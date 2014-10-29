@@ -6,15 +6,15 @@
          processIsolation="false">
     <testsuites>
         <testsuite name="MOC\V">
-            <directory suffix=".php">./Tests/Core</directory>
+            <directory suffix=".php">./Tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="false">
-            <directory suffix=".php">./Tests/Core</directory>
-            <directory suffix=".php">./../Core</directory>
+            <directory suffix=".php">./Tests</directory>
+            <directory suffix=".php">./../Library</directory>
             <exclude>
-                <directory>./../Core/HttpKernel/Vendor/Symfony</directory>
+                <directory>./../Library</directory>
             </exclude>
         </whitelist>
     </filter>
