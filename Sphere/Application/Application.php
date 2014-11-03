@@ -95,19 +95,19 @@ abstract class Application implements IApplicationInterface
         );
     }
 
-    private function prepareParameterUrl( $Value )
+    private static function prepareParameterUrl( $Value )
     {
 
         return new UrlParameter( $Value );
     }
 
-    private function prepareParameterName( $Value )
+    private static function prepareParameterName( $Value )
     {
 
         return new NameParameter( $Value );
     }
 
-    private function prepareParameterIcon( Icon $Value )
+    private static function prepareParameterIcon( Icon $Value )
     {
 
         if (null !== $Value) {
@@ -116,7 +116,7 @@ abstract class Application implements IApplicationInterface
         return $Value;
     }
 
-    private function prepareParameterActive( UrlParameter $Value )
+    private static function prepareParameterActive( UrlParameter $Value )
     {
 
         $Request = HttpKernel::getRequest();
