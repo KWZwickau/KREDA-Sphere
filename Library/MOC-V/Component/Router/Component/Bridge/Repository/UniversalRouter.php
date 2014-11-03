@@ -55,6 +55,15 @@ class UniversalRouter extends Bridge implements IBridgeInterface
     }
 
     /**
+     * @return array
+     */
+    public function getRouteList()
+    {
+
+        return array_keys( $this->RouteCollection );
+    }
+
+    /**
      * @param RouteParameter $Route
      *
      * @throws ComponentException

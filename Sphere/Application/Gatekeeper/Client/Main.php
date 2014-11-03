@@ -3,9 +3,8 @@ namespace KREDA\Sphere\Application\Gatekeeper\Client;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
-class Nuff extends Shell implements IElementInterface
+class Main extends Shell implements IElementInterface
 {
 
     /**
@@ -14,8 +13,7 @@ class Nuff extends Shell implements IElementInterface
     public function getContent()
     {
 
-        $Request = 'Gatekeeper';
-        return $Request;
+        return __CLASS__;
     }
 
 }

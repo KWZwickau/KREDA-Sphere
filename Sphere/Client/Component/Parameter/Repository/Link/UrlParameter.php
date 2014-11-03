@@ -7,11 +7,11 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Link;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
- * Class RouteParameter
+ * Class UrlParameter
  *
  * @package KREDA\Sphere\Client\Component\Parameter\Repository\Link
  */
-class RouteParameter extends Link implements IParameterInterface
+class UrlParameter extends Link implements IParameterInterface
 {
 
     /**

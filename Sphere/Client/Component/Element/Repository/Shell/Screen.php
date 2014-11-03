@@ -25,7 +25,7 @@ class Screen extends Shell implements IElementInterface
     function __construct()
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/Screen/Main.twig' );
+        $this->Template = Template::getTemplate( __DIR__.'/Screen.twig' );
         $this->Template->setVariable( 'PathBase', HttpKernel::getRequest()->getPathBase() );
     }
 
@@ -60,22 +60,12 @@ class Screen extends Shell implements IElementInterface
     {
 
         $Request =
-            '<div>'
-            .'<div>'
-            .'<div>'
-            .'<div class="navbar-fixed-bottom">'
-            .'<dl class="well-lg">'
-            .'<dt>PathInfo</dt>'
-            .'<dd>'.HttpKernel::getRequest()->getPathInfo().'</dd>'
-            .'<dt>PathBase</dt>'
-            .'<dd>'.HttpKernel::getRequest()->getPathBase().'</dd>'
-            .'<dt>UrlBase</dt>'
-            .'<dd>'.HttpKernel::getRequest()->getUrlBase().'</dd>'
-            .'<dt>UrlPort</dt>'
-            .'<dd>'.HttpKernel::getRequest()->getPort().'</dd>'
-            .'</dl>'
-            .'</div>'
-            .'</div>'
+            '<div class="navbar-fixed-bottom container-fluid">'
+            .'<div class="alert alert-info">'
+            .'<strong>PathInfo</strong> '.HttpKernel::getRequest()->getPathInfo().'<br/>'
+            .'<strong>PathBase</strong> '.HttpKernel::getRequest()->getPathBase().'<br/>'
+            .'<strong>UrlBase</strong> '.HttpKernel::getRequest()->getUrlBase().'<br/>'
+            .'<strong>UrlPort</strong> '.HttpKernel::getRequest()->getPort()
             .'</div>'
             .'</div>';
 

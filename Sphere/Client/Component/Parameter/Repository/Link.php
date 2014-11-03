@@ -10,7 +10,7 @@ abstract class Link extends Parameter implements IParameterInterface
     /** @var string $PatternLinkRoute */
     protected $PatternLinkRoute = '|^[a-z/]+$|is';
     /** @var string $PatternLinkName */
-    protected $PatternLinkName = '|^[a-z\s]+$|is';
+    protected $PatternLinkName = '|^[a-z\söäüß]+$|is';
 
     /** @var null|string $Value */
     protected $Value = null;

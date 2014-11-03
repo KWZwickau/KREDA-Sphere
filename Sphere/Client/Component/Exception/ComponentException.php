@@ -3,6 +3,11 @@ namespace KREDA\Sphere\Client\Component\Exception;
 
 use KREDA\Sphere\Client\Exception\ClientException;
 
+/**
+ * Class ComponentException
+ *
+ * @package KREDA\Sphere\Client\Component\Exception
+ */
 class ComponentException extends ClientException
 {
 

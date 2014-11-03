@@ -1,9 +1,19 @@
 <?php
 namespace KREDA\Sphere;
 
-use MOC\V\Component\Router\Component\IBridgeInterface;
+use KREDA\Sphere\Client\Configuration;
 
+/**
+ * Interface IApplicationInterface
+ *
+ * @package KREDA\Sphere
+ */
 interface IApplicationInterface
 {
-    public static function registerApplication( IBridgeInterface $Router );
+    /**
+     * @param Configuration $Configuration
+     *
+     * @return Configuration
+     */
+    public static function setupApi( Configuration $Configuration );
 }

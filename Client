@@ -1,21 +1,16 @@
 <?php
 namespace KREDA\Client;
 
-use KREDA\Sphere\Application\Assistance\Api;
+use KREDA\Sphere\Application\Assistance\Api as AssistanceApplication;
+use KREDA\Sphere\Application\Gatekeeper\Api as GatekeeperApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Container;
+use KREDA\Sphere\Client\Component\Element\Repository\Shell\Error;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Screen;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\StatisticIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Link\IconParameter;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Link\RouteParameter;
+use KREDA\Sphere\Client\Configuration;
 use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
-use MOC\V\Component\Router\Component\Parameter\Repository\RouteParameter as MOCRouteParameter;
 use MOC\V\Core\AutoLoader\AutoLoader;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
@@ -27,103 +22,38 @@ AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere\Client', __DIR__.'/Sphere/Clie
 AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere\Application', __DIR__.'/Sphere/Application' );
 AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere', __DIR__.'/Sphere' );
 
-$LevelClient = new LevelClient();
-$LevelModule = new LevelModule();
-$LevelApplication = new LevelApplication();
-
-$LevelClient->addLinkToMain(
-    new LevelClient\Link(
-        new RouteParameter( '/A' ), new NameParameter( 'Klassen' ), new IconParameter( new GearIcon() )
-    )
-);
-$LevelClient->addLinkToMain(
-    new LevelClient\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Zensuren' ), new IconParameter( new StatisticIcon() )
-        , true )
-);
-$LevelClient->addLinkToMain(
-    new LevelClient\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Verwaltung' ), new IconParameter( new GearIcon() )
-    )
-);
-$LevelClient->addLinkToMain(
-    new LevelClient\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Grunddaten' ), new IconParameter( new GearIcon() )
-    )
-);
-$LevelClient->addLinkToMeta(
-    new LevelClient\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Login' ), new IconParameter( new LockIcon() )
-    )
-);
-$LevelClient->addLinkToMeta(
-    new LevelClient\Link(
-        new RouteParameter( '/Sphere/Application/Assistance' ), new NameParameter( 'Hilfe' ), new IconParameter( new QuestionIcon() )
-    )
-);
-
-$LevelModule->addLinkToMain(
-    new LevelModule\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Zensurentabelle' )
-    )
-);
-$LevelModule->addLinkToMain(
-    new LevelModule\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Berechnung' )
-    )
-);
-$LevelModule->addLinkToMain(
-    new LevelModule\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Stichtagsnoten' )
-    )
-);
-$LevelModule->addLinkToMain(
-    new LevelModule\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Kopfnoten' )
-    )
-);
-$LevelModule->addLinkToMain(
-    new LevelModule\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Zensurenbewertung' ), new IconParameter( new GearIcon() )
-        , true )
-);
-$LevelModule->addLinkToMain(
-    new LevelModule\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Stichtagsnotenauftrag' )
-    )
-);
-$LevelModule->addLinkToMain(
-    new LevelModule\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Kopfnotenauftrag' )
-    )
-);
-
-$LevelApplication->addLinkToMain(
-    new LevelApplication\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Zensurentypen' ), new IconParameter( new GearIcon() )
-        , true )
-);
-$LevelApplication->addLinkToMain(
-    new LevelApplication\Link(
-        new RouteParameter( '/' ), new NameParameter( 'Bewertungstabellen' ), new IconParameter( new GearIcon() )
-    )
-);
-
-$ShellScreen = new Screen();
-
-$ShellScreen->addToNavigation( new Container( $LevelClient ) );
-$ShellScreen->addToNavigation( new Container( $LevelModule ) );
-$ShellScreen->addToNavigation( new Container( $LevelApplication ) );
-
 HttpKernel::getRequest()->getPathInfo();
 
-$Router = new UniversalRouter();
+$ShellScreen = new Screen();
+$Config = new Configuration( new UniversalRouter(), new LevelClient() );
+$Config = GatekeeperApplication::setupApi( $Config );
+$Config = AssistanceApplication::setupApi( $Config );
 
-$Assistance = new MOCRouteParameter( '/Sphere/Application/Assistance', 'KREDA\Sphere\Application\Assistance\Api::Main' );
-$Router->addRoute( $Assistance );
-$Router->addRoute( new MOCRouteParameter( '/', 'KREDA\Sphere\Application\Gatekeeper\Api::Main' ) );
-
-Api::registerApplication( $Router );
-
-$ShellScreen->addToContent( new Container( $Router->getRoute() ) );
+/**
+ * Execute Action, Get Response
+ */
+if (in_array( HttpKernel::getRequest()->getPathInfo(), $Config->getRouter()->getRouteList() )) {
+    $ShellScreen->addToContent( new Container( $Config->getRouter()->getRoute() ) );
+} else {
+    $ShellScreen->addToContent( new Container( new Error( 404 ) ) );
+}
+/**
+ * Define Navigation Client
+ */
+$ShellScreen->addToNavigation( new Container( $Config->getNavigation() ) );
+/**
+ * Define Navigation Module
+ */
+if ($Config->hasModuleNavigation()) {
+    $ShellScreen->addToNavigation( new Container( $Config->getModuleNavigation() ) );
+}
+/**
+ * Define Navigation Application
+ */
+if ($Config->hasMenuNavigation()) {
+    $ShellScreen->addToNavigation( new Container( $Config->getMenuNavigation() ) );
+}
+/**
+ * Create Client
+ */
 print $ShellScreen->getContent();

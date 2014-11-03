@@ -23,4 +23,9 @@ interface IBridgeInterface
      * @throws \Exception
      */
     public function getRoute();
+
+    /**
+     * @return array
+     */
+    public function getRouteList();
 }

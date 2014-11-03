@@ -4,7 +4,7 @@ namespace KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModul
 use KREDA\Sphere\Client\Component\IElementInterface;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\IconParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Link\RouteParameter;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Template;
 
@@ -20,7 +20,7 @@ class Link implements IElementInterface
     private $Template = null;
 
     /**
-     * @param RouteParameter $Route
+     * @param UrlParameter $Route
      * @param NameParameter  $Name
      * @param IconParameter  $Icon
      * @param bool           $ToggleActive
@@ -28,14 +28,14 @@ class Link implements IElementInterface
      * @throws \MOC\V\Component\Template\Exception\TemplateTypeException
      */
     function __construct(
-        RouteParameter $Route,
+        UrlParameter $Route,
         NameParameter $Name,
         IconParameter $Icon = null,
         $ToggleActive = false
     ) {
 
         $this->Template = Template::getTemplate( __DIR__.'/Link.twig' );
-        $this->Template->setVariable( 'RouteParameter', $Route->getValue() );
+        $this->Template->setVariable( 'UrlParameter', $Route->getValue() );
         $this->Template->setVariable( 'NameParameter', $Name->getValue() );
         if (null === $Icon) {
             $this->Template->setVariable( 'IconParameter', '' );
