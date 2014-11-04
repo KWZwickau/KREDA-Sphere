@@ -3,6 +3,8 @@ namespace KREDA\Client;
 
 use KREDA\Sphere\Application\Assistance\Api as AssistanceApplication;
 use KREDA\Sphere\Application\Gatekeeper\Api as GatekeeperApplication;
+use KREDA\Sphere\Application\Management\Api as ManagementApplication;
+use KREDA\Sphere\Application\Grade\Api as GradeApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
@@ -29,6 +31,11 @@ $ShellScreen = new Screen();
 $Config = new Configuration( new UniversalRouter(), new LevelClient() );
 $Config = GatekeeperApplication::setupApi( $Config );
 $Config = AssistanceApplication::setupApi( $Config );
+
+if( GatekeeperApplication::apiIsValidUser() ) {
+    $Config = ManagementApplication::setupApi($Config);
+    $Config = GradeApplication::setupApi($Config);
+}
 
 /**
  * Execute Action, Get Response

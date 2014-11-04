@@ -69,7 +69,7 @@ class Api extends Application
         return $Configuration;
     }
 
-    public function apiIsValidUser()
+    public static function apiIsValidUser()
     {
 
         if (isset( $_SESSION['Gatekeeper-Valid'] )) {
