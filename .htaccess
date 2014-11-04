@@ -1,3 +1,7 @@
+# External Network Access
+
+	Allow from All
+
 # Set Security Option
 
 	# ASAP 7 - Disable Directory-Listing
@@ -37,11 +41,11 @@
 
 	# Header set Cache-Control "max-age=600, private, must-revalidate"
 	# No ETag
-	<FilesMatch "\.(gif|jpg|jpeg|png|swf|css|js|html?|xml|txt|ico)$">
+	<FilesMatch "\.(gif|jpg|jpeg|png|swf|css|js|html?|xml|txt|ico|woff|map)$">
 		FileETag none
 	</FilesMatch>
 	# 480 weeks
-	<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$">
+	<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|woff|map)$">
 		Header set Cache-Control "max-age=290304000, public"
 	</FilesMatch>
 	# 2 DAYS
@@ -50,10 +54,7 @@
 	</FilesMatch>
 	# 2 HOURS
 	<FilesMatch "\.(html|htm)$">
-		Header set Cache-Control "max-age=7200, public, must-revalidate"
-	</FilesMatch>
-	<FilesMatch "Headline.php.*?$">
-		Header set Cache-Control "max-age=7200, public, must-revalidate"
+		Header set Cache-Control "max-age=7200, public"
 	</FilesMatch>
 
 # Compress everything except images

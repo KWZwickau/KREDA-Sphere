@@ -59,13 +59,20 @@ class Screen extends Shell implements IElementInterface
     public function getContent()
     {
 
+        ob_start();
+        print_r( $_REQUEST );
+        $Parameter = ob_get_clean();
+
         $Request =
             '<div class="navbar-fixed-bottom container-fluid">'
             .'<div class="alert alert-info">'
-            .'<strong>PathInfo</strong> '.HttpKernel::getRequest()->getPathInfo().'<br/>'
-            .'<strong>PathBase</strong> '.HttpKernel::getRequest()->getPathBase().'<br/>'
-            .'<strong>UrlBase</strong> '.HttpKernel::getRequest()->getUrlBase().'<br/>'
-            .'<strong>UrlPort</strong> '.HttpKernel::getRequest()->getPort()
+            .$Parameter
+            .'</div>'
+            .'<div class="alert alert-info">'
+            .'<strong>UrlPort</strong> '.HttpKernel::getRequest()->getPort().' '
+            .'<strong>PathBase</strong> '.HttpKernel::getRequest()->getPathBase().' '
+            .'<strong>UrlBase</strong> '.HttpKernel::getRequest()->getUrlBase().' '
+            .'<strong>PathInfo</strong> '.HttpKernel::getRequest()->getPathInfo().' '
             .'</div>'
             .'</div>';
 

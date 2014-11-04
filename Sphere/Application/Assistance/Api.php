@@ -2,11 +2,11 @@
 namespace KREDA\Sphere\Application\Assistance;
 
 use KREDA\Sphere\Application\Application;
+use KREDA\Sphere\Application\Assistance\Client\Entrance;
 use KREDA\Sphere\Application\Assistance\Client\Nuff;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
 use KREDA\Sphere\Client\Configuration;
@@ -29,13 +29,21 @@ class Api extends Application
         self::buildNavigationMeta( self::$Configuration,
             '/Sphere/Assistance', 'Hilfe', new QuestionIcon()
         );
-        self::buildRoute( self::$Configuration, '/Sphere/Assistance', __CLASS__.'::Main' );
-        self::buildRoute( self::$Configuration, '/Sphere/Assistance/Support', __CLASS__.'::Main' );
-        self::buildRoute( self::$Configuration, '/Sphere/Assistance/Support/Account', __CLASS__.'::Main' );
+        self::buildRoute( self::$Configuration, '/Sphere/Assistance', __CLASS__.'::apiMain' );
+        self::buildRoute( self::$Configuration, '/Sphere/Assistance/Support', __CLASS__.'::apiMain' );
+        self::buildRoute( self::$Configuration, '/Sphere/Assistance/Support/Account', __CLASS__.'::apiMain' );
         return $Configuration;
     }
 
-    public function Main()
+    public function apiMain()
+    {
+
+        $this->setupModule();
+
+        return new Entrance();
+    }
+
+    public function setupModule()
     {
 
         self::buildModuleMain( self::$Configuration,
@@ -44,13 +52,13 @@ class Api extends Application
         self::buildModuleMain( self::$Configuration,
             '/Sphere/Assistance/Support', 'Support', new QuestionIcon()
         );
-        self::buildMenuMain( self::$Configuration,
-            '/Sphere/Assistance/Support/Account', 'Account', new LockIcon()
-        );
-        self::buildMenuMain( self::$Configuration,
-            '/Sphere/Assistance/Support/Account', 'Fehler', new GearIcon()
-        );
-
-        return new Nuff();
+        /*
+                self::buildMenuMain( self::$Configuration,
+                    '/Sphere/Assistance/Support/Account', 'Account', new LockIcon()
+                );
+                self::buildMenuMain( self::$Configuration,
+                    '/Sphere/Assistance/Support/Account', 'Fehler', new GearIcon()
+                );
+        */
     }
 }

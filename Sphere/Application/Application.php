@@ -56,6 +56,34 @@ abstract class Application implements IApplicationInterface
         );
     }
 
+    private static function prepareParameterUrl( $Value )
+    {
+
+        return new UrlParameter( $Value );
+    }
+
+    private static function prepareParameterName( $Value )
+    {
+
+        return new NameParameter( $Value );
+    }
+
+    private static function prepareParameterIcon( Icon $Value )
+    {
+
+        if (null !== $Value) {
+            $Value = new IconParameter( $Value );
+        }
+        return $Value;
+    }
+
+    private static function prepareParameterActive( UrlParameter $Value )
+    {
+
+        $Request = HttpKernel::getRequest();
+        return 0 === strpos( $Request->getUrlBase().$Request->getPathInfo(), $Value->getValue() );
+    }
+
     protected static function buildNavigationMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
     {
 
@@ -95,31 +123,29 @@ abstract class Application implements IApplicationInterface
         );
     }
 
-    private static function prepareParameterUrl( $Value )
+    //from http://stackoverflow.com/questions/768431/how-to-make-a-redirect-in-php
+    /*
+    protected function doRedirect( $Url, $Code = 302 )
     {
-
-        return new UrlParameter( $Value );
-    }
-
-    private static function prepareParameterName( $Value )
-    {
-
-        return new NameParameter( $Value );
-    }
-
-    private static function prepareParameterIcon( Icon $Value )
-    {
-
-        if (null !== $Value) {
-            $Value = new IconParameter( $Value );
-        }
-        return $Value;
-    }
-
-    private static function prepareParameterActive( UrlParameter $Value )
-    {
-
         $Request = HttpKernel::getRequest();
-        return 0 === strpos( $Request->getUrlBase().$Request->getPathInfo(), $Value->getValue() );
+        $Url = $Request->getUrlBase().$Url;
+
+        if (headers_sent() !== true) {
+            if (strlen( session_id() ) > 0) {
+                session_regenerate_id( true );
+                session_write_close();
+            }
+            if (strncmp( 'cgi', PHP_SAPI, 3 ) === 0) {
+                header( sprintf( 'Status: %03u', $Code ), true, $Code );
+            }
+            header( 'Location: '.$Url, true, ( preg_match( '~^30[1237]$~', $Code ) > 0 ) ? $Code : 302 );
+        } else {
+            ?>
+            <meta http-equiv="Refresh" content="1; URL=<?php echo $Url; ?>">
+            <script language=javascript>setTimeout( "location.href='<?php echo $Url; ?>'", 1 );</script>
+        <?php
+        }
+        exit();
     }
+    */
 }

@@ -14,6 +14,7 @@ use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
 use MOC\V\Core\AutoLoader\AutoLoader;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
+header( 'Content-type: text/html; charset=utf-8' );
 ini_set( 'display_errors', 1 );
 
 require_once( __DIR__.'/Library/MOC-V/Core/AutoLoader/AutoLoader.php' );
@@ -22,7 +23,7 @@ AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere\Client', __DIR__.'/Sphere/Clie
 AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere\Application', __DIR__.'/Sphere/Application' );
 AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere', __DIR__.'/Sphere' );
 
-HttpKernel::getRequest()->getPathInfo();
+session_start();
 
 $ShellScreen = new Screen();
 $Config = new Configuration( new UniversalRouter(), new LevelClient() );
