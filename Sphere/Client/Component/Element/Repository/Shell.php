@@ -12,5 +12,15 @@ use KREDA\Sphere\Client\Component\IElementInterface;
 abstract class Shell extends Element implements IElementInterface
 {
 
+    /**
+     * @return string
+     */
+    function __toString()
+    {
+
+        return $this->getContent();
+    }
+
     abstract public function getContent();
+
 }
