@@ -2,14 +2,14 @@
 namespace KREDA\Sphere\Application\Grade;
 
 use KREDA\Sphere\Application\Application;
-use KREDA\Sphere\Application\Grade\Client\Entrance;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
+use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\StatisticIcon;
 use KREDA\Sphere\Client\Configuration;
 
-class Api extends Application
+class Client extends Application
 {
 
     /** @var Configuration $Config */
@@ -20,27 +20,32 @@ class Api extends Application
      *
      * @return Configuration
      */
-    public static function setupApi(Configuration $Configuration)
+    public static function setupApi( Configuration $Configuration )
     {
 
         self::$Configuration = $Configuration;
-        self::buildNavigationMain(self::$Configuration,
+        self::buildNavigationMain( self::$Configuration,
             '/Sphere/Grade', 'Zensuren', new StatisticIcon()
         );
-        self::buildRoute(self::$Configuration, '/Sphere/Grade', __CLASS__ . '::apiMain');
+        self::buildRoute( self::$Configuration, '/Sphere/Grade', __CLASS__.'::apiMain' );
         return $Configuration;
     }
 
     public function apiMain()
     {
+
         $this->setupModule();
-        return new Entrance();
+        $View = new Landing();
+        $View->setTitle( 'Zensuren' );
+        $View->setMessage( 'Bitte wählen Sie ein Thema' );
+        return $View;
     }
 
     public function setupModule()
     {
-        self::buildModuleMain(self::$Configuration,
-             '/Sphere/Management/Class', 'Zensurentypen', new StatisticIcon()
-         );
+
+        self::buildModuleMain( self::$Configuration,
+            '/Sphere/Management/Class', 'Zensurentypen', new StatisticIcon()
+        );
     }
 }

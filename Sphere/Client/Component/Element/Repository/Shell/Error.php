@@ -17,18 +17,22 @@ class Error extends Shell implements IElementInterface
     /** @var IBridgeInterface $Template */
     private $Template = null;
 
-    function __construct( $Code )
+    function __construct( $Code, $Message = null )
     {
 
         $this->Template = Template::getTemplate( __DIR__.'/Error.twig' );
         $this->Template->setVariable( 'ErrorCode', $Code );
-        switch ($Code) {
-            case 404:
-                $this->Template->setVariable( 'ErrorMessage',
-                    'Die angeforderte Ressource konnte nicht gefunden werden' );
-                break;
-            default:
-                $this->Template->setVariable( 'ErrorMessage', '' );
+        if (null === $Message) {
+            switch ($Code) {
+                case 404:
+                    $this->Template->setVariable( 'ErrorMessage',
+                        'Die angeforderte Ressource konnte nicht gefunden werden' );
+                    break;
+                default:
+                    $this->Template->setVariable( 'ErrorMessage', '' );
+            }
+        } else {
+            $this->Template->setVariable( 'ErrorMessage', $Message );
         }
     }
 

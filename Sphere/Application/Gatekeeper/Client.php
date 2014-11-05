@@ -2,25 +2,26 @@
 namespace KREDA\Sphere\Application\Gatekeeper;
 
 use KREDA\Sphere\Application\Application;
-use KREDA\Sphere\Application\Gatekeeper\Client\Entrance;
 use KREDA\Sphere\Application\Gatekeeper\Client\Entrance\SignIn;
-use KREDA\Sphere\Application\Gatekeeper\Client\Entrance\SignInManagement;
-use KREDA\Sphere\Application\Gatekeeper\Client\Entrance\SignInStudent;
-use KREDA\Sphere\Application\Gatekeeper\Client\Entrance\SignInTeacher;
 use KREDA\Sphere\Application\Gatekeeper\Client\Entrance\SignOut;
+use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement;
+use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent;
+use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch;
+use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
+use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
 use KREDA\Sphere\Client\Configuration;
 
 /**
- * Class Api
+ * Class Client
  *
  * @package KREDA\Sphere\Application\Gatekeeper
  */
-class Api extends Application
+class Client extends Application
 {
 
     /** @var Configuration $Config */
@@ -37,7 +38,7 @@ class Api extends Application
         self::$Configuration = $Configuration;
         if (self::apiIsValidUser()) {
             self::buildNavigationMeta( self::$Configuration,
-                '/Sphere/Gatekeeper/SignOut', 'Abmelden', new GearIcon()
+                '/Sphere/Gatekeeper/SignOut', 'Abmelden', new OffIcon()
             );
         } else {
             self::buildNavigationMeta( self::$Configuration,
@@ -80,7 +81,7 @@ class Api extends Application
     }
 
     /**
-     * @return Entrance
+     * @return \KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch
      */
     public function apiSignIn()
     {
@@ -89,13 +90,18 @@ class Api extends Application
     }
 
     /**
-     * @return Entrance
+     * @return SignInSwitch
      */
     public function apiMain()
     {
 
         $this->setupModule();
-        return new Entrance();
+        $View = new Landing();
+        $View->setTitle( 'Anmeldung' );
+        $View->setMessage( 'Bitte wählen Sie den Typ der Anmeldung' );
+        $View->setContent( new SignInSwitch() );
+        return $View;
+
     }
 
     /**
@@ -120,7 +126,7 @@ class Api extends Application
      * @param $CredentialLock
      * @param $CredentialKey
      *
-     * @return SignInTeacher
+     * @return \KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher
      */
     public function apiSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey )
     {
@@ -156,7 +162,7 @@ class Api extends Application
      * @param $CredentialLock
      * @param $CredentialKey
      *
-     * @return SignInManagement
+     * @return \KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement
      */
     public function apiSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
     {
@@ -192,7 +198,7 @@ class Api extends Application
      * @param $CredentialName
      * @param $CredentialLock
      *
-     * @return SignInStudent
+     * @return \KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent
      */
     public function apiSignInStudent( $CredentialName, $CredentialLock )
     {

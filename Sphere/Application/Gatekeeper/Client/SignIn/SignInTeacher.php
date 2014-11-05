@@ -1,12 +1,12 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Client\Entrance;
+namespace KREDA\Sphere\Application\Gatekeeper\Client\SignIn;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Template;
 
-class SignInStudent extends Shell implements IElementInterface
+class SignInTeacher extends Shell implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */
@@ -15,7 +15,7 @@ class SignInStudent extends Shell implements IElementInterface
     function __construct()
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/SignInStudent.twig' );
+        $this->Template = Template::getTemplate( __DIR__.'/SignInTeacher.twig' );
         if (isset( $_REQUEST['CredentialName'] )) {
             $this->Template->setVariable( 'CredentialNameValue', $_REQUEST['CredentialName'] );
         }

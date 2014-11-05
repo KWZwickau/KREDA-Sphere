@@ -42,6 +42,30 @@ class Screen extends Shell implements IElementInterface
     }
 
     /**
+     * @param \Exception $E
+     *
+     * @return Screen
+     */
+    public function addError( \Exception $E )
+    {
+
+        $TraceList = '';
+        foreach ((array)$E->getTrace() as $Index => $Trace) {
+            $TraceList .= '<br/><samp class="text-info">'
+                .( isset( $Trace['type'] ) && isset( $Trace['function'] ) ? '<br/>Method: '.$Trace['type'].$Trace['function'] : '<br/>Method: ' )
+                .( isset( $Trace['class'] ) ? '<br/>Class: '.$Trace['class'] : '<br/>Class: ' )
+                .( isset( $Trace['file'] ) ? '<br/>File: '.$Trace['file'] : '<br/>File: ' )
+                .( isset( $Trace['line'] ) ? '<br/>Line: '.$Trace['line'] : '<br/>Line: ' )
+                .'</samp>';
+        }
+        $Hit = '<samp class="text-danger"><p class="h6">'.$E->getMessage().'</p>File: '.$E->getFile().'<br/>Line: '.$E->getLine().'</samp>'.$TraceList;
+        $this->addToContent( new Container( new Error(
+            $E->getCode() == 0 ? 'Error' : $E->getCode(), $Hit
+        ) ) );
+        return $this;
+    }
+
+    /**
      * @param Container $Container
      *
      * @return Screen
@@ -51,6 +75,31 @@ class Screen extends Shell implements IElementInterface
 
         array_push( $this->PositionContent, $Container->getContent() );
         return $this;
+    }
+
+    /**
+     * @param \Exception $E
+     *
+     * @return Screen
+     */
+    public function addException( \Exception $E )
+    {
+
+        $TraceList = '';
+        foreach ((array)$E->getTrace() as $Index => $Trace) {
+            $TraceList .= '<br/><samp class="text-info">'
+                .( isset( $Trace['type'] ) && isset( $Trace['function'] ) ? '<br/>Method: '.$Trace['type'].$Trace['function'] : '<br/>Method: ' )
+                .( isset( $Trace['class'] ) ? '<br/>Class: '.$Trace['class'] : '<br/>Class: ' )
+                .( isset( $Trace['file'] ) ? '<br/>File: '.$Trace['file'] : '<br/>File: ' )
+                .( isset( $Trace['line'] ) ? '<br/>Line: '.$Trace['line'] : '<br/>Line: ' )
+                .'</samp>';
+        }
+        $Hit = '<samp class="text-danger"><p class="h6">'.$E->getMessage().'</p>File: '.$E->getFile().'<br/>Line: '.$E->getLine().'</samp>'.$TraceList;
+        $this->addToContent( new Container( new Error(
+            $E->getCode() == 0 ? 'Exception' : $E->getCode(), $Hit
+        ) ) );
+        return $this;
+
     }
 
     /**
@@ -77,7 +126,9 @@ class Screen extends Shell implements IElementInterface
             .'</div>';
 
         $this->Template->setVariable( 'PositionNavigation', implode( '', $this->PositionNavigation ) );
-        $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent ).$Request );
+        $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent )
+        //    .$Request
+        );
         return $this->Template->getContent();
     }
 

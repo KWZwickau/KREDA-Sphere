@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Client;
+namespace KREDA\Sphere\Application\Gatekeeper\Client\SignIn;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
@@ -7,7 +7,7 @@ use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Template;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
-class Entrance extends Shell implements IElementInterface
+class SignInSwitch extends Shell implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */
@@ -16,7 +16,7 @@ class Entrance extends Shell implements IElementInterface
     function __construct()
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/Entrance.twig' );
+        $this->Template = Template::getTemplate( __DIR__.'/SignInSwitch.twig' );
         $this->Template->setVariable( 'UrlBase', HttpKernel::getRequest()->getUrlBase() );
 
     }

@@ -1,12 +1,15 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xs-12">
-            <div class="alert alert-danger">
-                <strong>{{ ErrorCode }}</strong> {{ ErrorMessage }}
+        <div class="col-md-2"></div>
+        <div class="col-md-8 col-xs-12 text-center">
+            <h1 class="text-danger">Es ist ein Fehler aufgetreten</h1>
+            <hr/>
+            <div class="alert alert-warning text-left">
+                Typ <strong>{{ ErrorCode }}</strong>
+
+                <div>{{ ErrorMessage }}</div>
             </div>
         </div>
+        <div class="col-md-2"></div>
     </div>
 </div>
-
-
-

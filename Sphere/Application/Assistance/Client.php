@@ -2,16 +2,14 @@
 namespace KREDA\Sphere\Application\Assistance;
 
 use KREDA\Sphere\Application\Application;
-use KREDA\Sphere\Application\Assistance\Client\Entrance;
-use KREDA\Sphere\Application\Assistance\Client\Nuff;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
+use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
 use KREDA\Sphere\Client\Configuration;
 
-class Api extends Application
+class Client extends Application
 {
 
     /** @var Configuration $Config */
@@ -39,26 +37,14 @@ class Api extends Application
     {
 
         $this->setupModule();
-
-        return new Entrance();
+        $View = new Landing();
+        $View->setTitle( 'Hilfe' );
+        $View->setMessage( 'Bitte wählen Sie ein Thema' );
+        return $View;
     }
 
     public function setupModule()
     {
 
-        self::buildModuleMain( self::$Configuration,
-            '/Sphere/Assistance/Anmeldung', 'Anmeldung', new LockIcon()
-        );
-        self::buildModuleMain( self::$Configuration,
-            '/Sphere/Assistance/Support', 'Support', new QuestionIcon()
-        );
-        /*
-                self::buildMenuMain( self::$Configuration,
-                    '/Sphere/Assistance/Support/Account', 'Account', new LockIcon()
-                );
-                self::buildMenuMain( self::$Configuration,
-                    '/Sphere/Assistance/Support/Account', 'Fehler', new GearIcon()
-                );
-        */
     }
 }
