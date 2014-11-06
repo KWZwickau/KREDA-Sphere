@@ -24,7 +24,7 @@ class Client extends Application
     {
 
         self::$Configuration = $Configuration;
-        self::buildNavigationMain( self::$Configuration,
+        self::addClientNavigationMain( self::$Configuration,
             '/Sphere/Grade', 'Zensuren', new StatisticIcon()
         );
         self::buildRoute( self::$Configuration, '/Sphere/Grade', __CLASS__.'::apiMain' );
@@ -34,17 +34,17 @@ class Client extends Application
     public function apiMain()
     {
 
-        $this->setupModule();
+        $this->setupModuleNavigation();
         $View = new Landing();
         $View->setTitle( 'Zensuren' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
     }
 
-    public function setupModule()
+    public function setupModuleNavigation()
     {
 
-        self::buildModuleMain( self::$Configuration,
+        self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Class', 'Zensurentypen', new StatisticIcon()
         );
     }

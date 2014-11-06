@@ -127,7 +127,7 @@ class Screen extends Shell implements IElementInterface
 
         $this->Template->setVariable( 'PositionNavigation', implode( '', $this->PositionNavigation ) );
         $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent )
-        //    .$Request
+            .$Request
         );
         return $this->Template->getContent();
     }

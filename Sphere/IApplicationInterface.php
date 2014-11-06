@@ -20,11 +20,6 @@ interface IApplicationInterface
     public static function setupApi( Configuration $Configuration );
 
     /**
-     * @return void
-     */
-    public function setupModule();
-
-    /**
      * @return Element
      */
     public function apiMain();

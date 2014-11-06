@@ -31,27 +31,9 @@ class Configuration
     }
 
     /**
-     * @return bool
-     */
-    public function hasModuleNavigation()
-    {
-
-        return $this->Module !== null;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasMenuNavigation()
-    {
-
-        return $this->Menu !== null;
-    }
-
-    /**
      * @return Router
      */
-    public function getRouter()
+    public function getClientRouter()
     {
 
         return $this->Router;
@@ -60,7 +42,7 @@ class Configuration
     /**
      * @return Navigation
      */
-    public function getNavigation()
+    public function getClientNavigation()
     {
 
         return $this->Navigation;
@@ -79,14 +61,32 @@ class Configuration
     }
 
     /**
-     * @return Menu|null
+     * @return bool
      */
-    public function getMenuNavigation()
+    public function hasModuleNavigation()
     {
 
-        if (!$this->hasMenuNavigation()) {
+        return $this->Module !== null;
+    }
+
+    /**
+     * @return Menu|null
+     */
+    public function getApplicationNavigation()
+    {
+
+        if (!$this->hasApplicationNavigation()) {
             $this->Menu = new Menu();
         }
         return $this->Menu;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasApplicationNavigation()
+    {
+
+        return $this->Menu !== null;
     }
 }

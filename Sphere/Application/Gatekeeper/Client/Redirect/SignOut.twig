@@ -5,9 +5,19 @@
             <h1>Abmelden</h1>
             <hr/>
             <div>Sie werden vom System abgemeldet...</div>
+            <br/>
+
+            <div>
+                <small>Sollten sie nicht automatisch weitergeleitet werden, klicken Sie bitte hier</small>
+            </div>
+            <br/>
+
+            <div>
+                <a href="{{ UrlBase }}/Sphere/Gatekeeper/SignIn" class="btn btn-primary">Weiter</a>
+            </div>
             <meta http-equiv="Refresh" content="2; URL={{ UrlBase }}/Sphere/Gatekeeper/SignIn" property="">
             <script language=javascript>setTimeout( "location.href='{{ UrlBase }}/Sphere/Gatekeeper/SignIn'",
-                    2000 );</script>
+                    1500 );</script>
         </div>
         <div class="col-md-2"></div>
     </div>

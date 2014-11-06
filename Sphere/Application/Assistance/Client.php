@@ -24,7 +24,7 @@ class Client extends Application
     {
 
         self::$Configuration = $Configuration;
-        self::buildNavigationMeta( self::$Configuration,
+        self::addClientNavigationMeta( self::$Configuration,
             '/Sphere/Assistance', 'Hilfe', new QuestionIcon()
         );
         self::buildRoute( self::$Configuration, '/Sphere/Assistance', __CLASS__.'::apiMain' );
@@ -36,14 +36,14 @@ class Client extends Application
     public function apiMain()
     {
 
-        $this->setupModule();
+        $this->setupModuleNavigation();
         $View = new Landing();
         $View->setTitle( 'Hilfe' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
     }
 
-    public function setupModule()
+    public function setupModuleNavigation()
     {
 
     }

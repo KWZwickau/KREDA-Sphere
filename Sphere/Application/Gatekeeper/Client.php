@@ -37,11 +37,11 @@ class Client extends Application
 
         self::$Configuration = $Configuration;
         if (self::apiIsValidUser()) {
-            self::buildNavigationMeta( self::$Configuration,
+            self::addClientNavigationMeta( self::$Configuration,
                 '/Sphere/Gatekeeper/SignOut', 'Abmelden', new OffIcon()
             );
         } else {
-            self::buildNavigationMeta( self::$Configuration,
+            self::addClientNavigationMeta( self::$Configuration,
                 '/Sphere/Gatekeeper/SignIn', 'Anmeldung', new LockIcon()
             );
         }
@@ -95,7 +95,7 @@ class Client extends Application
     public function apiMain()
     {
 
-        $this->setupModule();
+        $this->setupModuleNavigation();
         $View = new Landing();
         $View->setTitle( 'Anmeldung' );
         $View->setMessage( 'Bitte wählen Sie den Typ der Anmeldung' );
@@ -107,16 +107,16 @@ class Client extends Application
     /**
      *
      */
-    public function setupModule()
+    public function setupModuleNavigation()
     {
 
-        self::buildModuleMain( self::$Configuration,
+        self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Gatekeeper/SignIn/Teacher', 'Lehrer', new LockIcon()
         );
-        self::buildModuleMain( self::$Configuration,
+        self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Gatekeeper/SignIn/Management', 'Verwaltung', new LockIcon()
         );
-        self::buildModuleMain( self::$Configuration,
+        self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Gatekeeper/SignIn/Student', 'Schüler', new LockIcon()
         );
     }
@@ -131,7 +131,7 @@ class Client extends Application
     public function apiSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
-        $this->setupModule();
+        $this->setupModuleNavigation();
         $View = new SignInTeacher();
         $Error = false;
 
@@ -167,7 +167,7 @@ class Client extends Application
     public function apiSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
-        $this->setupModule();
+        $this->setupModuleNavigation();
         $View = new SignInManagement();
         $Error = false;
 
@@ -203,7 +203,7 @@ class Client extends Application
     public function apiSignInStudent( $CredentialName, $CredentialLock )
     {
 
-        $this->setupModule();
+        $this->setupModuleNavigation();
         $View = new SignInStudent();
         $Error = false;
 

@@ -32,7 +32,7 @@ abstract class Application implements IApplicationInterface
     {
 
         $Route = new RouteParameter( $Url, $Method );
-        $Configuration->getRouter()->addRoute( $Route );
+        $Configuration->getClientRouter()->addRoute( $Route );
 
         return $Route;
     }
@@ -43,10 +43,10 @@ abstract class Application implements IApplicationInterface
      * @param string        $Name
      * @param Icon          $Icon
      */
-    protected static function buildNavigationMeta( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
+    protected static function addClientNavigationMeta( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
     {
 
-        $Configuration->getNavigation()->addLinkToMeta(
+        $Configuration->getClientNavigation()->addLinkToMeta(
             new LevelClient\Link(
                 $Url = self::prepareParameterUrl( $Url ),
                 self::prepareParameterName( $Name ),
@@ -84,10 +84,10 @@ abstract class Application implements IApplicationInterface
         return 0 === strpos( $Request->getUrlBase().$Request->getPathInfo(), $Value->getValue() );
     }
 
-    protected static function buildNavigationMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
+    protected static function addClientNavigationMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
     {
 
-        $Configuration->getNavigation()->addLinkToMain(
+        $Configuration->getClientNavigation()->addLinkToMain(
             new LevelClient\Link(
                 $Url = self::prepareParameterUrl( $Url ),
                 self::prepareParameterName( $Name ),
@@ -97,7 +97,7 @@ abstract class Application implements IApplicationInterface
         );
     }
 
-    protected static function buildModuleMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
+    protected static function addModuleNavigationMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
     {
 
         $Configuration->getModuleNavigation()->addLinkToMain(
@@ -110,10 +110,14 @@ abstract class Application implements IApplicationInterface
         );
     }
 
-    protected static function buildMenuMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
-    {
+    protected static function addApplicationNavigationMain(
+        Configuration &$Configuration,
+        $Url,
+        $Name,
+        Icon $Icon = null
+    ) {
 
-        $Configuration->getMenuNavigation()->addLinkToMain(
+        $Configuration->getApplicationNavigation()->addLinkToMain(
             new LevelApplication\Link(
                 $Url = self::prepareParameterUrl( $Url ),
                 self::prepareParameterName( $Name ),
@@ -123,29 +127,5 @@ abstract class Application implements IApplicationInterface
         );
     }
 
-    //from http://stackoverflow.com/questions/768431/how-to-make-a-redirect-in-php
-    /*
-    protected function doRedirect( $Url, $Code = 302 )
-    {
-        $Request = HttpKernel::getRequest();
-        $Url = $Request->getUrlBase().$Url;
-
-        if (headers_sent() !== true) {
-            if (strlen( session_id() ) > 0) {
-                session_regenerate_id( true );
-                session_write_close();
-            }
-            if (strncmp( 'cgi', PHP_SAPI, 3 ) === 0) {
-                header( sprintf( 'Status: %03u', $Code ), true, $Code );
-            }
-            header( 'Location: '.$Url, true, ( preg_match( '~^30[1237]$~', $Code ) > 0 ) ? $Code : 302 );
-        } else {
-            ?>
-            <meta http-equiv="Refresh" content="1; URL=<?php echo $Url; ?>">
-            <script language=javascript>setTimeout( "location.href='<?php echo $Url; ?>'", 1 );</script>
-        <?php
-        }
-        exit();
-    }
-    */
+    abstract protected function setupModuleNavigation();
 }

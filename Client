@@ -18,16 +18,16 @@ use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
 use MOC\V\Core\AutoLoader\AutoLoader;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
-header( 'Content-type: text/html; charset=utf-8' );
-ini_set( 'display_errors', 1 );
-
 require_once( __DIR__.'/Library/MOC-V/Core/AutoLoader/AutoLoader.php' );
 AutoLoader::getNamespaceAutoLoader( 'MOC\V', __DIR__.'/Library/MOC-V' );
 AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere\Client', __DIR__.'/Sphere/Client' );
 AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere\Application', __DIR__.'/Sphere/Application' );
 AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere', __DIR__.'/Sphere' );
 
+header( 'Content-type: text/html; charset=utf-8' );
+ini_set( 'display_errors', 1 );
 session_start();
+
 ini_set( 'xdebug.var_display_max_data', -1 );
 ini_set( 'xdebug.var_display_max_children', -1 );
 ini_set( 'xdebug.var_display_max_depth', -1 );
@@ -70,13 +70,24 @@ try {
     /**
      * Execute Action, Get Response
      */
-    if (in_array( HttpKernel::getRequest()->getPathInfo(), $Config->getRouter()->getRouteList() )) {
+    if (in_array( HttpKernel::getRequest()->getPathInfo(), $Config->getClientRouter()->getRouteList() )) {
         /** @var Element $Route */
-        $Route = $Config->getRouter()->getRoute();
+        $Route = $Config->getClientRouter()->getRoute();
         $ShellScreen->addToContent( new Container( $Route ) );
     } else {
-        $ShellScreen->addToContent( new Container( new Error( 404,
-            '<p class="h6">Die angeforderte Ressource konnte nicht gefunden werden</p><samp class="text-danger">'.HttpKernel::getRequest()->getPathInfo().'</samp>' ) ) );
+        if (GatekeeperApplication::apiIsValidUser()) {
+            $ShellScreen->addToContent(
+                new Container( new Error( 404,
+                        '<p class="h6">Die angeforderte Ressource konnte nicht gefunden werden</p><samp class="text-danger">'.HttpKernel::getRequest()->getPathInfo().'</samp>' )
+                )
+            );
+        } else {
+            $ShellScreen->addToContent(
+                new Container(
+                    $Config->getClientRouter()->getRoute( '/Sphere/Gatekeeper/SignIn' )
+                )
+            );
+        }
     }
 } catch( \ErrorException $E ) {
     $ShellScreen->addError( $E );
@@ -86,7 +97,7 @@ try {
 /**
  * Define Navigation Client
  */
-$ShellScreen->addToNavigation( new Container( $Config->getNavigation() ) );
+$ShellScreen->addToNavigation( new Container( $Config->getClientNavigation() ) );
 /**
  * Define Navigation Module
  */
@@ -96,8 +107,8 @@ if ($Config->hasModuleNavigation()) {
 /**
  * Define Navigation Application
  */
-if ($Config->hasMenuNavigation()) {
-    $ShellScreen->addToNavigation( new Container( $Config->getMenuNavigation() ) );
+if ($Config->hasApplicationNavigation()) {
+    $ShellScreen->addToNavigation( new Container( $Config->getApplicationNavigation() ) );
 }
 /**
  * Create Client

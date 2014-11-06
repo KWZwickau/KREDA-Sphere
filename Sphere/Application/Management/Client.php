@@ -2,6 +2,8 @@
 namespace KREDA\Sphere\Application\Management;
 
 use KREDA\Sphere\Application\Application;
+use KREDA\Sphere\Application\Gatekeeper\Service\People;
+use KREDA\Sphere\Application\Management\Service\Property;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
@@ -18,13 +20,16 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TileSmallIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Configuration;
 
+/**
+ * Class Client
+ *
+ * @package KREDA\Sphere\Application\Management
+ */
 class Client extends Application
 {
 
     /** @var Configuration $Config */
     private static $Configuration = null;
-    /** @var \KREDA\Sphere\Application\Management\Service\People $ServicePeople */
-    private static $ServicePeople = null;
 
     /**
      * @param Configuration $Configuration
@@ -35,15 +40,16 @@ class Client extends Application
     {
 
         self::$Configuration = $Configuration;
-        self::$ServicePeople = new Service\People();
 
-        self::buildNavigationMain( self::$Configuration,
-            '/Sphere/Management', 'Verwaltung', new GearIcon()
-        );
-        self::buildRoute( self::$Configuration,
-            '/Sphere/Management', __CLASS__.'::apiMain'
-        );
+        /**
+         * Navigation
+         */
+        self::buildRoute( self::$Configuration, '/Sphere/Management', __CLASS__.'::apiMain' );
+        self::addClientNavigationMain( self::$Configuration, '/Sphere/Management', 'Verwaltung', new GearIcon() );
 
+        /**
+         * Property
+         */
         self::buildRoute( self::$Configuration,
             '/Sphere/Management/Property', __CLASS__.'::apiProperty'
         );
@@ -57,11 +63,17 @@ class Client extends Application
             '/Sphere/Management/Property/Room', __CLASS__.'::apiPropertyRoom'
         );
 
+        /**
+         * People
+         */
         self::buildRoute( self::$Configuration,
             '/Sphere/Management/People', __CLASS__.'::apiPeople'
         );
         self::buildRoute( self::$Configuration,
             '/Sphere/Management/People/Staff', __CLASS__.'::apiPeopleStaff'
+        );
+        self::buildRoute( self::$Configuration,
+            '/Sphere/Management/People/Staff/Create', __CLASS__.'::apiPeopleStaffCreate'
         );
         self::buildRoute( self::$Configuration,
             '/Sphere/Management/People/Student', __CLASS__.'::apiPeopleStudent'
@@ -70,6 +82,9 @@ class Client extends Application
             '/Sphere/Management/People/Parent', __CLASS__.'::apiPeopleParent'
         );
 
+        /**
+         * Arrangement
+         */
         self::buildRoute( self::$Configuration,
             '/Sphere/Management/Arrangement', __CLASS__.'::apiArrangement'
         );
@@ -92,34 +107,33 @@ class Client extends Application
     public function apiMain()
     {
 
-        $this->setupModule();
+        $this->setupModuleNavigation();
         $View = new Landing();
         $View->setTitle( 'Verwaltung' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
     }
 
-    public function setupModule()
+    protected function setupModuleNavigation()
     {
 
-        self::buildModuleMain( self::$Configuration,
+        self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Property', 'Immobilien', new HomeIcon()
         );
-
-        self::buildModuleMain( self::$Configuration,
+        self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/People', 'Personen', new PersonIcon()
         );
 
-        self::buildModuleMain( self::$Configuration,
+        self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Arrangement/Group', 'Klassen', new TagListIcon()
         );
-        self::buildModuleMain( self::$Configuration,
+        self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Arrangement/Subject', 'Fächer', new BookIcon()
         );
-        self::buildModuleMain( self::$Configuration,
+        self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Arrangement/Period', 'Zeiten', new TimeIcon()
         );
-        self::buildModuleMain( self::$Configuration,
+        self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Arrangement/Mission', 'Aufträge', new BriefcaseIcon()
         );
     }
@@ -127,24 +141,21 @@ class Client extends Application
     public function apiProperty()
     {
 
-        $this->setupModule();
-        $this->setupMenuProperty();
-        $View = new Landing();
-        $View->setTitle( 'Immobilien' );
-        $View->setMessage( 'Bitte wählen Sie ein Thema' );
-        return $View;
+        $this->setupModuleNavigation();
+        $this->setupServiceProperty();
+        return Property::getApi( '/Sphere/Management/Property' )->apiMain();
     }
 
-    private function setupMenuProperty()
+    private function setupServiceProperty()
     {
 
-        self::buildMenuMain( self::$Configuration,
+        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/Property/School', 'Schulen', new TileBigIcon()
         );
-        self::buildMenuMain( self::$Configuration,
+        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/Property/Building', 'Gebäude', new TileSmallIcon()
         );
-        self::buildMenuMain( self::$Configuration,
+        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/Property/Room', 'Räume', new TileListIcon()
         );
     }
@@ -152,54 +163,45 @@ class Client extends Application
     public function apiPropertySchool()
     {
 
-        $this->setupModule();
-        $this->setupMenuProperty();
-        $View = new Landing();
-        $View->setTitle( 'Immobilien' );
-        $View->setMessage( 'Bitte wählen Sie ein Thema' );
-        return $View;
+        $this->setupModuleNavigation();
+        $this->setupServiceProperty();
+        return Property::getApi( '/Sphere/Management/Property' )->apiMain();
     }
 
     public function apiPropertyBuilding()
     {
 
-        $this->setupModule();
-        $this->setupMenuProperty();
-        $View = new Landing();
-        $View->setTitle( 'Immobilien' );
-        $View->setMessage( 'Bitte wählen Sie ein Thema' );
-        return $View;
+        $this->setupModuleNavigation();
+        $this->setupServiceProperty();
+        return Property::getApi( '/Sphere/Management/Property' )->apiMain();
     }
 
     public function apiPropertyRoom()
     {
 
-        $this->setupModule();
-        $this->setupMenuProperty();
-        $View = new Landing();
-        $View->setTitle( 'Immobilien' );
-        $View->setMessage( 'Bitte wählen Sie ein Thema' );
-        return $View;
+        $this->setupModuleNavigation();
+        $this->setupServiceProperty();
+        return Property::getApi( '/Sphere/Management/Property' )->apiMain();
     }
 
     public function apiPeople()
     {
 
-        $this->setupModule();
-        $this->setupMenuPeople();
-        return self::$ServicePeople->apiPeople();
+        $this->setupModuleNavigation();
+        $this->setupServicePeople();
+        return People::getApi( '/Sphere/Management/People' )->apiMain();
     }
 
-    private function setupMenuPeople()
+    private function setupServicePeople()
     {
 
-        self::buildMenuMain( self::$Configuration,
+        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/People/Staff', 'Personal', new PersonIcon()
         );
-        self::buildMenuMain( self::$Configuration,
+        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/People/Student', 'Schüler', new PersonIcon()
         );
-        self::buildMenuMain( self::$Configuration,
+        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/People/Parent', 'Eltern', new PersonIcon()
         );
 
@@ -208,25 +210,37 @@ class Client extends Application
     public function apiPeopleStaff()
     {
 
-        $this->setupModule();
-        $this->setupMenuPeople();
-        return self::$ServicePeople->apiPeopleStaff();
+        $this->setupModuleNavigation();
+        $this->setupServicePeople();
+        return People::getApi( '/Sphere/Management/People/Staff' )->apiPeopleStaff();
+
+    }
+
+    public function apiPeopleStaffCreate()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupServicePeople();
+        return People::getApi( '/Sphere/Management/People/Staff' )->apiPeopleStaffCreate();
+
     }
 
     public function apiPeopleStudent()
     {
 
-        $this->setupModule();
-        $this->setupMenuPeople();
-        return self::$ServicePeople->apiPeopleStudent();
+        $this->setupModuleNavigation();
+        $this->setupServicePeople();
+        return People::getApi( '/Sphere/Management/People/Student' )->apiPeopleStudent();
+
     }
 
     public function apiPeopleParent()
     {
 
-        $this->setupModule();
-        $this->setupMenuPeople();
-        return self::$ServicePeople->apiPeopleParent();
+        $this->setupModuleNavigation();
+        $this->setupServicePeople();
+        return People::getApi( '/Sphere/Management/People/Parent' )->apiPeopleParent();
+
     }
 
 }
