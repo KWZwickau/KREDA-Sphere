@@ -2,8 +2,8 @@
 namespace KREDA\Sphere\Application\Gatekeeper;
 
 use KREDA\Sphere\Application\Application;
-use KREDA\Sphere\Application\Gatekeeper\Client\Entrance\SignIn;
-use KREDA\Sphere\Application\Gatekeeper\Client\Entrance\SignOut;
+use KREDA\Sphere\Application\Gatekeeper\Client\Redirect\SignIn;
+use KREDA\Sphere\Application\Gatekeeper\Client\Redirect\SignOut;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch;
