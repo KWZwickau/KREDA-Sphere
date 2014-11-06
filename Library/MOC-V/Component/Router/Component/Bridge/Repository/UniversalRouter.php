@@ -31,15 +31,21 @@ class UniversalRouter extends Bridge implements IBridgeInterface
     }
 
     /**
+     * @param null|string $Path
+     *
      * @return string
      * @throws ComponentException
      */
-    public function getRoute()
+    public function getRoute( $Path = null )
     {
 
-        /** @var RouteParameter $Route */
-        $Route = $this->RouteCollection[HttpKernel::getRequest()->getPathInfo()];
-
+        if (null === $Path) {
+            /** @var RouteParameter $Route */
+            $Route = $this->RouteCollection[HttpKernel::getRequest()->getPathInfo()];
+        } else {
+            /** @var RouteParameter $Route */
+            $Route = $this->RouteCollection[$Path];
+        }
         $Controller = $this->handleController( $Route );
 
         if (!is_callable( $Controller )) {
@@ -52,15 +58,6 @@ class UniversalRouter extends Bridge implements IBridgeInterface
         $Response = call_user_func_array( $Controller, $Arguments );
 
         return $Response;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRouteList()
-    {
-
-        return array_keys( $this->RouteCollection );
     }
 
     /**
@@ -117,5 +114,14 @@ class UniversalRouter extends Bridge implements IBridgeInterface
             }
         }
         return $MethodArguments;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRouteList()
+    {
+
+        return array_keys( $this->RouteCollection );
     }
 }
