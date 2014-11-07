@@ -25,7 +25,8 @@ AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere\Application', __DIR__.'/Sphere
 AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere', __DIR__.'/Sphere' );
 
 header( 'Content-type: text/html; charset=utf-8' );
-ini_set( 'display_errors', 1 );
+error_reporting( E_ALL ^ E_NOTICE );
+ini_set( 'display_errors', 0 );
 session_start();
 
 ini_set( 'xdebug.var_display_max_data', -1 );

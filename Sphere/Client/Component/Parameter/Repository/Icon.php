@@ -31,6 +31,8 @@ abstract class Icon extends Parameter implements IParameterInterface
     const ICON_TAG = 'glyphicon glyphicon-tag';
     const ICON_TAG_LIST = 'glyphicon glyphicon-tags';
 
+    const ICON_YUBIKEY = 'glyphicon glyphicon-yubikey';
+
     /** @var null|string $Value */
     private $Value = null;
 

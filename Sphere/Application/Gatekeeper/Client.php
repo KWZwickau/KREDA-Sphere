@@ -8,12 +8,14 @@ use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Configuration;
 
 /**
@@ -67,6 +69,12 @@ class Client extends Application
         $Route->setParameterDefault( 'CredentialName', null );
         $Route->setParameterDefault( 'CredentialLock', null );
 
+        /**
+         * Demo
+         */
+        self::buildRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Demo',
+            __CLASS__.'::apiSignInDemo' );
+
         return $Configuration;
     }
 
@@ -119,6 +127,17 @@ class Client extends Application
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Gatekeeper/SignIn/Student', 'Schüler', new LockIcon()
         );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Gatekeeper/SignIn/Demo', 'Demo', new TimeIcon()
+        );
+    }
+
+    public function apiSignInDemo()
+    {
+
+        $this->setupModuleNavigation();
+        return Access::getApi( '/Sphere/Gatekeeper/SignIn/Demo' )->apiMain();
+
     }
 
     /**
@@ -173,21 +192,29 @@ class Client extends Application
 
         if (null !== $CredentialName && empty( $CredentialName )) {
             $View->setErrorEmptyName();
-            $Error = true;
+            //$Error = true;
         }
         if (null !== $CredentialLock && empty( $CredentialLock )) {
             $View->setErrorEmptyLock();
-            $Error = true;
+            //$Error = true;
         }
         if (null !== $CredentialKey && empty( $CredentialKey )) {
             $View->setErrorEmptyKey();
             $Error = true;
         }
 
-        return $View;
         if ($Error) {
             return $View;
         } else {
+
+            if (null !== $CredentialKey) {
+                require_once( __DIR__.'/../../../Library/AuthYubico/2.4/Yubico.php' );
+                $YubiKey = new \Auth_Yubico( 19180, 'YJwU33GNiRiw1dE8/MfIMNm8w3Y=' );
+                var_dump( $YubiKey->verify( $CredentialKey ) );
+                return $View;
+            }
+
+            return $View;
             //$_SESSION['Gatekeeper-Valid'] = true;
         }
 

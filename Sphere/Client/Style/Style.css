@@ -1,0 +1,26 @@
+h1 small,
+h2 small,
+h3 small,
+h4 small,
+h5 small,
+h6 small,
+.h1 small,
+.h2 small,
+.h3 small,
+.h4 small,
+.h5 small,
+.h6 small {
+    color: #999;
+}
+
+hr {
+    border-top: 1px solid #999;
+}
+
+.glyphicon.glyphicon-yubikey:before {
+    display: block;
+    width: 14px;
+    height: 14px;
+    content: " ";
+    background: url("Resource/YubiKeyIcon-16x16.ico") center;
+}
