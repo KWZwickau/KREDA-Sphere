@@ -12,7 +12,7 @@ class People extends Service
     public function __construct()
     {
 
-        $this->registerDatabaseMaster( 'root', 'kuw', 'ziel2', DriverParameter::DRIVER_PDO_MYSQL, '192.168.100.204' );
+//        $this->registerDatabaseMaster( 'root', 'kuw', 'ziel2', DriverParameter::DRIVER_PDO_MYSQL, '192.168.100.204' );
     }
 
     public function apiMain()
