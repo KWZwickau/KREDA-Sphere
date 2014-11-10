@@ -25,6 +25,8 @@ class LevelClient extends Navigation implements IElementInterface
     {
 
         $this->Template = Template::getTemplate( __DIR__.'/LevelClient/Main.twig' );
+        //$this->Template->setVariable( 'PathBase', HttpKernel::getRequest()->getPathBase() );
+
     }
 
     /**

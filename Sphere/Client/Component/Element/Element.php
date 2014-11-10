@@ -11,4 +11,12 @@ use KREDA\Sphere\Client\Component\IElementInterface;
 abstract class Element implements IElementInterface
 {
 
+    /**
+     * @return string
+     */
+    function __toString()
+    {
+
+        return $this->getContent();
+    }
 }

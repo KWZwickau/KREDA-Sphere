@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Gatekeeper\Client as GatekeeperApplication;
 use KREDA\Sphere\Application\Grade\Client as GradeApplication;
 use KREDA\Sphere\Application\Management\Client as ManagementApplication;
 use KREDA\Sphere\Application\Statistic\Client as StatisticApplication;
+use KREDA\Sphere\Application\System\Client as SystemApplication;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
@@ -46,15 +47,13 @@ $Config = new Configuration( new UniversalRouter(), new LevelClient() );
 
 try {
     /**
-     * Setup Public
+     * Setup Private-Access
      */
-    $Config = GatekeeperApplication::setupApi( $Config );
-    $Config = AssistanceApplication::setupApi( $Config );
-
     if (GatekeeperApplication::apiIsValidUser()) {
         /**
          * Setup Service
          */
+        $Config = SystemApplication::setupApi( $Config );
         /**
          * Setup Application
          */
@@ -69,6 +68,12 @@ try {
     }
 
     /**
+     * Setup Public-Access
+     */
+    $Config = GatekeeperApplication::setupApi( $Config );
+    $Config = AssistanceApplication::setupApi( $Config );
+
+    /**
      * Execute Action, Get Response
      */
     if (in_array( HttpKernel::getRequest()->getPathInfo(), $Config->getClientRouter()->getRouteList() )) {
@@ -76,18 +81,17 @@ try {
         $Route = $Config->getClientRouter()->getRoute();
         $ShellScreen->addToContent( new Container( $Route ) );
     } else {
+
         if (GatekeeperApplication::apiIsValidUser()) {
-            $ShellScreen->addToContent(
-                new Container( new Error( 404,
-                        '<p class="h6">Die angeforderte Ressource konnte nicht gefunden werden</p><samp class="text-danger">'.HttpKernel::getRequest()->getPathInfo().'</samp>' )
-                )
+            $Route = new Error( 404,
+                '<p class="h6">Die angeforderte Ressource konnte nicht gefunden werden</p>'
+                .'<samp class="text-danger">'.HttpKernel::getRequest()->getPathInfo().'</samp>'
             );
+            $ShellScreen->addToContent( new Container( $Route ) );
         } else {
-            $ShellScreen->addToContent(
-                new Container(
-                    $Config->getClientRouter()->getRoute( '/Sphere/Gatekeeper/SignIn' )
-                )
-            );
+            /** @var Element $Route */
+            $Route = $Config->getClientRouter()->getRoute( '/Sphere/Gatekeeper/SignIn' );
+            $ShellScreen->addToContent( new Container( $Route ) );
         }
     }
 } catch( \ErrorException $E ) {
@@ -98,6 +102,7 @@ try {
 /**
  * Define Navigation Client
  */
+
 $ShellScreen->addToNavigation( new Container( $Config->getClientNavigation() ) );
 /**
  * Define Navigation Module

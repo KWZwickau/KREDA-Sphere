@@ -12,5 +12,8 @@ use KREDA\Sphere\Client\Component\IElementInterface;
 abstract class Navigation extends Element implements IElementInterface
 {
 
+    /**
+     * @return string
+     */
     abstract public function getContent();
 }

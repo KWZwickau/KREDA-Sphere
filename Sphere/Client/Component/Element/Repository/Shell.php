@@ -21,6 +21,9 @@ abstract class Shell extends Element implements IElementInterface
         return $this->getContent();
     }
 
+    /**
+     * @return string
+     */
     abstract public function getContent();
 
 }

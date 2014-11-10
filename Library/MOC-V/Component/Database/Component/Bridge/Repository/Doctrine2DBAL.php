@@ -135,4 +135,28 @@ class Doctrine2DBAL extends Bridge implements IBridgeInterface
         $Query = $this->prepareQuery();
         return $this->prepareConnection()->executeUpdate( $Query[0], $Query[1], $Query[2] );
     }
+
+    /**
+     * WARNING: this may be drop out with no replacement
+     *
+     * @return \Doctrine\DBAL\Schema\AbstractSchemaManager
+     * @throws NoConnectionException
+     */
+    public function getSchemaManager()
+    {
+
+        return $this->prepareConnection()->getSchemaManager();
+    }
+
+    /**
+     * WARNING: this may be drop out with no replacement
+     *
+     * @return Connection
+     * @throws NoConnectionException
+     */
+    public function getConnection()
+    {
+
+        return $this->prepareConnection();
+    }
 }

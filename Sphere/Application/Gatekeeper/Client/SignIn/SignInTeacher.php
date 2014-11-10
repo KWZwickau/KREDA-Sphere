@@ -43,7 +43,27 @@ class SignInTeacher extends Shell implements IElementInterface
             '<span class="help-block text-left">Bitte geben Sie einen gültigen Benutzernamen ein</span>' );
     }
 
+    public function setErrorWrongName()
+    {
+
+        $this->Template->setVariable( 'CredentialNameGroup', 'has-error has-feedback' );
+        $this->Template->setVariable( 'CredentialNameFeedbackIcon',
+            '<span class="glyphicon glyphicon-remove form-control-feedback"></span>' );
+        $this->Template->setVariable( 'CredentialNameFeedbackMessage',
+            '<span class="help-block text-left">Bitte geben Sie einen gültigen Benutzernamen ein</span>' );
+    }
+
     public function setErrorEmptyLock()
+    {
+
+        $this->Template->setVariable( 'CredentialLockGroup', 'has-error has-feedback' );
+        $this->Template->setVariable( 'CredentialLockFeedbackIcon',
+            '<span class="glyphicon glyphicon-remove form-control-feedback"></span>' );
+        $this->Template->setVariable( 'CredentialLockFeedbackMessage',
+            '<span class="help-block text-left">Bitte geben Sie ein gültiges Passwort ein</span>' );
+    }
+
+    public function setErrorWrongLock()
     {
 
         $this->Template->setVariable( 'CredentialLockGroup', 'has-error has-feedback' );
@@ -60,6 +80,26 @@ class SignInTeacher extends Shell implements IElementInterface
         $this->Template->setVariable( 'CredentialKeyFeedbackIcon',
             '<span class="glyphicon glyphicon-remove form-control-feedback"></span>' );
         $this->Template->setVariable( 'CredentialKeyFeedbackMessage',
-            '<span class="help-block text-left">Bitte verwenden Sie Ihren Yubi-Key um dieses Feld zu befüllen</span>' );
+            '<span class="help-block text-left">Bitte verwenden Sie Ihren YubiKey um dieses Feld zu befüllen</span>' );
+    }
+
+    public function setErrorWrongKey()
+    {
+
+        $this->Template->setVariable( 'CredentialKeyGroup', 'has-error has-feedback' );
+        $this->Template->setVariable( 'CredentialKeyFeedbackIcon',
+            '<span class="glyphicon glyphicon-remove form-control-feedback"></span>' );
+        $this->Template->setVariable( 'CredentialKeyFeedbackMessage',
+            '<span class="help-block text-left">Der von Ihnen angegebene YubiKey ist nicht gültig.<br/>Bitte verwenden Sie Ihren YubiKey um dieses Feld zu befüllen</span>' );
+    }
+
+    public function setErrorReplayedKey()
+    {
+
+        $this->Template->setVariable( 'CredentialKeyGroup', 'has-error has-feedback' );
+        $this->Template->setVariable( 'CredentialKeyFeedbackIcon',
+            '<span class="glyphicon glyphicon-remove form-control-feedback"></span>' );
+        $this->Template->setVariable( 'CredentialKeyFeedbackMessage',
+            '<span class="help-block text-left">Der von Ihnen angegebene YubiKey wurde bereits verwendet.<br/>Bitte verwenden Sie Ihren YubiKey um dieses Feld neu zu befüllen</span>' );
     }
 }

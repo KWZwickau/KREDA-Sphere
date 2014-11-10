@@ -23,11 +23,11 @@ abstract class Service implements IServiceInterface
     protected static $BaseRoute = null;
 
     /**
-     * @param string $BaseRoute Client-Application Route
+     * @param null|string $BaseRoute Client-Application Route
      *
      * @return static Service Instance
      */
-    final public static function getApi( $BaseRoute )
+    final public static function getApi( $BaseRoute = null )
     {
 
         static::$BaseRoute = $BaseRoute;
