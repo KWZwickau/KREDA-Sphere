@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
+use Doctrine\DBAL\Types\TextType;
 use KREDA\Sphere\Application\Service;
 use MOC\V\Component\Database\Component\Parameter\Repository\DriverParameter;
 
@@ -36,11 +37,11 @@ class Access extends Service
         $Schema = $this->writeData()->getSchemaManager()->createSchema();
 
         $Update = clone $Schema;
-        $Update->getTable( 'tblCredential' )->addColumn( 'User1', \Doctrine\DBAL\Types\TextType::TEXT );
+        $Update->getTable('tblCredential')->addColumn('User1', TextType::TEXT);
 
-        var_dump( $this->writeData()->getSchemaManager()->createSchema()->getMigrateToSql(
+        $this->writeData()->getSchemaManager()->createSchema()->getMigrateToSql(
             $Update, $this->writeData()->getConnection()->getDatabasePlatform()
-        ) );
+        );
 
     }
 }

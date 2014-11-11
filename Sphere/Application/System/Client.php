@@ -3,13 +3,14 @@ namespace KREDA\Sphere\Application\System;
 
 use KREDA\Sphere\Application\Application;
 use KREDA\Sphere\Application\System\Service\Database;
-use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
-use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
-use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
 use KREDA\Sphere\Client\Configuration;
 
+/**
+ * Class Client
+ * @package KREDA\Sphere\Application\System
+ */
 class Client extends Application
 {
 

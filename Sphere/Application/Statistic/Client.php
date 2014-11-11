@@ -2,9 +2,6 @@
 namespace KREDA\Sphere\Application\Statistic;
 
 use KREDA\Sphere\Application\Application;
-use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
-use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
-use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\StatisticIcon;
 use KREDA\Sphere\Client\Configuration;
