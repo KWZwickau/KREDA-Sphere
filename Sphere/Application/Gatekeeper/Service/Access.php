@@ -37,7 +37,7 @@ class Access extends Service
         $Schema = $this->writeData()->getSchemaManager()->createSchema();
 
         $Update = clone $Schema;
-        $Update->getTable('tblCredential')->addColumn('User1', TextType::TEXT);
+        $Update->getTable( 'tblCredential' )->addColumn( 'User1', TextType::TEXT );
 
         $this->writeData()->getSchemaManager()->createSchema()->getMigrateToSql(
             $Update, $this->writeData()->getConnection()->getDatabasePlatform()

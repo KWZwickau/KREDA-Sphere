@@ -141,7 +141,7 @@ class YubiKey
 
         $this->resetYubiApiBalancer();
         $Return = new Request();
-        while (false !== ($YubiApiEndpoint = $this->fetchYubiApiBalancer())) {
+        while (false !== ( $YubiApiEndpoint = $this->fetchYubiApiBalancer() )) {
             if ($this->YubiApiSsl) {
                 $YubiApiUrl = "https://";
             } else {

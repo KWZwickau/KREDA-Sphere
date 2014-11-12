@@ -3,7 +3,7 @@ namespace KREDA\Client;
 
 use KREDA\Sphere\Application\Assistance\Client as AssistanceApplication;
 use KREDA\Sphere\Application\Gatekeeper\Client as GatekeeperApplication;
-use KREDA\Sphere\Application\Grade\Client as GradeApplication;
+use KREDA\Sphere\Application\Graduation\Client as GraduationApplication;
 use KREDA\Sphere\Application\Management\Client as ManagementApplication;
 use KREDA\Sphere\Application\Statistic\Client as StatisticApplication;
 use KREDA\Sphere\Application\System\Client as SystemApplication;
@@ -65,7 +65,7 @@ try {
          * Setup Application
          */
         $Config = ManagementApplication::setupApi( $Config );
-        $Config = GradeApplication::setupApi( $Config );
+        $Config = GraduationApplication::setupApi( $Config );
 
         $Config = StatisticApplication::setupApi( $Config );
 

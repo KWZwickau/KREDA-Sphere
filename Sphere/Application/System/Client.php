@@ -3,12 +3,14 @@ namespace KREDA\Sphere\Application\System;
 
 use KREDA\Sphere\Application\Application;
 use KREDA\Sphere\Application\System\Service\Database;
+use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
 use KREDA\Sphere\Client\Configuration;
 
 /**
  * Class Client
+ *
  * @package KREDA\Sphere\Application\System
  */
 class Client extends Application
@@ -40,6 +42,9 @@ class Client extends Application
         return $Configuration;
     }
 
+    /**
+     * @return Element|Landing
+     */
     public function apiMain()
     {
 

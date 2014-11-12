@@ -12,14 +12,16 @@ class Request
      */
     public function getCurlHandler()
     {
+
         return $this->CurlHandler;
     }
 
     /**
      * @param \resource $CurlHandler
      */
-    public function addCurlHandler($CurlHandler)
+    public function addCurlHandler( $CurlHandler )
     {
+
         $this->CurlHandler[] = $CurlHandler;
     }
 

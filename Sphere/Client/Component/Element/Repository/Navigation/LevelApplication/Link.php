@@ -20,10 +20,10 @@ class Link implements IElementInterface
     private $Template = null;
 
     /**
-     * @param UrlParameter $Route
-     * @param NameParameter  $Name
-     * @param IconParameter  $Icon
-     * @param bool           $ToggleActive
+     * @param UrlParameter  $Route
+     * @param NameParameter $Name
+     * @param IconParameter $Icon
+     * @param bool          $ToggleActive
      *
      * @throws \MOC\V\Component\Template\Exception\TemplateTypeException
      */

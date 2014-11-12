@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Grade;
+namespace KREDA\Sphere\Application\Graduation;
 
 use KREDA\Sphere\Application\Application;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
