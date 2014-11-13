@@ -16,6 +16,7 @@ abstract class Icon extends Parameter implements IParameterInterface
     const ICON_HOME = 'glyphicon glyphicon-home';
     const ICON_STATISTIC = 'glyphicon glyphicon-stats';
     const ICON_GEAR = 'glyphicon glyphicon-cog';
+    const ICON_WRENCH = 'glyphicon glyphicon-wrench';
     const ICON_QUESTION = 'glyphicon glyphicon-question-sign';
     const ICON_TIME = 'glyphicon glyphicon-time';
     const ICON_PERSON = 'glyphicon glyphicon-user';

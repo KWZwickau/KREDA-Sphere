@@ -28,26 +28,14 @@ AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere', __DIR__.'/Sphere' );
 header( 'Content-type: text/html; charset=utf-8' );
 error_reporting( E_ALL ^ E_NOTICE );
 ini_set( 'display_errors', 1 );
+
 session_start();
 
 ini_set( 'xdebug.var_display_max_data', -1 );
 ini_set( 'xdebug.var_display_max_children', -1 );
 ini_set( 'xdebug.var_display_max_depth', -1 );
 
-/**
- * @param $errno
- * @param $errstr
- * @param $errfile
- * @param $errline
- * @throws \ErrorException
- */
-function exception_error_handler( $errno, $errstr, $errfile, $errline )
-{
-
-    throw new \ErrorException( $errstr, 0, $errno, $errfile, $errline );
-}
-
-set_error_handler( '\KREDA\Client\exception_error_handler' );
+set_error_handler( create_function( '$N,$S,$F,$L', 'throw new \ErrorException($S,0,$N,$F,$L);' ), E_ALL );
 
 $ShellScreen = new Screen();
 $Config = new Configuration( new UniversalRouter(), new LevelClient() );
@@ -66,20 +54,13 @@ try {
          */
         $Config = ManagementApplication::setupApi( $Config );
         $Config = GraduationApplication::setupApi( $Config );
-
         $Config = StatisticApplication::setupApi( $Config );
-
-    } else {
-//    $Gatekeeper = new Client();
-//    $ShellScreen->addToContent( new Container( $Gatekeeper->apiSignIn() ) );
     }
-
     /**
      * Setup Public-Access
      */
     $Config = GatekeeperApplication::setupApi( $Config );
     $Config = AssistanceApplication::setupApi( $Config );
-
     /**
      * Execute Action, Get Response
      */
@@ -88,7 +69,6 @@ try {
         $Route = $Config->getClientRouter()->getRoute();
         $ShellScreen->addToContent( new Container( $Route ) );
     } else {
-
         if (GatekeeperApplication::apiIsValidUser()) {
             $Route = new Error( 404,
                 '<p class="h6">Die angeforderte Ressource konnte nicht gefunden werden</p>'
@@ -109,7 +89,6 @@ try {
 /**
  * Define Navigation Client
  */
-
 $ShellScreen->addToNavigation( new Container( $Config->getClientNavigation() ) );
 /**
  * Define Navigation Module

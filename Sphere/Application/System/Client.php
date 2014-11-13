@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WrenchIcon;
 use KREDA\Sphere\Client\Configuration;
 
 /**
@@ -29,7 +30,7 @@ class Client extends Application
 
         self::$Configuration = $Configuration;
         self::addClientNavigationMeta( self::$Configuration,
-            '/Sphere/System', 'System', new GearIcon()
+            '/Sphere/System', 'System', new WrenchIcon()
         );
         self::buildRoute( self::$Configuration, '/Sphere/System', __CLASS__.'::apiMain' );
 

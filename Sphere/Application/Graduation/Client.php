@@ -4,8 +4,14 @@ namespace KREDA\Sphere\Application\Graduation;
 use KREDA\Sphere\Application\Application;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\StatisticIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagListIcon;
 use KREDA\Sphere\Client\Configuration;
 
+/**
+ * Class Client
+ *
+ * @package KREDA\Sphere\Application\Graduation
+ */
 class Client extends Application
 {
 
@@ -22,7 +28,7 @@ class Client extends Application
 
         self::$Configuration = $Configuration;
         self::addClientNavigationMain( self::$Configuration,
-            '/Sphere/Grade', 'Zensuren', new StatisticIcon()
+            '/Sphere/Grade', 'Zensuren', new TagListIcon()
         );
         self::buildRoute( self::$Configuration, '/Sphere/Grade', __CLASS__.'::apiMain' );
         return $Configuration;
