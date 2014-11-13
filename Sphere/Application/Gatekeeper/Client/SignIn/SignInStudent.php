@@ -2,7 +2,6 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Client\SignIn;
 
 use KREDA\Sphere\Application\Gatekeeper\Client\SignInError;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;

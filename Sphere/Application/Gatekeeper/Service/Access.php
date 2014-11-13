@@ -11,9 +11,24 @@ class Access extends Service
     public function __construct()
     {
 
-        $this->registerDatabaseMaster( 'root', 'kuw', 'KredaAccess', DriverParameter::DRIVER_PDO_MYSQL,
+        $this->registerDatabaseMaster( 'root', 'kuw', 'KredaAccess', DriverParameter::DRIVER_MYSQLI,
             '192.168.100.204' );
 
+        //$this->setupDataStructure();
+
+    }
+
+    /**
+     * @return bool
+     */
+    public function apiSessionIsValid()
+    {
+
+        if (isset( $_SESSION['Gatekeeper-Valid'] )) {
+            return $_SESSION['Gatekeeper-Valid'];
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -43,5 +58,39 @@ class Access extends Service
             $Update, $this->writeData()->getConnection()->getDatabasePlatform()
         );
 
+    }
+
+    protected function setupDataStructure()
+    {
+
+        $SchemaManager = $this->writeData()->getSchemaManager();
+
+        $BaseSchema = $SchemaManager->createSchema();
+        var_dump( $BaseSchema );
+        $EditSchema = clone $BaseSchema;
+        /**
+         * YubiKey
+         */
+        if ($EditSchema->hasTable( 'YubiKey' )) {
+            $Table = $EditSchema->getTable( 'YubiKey' );
+        } else {
+            $Table = $EditSchema->createTable( 'YubiKey' );
+        }
+        if (!$Table->hasColumn( 'Id' )) {
+            $Column = $Table->addColumn( 'Id', 'bigint' );
+            $Column->setAutoincrement( true );
+            $Table->setPrimaryKey( array( 'Id' ) );
+        }
+        if (!$Table->hasColumn( 'KeyId' )) {
+            $Table->addColumn( 'KeyId', 'string' );
+        }
+
+        $Statement = $BaseSchema->getMigrateToSql( $EditSchema,
+            $this->writeData()->getConnection()->getDatabasePlatform()
+        );
+        if (!empty( $Statement )) {
+            var_dump( $Statement );
+//            $this->writeData()->prepareStatement( $Statement )->executeWrite();
+        }
     }
 }

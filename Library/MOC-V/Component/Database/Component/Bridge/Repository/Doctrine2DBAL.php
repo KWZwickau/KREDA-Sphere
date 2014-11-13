@@ -27,6 +27,9 @@ class Doctrine2DBAL extends Bridge implements IBridgeInterface
     /** @var Connection[] $ConnectionList */
     private static $ConnectionList = array();
 
+    /**
+     *
+     */
     function __construct()
     {
 
@@ -36,12 +39,12 @@ class Doctrine2DBAL extends Bridge implements IBridgeInterface
     }
 
     /**
-     * @param UsernameParameter                                                        $Username
-     * @param PasswordParameter                                                        $Password
-     * @param DatabaseParameter                                                        $Database
-     * @param \MOC\V\Component\Database\Component\Parameter\Repository\DriverParameter $Driver
-     * @param HostParameter                                                            $Host
-     * @param PortParameter                                                            $Port
+     * @param UsernameParameter $Username
+     * @param PasswordParameter $Password
+     * @param DatabaseParameter $Database
+     * @param DriverParameter   $Driver
+     * @param HostParameter     $Host
+     * @param PortParameter     $Port
      *
      * @throws ComponentException
      * @return IBridgeInterface

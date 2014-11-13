@@ -18,7 +18,6 @@ abstract class Service implements IServiceInterface
     protected static $DatabaseMaster = null;
     /** @var IBridgeInterface[] $DatabaseSlave */
     protected static $DatabaseSlave = array();
-
     /** @var null|string $BaseRoute Client-Application Route */
     protected static $BaseRoute = null;
 
@@ -33,6 +32,8 @@ abstract class Service implements IServiceInterface
         static::$BaseRoute = $BaseRoute;
         return new static;
     }
+
+    abstract protected function setupDataStructure();
 
     /**
      * @param string $Route Service Route

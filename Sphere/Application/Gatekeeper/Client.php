@@ -72,14 +72,13 @@ class Client extends Application
         return $Configuration;
     }
 
+    /**
+     * @return bool
+     */
     public static function apiIsValidUser()
     {
 
-        if (isset( $_SESSION['Gatekeeper-Valid'] )) {
-            return $_SESSION['Gatekeeper-Valid'];
-        } else {
-            return false;
-        }
+        return Access::getApi()->apiSessionIsValid();
     }
 
     /**
@@ -97,15 +96,12 @@ class Client extends Application
     public function apiMain()
     {
 
-        Access::getApi()->apiValidateCredentials( null, null );
-
         $this->setupModuleNavigation();
         $View = new Landing();
         $View->setTitle( 'Anmeldung' );
         $View->setMessage( 'Bitte wählen Sie den Typ der Anmeldung' );
         $View->setContent( new SignInSwitch() );
         return $View;
-
     }
 
     /**

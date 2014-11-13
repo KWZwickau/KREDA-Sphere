@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
+use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
@@ -22,6 +23,9 @@ class Screen extends Shell implements IElementInterface
     /** @var Container[] $PositionContent */
     private $PositionContent = array();
 
+    /**
+     * @throws TemplateTypeException
+     */
     function __construct()
     {
 
@@ -53,6 +57,12 @@ class Screen extends Shell implements IElementInterface
 
     }
 
+    /**
+     * @param \Exception $E
+     * @param string     $Name
+     *
+     * @return $this
+     */
     private function addMessageToContent( \Exception $E, $Name = 'Error' )
     {
 
@@ -103,14 +113,10 @@ class Screen extends Shell implements IElementInterface
     public function getContent()
     {
 
-        ob_start();
-        print_r( $_REQUEST );
-        $Parameter = ob_get_clean();
-
         $Request =
             '<div class="navbar-fixed-bottom container-fluid">'
             .'<div class="alert alert-info">'
-            .$Parameter
+            .json_encode( $_REQUEST )
             .'</div>'
             .'<div class="alert alert-info">'
             .'<strong>UrlPort</strong> '.HttpKernel::getRequest()->getPort().' '
@@ -122,7 +128,7 @@ class Screen extends Shell implements IElementInterface
 
         $this->Template->setVariable( 'PositionNavigation', implode( '', $this->PositionNavigation ) );
         $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent )
-            .$Request
+        //.$Request
         );
         return $this->Template->getContent();
     }
