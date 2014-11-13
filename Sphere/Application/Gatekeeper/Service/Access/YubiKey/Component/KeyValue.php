@@ -16,13 +16,11 @@ class KeyValue
 
     /**
      * @param string $KeyOTP
-     * @param string $KeyCipher
      */
-    function __construct( $KeyOTP, $KeyCipher )
+    function __construct( $KeyOTP )
     {
 
         $this->KeyOTP = $KeyOTP;
-        $this->KeyCipher = $KeyCipher;
     }
 
     /**

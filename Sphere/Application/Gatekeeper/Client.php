@@ -11,6 +11,7 @@ use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\BadOTPException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\MissingParameterException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\ReplayedOTPException;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
@@ -172,6 +173,7 @@ class Client extends Application
                     $View->setErrorReplayedKey();
                     return $View;
                 } catch( ComponentException $E ) {
+
                     throw new \Exception( 'Es ist ein Fehler bei der Anmeldung aufgetreten' );
                 }
             }
@@ -226,8 +228,11 @@ class Client extends Application
                 } catch( ReplayedOTPException $E ) {
                     $View->setErrorReplayedKey();
                     return $View;
+                } catch( MissingParameterException $E ) {
+                    throw new \Exception( $E->getMessage(), $E->getCode(), $E );
                 } catch( ComponentException $E ) {
-                    throw new \Exception( 'Es ist ein Fehler bei der Anmeldung aufgetreten' );
+                    $View->setErrorNetworkKey();
+                    return $View;
                 }
             }
             return $View;

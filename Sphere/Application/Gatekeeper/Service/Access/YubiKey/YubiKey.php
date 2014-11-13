@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Component\KeyValu
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Component\Request;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\BadOTPException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\MissingParameterException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\ReplayedOTPException;
 
 /**
@@ -71,9 +72,18 @@ class YubiKey
         ) {
             throw new BadOTPException();
         }
-        return new KeyValue( $Part[2], $Part[3], $Part[4], $Part[5] );
+        return new KeyValue( $Part[3] );
     }
 
+    /**
+     * @param KeyValue $Key
+     *
+     * @return bool
+     * @throws BadOTPException
+     * @throws ComponentException
+     * @throws MissingParameterException
+     * @throws ReplayedOTPException
+     */
     final public function verifyKey( KeyValue $Key )
     {
 
@@ -216,6 +226,10 @@ class YubiKey
                             case 'BAD_OTP':
                                 throw new BadOTPException( $Status );
                                 break;
+                            case 'MISSING_PARAMETER': {
+                                throw new MissingParameterException( $Result );
+                                break;
+                            }
                         }
                     } elseif (null !== $this->YubiApiKey) {
                         /**

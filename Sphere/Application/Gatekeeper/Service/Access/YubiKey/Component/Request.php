@@ -1,6 +1,11 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Component;
 
+/**
+ * Class Request
+ *
+ * @package KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Component
+ */
 class Request
 {
 
