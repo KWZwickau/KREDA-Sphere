@@ -16,4 +16,8 @@ class Property extends Service
         return $View;
     }
 
+    protected function setupDataStructure()
+    {
+        // TODO: Implement setupDataStructure() method.
+    }
 }
