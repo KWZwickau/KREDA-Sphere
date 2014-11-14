@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Client\Component\Element\Repository\Navigation;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
+use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 
 /**
@@ -19,6 +20,9 @@ class LevelApplication extends Navigation implements IElementInterface
     /** @var LevelApplication\Link[] $MainLinkList */
     private $MainLinkList = array();
 
+    /**
+     * @throws TemplateTypeException
+     */
     function __construct()
     {
 
