@@ -9,55 +9,51 @@ use Doctrine\DBAL\Id\TableGenerator;
  */
 class TableGeneratorTest extends \Doctrine\Tests\DbalFunctionalTestCase
 {
-
     private $generator;
 
     public function setUp()
     {
-
         parent::setUp();
 
         $platform = $this->_conn->getDatabasePlatform();
         if ($platform->getName() == "sqlite") {
-            $this->markTestSkipped( 'TableGenerator does not work with SQLite' );
+            $this->markTestSkipped('TableGenerator does not work with SQLite');
         }
 
         try {
             $schema = new \Doctrine\DBAL\Schema\Schema();
             $visitor = new \Doctrine\DBAL\Id\TableGeneratorSchemaVisitor();
-            $schema->visit( $visitor );
+            $schema->visit($visitor);
 
-            foreach ($schema->toSql( $platform ) as $sql) {
-                $this->_conn->exec( $sql );
+            foreach ($schema->toSql($platform) as $sql) {
+                $this->_conn->exec($sql);
             }
 
-        } catch( \Exception $e ) {
+        } catch(\Exception $e) {
         }
-        $this->generator = new TableGenerator( $this->_conn );
+        $this->generator = new TableGenerator($this->_conn);
     }
 
     public function testNextVal()
     {
+        $id1 = $this->generator->nextValue("tbl1");
+        $id2 = $this->generator->nextValue("tbl1");
+        $id3 = $this->generator->nextValue("tbl2");
 
-        $id1 = $this->generator->nextValue( "tbl1" );
-        $id2 = $this->generator->nextValue( "tbl1" );
-        $id3 = $this->generator->nextValue( "tbl2" );
-
-        $this->assertTrue( $id1 > 0, "First id has to be larger than 0" );
-        $this->assertEquals( $id1 + 1, $id2, "Second id is one larger than first one." );
-        $this->assertEquals( $id1, $id3, "First ids from different tables are equal." );
+        $this->assertTrue($id1 > 0, "First id has to be larger than 0");
+        $this->assertEquals($id1 + 1, $id2, "Second id is one larger than first one.");
+        $this->assertEquals($id1, $id3, "First ids from different tables are equal.");
     }
 
     public function testNextValNotAffectedByOuterTransactions()
     {
-
         $this->_conn->beginTransaction();
-        $id1 = $this->generator->nextValue( "tbl1" );
+        $id1 = $this->generator->nextValue("tbl1");
         $this->_conn->rollBack();
-        $id2 = $this->generator->nextValue( "tbl1" );
+        $id2 = $this->generator->nextValue("tbl1");
 
-        $this->assertTrue( $id1 > 0, "First id has to be larger than 0" );
-        $this->assertEquals( $id1 + 1, $id2, "Second id is one larger than first one." );
+        $this->assertTrue($id1 > 0, "First id has to be larger than 0");
+        $this->assertEquals($id1 + 1, $id2, "Second id is one larger than first one.");
     }
 }
 

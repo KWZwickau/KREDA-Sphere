@@ -34,7 +34,6 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 abstract class AbstractAsset
 {
-
     /**
      * @var string
      */
@@ -53,15 +52,32 @@ abstract class AbstractAsset
     protected $_quoted = false;
 
     /**
+     * Set name of this asset
+     *
+     * @param string $name
+     */
+    protected function _setName($name)
+    {
+        if ($this->isIdentifierQuoted($name)) {
+            $this->_quoted = true;
+            $name = $this->trimQuotes($name);
+        }
+        if (strpos($name, ".") !== false) {
+            $parts = explode(".", $name);
+            $this->_namespace = $parts[0];
+            $name = $parts[1];
+        }
+        $this->_name = $name;
+    }
+
+    /**
      * Is this asset in the default namespace?
      *
      * @param string $defaultNamespaceName
-     *
      * @return bool
      */
-    public function isInDefaultNamespace( $defaultNamespaceName )
+    public function isInDefaultNamespace($defaultNamespaceName)
     {
-
         return $this->_namespace == $defaultNamespaceName || $this->_namespace === null;
     }
 
@@ -74,7 +90,6 @@ abstract class AbstractAsset
      */
     public function getNamespaceName()
     {
-
         return $this->_namespace;
     }
 
@@ -83,77 +98,15 @@ abstract class AbstractAsset
      * namespaced elements are returned as full-qualified names.
      *
      * @param string
-     *
      * @return string
      */
-    public function getShortestName( $defaultNamespaceName )
+    public function getShortestName($defaultNamespaceName)
     {
-
         $shortestName = $this->getName();
         if ($this->_namespace == $defaultNamespaceName) {
             $shortestName = $this->_name;
         }
-        return strtolower( $shortestName );
-    }
-
-    /**
-     * Return name of this schema asset.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-
-        if ($this->_namespace) {
-            return $this->_namespace.".".$this->_name;
-        }
-        return $this->_name;
-    }
-
-    /**
-     * Set name of this asset
-     *
-     * @param string $name
-     */
-    protected function _setName( $name )
-    {
-
-        if ($this->isIdentifierQuoted( $name )) {
-            $this->_quoted = true;
-            $name = $this->trimQuotes( $name );
-        }
-        if (strpos( $name, "." ) !== false) {
-            $parts = explode( ".", $name );
-            $this->_namespace = $parts[0];
-            $name = $parts[1];
-        }
-        $this->_name = $name;
-    }
-
-    /**
-     * Check if this identifier is quoted.
-     *
-     * @param  string $identifier
-     *
-     * @return bool
-     */
-    protected function isIdentifierQuoted( $identifier )
-    {
-
-        return ( isset( $identifier[0] ) && ( $identifier[0] == '`' || $identifier[0] == '"' ) );
-    }
-
-    /**
-     * Trim quotes from the identifier.
-     *
-     * @param  string $identifier
-     *
-     * @return string
-     */
-    protected function trimQuotes( $identifier )
-    {
-
-        return str_replace( array( '`', '"' ), '', $identifier );
+        return strtolower($shortestName);
     }
 
     /**
@@ -167,14 +120,13 @@ abstract class AbstractAsset
      *
      * @return string
      */
-    public function getFullQualifiedName( $defaultNamespaceName )
+    public function getFullQualifiedName($defaultNamespaceName)
     {
-
         $name = $this->getName();
-        if (!$this->_namespace) {
-            $name = $defaultNamespaceName.".".$name;
+        if ( ! $this->_namespace) {
+            $name = $defaultNamespaceName . "." . $name;
         }
-        return strtolower( $name );
+        return strtolower($name);
     }
 
     /**
@@ -184,8 +136,42 @@ abstract class AbstractAsset
      */
     public function isQuoted()
     {
-
         return $this->_quoted;
+    }
+
+    /**
+     * Check if this identifier is quoted.
+     *
+     * @param  string $identifier
+     * @return bool
+     */
+    protected function isIdentifierQuoted($identifier)
+    {
+        return (isset($identifier[0]) && ($identifier[0] == '`' || $identifier[0] == '"'));
+    }
+
+    /**
+     * Trim quotes from the identifier.
+     *
+     * @param  string $identifier
+     * @return string
+     */
+    protected function trimQuotes($identifier)
+    {
+        return str_replace(array('`', '"'), '', $identifier);
+    }
+
+    /**
+     * Return name of this schema asset.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        if ($this->_namespace) {
+            return $this->_namespace . "." . $this->_name;
+        }
+        return $this->_name;
     }
 
     /**
@@ -193,19 +179,17 @@ abstract class AbstractAsset
      * return the plain unquoted value as inserted.
      *
      * @param AbstractPlatform $platform
-     *
      * @return string
      */
-    public function getQuotedName( AbstractPlatform $platform )
+    public function getQuotedName(AbstractPlatform $platform)
     {
-
         $keywords = $platform->getReservedKeywordsList();
-        $parts = explode( ".", $this->getName() );
+        $parts = explode(".", $this->getName());
         foreach ($parts as $k => $v) {
-            $parts[$k] = ( $this->_quoted || $keywords->isKeyword( $v ) ) ? $platform->quoteIdentifier( $v ) : $v;
+            $parts[$k] = ($this->_quoted || $keywords->isKeyword($v)) ? $platform->quoteIdentifier($v) : $v;
         }
 
-        return implode( ".", $parts );
+        return implode(".", $parts);
     }
 
     /**
@@ -215,19 +199,16 @@ abstract class AbstractAsset
      * however building idents automatically for foreign keys, composite keys or such can easily create
      * very long names.
      *
-     * @param  array  $columnNames
+     * @param  array $columnNames
      * @param  string $prefix
-     * @param  int    $maxSize
-     *
+     * @param  int $maxSize
      * @return string
      */
-    protected function _generateIdentifierName( $columnNames, $prefix = '', $maxSize = 30 )
+    protected function _generateIdentifierName($columnNames, $prefix='', $maxSize=30)
     {
-
-        $hash = implode( "", array_map( function ( $column ) {
-
-            return dechex( crc32( $column ) );
-        }, $columnNames ) );
-        return substr( strtoupper( $prefix."_".$hash ), 0, $maxSize );
+        $hash = implode("", array_map(function($column) {
+            return dechex(crc32($column));
+        }, $columnNames));
+        return substr(strtoupper($prefix . "_" . $hash), 0, $maxSize);
     }
 }

@@ -54,7 +54,6 @@ use Doctrine\DBAL\Schema\Visitor\Visitor;
  */
 class Schema extends AbstractAsset
 {
-
     /**
      * @var array
      */
@@ -71,59 +70,27 @@ class Schema extends AbstractAsset
     protected $_schemaConfig = false;
 
     /**
-     * @param array        $tables
-     * @param array        $sequences
-     * @param array        $views
-     * @param array        $triggers
+     * @param array $tables
+     * @param array $sequences
+     * @param array $views
+     * @param array $triggers
      * @param SchemaConfig $schemaConfig
      */
-    public function __construct(
-        array $tables = array(),
-        array $sequences = array(),
-        SchemaConfig $schemaConfig = null
-    ) {
-
+    public function __construct(array $tables=array(), array $sequences=array(), SchemaConfig $schemaConfig=null)
+    {
         if ($schemaConfig == null) {
             $schemaConfig = new SchemaConfig();
         }
         $this->_schemaConfig = $schemaConfig;
-        $this->_setName( $schemaConfig->getName() ?: 'public' );
+        $this->_setName($schemaConfig->getName() ?: 'public');
 
         foreach ($tables as $table) {
-            $this->_addTable( $table );
+            $this->_addTable($table);
         }
 
         foreach ($sequences as $sequence) {
-            $this->_addSequence( $sequence );
+            $this->_addSequence($sequence);
         }
-    }
-
-    /**
-     * @param Table $table
-     */
-    protected function _addTable( Table $table )
-    {
-
-        $tableName = $table->getFullQualifiedName( $this->getName() );
-        if (isset( $this->_tables[$tableName] )) {
-            throw SchemaException::tableAlreadyExists( $tableName );
-        }
-
-        $this->_tables[$tableName] = $table;
-        $table->setSchemaConfig( $this->_schemaConfig );
-    }
-
-    /**
-     * @param Sequence $sequence
-     */
-    protected function _addSequence( Sequence $sequence )
-    {
-
-        $seqName = $sequence->getFullQualifiedName( $this->getName() );
-        if (isset( $this->_sequences[$seqName] )) {
-            throw SchemaException::sequenceAlreadyExists( $seqName );
-        }
-        $this->_sequences[$seqName] = $sequence;
     }
 
     /**
@@ -131,8 +98,33 @@ class Schema extends AbstractAsset
      */
     public function hasExplicitForeignKeyIndexes()
     {
-
         return $this->_schemaConfig->hasExplicitForeignKeyIndexes();
+    }
+
+    /**
+     * @param Table $table
+     */
+    protected function _addTable(Table $table)
+    {
+        $tableName = $table->getFullQualifiedName($this->getName());
+        if(isset($this->_tables[$tableName])) {
+            throw SchemaException::tableAlreadyExists($tableName);
+        }
+
+        $this->_tables[$tableName] = $table;
+        $table->setSchemaConfig($this->_schemaConfig);
+    }
+
+    /**
+     * @param Sequence $sequence
+     */
+    protected function _addSequence(Sequence $sequence)
+    {
+        $seqName = $sequence->getFullQualifiedName($this->getName());
+        if (isset($this->_sequences[$seqName])) {
+            throw SchemaException::sequenceAlreadyExists($seqName);
+        }
+        $this->_sequences[$seqName] = $sequence;
     }
 
     /**
@@ -142,37 +134,47 @@ class Schema extends AbstractAsset
      */
     public function getTables()
     {
-
         return $this->_tables;
+    }
+
+    /**
+     * @param string $tableName
+     * @return Table
+     */
+    public function getTable($tableName)
+    {
+        $tableName = $this->getFullQualifiedAssetName($tableName);
+        if (!isset($this->_tables[$tableName])) {
+            throw SchemaException::tableDoesNotExist($tableName);
+        }
+
+        return $this->_tables[$tableName];
+    }
+
+    /**
+     * @return string
+     */
+    private function getFullQualifiedAssetName($name)
+    {
+        if ($this->isIdentifierQuoted($name)) {
+            $name = $this->trimQuotes($name);
+        }
+        if (strpos($name, ".") === false) {
+            $name = $this->getName() . "." . $name;
+        }
+        return strtolower($name);
     }
 
     /**
      * Does this schema have a table with the given name?
      *
      * @param  string $tableName
-     *
      * @return Schema
      */
-    public function hasTable( $tableName )
+    public function hasTable($tableName)
     {
-
-        $tableName = $this->getFullQualifiedAssetName( $tableName );
-        return isset( $this->_tables[$tableName] );
-    }
-
-    /**
-     * @return string
-     */
-    private function getFullQualifiedAssetName( $name )
-    {
-
-        if ($this->isIdentifierQuoted( $name )) {
-            $name = $this->trimQuotes( $name );
-        }
-        if (strpos( $name, "." ) === false) {
-            $name = $this->getName().".".$name;
-        }
-        return strtolower( $name );
+        $tableName = $this->getFullQualifiedAssetName($tableName);
+        return isset($this->_tables[$tableName]);
     }
 
     /**
@@ -183,32 +185,27 @@ class Schema extends AbstractAsset
      */
     public function getTableNames()
     {
+        return array_keys($this->_tables);
+    }
 
-        return array_keys( $this->_tables );
+    public function hasSequence($sequenceName)
+    {
+        $sequenceName = $this->getFullQualifiedAssetName($sequenceName);
+        return isset($this->_sequences[$sequenceName]);
     }
 
     /**
      * @throws SchemaException
-     *
      * @param  string $sequenceName
-     *
      * @return \Doctrine\DBAL\Schema\Sequence
      */
-    public function getSequence( $sequenceName )
+    public function getSequence($sequenceName)
     {
-
-        $sequenceName = $this->getFullQualifiedAssetName( $sequenceName );
-        if (!$this->hasSequence( $sequenceName )) {
-            throw SchemaException::sequenceDoesNotExist( $sequenceName );
+        $sequenceName = $this->getFullQualifiedAssetName($sequenceName);
+        if(!$this->hasSequence($sequenceName)) {
+            throw SchemaException::sequenceDoesNotExist($sequenceName);
         }
         return $this->_sequences[$sequenceName];
-    }
-
-    public function hasSequence( $sequenceName )
-    {
-
-        $sequenceName = $this->getFullQualifiedAssetName( $sequenceName );
-        return isset( $this->_sequences[$sequenceName] );
     }
 
     /**
@@ -216,7 +213,6 @@ class Schema extends AbstractAsset
      */
     public function getSequences()
     {
-
         return $this->_sequences;
     }
 
@@ -224,17 +220,15 @@ class Schema extends AbstractAsset
      * Create a new table
      *
      * @param  string $tableName
-     *
      * @return Table
      */
-    public function createTable( $tableName )
+    public function createTable($tableName)
     {
-
-        $table = new Table( $tableName );
-        $this->_addTable( $table );
+        $table = new Table($tableName);
+        $this->_addTable($table);
 
         foreach ($this->_schemaConfig->getDefaultTableOptions() as $name => $value) {
-            $table->addOption( $name, $value );
+            $table->addOption($name, $value);
         }
 
         return $table;
@@ -245,49 +239,29 @@ class Schema extends AbstractAsset
      *
      * @param string $oldTableName
      * @param string $newTableName
-     *
      * @return Schema
      */
-    public function renameTable( $oldTableName, $newTableName )
+    public function renameTable($oldTableName, $newTableName)
     {
+        $table = $this->getTable($oldTableName);
+        $table->_setName($newTableName);
 
-        $table = $this->getTable( $oldTableName );
-        $table->_setName( $newTableName );
-
-        $this->dropTable( $oldTableName );
-        $this->_addTable( $table );
+        $this->dropTable($oldTableName);
+        $this->_addTable($table);
         return $this;
-    }
-
-    /**
-     * @param string $tableName
-     *
-     * @return Table
-     */
-    public function getTable( $tableName )
-    {
-
-        $tableName = $this->getFullQualifiedAssetName( $tableName );
-        if (!isset( $this->_tables[$tableName] )) {
-            throw SchemaException::tableDoesNotExist( $tableName );
-        }
-
-        return $this->_tables[$tableName];
     }
 
     /**
      * Drop a table from the schema.
      *
      * @param string $tableName
-     *
      * @return Schema
      */
-    public function dropTable( $tableName )
+    public function dropTable($tableName)
     {
-
-        $tableName = $this->getFullQualifiedAssetName( $tableName );
-        $table = $this->getTable( $tableName );
-        unset( $this->_tables[$tableName] );
+        $tableName = $this->getFullQualifiedAssetName($tableName);
+        $table = $this->getTable($tableName);
+        unset($this->_tables[$tableName]);
         return $this;
     }
 
@@ -295,29 +269,25 @@ class Schema extends AbstractAsset
      * Create a new sequence
      *
      * @param  string $sequenceName
-     * @param  int    $allocationSize
-     * @param  int    $initialValue
-     *
+     * @param  int $allocationSize
+     * @param  int $initialValue
      * @return Sequence
      */
-    public function createSequence( $sequenceName, $allocationSize = 1, $initialValue = 1 )
+    public function createSequence($sequenceName, $allocationSize=1, $initialValue=1)
     {
-
-        $seq = new Sequence( $sequenceName, $allocationSize, $initialValue );
-        $this->_addSequence( $seq );
+        $seq = new Sequence($sequenceName, $allocationSize, $initialValue);
+        $this->_addSequence($seq);
         return $seq;
     }
 
     /**
      * @param string $sequenceName
-     *
      * @return Schema
      */
-    public function dropSequence( $sequenceName )
+    public function dropSequence($sequenceName)
     {
-
-        $sequenceName = $this->getFullQualifiedAssetName( $sequenceName );
-        unset( $this->_sequences[$sequenceName] );
+        $sequenceName = $this->getFullQualifiedAssetName($sequenceName);
+        unset($this->_sequences[$sequenceName]);
         return $this;
     }
 
@@ -325,72 +295,65 @@ class Schema extends AbstractAsset
      * Return an array of necessary sql queries to create the schema on the given platform.
      *
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *
      * @return array
      */
-    public function toSql( \Doctrine\DBAL\Platforms\AbstractPlatform $platform )
+    public function toSql(\Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
-
-        $sqlCollector = new CreateSchemaSqlCollector( $platform );
-        $this->visit( $sqlCollector );
+        $sqlCollector = new CreateSchemaSqlCollector($platform);
+        $this->visit($sqlCollector);
 
         return $sqlCollector->getQueries();
-    }
-
-    /**
-     * @param Visitor $visitor
-     */
-    public function visit( Visitor $visitor )
-    {
-
-        $visitor->acceptSchema( $this );
-
-        foreach ($this->_tables as $table) {
-            $table->visit( $visitor );
-        }
-        foreach ($this->_sequences as $sequence) {
-            $sequence->visit( $visitor );
-        }
     }
 
     /**
      * Return an array of necessary sql queries to drop the schema on the given platform.
      *
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *
      * @return array
      */
-    public function toDropSql( \Doctrine\DBAL\Platforms\AbstractPlatform $platform )
+    public function toDropSql(\Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
-
-        $dropSqlCollector = new DropSchemaSqlCollector( $platform );
-        $this->visit( $dropSqlCollector );
+        $dropSqlCollector = new DropSchemaSqlCollector($platform);
+        $this->visit($dropSqlCollector);
 
         return $dropSqlCollector->getQueries();
     }
 
     /**
-     * @param Schema                                    $toSchema
+     * @param Schema $toSchema
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
-    public function getMigrateToSql( Schema $toSchema, \Doctrine\DBAL\Platforms\AbstractPlatform $platform )
+    public function getMigrateToSql(Schema $toSchema, \Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
-
         $comparator = new Comparator();
-        $schemaDiff = $comparator->compare( $this, $toSchema );
-        return $schemaDiff->toSql( $platform );
+        $schemaDiff = $comparator->compare($this, $toSchema);
+        return $schemaDiff->toSql($platform);
     }
 
     /**
-     * @param Schema                                    $fromSchema
+     * @param Schema $fromSchema
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
-    public function getMigrateFromSql( Schema $fromSchema, \Doctrine\DBAL\Platforms\AbstractPlatform $platform )
+    public function getMigrateFromSql(Schema $fromSchema, \Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
-
         $comparator = new Comparator();
-        $schemaDiff = $comparator->compare( $fromSchema, $this );
-        return $schemaDiff->toSql( $platform );
+        $schemaDiff = $comparator->compare($fromSchema, $this);
+        return $schemaDiff->toSql($platform);
+    }
+
+    /**
+     * @param Visitor $visitor
+     */
+    public function visit(Visitor $visitor)
+    {
+        $visitor->acceptSchema($this);
+
+        foreach ($this->_tables as $table) {
+            $table->visit($visitor);
+        }
+        foreach ($this->_sequences as $sequence) {
+            $sequence->visit($visitor);
+        }
     }
 
     /**
@@ -400,7 +363,6 @@ class Schema extends AbstractAsset
      */
     public function __clone()
     {
-
         foreach ($this->_tables as $k => $table) {
             $this->_tables[$k] = clone $table;
         }

@@ -4,7 +4,6 @@ namespace Doctrine\Tests\Mocks;
 
 class DatabasePlatformMock extends \Doctrine\DBAL\Platforms\AbstractPlatform
 {
-
     private $_sequenceNextValSql = "";
     private $_prefersIdentityColumns = true;
     private $_prefersSequences = false;
@@ -12,23 +11,18 @@ class DatabasePlatformMock extends \Doctrine\DBAL\Platforms\AbstractPlatform
     /**
      * @override
      */
-    public function getNativeDeclaration( array $field )
-    {
-    }
+    public function getNativeDeclaration(array $field) {}
 
     /**
      * @override
      */
-    public function getPortableDeclaration( array $field )
-    {
-    }
+    public function getPortableDeclaration(array $field) {}
 
     /**
      * @override
      */
     public function prefersIdentityColumns()
     {
-
         return $this->_prefersIdentityColumns;
     }
 
@@ -37,93 +31,68 @@ class DatabasePlatformMock extends \Doctrine\DBAL\Platforms\AbstractPlatform
      */
     public function prefersSequences()
     {
-
         return $this->_prefersSequences;
     }
 
     /** @override */
-    public function getSequenceNextValSQL( $sequenceName )
+    public function getSequenceNextValSQL($sequenceName)
     {
-
         return $this->_sequenceNextValSql;
     }
 
-    public function setSequenceNextValSql( $sql )
-    {
-
-        $this->_sequenceNextValSql = $sql;
-    }
+    /** @override */
+    public function getBooleanTypeDeclarationSQL(array $field) {}
 
     /** @override */
-    public function getBooleanTypeDeclarationSQL( array $field )
-    {
-    }
+    public function getIntegerTypeDeclarationSQL(array $field) {}
 
     /** @override */
-    public function getIntegerTypeDeclarationSQL( array $field )
-    {
-    }
+    public function getBigIntTypeDeclarationSQL(array $field) {}
 
     /** @override */
-    public function getBigIntTypeDeclarationSQL( array $field )
-    {
-    }
+    public function getSmallIntTypeDeclarationSQL(array $field) {}
 
     /** @override */
-    public function getSmallIntTypeDeclarationSQL( array $field )
-    {
-    }
+    protected function _getCommonIntegerTypeDeclarationSQL(array $columnDef) {}
 
     /** @override */
-    public function getVarcharTypeDeclarationSQL( array $field )
-    {
-    }
+    public function getVarcharTypeDeclarationSQL(array $field) {}
 
     /** @override */
-    public function getClobTypeDeclarationSQL( array $field )
-    {
-    }
+    public function getClobTypeDeclarationSQL(array $field) {}
 
     /* MOCK API */
 
-    public function setPrefersIdentityColumns( $bool )
+    public function setPrefersIdentityColumns($bool)
     {
-
         $this->_prefersIdentityColumns = $bool;
     }
 
-    public function setPrefersSequences( $bool )
+    public function setPrefersSequences($bool)
     {
-
         $this->_prefersSequences = $bool;
+    }
+
+    public function setSequenceNextValSql($sql)
+    {
+        $this->_sequenceNextValSql = $sql;
     }
 
     public function getName()
     {
-
         return 'mock';
     }
+    protected function initializeDoctrineTypeMappings() {
+    }
+    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed)
+    {
 
+    }
     /**
      * Gets the SQL Snippet used to declare a BLOB column type.
      */
-    public function getBlobTypeDeclarationSQL( array $field )
+    public function getBlobTypeDeclarationSQL(array $field)
     {
-
-        throw DBALException::notSupported( __METHOD__ );
-    }
-
-    /** @override */
-    protected function _getCommonIntegerTypeDeclarationSQL( array $columnDef )
-    {
-    }
-
-    protected function initializeDoctrineTypeMappings()
-    {
-    }
-
-    protected function getVarcharTypeDeclarationSQLSnippet( $length, $fixed )
-    {
-
+        throw DBALException::notSupported(__METHOD__);
     }
 }

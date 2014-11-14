@@ -19,59 +19,56 @@
 
 namespace Doctrine\DBAL\Id;
 
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Constraint;
-use Doctrine\DBAL\Schema\ForeignKeyConstraint;
-use Doctrine\DBAL\Schema\Index;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Sequence;
-use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Schema\Table,
+    Doctrine\DBAL\Schema\Schema,
+    Doctrine\DBAL\Schema\Column,
+    Doctrine\DBAL\Schema\ForeignKeyConstraint,
+    Doctrine\DBAL\Schema\Constraint,
+    Doctrine\DBAL\Schema\Sequence,
+    Doctrine\DBAL\Schema\Index;
 
 class TableGeneratorSchemaVisitor implements \Doctrine\DBAL\Schema\Visitor\Visitor
 {
-
     /**
      * @var string
      */
     private $generatorTableName;
 
-    public function __construct( $generatorTableName = 'sequences' )
+    public function __construct($generatorTableName = 'sequences')
     {
-
         $this->generatorTableName = $generatorTableName;
     }
 
     /**
      * @param Schema $schema
      */
-    public function acceptSchema( Schema $schema )
+    public function acceptSchema(Schema $schema)
     {
-
-        $table = $schema->createTable( $this->generatorTableName );
-        $table->addColumn( 'sequence_name', 'string' );
-        $table->addColumn( 'sequence_value', 'integer', array( 'default' => 1 ) );
-        $table->addColumn( 'sequence_increment_by', 'integer', array( 'default' => 1 ) );
+        $table = $schema->createTable($this->generatorTableName);
+        $table->addColumn('sequence_name', 'string');
+        $table->addColumn('sequence_value', 'integer', array('default' => 1));
+        $table->addColumn('sequence_increment_by', 'integer', array('default' => 1));
     }
 
     /**
      * @param Table $table
      */
-    public function acceptTable( Table $table )
+    public function acceptTable(Table $table)
     {
     }
 
     /**
      * @param Column $column
      */
-    public function acceptColumn( Table $table, Column $column )
+    public function acceptColumn(Table $table, Column $column)
     {
     }
 
     /**
-     * @param Table                $localTable
+     * @param Table $localTable
      * @param ForeignKeyConstraint $fkConstraint
      */
-    public function acceptForeignKey( Table $localTable, ForeignKeyConstraint $fkConstraint )
+    public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
     {
     }
 
@@ -79,14 +76,14 @@ class TableGeneratorSchemaVisitor implements \Doctrine\DBAL\Schema\Visitor\Visit
      * @param Table $table
      * @param Index $index
      */
-    public function acceptIndex( Table $table, Index $index )
+    public function acceptIndex(Table $table, Index $index)
     {
     }
 
     /**
      * @param Sequence $sequence
      */
-    public function acceptSequence( Sequence $sequence )
+    public function acceptSequence(Sequence $sequence)
     {
     }
 }

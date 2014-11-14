@@ -17,6 +17,7 @@
  * <http://www.doctrine-project.org>.
  */
 
+
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
@@ -30,16 +31,13 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  */
 class PostgreSQLKeywords extends KeywordList
 {
-
     public function getName()
     {
-
         return 'PostgreSQL';
     }
 
     protected function getKeywords()
     {
-
         return array(
             'ALL',
             'ANALYSE',

@@ -11,17 +11,15 @@ use Doctrine\DBAL\Platforms;
  */
 class Driver implements \Doctrine\DBAL\Driver
 {
-
     /**
      * Attempts to connect to the database and returns a driver connection on success.
      *
      * @return \Doctrine\DBAL\Driver\Connection
      */
-    public function connect( array $params, $username = null, $password = null, array $driverOptions = array() )
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
-
         return new \Doctrine\DBAL\Driver\PDOConnection(
-            $this->_constructPdoDsn( $params ),
+            $this->_constructPdoDsn($params),
             $username,
             $password,
             $driverOptions
@@ -33,18 +31,17 @@ class Driver implements \Doctrine\DBAL\Driver
      *
      * @return string The DSN.
      */
-    private function _constructPdoDsn( array $params )
+    private function _constructPdoDsn(array $params)
     {
-
         $dsn = 'pgsql:';
-        if (isset( $params['host'] ) && $params['host'] != '') {
-            $dsn .= 'host='.$params['host'].' ';
+        if (isset($params['host']) && $params['host'] != '') {
+            $dsn .= 'host=' . $params['host'] . ' ';
         }
-        if (isset( $params['port'] ) && $params['port'] != '') {
-            $dsn .= 'port='.$params['port'].' ';
+        if (isset($params['port']) && $params['port'] != '') {
+            $dsn .= 'port=' . $params['port'] . ' ';
         }
-        if (isset( $params['dbname'] )) {
-            $dsn .= 'dbname='.$params['dbname'].' ';
+        if (isset($params['dbname'])) {
+            $dsn .= 'dbname=' . $params['dbname'] . ' ';
         }
 
         return $dsn;
@@ -52,25 +49,21 @@ class Driver implements \Doctrine\DBAL\Driver
 
     public function getDatabasePlatform()
     {
-
         return new \Doctrine\DBAL\Platforms\PostgreSqlPlatform();
     }
 
-    public function getSchemaManager( \Doctrine\DBAL\Connection $conn )
+    public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
     {
-
-        return new \Doctrine\DBAL\Schema\PostgreSqlSchemaManager( $conn );
+        return new \Doctrine\DBAL\Schema\PostgreSqlSchemaManager($conn);
     }
 
     public function getName()
     {
-
         return 'pdo_pgsql';
     }
 
-    public function getDatabase( \Doctrine\DBAL\Connection $conn )
+    public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
-
         $params = $conn->getParams();
         return $params['dbname'];
     }

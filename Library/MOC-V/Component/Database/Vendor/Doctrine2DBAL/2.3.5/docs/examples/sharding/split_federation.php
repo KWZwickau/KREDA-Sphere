@@ -2,4 +2,4 @@
 // split_federation.php
 require_once 'bootstrap.php';
 
-$shardManager->splitFederation( 60 );
+$shardManager->splitFederation(60);

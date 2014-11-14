@@ -21,7 +21,7 @@
         "phpunit/phpunit": "4.*"
     },
     "autoload": {
-        "psr-0": {"Doctrine\\Common\\Annotations\\": "lib/"}
+        "psr-0": { "Doctrine\\Common\\Annotations\\": "lib/" }
     },
     "extra": {
         "branch-alias": {

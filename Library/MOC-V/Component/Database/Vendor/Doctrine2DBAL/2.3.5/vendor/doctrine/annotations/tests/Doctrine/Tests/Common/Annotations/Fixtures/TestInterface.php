@@ -6,7 +6,6 @@ use Doctrine\Tests\Common\Annotations\Fixtures\Annotation\Secure;
 
 interface TestInterface
 {
-
     /**
      * @Secure
      */

@@ -24,15 +24,14 @@ namespace Doctrine\DBAL\Schema;
 /**
  * Represent the change of a column
  *
- *
+ * 
  * @link    www.doctrine-project.org
  * @since   2.0
  * @version $Revision$
- * @author  Benjamin Eberlei <kontakt@beberlei.de>
+ * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class ColumnDiff
 {
-
     public $oldColumnName;
 
     /**
@@ -45,17 +44,15 @@ class ColumnDiff
      */
     public $changedProperties = array();
 
-    public function __construct( $oldColumnName, Column $column, array $changedProperties = array() )
+    public function __construct($oldColumnName, Column $column, array $changedProperties = array())
     {
-
         $this->oldColumnName = $oldColumnName;
         $this->column = $column;
         $this->changedProperties = $changedProperties;
     }
 
-    public function hasChanged( $propertyName )
+    public function hasChanged($propertyName)
     {
-
-        return in_array( $propertyName, $this->changedProperties );
+        return in_array($propertyName, $this->changedProperties);
     }
 }

@@ -21,20 +21,19 @@
 
 namespace Doctrine\DBAL;
 
-use Doctrine\DBAL\Driver\Statement as DriverStatement;
-use Doctrine\DBAL\Types\Type;
-use PDO;
+use PDO,
+    Doctrine\DBAL\Types\Type,
+    Doctrine\DBAL\Driver\Statement as DriverStatement;
 
 /**
  * A thin wrapper around a Doctrine\DBAL\Driver\Statement that adds support
  * for logging, DBAL mapping types, etc.
  *
  * @author Roman Borschel <roman@code-factory.org>
- * @since  2.0
+ * @since 2.0
  */
 class Statement implements \IteratorAggregate, DriverStatement
 {
-
     /**
      * @var string The SQL statement.
      */
@@ -63,14 +62,13 @@ class Statement implements \IteratorAggregate, DriverStatement
     /**
      * Creates a new <tt>Statement</tt> for the given SQL and <tt>Connection</tt>.
      *
-     * @param string                    $sql The SQL of the statement.
-     * @param \Doctrine\DBAL\Connection The  connection on which the statement should be executed.
+     * @param string $sql The SQL of the statement.
+     * @param \Doctrine\DBAL\Connection The connection on which the statement should be executed.
      */
-    public function __construct( $sql, Connection $conn )
+    public function __construct($sql, Connection $conn)
     {
-
         $this->sql = $sql;
-        $this->stmt = $conn->getWrappedConnection()->prepare( $sql );
+        $this->stmt = $conn->getWrappedConnection()->prepare($sql);
         $this->conn = $conn;
         $this->platform = $conn->getDatabasePlatform();
     }
@@ -83,30 +81,28 @@ class Statement implements \IteratorAggregate, DriverStatement
      * type and the value undergoes the conversion routines of the mapping type before
      * being bound.
      *
-     * @param string $name  The name or position of the parameter.
-     * @param mixed  $value The value of the parameter.
-     * @param mixed  $type  Either a PDO binding type or a DBAL mapping type name or instance.
-     *
+     * @param string $name The name or position of the parameter.
+     * @param mixed $value The value of the parameter.
+     * @param mixed $type Either a PDO binding type or a DBAL mapping type name or instance.
      * @return boolean TRUE on success, FALSE on failure.
      */
-    public function bindValue( $name, $value, $type = null )
+    public function bindValue($name, $value, $type = null)
     {
-
         $this->params[$name] = $value;
         $this->types[$name] = $type;
         if ($type !== null) {
-            if (is_string( $type )) {
-                $type = Type::getType( $type );
+            if (is_string($type)) {
+                $type = Type::getType($type);
             }
             if ($type instanceof Type) {
-                $value = $type->convertToDatabaseValue( $value, $this->platform );
+                $value = $type->convertToDatabaseValue($value, $this->platform);
                 $bindingType = $type->getBindingType();
             } else {
                 $bindingType = $type; // PDO::PARAM_* constants
             }
-            return $this->stmt->bindValue( $name, $value, $bindingType );
+            return $this->stmt->bindValue($name, $value, $bindingType);
         } else {
-            return $this->stmt->bindValue( $name, $value );
+            return $this->stmt->bindValue($name, $value);
         }
     }
 
@@ -115,38 +111,33 @@ class Statement implements \IteratorAggregate, DriverStatement
      *
      * Binding a parameter by reference does not support DBAL mapping types.
      *
-     * @param string  $name The name or position of the parameter.
-     * @param mixed   $var  The reference to the variable to bind
+     * @param string $name The name or position of the parameter.
+     * @param mixed $var The reference to the variable to bind
      * @param integer $type The PDO binding type.
-     *
      * @return boolean TRUE on success, FALSE on failure.
      */
-    public function bindParam( $name, &$var, $type = PDO::PARAM_STR, $length = null )
+    public function bindParam($name, &$var, $type = PDO::PARAM_STR, $length = null)
     {
-
-        return $this->stmt->bindParam( $name, $var, $type, $length );
+        return $this->stmt->bindParam($name, $var, $type, $length );
     }
 
     /**
      * Executes the statement with the currently bound parameters.
      *
      * @param array $params
-     *
      * @return boolean TRUE on success, FALSE on failure.
      */
-    public function execute( $params = null )
+    public function execute($params = null)
     {
-
         $logger = $this->conn->getConfiguration()->getSQLLogger();
         if ($logger) {
-            $logger->startQuery( $this->sql, $this->params, $this->types );
+            $logger->startQuery($this->sql, $this->params, $this->types);
         }
 
         try {
-            $stmt = $this->stmt->execute( $params );
-        } catch( \Exception $ex ) {
-            throw DBALException::driverExceptionDuringQuery( $ex, $this->sql,
-                $this->conn->resolveParams( $this->params, $this->types ) );
+            $stmt = $this->stmt->execute($params);
+        } catch (\Exception $ex) {
+            throw DBALException::driverExceptionDuringQuery($ex, $this->sql, $this->conn->resolveParams($this->params, $this->types));
         }
 
         if ($logger) {
@@ -164,7 +155,6 @@ class Statement implements \IteratorAggregate, DriverStatement
      */
     public function closeCursor()
     {
-
         return $this->stmt->closeCursor();
     }
 
@@ -175,7 +165,6 @@ class Statement implements \IteratorAggregate, DriverStatement
      */
     public function columnCount()
     {
-
         return $this->stmt->columnCount();
     }
 
@@ -186,7 +175,6 @@ class Statement implements \IteratorAggregate, DriverStatement
      */
     public function errorCode()
     {
-
         return $this->stmt->errorCode();
     }
 
@@ -197,27 +185,22 @@ class Statement implements \IteratorAggregate, DriverStatement
      */
     public function errorInfo()
     {
-
         return $this->stmt->errorInfo();
     }
 
-    public function setFetchMode( $fetchMode, $arg2 = null, $arg3 = null )
+    public function setFetchMode($fetchMode, $arg2 = null, $arg3 = null)
     {
-
         if ($arg2 === null) {
-            return $this->stmt->setFetchMode( $fetchMode );
-        } else {
-            if ($arg3 === null) {
-                return $this->stmt->setFetchMode( $fetchMode, $arg2 );
-            }
+            return $this->stmt->setFetchMode($fetchMode);
+        } else if ($arg3 === null) {
+            return $this->stmt->setFetchMode($fetchMode, $arg2);
         }
 
-        return $this->stmt->setFetchMode( $fetchMode, $arg2, $arg3 );
+        return $this->stmt->setFetchMode($fetchMode, $arg2, $arg3);
     }
 
     public function getIterator()
     {
-
         return $this->stmt;
     }
 
@@ -225,44 +208,38 @@ class Statement implements \IteratorAggregate, DriverStatement
      * Fetches the next row from a result set.
      *
      * @param integer $fetchMode
-     *
      * @return mixed The return value of this function on success depends on the fetch type.
      *               In all cases, FALSE is returned on failure.
      */
-    public function fetch( $fetchMode = null )
+    public function fetch($fetchMode = null)
     {
-
-        return $this->stmt->fetch( $fetchMode );
+        return $this->stmt->fetch($fetchMode);
     }
 
     /**
      * Returns an array containing all of the result set rows.
      *
      * @param integer $fetchMode
-     * @param mixed   $fetchArgument
-     *
+     * @param mixed $fetchArgument
      * @return array An array containing all of the remaining rows in the result set.
      */
-    public function fetchAll( $fetchMode = null, $fetchArgument = 0 )
+    public function fetchAll($fetchMode = null, $fetchArgument = 0)
     {
-
         if ($fetchArgument !== 0) {
-            return $this->stmt->fetchAll( $fetchMode, $fetchArgument );
+            return $this->stmt->fetchAll($fetchMode, $fetchArgument);
         }
-        return $this->stmt->fetchAll( $fetchMode );
+        return $this->stmt->fetchAll($fetchMode);
     }
 
     /**
      * Returns a single column from the next row of a result set.
      *
      * @param integer $columnIndex
-     *
      * @return mixed A single column from the next row of a result set or FALSE if there are no more rows.
      */
-    public function fetchColumn( $columnIndex = 0 )
+    public function fetchColumn($columnIndex = 0)
     {
-
-        return $this->stmt->fetchColumn( $columnIndex );
+        return $this->stmt->fetchColumn($columnIndex);
     }
 
     /**
@@ -272,7 +249,6 @@ class Statement implements \IteratorAggregate, DriverStatement
      */
     public function rowCount()
     {
-
         return $this->stmt->rowCount();
     }
 
@@ -283,7 +259,6 @@ class Statement implements \IteratorAggregate, DriverStatement
      */
     public function getWrappedStatement()
     {
-
         return $this->stmt;
     }
 }

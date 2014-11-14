@@ -30,7 +30,6 @@ namespace Doctrine\DBAL\Query\Expression;
  */
 class CompositeExpression implements \Countable
 {
-
     /**
      * Constant that represents an AND composite expression
      */
@@ -39,7 +38,7 @@ class CompositeExpression implements \Countable
     /**
      * Constant that represents an OR composite expression
      */
-    const TYPE_OR = 'OR';
+    const TYPE_OR  = 'OR';
 
     /**
      * @var string Holds the instance type of composite expression
@@ -54,15 +53,14 @@ class CompositeExpression implements \Countable
     /**
      * Constructor.
      *
-     * @param string $type  Instance type of composite expression
-     * @param array  $parts Composition of expressions to be joined on composite expression
+     * @param string $type Instance type of composite expression
+     * @param array $parts Composition of expressions to be joined on composite expression
      */
-    public function __construct( $type, array $parts = array() )
+    public function __construct($type, array $parts = array())
     {
-
         $this->type = $type;
 
-        $this->addMultiple( $parts );
+        $this->addMultiple($parts);
     }
 
     /**
@@ -72,11 +70,10 @@ class CompositeExpression implements \Countable
      *
      * @return CompositeExpression
      */
-    public function addMultiple( array $parts = array() )
+    public function addMultiple(array $parts = array())
     {
-
-        foreach ((array)$parts as $part) {
-            $this->add( $part );
+        foreach ((array) $parts as $part) {
+            $this->add($part);
         }
 
         return $this;
@@ -86,13 +83,11 @@ class CompositeExpression implements \Countable
      * Adds an expression to composite expression.
      *
      * @param mixed $part
-     *
      * @return CompositeExpression
      */
-    public function add( $part )
+    public function add($part)
     {
-
-        if (!empty( $part ) || ( $part instanceof self && $part->count() > 0 )) {
+        if ( ! empty($part) || ($part instanceof self && $part->count() > 0)) {
             $this->parts[] = $part;
         }
 
@@ -106,8 +101,7 @@ class CompositeExpression implements \Countable
      */
     public function count()
     {
-
-        return count( $this->parts );
+        return count($this->parts);
     }
 
     /**
@@ -117,12 +111,11 @@ class CompositeExpression implements \Countable
      */
     public function __toString()
     {
-
-        if (count( $this->parts ) === 1) {
-            return (string)$this->parts[0];
+        if (count($this->parts) === 1) {
+            return (string) $this->parts[0];
         }
 
-        return '('.implode( ') '.$this->type.' (', $this->parts ).')';
+        return '(' . implode(') ' . $this->type . ' (', $this->parts) . ')';
     }
 
     /**
@@ -132,7 +125,6 @@ class CompositeExpression implements \Countable
      */
     public function getType()
     {
-
         return $this->type;
     }
 }

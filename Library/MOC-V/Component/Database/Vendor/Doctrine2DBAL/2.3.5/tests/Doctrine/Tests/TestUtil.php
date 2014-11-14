@@ -9,7 +9,6 @@ namespace Doctrine\Tests;
  */
 class TestUtil
 {
-
     /**
      * Gets a <b>real</b> database connection using the following parameters
      * of the $GLOBALS array:
@@ -33,48 +32,46 @@ class TestUtil
      */
     public static function getConnection()
     {
-
-        if (isset( $GLOBALS['db_type'], $GLOBALS['db_username'], $GLOBALS['db_password'],
-                $GLOBALS['db_host'], $GLOBALS['db_name'], $GLOBALS['db_port'] ) &&
-            isset( $GLOBALS['tmpdb_type'], $GLOBALS['tmpdb_username'], $GLOBALS['tmpdb_password'],
-                $GLOBALS['tmpdb_host'], $GLOBALS['tmpdb_name'], $GLOBALS['tmpdb_port'] )
-        ) {
+        if (isset($GLOBALS['db_type'], $GLOBALS['db_username'], $GLOBALS['db_password'],
+                $GLOBALS['db_host'], $GLOBALS['db_name'], $GLOBALS['db_port']) &&
+           isset($GLOBALS['tmpdb_type'], $GLOBALS['tmpdb_username'], $GLOBALS['tmpdb_password'],
+                $GLOBALS['tmpdb_host'], $GLOBALS['tmpdb_name'], $GLOBALS['tmpdb_port'])) {
             $realDbParams = array(
-                'driver'   => $GLOBALS['db_type'],
-                'user'     => $GLOBALS['db_username'],
+                'driver' => $GLOBALS['db_type'],
+                'user' => $GLOBALS['db_username'],
                 'password' => $GLOBALS['db_password'],
-                'host'     => $GLOBALS['db_host'],
-                'dbname'   => $GLOBALS['db_name'],
-                'port'     => $GLOBALS['db_port']
+                'host' => $GLOBALS['db_host'],
+                'dbname' => $GLOBALS['db_name'],
+                'port' => $GLOBALS['db_port']
             );
             $tmpDbParams = array(
-                'driver'   => $GLOBALS['tmpdb_type'],
-                'user'     => $GLOBALS['tmpdb_username'],
+                'driver' => $GLOBALS['tmpdb_type'],
+                'user' => $GLOBALS['tmpdb_username'],
                 'password' => $GLOBALS['tmpdb_password'],
-                'host'     => $GLOBALS['tmpdb_host'],
-                'dbname'   => $GLOBALS['tmpdb_name'],
-                'port'     => $GLOBALS['tmpdb_port']
+                'host' => $GLOBALS['tmpdb_host'],
+                'dbname' => $GLOBALS['tmpdb_name'],
+                'port' => $GLOBALS['tmpdb_port']
             );
 
-            if (isset( $GLOBALS['db_unix_socket'] )) {
+            if (isset($GLOBALS['db_unix_socket'])) {
                 $realDbParams['unix_socket'] = $GLOBALS['db_unix_socket'];
             }
 
-            if (isset( $GLOBALS['tmpdb_unix_socket'] )) {
+            if (isset($GLOBALS['tmpdb_unix_socket'])) {
                 $tmpDbParams['unix_socket'] = $GLOBALS['tmpdb_unix_socket'];
             }
 
-            $realConn = \Doctrine\DBAL\DriverManager::getConnection( $realDbParams );
+            $realConn = \Doctrine\DBAL\DriverManager::getConnection($realDbParams);
 
-            $platform = $realConn->getDatabasePlatform();
+            $platform  = $realConn->getDatabasePlatform();
 
             if ($platform->supportsCreateDropDatabase()) {
                 $dbname = $realConn->getDatabase();
                 // Connect to tmpdb in order to drop and create the real test db.
-                $tmpConn = \Doctrine\DBAL\DriverManager::getConnection( $tmpDbParams );
+                $tmpConn = \Doctrine\DBAL\DriverManager::getConnection($tmpDbParams);
                 $realConn->close();
 
-                $tmpConn->getSchemaManager()->dropAndCreateDatabase( $dbname );
+                $tmpConn->getSchemaManager()->dropAndCreateDatabase($dbname);
 
                 $tmpConn->close();
             } else {
@@ -82,31 +79,31 @@ class TestUtil
 
                 /* @var $schema Schema */
                 $schema = $sm->createSchema();
-                $stmts = $schema->toDropSql( $realConn->getDatabasePlatform() );
+                $stmts = $schema->toDropSql($realConn->getDatabasePlatform());
 
                 foreach ($stmts AS $stmt) {
-                    $realConn->exec( $stmt );
+                    $realConn->exec($stmt);
                 }
             }
 
-            $conn = \Doctrine\DBAL\DriverManager::getConnection( $realDbParams, null, null );
+            $conn = \Doctrine\DBAL\DriverManager::getConnection($realDbParams, null, null);
         } else {
             $params = array(
                 'driver' => 'pdo_sqlite',
                 'memory' => true
             );
-            if (isset( $GLOBALS['db_path'] )) {
+            if (isset($GLOBALS['db_path'])) {
                 $params['path'] = $GLOBALS['db_path'];
-                unlink( $GLOBALS['db_path'] );
+                unlink($GLOBALS['db_path']);
             }
-            $conn = \Doctrine\DBAL\DriverManager::getConnection( $params );
+            $conn = \Doctrine\DBAL\DriverManager::getConnection($params);
         }
 
-        if (isset( $GLOBALS['db_event_subscribers'] )) {
+        if (isset($GLOBALS['db_event_subscribers'])) {
             $evm = $conn->getEventManager();
-            foreach (explode( ",", $GLOBALS['db_event_subscribers'] ) AS $subscriberClass) {
+            foreach (explode(",", $GLOBALS['db_event_subscribers']) AS $subscriberClass) {
                 $subscriberInstance = new $subscriberClass();
-                $evm->addEventSubscriber( $subscriberInstance );
+                $evm->addEventSubscriber($subscriberInstance);
             }
         }
 
@@ -118,17 +115,16 @@ class TestUtil
      */
     public static function getTempConnection()
     {
-
         $tmpDbParams = array(
-            'driver'   => $GLOBALS['tmpdb_type'],
-            'user'     => $GLOBALS['tmpdb_username'],
+            'driver' => $GLOBALS['tmpdb_type'],
+            'user' => $GLOBALS['tmpdb_username'],
             'password' => $GLOBALS['tmpdb_password'],
-            'host'     => $GLOBALS['tmpdb_host'],
-            'dbname'   => $GLOBALS['tmpdb_name'],
-            'port'     => $GLOBALS['tmpdb_port']
+            'host' => $GLOBALS['tmpdb_host'],
+            'dbname' => $GLOBALS['tmpdb_name'],
+            'port' => $GLOBALS['tmpdb_port']
         );
 
         // Connect to tmpdb in order to drop and create the real test db.
-        return \Doctrine\DBAL\DriverManager::getConnection( $tmpDbParams );
+        return \Doctrine\DBAL\DriverManager::getConnection($tmpDbParams);
     }
 }

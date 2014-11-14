@@ -21,19 +21,19 @@
 
 namespace Doctrine\DBAL\Schema\Visitor;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Constraint;
-use Doctrine\DBAL\Schema\ForeignKeyConstraint;
-use Doctrine\DBAL\Schema\Index;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Sequence;
-use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Platforms\AbstractPlatform,
+    Doctrine\DBAL\Schema\Table,
+    Doctrine\DBAL\Schema\Schema,
+    Doctrine\DBAL\Schema\Column,
+    Doctrine\DBAL\Schema\ForeignKeyConstraint,
+    Doctrine\DBAL\Schema\Constraint,
+    Doctrine\DBAL\Schema\Sequence,
+    Doctrine\DBAL\Schema\Index;
 
 /**
  * Schema Visitor used for Validation or Generation purposes.
  *
- *
+ * 
  * @link    www.doctrine-project.org
  * @since   2.0
  * @version $Revision$
@@ -41,36 +41,35 @@ use Doctrine\DBAL\Schema\Table;
  */
 interface Visitor
 {
-
     /**
      * @param Schema $schema
      */
-    public function acceptSchema( Schema $schema );
+    public function acceptSchema(Schema $schema);
 
     /**
      * @param Table $table
      */
-    public function acceptTable( Table $table );
+    public function acceptTable(Table $table);
 
     /**
      * @param Column $column
      */
-    public function acceptColumn( Table $table, Column $column );
+    public function acceptColumn(Table $table, Column $column);
 
     /**
-     * @param Table                $localTable
+     * @param Table $localTable
      * @param ForeignKeyConstraint $fkConstraint
      */
-    public function acceptForeignKey( Table $localTable, ForeignKeyConstraint $fkConstraint );
+    public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint);
 
     /**
      * @param Table $table
      * @param Index $index
      */
-    public function acceptIndex( Table $table, Index $index );
+    public function acceptIndex(Table $table, Index $index);
 
     /**
      * @param Sequence $sequence
      */
-    public function acceptSequence( Sequence $sequence );
+    public function acceptSequence(Sequence $sequence);
 }

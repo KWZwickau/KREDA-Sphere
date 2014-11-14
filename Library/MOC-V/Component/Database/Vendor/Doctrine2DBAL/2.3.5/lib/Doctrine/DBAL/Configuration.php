@@ -19,22 +19,21 @@
 
 namespace Doctrine\DBAL;
 
-use Doctrine\Common\Cache\Cache;
 use Doctrine\DBAL\Logging\SQLLogger;
+use Doctrine\Common\Cache\Cache;
 
 /**
  * Configuration container for the Doctrine DBAL.
  *
- * @since    2.0
- * @author   Guilherme Blanco <guilhermeblanco@hotmail.com>
- * @author   Jonathan Wage <jonwage@gmail.com>
- * @author   Roman Borschel <roman@code-factory.org>
+ * @since   2.0
+ * @author  Guilherme Blanco <guilhermeblanco@hotmail.com>
+ * @author  Jonathan Wage <jonwage@gmail.com>
+ * @author  Roman Borschel <roman@code-factory.org>
  * @internal When adding a new configuration option just write a getter/setter
  *           pair and add the option to the _attributes array with a proper default value.
  */
 class Configuration
 {
-
     /**
      * The attributes that are contained in the configuration.
      * Values are default values.
@@ -48,9 +47,8 @@ class Configuration
      *
      * @param SQLLogger $logger
      */
-    public function setSQLLogger( SQLLogger $logger = null )
+    public function setSQLLogger(SQLLogger $logger = null)
     {
-
         $this->_attributes['sqlLogger'] = $logger;
     }
 
@@ -61,9 +59,8 @@ class Configuration
      */
     public function getSQLLogger()
     {
-
-        return isset( $this->_attributes['sqlLogger'] ) ?
-            $this->_attributes['sqlLogger'] : null;
+        return isset($this->_attributes['sqlLogger']) ?
+                $this->_attributes['sqlLogger'] : null;
     }
 
     /**
@@ -73,9 +70,8 @@ class Configuration
      */
     public function getResultCacheImpl()
     {
-
-        return isset( $this->_attributes['resultCacheImpl'] ) ?
-            $this->_attributes['resultCacheImpl'] : null;
+        return isset($this->_attributes['resultCacheImpl']) ?
+                $this->_attributes['resultCacheImpl'] : null;
     }
 
     /**
@@ -83,9 +79,8 @@ class Configuration
      *
      * @param \Doctrine\Common\Cache\Cache $cacheImpl
      */
-    public function setResultCacheImpl( Cache $cacheImpl )
+    public function setResultCacheImpl(Cache $cacheImpl)
     {
-
         $this->_attributes['resultCacheImpl'] = $cacheImpl;
     }
 
@@ -98,9 +93,8 @@ class Configuration
      *
      * @param string $filterExpression
      */
-    public function setFilterSchemaAssetsExpression( $filterExpression )
+    public function setFilterSchemaAssetsExpression($filterExpression)
     {
-
         $this->_attributes['filterSchemaAssetsExpression'] = $filterExpression;
     }
 
@@ -111,8 +105,7 @@ class Configuration
      */
     public function getFilterSchemaAssetsExpression()
     {
-
-        if (isset( $this->_attributes['filterSchemaAssetsExpression'] )) {
+        if (isset($this->_attributes['filterSchemaAssetsExpression'])) {
             return $this->_attributes['filterSchemaAssetsExpression'];
         }
         return null;

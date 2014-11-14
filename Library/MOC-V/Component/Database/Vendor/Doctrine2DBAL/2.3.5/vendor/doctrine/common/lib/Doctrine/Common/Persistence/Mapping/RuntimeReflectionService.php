@@ -19,12 +19,13 @@
 
 namespace Doctrine\Common\Persistence\Mapping;
 
-use Doctrine\Common\Persistence\Mapping\MappingException;
-use Doctrine\Common\Reflection\RuntimePublicReflectionProperty;
 use ReflectionClass;
-use ReflectionException;
-use ReflectionMethod;
 use ReflectionProperty;
+use ReflectionMethod;
+use ReflectionException;
+
+use Doctrine\Common\Reflection\RuntimePublicReflectionProperty;
+use Doctrine\Common\Persistence\Mapping\MappingException;
 
 /**
  * PHP Runtime Reflection Service.
@@ -33,27 +34,24 @@ use ReflectionProperty;
  */
 class RuntimeReflectionService implements ReflectionService
 {
-
     /**
      * {@inheritDoc}
      */
-    public function getParentClasses( $class )
+    public function getParentClasses($class)
     {
-
-        if (!class_exists( $class )) {
-            throw MappingException::nonExistingClass( $class );
+        if ( ! class_exists($class)) {
+            throw MappingException::nonExistingClass($class);
         }
 
-        return class_parents( $class );
+        return class_parents($class);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getClassShortName( $class )
+    public function getClassShortName($class)
     {
-
-        $reflectionClass = new ReflectionClass( $class );
+        $reflectionClass = new ReflectionClass($class);
 
         return $reflectionClass->getShortName();
     }
@@ -61,10 +59,9 @@ class RuntimeReflectionService implements ReflectionService
     /**
      * {@inheritDoc}
      */
-    public function getClassNamespace( $class )
+    public function getClassNamespace($class)
     {
-
-        $reflectionClass = new ReflectionClass( $class );
+        $reflectionClass = new ReflectionClass($class);
 
         return $reflectionClass->getNamespaceName();
     }
@@ -72,25 +69,23 @@ class RuntimeReflectionService implements ReflectionService
     /**
      * {@inheritDoc}
      */
-    public function getClass( $class )
+    public function getClass($class)
     {
-
-        return new ReflectionClass( $class );
+        return new ReflectionClass($class);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getAccessibleProperty( $class, $property )
+    public function getAccessibleProperty($class, $property)
     {
-
-        $reflectionProperty = new ReflectionProperty( $class, $property );
+        $reflectionProperty = new ReflectionProperty($class, $property);
 
         if ($reflectionProperty->isPublic()) {
-            $reflectionProperty = new RuntimePublicReflectionProperty( $class, $property );
+            $reflectionProperty = new RuntimePublicReflectionProperty($class, $property);
         }
 
-        $reflectionProperty->setAccessible( true );
+        $reflectionProperty->setAccessible(true);
 
         return $reflectionProperty;
     }
@@ -98,12 +93,11 @@ class RuntimeReflectionService implements ReflectionService
     /**
      * {@inheritDoc}
      */
-    public function hasPublicMethod( $class, $method )
+    public function hasPublicMethod($class, $method)
     {
-
         try {
-            $reflectionMethod = new ReflectionMethod( $class, $method );
-        } catch( ReflectionException $e ) {
+            $reflectionMethod = new ReflectionMethod($class, $method);
+        } catch (ReflectionException $e) {
             return false;
         }
 

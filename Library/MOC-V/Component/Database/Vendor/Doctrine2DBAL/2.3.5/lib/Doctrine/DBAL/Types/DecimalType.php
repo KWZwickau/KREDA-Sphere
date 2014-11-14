@@ -28,22 +28,18 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class DecimalType extends Type
 {
-
     public function getName()
     {
-
         return Type::DECIMAL;
     }
 
-    public function getSQLDeclaration( array $fieldDeclaration, AbstractPlatform $platform )
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-
-        return $platform->getDecimalTypeDeclarationSQL( $fieldDeclaration );
+        return $platform->getDecimalTypeDeclarationSQL($fieldDeclaration);
     }
 
-    public function convertToPHPValue( $value, AbstractPlatform $platform )
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-
-        return ( null === $value ) ? null : $value;
+        return (null === $value) ? null : $value;
     }
 }

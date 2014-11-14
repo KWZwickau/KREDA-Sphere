@@ -32,41 +32,36 @@ namespace Doctrine\Common\Cache;
  */
 class ApcCache extends CacheProvider
 {
-
     /**
      * {@inheritdoc}
      */
-    protected function doFetch( $id )
+    protected function doFetch($id)
     {
-
-        return apc_fetch( $id );
+        return apc_fetch($id);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doContains( $id )
+    protected function doContains($id)
     {
-
-        return apc_exists( $id );
+        return apc_exists($id);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doSave( $id, $data, $lifeTime = 0 )
+    protected function doSave($id, $data, $lifeTime = 0)
     {
-
-        return (bool)apc_store( $id, $data, (int)$lifeTime );
+        return (bool) apc_store($id, $data, (int) $lifeTime);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doDelete( $id )
+    protected function doDelete($id)
     {
-
-        return apc_delete( $id );
+        return apc_delete($id);
     }
 
     /**
@@ -74,8 +69,7 @@ class ApcCache extends CacheProvider
      */
     protected function doFlush()
     {
-
-        return apc_clear_cache() && apc_clear_cache( 'user' );
+        return apc_clear_cache() && apc_clear_cache('user');
     }
 
     /**
@@ -83,15 +77,14 @@ class ApcCache extends CacheProvider
      */
     protected function doGetStats()
     {
-
         $info = apc_cache_info();
-        $sma = apc_sma_info();
+        $sma  = apc_sma_info();
 
         // @TODO - Temporary fix @see https://github.com/krakjoe/apcu/pull/42
         if (PHP_VERSION_ID >= 50500) {
-            $info['num_hits'] = isset( $info['num_hits'] ) ? $info['num_hits'] : $info['nhits'];
-            $info['num_misses'] = isset( $info['num_misses'] ) ? $info['num_misses'] : $info['nmisses'];
-            $info['start_time'] = isset( $info['start_time'] ) ? $info['start_time'] : $info['stime'];
+            $info['num_hits']   = isset($info['num_hits'])   ? $info['num_hits']   : $info['nhits'];
+            $info['num_misses'] = isset($info['num_misses']) ? $info['num_misses'] : $info['nmisses'];
+            $info['start_time'] = isset($info['start_time']) ? $info['start_time'] : $info['stime'];
         }
 
         return array(

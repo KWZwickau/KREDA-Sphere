@@ -28,36 +28,32 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class BlobType extends Type
 {
-
     /** @override */
-    public function getSQLDeclaration( array $fieldDeclaration, AbstractPlatform $platform )
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-
-        return $platform->getBlobTypeDeclarationSQL( $fieldDeclaration );
+        return $platform->getBlobTypeDeclarationSQL($fieldDeclaration);
     }
 
     /**
      * Converts a value from its database representation to its PHP representation
      * of this type.
      *
-     * @param mixed            $value    The value to convert.
+     * @param mixed $value The value to convert.
      * @param AbstractPlatform $platform The currently used database platform.
-     *
      * @return mixed The PHP representation of the value.
      */
-    public function convertToPHPValue( $value, AbstractPlatform $platform )
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-
         if (null === $value) {
             return null;
         }
 
-        if (is_string( $value )) {
-            $value = fopen( 'data://text/plain;base64,'.base64_encode( $value ), 'r' );
-        }
-
-        if (!is_resource( $value )) {
-            throw ConversionException::conversionFailed( $value, self::BLOB );
+        if (is_string($value)) {
+            $value = fopen('data://text/plain;base64,' . base64_encode($value), 'r');
+        } 
+        
+        if ( ! is_resource($value)) {
+            throw ConversionException::conversionFailed($value, self::BLOB);
         }
 
         return $value;
@@ -65,13 +61,11 @@ class BlobType extends Type
 
     public function getName()
     {
-
         return Type::BLOB;
     }
 
     public function getBindingType()
     {
-
         return \PDO::PARAM_LOB;
     }
 }

@@ -24,38 +24,33 @@ use PDO;
 
 class ArrayStatement implements \IteratorAggregate, ResultStatement
 {
-
     private $data;
     private $columnCount = 0;
     private $num = 0;
     private $defaultFetchMode = PDO::FETCH_BOTH;
 
-    public function __construct( array $data )
+    public function __construct(array $data)
     {
-
         $this->data = $data;
-        if (count( $data )) {
-            $this->columnCount = count( $data[0] );
+        if (count($data)) {
+            $this->columnCount = count($data[0]);
         }
     }
 
     public function closeCursor()
     {
-
-        unset ( $this->data );
+        unset ($this->data);
     }
 
     public function columnCount()
     {
-
         return $this->columnCount;
     }
 
-    public function setFetchMode( $fetchMode, $arg2 = null, $arg3 = null )
+    public function setFetchMode($fetchMode, $arg2 = null, $arg3 = null)
     {
-
         if ($arg2 !== null || $arg3 !== null) {
-            throw new \InvalidArgumentException( "Caching layer does not support 2nd/3rd argument to setFetchMode()" );
+            throw new \InvalidArgumentException("Caching layer does not support 2nd/3rd argument to setFetchMode()");
         }
 
         $this->defaultFetchMode = $fetchMode;
@@ -63,53 +58,43 @@ class ArrayStatement implements \IteratorAggregate, ResultStatement
 
     public function getIterator()
     {
-
         $data = $this->fetchAll();
-        return new \ArrayIterator( $data );
+        return new \ArrayIterator($data);
     }
 
-    public function fetchAll( $fetchMode = null )
+    public function fetch($fetchMode = null)
     {
-
-        $rows = array();
-        while ($row = $this->fetch( $fetchMode )) {
-            $rows[] = $row;
-        }
-        return $rows;
-    }
-
-    public function fetch( $fetchMode = null )
-    {
-
-        if (isset( $this->data[$this->num] )) {
+        if (isset($this->data[$this->num])) {
             $row = $this->data[$this->num++];
             $fetchMode = $fetchMode ?: $this->defaultFetchMode;
             if ($fetchMode === PDO::FETCH_ASSOC) {
                 return $row;
+            } else if ($fetchMode === PDO::FETCH_NUM) {
+                return array_values($row);
+            } else if ($fetchMode === PDO::FETCH_BOTH) {
+                return array_merge($row, array_values($row));
+            } else if ($fetchMode === PDO::FETCH_COLUMN) {
+                return reset($row);
             } else {
-                if ($fetchMode === PDO::FETCH_NUM) {
-                    return array_values( $row );
-                } else {
-                    if ($fetchMode === PDO::FETCH_BOTH) {
-                        return array_merge( $row, array_values( $row ) );
-                    } else {
-                        if ($fetchMode === PDO::FETCH_COLUMN) {
-                            return reset( $row );
-                        } else {
-                            throw new \InvalidArgumentException( "Invalid fetch-style given for fetching result." );
-                        }
-                    }
-                }
+                throw new \InvalidArgumentException("Invalid fetch-style given for fetching result.");
             }
         }
         return false;
     }
 
-    public function fetchColumn( $columnIndex = 0 )
+    public function fetchAll($fetchMode = null)
     {
+        $rows = array();
+        while ($row = $this->fetch($fetchMode)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
 
-        $row = $this->fetch( PDO::FETCH_NUM );
-        if (!isset( $row[$columnIndex] )) {
+    public function fetchColumn($columnIndex = 0)
+    {
+        $row = $this->fetch(PDO::FETCH_NUM);
+        if (!isset($row[$columnIndex])) {
             // TODO: verify this is correct behavior
             return false;
         }

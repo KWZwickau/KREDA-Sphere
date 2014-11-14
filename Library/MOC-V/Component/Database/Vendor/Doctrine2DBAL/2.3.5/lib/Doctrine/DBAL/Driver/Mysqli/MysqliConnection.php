@@ -26,25 +26,23 @@ use Doctrine\DBAL\Driver\Connection as Connection;
  */
 class MysqliConnection implements Connection
 {
-
     /**
      * @var \mysqli
      */
     private $_conn;
 
-    public function __construct( array $params, $username, $password, array $driverOptions = array() )
+    public function __construct(array $params, $username, $password, array $driverOptions = array())
     {
-
-        $port = isset( $params['port'] ) ? $params['port'] : ini_get( 'mysqli.default_port' );
-        $socket = isset( $params['unix_socket'] ) ? $params['unix_socket'] : ini_get( 'mysqli.default_socket' );
+        $port = isset($params['port']) ? $params['port'] : ini_get('mysqli.default_port');
+        $socket = isset($params['unix_socket']) ? $params['unix_socket'] : ini_get('mysqli.default_socket');
 
         $this->_conn = mysqli_init();
-        if (!$this->_conn->real_connect( $params['host'], $username, $password, $params['dbname'], $port, $socket )) {
-            throw new MysqliException( $this->_conn->connect_error, $this->_conn->connect_errno );
+        if ( ! $this->_conn->real_connect($params['host'], $username, $password, $params['dbname'], $port, $socket)) {
+            throw new MysqliException($this->_conn->connect_error, $this->_conn->connect_errno);
         }
 
-        if (isset( $params['charset'] )) {
-            $this->_conn->set_charset( $params['charset'] );
+        if (isset($params['charset'])) {
+            $this->_conn->set_charset($params['charset']);
         }
     }
 
@@ -57,8 +55,15 @@ class MysqliConnection implements Connection
      */
     public function getWrappedResourceHandle()
     {
-
         return $this->_conn;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepare($prepareString)
+    {
+        return new MysqliStatement($this->_conn, $prepareString);
     }
 
     /**
@@ -66,10 +71,9 @@ class MysqliConnection implements Connection
      */
     public function query()
     {
-
         $args = func_get_args();
         $sql = $args[0];
-        $stmt = $this->prepare( $sql );
+        $stmt = $this->prepare($sql);
         $stmt->execute();
         return $stmt;
     }
@@ -77,37 +81,25 @@ class MysqliConnection implements Connection
     /**
      * {@inheritdoc}
      */
-    public function prepare( $prepareString )
+    public function quote($input, $type=\PDO::PARAM_STR)
     {
-
-        return new MysqliStatement( $this->_conn, $prepareString );
+        return "'". $this->_conn->escape_string($input) ."'";
     }
 
     /**
      * {@inheritdoc}
      */
-    public function quote( $input, $type = \PDO::PARAM_STR )
+    public function exec($statement)
     {
-
-        return "'".$this->_conn->escape_string( $input )."'";
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function exec( $statement )
-    {
-
-        $this->_conn->query( $statement );
+        $this->_conn->query($statement);
         return $this->_conn->affected_rows;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function lastInsertId( $name = null )
+    public function lastInsertId($name = null)
     {
-
         return $this->_conn->insert_id;
     }
 
@@ -116,8 +108,7 @@ class MysqliConnection implements Connection
      */
     public function beginTransaction()
     {
-
-        $this->_conn->query( 'START TRANSACTION' );
+        $this->_conn->query('START TRANSACTION');
         return true;
     }
 
@@ -126,7 +117,6 @@ class MysqliConnection implements Connection
      */
     public function commit()
     {
-
         return $this->_conn->commit();
     }
 
@@ -135,7 +125,6 @@ class MysqliConnection implements Connection
      */
     public function rollBack()
     {
-
         return $this->_conn->rollback();
     }
 
@@ -144,7 +133,6 @@ class MysqliConnection implements Connection
      */
     public function errorCode()
     {
-
         return $this->_conn->errno;
     }
 
@@ -153,7 +141,6 @@ class MysqliConnection implements Connection
      */
     public function errorInfo()
     {
-
         return $this->_conn->error;
     }
 }

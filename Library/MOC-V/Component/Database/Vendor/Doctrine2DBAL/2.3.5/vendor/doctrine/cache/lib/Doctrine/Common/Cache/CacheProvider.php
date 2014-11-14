@@ -31,7 +31,6 @@ namespace Doctrine\Common\Cache;
  */
 abstract class CacheProvider implements Cache
 {
-
     const DOCTRINE_NAMESPACE_CACHEKEY = 'DoctrineNamespaceCacheKey[%s]';
 
     /**
@@ -49,47 +48,92 @@ abstract class CacheProvider implements Cache
     private $namespaceVersion;
 
     /**
-     * Retrieves the namespace that prefixes all cache ids.
-     *
-     * @return string
-     */
-    public function getNamespace()
-    {
-
-        return $this->namespace;
-    }
-
-    /**
      * Sets the namespace to prefix all cache ids with.
      *
      * @param string $namespace
      *
      * @return void
      */
-    public function setNamespace( $namespace )
+    public function setNamespace($namespace)
     {
-
-        $this->namespace = (string)$namespace;
+        $this->namespace        = (string) $namespace;
         $this->namespaceVersion = null;
+    }
+
+    /**
+     * Retrieves the namespace that prefixes all cache ids.
+     *
+     * @return string
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fetch( $id )
+    public function fetch($id)
     {
-
-        return $this->doFetch( $this->getNamespacedId( $id ) );
+        return $this->doFetch($this->getNamespacedId($id));
     }
 
     /**
-     * Fetches an entry from the cache.
-     *
-     * @param string $id The id of the cache entry to fetch.
-     *
-     * @return string|boolean The cached data or FALSE, if no cache entry exists for the given id.
+     * {@inheritdoc}
      */
-    abstract protected function doFetch( $id );
+    public function contains($id)
+    {
+        return $this->doContains($this->getNamespacedId($id));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function save($id, $data, $lifeTime = 0)
+    {
+        return $this->doSave($this->getNamespacedId($id), $data, $lifeTime);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($id)
+    {
+        return $this->doDelete($this->getNamespacedId($id));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStats()
+    {
+        return $this->doGetStats();
+    }
+
+    /**
+     * Flushes all cache entries.
+     *
+     * @return boolean TRUE if the cache entries were successfully flushed, FALSE otherwise.
+     */
+    public function flushAll()
+    {
+        return $this->doFlush();
+    }
+
+    /**
+     * Deletes all cache entries.
+     *
+     * @return boolean TRUE if the cache entries were successfully deleted, FALSE otherwise.
+     */
+    public function deleteAll()
+    {
+        $namespaceCacheKey = $this->getNamespaceCacheKey();
+        $namespaceVersion  = $this->getNamespaceVersion() + 1;
+
+        $this->namespaceVersion = $namespaceVersion;
+
+        return $this->doSave($namespaceCacheKey, $namespaceVersion);
+    }
 
     /**
      * Prefixes the passed id with the configured namespace value.
@@ -98,38 +142,11 @@ abstract class CacheProvider implements Cache
      *
      * @return string The namespaced id.
      */
-    private function getNamespacedId( $id )
+    private function getNamespacedId($id)
     {
+        $namespaceVersion  = $this->getNamespaceVersion();
 
-        $namespaceVersion = $this->getNamespaceVersion();
-
-        return sprintf( '%s[%s][%s]', $this->namespace, $id, $namespaceVersion );
-    }
-
-    /**
-     * Returns the namespace version.
-     *
-     * @return integer
-     */
-    private function getNamespaceVersion()
-    {
-
-        if (null !== $this->namespaceVersion) {
-            return $this->namespaceVersion;
-        }
-
-        $namespaceCacheKey = $this->getNamespaceCacheKey();
-        $namespaceVersion = $this->doFetch( $namespaceCacheKey );
-
-        if (false === $namespaceVersion) {
-            $namespaceVersion = 1;
-
-            $this->doSave( $namespaceCacheKey, $namespaceVersion );
-        }
-
-        $this->namespaceVersion = $namespaceVersion;
-
-        return $this->namespaceVersion;
+        return sprintf('%s[%s][%s]', $this->namespace, $id, $namespaceVersion);
     }
 
     /**
@@ -139,30 +156,42 @@ abstract class CacheProvider implements Cache
      */
     private function getNamespaceCacheKey()
     {
-
-        return sprintf( self::DOCTRINE_NAMESPACE_CACHEKEY, $this->namespace );
+        return sprintf(self::DOCTRINE_NAMESPACE_CACHEKEY, $this->namespace);
     }
 
     /**
-     * Puts data into the cache.
+     * Returns the namespace version.
      *
-     * @param string $id         The cache id.
-     * @param string $data       The cache entry/data.
-     * @param int    $lifeTime   The lifetime. If != 0, sets a specific lifetime for this
-     *                           cache entry (0 => infinite lifeTime).
-     *
-     * @return boolean TRUE if the entry was successfully stored in the cache, FALSE otherwise.
+     * @return integer
      */
-    abstract protected function doSave( $id, $data, $lifeTime = 0 );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function contains( $id )
+    private function getNamespaceVersion()
     {
+        if (null !== $this->namespaceVersion) {
+            return $this->namespaceVersion;
+        }
 
-        return $this->doContains( $this->getNamespacedId( $id ) );
+        $namespaceCacheKey = $this->getNamespaceCacheKey();
+        $namespaceVersion = $this->doFetch($namespaceCacheKey);
+
+        if (false === $namespaceVersion) {
+            $namespaceVersion = 1;
+
+            $this->doSave($namespaceCacheKey, $namespaceVersion);
+        }
+
+        $this->namespaceVersion = $namespaceVersion;
+
+        return $this->namespaceVersion;
     }
+
+    /**
+     * Fetches an entry from the cache.
+     *
+     * @param string $id The id of the cache entry to fetch.
+     *
+     * @return string|boolean The cached data or FALSE, if no cache entry exists for the given id.
+     */
+    abstract protected function doFetch($id);
 
     /**
      * Tests if an entry exists in the cache.
@@ -171,25 +200,19 @@ abstract class CacheProvider implements Cache
      *
      * @return boolean TRUE if a cache entry exists for the given cache id, FALSE otherwise.
      */
-    abstract protected function doContains( $id );
+    abstract protected function doContains($id);
 
     /**
-     * {@inheritdoc}
+     * Puts data into the cache.
+     *
+     * @param string $id       The cache id.
+     * @param string $data     The cache entry/data.
+     * @param int    $lifeTime The lifetime. If != 0, sets a specific lifetime for this
+     *                           cache entry (0 => infinite lifeTime).
+     *
+     * @return boolean TRUE if the entry was successfully stored in the cache, FALSE otherwise.
      */
-    public function save( $id, $data, $lifeTime = 0 )
-    {
-
-        return $this->doSave( $this->getNamespacedId( $id ), $data, $lifeTime );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete( $id )
-    {
-
-        return $this->doDelete( $this->getNamespacedId( $id ) );
-    }
+    abstract protected function doSave($id, $data, $lifeTime = 0);
 
     /**
      * Deletes a cache entry.
@@ -198,36 +221,7 @@ abstract class CacheProvider implements Cache
      *
      * @return boolean TRUE if the cache entry was successfully deleted, FALSE otherwise.
      */
-    abstract protected function doDelete( $id );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStats()
-    {
-
-        return $this->doGetStats();
-    }
-
-    /**
-     * Retrieves cached information from the data store.
-     *
-     * @since 2.2
-     *
-     * @return array|null An associative array with server's statistics if available, NULL otherwise.
-     */
-    abstract protected function doGetStats();
-
-    /**
-     * Flushes all cache entries.
-     *
-     * @return boolean TRUE if the cache entries were successfully flushed, FALSE otherwise.
-     */
-    public function flushAll()
-    {
-
-        return $this->doFlush();
-    }
+    abstract protected function doDelete($id);
 
     /**
      * Flushes all cache entries.
@@ -237,18 +231,11 @@ abstract class CacheProvider implements Cache
     abstract protected function doFlush();
 
     /**
-     * Deletes all cache entries.
+     * Retrieves cached information from the data store.
      *
-     * @return boolean TRUE if the cache entries were successfully deleted, FALSE otherwise.
+     * @since 2.2
+     *
+     * @return array|null An associative array with server's statistics if available, NULL otherwise.
      */
-    public function deleteAll()
-    {
-
-        $namespaceCacheKey = $this->getNamespaceCacheKey();
-        $namespaceVersion = $this->getNamespaceVersion() + 1;
-
-        $this->namespaceVersion = $namespaceVersion;
-
-        return $this->doSave( $namespaceCacheKey, $namespaceVersion );
-    }
+    abstract protected function doGetStats();
 }

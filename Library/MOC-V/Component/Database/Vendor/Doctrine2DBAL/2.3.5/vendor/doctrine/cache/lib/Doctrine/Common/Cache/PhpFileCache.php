@@ -27,10 +27,9 @@ namespace Doctrine\Common\Cache;
  */
 class PhpFileCache extends FileCache
 {
-
     const EXTENSION = '.doctrinecache.php';
 
-    /**
+     /**
      * {@inheritdoc}
      */
     protected $extension = self::EXTENSION;
@@ -38,12 +37,11 @@ class PhpFileCache extends FileCache
     /**
      * {@inheritdoc}
      */
-    protected function doFetch( $id )
+    protected function doFetch($id)
     {
+        $filename = $this->getFilename($id);
 
-        $filename = $this->getFilename( $id );
-
-        if (!is_file( $filename )) {
+        if ( ! is_file($filename)) {
             return false;
         }
 
@@ -59,12 +57,11 @@ class PhpFileCache extends FileCache
     /**
      * {@inheritdoc}
      */
-    protected function doContains( $id )
+    protected function doContains($id)
     {
+        $filename = $this->getFilename($id);
 
-        $filename = $this->getFilename( $id );
-
-        if (!is_file( $filename )) {
+        if ( ! is_file($filename)) {
             return false;
         }
 
@@ -76,36 +73,35 @@ class PhpFileCache extends FileCache
     /**
      * {@inheritdoc}
      */
-    protected function doSave( $id, $data, $lifeTime = 0 )
+    protected function doSave($id, $data, $lifeTime = 0)
     {
-
         if ($lifeTime > 0) {
             $lifeTime = time() + $lifeTime;
         }
 
-        if (is_object( $data ) && !method_exists( $data, '__set_state' )) {
+        if (is_object($data) && ! method_exists($data, '__set_state')) {
             throw new \InvalidArgumentException(
-                "Invalid argument given, PhpFileCache only allows objects that implement __set_state() ".
-                "and fully support var_export(). You can use the FilesystemCache to save arbitrary object ".
+                "Invalid argument given, PhpFileCache only allows objects that implement __set_state() " .
+                "and fully support var_export(). You can use the FilesystemCache to save arbitrary object " .
                 "graphs using serialize()/deserialize()."
             );
         }
 
-        $filename = $this->getFilename( $id );
-        $filepath = pathinfo( $filename, PATHINFO_DIRNAME );
+        $filename   = $this->getFilename($id);
+        $filepath   = pathinfo($filename, PATHINFO_DIRNAME);
 
-        if (!is_dir( $filepath )) {
-            mkdir( $filepath, 0777, true );
+        if ( ! is_dir($filepath)) {
+            mkdir($filepath, 0777, true);
         }
 
         $value = array(
-            'lifetime' => $lifeTime,
-            'data'     => $data
+            'lifetime'  => $lifeTime,
+            'data'      => $data
         );
 
-        $value = var_export( $value, true );
-        $code = sprintf( '<?php return %s;', $value );
+        $value  = var_export($value, true);
+        $code   = sprintf('<?php return %s;', $value);
 
-        return file_put_contents( $filename, $code ) !== false;
+        return file_put_contents($filename, $code) !== false;
     }
 }

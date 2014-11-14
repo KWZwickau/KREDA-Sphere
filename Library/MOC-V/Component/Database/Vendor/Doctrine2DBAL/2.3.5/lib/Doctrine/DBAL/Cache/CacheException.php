@@ -21,20 +21,17 @@ namespace Doctrine\DBAL\Cache;
 
 /**
  * @author Benjamin Eberlei <kontakt@beberlei.de>
- * @since  2.2
+ * @since 2.2
  */
 class CacheException extends \Doctrine\DBAL\DBALException
 {
-
     static public function noCacheKey()
     {
-
-        return new self( "No cache key was set." );
+        return new self("No cache key was set.");
     }
 
     static public function noResultDriverConfigured()
     {
-
-        return new self( "Trying to cache a query but no result driver is configured." );
+        return new self("Trying to cache a query but no result driver is configured.");
     }
 }

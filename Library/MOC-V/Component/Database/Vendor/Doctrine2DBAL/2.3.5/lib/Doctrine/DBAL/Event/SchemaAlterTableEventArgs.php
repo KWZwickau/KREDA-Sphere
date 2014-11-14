@@ -19,9 +19,9 @@
 
 namespace Doctrine\DBAL\Event;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Platforms\AbstractPlatform,
+    Doctrine\DBAL\Schema\Column,
+    Doctrine\DBAL\Schema\TableDiff;
 
 /**
  * Event Arguments used when SQL queries for creating tables are generated inside Doctrine\DBAL\Platform\*Platform.
@@ -33,7 +33,6 @@ use Doctrine\DBAL\Schema\TableDiff;
  */
 class SchemaAlterTableEventArgs extends SchemaEventArgs
 {
-
     /**
      * @var \Doctrine\DBAL\Schema\TableDiff
      */
@@ -50,14 +49,13 @@ class SchemaAlterTableEventArgs extends SchemaEventArgs
     private $_sql = array();
 
     /**
-     * @param \Doctrine\DBAL\Schema\TableDiff           $tableDiff
+     * @param \Doctrine\DBAL\Schema\TableDiff $tableDiff
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
-    public function __construct( TableDiff $tableDiff, AbstractPlatform $platform )
+    public function __construct(TableDiff $tableDiff, AbstractPlatform $platform)
     {
-
         $this->_tableDiff = $tableDiff;
-        $this->_platform = $platform;
+        $this->_platform  = $platform;
     }
 
     /**
@@ -65,7 +63,6 @@ class SchemaAlterTableEventArgs extends SchemaEventArgs
      */
     public function getTableDiff()
     {
-
         return $this->_tableDiff;
     }
 
@@ -74,20 +71,17 @@ class SchemaAlterTableEventArgs extends SchemaEventArgs
      */
     public function getPlatform()
     {
-
         return $this->_platform;
     }
 
     /**
      * @param string|array $sql
-     *
      * @return \Doctrine\DBAL\Event\SchemaAlterTableEventArgs
      */
-    public function addSql( $sql )
+    public function addSql($sql)
     {
-
-        if (is_array( $sql )) {
-            $this->_sql = array_merge( $this->_sql, $sql );
+        if (is_array($sql)) {
+            $this->_sql = array_merge($this->_sql, $sql);
         } else {
             $this->_sql[] = $sql;
         }
@@ -100,7 +94,6 @@ class SchemaAlterTableEventArgs extends SchemaEventArgs
      */
     public function getSql()
     {
-
         return $this->_sql;
     }
 }

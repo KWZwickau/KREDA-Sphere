@@ -17,24 +17,25 @@
  * <http://www.doctrine-project.org>.
  */
 
+
 namespace Doctrine\DBAL\Tools\Console\Command;
 
+use Symfony\Component\Console\Input\InputArgument,
+    Symfony\Component\Console\Input\InputOption,
+    Symfony\Component\Console\Command\Command,
+    Symfony\Component\Console\Input\InputInterface,
+    Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\DBAL\Platforms\Keywords\ReservedKeywordsValidator;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class ReservedWordsCommand extends Command
 {
-
     private $keywordListClasses = array(
-        'mysql'  => 'Doctrine\DBAL\Platforms\Keywords\MySQLKeywords',
-        'mssql'  => 'Doctrine\DBAL\Platforms\Keywords\MsSQLKeywords',
-        'sqlite' => 'Doctrine\DBAL\Platforms\Keywords\SQLiteKeywords',
-        'pgsql'  => 'Doctrine\DBAL\Platforms\Keywords\PostgreSQLKeywords',
-        'oracle' => 'Doctrine\DBAL\Platforms\Keywords\OracleKeywords',
-        'db2'    => 'Doctrine\DBAL\Platforms\Keywords\DB2Keywords',
+        'mysql'     => 'Doctrine\DBAL\Platforms\Keywords\MySQLKeywords',
+        'mssql'     => 'Doctrine\DBAL\Platforms\Keywords\MsSQLKeywords',
+        'sqlite'    => 'Doctrine\DBAL\Platforms\Keywords\SQLiteKeywords',
+        'pgsql'     => 'Doctrine\DBAL\Platforms\Keywords\PostgreSQLKeywords',
+        'oracle'    => 'Doctrine\DBAL\Platforms\Keywords\OracleKeywords',
+        'db2'       => 'Doctrine\DBAL\Platforms\Keywords\DB2Keywords',
     );
 
     /**
@@ -43,9 +44,8 @@ class ReservedWordsCommand extends Command
      * @param string $name
      * @param string $class
      */
-    public function setKeywordListClass( $name, $class )
+    public function setKeywordListClass($name, $class)
     {
-
         $this->keywordListClasses[$name] = $class;
     }
 
@@ -54,16 +54,15 @@ class ReservedWordsCommand extends Command
      */
     protected function configure()
     {
-
         $this
-            ->setName( 'dbal:reserved-words' )
-            ->setDescription( 'Checks if the current database contains identifiers that are reserved.' )
-            ->setDefinition( array(
-                new InputOption(
-                    'list', 'l', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Keyword-List name.'
-                )
-            ) )
-            ->setHelp( <<<EOT
+        ->setName('dbal:reserved-words')
+        ->setDescription('Checks if the current database contains identifiers that are reserved.')
+        ->setDefinition(array(
+            new InputOption(
+                'list', 'l', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Keyword-List name.'
+            )
+        ))
+        ->setHelp(<<<EOT
 Checks if the current database contains tables and columns
 with names that are identifiers in this dialect or in other SQL dialects.
 
@@ -86,51 +85,48 @@ The following keyword lists are currently shipped with Doctrine:
     * mssql
     * db2 (Not checked by default)
 EOT
-            );
+        );
     }
 
     /**
      * @see Console\Command\Command
      */
-    protected function execute( InputInterface $input, OutputInterface $output )
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         /* @var $conn \Doctrine\DBAL\Connection */
-        $conn = $this->getHelper( 'db' )->getConnection();
+        $conn = $this->getHelper('db')->getConnection();
 
-        $keywordLists = (array)$input->getOption( 'list' );
-        if (!$keywordLists) {
-            $keywordLists = array( 'mysql', 'pgsql', 'sqlite', 'oracle', 'mssql' );
+        $keywordLists = (array)$input->getOption('list');
+        if ( ! $keywordLists) {
+            $keywordLists = array('mysql', 'pgsql', 'sqlite', 'oracle', 'mssql');
         }
 
         $keywords = array();
         foreach ($keywordLists as $keywordList) {
-            if (!isset( $this->keywordListClasses[$keywordList] )) {
+            if (!isset($this->keywordListClasses[$keywordList])) {
                 throw new \InvalidArgumentException(
-                    "There exists no keyword list with name '".$keywordList."'. ".
-                    "Known lists: ".implode( ", ", array_keys( $this->keywordListClasses ) )
+                    "There exists no keyword list with name '" . $keywordList . "'. ".
+                    "Known lists: " . implode(", ", array_keys($this->keywordListClasses))
                 );
             }
             $class = $this->keywordListClasses[$keywordList];
             $keywords[] = new $class;
         }
 
-        $output->write( 'Checking keyword violations for <comment>'.implode( ", ", $keywordLists )."</comment>...",
-            true );
+        $output->write('Checking keyword violations for <comment>' . implode(", ", $keywordLists) . "</comment>...", true);
 
         /* @var $schema \Doctrine\DBAL\Schema\Schema */
         $schema = $conn->getSchemaManager()->createSchema();
-        $visitor = new ReservedKeywordsValidator( $keywords );
-        $schema->visit( $visitor );
+        $visitor = new ReservedKeywordsValidator($keywords);
+        $schema->visit($visitor);
 
         $violations = $visitor->getViolations();
-        if (count( $violations ) == 0) {
-            $output->write( "No reserved keywords violations have been found!", true );
+        if (count($violations) == 0) {
+            $output->write("No reserved keywords violations have been found!", true);
         } else {
-            $output->write( 'There are <error>'.count( $violations ).'</error> reserved keyword violations in your database schema:',
-                true );
+            $output->write('There are <error>' . count($violations) . '</error> reserved keyword violations in your database schema:', true);
             foreach ($violations as $violation) {
-                $output->write( '  - '.$violation, true );
+                $output->write('  - ' . $violation, true);
             }
         }
     }

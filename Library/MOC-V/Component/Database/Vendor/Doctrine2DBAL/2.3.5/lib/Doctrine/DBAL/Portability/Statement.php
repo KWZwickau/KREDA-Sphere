@@ -57,148 +57,130 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
      * Wraps <tt>Statement</tt> and applies portability measures
      *
      * @param \Doctrine\DBAL\Driver\Statement $stmt
-     * @param \Doctrine\DBAL\Connection       $conn
+     * @param \Doctrine\DBAL\Connection $conn
      */
-    public function __construct( $stmt, Connection $conn )
+    public function __construct($stmt, Connection $conn)
     {
-
         $this->stmt = $stmt;
         $this->portability = $conn->getPortability();
         $this->case = $conn->getFetchCase();
     }
 
-    public function bindParam( $column, &$variable, $type = null, $length = null )
+    public function bindParam($column, &$variable, $type = null,$length = null)
     {
-
-        return $this->stmt->bindParam( $column, $variable, $type );
+        return $this->stmt->bindParam($column, $variable, $type);
     }
 
-    public function bindValue( $param, $value, $type = null )
+    public function bindValue($param, $value, $type = null)
     {
-
-        return $this->stmt->bindValue( $param, $value, $type );
+        return $this->stmt->bindValue($param, $value, $type);
     }
 
     public function closeCursor()
     {
-
         return $this->stmt->closeCursor();
     }
 
     public function columnCount()
     {
-
         return $this->stmt->columnCount();
     }
 
     public function errorCode()
     {
-
         return $this->stmt->errorCode();
     }
 
     public function errorInfo()
     {
-
         return $this->stmt->errorInfo();
     }
 
-    public function execute( $params = null )
+    public function execute($params = null)
     {
-
-        return $this->stmt->execute( $params );
+        return $this->stmt->execute($params);
     }
 
-    public function setFetchMode( $fetchMode, $arg1 = null, $arg2 = null )
+    public function setFetchMode($fetchMode, $arg1 = null, $arg2 = null)
     {
-
         $this->defaultFetchMode = $fetchMode;
-        $this->stmt->setFetchMode( $fetchMode, $arg1, $arg2 );
+        $this->stmt->setFetchMode($fetchMode, $arg1, $arg2);
     }
 
     public function getIterator()
     {
-
         $data = $this->fetchAll();
-        return new \ArrayIterator( $data );
+        return new \ArrayIterator($data);
     }
 
-    public function fetchAll( $fetchMode = null, $columnIndex = 0 )
+    public function fetch($fetchMode = null)
     {
+        $fetchMode = $fetchMode ?: $this->defaultFetchMode;
 
+        $row = $this->stmt->fetch($fetchMode);
+
+        $row = $this->fixRow($row,
+            $this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL|Connection::PORTABILITY_RTRIM),
+            !is_null($this->case) && ($fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH) && ($this->portability & Connection::PORTABILITY_FIX_CASE)
+        );
+
+        return $row;
+    }
+
+    public function fetchAll($fetchMode = null, $columnIndex = 0)
+    {
         $fetchMode = $fetchMode ?: $this->defaultFetchMode;
 
         if ($columnIndex != 0) {
-            $rows = $this->stmt->fetchAll( $fetchMode, $columnIndex );
+            $rows = $this->stmt->fetchAll($fetchMode, $columnIndex);
         } else {
-            $rows = $this->stmt->fetchAll( $fetchMode );
+            $rows = $this->stmt->fetchAll($fetchMode);
         }
 
-        $iterateRow = $this->portability & ( Connection::PORTABILITY_EMPTY_TO_NULL | Connection::PORTABILITY_RTRIM );
-        $fixCase = !is_null( $this->case ) && ( $fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH ) && ( $this->portability & Connection::PORTABILITY_FIX_CASE );
-        if (!$iterateRow && !$fixCase) {
+        $iterateRow = $this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL|Connection::PORTABILITY_RTRIM);
+        $fixCase = !is_null($this->case) && ($fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH) && ($this->portability & Connection::PORTABILITY_FIX_CASE);
+        if ( ! $iterateRow && !$fixCase) {
             return $rows;
         }
 
         foreach ($rows as $num => $row) {
-            $rows[$num] = $this->fixRow( $row, $iterateRow, $fixCase );
+            $rows[$num] = $this->fixRow($row, $iterateRow, $fixCase);
         }
 
         return $rows;
     }
 
-    protected function fixRow( $row, $iterateRow, $fixCase )
+    protected function fixRow($row, $iterateRow, $fixCase)
     {
-
-        if (!$row) {
+        if ( ! $row) {
             return $row;
         }
 
         if ($fixCase) {
-            $row = array_change_key_case( $row, $this->case );
+            $row = array_change_key_case($row, $this->case);
         }
 
         if ($iterateRow) {
             foreach ($row as $k => $v) {
-                if (( $this->portability & Connection::PORTABILITY_EMPTY_TO_NULL ) && $v === '') {
+                if (($this->portability & Connection::PORTABILITY_EMPTY_TO_NULL) && $v === '') {
                     $row[$k] = null;
-                } else {
-                    if (( $this->portability & Connection::PORTABILITY_RTRIM ) && is_string( $v )) {
-                        $row[$k] = rtrim( $v );
-                    }
+                } else if (($this->portability & Connection::PORTABILITY_RTRIM) && is_string($v)) {
+                    $row[$k] = rtrim($v);
                 }
             }
         }
         return $row;
     }
 
-    public function fetch( $fetchMode = null )
+    public function fetchColumn($columnIndex = 0)
     {
+        $value = $this->stmt->fetchColumn($columnIndex);
 
-        $fetchMode = $fetchMode ?: $this->defaultFetchMode;
-
-        $row = $this->stmt->fetch( $fetchMode );
-
-        $row = $this->fixRow( $row,
-            $this->portability & ( Connection::PORTABILITY_EMPTY_TO_NULL | Connection::PORTABILITY_RTRIM ),
-            !is_null( $this->case ) && ( $fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH ) && ( $this->portability & Connection::PORTABILITY_FIX_CASE )
-        );
-
-        return $row;
-    }
-
-    public function fetchColumn( $columnIndex = 0 )
-    {
-
-        $value = $this->stmt->fetchColumn( $columnIndex );
-
-        if ($this->portability & ( Connection::PORTABILITY_EMPTY_TO_NULL | Connection::PORTABILITY_RTRIM )) {
-            if (( $this->portability & Connection::PORTABILITY_EMPTY_TO_NULL ) && $value === '') {
+        if ($this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL|Connection::PORTABILITY_RTRIM)) {
+            if (($this->portability & Connection::PORTABILITY_EMPTY_TO_NULL) && $value === '') {
                 $value = null;
-            } else {
-                if (( $this->portability & Connection::PORTABILITY_RTRIM ) && is_string( $value )) {
-                    $value = rtrim( $value );
-                }
+            } else if (($this->portability & Connection::PORTABILITY_RTRIM) && is_string($value)) {
+                $value = rtrim($value);
             }
         }
 
@@ -207,7 +189,6 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
 
     public function rowCount()
     {
-
         return $this->stmt->rowCount();
     }
 

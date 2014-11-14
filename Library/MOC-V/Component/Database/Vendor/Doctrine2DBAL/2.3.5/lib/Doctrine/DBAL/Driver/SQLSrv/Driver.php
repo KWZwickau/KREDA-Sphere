@@ -24,53 +24,47 @@ namespace Doctrine\DBAL\Driver\SQLSrv;
  */
 class Driver implements \Doctrine\DBAL\Driver
 {
-
-    public function connect( array $params, $username = null, $password = null, array $driverOptions = array() )
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
-
-        if (!isset( $params['host'] )) {
-            throw new SQLSrvException( "Missing 'host' in configuration for sqlsrv driver." );
+        if (!isset($params['host'])) {
+            throw new SQLSrvException("Missing 'host' in configuration for sqlsrv driver.");
         }
-        if (!isset( $params['dbname'] )) {
-            throw new SQLSrvException( "Missing 'dbname' in configuration for sqlsrv driver." );
+        if (!isset($params['dbname'])) {
+            throw new SQLSrvException("Missing 'dbname' in configuration for sqlsrv driver.");
         }
 
         $serverName = $params['host'];
-        if (isset( $params['port'] )) {
-            $serverName .= ', '.$params['port'];
+        if (isset($params['port'])) {
+            $serverName .= ', ' . $params['port'];
         }
         $driverOptions['Database'] = $params['dbname'];
         $driverOptions['UID'] = $username;
         $driverOptions['PWD'] = $password;
 
-        if (!isset( $driverOptions['ReturnDatesAsStrings'] )) {
+        if (!isset($driverOptions['ReturnDatesAsStrings'])) {
             $driverOptions['ReturnDatesAsStrings'] = 1;
         }
 
-        return new SQLSrvConnection( $serverName, $driverOptions );
+        return new SQLSrvConnection($serverName, $driverOptions);
     }
 
     public function getDatabasePlatform()
     {
-
         return new \Doctrine\DBAL\Platforms\SQLServer2008Platform();
     }
 
-    public function getSchemaManager( \Doctrine\DBAL\Connection $conn )
+    public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
     {
-
-        return new \Doctrine\DBAL\Schema\SQLServerSchemaManager( $conn );
+        return new \Doctrine\DBAL\Schema\SQLServerSchemaManager($conn);
     }
 
     public function getName()
     {
-
         return 'sqlsrv';
     }
 
-    public function getDatabase( \Doctrine\DBAL\Connection $conn )
+    public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
-
         $params = $conn->getParams();
         return $params['dbname'];
     }

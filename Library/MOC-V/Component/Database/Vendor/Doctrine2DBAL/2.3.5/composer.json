@@ -1,6 +1,6 @@
 {
     "name": "doctrine/dbal",
-    "type": "library", "version": "2.3.5",
+    "type": "library","version":"2.3.5",
     "description": "Database Abstraction Layer",
     "keywords": ["dbal", "database", "persistence", "queryobject"],
     "homepage": "http://www.doctrine-project.org",
@@ -16,7 +16,7 @@
         "doctrine/common": ">=2.3.0,<2.5-dev"
     },
     "autoload": {
-        "psr-0": {"Doctrine\\DBAL": "lib/"}
+        "psr-0": { "Doctrine\\DBAL": "lib/" }
     },
     "extra": {
         "branch-alias": {

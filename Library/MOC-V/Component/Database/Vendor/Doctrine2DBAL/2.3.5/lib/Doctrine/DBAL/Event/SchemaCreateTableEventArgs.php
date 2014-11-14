@@ -19,8 +19,8 @@
 
 namespace Doctrine\DBAL\Event;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Platforms\AbstractPlatform,
+    Doctrine\DBAL\Schema\Table;
 
 /**
  * Event Arguments used when SQL queries for creating tables are generated inside Doctrine\DBAL\Platform\AbstractPlatform.
@@ -32,7 +32,6 @@ use Doctrine\DBAL\Schema\Table;
  */
 class SchemaCreateTableEventArgs extends SchemaEventArgs
 {
-
     /**
      * @var \Doctrine\DBAL\Schema\Table
      */
@@ -59,17 +58,16 @@ class SchemaCreateTableEventArgs extends SchemaEventArgs
     private $_sql = array();
 
     /**
-     * @param \Doctrine\DBAL\Schema\Table               $table
-     * @param array                                     $columns
-     * @param array                                     $options
+     * @param \Doctrine\DBAL\Schema\Table $table
+     * @param array $columns
+     * @param array $options
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
-    public function __construct( Table $table, array $columns, array $options, AbstractPlatform $platform )
+    public function __construct(Table $table, array $columns, array $options, AbstractPlatform $platform)
     {
-
-        $this->_table = $table;
-        $this->_columns = $columns;
-        $this->_options = $options;
+        $this->_table    = $table;
+        $this->_columns  = $columns;
+        $this->_options  = $options;
         $this->_platform = $platform;
     }
 
@@ -78,7 +76,6 @@ class SchemaCreateTableEventArgs extends SchemaEventArgs
      */
     public function getTable()
     {
-
         return $this->_table;
     }
 
@@ -87,7 +84,6 @@ class SchemaCreateTableEventArgs extends SchemaEventArgs
      */
     public function getColumns()
     {
-
         return $this->_columns;
     }
 
@@ -96,7 +92,6 @@ class SchemaCreateTableEventArgs extends SchemaEventArgs
      */
     public function getOptions()
     {
-
         return $this->_options;
     }
 
@@ -105,20 +100,17 @@ class SchemaCreateTableEventArgs extends SchemaEventArgs
      */
     public function getPlatform()
     {
-
         return $this->_platform;
     }
 
     /**
      * @param string|array $sql
-     *
      * @return \Doctrine\DBAL\Event\SchemaCreateTableEventArgs
      */
-    public function addSql( $sql )
+    public function addSql($sql)
     {
-
-        if (is_array( $sql )) {
-            $this->_sql = array_merge( $this->_sql, $sql );
+        if (is_array($sql)) {
+            $this->_sql = array_merge($this->_sql, $sql);
         } else {
             $this->_sql[] = $sql;
         }
@@ -131,7 +123,6 @@ class SchemaCreateTableEventArgs extends SchemaEventArgs
      */
     public function getSql()
     {
-
         return $this->_sql;
     }
 }

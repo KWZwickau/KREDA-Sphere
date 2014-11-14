@@ -27,49 +27,43 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  *
  * Only use this type if you are sure that your values cannot contain a ",".
  *
- * @since  2.3
+ * @since 2.3
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
 class SimpleArrayType extends Type
 {
-
-    public function getSQLDeclaration( array $fieldDeclaration, AbstractPlatform $platform )
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-
-        return $platform->getClobTypeDeclarationSQL( $fieldDeclaration );
+        return $platform->getClobTypeDeclarationSQL($fieldDeclaration);
     }
 
-    public function convertToDatabaseValue( $value, AbstractPlatform $platform )
+    public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-
         if (!$value) {
             return null;
         }
 
-        return implode( ',', $value );
+        return implode(',', $value);
     }
 
-    public function convertToPHPValue( $value, AbstractPlatform $platform )
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-
         if ($value === null) {
             return array();
         }
 
-        $value = ( is_resource( $value ) ) ? stream_get_contents( $value ) : $value;
+        $value = (is_resource($value)) ? stream_get_contents($value) : $value;
 
-        return explode( ',', $value );
+        return explode(',', $value);
     }
 
     public function getName()
     {
-
         return Type::SIMPLE_ARRAY;
     }
 
-    public function requiresSQLCommentHint( AbstractPlatform $platform )
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
-
         return true;
     }
 }

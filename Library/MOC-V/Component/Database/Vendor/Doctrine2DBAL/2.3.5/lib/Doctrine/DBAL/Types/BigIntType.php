@@ -27,35 +27,30 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  * Type that maps a database BIGINT to a PHP string.
  *
  * @author robo
- * @since  2.0
+ * @since 2.0
  */
 class BigIntType extends Type
 {
-
     public function getName()
     {
-
         return Type::BIGINT;
     }
 
-    public function getSQLDeclaration( array $fieldDeclaration, AbstractPlatform $platform )
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-
-        return $platform->getBigIntTypeDeclarationSQL( $fieldDeclaration );
+        return $platform->getBigIntTypeDeclarationSQL($fieldDeclaration);
     }
 
     public function getBindingType()
     {
-
         return \PDO::PARAM_STR;
     }
 
-    /**
+    /** 
      * {@inheritdoc}
-     */
-    public function convertToPHPValue( $value, AbstractPlatform $platform )
-    {
-
-        return ( null === $value ) ? null : (string)$value;
+     */  
+    public function convertToPHPValue($value, AbstractPlatform $platform)
+    {   
+        return (null === $value) ? null : (string) $value;
     }
 }

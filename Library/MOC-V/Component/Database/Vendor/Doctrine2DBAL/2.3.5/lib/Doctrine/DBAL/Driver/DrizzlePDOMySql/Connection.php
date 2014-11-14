@@ -24,13 +24,11 @@ namespace Doctrine\DBAL\Driver\DrizzlePDOMySql;
  */
 class Connection extends \Doctrine\DBAL\Driver\PDOConnection
 {
-
     /**
      * {@inheritdoc}
      */
-    public function quote( $value, $type = \PDO::PARAM_STR )
+    public function quote($value, $type=\PDO::PARAM_STR)
     {
-
         if (\PDO::PARAM_BOOL === $type) {
             if ($value) {
                 return 'true';
@@ -38,6 +36,6 @@ class Connection extends \Doctrine\DBAL\Driver\PDOConnection
                 return 'false';
             }
         }
-        return parent::quote( $value, $type );
+        return parent::quote($value, $type);
     }
 }

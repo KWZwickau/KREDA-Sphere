@@ -18,9 +18,9 @@ $config = array(
 );
 
 if ($config['host'] == "tcp:dbname.windows.net") {
-    die( "You have to change the configuration to your Azure account.\n" );
+    die("You have to change the configuration to your Azure account.\n");
 }
 
-$conn = DriverManager::getConnection( $config );
-$shardManager = new SQLAzureShardManager( $conn );
+$conn = DriverManager::getConnection($config);
+$shardManager = new SQLAzureShardManager($conn);
 

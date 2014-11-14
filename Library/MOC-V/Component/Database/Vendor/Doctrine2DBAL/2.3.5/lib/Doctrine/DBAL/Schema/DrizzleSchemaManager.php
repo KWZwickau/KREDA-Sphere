@@ -26,18 +26,48 @@ namespace Doctrine\DBAL\Schema;
  */
 class DrizzleSchemaManager extends AbstractSchemaManager
 {
-
-    public function _getPortableTableForeignKeyDefinition( $tableForeignKey )
+    protected function _getPortableTableColumnDefinition($tableColumn)
     {
+        $tableName = $tableColumn['COLUMN_NAME'];
+        $dbType = strtolower($tableColumn['DATA_TYPE']);
 
+        $type = $this->_platform->getDoctrineTypeMapping($dbType);
+        $type = $this->extractDoctrineTypeFromComment($tableColumn['COLUMN_COMMENT'], $type);
+        $tableColumn['COLUMN_COMMENT'] = $this->removeDoctrineTypeFromComment($tableColumn['COLUMN_COMMENT'], $type);
+
+        $options = array(
+            'notnull' => !(bool)$tableColumn['IS_NULLABLE'],
+            'length' => (int)$tableColumn['CHARACTER_MAXIMUM_LENGTH'],
+            'default' => empty($tableColumn['COLUMN_DEFAULT']) ? null : $tableColumn['COLUMN_DEFAULT'],
+            'autoincrement' => (bool)$tableColumn['IS_AUTO_INCREMENT'],
+            'scale' => (int)$tableColumn['NUMERIC_SCALE'],
+            'precision' => (int)$tableColumn['NUMERIC_PRECISION'],
+            'comment' => (isset($tableColumn['COLUMN_COMMENT']) ? $tableColumn['COLUMN_COMMENT'] : null),
+        );
+
+        return new Column($tableName, \Doctrine\DBAL\Types\Type::getType($type), $options);
+    }
+
+    protected function _getPortableDatabaseDefinition($database)
+    {
+        return $database['SCHEMA_NAME'];
+    }
+
+    protected function _getPortableTableDefinition($table)
+    {
+        return $table['TABLE_NAME'];
+    }
+
+    public function _getPortableTableForeignKeyDefinition($tableForeignKey)
+    {
         $columns = array();
-        foreach (explode( ',', $tableForeignKey['CONSTRAINT_COLUMNS'] ) as $value) {
-            $columns[] = trim( $value, ' `' );
+        foreach (explode(',', $tableForeignKey['CONSTRAINT_COLUMNS']) as $value) {
+            $columns[] = trim($value, ' `');
         }
 
         $ref_columns = array();
-        foreach (explode( ',', $tableForeignKey['REFERENCED_TABLE_COLUMNS'] ) as $value) {
-            $ref_columns[] = trim( $value, ' `' );
+        foreach (explode(',', $tableForeignKey['REFERENCED_TABLE_COLUMNS']) as $value) {
+            $ref_columns[] = trim($value, ' `');
         }
 
         return new ForeignKeyConstraint(
@@ -52,51 +82,15 @@ class DrizzleSchemaManager extends AbstractSchemaManager
         );
     }
 
-    protected function _getPortableTableColumnDefinition( $tableColumn )
+    protected function _getPortableTableIndexesList($tableIndexes, $tableName = null)
     {
-
-        $tableName = $tableColumn['COLUMN_NAME'];
-        $dbType = strtolower( $tableColumn['DATA_TYPE'] );
-
-        $type = $this->_platform->getDoctrineTypeMapping( $dbType );
-        $type = $this->extractDoctrineTypeFromComment( $tableColumn['COLUMN_COMMENT'], $type );
-        $tableColumn['COLUMN_COMMENT'] = $this->removeDoctrineTypeFromComment( $tableColumn['COLUMN_COMMENT'], $type );
-
-        $options = array(
-            'notnull'       => !(bool)$tableColumn['IS_NULLABLE'],
-            'length'        => (int)$tableColumn['CHARACTER_MAXIMUM_LENGTH'],
-            'default'       => empty( $tableColumn['COLUMN_DEFAULT'] ) ? null : $tableColumn['COLUMN_DEFAULT'],
-            'autoincrement' => (bool)$tableColumn['IS_AUTO_INCREMENT'],
-            'scale'         => (int)$tableColumn['NUMERIC_SCALE'],
-            'precision'     => (int)$tableColumn['NUMERIC_PRECISION'],
-            'comment'       => ( isset( $tableColumn['COLUMN_COMMENT'] ) ? $tableColumn['COLUMN_COMMENT'] : null ),
-        );
-
-        return new Column( $tableName, \Doctrine\DBAL\Types\Type::getType( $type ), $options );
-    }
-
-    protected function _getPortableDatabaseDefinition( $database )
-    {
-
-        return $database['SCHEMA_NAME'];
-    }
-
-    protected function _getPortableTableDefinition( $table )
-    {
-
-        return $table['TABLE_NAME'];
-    }
-
-    protected function _getPortableTableIndexesList( $tableIndexes, $tableName = null )
-    {
-
         $indexes = array();
         foreach ($tableIndexes as $k) {
             $k['primary'] = (boolean)$k['primary'];
             $indexes[] = $k;
         }
 
-        return parent::_getPortableTableIndexesList( $indexes, $tableName );
+        return parent::_getPortableTableIndexesList($indexes, $tableName);
     }
 }
 

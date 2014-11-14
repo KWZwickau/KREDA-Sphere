@@ -22,16 +22,15 @@ namespace Doctrine\DBAL\Schema;
 /**
  * Table Diff
  *
- *
- * @link      www.doctrine-project.org
+ * 
+ * @link    www.doctrine-project.org
  * @copyright Copyright (C) 2005-2009 eZ Systems AS. All rights reserved.
- * @license   http://ez.no/licenses/new_bsd New BSD License
- * @since     2.0
- * @author    Benjamin Eberlei <kontakt@beberlei.de>
+ * @license http://ez.no/licenses/new_bsd New BSD License
+ * @since   2.0
+ * @author  Benjamin Eberlei <kontakt@beberlei.de>
  */
 class TableDiff
 {
-
     /**
      * @var string
      */
@@ -122,16 +121,10 @@ class TableDiff
      * @param array(string=>Index)  $changedIndexes
      * @param array(string=>bool)   $removedIndexes
      */
-    public function __construct(
-        $tableName,
-        $addedColumns = array(),
-        $changedColumns = array(),
-        $removedColumns = array(),
-        $addedIndexes = array(),
-        $changedIndexes = array(),
-        $removedIndexes = array()
-    ) {
-
+    public function __construct($tableName, $addedColumns = array(),
+        $changedColumns = array(), $removedColumns = array(), $addedIndexes = array(),
+        $changedIndexes = array(), $removedIndexes = array())
+    {
         $this->name = $tableName;
         $this->addedColumns = $addedColumns;
         $this->changedColumns = $changedColumns;

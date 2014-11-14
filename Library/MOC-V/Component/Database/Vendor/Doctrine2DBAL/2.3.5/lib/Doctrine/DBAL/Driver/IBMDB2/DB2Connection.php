@@ -23,105 +23,93 @@ namespace Doctrine\DBAL\Driver\IBMDB2;
 
 class DB2Connection implements \Doctrine\DBAL\Driver\Connection
 {
-
     private $_conn = null;
 
-    public function __construct( array $params, $username, $password, $driverOptions = array() )
+    public function __construct(array $params, $username, $password, $driverOptions = array())
     {
-
-        $isPersistant = ( isset( $params['persistent'] ) && $params['persistent'] == true );
+        $isPersistant = (isset($params['persistent']) && $params['persistent'] == true);
 
         if ($isPersistant) {
-            $this->_conn = db2_pconnect( $params['dbname'], $username, $password, $driverOptions );
+            $this->_conn = db2_pconnect($params['dbname'], $username, $password, $driverOptions);
         } else {
-            $this->_conn = db2_connect( $params['dbname'], $username, $password, $driverOptions );
+            $this->_conn = db2_connect($params['dbname'], $username, $password, $driverOptions);
         }
-        if (!$this->_conn) {
-            throw new DB2Exception( db2_conn_errormsg() );
+        if ( ! $this->_conn) {
+            throw new DB2Exception(db2_conn_errormsg());
         }
+    }
+
+    public function prepare($sql)
+    {
+        $stmt = @db2_prepare($this->_conn, $sql);
+        if ( ! $stmt) {
+            throw new DB2Exception(db2_stmt_errormsg());
+        }
+        return new DB2Statement($stmt);
     }
 
     public function query()
     {
-
         $args = func_get_args();
         $sql = $args[0];
-        $stmt = $this->prepare( $sql );
+        $stmt = $this->prepare($sql);
         $stmt->execute();
         return $stmt;
     }
 
-    public function prepare( $sql )
+    public function quote($input, $type=\PDO::PARAM_STR)
     {
-
-        $stmt = @db2_prepare( $this->_conn, $sql );
-        if (!$stmt) {
-            throw new DB2Exception( db2_stmt_errormsg() );
-        }
-        return new DB2Statement( $stmt );
-    }
-
-    public function quote( $input, $type = \PDO::PARAM_STR )
-    {
-
-        $input = db2_escape_string( $input );
-        if ($type == \PDO::PARAM_INT) {
+        $input = db2_escape_string($input);
+        if ($type == \PDO::PARAM_INT ) {
             return $input;
         } else {
             return "'".$input."'";
         }
     }
 
-    public function exec( $statement )
+    public function exec($statement)
     {
-
-        $stmt = $this->prepare( $statement );
+        $stmt = $this->prepare($statement);
         $stmt->execute();
         return $stmt->rowCount();
     }
 
-    public function lastInsertId( $name = null )
+    public function lastInsertId($name = null)
     {
-
-        return db2_last_insert_id( $this->_conn );
+        return db2_last_insert_id($this->_conn);
     }
 
     public function beginTransaction()
     {
-
-        db2_autocommit( $this->_conn, DB2_AUTOCOMMIT_OFF );
+        db2_autocommit($this->_conn, DB2_AUTOCOMMIT_OFF);
     }
 
     public function commit()
     {
-
-        if (!db2_commit( $this->_conn )) {
-            throw new DB2Exception( db2_conn_errormsg( $this->_conn ) );
+        if (!db2_commit($this->_conn)) {
+            throw new DB2Exception(db2_conn_errormsg($this->_conn));
         }
-        db2_autocommit( $this->_conn, DB2_AUTOCOMMIT_ON );
+        db2_autocommit($this->_conn, DB2_AUTOCOMMIT_ON);
     }
 
     public function rollBack()
     {
-
-        if (!db2_rollback( $this->_conn )) {
-            throw new DB2Exception( db2_conn_errormsg( $this->_conn ) );
+        if (!db2_rollback($this->_conn)) {
+            throw new DB2Exception(db2_conn_errormsg($this->_conn));
         }
-        db2_autocommit( $this->_conn, DB2_AUTOCOMMIT_ON );
-    }
-
-    public function errorInfo()
-    {
-
-        return array(
-            0 => db2_conn_errormsg( $this->_conn ),
-            1 => $this->errorCode(),
-        );
+        db2_autocommit($this->_conn, DB2_AUTOCOMMIT_ON);
     }
 
     public function errorCode()
     {
+        return db2_conn_error($this->_conn);
+    }
 
-        return db2_conn_error( $this->_conn );
+    public function errorInfo()
+    {
+        return array(
+            0 => db2_conn_errormsg($this->_conn),
+            1 => $this->errorCode(),
+        );
     }
 }

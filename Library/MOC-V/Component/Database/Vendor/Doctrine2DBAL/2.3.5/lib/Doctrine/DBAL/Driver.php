@@ -27,18 +27,16 @@ namespace Doctrine\DBAL;
  */
 interface Driver
 {
-
     /**
      * Attempts to create a connection with the database.
      *
-     * @param array  $params        All connection parameters passed by the user.
-     * @param string $username      The username to use when connecting.
-     * @param string $password      The password to use when connecting.
-     * @param array  $driverOptions The driver options to use when connecting.
-     *
+     * @param array $params All connection parameters passed by the user.
+     * @param string $username The username to use when connecting.
+     * @param string $password The password to use when connecting.
+     * @param array $driverOptions The driver options to use when connecting.
      * @return \Doctrine\DBAL\Driver\Connection The database connection.
      */
-    public function connect( array $params, $username = null, $password = null, array $driverOptions = array() );
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = array());
 
     /**
      * Gets the DatabasePlatform instance that provides all the metadata about
@@ -53,10 +51,9 @@ interface Driver
      * database schema of the platform this driver connects to.
      *
      * @param  \Doctrine\DBAL\Connection $conn
-     *
      * @return \Doctrine\DBAL\Schema\AbstractSchemaManager
      */
-    public function getSchemaManager( Connection $conn );
+    public function getSchemaManager(Connection $conn);
 
     /**
      * Gets the name of the driver.
@@ -69,8 +66,7 @@ interface Driver
      * Get the name of the database connected to for this driver.
      *
      * @param  \Doctrine\DBAL\Connection $conn
-     *
      * @return string $database
      */
-    public function getDatabase( Connection $conn );
+    public function getDatabase(Connection $conn);
 }

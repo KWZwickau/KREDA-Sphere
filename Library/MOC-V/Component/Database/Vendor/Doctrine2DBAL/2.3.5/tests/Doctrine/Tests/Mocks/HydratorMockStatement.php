@@ -10,17 +10,15 @@ namespace Doctrine\Tests\Mocks;
  */
 class HydratorMockStatement implements \Doctrine\DBAL\Driver\Statement
 {
-
     private $_resultSet;
 
     /**
      * Creates a new mock statement that will serve the provided fake result set to clients.
      *
-     * @param array $resultSet The faked SQL result set.
+     * @param array $resultSet  The faked SQL result set.
      */
-    public function __construct( array $resultSet )
+    public function __construct(array $resultSet)
     {
-
         $this->_resultSet = $resultSet;
     }
 
@@ -29,20 +27,16 @@ class HydratorMockStatement implements \Doctrine\DBAL\Driver\Statement
      *
      * @return array
      */
-    public function fetchAll( $fetchMode = null, $columnIndex = null, array $ctorArgs = null )
+    public function fetchAll($fetchMode = null, $columnIndex = null, array $ctorArgs = null)
     {
-
         return $this->_resultSet;
     }
 
-    public function fetchColumn( $columnNumber = 0 )
+    public function fetchColumn($columnNumber = 0)
     {
-
-        $row = current( $this->_resultSet );
-        if (!is_array( $row )) {
-            return false;
-        }
-        $val = array_shift( $row );
+        $row = current($this->_resultSet);
+        if ( ! is_array($row)) return false;
+        $val = array_shift($row);
         return $val !== null ? $val : false;
     }
 
@@ -50,11 +44,10 @@ class HydratorMockStatement implements \Doctrine\DBAL\Driver\Statement
      * Fetches the next row in the result set.
      *
      */
-    public function fetch( $fetchMode = null )
+    public function fetch($fetchMode = null)
     {
-
-        $current = current( $this->_resultSet );
-        next( $this->_resultSet );
+        $current = current($this->_resultSet);
+        next($this->_resultSet);
         return $current;
     }
 
@@ -65,26 +58,24 @@ class HydratorMockStatement implements \Doctrine\DBAL\Driver\Statement
      */
     public function closeCursor()
     {
-
         return true;
     }
 
-    public function setResultSet( array $resultSet )
+    public function setResultSet(array $resultSet)
     {
-
-        reset( $resultSet );
+        reset($resultSet);
         $this->_resultSet = $resultSet;
     }
 
-    public function bindColumn( $column, &$param, $type = null )
+    public function bindColumn($column, &$param, $type = null)
     {
     }
 
-    public function bindValue( $param, $value, $type = null )
+    public function bindValue($param, $value, $type = null)
     {
     }
 
-    public function bindParam( $column, &$variable, $type = null, $length = null, $driverOptions = array() )
+    public function bindParam($column, &$variable, $type = null, $length = null, $driverOptions = array())
     {
     }
 
@@ -100,7 +91,7 @@ class HydratorMockStatement implements \Doctrine\DBAL\Driver\Statement
     {
     }
 
-    public function execute( $params = array() )
+    public function execute($params = array())
     {
     }
 

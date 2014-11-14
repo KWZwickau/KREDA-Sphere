@@ -17,19 +17,19 @@
  * <http://www.doctrine-project.org>.
  */
 
+
 namespace Doctrine\DBAL\Platforms\Keywords;
 
+use Doctrine\DBAL\Schema\Visitor\Visitor;
+use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
-use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Sequence;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\Visitor\Visitor;
+use Doctrine\DBAL\Schema\Index;
 
 class ReservedKeywordsValidator implements Visitor
 {
-
     /**
      * @var KeywordList[]
      */
@@ -40,84 +40,77 @@ class ReservedKeywordsValidator implements Visitor
      */
     private $violations = array();
 
-    public function __construct( array $keywordLists )
+    public function __construct(array $keywordLists)
     {
-
         $this->keywordLists = $keywordLists;
     }
 
     public function getViolations()
     {
-
         return $this->violations;
-    }
-
-    public function acceptColumn( Table $table, Column $column )
-    {
-
-        $this->addViolation(
-            'Table '.$table->getName().' column '.$column->getName(),
-            $this->isReservedWord( $column->getName() )
-        );
-    }
-
-    private function addViolation( $asset, $violatedPlatforms )
-    {
-
-        if (!$violatedPlatforms) {
-            return;
-        }
-
-        $this->violations[] = $asset.' keyword violations: '.implode( ', ', $violatedPlatforms );
     }
 
     /**
      * @param string $word
-     *
      * @return array
      */
-    private function isReservedWord( $word )
+    private function isReservedWord($word)
     {
-
         if ($word[0] == "`") {
-            $word = str_replace( '`', '', $word );
+            $word = str_replace('`', '', $word);
         }
 
         $keywordLists = array();
         foreach ($this->keywordLists as $keywordList) {
-            if ($keywordList->isKeyword( $word )) {
+            if ($keywordList->isKeyword($word)) {
                 $keywordLists[] = $keywordList->getName();
             }
         }
         return $keywordLists;
     }
 
-    public function acceptForeignKey( Table $localTable, ForeignKeyConstraint $fkConstraint )
+    private function addViolation($asset, $violatedPlatforms)
     {
+        if ( ! $violatedPlatforms) {
+            return;
+        }
 
+        $this->violations[] = $asset . ' keyword violations: ' . implode(', ', $violatedPlatforms);
     }
 
-    public function acceptIndex( Table $table, Index $index )
+    public function acceptColumn(Table $table, Column $column)
     {
-
-    }
-
-    public function acceptSchema( Schema $schema )
-    {
-
-    }
-
-    public function acceptSequence( Sequence $sequence )
-    {
-
-    }
-
-    public function acceptTable( Table $table )
-    {
-
         $this->addViolation(
-            'Table '.$table->getName(),
-            $this->isReservedWord( $table->getName() )
+            'Table ' . $table->getName() . ' column ' . $column->getName(),
+            $this->isReservedWord($column->getName())
+        );
+    }
+
+    public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
+    {
+
+    }
+
+    public function acceptIndex(Table $table, Index $index)
+    {
+
+    }
+
+    public function acceptSchema(Schema $schema)
+    {
+
+    }
+
+    public function acceptSequence(Sequence $sequence)
+    {
+
+    }
+
+    public function acceptTable(Table $table)
+    {
+        $this->addViolation(
+            'Table ' . $table->getName(),
+            $this->isReservedWord($table->getName())
         );
     }
 }

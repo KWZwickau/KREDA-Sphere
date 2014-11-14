@@ -26,47 +26,41 @@ namespace Doctrine\DBAL\Driver\PDOSqlite;
  */
 class Driver implements \Doctrine\DBAL\Driver
 {
-
     /**
      * @var array
      */
     protected $_userDefinedFunctions = array(
-        'sqrt'   => array( 'callback' => array( 'Doctrine\DBAL\Platforms\SqlitePlatform', 'udfSqrt' ), 'numArgs' => 1 ),
-        'mod'    => array( 'callback' => array( 'Doctrine\DBAL\Platforms\SqlitePlatform', 'udfMod' ), 'numArgs' => 2 ),
-        'locate' => array(
-            'callback' => array( 'Doctrine\DBAL\Platforms\SqlitePlatform', 'udfLocate' ),
-            'numArgs'  => -1
-        ),
+        'sqrt' => array('callback' => array('Doctrine\DBAL\Platforms\SqlitePlatform', 'udfSqrt'), 'numArgs' => 1),
+        'mod'  => array('callback' => array('Doctrine\DBAL\Platforms\SqlitePlatform', 'udfMod'), 'numArgs' => 2),
+        'locate'  => array('callback' => array('Doctrine\DBAL\Platforms\SqlitePlatform', 'udfLocate'), 'numArgs' => -1),
     );
 
     /**
      * Tries to establish a database connection to SQLite.
      *
-     * @param array  $params
+     * @param array $params
      * @param string $username
      * @param string $password
-     * @param array  $driverOptions
-     *
+     * @param array $driverOptions
      * @return \Doctrine\DBAL\Driver\PDOConnection
      */
-    public function connect( array $params, $username = null, $password = null, array $driverOptions = array() )
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
-
-        if (isset( $driverOptions['userDefinedFunctions'] )) {
+        if (isset($driverOptions['userDefinedFunctions'])) {
             $this->_userDefinedFunctions = array_merge(
-                $this->_userDefinedFunctions, $driverOptions['userDefinedFunctions'] );
-            unset( $driverOptions['userDefinedFunctions'] );
+                $this->_userDefinedFunctions, $driverOptions['userDefinedFunctions']);
+            unset($driverOptions['userDefinedFunctions']);
         }
 
         $pdo = new \Doctrine\DBAL\Driver\PDOConnection(
-            $this->_constructPdoDsn( $params ),
+            $this->_constructPdoDsn($params),
             $username,
             $password,
             $driverOptions
         );
 
         foreach ($this->_userDefinedFunctions as $fn => $data) {
-            $pdo->sqliteCreateFunction( $fn, $data['callback'], $data['numArgs'] );
+            $pdo->sqliteCreateFunction($fn, $data['callback'], $data['numArgs']);
         }
 
         return $pdo;
@@ -78,16 +72,13 @@ class Driver implements \Doctrine\DBAL\Driver
      * @return string  The DSN.
      * @override
      */
-    protected function _constructPdoDsn( array $params )
+    protected function _constructPdoDsn(array $params)
     {
-
         $dsn = 'sqlite:';
-        if (isset( $params['path'] )) {
+        if (isset($params['path'])) {
             $dsn .= $params['path'];
-        } else {
-            if (isset( $params['memory'] )) {
-                $dsn .= ':memory:';
-            }
+        } else if (isset($params['memory'])) {
+            $dsn .= ':memory:';
         }
 
         return $dsn;
@@ -98,7 +89,6 @@ class Driver implements \Doctrine\DBAL\Driver
      */
     public function getDatabasePlatform()
     {
-
         return new \Doctrine\DBAL\Platforms\SqlitePlatform();
     }
 
@@ -106,25 +96,21 @@ class Driver implements \Doctrine\DBAL\Driver
      * Gets the schema manager that is relevant for this driver.
      *
      * @param \Doctrine\DBAL\Connection $conn
-     *
      * @return \Doctrine\DBAL\Schema\SqliteSchemaManager
      */
-    public function getSchemaManager( \Doctrine\DBAL\Connection $conn )
+    public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
     {
-
-        return new \Doctrine\DBAL\Schema\SqliteSchemaManager( $conn );
+        return new \Doctrine\DBAL\Schema\SqliteSchemaManager($conn);
     }
 
     public function getName()
     {
-
         return 'pdo_sqlite';
     }
 
-    public function getDatabase( \Doctrine\DBAL\Connection $conn )
+    public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
-
         $params = $conn->getParams();
-        return isset( $params['path'] ) ? $params['path'] : null;
+        return isset($params['path']) ? $params['path'] : null;
     }
 }

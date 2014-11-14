@@ -19,6 +19,8 @@
 
 namespace Doctrine\DBAL\Driver;
 
+use PDO;
+
 /**
  * Interface for the reading part of a prepare statement only.
  *
@@ -26,7 +28,6 @@ namespace Doctrine\DBAL\Driver;
  */
 interface ResultStatement extends \Traversable
 {
-
     /**
      * Closes the cursor, enabling the statement to be executed again.
      *
@@ -51,20 +52,19 @@ interface ResultStatement extends \Traversable
      *
      * @param integer $fetchMode
      */
-    function setFetchMode( $fetchMode, $arg2 = null, $arg3 = null );
+    function setFetchMode($fetchMode, $arg2 = null, $arg3 = null);
 
     /**
      * fetch
      *
      * @see Query::HYDRATE_* constants
-     *
      * @param integer $fetchMode            Controls how the next row will be returned to the caller.
      *                                      This value must be one of the Query::HYDRATE_* constants,
      *                                      defaulting to Query::HYDRATE_BOTH
      *
      * @return mixed
      */
-    function fetch( $fetchMode = null );
+    function fetch($fetchMode = null);
 
     /**
      * Returns an array containing all of the result set rows
@@ -75,7 +75,7 @@ interface ResultStatement extends \Traversable
      *
      * @return array
      */
-    function fetchAll( $fetchMode = null );
+    function fetchAll($fetchMode = null);
 
     /**
      * fetchColumn
@@ -88,6 +88,6 @@ interface ResultStatement extends \Traversable
      *
      * @return string                       returns a single column in the next row of a result set.
      */
-    function fetchColumn( $columnIndex = 0 );
+    function fetchColumn($columnIndex = 0);
 }
 

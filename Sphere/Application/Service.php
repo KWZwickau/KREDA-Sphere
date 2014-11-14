@@ -61,15 +61,6 @@ abstract class Service implements IServiceInterface
     }
 
     /**
-     * @return IBridgeInterface
-     */
-    final protected function writeData()
-    {
-
-        return static::$DatabaseMaster;
-    }
-
-    /**
      * Database Write Access
      *
      * @param string $Username
@@ -105,5 +96,43 @@ abstract class Service implements IServiceInterface
 
         static::$DatabaseSlave[] = Database::getDatabase( $Username, $Password, $Database, $Driver, $Host, $Port );
         return $this;
+    }
+
+    /**
+     * @param string $TableName
+     *
+     * @return bool
+     */
+    protected function dbHasTable( $TableName )
+    {
+
+        $SchemaManager = $this->writeData()->getSchemaManager();
+        $NameList = $SchemaManager->listTableNames();
+        $NameList = array_map( 'strtolower', $NameList );
+        return in_array( strtolower( $TableName ), $NameList );
+    }
+
+    /**
+     * @return IBridgeInterface
+     */
+    final protected function writeData()
+    {
+
+        return static::$DatabaseMaster;
+    }
+
+    /**
+     * @param string $TableName
+     * @param string $ColumnName
+     *
+     * @return bool
+     */
+    protected function dbTableHasColumn( $TableName, $ColumnName )
+    {
+
+        $SchemaManager = $this->writeData()->getSchemaManager();
+        $NameList = array_keys( $SchemaManager->listTableColumns( $TableName ) );
+        $NameList = array_map( 'strtolower', $NameList );
+        return in_array( strtolower( $ColumnName ), $NameList );
     }
 }

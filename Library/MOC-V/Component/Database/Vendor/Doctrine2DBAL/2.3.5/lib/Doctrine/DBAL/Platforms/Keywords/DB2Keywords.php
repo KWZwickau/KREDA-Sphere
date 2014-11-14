@@ -17,6 +17,7 @@
  * <http://www.doctrine-project.org>.
  */
 
+
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
@@ -29,16 +30,13 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  */
 class DB2Keywords extends KeywordList
 {
-
     public function getName()
     {
-
         return 'DB2';
     }
 
     protected function getKeywords()
     {
-
         return array(
             'ACTIVATE',
             'ADD',

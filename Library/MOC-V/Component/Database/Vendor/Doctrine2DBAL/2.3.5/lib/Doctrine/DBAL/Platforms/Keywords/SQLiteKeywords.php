@@ -17,6 +17,7 @@
  * <http://www.doctrine-project.org>.
  */
 
+
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
@@ -29,16 +30,13 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  */
 class SQLiteKeywords extends KeywordList
 {
-
     public function getName()
     {
-
         return 'SQLite';
     }
 
     protected function getKeywords()
     {
-
         return array(
             'ABORT',
             'ACTION',

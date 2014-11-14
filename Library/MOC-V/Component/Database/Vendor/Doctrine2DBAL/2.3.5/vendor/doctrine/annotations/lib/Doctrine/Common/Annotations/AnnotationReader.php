@@ -36,7 +36,6 @@ use ReflectionProperty;
  */
 class AnnotationReader implements Reader
 {
-
     /**
      * Global map for imports.
      *
@@ -55,80 +54,52 @@ class AnnotationReader implements Reader
      */
     private static $globalIgnoredNames = array(
         // Annotation tags
-        'Annotation'              => true,
-        'Attribute'               => true,
-        'Attributes'              => true,
+        'Annotation' => true, 'Attribute' => true, 'Attributes' => true,
         /* Can we enable this? 'Enum' => true, */
-        'Required'                => true,
-        'Target'                  => true,
+        'Required' => true,
+        'Target' => true,
         // Widely used tags (but not existent in phpdoc)
-        'fix'                     => true,
-        'fixme'                   => true,
-        'override'                => true,
+        'fix' => true , 'fixme' => true,
+        'override' => true,
         // PHPDocumentor 1 tags
-        'abstract'                => true,
-        'access'                  => true,
-        'code'                    => true,
-        'deprec'                  => true,
-        'endcode'                 => true,
-        'exception'               => true,
-        'final'                   => true,
-        'ingroup'                 => true,
-        'inheritdoc'              => true,
-        'inheritDoc'              => true,
-        'magic'                   => true,
-        'name'                    => true,
-        'toc'                     => true,
-        'tutorial'                => true,
-        'private'                 => true,
-        'static'                  => true,
-        'staticvar'               => true,
-        'staticVar'               => true,
-        'throw'                   => true,
+        'abstract'=> true, 'access'=> true,
+        'code' => true,
+        'deprec'=> true,
+        'endcode' => true, 'exception'=> true,
+        'final'=> true,
+        'ingroup' => true, 'inheritdoc'=> true, 'inheritDoc'=> true,
+        'magic' => true,
+        'name'=> true,
+        'toc' => true, 'tutorial'=> true,
+        'private' => true,
+        'static'=> true, 'staticvar'=> true, 'staticVar'=> true,
+        'throw' => true,
         // PHPDocumentor 2 tags.
-        'api'                     => true,
-        'author'                  => true,
-        'category'                => true,
-        'copyright'               => true,
-        'deprecated'              => true,
-        'example'                 => true,
-        'filesource'              => true,
-        'global'                  => true,
-        'ignore'                  => true, /* Can we enable this? 'index' => true, */
-        'internal'                => true,
-        'license'                 => true,
-        'link'                    => true,
-        'method'                  => true,
-        'package'                 => true,
-        'param'                   => true,
-        'property'                => true,
-        'property-read'           => true,
-        'property-write'          => true,
-        'return'                  => true,
-        'see'                     => true,
-        'since'                   => true,
-        'source'                  => true,
-        'subpackage'              => true,
-        'throws'                  => true,
-        'todo'                    => true,
-        'TODO'                    => true,
-        'usedby'                  => true,
-        'uses'                    => true,
-        'var'                     => true,
-        'version'                 => true,
+        'api' => true, 'author'=> true,
+        'category'=> true, 'copyright'=> true,
+        'deprecated'=> true,
+        'example'=> true,
+        'filesource'=> true,
+        'global'=> true,
+        'ignore'=> true, /* Can we enable this? 'index' => true, */ 'internal'=> true,
+        'license'=> true, 'link'=> true,
+        'method' => true,
+        'package'=> true, 'param'=> true, 'property' => true, 'property-read' => true, 'property-write' => true,
+        'return'=> true,
+        'see'=> true, 'since'=> true, 'source' => true, 'subpackage'=> true,
+        'throws'=> true, 'todo'=> true, 'TODO'=> true,
+        'usedby'=> true, 'uses' => true,
+        'var'=> true, 'version'=> true,
         // PHPUnit tags
-        'codeCoverageIgnore'      => true,
-        'codeCoverageIgnoreStart' => true,
-        'codeCoverageIgnoreEnd'   => true,
+        'codeCoverageIgnore' => true, 'codeCoverageIgnoreStart' => true, 'codeCoverageIgnoreEnd' => true,
         // PHPCheckStyle
-        'SuppressWarnings'        => true,
+        'SuppressWarnings' => true,
         // PHPStorm
-        'noinspection'            => true,
+        'noinspection' => true,
         // PEAR
-        'package_version'         => true,
+        'package_version' => true,
         // PlantUML
-        'startuml'                => true,
-        'enduml'                  => true,
+        'startuml' => true, 'enduml' => true,
     );
     /**
      * Annotations parser.
@@ -168,12 +139,11 @@ class AnnotationReader implements Reader
      */
     public function __construct()
     {
-
-        if (extension_loaded( 'Zend Optimizer+' ) && ( ini_get( 'zend_optimizerplus.save_comments' ) === "0" || ini_get( 'opcache.save_comments' ) === "0" )) {
+        if (extension_loaded('Zend Optimizer+') && (ini_get('zend_optimizerplus.save_comments') === "0" || ini_get('opcache.save_comments') === "0")) {
             throw AnnotationException::optimizerPlusSaveComments();
         }
 
-        if (extension_loaded( 'Zend OPcache' ) && ini_get( 'opcache.save_comments' ) == 0) {
+        if (extension_loaded('Zend OPcache') && ini_get('opcache.save_comments') == 0) {
             throw AnnotationException::optimizerPlusSaveComments();
         }
 
@@ -185,13 +155,13 @@ class AnnotationReader implements Reader
             throw AnnotationException::optimizerPlusLoadComments();
         }
 
-        AnnotationRegistry::registerFile( __DIR__.'/Annotation/IgnoreAnnotation.php' );
+        AnnotationRegistry::registerFile(__DIR__ . '/Annotation/IgnoreAnnotation.php');
 
-        $this->parser = new DocParser;
+        $this->parser    = new DocParser;
         $this->preParser = new DocParser;
 
-        $this->preParser->setImports( self::$globalImports );
-        $this->preParser->setIgnoreNotImportedAnnotations( true );
+        $this->preParser->setImports(self::$globalImports);
+        $this->preParser->setIgnoreNotImportedAnnotations(true);
 
         $this->phpParser = new PhpParser;
     }
@@ -210,10 +180,9 @@ class AnnotationReader implements Reader
     /**
      * {@inheritDoc}
      */
-    public function getClassAnnotation( ReflectionClass $class, $annotationName )
+    public function getClassAnnotation(ReflectionClass $class, $annotationName)
     {
-
-        $annotations = $this->getClassAnnotations( $class );
+        $annotations = $this->getClassAnnotations($class);
 
         foreach ($annotations as $annotation) {
             if ($annotation instanceof $annotationName) {
@@ -232,7 +201,7 @@ class AnnotationReader implements Reader
 
         $this->parser->setTarget( Target::TARGET_CLASS );
         $this->parser->setImports( $this->getClassImports( $class ) );
-        $this->parser->setIgnoredAnnotationNames( $this->getIgnoredAnnotationNames( $class ) );
+        $this->parser->setIgnoredAnnotationNames($this->getIgnoredAnnotationNames($class));
 
         return $this->parser->parse( $class->getDocComment(), 'class '.$class->getName() );
     }
@@ -293,14 +262,13 @@ class AnnotationReader implements Reader
      *
      * @return array
      */
-    private function getIgnoredAnnotationNames( ReflectionClass $class )
+    private function getIgnoredAnnotationNames(ReflectionClass $class)
     {
-
-        if (isset( $this->ignoredAnnotationNames[$name = $class->getName()] )) {
+        if (isset($this->ignoredAnnotationNames[$name = $class->getName()])) {
             return $this->ignoredAnnotationNames[$name];
         }
 
-        $this->collectParsingMetadata( $class );
+        $this->collectParsingMetadata($class);
 
         return $this->ignoredAnnotationNames[$name];
     }
@@ -345,24 +313,23 @@ class AnnotationReader implements Reader
      *
      * @return array
      */
-    private function getPropertyImports( ReflectionProperty $property )
+    private function getPropertyImports(ReflectionProperty $property)
     {
-
         $class = $property->getDeclaringClass();
-        $classImports = $this->getClassImports( $class );
-        if (!method_exists( $class, 'getTraits' )) {
+        $classImports = $this->getClassImports($class);
+        if (!method_exists($class, 'getTraits')) {
             return $classImports;
         }
 
         $traitImports = array();
 
         foreach ($class->getTraits() as $trait) {
-            if ($trait->hasProperty( $property->getName() )) {
-                $traitImports = array_merge( $traitImports, $this->phpParser->parseClass( $trait ) );
+            if ($trait->hasProperty($property->getName())) {
+                $traitImports = array_merge($traitImports, $this->phpParser->parseClass($trait));
             }
         }
 
-        return array_merge( $classImports, $traitImports );
+        return array_merge($classImports, $traitImports);
     }
 
     /**

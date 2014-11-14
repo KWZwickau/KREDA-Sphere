@@ -10,31 +10,28 @@ use Doctrine\DBAL\Schema\Table;
  */
 class DBAL510Test extends \Doctrine\Tests\DbalFunctionalTestCase
 {
-
     public function setUp()
     {
-
         parent::setUp();
 
         if ($this->_conn->getDatabasePlatform()->getName() !== "postgresql") {
-            $this->markTestSkipped( 'PostgreSQL Only test' );
+            $this->markTestSkipped('PostgreSQL Only test');
         }
     }
 
     public function testSearchPathSchemaChanges()
     {
+        $table = new Table("dbal510tbl");
+        $table->addColumn('id', 'integer');
+        $table->setPrimaryKey(array('id'));
 
-        $table = new Table( "dbal510tbl" );
-        $table->addColumn( 'id', 'integer' );
-        $table->setPrimaryKey( array( 'id' ) );
+        $this->_conn->getSchemaManager()->createTable($table);
 
-        $this->_conn->getSchemaManager()->createTable( $table );
-
-        $onlineTable = $this->_conn->getSchemaManager()->listTableDetails( 'dbal510tbl' );
+        $onlineTable = $this->_conn->getSchemaManager()->listTableDetails('dbal510tbl');
 
         $comparator = new Comparator();
-        $diff = $comparator->diffTable( $onlineTable, $table );
+        $diff = $comparator->diffTable($onlineTable, $table);
 
-        $this->assertFalse( $diff );
+        $this->assertFalse($diff);
     }
 }

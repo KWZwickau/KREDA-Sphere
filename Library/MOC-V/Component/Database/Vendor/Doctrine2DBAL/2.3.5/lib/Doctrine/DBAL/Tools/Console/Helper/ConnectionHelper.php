@@ -21,13 +21,13 @@
 
 namespace Doctrine\DBAL\Tools\Console\Helper;
 
-use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Console\Helper\Helper,
+    Doctrine\DBAL\Connection;
 
 /**
  * Doctrine CLI Connection Helper.
  *
- *
+ * 
  * @link    www.doctrine-project.org
  * @since   2.0
  * @version $Revision$
@@ -38,10 +38,8 @@ use Symfony\Component\Console\Helper\Helper;
  */
 class ConnectionHelper extends Helper
 {
-
     /**
      * Doctrine Database Connection
-     *
      * @var Connection
      */
     protected $_connection;
@@ -51,9 +49,8 @@ class ConnectionHelper extends Helper
      *
      * @param Connection $connection Doctrine Database Connection
      */
-    public function __construct( Connection $connection )
+    public function __construct(Connection $connection)
     {
-
         $this->_connection = $connection;
     }
 
@@ -64,7 +61,6 @@ class ConnectionHelper extends Helper
      */
     public function getConnection()
     {
-
         return $this->_connection;
     }
 
@@ -73,7 +69,6 @@ class ConnectionHelper extends Helper
      */
     public function getName()
     {
-
         return 'connection';
     }
 }

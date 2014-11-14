@@ -28,47 +28,41 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class TimeType extends Type
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSQLDeclaration( array $fieldDeclaration, AbstractPlatform $platform )
+    public function getName()
     {
-
-        return $platform->getTimeTypeDeclarationSQL( $fieldDeclaration );
+        return Type::TIME;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convertToDatabaseValue( $value, AbstractPlatform $platform )
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-
-        return ( $value !== null )
-            ? $value->format( $platform->getTimeFormatString() ) : null;
+        return $platform->getTimeTypeDeclarationSQL($fieldDeclaration);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convertToPHPValue( $value, AbstractPlatform $platform )
+    public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
+        return ($value !== null)
+            ? $value->format($platform->getTimeFormatString()) : null;
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function convertToPHPValue($value, AbstractPlatform $platform)
+    {
         if ($value === null || $value instanceof \DateTime) {
             return $value;
         }
 
-        $val = \DateTime::createFromFormat( $platform->getTimeFormatString(), $value );
-        if (!$val) {
-            throw ConversionException::conversionFailedFormat( $value, $this->getName(),
-                $platform->getTimeFormatString() );
+        $val = \DateTime::createFromFormat($platform->getTimeFormatString(), $value);
+        if ( ! $val) {
+            throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getTimeFormatString());
         }
         return $val;
-    }
-
-    public function getName()
-    {
-
-        return Type::TIME;
     }
 }

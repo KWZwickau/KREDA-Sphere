@@ -28,38 +28,32 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class DateTimeType extends Type
 {
-
-    public function getSQLDeclaration( array $fieldDeclaration, AbstractPlatform $platform )
+    public function getName()
     {
-
-        return $platform->getDateTimeTypeDeclarationSQL( $fieldDeclaration );
+        return Type::DATETIME;
     }
 
-    public function convertToDatabaseValue( $value, AbstractPlatform $platform )
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-
-        return ( $value !== null )
-            ? $value->format( $platform->getDateTimeFormatString() ) : null;
+        return $platform->getDateTimeTypeDeclarationSQL($fieldDeclaration);
     }
 
-    public function convertToPHPValue( $value, AbstractPlatform $platform )
+    public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
+        return ($value !== null)
+            ? $value->format($platform->getDateTimeFormatString()) : null;
+    }
 
+    public function convertToPHPValue($value, AbstractPlatform $platform)
+    {
         if ($value === null || $value instanceof \DateTime) {
             return $value;
         }
 
-        $val = \DateTime::createFromFormat( $platform->getDateTimeFormatString(), $value );
-        if (!$val) {
-            throw ConversionException::conversionFailedFormat( $value, $this->getName(),
-                $platform->getDateTimeFormatString() );
+        $val = \DateTime::createFromFormat($platform->getDateTimeFormatString(), $value);
+        if ( ! $val) {
+            throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateTimeFormatString());
         }
         return $val;
-    }
-
-    public function getName()
-    {
-
-        return Type::DATETIME;
     }
 }

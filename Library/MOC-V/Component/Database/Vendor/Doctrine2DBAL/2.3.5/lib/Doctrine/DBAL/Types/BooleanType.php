@@ -30,34 +30,28 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class BooleanType extends Type
 {
-
-    public function getSQLDeclaration( array $fieldDeclaration, AbstractPlatform $platform )
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-
-        return $platform->getBooleanTypeDeclarationSQL( $fieldDeclaration );
+        return $platform->getBooleanTypeDeclarationSQL($fieldDeclaration);
     }
 
-    public function convertToDatabaseValue( $value, AbstractPlatform $platform )
+    public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-
-        return $platform->convertBooleans( $value );
+        return $platform->convertBooleans($value);
     }
 
-    public function convertToPHPValue( $value, AbstractPlatform $platform )
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-
-        return ( null === $value ) ? null : (bool)$value;
+        return (null === $value) ? null : (bool) $value;
     }
 
     public function getName()
     {
-
         return Type::BOOLEAN;
     }
 
     public function getBindingType()
     {
-
         return \PDO::PARAM_BOOL;
     }
 }

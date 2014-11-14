@@ -32,16 +32,14 @@ namespace Doctrine\DBAL\Schema;
  */
 class View extends AbstractAsset
 {
-
     /**
      * @var string
      */
     private $_sql;
 
-    public function __construct( $name, $sql )
+    public function __construct($name, $sql)
     {
-
-        $this->_setName( $name );
+        $this->_setName($name);
         $this->_sql = $sql;
     }
 
@@ -50,7 +48,6 @@ class View extends AbstractAsset
      */
     public function getSql()
     {
-
         return $this->_sql;
     }
 }

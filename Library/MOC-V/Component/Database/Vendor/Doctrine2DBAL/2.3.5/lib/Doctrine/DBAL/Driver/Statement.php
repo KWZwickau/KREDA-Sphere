@@ -19,6 +19,8 @@
 
 namespace Doctrine\DBAL\Driver;
 
+use \PDO;
+
 /**
  * Statement interface.
  * Drivers must implement this interface.
@@ -33,21 +35,20 @@ namespace Doctrine\DBAL\Driver;
  */
 interface Statement extends ResultStatement
 {
-
     /**
      * Binds a value to a corresponding named or positional
      * placeholder in the SQL statement that was used to prepare the statement.
      *
-     * @param mixed   $param        Parameter identifier. For a prepared statement using named placeholders,
+     * @param mixed $param          Parameter identifier. For a prepared statement using named placeholders,
      *                              this will be a parameter name of the form :name. For a prepared statement
      *                              using question mark placeholders, this will be the 1-indexed position of the parameter
      *
-     * @param mixed   $value        The value to bind to the parameter.
+     * @param mixed $value          The value to bind to the parameter.
      * @param integer $type         Explicit data type for the parameter using the PDO::PARAM_* constants.
      *
      * @return boolean              Returns TRUE on success or FALSE on failure.
      */
-    function bindValue( $param, $value, $type = null );
+    function bindValue($param, $value, $type = null);
 
     /**
      * Binds a PHP variable to a corresponding named or question mark placeholder in the
@@ -60,20 +61,19 @@ interface Statement extends ResultStatement
      * of stored procedures that return data as output parameters, and some also as input/output
      * parameters that both send in data and are updated to receive it.
      *
-     * @param mixed   $column       Parameter identifier. For a prepared statement using named placeholders,
+     * @param mixed $column         Parameter identifier. For a prepared statement using named placeholders,
      *                              this will be a parameter name of the form :name. For a prepared statement
      *                              using question mark placeholders, this will be the 1-indexed position of the parameter
      *
-     * @param mixed   $variable     Name of the PHP variable to bind to the SQL statement parameter.
+     * @param mixed $variable       Name of the PHP variable to bind to the SQL statement parameter.
      *
      * @param integer $type         Explicit data type for the parameter using the PDO::PARAM_* constants. To return
      *                              an INOUT parameter from a stored procedure, use the bitwise OR operator to set the
      *                              PDO::PARAM_INPUT_OUTPUT bits for the data_type parameter.
-     * @param integer $length       You must specify maxlength when using an OUT bind so that PHP allocates enough memory to hold the returned value.
-     *
+     * @param integer $length		You must specify maxlength when using an OUT bind so that PHP allocates enough memory to hold the returned value.
      * @return boolean              Returns TRUE on success or FALSE on failure.
      */
-    function bindParam( $column, &$variable, $type = null, $length = null );
+    function bindParam($column, &$variable, $type = null, $length = null);
 
     /**
      * errorCode
@@ -105,10 +105,9 @@ interface Statement extends ResultStatement
      *
      * @param array $params             An array of values with as many elements as there are
      *                                  bound parameters in the SQL statement being executed.
-     *
      * @return boolean                  Returns TRUE on success or FALSE on failure.
      */
-    function execute( $params = null );
+    function execute($params = null);
 
     /**
      * rowCount

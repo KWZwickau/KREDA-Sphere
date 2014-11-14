@@ -19,9 +19,9 @@
 
 namespace Doctrine\DBAL\Event;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Platforms\AbstractPlatform,
+    Doctrine\DBAL\Schema\Column,
+    Doctrine\DBAL\Schema\TableDiff;
 
 /**
  * Event Arguments used when SQL queries for adding table columns are generated inside Doctrine\DBAL\Platform\*Platform.
@@ -33,7 +33,6 @@ use Doctrine\DBAL\Schema\TableDiff;
  */
 class SchemaAlterTableAddColumnEventArgs extends SchemaEventArgs
 {
-
     /**
      * @var \Doctrine\DBAL\Schema\Column
      */
@@ -55,16 +54,15 @@ class SchemaAlterTableAddColumnEventArgs extends SchemaEventArgs
     private $_sql = array();
 
     /**
-     * @param \Doctrine\DBAL\Schema\Column              $column
-     * @param \Doctrine\DBAL\Schema\TableDiff           $tableDiff
+     * @param \Doctrine\DBAL\Schema\Column $column
+     * @param \Doctrine\DBAL\Schema\TableDiff $tableDiff
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
-    public function __construct( Column $column, TableDiff $tableDiff, AbstractPlatform $platform )
+    public function __construct(Column $column, TableDiff $tableDiff, AbstractPlatform $platform)
     {
-
-        $this->_column = $column;
+        $this->_column    = $column;
         $this->_tableDiff = $tableDiff;
-        $this->_platform = $platform;
+        $this->_platform  = $platform;
     }
 
     /**
@@ -72,7 +70,6 @@ class SchemaAlterTableAddColumnEventArgs extends SchemaEventArgs
      */
     public function getColumn()
     {
-
         return $this->_column;
     }
 
@@ -81,7 +78,6 @@ class SchemaAlterTableAddColumnEventArgs extends SchemaEventArgs
      */
     public function getTableDiff()
     {
-
         return $this->_tableDiff;
     }
 
@@ -90,20 +86,17 @@ class SchemaAlterTableAddColumnEventArgs extends SchemaEventArgs
      */
     public function getPlatform()
     {
-
         return $this->_platform;
     }
 
     /**
      * @param string|array $sql
-     *
      * @return \Doctrine\DBAL\Event\SchemaAlterTableAddColumnEventArgs
      */
-    public function addSql( $sql )
+    public function addSql($sql)
     {
-
-        if (is_array( $sql )) {
-            $this->_sql = array_merge( $this->_sql, $sql );
+        if (is_array($sql)) {
+            $this->_sql = array_merge($this->_sql, $sql);
         } else {
             $this->_sql[] = $sql;
         }
@@ -116,7 +109,6 @@ class SchemaAlterTableAddColumnEventArgs extends SchemaEventArgs
      */
     public function getSql()
     {
-
         return $this->_sql;
     }
 }

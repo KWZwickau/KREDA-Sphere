@@ -37,22 +37,19 @@ use Doctrine\DBAL\Connection;
  */
 class Driver implements \Doctrine\DBAL\Driver
 {
-
     /**
      * Attempts to establish a connection with the underlying driver.
      *
-     * @param array  $params
+     * @param array $params
      * @param string $username
      * @param string $password
-     * @param array  $driverOptions
-     *
+     * @param array $driverOptions
      * @return \Doctrine\DBAL\Driver\Connection
      */
-    public function connect( array $params, $username = null, $password = null, array $driverOptions = array() )
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
-
         $conn = new \Doctrine\DBAL\Driver\PDOConnection(
-            $this->_constructPdoDsn( $params ),
+            $this->_constructPdoDsn($params),
             $username,
             $password,
             $driverOptions
@@ -65,19 +62,18 @@ class Driver implements \Doctrine\DBAL\Driver
      *
      * @return string  The DSN.
      */
-    private function _constructPdoDsn( array $params )
+    private function _constructPdoDsn(array $params)
     {
-
         $dsn = 'ibm:';
-        if (isset( $params['host'] )) {
-            $dsn .= 'HOSTNAME='.$params['host'].';';
+        if (isset($params['host'])) {
+            $dsn .= 'HOSTNAME=' . $params['host'] . ';';
         }
-        if (isset( $params['port'] )) {
-            $dsn .= 'PORT='.$params['port'].';';
+        if (isset($params['port'])) {
+            $dsn .= 'PORT=' . $params['port'] . ';';
         }
         $dsn .= 'PROTOCOL=TCPIP;';
-        if (isset( $params['dbname'] )) {
-            $dsn .= 'DATABASE='.$params['dbname'].';';
+        if (isset($params['dbname'])) {
+            $dsn .= 'DATABASE=' . $params['dbname'] . ';';
         }
 
         return $dsn;
@@ -91,7 +87,6 @@ class Driver implements \Doctrine\DBAL\Driver
      */
     public function getDatabasePlatform()
     {
-
         return new \Doctrine\DBAL\Platforms\DB2Platform;
     }
 
@@ -100,13 +95,11 @@ class Driver implements \Doctrine\DBAL\Driver
      * database schema of the platform this driver connects to.
      *
      * @param  \Doctrine\DBAL\Connection $conn
-     *
      * @return \Doctrine\DBAL\Schema\DB2SchemaManager
      */
-    public function getSchemaManager( Connection $conn )
+    public function getSchemaManager(Connection $conn)
     {
-
-        return new \Doctrine\DBAL\Schema\DB2SchemaManager( $conn );
+        return new \Doctrine\DBAL\Schema\DB2SchemaManager($conn);
     }
 
     /**
@@ -116,7 +109,6 @@ class Driver implements \Doctrine\DBAL\Driver
      */
     public function getName()
     {
-
         return 'pdo_ibm';
     }
 
@@ -124,12 +116,10 @@ class Driver implements \Doctrine\DBAL\Driver
      * Get the name of the database connected to for this driver.
      *
      * @param  \Doctrine\DBAL\Connection $conn
-     *
      * @return string $database
      */
-    public function getDatabase( \Doctrine\DBAL\Connection $conn )
+    public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
-
         $params = $conn->getParams();
         return $params['dbname'];
     }

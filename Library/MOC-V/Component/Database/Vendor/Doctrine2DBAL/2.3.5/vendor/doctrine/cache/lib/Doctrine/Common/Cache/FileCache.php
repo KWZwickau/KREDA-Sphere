@@ -27,7 +27,6 @@ namespace Doctrine\Common\Cache;
  */
 abstract class FileCache extends CacheProvider
 {
-
     /**
      * The cache directory.
      *
@@ -50,24 +49,23 @@ abstract class FileCache extends CacheProvider
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct( $directory, $extension = null )
+    public function __construct($directory, $extension = null)
     {
-
-        if (!is_dir( $directory ) && !@mkdir( $directory, 0777, true )) {
-            throw new \InvalidArgumentException( sprintf(
+        if ( ! is_dir($directory) && ! @mkdir($directory, 0777, true)) {
+            throw new \InvalidArgumentException(sprintf(
                 'The directory "%s" does not exist and could not be created.',
                 $directory
-            ) );
+            ));
         }
 
-        if (!is_writable( $directory )) {
-            throw new \InvalidArgumentException( sprintf(
+        if ( ! is_writable($directory)) {
+            throw new \InvalidArgumentException(sprintf(
                 'The directory "%s" is not writable.',
                 $directory
-            ) );
+            ));
         }
 
-        $this->directory = realpath( $directory );
+        $this->directory = realpath($directory);
         $this->extension = $extension ?: $this->extension;
     }
 
@@ -78,7 +76,6 @@ abstract class FileCache extends CacheProvider
      */
     public function getDirectory()
     {
-
         return $this->directory;
     }
 
@@ -89,17 +86,7 @@ abstract class FileCache extends CacheProvider
      */
     public function getExtension()
     {
-
         return $this->extension;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function doDelete( $id )
-    {
-
-        return @unlink( $this->getFilename( $id ) );
     }
 
     /**
@@ -107,15 +94,22 @@ abstract class FileCache extends CacheProvider
      *
      * @return string
      */
-    protected function getFilename( $id )
+    protected function getFilename($id)
     {
+        $hash = hash('sha256', $id);
+        $path = implode(str_split($hash, 16), DIRECTORY_SEPARATOR);
+        $path = $this->directory . DIRECTORY_SEPARATOR . $path;
+        $id   = preg_replace('@[\\\/:"*?<>|]+@', '', $id);
 
-        $hash = hash( 'sha256', $id );
-        $path = implode( str_split( $hash, 16 ), DIRECTORY_SEPARATOR );
-        $path = $this->directory.DIRECTORY_SEPARATOR.$path;
-        $id = preg_replace( '@[\\\/:"*?<>|]+@', '', $id );
+        return $path . DIRECTORY_SEPARATOR . $id . $this->extension;
+    }
 
-        return $path.DIRECTORY_SEPARATOR.$id.$this->extension;
+    /**
+     * {@inheritdoc}
+     */
+    protected function doDelete($id)
+    {
+        return @unlink($this->getFilename($id));
     }
 
     /**
@@ -123,24 +117,11 @@ abstract class FileCache extends CacheProvider
      */
     protected function doFlush()
     {
-
         foreach ($this->getIterator() as $name => $file) {
-            @unlink( $name );
+            @unlink($name);
         }
 
         return true;
-    }
-
-    /**
-     * @return \Iterator
-     */
-    private function getIterator()
-    {
-
-        $pattern = '/^.+\\'.$this->extension.'$/i';
-        $iterator = new \RecursiveDirectoryIterator( $this->directory );
-        $iterator = new \RecursiveIteratorIterator( $iterator );
-        return new \RegexIterator( $iterator, $pattern );
     }
 
     /**
@@ -148,20 +129,30 @@ abstract class FileCache extends CacheProvider
      */
     protected function doGetStats()
     {
-
         $usage = 0;
         foreach ($this->getIterator() as $file) {
             $usage += $file->getSize();
         }
 
-        $free = disk_free_space( $this->directory );
+        $free = disk_free_space($this->directory);
 
         return array(
-            Cache::STATS_HITS             => null,
-            Cache::STATS_MISSES           => null,
-            Cache::STATS_UPTIME           => null,
-            Cache::STATS_MEMORY_USAGE     => $usage,
-            Cache::STATS_MEMORY_AVAILABLE => $free,
+            Cache::STATS_HITS               => null,
+            Cache::STATS_MISSES             => null,
+            Cache::STATS_UPTIME             => null,
+            Cache::STATS_MEMORY_USAGE       => $usage,
+            Cache::STATS_MEMORY_AVAILABLE   => $free,
         );
+    }
+
+    /**
+     * @return \Iterator
+     */
+    private function getIterator()
+    {
+        $pattern = '/^.+\\' . $this->extension . '$/i';
+        $iterator = new \RecursiveDirectoryIterator($this->directory);
+        $iterator = new \RecursiveIteratorIterator($iterator);
+        return new \RegexIterator($iterator, $pattern);
     }
 }

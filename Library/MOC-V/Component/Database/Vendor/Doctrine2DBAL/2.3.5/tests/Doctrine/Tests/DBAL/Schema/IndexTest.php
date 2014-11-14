@@ -2,48 +2,43 @@
 
 namespace Doctrine\Tests\DBAL\Schema;
 
-require_once __DIR__.'/../../TestInit.php';
+require_once __DIR__ . '/../../TestInit.php';
 
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Index;
 
 class IndexTest extends \PHPUnit_Framework_TestCase
 {
+    public function createIndex($unique=false, $primary=false)
+    {
+        return new Index("foo", array("bar", "baz"), $unique, $primary);
+    }
 
     public function testCreateIndex()
     {
-
         $idx = $this->createIndex();
-        $this->assertEquals( "foo", $idx->getName() );
+        $this->assertEquals("foo", $idx->getName());
         $columns = $idx->getColumns();
-        $this->assertEquals( 2, count( $columns ) );
-        $this->assertEquals( array( "bar", "baz" ), $columns );
-        $this->assertFalse( $idx->isUnique() );
-        $this->assertFalse( $idx->isPrimary() );
-    }
-
-    public function createIndex( $unique = false, $primary = false )
-    {
-
-        return new Index( "foo", array( "bar", "baz" ), $unique, $primary );
+        $this->assertEquals(2, count($columns));
+        $this->assertEquals(array("bar", "baz"), $columns);
+        $this->assertFalse($idx->isUnique());
+        $this->assertFalse($idx->isPrimary());
     }
 
     public function testCreatePrimary()
     {
-
-        $idx = $this->createIndex( false, true );
-        $this->assertTrue( $idx->isUnique() );
-        $this->assertTrue( $idx->isPrimary() );
+        $idx = $this->createIndex(false, true);
+        $this->assertTrue($idx->isUnique());
+        $this->assertTrue($idx->isPrimary());
     }
 
     public function testCreateUnique()
     {
-
-        $idx = $this->createIndex( true, false );
-        $this->assertTrue( $idx->isUnique() );
-        $this->assertFalse( $idx->isPrimary() );
+        $idx = $this->createIndex(true, false);
+        $this->assertTrue($idx->isUnique());
+        $this->assertFalse($idx->isPrimary());
     }
 
     /**
@@ -51,13 +46,12 @@ class IndexTest extends \PHPUnit_Framework_TestCase
      */
     public function testFullfilledByUnique()
     {
-
-        $idx1 = $this->createIndex( true, false );
-        $idx2 = $this->createIndex( true, false );
+        $idx1 = $this->createIndex(true, false);
+        $idx2 = $this->createIndex(true, false);
         $idx3 = $this->createIndex();
 
-        $this->assertTrue( $idx1->isFullfilledBy( $idx2 ) );
-        $this->assertFalse( $idx1->isFullfilledBy( $idx3 ) );
+        $this->assertTrue($idx1->isFullfilledBy($idx2));
+        $this->assertFalse($idx1->isFullfilledBy($idx3));
     }
 
     /**
@@ -65,13 +59,12 @@ class IndexTest extends \PHPUnit_Framework_TestCase
      */
     public function testFullfilledByPrimary()
     {
+        $idx1 = $this->createIndex(true, true);
+        $idx2 = $this->createIndex(true, true);
+        $idx3 = $this->createIndex(true, false);
 
-        $idx1 = $this->createIndex( true, true );
-        $idx2 = $this->createIndex( true, true );
-        $idx3 = $this->createIndex( true, false );
-
-        $this->assertTrue( $idx1->isFullfilledBy( $idx2 ) );
-        $this->assertFalse( $idx1->isFullfilledBy( $idx3 ) );
+        $this->assertTrue($idx1->isFullfilledBy($idx2));
+        $this->assertFalse($idx1->isFullfilledBy($idx3));
     }
 
     /**
@@ -79,15 +72,14 @@ class IndexTest extends \PHPUnit_Framework_TestCase
      */
     public function testFullfilledByIndex()
     {
-
         $idx1 = $this->createIndex();
         $idx2 = $this->createIndex();
-        $pri = $this->createIndex( true, true );
-        $uniq = $this->createIndex( true );
+        $pri = $this->createIndex(true, true);
+        $uniq = $this->createIndex(true);
 
-        $this->assertTrue( $idx1->isFullfilledBy( $idx2 ) );
-        $this->assertTrue( $idx1->isFullfilledBy( $pri ) );
-        $this->assertTrue( $idx1->isFullfilledBy( $uniq ) );
+        $this->assertTrue($idx1->isFullfilledBy($idx2));
+        $this->assertTrue($idx1->isFullfilledBy($pri));
+        $this->assertTrue($idx1->isFullfilledBy($uniq));
     }
 
     /**
@@ -95,16 +87,15 @@ class IndexTest extends \PHPUnit_Framework_TestCase
      */
     public function testFlags()
     {
-
         $idx1 = $this->createIndex();
-        $this->assertFalse( $idx1->hasFlag( 'clustered' ) );
+        $this->assertFalse($idx1->hasFlag('clustered'));
 
-        $idx1->addFlag( 'clustered' );
-        $this->assertTrue( $idx1->hasFlag( 'clustered' ) );
-        $this->assertTrue( $idx1->hasFlag( 'CLUSTERED' ) );
+        $idx1->addFlag('clustered');
+        $this->assertTrue($idx1->hasFlag('clustered'));
+        $this->assertTrue($idx1->hasFlag('CLUSTERED'));
 
-        $idx1->removeFlag( 'clustered' );
-        $this->assertFalse( $idx1->hasFlag( 'clustered' ) );
+        $idx1->removeFlag('clustered');
+        $this->assertFalse($idx1->hasFlag('clustered'));
     }
 
     /**
@@ -112,14 +103,13 @@ class IndexTest extends \PHPUnit_Framework_TestCase
      */
     public function testIndexQuotes()
     {
+        $index = new Index("foo", array("`bar`", "`baz`"));
 
-        $index = new Index( "foo", array( "`bar`", "`baz`" ) );
+        $this->assertTrue($index->spansColumns(array("bar", "baz")));
+        $this->assertTrue($index->hasColumnAtPosition("bar", 0));
+        $this->assertTrue($index->hasColumnAtPosition("baz", 1));
 
-        $this->assertTrue( $index->spansColumns( array( "bar", "baz" ) ) );
-        $this->assertTrue( $index->hasColumnAtPosition( "bar", 0 ) );
-        $this->assertTrue( $index->hasColumnAtPosition( "baz", 1 ) );
-
-        $this->assertFalse( $index->hasColumnAtPosition( "bar", 1 ) );
-        $this->assertFalse( $index->hasColumnAtPosition( "baz", 0 ) );
+        $this->assertFalse($index->hasColumnAtPosition("bar", 1));
+        $this->assertFalse($index->hasColumnAtPosition("baz", 0));
     }
 }

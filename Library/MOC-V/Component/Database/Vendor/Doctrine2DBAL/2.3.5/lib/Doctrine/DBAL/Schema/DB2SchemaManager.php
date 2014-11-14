@@ -35,7 +35,6 @@ use Doctrine\DBAL\Events;
  */
 class DB2SchemaManager extends AbstractSchemaManager
 {
-
     /**
      * Return a list of all tables in the current database
      *
@@ -46,37 +45,24 @@ class DB2SchemaManager extends AbstractSchemaManager
      */
     public function listTableNames()
     {
-
         $sql = $this->_platform->getListTablesSQL();
         $sql .= " AND CREATOR = UPPER('".$this->_conn->getUsername()."')";
 
-        $tables = $this->_conn->fetchAll( $sql );
+        $tables = $this->_conn->fetchAll($sql);
 
-        return $this->_getPortableTablesList( $tables );
+        return $this->_getPortableTablesList($tables);
     }
 
-    protected function _getPortableTablesList( $tables )
-    {
-
-        $tableNames = array();
-        foreach ($tables as $tableRow) {
-            $tableRow = array_change_key_case( $tableRow, \CASE_LOWER );
-            $tableNames[] = $tableRow['name'];
-        }
-        return $tableNames;
-    }
 
     /**
      * Get Table Column Definition
      *
      * @param array $tableColumn
-     *
      * @return Column
      */
-    protected function _getPortableTableColumnDefinition( $tableColumn )
+    protected function _getPortableTableColumnDefinition($tableColumn)
     {
-
-        $tableColumn = array_change_key_case( $tableColumn, \CASE_LOWER );
+        $tableColumn = array_change_key_case($tableColumn, \CASE_LOWER);
 
         $length = null;
         $fixed = null;
@@ -84,9 +70,9 @@ class DB2SchemaManager extends AbstractSchemaManager
         $scale = false;
         $precision = false;
 
-        $type = $this->_platform->getDoctrineTypeMapping( $tableColumn['typename'] );
+        $type = $this->_platform->getDoctrineTypeMapping($tableColumn['typename']);
 
-        switch (strtolower( $tableColumn['typename'] )) {
+        switch (strtolower($tableColumn['typename'])) {
             case 'varchar':
                 $length = $tableColumn['length'];
                 $fixed = false;
@@ -107,13 +93,13 @@ class DB2SchemaManager extends AbstractSchemaManager
         }
 
         $options = array(
-            'length'          => $length,
-            'unsigned'        => (bool)$unsigned,
-            'fixed'           => (bool)$fixed,
-            'default'         => ( $tableColumn['default'] == "NULL" ) ? null : $tableColumn['default'],
-            'notnull'         => (bool)( $tableColumn['nulls'] == 'N' ),
-            'scale'           => null,
-            'precision'       => null,
+            'length'        => $length,
+            'unsigned'      => (bool)$unsigned,
+            'fixed'         => (bool)$fixed,
+            'default'       => ($tableColumn['default'] == "NULL") ? null : $tableColumn['default'],
+            'notnull'       => (bool) ($tableColumn['nulls'] == 'N'),
+            'scale'         => null,
+            'precision'     => null,
             'platformOptions' => array(),
         );
 
@@ -122,21 +108,30 @@ class DB2SchemaManager extends AbstractSchemaManager
             $options['precision'] = $precision;
         }
 
-        return new Column( $tableColumn['colname'], \Doctrine\DBAL\Types\Type::getType( $type ), $options );
+        return new Column($tableColumn['colname'], \Doctrine\DBAL\Types\Type::getType($type), $options);
     }
 
-    protected function _getPortableTableIndexesList( $tableIndexes, $tableName = null )
+    protected function _getPortableTablesList($tables)
     {
+        $tableNames = array();
+        foreach ($tables as $tableRow) {
+            $tableRow = array_change_key_case($tableRow, \CASE_LOWER);
+            $tableNames[] = $tableRow['name'];
+        }
+        return $tableNames;
+    }
 
+    protected function _getPortableTableIndexesList($tableIndexes, $tableName=null)
+    {
         $eventManager = $this->_platform->getEventManager();
 
         $indexes = array();
-        foreach ($tableIndexes as $indexKey => $data) {
-            $data = array_change_key_case( $data, \CASE_LOWER );
-            $unique = ( $data['uniquerule'] == "D" ) ? false : true;
-            $primary = ( $data['uniquerule'] == "P" );
+        foreach($tableIndexes as $indexKey => $data) {
+            $data = array_change_key_case($data, \CASE_LOWER);
+            $unique = ($data['uniquerule'] == "D") ? false : true;
+            $primary = ($data['uniquerule'] == "P");
 
-            $indexName = strtolower( $data['name'] );
+            $indexName = strtolower($data['name']);
             if ($primary) {
                 $keyName = 'primary';
             } else {
@@ -144,25 +139,25 @@ class DB2SchemaManager extends AbstractSchemaManager
             }
 
             $data = array(
-                'name'    => $indexName,
-                'columns' => explode( "+", ltrim( $data['colnames'], '+' ) ),
-                'unique'  => $unique,
+                'name' => $indexName,
+                'columns' => explode("+", ltrim($data['colnames'], '+')),
+                'unique' => $unique,
                 'primary' => $primary
             );
 
             $index = null;
             $defaultPrevented = false;
 
-            if (null !== $eventManager && $eventManager->hasListeners( Events::onSchemaIndexDefinition )) {
-                $eventArgs = new SchemaIndexDefinitionEventArgs( $data, $tableName, $this->_conn );
-                $eventManager->dispatchEvent( Events::onSchemaIndexDefinition, $eventArgs );
+            if (null !== $eventManager && $eventManager->hasListeners(Events::onSchemaIndexDefinition)) {
+                $eventArgs = new SchemaIndexDefinitionEventArgs($data, $tableName, $this->_conn);
+                $eventManager->dispatchEvent(Events::onSchemaIndexDefinition, $eventArgs);
 
                 $defaultPrevented = $eventArgs->isDefaultPrevented();
                 $index = $eventArgs->getIndex();
             }
 
-            if (!$defaultPrevented) {
-                $index = new Index( $data['name'], $data['columns'], $data['unique'], $data['primary'] );
+            if ( ! $defaultPrevented) {
+                $index = new Index($data['name'], $data['columns'], $data['unique'], $data['primary']);
             }
 
             if ($index) {
@@ -173,18 +168,17 @@ class DB2SchemaManager extends AbstractSchemaManager
         return $indexes;
     }
 
-    protected function _getPortableTableForeignKeyDefinition( $tableForeignKey )
+    protected function _getPortableTableForeignKeyDefinition($tableForeignKey)
     {
+        $tableForeignKey = array_change_key_case($tableForeignKey, CASE_LOWER);
 
-        $tableForeignKey = array_change_key_case( $tableForeignKey, CASE_LOWER );
-
-        $tableForeignKey['deleterule'] = $this->_getPortableForeignKeyRuleDef( $tableForeignKey['deleterule'] );
-        $tableForeignKey['updaterule'] = $this->_getPortableForeignKeyRuleDef( $tableForeignKey['updaterule'] );
+        $tableForeignKey['deleterule'] = $this->_getPortableForeignKeyRuleDef($tableForeignKey['deleterule']);
+        $tableForeignKey['updaterule'] = $this->_getPortableForeignKeyRuleDef($tableForeignKey['updaterule']);
 
         return new ForeignKeyConstraint(
-            array_map( 'trim', (array)$tableForeignKey['fkcolnames'] ),
+            array_map('trim', (array)$tableForeignKey['fkcolnames']),
             $tableForeignKey['reftbname'],
-            array_map( 'trim', (array)$tableForeignKey['pkcolnames'] ),
+            array_map('trim', (array)$tableForeignKey['pkcolnames']),
             $tableForeignKey['relname'],
             array(
                 'onUpdate' => $tableForeignKey['updaterule'],
@@ -193,32 +187,28 @@ class DB2SchemaManager extends AbstractSchemaManager
         );
     }
 
-    protected function _getPortableForeignKeyRuleDef( $def )
+    protected function _getPortableForeignKeyRuleDef($def)
     {
-
         if ($def == "C") {
             return "CASCADE";
-        } else {
-            if ($def == "N") {
-                return "SET NULL";
-            }
+        } else if ($def == "N") {
+            return "SET NULL";
         }
         return null;
     }
 
-    protected function _getPortableViewDefinition( $view )
+    protected function _getPortableViewDefinition($view)
     {
-
-        $view = array_change_key_case( $view, \CASE_LOWER );
+        $view = array_change_key_case($view, \CASE_LOWER);
         // sadly this still segfaults on PDO_IBM, see http://pecl.php.net/bugs/bug.php?id=17199
         //$view['text'] = (is_resource($view['text']) ? stream_get_contents($view['text']) : $view['text']);
-        if (!is_resource( $view['text'] )) {
-            $pos = strpos( $view['text'], ' AS ' );
-            $sql = substr( $view['text'], $pos + 4 );
+        if (!is_resource($view['text'])) {
+            $pos = strpos($view['text'], ' AS ');
+            $sql = substr($view['text'], $pos+4);
         } else {
             $sql = '';
         }
 
-        return new View( $view['name'], $sql );
+        return new View($view['name'], $sql);
     }
 }

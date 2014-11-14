@@ -30,7 +30,6 @@ namespace Doctrine\Common\Annotations;
  */
 class AnnotationException extends \Exception
 {
-
     /**
      * Creates a new AnnotationException describing a Syntax error.
      *
@@ -38,10 +37,9 @@ class AnnotationException extends \Exception
      *
      * @return AnnotationException
      */
-    public static function syntaxError( $message )
+    public static function syntaxError($message)
     {
-
-        return new self( '[Syntax Error] '.$message );
+        return new self('[Syntax Error] ' . $message);
     }
 
     /**
@@ -54,10 +52,9 @@ class AnnotationException extends \Exception
      *
      * @return AnnotationException
      */
-    public static function creationError( $message )
+    public static function creationError($message)
     {
-
-        return new self( '[Creation Error] '.$message );
+        return new self('[Creation Error] ' . $message);
     }
 
     /**
@@ -70,14 +67,13 @@ class AnnotationException extends \Exception
      *
      * @return AnnotationException
      */
-    public static function semanticalErrorConstants( $identifier, $context = null )
+    public static function semanticalErrorConstants($identifier, $context = null)
     {
-
-        return self::semanticalError( sprintf(
+        return self::semanticalError(sprintf(
             "Couldn't find constant %s%s.",
             $identifier,
-            $context ? ', '.$context : ''
-        ) );
+            $context ? ', ' . $context : ''
+        ));
     }
 
     /**
@@ -106,17 +102,16 @@ class AnnotationException extends \Exception
      *
      * @return AnnotationException
      */
-    public static function attributeTypeError( $attributeName, $annotationName, $context, $expected, $actual )
+    public static function attributeTypeError($attributeName, $annotationName, $context, $expected, $actual)
     {
-
-        return self::typeError( sprintf(
+        return self::typeError(sprintf(
             'Attribute "%s" of @%s declared on %s expects %s, but got %s.',
             $attributeName,
             $annotationName,
             $context,
             $expected,
-            is_object( $actual ) ? 'an instance of '.get_class( $actual ) : gettype( $actual )
-        ) );
+            is_object($actual) ? 'an instance of ' . get_class($actual) : gettype($actual)
+        ));
     }
 
     /**
@@ -146,16 +141,15 @@ class AnnotationException extends \Exception
      *
      * @return AnnotationException
      */
-    public static function requiredError( $attributeName, $annotationName, $context, $expected )
+    public static function requiredError($attributeName, $annotationName, $context, $expected)
     {
-
-        return self::typeError( sprintf(
+        return self::typeError(sprintf(
             'Attribute "%s" of @%s declared on %s expects %s. This value should not be null.',
             $attributeName,
             $annotationName,
             $context,
             $expected
-        ) );
+        ));
     }
 
     /**
@@ -171,17 +165,16 @@ class AnnotationException extends \Exception
      *
      * @return AnnotationException
      */
-    public static function enumeratorError( $attributeName, $annotationName, $context, $available, $given )
+    public static function enumeratorError($attributeName, $annotationName, $context, $available, $given)
     {
-
-        return new self( sprintf(
+        return new self(sprintf(
             '[Enum Error] Attribute "%s" of @%s declared on %s accept only [%s], but got %s.',
             $attributeName,
             $annotationName,
             $context,
-            implode( ', ', $available ),
-            is_object( $given ) ? get_class( $given ) : $given
-        ) );
+            implode(', ', $available),
+            is_object($given) ? get_class($given) : $given
+        ));
     }
 
     /**
@@ -189,7 +182,6 @@ class AnnotationException extends \Exception
      */
     public static function optimizerPlusSaveComments()
     {
-
         return new self(
             "You have to enable opcache.save_comments=1 or zend_optimizerplus.save_comments=1."
         );

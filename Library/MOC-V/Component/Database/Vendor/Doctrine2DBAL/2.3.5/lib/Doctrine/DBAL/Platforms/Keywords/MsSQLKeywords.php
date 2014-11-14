@@ -17,12 +17,13 @@
  * <http://www.doctrine-project.org>.
  */
 
+
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
  * MsSQL Keywordlist
  *
- * @license     BSD http://www.opensource.org/licenses/bsd-license.php
+ * @license  BSD http://www.opensource.org/licenses/bsd-license.php
  * @link        www.doctrine-project.com
  * @since       2.0
  * @author      Benjamin Eberlei <kontakt@beberlei.de>
@@ -30,16 +31,13 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  */
 class MsSQLKeywords extends KeywordList
 {
-
     public function getName()
     {
-
         return 'MsSQL';
     }
 
     protected function getKeywords()
     {
-
         return array(
             'ADD',
             'CURRENT_TIMESTAMP',

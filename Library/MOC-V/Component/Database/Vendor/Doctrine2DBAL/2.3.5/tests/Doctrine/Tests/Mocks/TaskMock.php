@@ -25,12 +25,10 @@ use Doctrine\Common\Cli\AbstractNamespace;
 
 /**
  * TaskMock used for testing the CLI interface.
- *
  * @author Nils Adermann <naderman@naderman.de>
  */
 class TaskMock extends \Doctrine\Common\Cli\Tasks\AbstractTask
 {
-
     /**
      * Since instances of this class can be created elsewhere all instances
      * register themselves in this array for later inspection.
@@ -47,12 +45,11 @@ class TaskMock extends \Doctrine\Common\Cli\Tasks\AbstractTask
      *
      * @param AbstractNamespace CLI Namespace, passed to parent constructor
      */
-    function __construct( AbstractNamespace $namespace )
+    function __construct(AbstractNamespace $namespace)
     {
-
         self::$instances[] = $this;
 
-        parent::__construct( $namespace );
+        parent::__construct($namespace);
     }
 
     /**
@@ -62,7 +59,6 @@ class TaskMock extends \Doctrine\Common\Cli\Tasks\AbstractTask
      */
     public function getRunCounter()
     {
-
         return $this->runCounter;
     }
 
@@ -73,7 +69,6 @@ class TaskMock extends \Doctrine\Common\Cli\Tasks\AbstractTask
      */
     public function run()
     {
-
         $this->runCounter++;
     }
 

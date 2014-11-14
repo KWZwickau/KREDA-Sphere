@@ -41,7 +41,6 @@ use Doctrine\DBAL\Connection;
  */
 interface ShardManager
 {
-
     /**
      * Select global database with global data.
      *
@@ -57,13 +56,11 @@ interface ShardManager
      * shard.
      *
      * @throws ShardingException If no value is passed as shard identifier.
-     *
      * @param mixed $distributionValue
      * @param array $options
-     *
      * @return void
      */
-    function selectShard( $distributionValue );
+    function selectShard($distributionValue);
 
     /**
      * Get the distribution value currently used for sharding.
@@ -89,11 +86,10 @@ interface ShardManager
      * Using {@link Connection::fetchAll} to retrieve rows internally.
      *
      * @param string $sql
-     * @param array  $params
-     * @param array  $types
-     *
+     * @param array $params
+     * @param array $types
      * @return array
      */
-    function queryAll( $sql, array $params, array $types );
+    function queryAll($sql, array $params, array $types);
 }
 

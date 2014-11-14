@@ -2,67 +2,36 @@
 
 namespace Doctrine\Tests\Common\Annotations;
 
-use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\FileCacheReader;
+use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Annotations\DocLexer;
 use Doctrine\Common\Annotations\DocParser;
-use Doctrine\Common\Annotations\FileCacheReader;
 use Doctrine\Common\Annotations\PhpParser;
-use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Annotations\AnnotationReader;
 
-require_once __DIR__.'/Fixtures/Annotation/Route.php';
-require_once __DIR__.'/Fixtures/Annotation/Template.php';
-require_once __DIR__.'/Fixtures/Annotation/Secure.php';
-require_once __DIR__.'/Fixtures/SingleClassLOC1000.php';
+require_once __DIR__ . '/Fixtures/Annotation/Route.php';
+require_once __DIR__ . '/Fixtures/Annotation/Template.php';
+require_once __DIR__ . '/Fixtures/Annotation/Secure.php';
+require_once __DIR__ . '/Fixtures/SingleClassLOC1000.php';
 
 class PerformanceTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @group performance
      */
     public function testCachedReadPerformanceWithInMemory()
     {
-
-        $reader = new CachedReader( new AnnotationReader(), new ArrayCache() );
+        $reader = new CachedReader(new AnnotationReader(), new ArrayCache());
         $method = $this->getMethod();
 
-        $time = microtime( true );
-        for ($i = 0, $c = 500; $i < $c; $i++) {
-            $reader->getMethodAnnotations( $method );
+        $time = microtime(true);
+        for ($i=0,$c=500; $i<$c; $i++) {
+            $reader->getMethodAnnotations($method);
         }
-        $time = microtime( true ) - $time;
+        $time = microtime(true) - $time;
 
-        $this->printResults( 'cached reader (in-memory)', $time, $c );
-    }
-
-    private function getMethod()
-    {
-
-        return new \ReflectionMethod( 'Doctrine\Tests\Common\Annotations\Fixtures\Controller', 'helloAction' );
-    }
-
-    private function printResults( $test, $time, $iterations )
-    {
-
-        if (0 == $iterations) {
-            throw new \InvalidArgumentException( '$iterations cannot be zero.' );
-        }
-
-        $title = $test." results:\n";
-        $iterationsText = sprintf( "Iterations:         %d\n", $iterations );
-        $totalTime = sprintf( "Total Time:         %.3f s\n", $time );
-        $iterationTime = sprintf( "Time per iteration: %.3f ms\n", $time / $iterations * 1000 );
-
-        $max = max( strlen( $title ), strlen( $iterationTime ) ) - 1;
-
-        echo "\n".str_repeat( '-', $max )."\n";
-        echo $title;
-        echo str_repeat( '=', $max )."\n";
-        echo $iterationsText;
-        echo $totalTime;
-        echo $iterationTime;
-        echo str_repeat( '-', $max )."\n";
+        $this->printResults('cached reader (in-memory)', $time, $c);
     }
 
     /**
@@ -70,22 +39,21 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
      */
     public function testCachedReadPerformanceWithFileCache()
     {
-
         $method = $this->getMethod();
 
         // prime cache
-        $reader = new FileCacheReader( new AnnotationReader(), sys_get_temp_dir() );
-        $reader->getMethodAnnotations( $method );
+        $reader = new FileCacheReader(new AnnotationReader(), sys_get_temp_dir());
+        $reader->getMethodAnnotations($method);
 
-        $time = microtime( true );
-        for ($i = 0, $c = 500; $i < $c; $i++) {
-            $reader = new FileCacheReader( new AnnotationReader(), sys_get_temp_dir() );
-            $reader->getMethodAnnotations( $method );
+        $time = microtime(true);
+        for ($i=0,$c=500; $i<$c; $i++) {
+            $reader = new FileCacheReader(new AnnotationReader(), sys_get_temp_dir());
+            $reader->getMethodAnnotations($method);
             clearstatcache();
         }
-        $time = microtime( true ) - $time;
+        $time = microtime(true) - $time;
 
-        $this->printResults( 'cached reader (file)', $time, $c );
+        $this->printResults('cached reader (file)', $time, $c);
     }
 
     /**
@@ -93,17 +61,16 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadPerformance()
     {
-
         $method = $this->getMethod();
 
-        $time = microtime( true );
-        for ($i = 0, $c = 150; $i < $c; $i++) {
+        $time = microtime(true);
+        for ($i=0,$c=150; $i<$c; $i++) {
             $reader = new AnnotationReader();
-            $reader->getMethodAnnotations( $method );
+            $reader->getMethodAnnotations($method);
         }
-        $time = microtime( true ) - $time;
+        $time = microtime(true) - $time;
 
-        $this->printResults( 'reader', $time, $c );
+        $this->printResults('reader', $time, $c);
     }
 
     /**
@@ -111,7 +78,6 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
      */
     public function testDocParsePerformance()
     {
-
         $imports = array(
             'ignorephpdoc'     => 'Annotations\Annotation\IgnorePhpDoc',
             'ignoreannotation' => 'Annotations\Annotation\IgnoreAnnotation',
@@ -120,48 +86,29 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
             '__NAMESPACE__'    => 'Doctrine\Tests\Common\Annotations\Fixtures',
         );
         $ignored = array(
-            'access',
-            'author',
-            'copyright',
-            'deprecated',
-            'example',
-            'ignore',
-            'internal',
-            'link',
-            'see',
-            'since',
-            'tutorial',
-            'version',
-            'package',
-            'subpackage',
-            'name',
-            'global',
-            'param',
-            'return',
-            'staticvar',
-            'static',
-            'var',
-            'throws',
-            'inheritdoc',
+            'access', 'author', 'copyright', 'deprecated', 'example', 'ignore',
+            'internal', 'link', 'see', 'since', 'tutorial', 'version', 'package',
+            'subpackage', 'name', 'global', 'param', 'return', 'staticvar',
+            'static', 'var', 'throws', 'inheritdoc',
         );
 
         $method = $this->getMethod();
         $methodComment = $method->getDocComment();
         $classComment = $method->getDeclaringClass()->getDocComment();
 
-        $time = microtime( true );
-        for ($i = 0, $c = 200; $i < $c; $i++) {
+        $time = microtime(true);
+        for ($i=0,$c=200; $i<$c; $i++) {
             $parser = new DocParser();
-            $parser->setImports( $imports );
-            $parser->setIgnoredAnnotationNames( $ignored );
-            $parser->setIgnoreNotImportedAnnotations( true );
+            $parser->setImports($imports);
+            $parser->setIgnoredAnnotationNames($ignored);
+            $parser->setIgnoreNotImportedAnnotations(true);
 
-            $parser->parse( $methodComment );
-            $parser->parse( $classComment );
+            $parser->parse($methodComment);
+            $parser->parse($classComment);
         }
-        $time = microtime( true ) - $time;
+        $time = microtime(true) - $time;
 
-        $this->printResults( 'doc-parser', $time, $c );
+        $this->printResults('doc-parser', $time, $c);
     }
 
     /**
@@ -169,20 +116,19 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
      */
     public function testDocLexerPerformance()
     {
-
         $method = $this->getMethod();
         $methodComment = $method->getDocComment();
         $classComment = $method->getDeclaringClass()->getDocComment();
 
-        $time = microtime( true );
-        for ($i = 0, $c = 500; $i < $c; $i++) {
+        $time = microtime(true);
+        for ($i=0,$c=500; $i<$c; $i++) {
             $lexer = new DocLexer();
-            $lexer->setInput( $methodComment );
-            $lexer->setInput( $classComment );
+            $lexer->setInput($methodComment);
+            $lexer->setInput($classComment);
         }
-        $time = microtime( true ) - $time;
+        $time = microtime(true) - $time;
 
-        $this->printResults( 'doc-lexer', $time, $c );
+        $this->printResults('doc-lexer', $time, $c);
     }
 
     /**
@@ -190,17 +136,16 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
      */
     public function testPhpParserPerformanceWithShortCut()
     {
+        $class = new \ReflectionClass('Doctrine\Tests\Common\Annotations\Fixtures\NamespacedSingleClassLOC1000');
 
-        $class = new \ReflectionClass( 'Doctrine\Tests\Common\Annotations\Fixtures\NamespacedSingleClassLOC1000' );
-
-        $time = microtime( true );
-        for ($i = 0, $c = 500; $i < $c; $i++) {
+        $time = microtime(true);
+        for ($i=0,$c=500; $i<$c; $i++) {
             $parser = new PhpParser();
-            $parser->parseClass( $class );
+            $parser->parseClass($class);
         }
-        $time = microtime( true ) - $time;
+        $time = microtime(true) - $time;
 
-        $this->printResults( 'doc-parser-with-short-cut', $time, $c );
+        $this->printResults('doc-parser-with-short-cut', $time, $c);
     }
 
     /**
@@ -208,16 +153,42 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
      */
     public function testPhpParserPerformanceWithoutShortCut()
     {
+        $class = new \ReflectionClass('SingleClassLOC1000');
 
-        $class = new \ReflectionClass( 'SingleClassLOC1000' );
-
-        $time = microtime( true );
-        for ($i = 0, $c = 500; $i < $c; $i++) {
+        $time = microtime(true);
+        for ($i=0,$c=500; $i<$c; $i++) {
             $parser = new PhpParser();
-            $parser->parseClass( $class );
+            $parser->parseClass($class);
         }
-        $time = microtime( true ) - $time;
+        $time = microtime(true) - $time;
 
-        $this->printResults( 'doc-parser-without-short-cut', $time, $c );
+        $this->printResults('doc-parser-without-short-cut', $time, $c);
+    }
+
+    private function getMethod()
+    {
+        return new \ReflectionMethod('Doctrine\Tests\Common\Annotations\Fixtures\Controller', 'helloAction');
+    }
+
+    private function printResults($test, $time, $iterations)
+    {
+        if (0 == $iterations) {
+            throw new \InvalidArgumentException('$iterations cannot be zero.');
+        }
+
+        $title = $test." results:\n";
+        $iterationsText = sprintf("Iterations:         %d\n", $iterations);
+        $totalTime      = sprintf("Total Time:         %.3f s\n", $time);
+        $iterationTime  = sprintf("Time per iteration: %.3f ms\n", $time/$iterations * 1000);
+
+        $max = max(strlen($title), strlen($iterationTime)) - 1;
+
+        echo "\n".str_repeat('-', $max)."\n";
+        echo $title;
+        echo str_repeat('=', $max)."\n";
+        echo $iterationsText;
+        echo $totalTime;
+        echo $iterationTime;
+        echo str_repeat('-', $max)."\n";
     }
 }

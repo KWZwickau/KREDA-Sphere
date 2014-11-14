@@ -19,9 +19,9 @@
 
 namespace Doctrine\DBAL\Event;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Platforms\AbstractPlatform,
+    Doctrine\DBAL\Schema\Column,
+    Doctrine\DBAL\Schema\TableDiff;
 
 /**
  * Event Arguments used when SQL queries for renaming table columns are generated inside Doctrine\DBAL\Platform\*Platform.
@@ -33,7 +33,6 @@ use Doctrine\DBAL\Schema\TableDiff;
  */
 class SchemaAlterTableRenameColumnEventArgs extends SchemaEventArgs
 {
-
     /**
      * @var string
      */
@@ -60,18 +59,17 @@ class SchemaAlterTableRenameColumnEventArgs extends SchemaEventArgs
     private $_sql = array();
 
     /**
-     * @param string                                    $oldColumnName
-     * @param \Doctrine\DBAL\Schema\Column              $column
-     * @param \Doctrine\DBAL\Schema\TableDiff           $tableDiff
+     * @param string $oldColumnName
+     * @param \Doctrine\DBAL\Schema\Column $column
+     * @param \Doctrine\DBAL\Schema\TableDiff $tableDiff
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
-    public function __construct( $oldColumnName, Column $column, TableDiff $tableDiff, AbstractPlatform $platform )
+    public function __construct($oldColumnName, Column $column, TableDiff $tableDiff, AbstractPlatform $platform)
     {
-
         $this->_oldColumnName = $oldColumnName;
-        $this->_column = $column;
-        $this->_tableDiff = $tableDiff;
-        $this->_platform = $platform;
+        $this->_column        = $column;
+        $this->_tableDiff     = $tableDiff;
+        $this->_platform      = $platform;
     }
 
     /**
@@ -79,7 +77,6 @@ class SchemaAlterTableRenameColumnEventArgs extends SchemaEventArgs
      */
     public function getOldColumnName()
     {
-
         return $this->_oldColumnName;
     }
 
@@ -88,7 +85,6 @@ class SchemaAlterTableRenameColumnEventArgs extends SchemaEventArgs
      */
     public function getColumn()
     {
-
         return $this->_column;
     }
 
@@ -97,7 +93,6 @@ class SchemaAlterTableRenameColumnEventArgs extends SchemaEventArgs
      */
     public function getTableDiff()
     {
-
         return $this->_tableDiff;
     }
 
@@ -106,20 +101,17 @@ class SchemaAlterTableRenameColumnEventArgs extends SchemaEventArgs
      */
     public function getPlatform()
     {
-
         return $this->_platform;
     }
 
     /**
      * @param string|array $sql
-     *
      * @return \Doctrine\DBAL\Event\SchemaAlterTableRenameColumnEventArgs
      */
-    public function addSql( $sql )
+    public function addSql($sql)
     {
-
-        if (is_array( $sql )) {
-            $this->_sql = array_merge( $this->_sql, $sql );
+        if (is_array($sql)) {
+            $this->_sql = array_merge($this->_sql, $sql);
         } else {
             $this->_sql[] = $sql;
         }
@@ -132,7 +124,6 @@ class SchemaAlterTableRenameColumnEventArgs extends SchemaEventArgs
      */
     public function getSql()
     {
-
         return $this->_sql;
     }
 }

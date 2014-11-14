@@ -6,14 +6,12 @@ use Doctrine\Common\Annotations\SimpleAnnotationReader;
 
 class SimpleAnnotationReaderTest extends AbstractReaderTest
 {
-
     /**
      * Contrary to the behavior of the default annotation reader, we do just ignore
      * these in the simple annotation reader (so, no expected exception here).
      */
     public function testImportDetectsNotImportedAnnotation()
     {
-
         parent::testImportDetectsNotImportedAnnotation();
     }
 
@@ -23,7 +21,6 @@ class SimpleAnnotationReaderTest extends AbstractReaderTest
      */
     public function testImportDetectsNonExistentAnnotation()
     {
-
         parent::testImportDetectsNonExistentAnnotation();
     }
 
@@ -33,7 +30,6 @@ class SimpleAnnotationReaderTest extends AbstractReaderTest
      */
     public function testClassWithInvalidAnnotationTargetAtClassDocBlock()
     {
-
         parent::testClassWithInvalidAnnotationTargetAtClassDocBlock();
     }
 
@@ -43,7 +39,6 @@ class SimpleAnnotationReaderTest extends AbstractReaderTest
      */
     public function testClassWithInvalidAnnotationTargetAtPropertyDocBlock()
     {
-
         parent::testClassWithInvalidAnnotationTargetAtPropertyDocBlock();
     }
 
@@ -53,7 +48,6 @@ class SimpleAnnotationReaderTest extends AbstractReaderTest
      */
     public function testClassWithInvalidNestedAnnotationTargetAtPropertyDocBlock()
     {
-
         parent::testClassWithInvalidNestedAnnotationTargetAtPropertyDocBlock();
     }
 
@@ -63,7 +57,6 @@ class SimpleAnnotationReaderTest extends AbstractReaderTest
      */
     public function testClassWithInvalidAnnotationTargetAtMethodDocBlock()
     {
-
         parent::testClassWithInvalidAnnotationTargetAtMethodDocBlock();
     }
 
@@ -72,14 +65,12 @@ class SimpleAnnotationReaderTest extends AbstractReaderTest
      */
     public function testInvalidAnnotationUsageButIgnoredClass()
     {
-
         parent::testInvalidAnnotationUsageButIgnoredClass();
     }
 
     public function testIncludeIgnoreAnnotation()
     {
-
-        $this->markTestSkipped( 'The simplified annotation reader would always autoload annotations' );
+        $this->markTestSkipped('The simplified annotation reader would always autoload annotations');
     }
 
     /**
@@ -90,23 +81,21 @@ class SimpleAnnotationReaderTest extends AbstractReaderTest
      */
     public function testInvalidAnnotationButIgnored()
     {
-
         $reader = $this->getReader();
-        $class = new \ReflectionClass( 'Doctrine\Tests\Common\Annotations\Fixtures\ClassDDC1660' );
+        $class  = new \ReflectionClass('Doctrine\Tests\Common\Annotations\Fixtures\ClassDDC1660');
 
-        $this->assertTrue( class_exists( 'Doctrine\Tests\Common\Annotations\Fixtures\Annotation\Version' ) );
-        $this->assertCount( 1, $reader->getClassAnnotations( $class ) );
-        $this->assertCount( 1, $reader->getMethodAnnotations( $class->getMethod( 'bar' ) ) );
-        $this->assertCount( 1, $reader->getPropertyAnnotations( $class->getProperty( 'foo' ) ) );
+        $this->assertTrue(class_exists('Doctrine\Tests\Common\Annotations\Fixtures\Annotation\Version'));
+        $this->assertCount(1, $reader->getClassAnnotations($class));
+        $this->assertCount(1, $reader->getMethodAnnotations($class->getMethod('bar')));
+        $this->assertCount(1, $reader->getPropertyAnnotations($class->getProperty('foo')));
     }
 
     protected function getReader()
     {
-
         $reader = new SimpleAnnotationReader();
-        $reader->addNamespace( __NAMESPACE__ );
-        $reader->addNamespace( __NAMESPACE__.'\Fixtures' );
-        $reader->addNamespace( __NAMESPACE__.'\Fixtures\Annotation' );
+        $reader->addNamespace(__NAMESPACE__);
+        $reader->addNamespace(__NAMESPACE__ . '\Fixtures');
+        $reader->addNamespace(__NAMESPACE__ . '\Fixtures\Annotation');
 
         return $reader;
     }

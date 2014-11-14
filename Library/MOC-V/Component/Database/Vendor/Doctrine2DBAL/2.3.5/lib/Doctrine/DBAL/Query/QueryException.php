@@ -29,12 +29,10 @@ use Doctrine\DBAL\DBALException;
  */
 class QueryException extends DBALException
 {
-
-    static public function unknownAlias( $alias, $registeredAliases )
+    static public function unknownAlias($alias, $registeredAliases)
     {
-
-        return new self( "The given alias '".$alias."' is not part of ".
-            "any FROM or JOIN clause table. The currently registered ".
-            "aliases are: ".implode( ", ", $registeredAliases )."." );
+        return new self("The given alias '" . $alias . "' is not part of " .
+            "any FROM or JOIN clause table. The currently registered " .
+            "aliases are: " . implode(", ", $registeredAliases) . ".");
     }
 }

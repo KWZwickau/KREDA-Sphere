@@ -9,7 +9,6 @@ use Doctrine\Tests\Common\Annotations\Fixtures\AnnotationWithTargetSyntaxError;
  */
 class ClassWithAnnotationWithTargetSyntaxError
 {
-
     /**
      * @AnnotationWithTargetSyntaxError()
      */
@@ -18,7 +17,5 @@ class ClassWithAnnotationWithTargetSyntaxError
     /**
      * @AnnotationWithTargetSyntaxError()
      */
-    public function bar()
-    {
-    }
+    public function bar(){}
 }
