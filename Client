@@ -39,7 +39,13 @@ set_error_handler( create_function( '$N,$S,$F,$L', 'throw new \ErrorException($S
 
 $ShellScreen = new Screen();
 $Config = new Configuration( new UniversalRouter(), new LevelClient() );
-
+/**
+ * Setup Permanent-Available
+ */
+$Config = AssistanceApplication::setupApi($Config);
+/**
+ * Setup Application
+ */
 try {
     /**
      * Setup Private-Access
@@ -60,7 +66,6 @@ try {
      * Setup Public-Access
      */
     $Config = GatekeeperApplication::setupApi( $Config );
-    $Config = AssistanceApplication::setupApi( $Config );
     /**
      * Execute Action, Get Response
      */
@@ -84,7 +89,20 @@ try {
 } catch( \ErrorException $E ) {
     $ShellScreen->addError( $E );
 } catch( \Exception $E ) {
-    $ShellScreen->addException( $E );
+    if (strpos($E->getFile(), 'MOC-V\Component\Database')) {
+        try {
+            /**
+             * Execute Action, Get Response
+             */
+            /** @var Element $Route */
+            $Route = $Config->getClientRouter()->getRoute('/Sphere/Assistance/Support/Application/StartUp');
+            $ShellScreen->addToContent(new Container($Route));
+        } catch (\Exception $E) {
+            $ShellScreen->addException($E);
+        }
+    } else {
+        $ShellScreen->addException($E);
+    }
 }
 /**
  * Define Navigation Client

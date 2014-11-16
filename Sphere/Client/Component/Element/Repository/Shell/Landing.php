@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
+use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
@@ -20,11 +21,16 @@ class Landing extends Shell implements IElementInterface
 
     /** @var string $Title */
     private $Title = '{ LandingTitle }';
+    /** @var string $Description */
+    private $Description = '';
     /** @var string $Message */
     private $Message = '{ LandingMessage }';
     /** @var string $Content */
     private $Content = '';
 
+    /**
+     * @throws TemplateTypeException
+     */
     function __construct()
     {
 
@@ -48,6 +54,18 @@ class Landing extends Shell implements IElementInterface
      *
      * @return Landing
      */
+    public function setDescription($Value)
+    {
+
+        $this->Description = $Value;
+        return $this;
+    }
+
+    /**
+     * @param string $Value
+     *
+     * @return Landing
+     */
     public function setMessage( $Value )
     {
 
@@ -62,6 +80,7 @@ class Landing extends Shell implements IElementInterface
     {
 
         $this->Template->setVariable( 'LandingTitle', $this->Title );
+        $this->Template->setVariable('LandingDescription', '<small>' . $this->Description . '</small>');
         $this->Template->setVariable( 'LandingMessage', $this->Message );
         $this->Template->setVariable( 'LandingContent', $this->Content );
 

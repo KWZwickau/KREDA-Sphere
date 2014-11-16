@@ -4,9 +4,15 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 use KREDA\Sphere\Application\Service;
 use MOC\V\Component\Database\Component\Parameter\Repository\DriverParameter;
 
+/**
+ * Class Access
+ * @package KREDA\Sphere\Application\Gatekeeper\Service
+ */
 class Access extends Service
 {
-
+    /**
+     *
+     */
     public function __construct()
     {
 
