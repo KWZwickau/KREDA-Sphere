@@ -54,6 +54,9 @@ class Client extends Application
 
     public function setupModuleNavigation()
     {
+        self::addModuleNavigationMain(self::$Configuration,
+            '/Sphere/Assistance/Support/Application', 'Anwendungsfehler', new BookIcon()
+        );
         self::addApplicationNavigationMain(self::$Configuration,
             '/Sphere/Assistance/Support/Application/StartUp', 'Starten der Anwendung', new BookIcon()
         );
