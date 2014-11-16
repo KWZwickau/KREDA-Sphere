@@ -1,0 +1,56 @@
+<form class="form-horizontal" action="" method="post">
+    <div class="form-group {{ TicketSubjectGroup }}">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-bell"></span>
+            </span>
+            <input type="text" class="form-control" name="TicketSubject" placeholder="Thema"
+                   value="{{ TicketSubjectValue }}"/>
+            {{ TicketSubjectFeedbackIcon }}
+        </div>
+        {{ TicketSubjectFeedbackMessage }}
+    </div>
+    <div class="form-group {{ TicketMessageGroup }}">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-comment"></span>
+            </span>
+            <textarea name="TicketMessage" class="form-control" placeholder="Mitteilung"
+                      rows="10">{{ TicketMessageValue }}</textarea>
+            {{ TicketMessageFeedbackIcon }}
+        </div>
+        {{ TicketMessageFeedbackMessage }}
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <button type="submit" class="btn btn-primary">Absenden</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    function createIssue()
+    {
+        jQuery.ajax({
+            url: "http://ticket.haus-der-edv.de" +
+            "/youtrack/rest/issue",
+            dataType: "json",
+            type: "POST",
+            data: {
+                project: 'KREDA',
+                summary: jQuery("#summary").val(),
+                description: jQuery("#description").val()
+            }
+        }).done(function (data)
+        {
+            jQuery("#result").show();
+            jQuery("#summary").val('');
+            jQuery("#description").val('');
+        });
+    }
+
+    jQuery(function ()
+    {
+        jQuery("#result").hide();
+    })
+</script>
