@@ -79,8 +79,8 @@ abstract class Setup extends Service
                 $Column->setAutoincrement( true );
                 $Table->setPrimaryKey( array( 'Id' ) );
             }
-            if (!$this->dbTableHasColumn( 'tblYubiKey', 'YubiKeyId' )) {
-                $Table->addColumn( 'YubiKeyId', 'string' );
+            if (!$this->dbTableHasColumn( 'tblYubiKey', 'YubiKey' )) {
+                $Table->addColumn( 'YubiKey', 'string' );
             }
         } else {
             // Install
@@ -88,7 +88,7 @@ abstract class Setup extends Service
             $Column = $Table->addColumn( 'Id', 'bigint' );
             $Column->setAutoincrement( true );
             $Table->setPrimaryKey( array( 'Id' ) );
-            $Table->addColumn( 'YubiKeyId', 'string' );
+            $Table->addColumn( 'YubiKey', 'string' );
         }
         return $Table;
     }
