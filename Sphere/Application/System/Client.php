@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\System;
 
 use KREDA\Sphere\Application\Application;
 use KREDA\Sphere\Application\System\Service\Database;
+use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
@@ -27,7 +28,6 @@ class Client extends Application
      */
     public static function setupApi( Configuration $Configuration )
     {
-
         self::$Configuration = $Configuration;
         self::addClientNavigationMeta( self::$Configuration,
             '/Sphere/System', 'System', new WrenchIcon()
@@ -36,7 +36,7 @@ class Client extends Application
 
         self::buildRoute( self::$Configuration, '/Sphere/System/Backup', __CLASS__.'::apiMain' );
 
-        self::buildRoute( self::$Configuration, '/Sphere/System/Update', __CLASS__.'::apiMain' );
+        self::buildRoute( self::$Configuration, '/Sphere/System/Update', __CLASS__.'::apiUpdate' );
 
         self::buildRoute( self::$Configuration, '/Sphere/System/Database', __CLASS__.'::serviceDatabaseMain' );
 
@@ -70,6 +70,23 @@ class Client extends Application
         );
     }
 
+    /**
+     * @return Landing
+     */
+    public function apiUpdate()
+    {
+
+        $this->setupModuleNavigation();
+        $View = new Landing();
+        $View->setTitle( 'KREDA Update' );
+        $View->setMessage( '' );
+        $View->setContent( Update::getApi()->setupDataStructure() );
+        return $View;
+    }
+
+    /**
+     * @return Landing
+     */
     public function serviceDatabaseMain()
     {
 

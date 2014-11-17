@@ -33,6 +33,20 @@
 		Allow from All
 	</FilesMatch>
 
+	RewriteEngine On
+	#Force WWW:
+	#RewriteCond %{HTTP_HOST} !^www\.kreda-professional\.de [NC]
+	#RewriteRule ^(.*)$ http://www.kreda-professional.de/$1 [R=301,L]
+
+	#Force SSL:
+	#RewriteCond %{SERVER_PORT} 80
+	#RewriteRule ^(.*)$ https://www.kreda-professional.de/$1 [R=301,L]
+
+	#Remove "index.php":
+#	RewriteCond %{REQUEST_FILENAME} !-f
+#    RewriteCond %{REQUEST_FILENAME} !-d
+#    RewriteRule ^(.*)$ /Client [L,QSA]
+
 
 # Cache settings
 

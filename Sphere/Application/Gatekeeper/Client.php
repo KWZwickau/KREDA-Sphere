@@ -8,6 +8,7 @@ use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
+use KREDA\Sphere\Application\Gatekeeper\Client\Welcome;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\BadOTPException;
@@ -49,6 +50,7 @@ class Client extends Application
         }
 
         self::buildRoute( self::$Configuration, '/', __CLASS__.'::apiMain' );
+        self::buildRoute( self::$Configuration, '/Sphere', __CLASS__.'::apiWelcome' );
         self::buildRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn', __CLASS__.'::apiSignIn' );
         self::buildRoute( self::$Configuration, '/Sphere/Gatekeeper/SignOut', __CLASS__.'::apiSignOut' );
 
@@ -82,7 +84,7 @@ class Client extends Application
     }
 
     /**
-     * @return \KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch
+     * @return SignInSwitch
      */
     public function apiSignIn()
     {
@@ -119,6 +121,15 @@ class Client extends Application
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Gatekeeper/SignIn/Student', 'Schüler', new LockIcon()
         );
+    }
+
+    /**
+     * @return Welcome
+     */
+    public function apiWelcome()
+    {
+
+        return new Welcome();
     }
 
     /**

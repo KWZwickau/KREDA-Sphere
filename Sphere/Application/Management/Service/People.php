@@ -1,7 +1,7 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Service;
+namespace KREDA\Sphere\Application\Management\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\People\Search;
+use KREDA\Sphere\Application\Management\Service\People\Search;
 use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 
@@ -13,11 +13,9 @@ use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 class People extends Service
 {
 
-    public function __construct()
-    {
-
-    }
-
+    /**
+     * @return Landing
+     */
     public function apiMain()
     {
 
@@ -63,8 +61,14 @@ class People extends Service
         return $View;
     }
 
-    protected function setupDataStructure()
+    /**
+     * @return string
+     */
+    public function setupDataStructure()
     {
-        // TODO: Implement setupDataStructure() method.
+
+        $this->addInstallProtocol( __CLASS__ );
+
+        return $this->getInstallProtocol();
     }
 }

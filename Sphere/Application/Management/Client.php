@@ -2,7 +2,7 @@
 namespace KREDA\Sphere\Application\Management;
 
 use KREDA\Sphere\Application\Application;
-use KREDA\Sphere\Application\Gatekeeper\Service\People;
+use KREDA\Sphere\Application\Management\Service\People;
 use KREDA\Sphere\Application\Management\Service\Property;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BookIcon;

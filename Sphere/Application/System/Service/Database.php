@@ -5,6 +5,11 @@ use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Application\System\Service\Database\Status;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 
+/**
+ * Class Database
+ *
+ * @package KREDA\Sphere\Application\System\Service
+ */
 class Database extends Service
 {
 
@@ -12,8 +17,11 @@ class Database extends Service
     const STATUS_ERROR = 1;
     const STATUS_FAIL = 2;
     const STATUS_OK = 3;
-    private $ServiceList = array( 'Access', 'People', 'Property', 'Support', 'Assistance' );
+    private $ServiceList = array( 'Access', 'Consumer' );
 
+    /**
+     * @return Landing
+     */
     public function apiMain()
     {
 
@@ -34,28 +42,7 @@ class Database extends Service
                     foreach ((array)$Setting as $Key => $Group) {
                         $Key = explode( ':', $Key );
                         try {
-                            switch (strtoupper( $Key[0] )) {
-                                case 'MASTER':
-                                    $this->registerDatabaseMaster(
-                                        $Group['Username'],
-                                        $Group['Password'],
-                                        $Group['Database'],
-                                        $Group['Driver'],
-                                        $Group['Host'],
-                                        $Group['Port']
-                                    );
-                                    break;
-                                case 'SLAVE':
-                                    $this->registerDatabaseSlave(
-                                        $Group['Username'],
-                                        $Group['Password'],
-                                        $Group['Database'],
-                                        $Group['Driver'],
-                                        $Group['Host'],
-                                        $Group['Port']
-                                    );
-                                    break;
-                            }
+                            $this->connectDatabase( $Service, $Key[1] );
                             $Report[$Index][$Group['Host'].'<div class="text-info small">'.$Service.' - '.$Key[0].', '.$Key[1].'</div>'][$Group['Database']] = '<div class="badge badge-success">Verbindung erfolgreich</div>';
                         } catch( \Exception $E ) {
                             $Report[$Index][$Group['Host'].'<div class="text-info small">'.$Service.' - '.$Key[0].', '.$Key[1].'</div>'][$Group['Database']] = '<div class="badge badge-danger">Nicht verbunden</div>';
@@ -75,8 +62,14 @@ class Database extends Service
         return $View;
     }
 
-    protected function setupDataStructure()
+    /**
+     * @return string
+     */
+    public function setupDataStructure()
     {
-        // TODO: Implement setupDataStructure() method.
+
+        $this->addInstallProtocol( __CLASS__ );
+
+        return $this->getInstallProtocol();
     }
 }

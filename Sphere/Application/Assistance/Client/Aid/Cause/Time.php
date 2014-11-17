@@ -9,6 +9,7 @@ use MOC\V\Component\Template\Template;
 
 /**
  * Class Time
+ *
  * @package KREDA\Sphere\Application\Assistance\Client\Aid\Cause
  */
 class Time extends Element implements IElementInterface
@@ -19,13 +20,14 @@ class Time extends Element implements IElementInterface
 
     /**
      * @param string $Message
+     *
      * @throws TemplateTypeException
      */
-    function __construct($Message)
+    function __construct( $Message )
     {
 
-        $this->Template = Template::getTemplate(__DIR__ . '/Time.twig');
-        $this->Template->setVariable('Message', $Message);
+        $this->Template = Template::getTemplate( __DIR__.'/Time.twig' );
+        $this->Template->setVariable( 'Message', $Message );
     }
 
     /**

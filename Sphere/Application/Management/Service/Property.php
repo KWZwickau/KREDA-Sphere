@@ -4,9 +4,17 @@ namespace KREDA\Sphere\Application\Management\Service;
 use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 
+/**
+ * Class Property
+ *
+ * @package KREDA\Sphere\Application\Management\Service
+ */
 class Property extends Service
 {
 
+    /**
+     * @return Landing
+     */
     public function apiMain()
     {
 
@@ -16,8 +24,14 @@ class Property extends Service
         return $View;
     }
 
-    protected function setupDataStructure()
+    /**
+     * @return string
+     */
+    public function setupDataStructure()
     {
-        // TODO: Implement setupDataStructure() method.
+
+        $this->addInstallProtocol( __CLASS__ );
+
+        return $this->getInstallProtocol();
     }
 }

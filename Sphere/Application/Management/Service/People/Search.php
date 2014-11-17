@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Service\People;
+namespace KREDA\Sphere\Application\Management\Service\People;
 
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\IElementInterface;

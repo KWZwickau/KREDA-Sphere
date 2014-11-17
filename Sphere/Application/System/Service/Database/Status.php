@@ -4,9 +4,15 @@ namespace KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
+use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
+/**
+ * Class Status
+ *
+ * @package KREDA\Sphere\Application\System\Service\Database
+ */
 class Status extends Element implements IElementInterface
 {
 
@@ -16,6 +22,11 @@ class Status extends Element implements IElementInterface
     /** @var string $Update */
     private $Update = '{ RouteUpdate }';
 
+    /**
+     * @param $Status
+     *
+     * @throws TemplateTypeException
+     */
     function __construct( $Status )
     {
 

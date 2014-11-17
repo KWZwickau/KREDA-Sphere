@@ -54,7 +54,7 @@ class Landing extends Shell implements IElementInterface
      *
      * @return Landing
      */
-    public function setDescription($Value)
+    public function setDescription( $Value )
     {
 
         $this->Description = $Value;
@@ -80,7 +80,7 @@ class Landing extends Shell implements IElementInterface
     {
 
         $this->Template->setVariable( 'LandingTitle', $this->Title );
-        $this->Template->setVariable('LandingDescription', '<small>' . $this->Description . '</small>');
+        $this->Template->setVariable( 'LandingDescription', '<small>'.$this->Description.'</small>' );
         $this->Template->setVariable( 'LandingMessage', $this->Message );
         $this->Template->setVariable( 'LandingContent', $this->Content );
 

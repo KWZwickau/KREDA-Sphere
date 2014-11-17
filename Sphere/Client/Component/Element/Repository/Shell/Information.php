@@ -22,15 +22,16 @@ class Information extends Shell implements IElementInterface
      * @param string $Message
      * @param string $Description
      * @param string $Title
+     *
      * @throws TemplateTypeException
      */
-    function __construct($Message, $Description = 'Hinweis', $Title = 'Information')
+    function __construct( $Message, $Description = 'Hinweis', $Title = 'Information' )
     {
 
-        $this->Template = Template::getTemplate(__DIR__ . '/Information.twig');
-        $this->Template->setVariable('InformationMessage', $Message);
-        $this->Template->setVariable('InformationDescription', $Description);
-        $this->Template->setVariable('InformationTitle', $Title);
+        $this->Template = Template::getTemplate( __DIR__.'/Information.twig' );
+        $this->Template->setVariable( 'InformationMessage', $Message );
+        $this->Template->setVariable( 'InformationDescription', $Description );
+        $this->Template->setVariable( 'InformationTitle', $Title );
     }
 
     /**

@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Gatekeeper\Client\SignInError;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
+use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class SignInManagement
@@ -21,6 +22,8 @@ class SignInManagement extends SignInError implements IElementInterface
     {
 
         $this->Template = Template::getTemplate( __DIR__.'/SignInManagement.twig' );
+        $this->Template->setVariable( 'UrlBase', HttpKernel::getRequest()->getUrlBase() );
+
         if (isset( $_REQUEST['CredentialName'] )) {
             $this->Template->setVariable( 'CredentialNameValue', $_REQUEST['CredentialName'] );
         }

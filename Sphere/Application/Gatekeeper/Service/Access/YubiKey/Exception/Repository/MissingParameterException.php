@@ -3,6 +3,11 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\R
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\ComponentException;
 
+/**
+ * Class MissingParameterException
+ *
+ * @package KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository
+ */
 class MissingParameterException extends ComponentException
 {
 

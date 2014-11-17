@@ -10,6 +10,7 @@ use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class Stage
+ *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Content
  */
 class Stage extends Shell implements IElementInterface
@@ -35,7 +36,7 @@ class Stage extends Shell implements IElementInterface
     function __construct()
     {
 
-        $this->Template = Template::getTemplate(__DIR__ . '/Stage.twig');
+        $this->Template = Template::getTemplate( __DIR__.'/Stage.twig' );
     }
 
     /**
@@ -43,7 +44,7 @@ class Stage extends Shell implements IElementInterface
      *
      * @return Stage
      */
-    public function setTitle($Value)
+    public function setTitle( $Value )
     {
 
         $this->Title = $Value;
@@ -55,7 +56,7 @@ class Stage extends Shell implements IElementInterface
      *
      * @return Stage
      */
-    public function setDescription($Value)
+    public function setDescription( $Value )
     {
 
         $this->Description = $Value;
@@ -69,31 +70,35 @@ class Stage extends Shell implements IElementInterface
     public function getContent()
     {
 
-        $this->Template->setVariable('StageTitle', $this->Title);
-        $this->Template->setVariable('StageDescription', $this->Description);
-        $this->Template->setVariable('StageMessage', $this->Message);
-        $this->Template->setVariable('StageContent', $this->Content);
-        $this->Template->setVariable('StageMenu', $this->Menu);
+        $this->Template->setVariable( 'StageTitle', $this->Title );
+        $this->Template->setVariable( 'StageDescription', $this->Description );
+        $this->Template->setVariable( 'StageMessage', $this->Message );
+        $this->Template->setVariable( 'StageContent', $this->Content );
+        $this->Template->setVariable( 'StageMenu', $this->Menu );
 
         return $this->Template->getContent();
     }
 
     /**
      * @param string $Content
+     *
      * @return Stage
      */
-    public function setContent($Content)
+    public function setContent( $Content )
     {
+
         $this->Content = $Content;
         return $this;
     }
 
     /**
      * @param string $Message
+     *
      * @return Stage
      */
-    public function setMessage($Message)
+    public function setMessage( $Message )
     {
+
         $this->Message = $Message;
         return $this;
     }
@@ -101,11 +106,13 @@ class Stage extends Shell implements IElementInterface
     /**
      * @param string $Route
      * @param string $Title
+     *
      * @return Stage
      */
-    public function addButton($Route, $Title)
+    public function addButton( $Route, $Title )
     {
-        $this->Menu[HttpKernel::getRequest()->getUrlBase() . '/' . trim($Route, '/')] = $Title;
+
+        $this->Menu[HttpKernel::getRequest()->getUrlBase().'/'.trim( $Route, '/' )] = $Title;
         return $this;
     }
 

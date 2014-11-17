@@ -1,33 +1,30 @@
 <?php
-namespace KREDA\Sphere\Application\Assistance\Client\Aid\Solution;
+namespace KREDA\Sphere\Application\Gatekeeper\Client;
 
-use KREDA\Sphere\Client\Component\Element\Element;
+use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 
 /**
- * Class User
+ * Class Welcome
  *
- * @package KREDA\Sphere\Application\Assistance\Client\Aid\Solution
+ * @package KREDA\Sphere\Application\Gatekeeper\Client
  */
-class User extends Element implements IElementInterface
+class Welcome extends Shell implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */
     private $Template = null;
 
     /**
-     * @param string $Message
-     *
      * @throws TemplateTypeException
      */
-    function __construct( $Message )
+    function __construct()
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/User.twig' );
-        $this->Template->setVariable( 'Message', $Message );
+        $this->Template = Template::getTemplate( __DIR__.'/Welcome.twig' );
     }
 
     /**

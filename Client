@@ -7,50 +7,69 @@ use KREDA\Sphere\Application\Graduation\Client as GraduationApplication;
 use KREDA\Sphere\Application\Management\Client as ManagementApplication;
 use KREDA\Sphere\Application\Statistic\Client as StatisticApplication;
 use KREDA\Sphere\Application\System\Client as SystemApplication;
+use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Container;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell\Error;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Screen;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use KREDA\Sphere\Client\Configuration;
 use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
 use MOC\V\Core\AutoLoader\AutoLoader;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
-require_once(__DIR__ . '/Library/MOC-V/Core/AutoLoader/AutoLoader.php');
-AutoLoader::getNamespaceAutoLoader('MOC\V', __DIR__ . '/Library/MOC-V');
-AutoLoader::getNamespaceAutoLoader('KREDA\Sphere\Client', __DIR__ . '/Sphere/Client');
-AutoLoader::getNamespaceAutoLoader('KREDA\Sphere\Application', __DIR__ . '/Sphere/Application');
-AutoLoader::getNamespaceAutoLoader('KREDA\Sphere', __DIR__ . '/Sphere');
+require_once( __DIR__.'/Library/MOC-V/Core/AutoLoader/AutoLoader.php' );
+AutoLoader::getNamespaceAutoLoader( 'MOC\V', __DIR__.'/Library/MOC-V' );
+AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere\Client', __DIR__.'/Sphere/Client' );
+AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere\Application', __DIR__.'/Sphere/Application' );
+AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere', __DIR__.'/Sphere' );
 
-header('Content-type: text/html; charset=utf-8');
-error_reporting(E_ALL ^ E_NOTICE);
-ini_set('display_errors', 1);
+header( 'Content-type: text/html; charset=utf-8' );
+error_reporting( E_ALL );
+ini_set( 'display_errors', 1 );
 
 session_start();
 
-ini_set('xdebug.var_display_max_data', -1);
-ini_set('xdebug.var_display_max_children', -1);
-ini_set('xdebug.var_display_max_depth', -1);
+ini_set( 'xdebug.var_display_max_data', -1 );
+ini_set( 'xdebug.var_display_max_children', -1 );
+ini_set( 'xdebug.var_display_max_depth', -1 );
 
-set_error_handler(create_function('$N,$S,$F,$L', 'throw new \ErrorException($S,0,$N,$F,$L);'), E_ALL);
+set_error_handler( create_function( '$N,$S,$F,$L', 'throw new \ErrorException($S,0,$N,$F,$L);' ), E_ALL );
 
 $ShellScreen = new Screen();
-$Config = new Configuration(new UniversalRouter(), new LevelClient());
-/**
- * Setup Permanent-Available
- */
-$Config = AssistanceApplication::setupApi($Config);
+$Config = new Configuration( new UniversalRouter(), new LevelClient() );
 
-if (false !== strpos(HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance')) {
-    /** @var Element $Route */
-    $Route = $Config->getClientRouter()->getRoute();
-    $ShellScreen->addToContent(new Container($Route));
-
+if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance/Support' )) {
+    /**
+     * Setup Public-Access
+     */
+    $Config = AssistanceApplication::setupApi( $Config );
+    $Config->getClientNavigation()->addLinkToMeta(
+        new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
+    );
+    if (in_array( HttpKernel::getRequest()->getPathInfo(), $Config->getClientRouter()->getRouteList() )) {
+        /** @var Element $Route */
+        $Route = $Config->getClientRouter()->getRoute();
+        $ShellScreen->addToContent( new Container( $Route ) );
+    } else {
+        /**
+         * Show Help
+         */
+        try {
+            /** @var Element $Route */
+            $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
+            $ShellScreen->addToContent( new Container( $Route ) );
+        } catch( \Exception $E ) {
+            /**
+             * Unexpected Exception
+             */
+            $ShellScreen->addException( $E );
+        }
+    }
 } else {
-
     /**
      * Setup Application
      */
@@ -59,75 +78,101 @@ if (false !== strpos(HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistanc
          * Setup Private-Access
          */
         if (GatekeeperApplication::apiIsValidUser()) {
-            /**
-             * Setup Service
-             */
-            $Config = SystemApplication::setupApi($Config);
-            /**
-             * Setup Application
-             */
-            $Config = ManagementApplication::setupApi($Config);
-            $Config = GraduationApplication::setupApi($Config);
-            $Config = StatisticApplication::setupApi($Config);
+            $Config = SystemApplication::setupApi( $Config );
+            $Config = ManagementApplication::setupApi( $Config );
+            $Config = GraduationApplication::setupApi( $Config );
+            $Config = StatisticApplication::setupApi( $Config );
         }
         /**
          * Setup Public-Access
          */
-        $Config = GatekeeperApplication::setupApi($Config);
+        $Config = GatekeeperApplication::setupApi( $Config );
+        $Config = AssistanceApplication::setupApi( $Config );
         /**
-         * Execute Action, Get Response
+         * Execute Action (if available)
          */
-        if (in_array(HttpKernel::getRequest()->getPathInfo(), $Config->getClientRouter()->getRouteList())) {
+        if (in_array( HttpKernel::getRequest()->getPathInfo(), $Config->getClientRouter()->getRouteList() )) {
             /** @var Element $Route */
             $Route = $Config->getClientRouter()->getRoute();
-            $ShellScreen->addToContent(new Container($Route));
+            $ShellScreen->addToContent( new Container( $Route ) );
         } else {
+            /**
+             * Show Help (if not available)
+             */
             if (GatekeeperApplication::apiIsValidUser()) {
-                $Route = new Error(404,
-                    '<p class="h6">Die angeforderte Ressource konnte nicht gefunden werden</p>'
-                    . '<samp class="text-danger">' . HttpKernel::getRequest()->getPathInfo() . '</samp>'
-                );
-                $ShellScreen->addToContent(new Container($Route));
+                /**
+                 * Show Help
+                 */
+                try {
+                    /** @var Element $Route */
+                    $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
+                    $ShellScreen->addToContent( new Container( $Route ) );
+                } catch( \Exception $E ) {
+                    /**
+                     * Unexpected Exception
+                     */
+                    $ShellScreen->addException( $E );
+                }
             } else {
                 /** @var Element $Route */
-                $Route = $Config->getClientRouter()->getRoute('/Sphere/Gatekeeper/SignIn');
-                $ShellScreen->addToContent(new Container($Route));
+                $Route = $Config->getClientRouter()->getRoute( '/Sphere/Gatekeeper/SignIn' );
+                $ShellScreen->addToContent( new Container( $Route ) );
             }
         }
-    } catch (\ErrorException $E) {
-        $ShellScreen->addError($E);
-    } catch (\Exception $E) {
-        if (strpos($E->getFile(), 'MOC-V\Component\Database')) {
+    } catch( \ErrorException $E ) {
+        /**
+         * Php Error
+         */
+        $ShellScreen->addError( $E );
+
+    } catch( \Exception $E ) {
+        /**
+         * Database Error
+         */
+        if (strpos( $E->getFile(), 'MOC-V\Component\Database' )) {
+            /**
+             * Show Help
+             */
             try {
-                /**
-                 * Execute Action, Get Response
-                 */
                 /** @var Element $Route */
-                $Route = $Config->getClientRouter()->getRoute('/Sphere/Assistance/Support/Application/StartUp');
-                $ShellScreen->addToContent(new Container($Route));
-            } catch (\Exception $E) {
-                $ShellScreen->addException($E);
+                $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/StartUp' );
+                $ShellScreen->addToContent( new Container( $Route ) );
+            } catch( \Exception $E ) {
+                /**
+                 * Unexpected Exception
+                 */
+                $ShellScreen->addException( $E );
             }
         } else {
-            $ShellScreen->addException($E);
+            /**
+             * Unexpected Exception
+             */
+            $ShellScreen->addException( $E );
         }
     }
 }
+
 /**
  * Define Navigation Client
  */
-$ShellScreen->addToNavigation(new Container($Config->getClientNavigation()));
+$ShellScreen->addToNavigation(
+    new Container( $Config->getClientNavigation() )
+);
 /**
  * Define Navigation Module
  */
 if ($Config->hasModuleNavigation()) {
-    $ShellScreen->addToNavigation(new Container($Config->getModuleNavigation()));
+    $ShellScreen->addToNavigation(
+        new Container( $Config->getModuleNavigation() )
+    );
 }
 /**
  * Define Navigation Application
  */
 if ($Config->hasApplicationNavigation()) {
-    $ShellScreen->addToNavigation(new Container($Config->getApplicationNavigation()));
+    $ShellScreen->addToNavigation(
+        new Container( $Config->getApplicationNavigation() )
+    );
 }
 /**
  * Create Client

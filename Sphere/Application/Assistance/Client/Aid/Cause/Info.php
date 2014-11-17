@@ -9,6 +9,7 @@ use MOC\V\Component\Template\Template;
 
 /**
  * Class Info
+ *
  * @package KREDA\Sphere\Application\Assistance\Client\Aid\Cause
  */
 class Info extends Element implements IElementInterface
@@ -19,13 +20,14 @@ class Info extends Element implements IElementInterface
 
     /**
      * @param string $Message
+     *
      * @throws TemplateTypeException
      */
-    function __construct($Message)
+    function __construct( $Message )
     {
 
-        $this->Template = Template::getTemplate(__DIR__ . '/Info.twig');
-        $this->Template->setVariable('Message', $Message);
+        $this->Template = Template::getTemplate( __DIR__.'/Info.twig' );
+        $this->Template->setVariable( 'Message', $Message );
     }
 
     /**
