@@ -36,7 +36,6 @@ class Account extends Service
             .new User( 'Versuchen Sie bitte erneut Ihre Zugangsdaten korrekt einzugeben' )
             .new Support( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
-        //$View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Passwort vergessen', 'Support-Ticket' );
         return $View;
     }
 

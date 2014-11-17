@@ -113,23 +113,8 @@ class Screen extends Shell implements IElementInterface
     public function getContent()
     {
 
-        $Request =
-            '<div class="navbar-fixed-bottom container-fluid">'
-            .'<div class="alert alert-info">'
-            .json_encode( $_REQUEST )
-            .'</div>'
-            .'<div class="alert alert-info">'
-            .'<strong>UrlPort</strong> '.HttpKernel::getRequest()->getPort().' '
-            .'<strong>PathBase</strong> '.HttpKernel::getRequest()->getPathBase().' '
-            .'<strong>UrlBase</strong> '.HttpKernel::getRequest()->getUrlBase().' '
-            .'<strong>PathInfo</strong> '.HttpKernel::getRequest()->getPathInfo().' '
-            .'</div>'
-            .'</div>';
-
         $this->Template->setVariable( 'PositionNavigation', implode( '', $this->PositionNavigation ) );
-        $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent )
-        //.$Request
-        );
+        $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent ) );
         return $this->Template->getContent();
     }
 

@@ -8,6 +8,7 @@ use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
+use KREDA\Sphere\Application\Gatekeeper\Client\SignInError;
 use KREDA\Sphere\Application\Gatekeeper\Client\Welcome;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\ComponentException;
@@ -145,19 +146,12 @@ class Client extends Application
 
         $this->setupModuleNavigation();
         $View = new SignInTeacher();
-        $Error = false;
-        if (null !== $CredentialName && empty( $CredentialName )) {
-            $View->setErrorEmptyName();
-            $Error = true;
+
+        $Error = $this->checkFormCredential( $View, $CredentialName, $CredentialLock );
+        if (!$Error) {
+            $Error = $this->checkFormYubiKey( $View, $CredentialKey );
         }
-        if (null !== $CredentialLock && empty( $CredentialLock )) {
-            $View->setErrorEmptyLock();
-            $Error = true;
-        }
-        if (null !== $CredentialKey && empty( $CredentialKey )) {
-            $View->setErrorEmptyKey();
-            $Error = true;
-        }
+
         if ($Error) {
             return $View;
         } else {
@@ -189,6 +183,45 @@ class Client extends Application
     }
 
     /**
+     * @param SignInError $View
+     * @param null|string $CredentialName
+     * @param null|string $CredentialLock
+     *
+     * @return bool
+     */
+    private function checkFormCredential( SignInError &$View, $CredentialName, $CredentialLock )
+    {
+
+        $Error = false;
+        if (null !== $CredentialName && empty( $CredentialName )) {
+            $View->setErrorEmptyName();
+            $Error = true;
+        }
+        if (null !== $CredentialLock && empty( $CredentialLock )) {
+            $View->setErrorEmptyLock();
+            $Error = true;
+        }
+        return $Error;
+    }
+
+    /**
+     * @param SignInError $View
+     * @param null|string $CredentialKey
+     *
+     * @return bool
+     */
+    private function checkFormYubiKey( SignInError &$View, $CredentialKey )
+    {
+
+        $Error = false;
+        if (null !== $CredentialKey && empty( $CredentialKey )) {
+            $View->setErrorEmptyKey();
+            $Error = true;
+        }
+        return $Error;
+    }
+
+    /**
      * @param string $CredentialName
      * @param string $CredentialLock
      * @param string $CredentialKey
@@ -201,19 +234,12 @@ class Client extends Application
 
         $this->setupModuleNavigation();
         $View = new SignInManagement();
-        $Error = false;
-        if (null !== $CredentialName && empty( $CredentialName )) {
-            $View->setErrorEmptyName();
-            $Error = true;
+
+        $Error = $this->checkFormCredential( $View, $CredentialName, $CredentialLock );
+        if (!$Error) {
+            $Error = $this->checkFormYubiKey( $View, $CredentialKey );
         }
-        if (null !== $CredentialLock && empty( $CredentialLock )) {
-            $View->setErrorEmptyLock();
-            $Error = true;
-        }
-        if (null !== $CredentialKey && empty( $CredentialKey )) {
-            $View->setErrorEmptyKey();
-            $Error = true;
-        }
+
         if ($Error) {
             return $View;
         } else {
@@ -257,15 +283,9 @@ class Client extends Application
 
         $this->setupModuleNavigation();
         $View = new SignInStudent();
-        $Error = false;
-        if (null !== $CredentialName && empty( $CredentialName )) {
-            $View->setErrorEmptyName();
-            $Error = true;
-        }
-        if (null !== $CredentialLock && empty( $CredentialLock )) {
-            $View->setErrorEmptyLock();
-            $Error = true;
-        }
+
+        $Error = $this->checkFormCredential( $View, $CredentialName, $CredentialLock );
+
         if ($Error) {
             return $View;
         } else {
@@ -282,6 +302,9 @@ class Client extends Application
         }
     }
 
+    /**
+     * @return SignOut
+     */
     public function apiSignOut()
     {
 
