@@ -186,7 +186,7 @@ class Youtrack extends Service
         curl_setopt( $CurlHandler, CURLOPT_COOKIE, $this->Cookie );
         curl_setopt( $CurlHandler, CURLOPT_RETURNTRANSFER, 1 );
 
-        var_dump( curl_exec( $CurlHandler ) );
+        curl_exec( $CurlHandler );
         curl_close( $CurlHandler );
     }
 

@@ -41,7 +41,6 @@ set_error_handler( create_function( '$N,$S,$F,$L', 'throw new \ErrorException($S
 
 $ShellScreen = new Screen();
 $Config = new Configuration( new UniversalRouter(), new LevelClient() );
-
 if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance/Support' )) {
     /**
      * Setup Public-Access
@@ -129,13 +128,22 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
         /**
          * Database Error
          */
-        if (strpos( $E->getFile(), 'MOC-V\Component\Database' )) {
+        if (false !== strpos( $E->getFile(), 'MOC-V\Component\Database' ) || false !== strpos( $E->getFile(),
+                'Sphere\Application\Service' )
+        ) {
             /**
              * Show Help
              */
             try {
+                /**
+                 * Setup Public-Access
+                 */
+                $Config = AssistanceApplication::setupApi( $Config );
+                $Config->getClientNavigation()->addLinkToMeta(
+                    new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
+                );
                 /** @var Element $Route */
-                $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/StartUp' );
+                $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
                 $ShellScreen->addToContent( new Container( $Route ) );
             } catch( \Exception $E ) {
                 /**

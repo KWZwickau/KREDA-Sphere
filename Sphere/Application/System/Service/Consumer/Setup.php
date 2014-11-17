@@ -131,10 +131,10 @@ abstract class Setup extends Service
     }
 
     /**
-     * @param Schema $Schema
+     * @param Schema  $Schema
      * @param Manager $Manager
-     * @param Table $tblConsumer
-     * @param Table $tblConsumerTyp
+     * @param Table   $tblConsumer
+     * @param Table   $tblConsumerTyp
      *
      * @throws SchemaException
      * @return Table

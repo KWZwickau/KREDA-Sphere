@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application;
 
 use KREDA\Sphere\IServiceInterface;
+use MOC\V\Component\Database\Component\Exception\ComponentException;
 use MOC\V\Component\Database\Component\IBridgeInterface;
 use MOC\V\Component\Database\Database;
 use MOC\V\Core\HttpKernel\HttpKernel;
@@ -141,7 +142,7 @@ abstract class Service implements IServiceInterface
                     }
 
                 } catch( \Exception $E ) {
-                    throw new \Exception( 'Connection Error' );
+                    throw new ComponentException( 'Connection Error' );
                 }
             }
 

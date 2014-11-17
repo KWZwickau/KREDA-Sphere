@@ -2,7 +2,7 @@
 namespace KREDA\Sphere\Application\Assistance\Service;
 
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Danger;
-use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Time;
+use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Info;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Warning;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Solution\Support;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Solution\User;
@@ -30,8 +30,9 @@ class Application extends Service
         $View->setMessage( '<strong>Problem:</strong> Nach Aufruf der Anwendung arbeitet diese nicht wie erwartet' );
         $View->setContent(
             '<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
-            .new Time( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
+            .new Info( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
             .new Warning( 'Die Anwendung kann wegen Kapazitätsproblemen im Moment nicht verwendet werden' )
+            .new Danger( 'Die Anwendung hat erkannt, dass das System nicht fehlerfrei arbeiten kann' )
             .new Danger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Datenbanken kann gestört sein' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
             .new User( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
@@ -57,7 +58,7 @@ class Application extends Service
                 : ''
             )
             .'<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
-            .new Time( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
+            .new Info( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
             .new Warning( 'Sie haben im Browser manuell eine nicht vorhandene Addresse aufgerufen' )
             .new Danger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Webservern kann gestört sein' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '

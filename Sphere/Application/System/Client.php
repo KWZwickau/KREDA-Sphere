@@ -28,6 +28,7 @@ class Client extends Application
      */
     public static function setupApi( Configuration $Configuration )
     {
+
         self::$Configuration = $Configuration;
         self::addClientNavigationMeta( self::$Configuration,
             '/Sphere/System', 'System', new WrenchIcon()
