@@ -16,4 +16,10 @@ interface IServiceInterface
      */
     public static function getApi( $BaseRoute );
 
+    /**
+     * @param bool $Simulate
+     *
+     * @return string
+     */
+    public function setupDataStructure( $Simulate = true );
 }

@@ -2,7 +2,6 @@
 namespace KREDA\Sphere\Application;
 
 use KREDA\Sphere\IServiceInterface;
-use MOC\V\Component\Database\Component\Exception\ComponentException;
 use MOC\V\Component\Database\Component\IBridgeInterface;
 use MOC\V\Component\Database\Database;
 use MOC\V\Core\HttpKernel\HttpKernel;
@@ -36,7 +35,18 @@ abstract class Service implements IServiceInterface
         return new static;
     }
 
-    abstract public function setupDataStructure();
+    /**
+     * @param bool $Simulate
+     *
+     * @return string
+     */
+    public function setupDataStructure( $Simulate = true )
+    {
+
+        $this->addInstallProtocol( __CLASS__ );
+
+        return $this->getInstallProtocol();
+    }
 
     /**
      * @param string $Item
@@ -117,32 +127,28 @@ abstract class Service implements IServiceInterface
                 if (strtoupper( $Key[1] ) != strtoupper( $Cluster )) {
                     continue;
                 }
-                try {
-                    switch (strtoupper( $Key[0] )) {
-                        case 'MASTER':
-                            $this->registerDatabaseMaster(
-                                $Group['Username'],
-                                $Group['Password'],
-                                $Group['Database'],
-                                $Group['Driver'],
-                                $Group['Host'],
-                                $Group['Port']
-                            );
-                            break;
-                        case 'SLAVE':
-                            $this->registerDatabaseSlave(
-                                $Group['Username'],
-                                $Group['Password'],
-                                $Group['Database'],
-                                $Group['Driver'],
-                                $Group['Host'],
-                                $Group['Port']
-                            );
-                            break;
-                    }
 
-                } catch( \Exception $E ) {
-                    throw new ComponentException( 'Connection Error' );
+                switch (strtoupper( $Key[0] )) {
+                    case 'MASTER':
+                        $this->registerDatabaseMaster(
+                            $Group['Username'],
+                            $Group['Password'],
+                            $Group['Database'],
+                            $Group['Driver'],
+                            $Group['Host'],
+                            $Group['Port']
+                        );
+                        break;
+                    case 'SLAVE':
+                        $this->registerDatabaseSlave(
+                            $Group['Username'],
+                            $Group['Password'],
+                            $Group['Database'],
+                            $Group['Driver'],
+                            $Group['Host'],
+                            $Group['Port']
+                        );
+                        break;
                 }
             }
 

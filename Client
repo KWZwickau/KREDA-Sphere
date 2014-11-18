@@ -1,22 +1,29 @@
 <?php
 namespace KREDA\Client;
 
+use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use KREDA\Sphere\Application\Assistance\Client as AssistanceApplication;
+use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Danger;
+use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Info;
+use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Warning;
 use KREDA\Sphere\Application\Gatekeeper\Client as GatekeeperApplication;
 use KREDA\Sphere\Application\Graduation\Client as GraduationApplication;
 use KREDA\Sphere\Application\Management\Client as ManagementApplication;
 use KREDA\Sphere\Application\Statistic\Client as StatisticApplication;
 use KREDA\Sphere\Application\System\Client as SystemApplication;
 use KREDA\Sphere\Application\System\Service\Database;
+use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Container;
+use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Screen;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use KREDA\Sphere\Client\Configuration;
+use MOC\V\Component\Database\Exception\DatabaseException;
 use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
 use MOC\V\Core\AutoLoader\AutoLoader;
 use MOC\V\Core\HttpKernel\HttpKernel;
@@ -65,7 +72,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             /**
              * Unexpected Exception
              */
-            $ShellScreen->addException( $E );
+            $ShellScreen->addException( $E, get_class( $E ) );
         }
     }
 } else {
@@ -110,7 +117,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
                     /**
                      * Unexpected Exception
                      */
-                    $ShellScreen->addException( $E );
+                    $ShellScreen->addException( $E, get_class( $E ) );
                 }
             } else {
                 /** @var Element $Route */
@@ -123,14 +130,40 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
          * Php Error
          */
         $ShellScreen->addError( $E );
-
-    } catch( \Exception $E ) {
+    } catch( DatabaseException $E ) {
+        try {
+            /**
+             * Setup Public-Access
+             */
+            $Config = AssistanceApplication::setupApi( $Config );
+            /** @var Element $Route */
+            $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
+            $ShellScreen->addToContent( new Container( $Route ) );
+        } catch( \Exception $E ) {
+            /**
+             * Unexpected Exception
+             */
+            $ShellScreen->addException( $E, get_class( $E ) );
+        }
+    } catch( DatabaseObjectNotFoundException $E ) {
         /**
-         * Database Error
+         * Repair Database
          */
-        if (false !== strpos( $E->getFile(), 'MOC-V\Component\Database' ) || false !== strpos( $E->getFile(),
-                'Sphere\Application\Service' )
-        ) {
+        $View = new Landing();
+        $View->setTitle( 'Systemprüfung' );
+        $View->setDescription( 'Datenbanken' );
+        $View->setMessage(
+            new Danger( 'Die Anwendung hat festgestellt, dass manche Datenbanken nicht korrekt arbeiten.' )
+            .new Warning( 'Sollte das Problem nach dem automatischen Reparaturversuch nicht behoben sein wenden Sie sich bitte an den Support' )
+            .new Info( $E->getMessage() )
+        );
+        $View->setContent(
+            Update::getApi()->setupDataStructure( false )
+            .new GatekeeperApplication\Redirect\Custom( '', '/Sphere', '', '', 30 )
+        );
+        $ShellScreen->addToContent( new Container( $View ) );
+    } catch( \Exception $E ) {
+        if (false !== strpos( $E->getFile(), 'Sphere\Application\Service' )) {
             /**
              * Show Help
              */
@@ -149,13 +182,13 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
                 /**
                  * Unexpected Exception
                  */
-                $ShellScreen->addException( $E );
+                $ShellScreen->addException( $E, get_class( $E ) );
             }
         } else {
             /**
              * Unexpected Exception
              */
-            $ShellScreen->addException( $E );
+            $ShellScreen->addException( $E, get_class( $E ) );
         }
     }
 }

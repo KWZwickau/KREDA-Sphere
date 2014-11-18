@@ -16,10 +16,11 @@ abstract class Setup extends Service
 {
 
     /**
+     * @param bool $Simulate
+     *
      * @return string
-     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    public function setupDataStructure()
+    public function setupDataStructure( $Simulate = true )
     {
 
         /**
@@ -39,7 +40,8 @@ abstract class Setup extends Service
         /**
          * Setup - Table (FK)
          */
-        $this->setupTableAccount( $UpgradeSchema, $Manager, $tblYubiKey );
+        $tblAccount = $this->setupTableAccount( $UpgradeSchema, $Manager, $tblYubiKey );
+        $this->setupTableAccountSession( $UpgradeSchema, $Manager, $tblAccount );
         $this->setupTableAccountRoleList( $UpgradeSchema, $Manager, $tblAccountRole, $tblAccessRole );
         $this->setupTableAccessPrivilegeRoleList( $UpgradeSchema, $Manager, $tblAccessPrivilege, $tblAccessRole );
         $this->setupTableAccessRightPrivilegeList( $UpgradeSchema, $Manager, $tblAccessRight, $tblAccessPrivilege );
@@ -56,7 +58,9 @@ abstract class Setup extends Service
         if (!empty( $Statement )) {
             foreach ((array)$Statement as $Query) {
                 $this->addInstallProtocol( $Query );
-                $this->writeData()->prepareStatement( $Query )->executeWrite();
+                if (!$Simulate) {
+                    $this->writeData()->prepareStatement( $Query )->executeWrite();
+                }
             }
         }
         return $this->getInstallProtocol();
@@ -141,11 +145,8 @@ abstract class Setup extends Service
                 $Column->setAutoincrement( true );
                 $Table->setPrimaryKey( array( 'Id' ) );
             }
-            if (!$this->dbTableHasColumn( 'tblAccessRight', 'Class' )) {
-                $Table->addColumn( 'Class', 'string' );
-            }
-            if (!$this->dbTableHasColumn( 'tblAccessRight', 'Method' )) {
-                $Table->addColumn( 'Method', 'string' );
+            if (!$this->dbTableHasColumn( 'tblAccessRight', 'Route' )) {
+                $Table->addColumn( 'Route', 'string' );
             }
         } else {
             // Install
@@ -153,8 +154,7 @@ abstract class Setup extends Service
             $Column = $Table->addColumn( 'Id', 'bigint' );
             $Column->setAutoincrement( true );
             $Table->setPrimaryKey( array( 'Id' ) );
-            $Table->addColumn( 'Class', 'string' );
-            $Table->addColumn( 'Method', 'string' );
+            $Table->addColumn( 'Route', 'string' );
         }
         return $Table;
     }
@@ -247,16 +247,16 @@ abstract class Setup extends Service
                 $Table->addColumn( 'Password', 'string' );
             }
             if (!$this->dbTableHasColumn( 'tblAccount', 'tblYubiKey' )) {
-                $Table->addColumn( 'tblYubiKey', 'bigint' );
+                $Table->addColumn( 'tblYubiKey', 'bigint', array( 'notnull' => false ) );
                 if ($Manager->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                     $Table->addForeignKeyConstraint( $tblYubiKey, array( 'tblYubiKey' ), array( 'Id' ) );
                 }
             }
             if (!$this->dbTableHasColumn( 'tblAccount', 'apiHumanResources_Person' )) {
-                $Table->addColumn( 'apiHumanResources_Person', 'bigint' );
+                $Table->addColumn( 'apiHumanResources_Person', 'bigint', array( 'notnull' => false ) );
             }
             if (!$this->dbTableHasColumn( 'tblAccount', 'apiSystem_Consumer' )) {
-                $Table->addColumn( 'apiSystem_Consumer', 'bigint' );
+                $Table->addColumn( 'apiSystem_Consumer', 'bigint', array( 'notnull' => false ) );
             }
         } else {
             // Install
@@ -266,12 +266,59 @@ abstract class Setup extends Service
             $Table->setPrimaryKey( array( 'Id' ) );
             $Table->addColumn( 'Username', 'string' );
             $Table->addColumn( 'Password', 'string' );
-            $Table->addColumn( 'tblYubiKey', 'bigint' );
+            $Table->addColumn( 'tblYubiKey', 'bigint', array( 'notnull' => false ) );
             if ($Manager->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblYubiKey, array( 'tblYubiKey' ), array( 'Id' ) );
             }
-            $Table->addColumn( 'apiHumanResources_Person', 'bigint' );
-            $Table->addColumn( 'apiSystem_Consumer', 'bigint' );
+            $Table->addColumn( 'apiHumanResources_Person', 'bigint', array( 'notnull' => false ) );
+            $Table->addColumn( 'apiSystem_Consumer', 'bigint', array( 'notnull' => false ) );
+        }
+        return $Table;
+    }
+
+    /**
+     * @param Schema  $Schema
+     * @param Manager $Manager
+     * @param Table   $tblAccount
+     *
+     * @return Table
+     * @throws SchemaException
+     */
+    protected function setupTableAccountSession( Schema &$Schema, Manager $Manager, Table $tblAccount )
+    {
+
+        if ($this->dbHasTable( 'tblAccountSession' )) {
+            // Upgrade
+            $Table = $Schema->getTable( 'tblAccountSession' );
+            if (!$this->dbTableHasColumn( 'tblAccountSession', 'Id' )) {
+                $Column = $Table->addColumn( 'Id', 'bigint' );
+                $Column->setAutoincrement( true );
+                $Table->setPrimaryKey( array( 'Id' ) );
+            }
+            if (!$this->dbTableHasColumn( 'tblAccountSession', 'Session' )) {
+                $Table->addColumn( 'Session', 'string' );
+            }
+            if (!$this->dbTableHasColumn( 'tblAccountSession', 'Timeout' )) {
+                $Table->addColumn( 'Timeout', 'integer' );
+            }
+            if (!$this->dbTableHasColumn( 'tblAccountSession', 'tblAccount' )) {
+                $Table->addColumn( 'tblAccount', 'bigint' );
+                if ($Manager->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                    $Table->addForeignKeyConstraint( $tblAccount, array( 'tblAccount' ), array( 'Id' ) );
+                }
+            }
+        } else {
+            // Install
+            $Table = $Schema->createTable( 'tblAccountSession' );
+            $Column = $Table->addColumn( 'Id', 'bigint' );
+            $Column->setAutoincrement( true );
+            $Table->setPrimaryKey( array( 'Id' ) );
+            $Table->addColumn( 'Session', 'string' );
+            $Table->addColumn( 'Timeout', 'integer' );
+            $Table->addColumn( 'tblAccount', 'bigint' );
+            if ($Manager->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                $Table->addForeignKeyConstraint( $tblAccount, array( 'tblAccount' ), array( 'Id' ) );
+            }
         }
         return $Table;
     }

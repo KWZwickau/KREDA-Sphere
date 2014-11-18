@@ -37,7 +37,9 @@ class LevelApplication extends Navigation implements IElementInterface
     public function addLinkToMain( LevelApplication\Link $Link )
     {
 
-        array_push( $this->MainLinkList, $Link->getContent() );
+        if (!in_array( $Link->getContent(), $this->MainLinkList )) {
+            array_push( $this->MainLinkList, $Link->getContent() );
+        }
         return $this;
     }
 

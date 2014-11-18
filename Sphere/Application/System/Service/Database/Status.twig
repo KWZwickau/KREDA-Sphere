@@ -1,41 +1,45 @@
 <table class="table table-condensed text-left">
     <thead>
     <tr>
-        <th> Server / Service</th>
-        <th> Datenbank</th>
-        <th> Status</th>
-        <th></th>
+        <th>Service</th>
+        <th>Connection</th>
+        <th>Datenbank</th>
+        <th>Status</th>
+        {#<th></th>#}
     </tr>
     </thead>
     <tbody>
     {% for Key, Item in Status %}
-        {% for Server, Setting in Item %}
-            {% for Database, Connection in Setting %}
-                <tr>
-                    <td style="vertical-align: middle;">{{ Server }}</td>
-                    <td style="vertical-align: middle;">{{ Database }}</td>
-                    <td style="vertical-align: middle;">{{ Connection }}</td>
-                    <td style="vertical-align: middle;" class="text-right">
-                        <form class="form-inline" action="{{ RouteUpdate }}" method="post">
-                            <div class="form-group {{ CredentialKeyGroup }}">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-certificate"></span>
-                                    </span>
-                                    <input type="password" class="form-control" name="CredentialKey"
-                                           placeholder="YubiKey">
-                                    {{ CredentialKeyFeedbackIcon }}
-                                </div>
-                                {{ CredentialKeyFeedbackMessage }}
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <button type="submit" class="btn btn-primary">Bearbeiten</button>
-                                </div>
-                            </div>
-                        </form>
-                    </td>
-                </tr>
+        {% for Service, Server in Item %}
+            {% for Connection, Setting in Server %}
+                {% for Database, Status in Setting %}
+                    <tr>
+                        <td style="vertical-align: middle;" class="small text-warning">{{ Service }}</td>
+                        <td style="vertical-align: middle;" class="small text-info">{{ Connection }}</td>
+                        <td style="vertical-align: middle;" class="small text-warning">{{ Database }}</td>
+                        <td style="vertical-align: middle;">{{ Status }}</td>
+                        {#<td style="vertical-align: middle;" class="text-right">#}
+                        {#<form class="form-inline" action="{{ RouteUpdate }}" method="post">#}
+                        {#<div class="form-group {{ CredentialKeyGroup }}">#}
+                        {#<div class="input-group">#}
+                        {#<span class="input-group-addon">#}
+                        {#<span class="glyphicon glyphicon-certificate"></span>#}
+                        {#</span>#}
+                        {#<input type="password" class="form-control" name="CredentialKey"#}
+                        {#placeholder="YubiKey">#}
+                        {#{{ CredentialKeyFeedbackIcon }}#}
+                        {#</div>#}
+                        {#{{ CredentialKeyFeedbackMessage }}#}
+                        {#</div>#}
+                        {#<div class="form-group">#}
+                        {#<div class="input-group">#}
+                        {#<button type="submit" class="btn btn-primary">Bearbeiten</button>#}
+                        {#</div>#}
+                        {#</div>#}
+                        {#</form>#}
+                        {#</td>#}
+                    </tr>
+                {% endfor %}
             {% endfor %}
         {% endfor %}
     {% endfor %}

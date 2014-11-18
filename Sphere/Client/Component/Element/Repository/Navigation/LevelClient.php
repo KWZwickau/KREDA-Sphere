@@ -39,7 +39,9 @@ class LevelClient extends Navigation implements IElementInterface
     public function addLinkToMain( LevelClient\Link $Link )
     {
 
-        array_push( $this->MainLinkList, $Link->getContent() );
+        if (!in_array( $Link->getContent(), $this->MainLinkList )) {
+            array_push( $this->MainLinkList, $Link->getContent() );
+        }
         return $this;
     }
 
@@ -51,7 +53,9 @@ class LevelClient extends Navigation implements IElementInterface
     public function addLinkToMeta( LevelClient\Link $Link )
     {
 
-        array_push( $this->MetaLinkList, $Link->getContent() );
+        if (!in_array( $Link->getContent(), $this->MetaLinkList )) {
+            array_push( $this->MetaLinkList, $Link->getContent() );
+        }
         return $this;
     }
 

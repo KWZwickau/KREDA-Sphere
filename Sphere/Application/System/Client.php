@@ -7,6 +7,7 @@ use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WrenchIcon;
 use KREDA\Sphere\Client\Configuration;
 
@@ -35,11 +36,11 @@ class Client extends Application
         );
         self::buildRoute( self::$Configuration, '/Sphere/System', __CLASS__.'::apiMain' );
 
-        self::buildRoute( self::$Configuration, '/Sphere/System/Backup', __CLASS__.'::apiMain' );
-
         self::buildRoute( self::$Configuration, '/Sphere/System/Update', __CLASS__.'::apiUpdate' );
+        self::buildRoute( self::$Configuration, '/Sphere/System/Update/Simulation', __CLASS__.'::apiUpdateSimulation' );
+        self::buildRoute( self::$Configuration, '/Sphere/System/Update/Perform', __CLASS__.'::apiUpdatePerform' );
 
-        self::buildRoute( self::$Configuration, '/Sphere/System/Database', __CLASS__.'::serviceDatabaseMain' );
+        self::buildRoute( self::$Configuration, '/Sphere/System/Database/Status', __CLASS__.'::apiDatabaseStatus' );
 
         return $Configuration;
     }
@@ -61,13 +62,13 @@ class Client extends Application
     {
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Backup', 'Backup', new GearIcon()
+            '/Sphere/System/Database/Status', 'Datenbanken', new GearIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Update', 'Update', new GearIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Database', 'Datenbanken', new GearIcon()
+            '/Sphere/System/Account', 'Benutzerkonten', new PersonIcon()
         );
     }
 
@@ -78,21 +79,52 @@ class Client extends Application
     {
 
         $this->setupModuleNavigation();
-        $View = new Landing();
-        $View->setTitle( 'KREDA Update' );
-        $View->setMessage( '' );
-        $View->setContent( Update::getApi()->setupDataStructure() );
-        return $View;
+        $this->setupServiceUpdate();
+        return Update::getApi()->apiUpdate();
+    }
+
+    public function setupServiceUpdate()
+    {
+
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Update/Simulation', 'Simulation durchführen', new GearIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Update/Perform', 'Update durchführen', new GearIcon()
+        );
+
     }
 
     /**
      * @return Landing
      */
-    public function serviceDatabaseMain()
+    public function apiUpdateSimulation()
     {
 
         $this->setupModuleNavigation();
-        return Database::getApi( '/Sphere/System/Database' )->apiMain();
+        $this->setupServiceUpdate();
+        return Update::getApi()->apiUpdateSimulation();
+    }
+
+    /**
+     * @return Landing
+     */
+    public function apiUpdatePerform()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupServiceUpdate();
+        return Update::getApi()->apiUpdatePerform();
+    }
+
+    /**
+     * @return Landing
+     */
+    public function apiDatabaseStatus()
+    {
+
+        $this->setupModuleNavigation();
+        return Database::getApi( '/Sphere/System/Database' )->apiStatus();
     }
 
 }

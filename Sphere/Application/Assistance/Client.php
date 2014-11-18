@@ -94,10 +94,10 @@ class Client extends Application
     {
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Assistance/Account', 'Benutzerkonto', new BookIcon()
+            '/Sphere/Assistance/Account', 'Benutzerkonto', new QuestionIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Assistance/Support/Application', 'Anwendungsfehler', new BookIcon()
+            '/Sphere/Assistance/Support/Application', 'Anwendungsfehler', new QuestionIcon()
         );
     }
 

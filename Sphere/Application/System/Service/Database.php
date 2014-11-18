@@ -22,12 +22,12 @@ class Database extends Service
     /**
      * @return Landing
      */
-    public function apiMain()
+    public function apiStatus()
     {
 
         $View = new Landing();
         $View->setTitle( 'Datenbanken' );
-        $View->setMessage( '<div class="text-danger">OBACHT!!</div>' );
+        $View->setMessage( '' );
 
         $Report = array();
 
@@ -36,21 +36,21 @@ class Database extends Service
             if (false !== ( $Config = realpath( $Config ) )) {
                 $Setting = parse_ini_file( $Config, true );
                 if (empty( $Setting )) {
-                    $Report[$Index][$Service]['Database/Config/'.$Service.'.ini'] = '<div class="badge badge-warning">Konfiguration fehlerhaft</div>';
+                    $Report[$Index][$Service]['Database/Config/'.$Service.'.ini']['-NA-'] = '<div class="badge badge-warning">Konfiguration fehlerhaft</div>';
                 } else {
 
                     foreach ((array)$Setting as $Key => $Group) {
                         $Key = explode( ':', $Key );
                         try {
                             $this->connectDatabase( $Service, $Key[1] );
-                            $Report[$Index][$Group['Host'].'<div class="text-info small">'.$Service.' - '.$Key[0].', '.$Key[1].'</div>'][$Group['Database']] = '<div class="badge badge-success">Verbindung erfolgreich</div>';
+                            $Report[$Index][$Service][$Group['Host'].'<br/>'.$Key[0].', '.$Key[1].'</div>'][$Group['Database']] = '<div class="badge badge-success">Verbindung erfolgreich</div>';
                         } catch( \Exception $E ) {
-                            $Report[$Index][$Group['Host'].'<div class="text-info small">'.$Service.' - '.$Key[0].', '.$Key[1].'</div>'][$Group['Database']] = '<div class="badge badge-danger">Nicht verbunden</div>';
+                            $Report[$Index][$Service][$Group['Host'].'<br/>'.$Key[0].', '.$Key[1].'</div>'][$Group['Database']] = '<div class="badge badge-danger">Nicht verbunden</div>';
                         }
                     }
                 }
             } else {
-                $Report[$Index][$Service]['Database/Config/'.$Service.'.ini'] = '<div class="badge badge-primary">Konfiguration fehlt</div>';
+                $Report[$Index][$Service]['Database/Config/'.$Service.'.ini']['-NA-'] = '<div class="badge badge-primary">Konfiguration fehlt</div>';
             }
         }
 
@@ -60,16 +60,5 @@ class Database extends Service
         $View->setContent( $Report->getContent() );
 
         return $View;
-    }
-
-    /**
-     * @return string
-     */
-    public function setupDataStructure()
-    {
-
-        $this->addInstallProtocol( __CLASS__ );
-
-        return $this->getInstallProtocol();
     }
 }

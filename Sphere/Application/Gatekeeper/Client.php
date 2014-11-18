@@ -81,7 +81,7 @@ class Client extends Application
     public static function apiIsValidUser()
     {
 
-        return Access::getApi()->apiSessionIsValid();
+        return Access::getApi()->apiGetAccountIdBySession();
     }
 
     /**

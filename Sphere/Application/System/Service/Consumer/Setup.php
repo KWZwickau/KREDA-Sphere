@@ -16,10 +16,11 @@ abstract class Setup extends Service
 {
 
     /**
+     * @param bool $Simulate
+     *
      * @return string
-     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    public function setupDataStructure()
+    public function setupDataStructure( $Simulate = true )
     {
 
         /**
@@ -50,7 +51,9 @@ abstract class Setup extends Service
         if (!empty( $Statement )) {
             foreach ((array)$Statement as $Query) {
                 $this->addInstallProtocol( $Query );
-                $this->writeData()->prepareStatement( $Query )->executeWrite();
+                if (!$Simulate) {
+                    $this->writeData()->prepareStatement( $Query )->executeWrite();
+                }
             }
         }
         return $this->getInstallProtocol();

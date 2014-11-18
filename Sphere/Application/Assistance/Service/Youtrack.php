@@ -190,17 +190,7 @@ class Youtrack extends Service
         curl_close( $CurlHandler );
     }
 
-    /**
-     * @return string
-     */
-    public function setupDataStructure()
-    {
-
-        $this->addInstallProtocol( __CLASS__ );
-
-        return $this->getInstallProtocol();
-    }
-
+    /** @noinspection PhpUnusedPrivateMethodInspection */
     /**
      * @param \resource $CurlHandler
      * @param string    $String

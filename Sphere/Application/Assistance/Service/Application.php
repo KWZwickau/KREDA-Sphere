@@ -75,14 +75,4 @@ class Application extends Service
         return $View;
     }
 
-    /**
-     * @return string
-     */
-    public function setupDataStructure()
-    {
-
-        $this->addInstallProtocol( __CLASS__ );
-
-        return $this->getInstallProtocol();
-    }
 }

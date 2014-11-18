@@ -1,14 +1,14 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Setup;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema;
 
 /**
  * Class Access
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service
  */
-class Access extends Setup
+class Access extends Schema
 {
 
     /**
@@ -20,12 +20,28 @@ class Access extends Setup
         $this->connectDatabase( 'Access' );
     }
 
-    /**
-     * @return bool
-     */
-    public function apiSessionIsValid()
+    public function setupSystem()
     {
 
+        $this->schemaCreateAccessRight( '' );
+
+        $this->schemaCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp' );
+
+    }
+
+    /**
+     * @return bool|integer
+     */
+    public function apiGetAccountIdBySession()
+    {
+
+        /*
+                if( false != ( $tblAccount = $this->schemaGetAccountIdBySession() ) ) {
+                    return $tblAccount;
+                } else {
+                    return false;
+                }
+        */
         if (isset( $_SESSION['Gatekeeper-Valid'] )) {
             return $_SESSION['Gatekeeper-Valid'];
         } else {
@@ -52,4 +68,5 @@ class Access extends Setup
     {
 
     }
+
 }

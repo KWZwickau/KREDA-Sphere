@@ -1,13 +1,10 @@
 <?php
 namespace KREDA\Sphere\Application\System\Service;
 
-use KREDA\Sphere\Application\Assistance\Service\Account;
-use KREDA\Sphere\Application\Assistance\Service\Application;
 use KREDA\Sphere\Application\Assistance\Service\Youtrack;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
-use KREDA\Sphere\Application\Management\Service\People;
-use KREDA\Sphere\Application\Management\Service\Property;
 use KREDA\Sphere\Application\Service;
+use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 
 /**
  * Class Update
@@ -18,32 +15,62 @@ class Update extends Service
 {
 
     /**
+     * @return Landing
+     */
+    public function apiUpdate()
+    {
+
+        $View = new Landing();
+        $View->setTitle( 'KREDA Update' );
+        $View->setMessage( 'Bitte wählen Sie ein Thema' );
+        return $View;
+    }
+
+    /**
+     * @return Landing
+     */
+    public function apiUpdateSimulation()
+    {
+
+        $View = new Landing();
+        $View->setTitle( 'KREDA Update' );
+        $View->setDescription( 'Simulation' );
+        $View->setMessage( '' );
+        $View->setContent( Update::getApi()->setupDataStructure( true ) );
+        return $View;
+    }
+
+    /**
+     * @param bool $Simulate
+     *
      * @return string
      */
-    public function setupDataStructure()
+    public function setupDataStructure( $Simulate = true )
     {
 
         /**
          * Gatekeeper
          */
-        $Protocol[] = Access::getApi()->setupDataStructure();
+        $Protocol[] = Access::getApi()->setupDataStructure( $Simulate );
+        Access::getApi()->setupSystem();
         /**
          * System
          */
-        $Protocol[] = Database::getApi()->setupDataStructure();
-        $Protocol[] = Consumer::getApi()->setupDataStructure();
-        /**
-         * Assistance
-         */
-        $Protocol[] = Application::getApi()->setupDataStructure();
-        $Protocol[] = Youtrack::getApi()->setupDataStructure();
-        $Protocol[] = Account::getApi()->setupDataStructure();
-        /**
-         * Management
-         */
-        $Protocol[] = People::getApi()->setupDataStructure();
-        $Protocol[] = Property::getApi()->setupDataStructure();
+        $Protocol[] = Consumer::getApi()->setupDataStructure( $Simulate );
 
         return implode( $Protocol );
+    }
+
+    /**
+     * @return Landing
+     */
+    public function apiUpdatePerform()
+    {
+
+        $View = new Landing();
+        $View->setTitle( 'KREDA Update' );
+        $View->setMessage( '' );
+        $View->setContent( Update::getApi()->setupDataStructure( false ) );
+        return $View;
     }
 }

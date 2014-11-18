@@ -97,13 +97,14 @@ class Screen extends Shell implements IElementInterface
 
     /**
      * @param \Exception $E
+     * @param string     $Identifier
      *
      * @return Screen
      */
-    public function addException( \Exception $E )
+    public function addException( \Exception $E, $Identifier = 'Unhandled Exception' )
     {
 
-        return $this->addMessageToContent( $E, 'Exception' );
+        return $this->addMessageToContent( $E, $Identifier );
 
     }
 
