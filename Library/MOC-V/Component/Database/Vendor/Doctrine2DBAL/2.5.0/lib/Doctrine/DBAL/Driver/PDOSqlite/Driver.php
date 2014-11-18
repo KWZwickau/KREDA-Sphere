@@ -37,7 +37,7 @@ class Driver extends AbstractSQLiteDriver
      */
     protected $_userDefinedFunctions = array(
         'sqrt' => array( 'callback' => array( 'Doctrine\DBAL\Platforms\SqlitePlatform', 'udfSqrt' ), 'numArgs' => 1 ),
-        'mod'  => array( 'callback' => array( 'Doctrine\DBAL\Platforms\SqlitePlatform', 'udfMod' ), 'numArgs' => 2 ),
+        'mod' => array( 'callback' => array( 'Doctrine\DBAL\Platforms\SqlitePlatform', 'udfMod' ), 'numArgs' => 2 ),
         'locate' => array(
             'callback' => array( 'Doctrine\DBAL\Platforms\SqlitePlatform', 'udfLocate' ),
             'numArgs'  => -1

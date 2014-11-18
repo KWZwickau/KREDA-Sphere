@@ -3,6 +3,7 @@ namespace MOC\V\Component\Database\Component\Bridge\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Statement;
 use MOC\V\Component\Database\Component\Bridge\Bridge;
 use MOC\V\Component\Database\Component\Exception\ComponentException;
@@ -140,10 +141,11 @@ class Doctrine2DBAL extends Bridge implements IBridgeInterface
     }
 
     /**
-     * WARNING: this may be drop out with no replacement
+     * WARNING: this may drop out with no replacement
      *
      * @return \Doctrine\DBAL\Schema\AbstractSchemaManager
      * @throws NoConnectionException
+     * @codeCoverageIgnore
      */
     public function getSchemaManager()
     {
@@ -152,14 +154,28 @@ class Doctrine2DBAL extends Bridge implements IBridgeInterface
     }
 
     /**
-     * WARNING: this may be drop out with no replacement
+     * WARNING: this may drop out with no replacement
      *
      * @return Connection
      * @throws NoConnectionException
+     * @codeCoverageIgnore
      */
     public function getConnection()
     {
 
         return $this->prepareConnection();
+    }
+
+    /**
+     * WARNING: this may drop out with no replacement
+     *
+     * @return QueryBuilder
+     * @throws NoConnectionException
+     * @codeCoverageIgnore
+     */
+    public function getQueryBuilder()
+    {
+
+        return $this->prepareConnection()->createQueryBuilder();
     }
 }
