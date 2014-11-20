@@ -9,7 +9,6 @@ use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignInError;
-use KREDA\Sphere\Application\Gatekeeper\Client\Welcome;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\BadOTPException;
@@ -125,12 +124,15 @@ class Client extends Application
     }
 
     /**
-     * @return Welcome
+     * @return Landing
      */
     public function apiWelcome()
     {
 
-        return new Welcome();
+        $View = new Landing();
+        $View->setTitle( 'Willkommen' );
+        $View->setMessage( '' );
+        return $View;
     }
 
     /**
@@ -159,6 +161,7 @@ class Client extends Application
                 try {
                     if (Access::getApi()->apiValidateYubiKey( $CredentialKey )) {
                         if ($CredentialName == 'demo' && $CredentialLock == 'demo') {
+                            Access::getApi()->
                             $_SESSION['Gatekeeper-Valid'] = true;
                             return new SignIn();
                         } else {
@@ -246,8 +249,12 @@ class Client extends Application
             if (null !== $CredentialKey) {
                 try {
                     if (Access::getApi()->apiValidateYubiKey( $CredentialKey )) {
-                        if ($CredentialName == 'demo' && $CredentialLock == 'demo') {
-                            $_SESSION['Gatekeeper-Valid'] = true;
+                        if (false !== ( $tblAccount = Access::getApi()->apiValidateCredentials(
+                                $CredentialName,
+                                $CredentialLock
+                            ) )
+                        ) {
+                            Access::getApi()->apiSignIn( $tblAccount );
                             return new SignIn();
                         } else {
                             $View->setErrorWrongName();

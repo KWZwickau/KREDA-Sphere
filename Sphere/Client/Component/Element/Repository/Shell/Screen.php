@@ -65,7 +65,6 @@ class Screen extends Shell implements IElementInterface
      */
     private function addMessageToContent( \Exception $E, $Name = 'Error' )
     {
-
         $TraceList = '';
         foreach ((array)$E->getTrace() as $Index => $Trace) {
             $TraceList .= '<br/><samp class="text-info">'
@@ -75,7 +74,7 @@ class Screen extends Shell implements IElementInterface
                 .( isset( $Trace['line'] ) ? '<br/>Line: '.$Trace['line'] : '<br/>Line: ' )
                 .'</samp>';
         }
-        $Hit = '<samp class="text-danger"><p class="h6">'.$E->getMessage().'</p>File: '.$E->getFile().'<br/>Line: '.$E->getLine().'</samp>'.$TraceList;
+        $Hit = '<samp class="text-danger"><p class="h6">'.$E->getMessage().'</p><br/>File: '.$E->getFile().'<br/>Line: '.$E->getLine().'</samp>'.$TraceList;
         $this->addToContent( new Container( new Error(
             $E->getCode() == 0 ? $Name : $E->getCode(), $Hit
         ) ) );

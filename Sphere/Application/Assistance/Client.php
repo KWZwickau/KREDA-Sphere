@@ -99,6 +99,9 @@ class Client extends Application
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Assistance/Support/Application', 'Anwendungsfehler', new QuestionIcon()
         );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Assistance/Support/Ticket', 'Support', new QuestionIcon()
+        );
     }
 
     /**

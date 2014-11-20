@@ -5,6 +5,7 @@ use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Template;
+use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class Error
@@ -17,6 +18,12 @@ class Error extends Shell implements IElementInterface
     /** @var IBridgeInterface $Template */
     private $Template = null;
 
+    /**
+     * @param integer|string $Code
+     * @param null           $Message
+     *
+     * @throws \MOC\V\Component\Template\Exception\TemplateTypeException
+     */
     function __construct( $Code, $Message = null )
     {
 
@@ -30,9 +37,19 @@ class Error extends Shell implements IElementInterface
                     break;
                 default:
                     $this->Template->setVariable( 'ErrorMessage', '' );
+
             }
         } else {
             $this->Template->setVariable( 'ErrorMessage', $Message );
+
+            $this->Template->setVariable( 'ErrorMenu', array(
+                HttpKernel::getRequest()->getUrlBase()
+                .'/'.trim( '/Sphere/Assistance/Support/Ticket'
+                    .'?TicketSubject='.urlencode( $Code )
+                    .'&TicketMessage='.urlencode( $Message ),
+                    '/' ) => 'Fehlerbericht senden'
+            ) );
+
         }
     }
 

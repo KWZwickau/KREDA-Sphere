@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Danger;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Solution\Support;
 use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use Markdownify\Converter;
 
 /**
  * Class Youtrack
@@ -17,6 +18,10 @@ class Youtrack extends Service
     /** @var string $YoutrackDomain */
     //private $YoutrackDomain = 'http://ticket.swe.haus-der-edv.de';
     private $YoutrackDomain = 'http://192.168.33.150:8080';
+    /** @var string $YoutrackUser */
+    private $YoutrackUser = 'KREDA-Support';
+    /** @var string $YoutrackPassword */
+    private $YoutrackPassword = 'Professional';
     /** @var null|string $Cookie */
     private $Cookie = null;
     /** @var null|array $CookieList */
@@ -90,12 +95,41 @@ class Youtrack extends Service
             if (!isset( $Content[1] )) {
                 $Content[1] = '';
             }
-            $Issues[$Index] = '<div class="alert alert-info"><strong>'.$Content[0].'</strong><hr/><small>'.nl2br( $Content[1] ).'</small></div>';
+            if (!isset( $Content[1] )) {
+                $Content[2] = '';
+            }
+            switch (strtoupper( $Content[2] )) {
+                case 'ERFASST': {
+                    $Label = 'label-primary';
+                    break;
+                }
+                case 'ZU BESPRECHEN': {
+                    $Label = 'label-warning';
+                    break;
+                }
+                case 'OFFEN': {
+                    $Label = 'label-danger';
+                    break;
+                }
+                case 'IN BEARBEITUNG': {
+                    $Label = 'label-success';
+                    break;
+                }
+                default:
+                    $Label = 'label-default';
+
+            }
+
+            $Issues[$Index] = '<div class="alert alert-info">'
+                .'<strong>'.$Content[0].'</strong>'
+                .'<div class="pull-right label '.$Label.'"><samp>'.$Content[2].'</samp></div>'
+                .'<hr/><small>'.nl2br( $Content[1] ).'</small>'
+                .'</div>';
         }
         if (empty( $Issues )) {
             $Issues[0] = '<div>Keine Supportanfragen vorhanden</div>';
         }
-        rsort( $Issues );
+        krsort( $Issues );
         return '<br/><h3>Tickets<small> Aktuelle Anfragen</small></h3>'.implode( '', $Issues );
     }
 
@@ -122,8 +156,12 @@ class Youtrack extends Service
 
         $Summary = $Response->xpath( '//issues/issue/field[@name="summary"]' );
         $Description = $Response->xpath( '//issues/issue/field[@name="description"]' );
+        $Status = $Response->xpath( '//issues/issue/field[@name="State"]' );
 
         $Issues = array();
+        /**
+         * [0] - Title
+         */
         $Run = 0;
         foreach ($Summary as $Title) {
             foreach ($Title->children() as $Value) {
@@ -131,8 +169,21 @@ class Youtrack extends Service
             }
             $Run++;
         }
+        /**
+         * [1] - Description
+         */
         $Run = 0;
         foreach ($Description as $Message) {
+            foreach ($Message->children() as $Value) {
+                array_push( $Issues[$Run], (string)$Value );
+            }
+            $Run++;
+        }
+        /**
+         * [2] - Status
+         */
+        $Run = 0;
+        foreach ($Status as $Message) {
             foreach ($Message->children() as $Value) {
                 array_push( $Issues[$Run], (string)$Value );
             }
@@ -151,7 +202,8 @@ class Youtrack extends Service
         $CurlHandler = curl_init();
         curl_setopt( $CurlHandler, CURLOPT_URL, $this->YoutrackDomain.'/rest/user/login' );
         curl_setopt( $CurlHandler, CURLOPT_POST, true );
-        curl_setopt( $CurlHandler, CURLOPT_POSTFIELDS, 'login=KREDA-Support&password=Professional' );
+        curl_setopt( $CurlHandler, CURLOPT_POSTFIELDS,
+            'login='.$this->YoutrackUser.'&password='.$this->YoutrackPassword );
         curl_setopt( $CurlHandler, CURLOPT_HEADER, false );
         curl_setopt( $CurlHandler, CURLOPT_HEADERFUNCTION, array( $this, 'ticketHeader' ) );
         curl_setopt( $CurlHandler, CURLOPT_RETURNTRANSFER, true );
@@ -174,6 +226,11 @@ class Youtrack extends Service
      */
     private function ticketCreate( $Summary, $Description )
     {
+
+        $Markdown = new Converter();
+        $Markdown->setKeepHTML( false );
+        $Summary = $Markdown->parseString( $Summary );
+        $Description = $Markdown->parseString( $Description );
 
         $this->ticketLogin();
         $CurlHandler = curl_init();
