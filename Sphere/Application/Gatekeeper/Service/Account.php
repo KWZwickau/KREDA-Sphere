@@ -68,7 +68,6 @@ class Account extends Schema
                  */
                 try {
                     if (Token::getApi()->apiValidateToken( $TokenString )) {
-                        var_dump( __METHOD__ );
                         /**
                          * Certification
                          */

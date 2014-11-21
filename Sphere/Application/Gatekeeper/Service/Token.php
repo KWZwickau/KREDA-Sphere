@@ -25,6 +25,7 @@ class Token extends Schema
     public function setupSystem()
     {
 
+        $this->toolCreateToken( 'ccccccdilkui' );
     }
 
     /**

@@ -161,8 +161,8 @@ class YubiKey
             $CurlHandler = curl_init( $YubiApiUrl );
             curl_setopt( $CurlHandler, CURLOPT_USERAGENT, "KREDA YubiKey" );
             curl_setopt( $CurlHandler, CURLOPT_RETURNTRANSFER, 1 );
-
             curl_setopt( $CurlHandler, CURLOPT_VERBOSE, true );
+
             curl_setopt( $CurlHandler, CURLOPT_PROXY, '192.168.100.254' );
             curl_setopt( $CurlHandler, CURLOPT_PROXYPORT, 3128 );
             curl_setopt( $CurlHandler, CURLOPT_PROXYUSERPWD, 'Kunze:Ny58N' );
@@ -216,7 +216,6 @@ class YubiKey
             if (false !== ( $Result = curl_exec( $CurlHandler ) )) {
                 if (preg_match( "/status=([a-zA-Z0-9_]+)/", $Result, $Status )) {
                     $Status = $Status[1];
-                    var_dump( $Status );
                     if (!preg_match( "/otp=".$KeyValue->getKeyOTP()."/", $Result ) ||
                         !preg_match( "/nonce=".$KeyValue->getKeyNOnce()."/", $Result )
                     ) {
@@ -266,11 +265,9 @@ class YubiKey
 
             if ($this->IsValid || $this->IsReplay) {
                 if ($this->IsReplay) {
-                    var_dump( __LINE__ );
                     throw new ReplayedOTPException();
                 }
                 if ($this->IsValid) {
-                    var_dump( __LINE__ );
                     return true;
                 }
             }
@@ -278,11 +275,9 @@ class YubiKey
         }
 
         if ($this->IsReplay) {
-            var_dump( __LINE__ );
             throw new ReplayedOTPException();
         }
         if ($this->IsValid) {
-            var_dump( __LINE__ );
             return true;
         }
         throw new ComponentException();

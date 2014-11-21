@@ -44,4 +44,24 @@ class Schema extends Setup
             return $Entity;
         }
     }
+
+    /**
+     * @param string $Identifier
+     *
+     * @return bool|null
+     */
+    protected function toolCreateToken( $Identifier )
+    {
+
+        $Entity = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblToken' )
+            ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
+        if (null === $Entity) {
+            $Entity = new TblToken( $Identifier );
+            $this->EntityManager->persist( $Entity );
+            $this->EntityManager->flush();
+            return true;
+        }
+
+        return null;
+    }
 }

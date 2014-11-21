@@ -21,12 +21,12 @@ class TblToken
     private $Identifier;
 
     /**
-     * @param string $Token
+     * @param string $Identifier
      */
-    function __construct( $Token )
+    function __construct( $Identifier )
     {
 
-        $this->Identifier = $Token;
+        $this->Identifier = $Identifier;
     }
 
     /**
