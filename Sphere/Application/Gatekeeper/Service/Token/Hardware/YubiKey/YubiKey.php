@@ -1,12 +1,12 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey;
+namespace KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Component\KeyValue;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Component\Request;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\ComponentException;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\BadOTPException;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\MissingParameterException;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\ReplayedOTPException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Component\KeyValue;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Component\Request;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\MissingParameterException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
 
 /**
  * Class YubiKey
@@ -162,6 +162,7 @@ class YubiKey
             curl_setopt( $CurlHandler, CURLOPT_USERAGENT, "KREDA YubiKey" );
             curl_setopt( $CurlHandler, CURLOPT_RETURNTRANSFER, 1 );
 
+            curl_setopt( $CurlHandler, CURLOPT_VERBOSE, true );
             curl_setopt( $CurlHandler, CURLOPT_PROXY, '192.168.100.254' );
             curl_setopt( $CurlHandler, CURLOPT_PROXYPORT, 3128 );
             curl_setopt( $CurlHandler, CURLOPT_PROXYUSERPWD, 'Kunze:Ny58N' );
@@ -199,7 +200,7 @@ class YubiKey
     }
 
     /**
-     * @param Request  $Request
+     * @param Request $Request
      * @param KeyValue $KeyValue
      *
      * @return bool
@@ -215,6 +216,7 @@ class YubiKey
             if (false !== ( $Result = curl_exec( $CurlHandler ) )) {
                 if (preg_match( "/status=([a-zA-Z0-9_]+)/", $Result, $Status )) {
                     $Status = $Status[1];
+                    var_dump( $Status );
                     if (!preg_match( "/otp=".$KeyValue->getKeyOTP()."/", $Result ) ||
                         !preg_match( "/nonce=".$KeyValue->getKeyNOnce()."/", $Result )
                     ) {
@@ -226,10 +228,10 @@ class YubiKey
                             case 'BAD_OTP':
                                 throw new BadOTPException( $Status );
                                 break;
-                            case 'MISSING_PARAMETER': {
+                            case 'MISSING_PARAMETER':
                                 throw new MissingParameterException( $Result );
                                 break;
-                            }
+
                         }
                     } elseif (null !== $this->YubiApiKey) {
                         /**
@@ -250,35 +252,37 @@ class YubiKey
                             case 'BAD_OTP':
                                 throw new BadOTPException( $Status );
                                 break;
-
                             case 'REPLAYED_OTP':
                                 $this->IsReplay = true;
                                 break;
-                            default: {
-                            throw new ComponentException();
-                            }
+                            default:
+                                throw new ComponentException( $Status );
+
                         }
-                    }
-                    if ($this->IsValid || $this->IsReplay) {
-                        /* We have status=OK or status=REPLAYED_OTP, return. */
-                        curl_close( $CurlHandler );
-                        if ($this->IsReplay) {
-                            throw new ReplayedOTPException();
-                        }
-                        if ($this->IsValid) {
-                            return true;
-                        }
-                        throw new ComponentException( $Status );
                     }
                 }
             }
             curl_close( $CurlHandler );
+
+            if ($this->IsValid || $this->IsReplay) {
+                if ($this->IsReplay) {
+                    var_dump( __LINE__ );
+                    throw new ReplayedOTPException();
+                }
+                if ($this->IsValid) {
+                    var_dump( __LINE__ );
+                    return true;
+                }
+            }
+
         }
 
         if ($this->IsReplay) {
+            var_dump( __LINE__ );
             throw new ReplayedOTPException();
         }
         if ($this->IsValid) {
+            var_dump( __LINE__ );
             return true;
         }
         throw new ComponentException();

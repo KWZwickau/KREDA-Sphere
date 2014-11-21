@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception;
+namespace KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception;
 
 use Exception;
 

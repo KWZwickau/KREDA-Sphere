@@ -1,7 +1,7 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository;
+namespace KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\ComponentException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
 
 /**
  * Class MissingParameterException
@@ -14,7 +14,7 @@ class MissingParameterException extends ComponentException
     /**
      * @param string             $Message
      * @param int                $Code
-     * @param ComponentException $Previous
+     * @param \KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException $Previous
      */
     public function __construct( $Message = "", $Code = 0, ComponentException $Previous = null )
     {

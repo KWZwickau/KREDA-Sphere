@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Component;
+namespace KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Component;
 
 /**
  * Class Request

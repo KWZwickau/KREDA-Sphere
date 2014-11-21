@@ -133,7 +133,7 @@
               <y:Geometry height="30.0" width="150.0" x="230.0" y="1146.7531746031746"/>
               <y:Fill color="#FF6600" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="48.6953125" x="50.65234375" y="5.6494140625">YubiKey<y:LabelModel>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="48.6953125" x="50.65234375" y="5.6494140625">Token<y:LabelModel>
                   <y:SmartNodeLabelModel distance="4.0"/>
                 </y:LabelModel>
                 <y:ModelParameter>

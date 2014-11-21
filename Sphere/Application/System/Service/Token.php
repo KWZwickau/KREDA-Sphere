@@ -3,27 +3,31 @@ namespace KREDA\Sphere\Application\System\Service;
 
 use KREDA\Sphere\Application\Assistance\Service\Youtrack;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token as ServiceToken;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
 use KREDA\Sphere\Application\Service;
-use KREDA\Sphere\Application\System\Service\YubiKey\Certification;
+use KREDA\Sphere\Application\System\Service\Token\Certification;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 
 /**
- * Class YubiKey
+ * Class Token
  *
  * @package KREDA\Sphere\Application\System\Service
  */
-class YubiKey extends Service
+class Token extends Service
 {
 
     /**
      * @return Landing
      */
-    public function apiYubiKey()
+    public function apiToken()
     {
 
         $View = new Landing();
-        $View->setTitle( 'YubiKey' );
+        $View->setTitle( 'Hardware-Schlüssel' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
     }
@@ -34,11 +38,11 @@ class YubiKey extends Service
      * @throws \Exception
      * @return Landing
      */
-    public function apiYubiKeyCertification( $CredentialKey = null )
+    public function apiTokenCertification( $CredentialKey = null )
     {
 
         $View = new Stage();
-        $View->setTitle( 'YubiKey' );
+        $View->setTitle( 'Hardware-Schlüssel' );
         $View->setDescription( 'Zertifizierung' );
         $View->setMessage( '' );
 
@@ -50,18 +54,18 @@ class YubiKey extends Service
         } else {
             if (null !== $CredentialKey) {
                 try {
-                    if (Access::getApi()->apiValidateYubiKey( $CredentialKey )) {
+                    if (ServiceToken::getApi()->apiValidateToken( $CredentialKey )) {
 
                     }
-                } catch( Access\YubiKey\Exception\Repository\BadOTPException $E ) {
+                } catch( BadOTPException $E ) {
                     $Certification->setErrorWrongKey();
                     $View->setContent( $Certification );
                     return $View;
-                } catch( Access\YubiKey\Exception\Repository\ReplayedOTPException $E ) {
+                } catch( ReplayedOTPException $E ) {
                     $Certification->setErrorReplayedKey();
                     $View->setContent( $Certification );
                     return $View;
-                } catch( Access\YubiKey\Exception\ComponentException $E ) {
+                } catch( ComponentException $E ) {
 
                     throw new \Exception( 'Es ist ein Fehler bei der Anmeldung aufgetreten' );
                 }
@@ -73,8 +77,8 @@ class YubiKey extends Service
     }
 
     /**
-     * @param Certification $View
-     * @param null|string   $CredentialKey
+     * @param \KREDA\Sphere\Application\System\Service\Token\Certification $View
+     * @param null|string                                                  $CredentialKey
      *
      * @return bool
      */

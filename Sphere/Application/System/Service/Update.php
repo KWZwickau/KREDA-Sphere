@@ -3,6 +3,8 @@ namespace KREDA\Sphere\Application\System\Service;
 
 use KREDA\Sphere\Application\Assistance\Service\Youtrack;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 
@@ -51,11 +53,18 @@ class Update extends Service
         /**
          * Gatekeeper
          */
+
+        $Protocol[] = Token::getApi()->setupDataStructure( $Simulate );
+        Token::getApi()->setupSystem();
         $Protocol[] = Access::getApi()->setupDataStructure( $Simulate );
         Access::getApi()->setupSystem();
+        $Protocol[] = Account::getApi()->setupDataStructure( $Simulate );
+        Account::getApi()->setupSystem();
+
         /**
          * System
          */
+
         $Protocol[] = Consumer::getApi()->setupDataStructure( $Simulate );
 
         return implode( $Protocol );

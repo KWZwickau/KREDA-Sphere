@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema;
+namespace KREDA\Sphere\Application\Gatekeeper\Service\Account\Schema;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -15,7 +15,7 @@ class TblAccount
 
     const ATTR_USERNAME = 'Username';
     const ATTR_PASSWORD = 'Password';
-    const ATTR_TBL_YUBIKEY = 'tblYubiKey';
+    const ATTR_TBL_TOKEN = 'tblToken';
     const ATTR_API_HUMANRESOURCES_PERSON = 'apiHumanResources_Person';
     const ATTR_API_SYSTEM_CONSUMER = 'apiSystem_Consumer';
 
@@ -26,7 +26,7 @@ class TblAccount
     /** @Column(type="string") */
     private $Password;
     /** @Column(type="bigint") */
-    private $tblYubiKey;
+    private $tblToken;
     /** @Column(type="bigint") */
     private $apiHumanResources_Person;
     /** @Column(type="bigint") */
@@ -134,19 +134,19 @@ class TblAccount
     /**
      * @return null|string
      */
-    public function getTblYubiKey()
+    public function getTblToken()
     {
 
-        return $this->tblYubiKey;
+        return $this->tblToken;
     }
 
     /**
-     * @param string $tblYubiKey
+     * @param string $tblToken
      */
-    public function setTblYubiKey( $tblYubiKey )
+    public function setTblToken( $tblToken )
     {
 
-        $this->tblYubiKey = $tblYubiKey;
+        $this->tblToken = $tblToken;
     }
 
 }

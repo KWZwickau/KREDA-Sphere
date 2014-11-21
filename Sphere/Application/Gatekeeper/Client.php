@@ -8,12 +8,9 @@ use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
-use KREDA\Sphere\Application\Gatekeeper\Client\SignInError;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\ComponentException;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\BadOTPException;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\MissingParameterException;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\YubiKey\Exception\Repository\ReplayedOTPException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
@@ -39,7 +36,7 @@ class Client extends Application
     {
 
         self::$Configuration = $Configuration;
-        if (self::apiIsValidUser()) {
+        if (self::apiIsValidSession()) {
             self::addClientNavigationMeta( self::$Configuration,
                 '/Sphere/Gatekeeper/SignOut', 'Abmelden', new OffIcon()
             );
@@ -77,10 +74,10 @@ class Client extends Application
     /**
      * @return bool
      */
-    public static function apiIsValidUser()
+    public static function apiIsValidSession()
     {
 
-        return Access::getApi()->apiGetAccountIdBySession();
+        return Account::getApi()->apiIsValidSession();
     }
 
     /**
@@ -148,80 +145,33 @@ class Client extends Application
 
         $this->setupModuleNavigation();
         $View = new SignInTeacher();
-
-        $Error = $this->checkFormCredential( $View, $CredentialName, $CredentialLock );
-        if (!$Error) {
-            $Error = $this->checkFormYubiKey( $View, $CredentialKey );
-        }
-
-        if ($Error) {
-            return $View;
-        } else {
-            if (null !== $CredentialKey) {
-                try {
-                    if (Access::getApi()->apiValidateYubiKey( $CredentialKey )) {
-                        if ($CredentialName == 'demo' && $CredentialLock == 'demo') {
-                            Access::getApi()->
-                            $_SESSION['Gatekeeper-Valid'] = true;
-                            return new SignIn();
-                        } else {
-                            $View->setErrorWrongName();
-                            $View->setErrorWrongLock();
-                            return $View;
-                        }
-                    }
-                } catch( BadOTPException $E ) {
-                    $View->setErrorWrongKey();
-                    return $View;
-                } catch( ReplayedOTPException $E ) {
-                    $View->setErrorReplayedKey();
-                    return $View;
-                } catch( ComponentException $E ) {
-
-                    throw new \Exception( 'Es ist ein Fehler bei der Anmeldung aufgetreten' );
+        switch (Account::getApi()->apiSignIn( $CredentialName, $CredentialLock, $CredentialKey )) {
+            case Account::API_SIGN_IN_ERROR_CREDENTIAL:
+            case Account::API_SIGN_IN_ERROR: {
+                if (null !== $CredentialName && empty( $CredentialName )) {
+                    $View->setErrorEmptyName();
                 }
+                if (null !== $CredentialName && !empty( $CredentialName )) {
+                    $View->setErrorWrongName();
+                }
+                if (null !== $CredentialLock && empty( $CredentialLock )) {
+                    $View->setErrorEmptyLock();
+                }
+                if (null !== $CredentialLock && !empty( $CredentialLock )) {
+                    $View->setErrorWrongLock();
+                }
+                break;
             }
-            return $View;
+            case Account::API_SIGN_IN_ERROR_TOKEN: {
+                $View->setErrorWrongKey();
+                break;
+            }
+            case Account::API_SIGN_IN_SUCCESS: {
+                return new SignIn();
+                break;
+            }
         }
-    }
-
-    /**
-     * @param SignInError $View
-     * @param null|string $CredentialName
-     * @param null|string $CredentialLock
-     *
-     * @return bool
-     */
-    private function checkFormCredential( SignInError &$View, $CredentialName, $CredentialLock )
-    {
-
-        $Error = false;
-        if (null !== $CredentialName && empty( $CredentialName )) {
-            $View->setErrorEmptyName();
-            $Error = true;
-        }
-        if (null !== $CredentialLock && empty( $CredentialLock )) {
-            $View->setErrorEmptyLock();
-            $Error = true;
-        }
-        return $Error;
-    }
-
-    /**
-     * @param SignInError $View
-     * @param null|string $CredentialKey
-     *
-     * @return bool
-     */
-    private function checkFormYubiKey( SignInError &$View, $CredentialKey )
-    {
-
-        $Error = false;
-        if (null !== $CredentialKey && empty( $CredentialKey )) {
-            $View->setErrorEmptyKey();
-            $Error = true;
-        }
-        return $Error;
+        return $View;
     }
 
     /**
@@ -234,49 +184,35 @@ class Client extends Application
      */
     public function apiSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
     {
-
         $this->setupModuleNavigation();
         $View = new SignInManagement();
-
-        $Error = $this->checkFormCredential( $View, $CredentialName, $CredentialLock );
-        if (!$Error) {
-            $Error = $this->checkFormYubiKey( $View, $CredentialKey );
-        }
-
-        if ($Error) {
-            return $View;
-        } else {
-            if (null !== $CredentialKey) {
-                try {
-                    if (Access::getApi()->apiValidateYubiKey( $CredentialKey )) {
-                        if (false !== ( $tblAccount = Access::getApi()->apiValidateCredentials(
-                                $CredentialName,
-                                $CredentialLock
-                            ) )
-                        ) {
-                            Access::getApi()->apiSignIn( $tblAccount );
-                            return new SignIn();
-                        } else {
-                            $View->setErrorWrongName();
-                            $View->setErrorWrongLock();
-                            return $View;
-                        }
-                    }
-                } catch( BadOTPException $E ) {
-                    $View->setErrorWrongKey();
-                    return $View;
-                } catch( ReplayedOTPException $E ) {
-                    $View->setErrorReplayedKey();
-                    return $View;
-                } catch( MissingParameterException $E ) {
-                    throw new \Exception( $E->getMessage(), $E->getCode(), $E );
-                } catch( ComponentException $E ) {
-                    $View->setErrorNetworkKey();
-                    return $View;
+        switch (Account::getApi()->apiSignIn( $CredentialName, $CredentialLock, $CredentialKey )) {
+            case Account::API_SIGN_IN_ERROR_CREDENTIAL:
+            case Account::API_SIGN_IN_ERROR: {
+                if (null !== $CredentialName && empty( $CredentialName )) {
+                    $View->setErrorEmptyName();
                 }
+                if (null !== $CredentialName && !empty( $CredentialName )) {
+                    $View->setErrorWrongName();
+                }
+                if (null !== $CredentialLock && empty( $CredentialLock )) {
+                    $View->setErrorEmptyLock();
+                }
+                if (null !== $CredentialLock && !empty( $CredentialLock )) {
+                    $View->setErrorWrongLock();
+                }
+                break;
             }
-            return $View;
+            case Account::API_SIGN_IN_ERROR_TOKEN: {
+                $View->setErrorWrongKey();
+                break;
+            }
+            case Account::API_SIGN_IN_SUCCESS: {
+                return new SignIn();
+                break;
+            }
         }
+        return $View;
     }
 
     /**
@@ -290,23 +226,29 @@ class Client extends Application
 
         $this->setupModuleNavigation();
         $View = new SignInStudent();
-
-        $Error = $this->checkFormCredential( $View, $CredentialName, $CredentialLock );
-
-        if ($Error) {
-            return $View;
-        } else {
-            if ($CredentialName == 'demo' && $CredentialLock == 'demo') {
-                $_SESSION['Gatekeeper-Valid'] = true;
-                return new SignIn();
-            } else {
-                if (null !== $CredentialName || null !== $CredentialLock) {
+        switch (Account::getApi()->apiSignIn( $CredentialName, $CredentialLock )) {
+            case Account::API_SIGN_IN_ERROR_CREDENTIAL:
+            case Account::API_SIGN_IN_ERROR: {
+                if (null !== $CredentialName && empty( $CredentialName )) {
+                    $View->setErrorEmptyName();
+                }
+                if (null !== $CredentialName && !empty( $CredentialName )) {
                     $View->setErrorWrongName();
+                }
+                if (null !== $CredentialLock && empty( $CredentialLock )) {
+                    $View->setErrorEmptyLock();
+                }
+                if (null !== $CredentialLock && !empty( $CredentialLock )) {
                     $View->setErrorWrongLock();
                 }
-                return $View;
+                break;
+            }
+            case Account::API_SIGN_IN_SUCCESS: {
+                return new SignIn();
+                break;
             }
         }
+        return $View;
     }
 
     /**
@@ -316,9 +258,7 @@ class Client extends Application
     {
 
         $View = new SignOut();
-
-        $_SESSION['Gatekeeper-Valid'] = false;
-
+        Account::getApi()->apiSignOut();
         return $View;
     }
 }

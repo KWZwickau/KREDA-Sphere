@@ -17,7 +17,12 @@ class Database extends Service
     const STATUS_ERROR = 1;
     const STATUS_FAIL = 2;
     const STATUS_OK = 3;
-    private $ServiceList = array( 'Access', 'Consumer' );
+    private $ServiceList = array(
+        'Gatekeeper-Access',
+        'Gatekeeper-Account',
+        'Gatekeeper-Token',
+        'Consumer'
+    );
 
     /**
      * @return Landing

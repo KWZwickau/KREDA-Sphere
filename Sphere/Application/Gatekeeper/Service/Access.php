@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
+use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema;
 
 /**
@@ -12,74 +13,26 @@ class Access extends Schema
 {
 
     /**
-     *
+     * @throws \Exception
      */
     public function __construct()
     {
 
-        $this->connectDatabase( 'Access' );
+        $this->connectDatabase( 'Gatekeeper-Access' );
         parent::__construct();
     }
 
     public function setupSystem()
     {
-
-        //$this->schemaCreateAccessRight( '' );
-
-        $this->schemaCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp' );
-
+        //$this->toolCreateAccessRight( '' );
     }
 
     /**
-     * @return bool|integer
+     * @return Table
      */
-    public function apiGetAccountIdBySession()
+    public function schemaTableAccessRole()
     {
 
-        if (false != ( $tblAccount = $this->schemaGetAccountIdBySession() )) {
-            return $tblAccount;
-        } else {
-            return false;
-        }
+        return $this->getTableAccessRole();
     }
-
-    /**
-     * @param integer $tblAccount
-     *
-     * @return bool
-     */
-    public function apiSignIn( $tblAccount )
-    {
-
-        session_regenerate_id();
-        return $this->schemaCreateSession( session_id(), $tblAccount );
-    }
-
-    /**
-     * @param string $Value
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function apiValidateYubiKey( $Value )
-    {
-
-        $YubiKey = new Access\YubiKey\YubiKey( 19180, 'YJwU33GNiRiw1dE8/MfIMNm8w3Y=' );
-        return $YubiKey->verifyKey(
-            $YubiKey->parseKey( $Value )
-        );
-    }
-
-    /**
-     * @param string $CredentialUser
-     * @param string $CredentialLock
-     *
-     * @return bool|int
-     */
-    public function apiValidateCredentials( $CredentialUser, $CredentialLock )
-    {
-
-        return $this->schemaGetAccountIdByCredential( $CredentialUser, $CredentialLock );
-    }
-
 }

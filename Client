@@ -84,7 +84,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
         /**
          * Setup Private-Access
          */
-        if (GatekeeperApplication::apiIsValidUser()) {
+        if (GatekeeperApplication::apiIsValidSession()) {
             $Config = SystemApplication::setupApi( $Config );
             $Config = ManagementApplication::setupApi( $Config );
             $Config = GraduationApplication::setupApi( $Config );
@@ -106,7 +106,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             /**
              * Show Help (if not available)
              */
-            if (GatekeeperApplication::apiIsValidUser()) {
+            if (GatekeeperApplication::apiIsValidSession()) {
                 /**
                  * Show Help
                  */
