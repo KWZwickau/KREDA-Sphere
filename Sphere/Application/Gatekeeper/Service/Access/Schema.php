@@ -1,11 +1,12 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Access;
 
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup as ORMSetup;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\tblAccount;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\TblAccessRight;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\TblAccount;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\TblAccountSession;
 
 /**
  * Class Schema
@@ -15,6 +16,21 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\tblAccount;
 class Schema extends Setup
 {
 
+    /** @var EntityManager $EntityManager */
+    private $EntityManager = null;
+
+    /**
+     * @throws ORMException
+     */
+    function __construct()
+    {
+
+        $this->EntityManager = EntityManager::create(
+            $this->readData()->getConnection(),
+            ORMSetup::createAnnotationMetadataConfiguration( array( __DIR__.'/Schema' ) )
+        );
+    }
+
     /**
      * @param string $Username
      *
@@ -23,10 +39,36 @@ class Schema extends Setup
     protected function schemaGetAccountIdByUsername( $Username )
     {
 
-        $Get = $this->readData()->getQueryBuilder();
-        return $Get->select( 'Id' )->from( 'tblAccount' )->where( 'Username = ?' )
-            ->setParameter( 0, $Username )
-            ->execute()->fetchColumn();
+        /** @var TblAccount $tblAccount */
+        $tblAccount = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
+            ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
+        if (null === $tblAccount) {
+            return false;
+        } else {
+            return $tblAccount->getId();
+        }
+    }
+
+    /**
+     * @param string $Username
+     * @param string $Password
+     *
+     * @return bool|integer
+     */
+    protected function schemaGetAccountIdByCredential( $Username, $Password )
+    {
+
+        /** @var TblAccount $tblAccount */
+        $tblAccount = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
+            ->findOneBy( array(
+                TblAccount::ATTR_USERNAME => $Username,
+                TblAccount::ATTR_PASSWORD => hash( 'sha256', $Password )
+            ) );
+        if (null === $tblAccount) {
+            return false;
+        } else {
+            return $tblAccount->getId();
+        }
     }
 
     /**
@@ -40,10 +82,14 @@ class Schema extends Setup
         if (null === $Session) {
             $Session = session_id();
         }
-        $Get = $this->readData()->getQueryBuilder();
-        return $Get->select( 'tblAccount' )->from( 'tblAccountSession' )->where( 'Session = ?' )
-            ->setParameter( 0, $Session )
-            ->execute()->fetchColumn();
+        /** @var TblAccountSession $tblAccountSession */
+        $tblAccountSession = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
+            ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
+        if (null === $tblAccountSession) {
+            return false;
+        } else {
+            return $tblAccountSession->getTblAccount();
+        }
     }
 
     /**
@@ -54,56 +100,41 @@ class Schema extends Setup
     protected function schemaCreateAccessRight( $Route )
     {
 
-        $Get = $this->readData()->getQueryBuilder();
-        $Set = $this->writeData()->getQueryBuilder();
-        if (false == $Get->select( 'Id' )->from( 'tblAccessRight' )
-                ->where( 'Route = ?' )
-                ->setParameter( 0, $Route )
-                ->execute()->fetch()
-        ) {
-            if ($Set->insert( 'tblAccessRight' )
-                ->values( array(
-                    'Route' => '?',
-                ) )
-                ->setParameter( 0, $Route, Type::STRING )
-                ->execute()
-            ) {
-                return true;
-            } else {
-                return false;
-            }
+        $tblAccessRight = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccessRight' )
+            ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Route ) );
+        if (null === $tblAccessRight) {
+            $tblAccessRight = new TblAccessRight( $Route );
+            $this->EntityManager->persist( $tblAccessRight );
+            $this->EntityManager->flush();
+            return true;
         }
         return null;
     }
 
-    protected function schemaCreateAccessPrivilege()
-    {
+    /**
+     * @param string  $Session
+     * @param integer $tblAccount
+     * @param integer $Timeout
+     *
+     * @return bool
+     */
+    protected function schemaCreateSession(
+        $Session,
+        $tblAccount,
+        $Timeout = 1800
+    ) {
 
-        $Get = $this->readData()->getQueryBuilder();
-        $Set = $this->writeData()->getQueryBuilder();
-    }
-
-    protected function schemaAddAccessRightPrivilege()
-    {
-
-        $Get = $this->readData()->getQueryBuilder();
-        $Set = $this->writeData()->getQueryBuilder();
-    }
-
-    protected function schemaCreateAccessRole()
-    {
-
-        $Get = $this->readData()->getQueryBuilder();
-        $Set = $this->writeData()->getQueryBuilder();
-
-    }
-
-    protected function schemaAddAccessPrivilegeRole()
-    {
-
-        $Get = $this->readData()->getQueryBuilder();
-        $Set = $this->writeData()->getQueryBuilder();
-
+        $tblAccountSession = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
+            ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
+        if (null !== $tblAccountSession) {
+            $this->EntityManager->remove( $tblAccountSession );
+        }
+        $tblAccountSession = new TblAccountSession( $Session );
+        $tblAccountSession->setTblAccount( $tblAccount );
+        $tblAccountSession->setTimeout( time() + $Timeout );
+        $this->EntityManager->persist( $tblAccountSession );
+        $this->EntityManager->flush();
+        return true;
     }
 
     /**
@@ -114,7 +145,6 @@ class Schema extends Setup
      * @param null|integer $apiSystem_Consumer
      *
      * @return bool|null
-     * @throws ORMException
      */
     protected function schemaCreateAccount(
         $Username,
@@ -124,24 +154,18 @@ class Schema extends Setup
         $apiSystem_Consumer = null
     ) {
 
-        $EntityManager = EntityManager::create(
-            $this->readData()->getConnection(),
-            ORMSetup::createAnnotationMetadataConfiguration( array( __DIR__.'/Schema' ) )
-        );
-
-        $tblAccount = $EntityManager->getRepository( __NAMESPACE__.'\Schema\tblAccount' )
-            ->findOneBy( array( tblAccount::USERNAME => $Username ) );
+        $tblAccount = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
+            ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
         if (null === $tblAccount) {
-            $tblAccount = new tblAccount( $Username );
+            $tblAccount = new TblAccount( $Username );
             $tblAccount->setPassword( hash( 'sha256', $Password ) );
             $tblAccount->setTblYubiKey( $tblYubiKey );
             $tblAccount->setApiHumanResourcesPerson( $apiHumanResources_Person );
             $tblAccount->setApiSystemConsumer( $apiSystem_Consumer );
-            $EntityManager->persist( $tblAccount );
-            $EntityManager->flush();
+            $this->EntityManager->persist( $tblAccount );
+            $this->EntityManager->flush();
             return true;
         }
-
         return null;
     }
 }

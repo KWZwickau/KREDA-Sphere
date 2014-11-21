@@ -4,8 +4,10 @@ namespace KREDA\Sphere\Application\System;
 use KREDA\Sphere\Application\Application;
 use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Update;
+use KREDA\Sphere\Application\System\Service\YubiKey;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CertificateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WrenchIcon;
@@ -40,7 +42,14 @@ class Client extends Application
         self::buildRoute( self::$Configuration, '/Sphere/System/Update/Simulation', __CLASS__.'::apiUpdateSimulation' );
         self::buildRoute( self::$Configuration, '/Sphere/System/Update/Perform', __CLASS__.'::apiUpdatePerform' );
 
+        self::buildRoute( self::$Configuration, '/Sphere/System/Database', __CLASS__.'::apiDatabaseStatus' );
         self::buildRoute( self::$Configuration, '/Sphere/System/Database/Status', __CLASS__.'::apiDatabaseStatus' );
+
+        self::buildRoute( self::$Configuration, '/Sphere/System/Account', __CLASS__.'::apiAccount' );
+
+        self::buildRoute( self::$Configuration, '/Sphere/System/YubiKey', __CLASS__.'::apiYubiKey' );
+        self::buildRoute( self::$Configuration, '/Sphere/System/YubiKey/Certification',
+            __CLASS__.'::apiYubiKeyCertification' );
 
         return $Configuration;
     }
@@ -62,13 +71,16 @@ class Client extends Application
     {
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Database/Status', 'Datenbanken', new GearIcon()
+            '/Sphere/System/Database', 'Datenbanken', new GearIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Update', 'Update', new GearIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Account', 'Benutzerkonten', new PersonIcon()
+        );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/System/YubiKey', 'YubiKey', new CertificateIcon()
         );
     }
 
@@ -127,4 +139,37 @@ class Client extends Application
         return Database::getApi( '/Sphere/System/Database' )->apiStatus();
     }
 
+    /**
+     * @return Landing
+     */
+    public function apiYubiKey()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupServiceYubiKey();
+        return YubiKey::getApi()->apiYubiKey();
+    }
+
+    public function setupServiceYubiKey()
+    {
+
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/YubiKey/Certification', 'Zertifizierung', new CertificateIcon()
+        );
+
+    }
+
+    /**
+     * @param null|string $CredentialKey
+     *
+     * @throws \Exception
+     * @return Landing
+     */
+    public function apiYubiKeyCertification( $CredentialKey = null )
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupServiceYubiKey();
+        return YubiKey::getApi()->apiYubiKeyCertification( $CredentialKey );
+    }
 }

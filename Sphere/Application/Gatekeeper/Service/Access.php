@@ -18,12 +18,13 @@ class Access extends Schema
     {
 
         $this->connectDatabase( 'Access' );
+        parent::__construct();
     }
 
     public function setupSystem()
     {
 
-        $this->schemaCreateAccessRight( '' );
+        //$this->schemaCreateAccessRight( '' );
 
         $this->schemaCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp' );
 
@@ -35,18 +36,23 @@ class Access extends Schema
     public function apiGetAccountIdBySession()
     {
 
-        /*
-                if( false != ( $tblAccount = $this->schemaGetAccountIdBySession() ) ) {
-                    return $tblAccount;
-                } else {
-                    return false;
-                }
-        */
-        if (isset( $_SESSION['Gatekeeper-Valid'] )) {
-            return $_SESSION['Gatekeeper-Valid'];
+        if (false != ( $tblAccount = $this->schemaGetAccountIdBySession() )) {
+            return $tblAccount;
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param integer $tblAccount
+     *
+     * @return bool
+     */
+    public function apiSignIn( $tblAccount )
+    {
+
+        session_regenerate_id();
+        return $this->schemaCreateSession( session_id(), $tblAccount );
     }
 
     /**
@@ -64,9 +70,16 @@ class Access extends Schema
         );
     }
 
+    /**
+     * @param string $CredentialUser
+     * @param string $CredentialLock
+     *
+     * @return bool|int
+     */
     public function apiValidateCredentials( $CredentialUser, $CredentialLock )
     {
 
+        return $this->schemaGetAccountIdByCredential( $CredentialUser, $CredentialLock );
     }
 
 }

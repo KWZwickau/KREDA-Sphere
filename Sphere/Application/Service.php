@@ -42,9 +42,8 @@ abstract class Service implements IServiceInterface
      */
     public function setupDataStructure( $Simulate = true )
     {
-
         $this->addInstallProtocol( __CLASS__ );
-
+        $this->addInstallProtocol( '<span class="text-danger">Missing Configuration!</span>' );
         return $this->getInstallProtocol();
     }
 

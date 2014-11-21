@@ -10,10 +10,14 @@ use Doctrine\ORM\Mapping\Table;
  * @Entity
  * @Table(name="tblAccount")
  */
-class tblAccount
+class TblAccount
 {
 
-    const USERNAME = 'Username';
+    const ATTR_USERNAME = 'Username';
+    const ATTR_PASSWORD = 'Password';
+    const ATTR_TBL_YUBIKEY = 'tblYubiKey';
+    const ATTR_API_HUMANRESOURCES_PERSON = 'apiHumanResources_Person';
+    const ATTR_API_SYSTEM_CONSUMER = 'apiSystem_Consumer';
 
     /** @Id @GeneratedValue @Column(type="bigint") */
     private $Id;
@@ -38,21 +42,30 @@ class tblAccount
     }
 
     /**
-     * @param integer $apiHumanResources_Person
+     * @return integer
      */
-    public function setApiHumanResourcesPerson( $apiHumanResources_Person )
+    public function getId()
     {
 
-        $this->apiHumanResources_Person = $apiHumanResources_Person;
+        return $this->Id;
     }
 
     /**
-     * @param integer $apiSystem_Consumer
+     * @param null|integer $Id
      */
-    public function setApiSystemConsumer( $apiSystem_Consumer )
+    public function setId( $Id )
     {
 
-        $this->apiSystem_Consumer = $apiSystem_Consumer;
+        $this->Id = $Id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword()
+    {
+
+        return $this->Password;
     }
 
     /**
@@ -65,7 +78,70 @@ class tblAccount
     }
 
     /**
-     * @param integer $tblYubiKey
+     * @return string
+     */
+    public function getUsername()
+    {
+
+        return $this->Username;
+    }
+
+    /**
+     * @param string $Username
+     */
+    public function setUsername( $Username )
+    {
+
+        $this->Username = $Username;
+    }
+
+    /**
+     * @return null|integer
+     */
+    public function getApiHumanResourcesPerson()
+    {
+
+        return $this->apiHumanResources_Person;
+    }
+
+    /**
+     * @param null|integer $apiHumanResources_Person
+     */
+    public function setApiHumanResourcesPerson( $apiHumanResources_Person )
+    {
+
+        $this->apiHumanResources_Person = $apiHumanResources_Person;
+    }
+
+    /**
+     * @return null|integer
+     */
+    public function getApiSystemConsumer()
+    {
+
+        return $this->apiSystem_Consumer;
+    }
+
+    /**
+     * @param null|integer $apiSystem_Consumer
+     */
+    public function setApiSystemConsumer( $apiSystem_Consumer )
+    {
+
+        $this->apiSystem_Consumer = $apiSystem_Consumer;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTblYubiKey()
+    {
+
+        return $this->tblYubiKey;
+    }
+
+    /**
+     * @param string $tblYubiKey
      */
     public function setTblYubiKey( $tblYubiKey )
     {

@@ -21,6 +21,8 @@ class LevelClient extends Navigation implements IElementInterface
     private $MainLinkList = array();
     /** @var LevelClient\Link[] $MetaLinkList */
     private $MetaLinkList = array();
+    /** @var array $BreadcrumbList */
+    private $BreadcrumbList = array();
 
     /**
      * @throws TemplateTypeException
@@ -29,6 +31,20 @@ class LevelClient extends Navigation implements IElementInterface
     {
 
         $this->Template = Template::getTemplate( __DIR__.'/LevelClient/Main.twig' );
+    }
+
+    /**
+     * @param string $Title
+     *
+     * @return LevelClient
+     */
+    public function addBreadcrumb( $Title )
+    {
+
+        if (!in_array( $Title, $this->BreadcrumbList )) {
+            array_push( $this->BreadcrumbList, $Title );
+        }
+        return $this;
     }
 
     /**
@@ -67,6 +83,8 @@ class LevelClient extends Navigation implements IElementInterface
 
         $this->Template->setVariable( 'PositionMain', implode( '', $this->MainLinkList ) );
         $this->Template->setVariable( 'PositionMeta', implode( '', $this->MetaLinkList ) );
+        $this->Template->setVariable( 'PositionBreadcrumb',
+            ( empty( $this->BreadcrumbList ) ? '' : implode( '', $this->BreadcrumbList ).'&nbsp;&nbsp;' ) );
         return $this->Template->getContent();
     }
 

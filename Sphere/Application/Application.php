@@ -54,6 +54,9 @@ abstract class Application implements IApplicationInterface
                 self::prepareParameterActive( $Url )
             )
         );
+        if (self::prepareParameterActive( $Url )) {
+            $Configuration->getClientNavigation()->addBreadcrumb( $Name );
+        }
     }
 
     private static function prepareParameterUrl( $Value )
@@ -88,13 +91,16 @@ abstract class Application implements IApplicationInterface
     {
 
         $Configuration->getClientNavigation()->addLinkToMain(
-            new LevelClient\Link(
+            $Link = new LevelClient\Link(
                 $Url = self::prepareParameterUrl( $Url ),
                 self::prepareParameterName( $Name ),
                 self::prepareParameterIcon( $Icon ),
                 self::prepareParameterActive( $Url )
             )
         );
+        if (self::prepareParameterActive( $Url )) {
+            $Configuration->getClientNavigation()->addBreadcrumb( $Name );
+        }
     }
 
     protected static function addModuleNavigationMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
@@ -108,6 +114,9 @@ abstract class Application implements IApplicationInterface
                 self::prepareParameterActive( $Url )
             )
         );
+        if (self::prepareParameterActive( $Url )) {
+            $Configuration->getModuleNavigation()->addBreadcrumb( $Name );
+        }
     }
 
     protected static function addApplicationNavigationMain(
