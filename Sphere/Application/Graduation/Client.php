@@ -26,6 +26,8 @@ class Client extends Application
     public static function setupApi( Configuration $Configuration )
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         self::$Configuration = $Configuration;
         self::addClientNavigationMain( self::$Configuration,
             '/Sphere/Grade', 'Zensuren', new TagListIcon()
@@ -37,6 +39,8 @@ class Client extends Application
     public function apiMain()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $View = new Landing();
         $View->setTitle( 'Zensuren' );
@@ -46,6 +50,8 @@ class Client extends Application
 
     public function setupModuleNavigation()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Class', 'Zensurentypen', new StatisticIcon()

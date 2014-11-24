@@ -16,6 +16,7 @@ class Account extends Schema
     const API_SIGN_IN_ERROR_TOKEN = 22;
     const API_SIGN_IN_ERROR = 23;
     const API_SIGN_IN_SUCCESS = 11;
+    private static $ValidSessionCache = false;
 
     /**
      * @throws \Exception
@@ -23,14 +24,17 @@ class Account extends Schema
     public function __construct()
     {
 
+        $this->getDebugger()->addConstructorCall( __METHOD__ );
+
         $this->connectDatabase( 'Gatekeeper-Account' );
-        parent::__construct();
     }
 
     public function setupSystem()
     {
 
-        $this->toolCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp' );
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp' );
     }
 
     /**
@@ -42,6 +46,8 @@ class Account extends Schema
      */
     public function apiSignIn( $Username, $Password, $TokenString = false )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         /**
          * Credentials
@@ -60,7 +66,7 @@ class Account extends Schema
                  * Valid
                  */
                 session_regenerate_id();
-                $this->toolCreateSession( session_id(), $Account->getId() );
+                $this->actionCreateSession( session_id(), $Account->getId() );
                 return self::API_SIGN_IN_SUCCESS;
             } else {
                 /**
@@ -71,8 +77,7 @@ class Account extends Schema
                         /**
                          * Certification
                          */
-                        if (false === ( $Token = Token::getApi()->schemaTokenById( $Account->getTblToken() ) )) {
-                            var_dump( $Token );
+                        if (false === ( $Token = Token::getApi()->entityTokenById( $Account->getTblToken() ) )) {
                             /**
                              * Invalid
                              */
@@ -83,7 +88,7 @@ class Account extends Schema
                                  * Valid
                                  */
                                 session_regenerate_id();
-                                $this->toolCreateSession( session_id(), $Account->getId() );
+                                $this->actionCreateSession( session_id(), $Account->getId() );
                                 return self::API_SIGN_IN_SUCCESS;
                             } else {
                                 /**
@@ -114,7 +119,9 @@ class Account extends Schema
     public function apiSignOut()
     {
 
-        $this->toolDestroySession();
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $this->actionDestroySession();
         session_regenerate_id();
     }
 
@@ -124,11 +131,18 @@ class Account extends Schema
     public function apiIsValidSession()
     {
 
-        if (false === ( $Account = $this->objectAccountBySession() )) {
-            return false;
-        } else {
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        if (self::$ValidSessionCache) {
             return true;
         }
+
+        if (false === ( $Account = $this->objectAccountBySession() )) {
+            self::$ValidSessionCache = false;
+        } else {
+            self::$ValidSessionCache = true;
+        }
+        return self::$ValidSessionCache;
     }
 
     /**
@@ -137,6 +151,34 @@ class Account extends Schema
     public function schemaTableAccount()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         return $this->getTableAccount();
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|Schema\TblAccount
+     */
+    public function entityAccountById( $Id )
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        return $this->objectAccountById( $Id );
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|Schema\TblAccount
+     */
+    public function entityAccountByUsername( $Name )
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        return $this->objectAccountByUsername( $Name );
     }
 }

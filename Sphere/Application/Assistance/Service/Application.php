@@ -24,6 +24,8 @@ class Application extends Service
     public function apiAidStart()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $View = new Stage();
         $View->setTitle( 'Hilfe' );
         $View->setDescription( 'Starten der Anwendung' );
@@ -47,6 +49,8 @@ class Application extends Service
      */
     public function apiAidMissingResource()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $View = new Stage();
         $View->setTitle( 'Hilfe' );

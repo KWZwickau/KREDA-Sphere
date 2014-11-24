@@ -36,6 +36,8 @@ class Youtrack extends Service
     public function apiTicket( $TicketSubject, $TicketMessage )
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $View = new Stage();
         $View->setTitle( 'Support' );
         $View->setDescription( 'Ticket erstellen' );
@@ -89,6 +91,8 @@ class Youtrack extends Service
     private function ticketCurrent()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $Issues = $this->ticketList();
 
         foreach ((array)$Issues as $Index => $Content) {
@@ -138,6 +142,8 @@ class Youtrack extends Service
      */
     private function ticketList()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->ticketLogin();
         $CurlHandler = curl_init();
@@ -199,6 +205,8 @@ class Youtrack extends Service
     private function ticketLogin()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $CurlHandler = curl_init();
         curl_setopt( $CurlHandler, CURLOPT_URL, $this->YoutrackDomain.'/rest/user/login' );
         curl_setopt( $CurlHandler, CURLOPT_POST, true );
@@ -226,6 +234,8 @@ class Youtrack extends Service
      */
     private function ticketCreate( $Summary, $Description )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Markdown = new Converter();
         $Markdown->setKeepHTML( false );
@@ -259,6 +269,8 @@ class Youtrack extends Service
         $CurlHandler,
         $String
     ) {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Length = strlen( $String );
         if (!strncmp( $String, "Set-Cookie:", 11 )) {

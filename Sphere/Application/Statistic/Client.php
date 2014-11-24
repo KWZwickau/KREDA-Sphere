@@ -20,9 +20,11 @@ class Client extends Application
     public static function setupApi( Configuration $Configuration )
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         self::$Configuration = $Configuration;
         self::addClientNavigationMain( self::$Configuration,
-            '/Sphere/Statistic', 'Statistk', new StatisticIcon()
+            '/Sphere/Statistic', 'Statistik', new StatisticIcon()
         );
         self::buildRoute( self::$Configuration, '/Sphere/Statistic', __CLASS__.'::apiMain' );
         return $Configuration;
@@ -30,6 +32,8 @@ class Client extends Application
 
     public function apiMain()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $View = new Landing();
@@ -40,6 +44,8 @@ class Client extends Application
 
     public function setupModuleNavigation()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
     }
 }

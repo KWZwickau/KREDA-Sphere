@@ -21,25 +21,11 @@ abstract class Setup extends Service
 {
 
     /** @var EntityManager $EntityManager */
-    protected $EntityManager = null;
+    protected static $EntityManager = null;
     /** @var null|AbstractSchemaManager $SchemaManager */
-    private $SchemaManager = null;
+    private static $SchemaManager = null;
     /** @var null|Schema $Schema */
-    private $Schema = null;
-
-    /**
-     * @throws ORMException
-     */
-    function __construct()
-    {
-
-        $this->SchemaManager = $this->writeData()->getSchemaManager();
-        $this->Schema = $this->SchemaManager->createSchema();
-        $this->EntityManager = EntityManager::create(
-            $this->readData()->getConnection(),
-            ORMSetup::createAnnotationMetadataConfiguration( array( __DIR__.'/Schema' ) )
-        );
-    }
+    private static $Schema = null;
 
     /**
      * @param bool $Simulate
@@ -52,7 +38,7 @@ abstract class Setup extends Service
         /**
          * Setup
          */
-        $Schema = clone $this->Schema;
+        $Schema = clone $this->loadSchema();
         $tblAccountRole = $this->setTableAccountRole( $Schema );
         $tblAccount = $this->setTableAccount( $Schema, Token::getApi()->schemaTableToken() );
         $this->setTableAccountSession( $Schema, $tblAccount );
@@ -60,7 +46,7 @@ abstract class Setup extends Service
         /**
          * Migration
          */
-        $Statement = $this->Schema->getMigrateToSql( $Schema,
+        $Statement = $this->loadSchema()->getMigrateToSql( $Schema,
             $this->writeData()->getConnection()->getDatabasePlatform()
         );
         /**
@@ -76,6 +62,32 @@ abstract class Setup extends Service
             }
         }
         return $this->getInstallProtocol();
+    }
+
+    /**
+     * @return Schema|null
+     */
+    private function loadSchema()
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+        if (null === self::$Schema) {
+            self::$Schema = $this->loadSchemaManager()->createSchema();
+        }
+        return self::$Schema;
+    }
+
+    /**
+     * @return AbstractSchemaManager|null
+     */
+    private function loadSchemaManager()
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+        if (null === self::$SchemaManager) {
+            self::$SchemaManager = $this->writeData()->getSchemaManager();
+        }
+        return self::$SchemaManager;
     }
 
     /**
@@ -137,7 +149,7 @@ abstract class Setup extends Service
         }
         if (!$this->dbTableHasColumn( 'tblAccount', 'tblToken' )) {
             $Table->addColumn( 'tblToken', 'bigint', array( 'notnull' => false ) );
-            if ($this->SchemaManager->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblToken, array( 'tblToken' ), array( 'Id' ) );
             }
         }
@@ -181,7 +193,7 @@ abstract class Setup extends Service
         }
         if (!$this->dbTableHasColumn( 'tblAccountSession', 'tblAccount' )) {
             $Table->addColumn( 'tblAccount', 'bigint' );
-            if ($this->SchemaManager->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccount, array( 'tblAccount' ), array( 'Id' ) );
             }
         }
@@ -217,17 +229,34 @@ abstract class Setup extends Service
          */
         if (!$this->dbTableHasColumn( 'tblAccountRoleList', 'tblAccountRole' )) {
             $Table->addColumn( 'tblAccountRole', 'bigint' );
-            if ($this->SchemaManager->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccountRole, array( 'tblAccountRole' ), array( 'Id' ) );
             }
         }
         if (!$this->dbTableHasColumn( 'tblAccountRoleList', 'tblAccessRole' )) {
             $Table->addColumn( 'tblAccessRole', 'bigint' );
-            if ($this->SchemaManager->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccessRole, array( 'tblAccessRole' ), array( 'Id' ) );
             }
         }
         return $Table;
+    }
+
+    /**
+     * @return EntityManager
+     * @throws ORMException
+     */
+    protected function loadEntityManager()
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+        if (null === self::$EntityManager) {
+            self::$EntityManager = EntityManager::create(
+                $this->readData()->getConnection(),
+                ORMSetup::createAnnotationMetadataConfiguration( array( __DIR__.'/Schema' ) )
+            );
+        }
+        return self::$EntityManager;
     }
 
     /**
@@ -237,7 +266,7 @@ abstract class Setup extends Service
     protected function getTableAccount()
     {
 
-        return $this->Schema->getTable( 'tblAccount' );
+        return $this->loadSchema()->getTable( 'tblAccount' );
     }
 
     /**
@@ -247,7 +276,7 @@ abstract class Setup extends Service
     protected function getTableAccountRole()
     {
 
-        return $this->Schema->getTable( 'tblAccountRole' );
+        return $this->loadSchema()->getTable( 'tblAccountRole' );
     }
 
     /**
@@ -257,7 +286,7 @@ abstract class Setup extends Service
     protected function getTableAccountSession()
     {
 
-        return $this->Schema->getTable( 'tblAccountSession' );
+        return $this->loadSchema()->getTable( 'tblAccountSession' );
     }
 
     /**
@@ -267,6 +296,6 @@ abstract class Setup extends Service
     protected function getTableAccountRoleList()
     {
 
-        return $this->Schema->getTable( 'tblAccountRoleList' );
+        return $this->loadSchema()->getTable( 'tblAccountRoleList' );
     }
 }

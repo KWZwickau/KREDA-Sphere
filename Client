@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Assistance\Client as AssistanceApplication;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Danger;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Info;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Warning;
+use KREDA\Sphere\Application\Debugger;
 use KREDA\Sphere\Application\Gatekeeper\Client as GatekeeperApplication;
 use KREDA\Sphere\Application\Graduation\Client as GraduationApplication;
 use KREDA\Sphere\Application\Management\Client as ManagementApplication;
@@ -35,6 +36,8 @@ AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere\Application', __DIR__.'/Sphere
 AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere', __DIR__.'/Sphere' );
 AutoLoader::getNamespaceAutoLoader( 'Markdownify', __DIR__.'/Library/Markdownify/2.1.6/src' );
 
+new Debugger();
+
 header( 'Content-type: text/html; charset=utf-8' );
 error_reporting( E_ALL );
 ini_set( 'display_errors', 1 );
@@ -47,9 +50,20 @@ ini_set( 'xdebug.var_display_max_depth', -1 );
 
 set_error_handler( create_function( '$N,$S,$F,$L', 'throw new \ErrorException($S,0,$N,$F,$L);' ), E_ALL );
 
+Debugger::addFileLine( __FILE__, __LINE__ );
+
 $ShellScreen = new Screen();
+
+Debugger::addFileLine( __FILE__, __LINE__ );
+
 $Config = new Configuration( new UniversalRouter(), new LevelClient() );
+
+Debugger::addFileLine( __FILE__, __LINE__ );
+
 if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance/Support' )) {
+
+    Debugger::addFileLine( __FILE__, __LINE__ );
+
     /**
      * Setup Public-Access
      */
@@ -76,7 +90,13 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             $ShellScreen->addException( $E, get_class( $E ) );
         }
     }
+
+    Debugger::addFileLine( __FILE__, __LINE__ );
+
 } else {
+
+    Debugger::addFileLine( __FILE__, __LINE__ );
+
     /**
      * Setup Application
      */
@@ -84,7 +104,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
         /**
          * Setup Private-Access
          */
-        if (GatekeeperApplication::apiIsValidSession()) {
+        if (( $IsValid = GatekeeperApplication::apiIsValidSession() )) {
             $Config = SystemApplication::setupApi( $Config );
             $Config = ManagementApplication::setupApi( $Config );
             $Config = GraduationApplication::setupApi( $Config );
@@ -95,24 +115,33 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
          */
         $Config = GatekeeperApplication::setupApi( $Config );
         $Config = AssistanceApplication::setupApi( $Config );
+
+        Debugger::addFileLine( __FILE__, __LINE__ );
+
         /**
          * Execute Action (if available)
          */
         if (in_array( HttpKernel::getRequest()->getPathInfo(), $Config->getClientRouter()->getRouteList() )) {
             /** @var Element $Route */
             $Route = $Config->getClientRouter()->getRoute();
+
+            Debugger::addFileLine( __FILE__, __LINE__ );
+
             $ShellScreen->addToContent( new Container( $Route ) );
         } else {
             /**
              * Show Help (if not available)
              */
-            if (GatekeeperApplication::apiIsValidSession()) {
+            if ($IsValid) {
                 /**
                  * Show Help
                  */
                 try {
                     /** @var Element $Route */
                     $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
+
+                    Debugger::addFileLine( __FILE__, __LINE__ );
+
                     $ShellScreen->addToContent( new Container( $Route ) );
                 } catch( \Exception $E ) {
                     /**
@@ -123,6 +152,9 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             } else {
                 /** @var Element $Route */
                 $Route = $Config->getClientRouter()->getRoute( '/Sphere/Gatekeeper/SignIn' );
+
+                Debugger::addFileLine( __FILE__, __LINE__ );
+
                 $ShellScreen->addToContent( new Container( $Route ) );
             }
         }
@@ -139,6 +171,9 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             $Config = AssistanceApplication::setupApi( $Config );
             /** @var Element $Route */
             $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
+
+            Debugger::addFileLine( __FILE__, __LINE__ );
+
             $ShellScreen->addToContent( new Container( $Route ) );
         } catch( \Exception $E ) {
             /**
@@ -162,6 +197,9 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             Update::getApi()->setupDataStructure( false )
             .new GatekeeperApplication\Redirect\Custom( '', '/Sphere', '', '', 30 )
         );
+
+        Debugger::addFileLine( __FILE__, __LINE__ );
+
         $ShellScreen->addToContent( new Container( $View ) );
     } catch( \Exception $E ) {
         if (false !== strpos( $E->getFile(), 'Sphere\Application\Service' )) {
@@ -178,6 +216,9 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
                 );
                 /** @var Element $Route */
                 $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
+
+                Debugger::addFileLine( __FILE__, __LINE__ );
+
                 $ShellScreen->addToContent( new Container( $Route ) );
             } catch( \Exception $E ) {
                 /**
@@ -193,6 +234,8 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
         }
     }
 }
+
+Debugger::addFileLine( __FILE__, __LINE__ );
 
 /**
  * Define Navigation Client
@@ -216,6 +259,9 @@ if ($Config->hasApplicationNavigation()) {
         new Container( $Config->getApplicationNavigation() )
     );
 }
+
+Debugger::addFileLine( __FILE__, __LINE__ );
+
 /**
  * Create Client
  */

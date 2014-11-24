@@ -14,8 +14,10 @@ use MOC\V\Core\HttpKernel\HttpKernel;
 abstract class Service implements IServiceInterface
 {
 
-    /** @var IBridgeInterface $DatabaseMaster */
-    protected static $DatabaseMaster = null;
+    /** @var IBridgeInterface $Database */
+    protected static $Database = null;
+    /** @var IBridgeInterface[] $DatabaseMaster */
+    protected static $DatabaseMaster = array();
     /** @var IBridgeInterface[] $DatabaseSlave */
     protected static $DatabaseSlave = array();
     /** @var null|string $BaseRoute Client-Application Route */
@@ -36,12 +38,22 @@ abstract class Service implements IServiceInterface
     }
 
     /**
+     * @return Debugger
+     */
+    public static function getDebugger()
+    {
+
+        return new Debugger();
+    }
+
+    /**
      * @param bool $Simulate
      *
      * @return string
      */
     public function setupDataStructure( $Simulate = true )
     {
+
         $this->addInstallProtocol( __CLASS__ );
         $this->addInstallProtocol( '<span class="text-danger">Missing Configuration!</span>' );
         return $this->getInstallProtocol();
@@ -103,7 +115,7 @@ abstract class Service implements IServiceInterface
 
         $SlaveCount = count( static::$DatabaseSlave );
         if ($SlaveCount == 0) {
-            return static::$DatabaseMaster;
+            return static::$Database;
         } else {
             return static::$DatabaseSlave[rand( 0, $SlaveCount - 1 )];
         }
@@ -156,7 +168,6 @@ abstract class Service implements IServiceInterface
         }
     }
 
-
     /**
      * Database Write Access
      *
@@ -172,7 +183,12 @@ abstract class Service implements IServiceInterface
     private final function registerDatabaseMaster( $Username, $Password, $Database, $Driver, $Host, $Port = null )
     {
 
-        static::$DatabaseMaster = Database::getDatabase( $Username, $Password, $Database, $Driver, $Host, $Port );
+        $Identifier = sha1( serialize( func_get_args() ) );
+        if (!array_key_exists( $Identifier, static::$DatabaseMaster )) {
+            static::$DatabaseMaster[$Identifier] = Database::getDatabase( $Username, $Password, $Database, $Driver,
+                $Host, $Port );
+        }
+        static::$Database = static::$DatabaseMaster[$Identifier];
         return $this;
     }
 
@@ -215,7 +231,21 @@ abstract class Service implements IServiceInterface
     final protected function writeData()
     {
 
-        return static::$DatabaseMaster;
+        return static::$Database;
+    }
+
+    /**
+     * @param string $ViewName
+     *
+     * @return bool
+     */
+    protected function dbHasView( $ViewName )
+    {
+
+        $SchemaManager = $this->writeData()->getSchemaManager();
+        $NameList = $SchemaManager->listViews();
+        $NameList = array_keys( array_map( create_function( '&$V', '$V = strtolower( $V->getName() );' ), $NameList ) );
+        return in_array( strtolower( $ViewName ), $NameList );
     }
 
     /**

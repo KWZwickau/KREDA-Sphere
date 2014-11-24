@@ -12,19 +12,48 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema;
 class Access extends Schema
 {
 
+    private static $AccessCache = array();
+
     /**
      * @throws \Exception
      */
     public function __construct()
     {
 
+        $this->getDebugger()->addConstructorCall( __METHOD__ );
+
         $this->connectDatabase( 'Gatekeeper-Access' );
-        parent::__construct();
     }
 
     public function setupSystem()
     {
-        //$this->toolCreateAccessRight( '' );
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        /**
+         * System:Database
+         */
+        $Privilege = $this->actionCreateAccessPrivilege( 'Application::System:Database' );
+
+        $Right = $this->actionCreateAccessRight( '/Sphere/System/Database' );
+        $this->actionCreateAccessRightPrivilegeList( $Right, $Privilege );
+        $Right = $this->actionCreateAccessRight( '/Sphere/System/Database/Status' );
+        $this->actionCreateAccessRightPrivilegeList( $Right, $Privilege );
+
+        $Role = $this->actionCreateAccessRole( 'Administrator::GodMode' );
+        $this->actionCreateAccessPrivilegeRoleList( $Privilege, $Role );
+
+        /**
+         * System:Token
+         */
+        $Privilege = $this->actionCreateAccessPrivilege( 'Application::System:Token' );
+
+        $Right = $this->actionCreateAccessRight( '/Sphere/System/Token/Certification' );
+        $this->actionCreateAccessRightPrivilegeList( $Right, $Privilege );
+
+        $Role = $this->actionCreateAccessRole( 'Administrator::GodMode' );
+        $this->actionCreateAccessPrivilegeRoleList( $Privilege, $Role );
+
     }
 
     /**
@@ -33,6 +62,31 @@ class Access extends Schema
     public function schemaTableAccessRole()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         return $this->getTableAccessRole();
+    }
+
+    public function apiIsValidAccess( $Route )
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__.':'.$Route );
+
+        if (in_array( $Route, self::$AccessCache )) {
+            return true;
+        }
+
+        try {
+            if (false !== ( $Right = $this->objectAccessRightByRouteName( $Route ) )) {
+                if (false !== ( $AccessList = $this->objectViewAccessByAccessRight( $Right ) )) {
+                    self::$AccessCache[] = $Route;
+                    return true;
+                    //var_dump( $AccessList );
+                }
+            }
+        } catch( \Exception $E ) {
+
+        }
+        return false;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\System\Service\Token;
 
+use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
@@ -25,6 +26,7 @@ class Certification extends Element implements IElementInterface
     {
 
         $this->Template = Template::getTemplate( __DIR__.'/Certification.twig' );
+        $this->Template->setVariable( 'TokenList', Token::getApi()->entityViewToken() );
     }
 
     /**

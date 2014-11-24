@@ -19,7 +19,7 @@ class Schema extends Setup
     protected function objectTokenByIdentifier( $Identifier )
     {
 
-        $Entity = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblToken' )
+        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblToken' )
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
         if (null === $Entity) {
             return false;
@@ -36,7 +36,7 @@ class Schema extends Setup
     protected function objectTokenById( $Id )
     {
 
-        $Entity = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblToken' )
+        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblToken' )
             ->find( $Id );
         if (null === $Entity) {
             return false;
@@ -50,18 +50,34 @@ class Schema extends Setup
      *
      * @return bool|null
      */
-    protected function toolCreateToken( $Identifier )
+    protected function actionCreateToken( $Identifier )
     {
 
-        $Entity = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblToken' )
+        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblToken' )
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
         if (null === $Entity) {
             $Entity = new TblToken( $Identifier );
-            $this->EntityManager->persist( $Entity );
-            $this->EntityManager->flush();
+            $this->loadEntityManager()->persist( $Entity );
+            $this->loadEntityManager()->flush();
             return true;
         }
 
         return null;
+    }
+
+    /**
+     * @return ViewToken[]|bool
+     */
+    protected function objectViewToken()
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $EntityList = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\ViewToken' )->findAll();
+        if (empty( $EntityList )) {
+            return false;
+        } else {
+            return $EntityList;
+        }
     }
 }

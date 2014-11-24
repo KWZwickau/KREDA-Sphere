@@ -21,7 +21,7 @@ class Schema extends Setup
      *
      * @return bool|null
      */
-    protected function toolCreateAccount(
+    protected function actionCreateAccount(
         $Username,
         $Password,
         $tblToken = null,
@@ -29,7 +29,9 @@ class Schema extends Setup
         $apiSystem_Consumer = null
     ) {
 
-        $tblAccount = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $tblAccount = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
             ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
         if (null === $tblAccount) {
             $tblAccount = new TblAccount( $Username );
@@ -37,8 +39,8 @@ class Schema extends Setup
             $tblAccount->setTblToken( $tblToken );
             $tblAccount->setApiHumanResourcesPerson( $apiHumanResources_Person );
             $tblAccount->setApiSystemConsumer( $apiSystem_Consumer );
-            $this->EntityManager->persist( $tblAccount );
-            $this->EntityManager->flush();
+            $this->loadEntityManager()->persist( $tblAccount );
+            $this->loadEntityManager()->flush();
             return true;
         }
         return null;
@@ -52,7 +54,9 @@ class Schema extends Setup
     protected function objectAccountByUsername( $Username )
     {
 
-        $Entity = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
             ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
         if (null === $Entity) {
             return false;
@@ -69,11 +73,13 @@ class Schema extends Setup
     protected function objectAccountBySession( $Session = null )
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         if (null === $Session) {
             $Session = session_id();
         }
         /** @var TblAccountSession $Entity */
-        $Entity = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
+        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null === $Entity) {
             return false;
@@ -90,7 +96,9 @@ class Schema extends Setup
     protected function objectAccountById( $Id )
     {
 
-        $Entity = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
             ->find( $Id );
         if (null === $Entity) {
             return false;
@@ -108,7 +116,9 @@ class Schema extends Setup
     protected function objectAccountByCredential( $Username, $Password )
     {
 
-        $Entity = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
             ->findOneBy( array(
                 TblAccount::ATTR_USERNAME => $Username,
                 TblAccount::ATTR_PASSWORD => hash( 'sha256', $Password )
@@ -127,19 +137,21 @@ class Schema extends Setup
      *
      * @return bool
      */
-    protected function toolCreateSession( $Session, $tblAccount, $Timeout = 1800 )
+    protected function actionCreateSession( $Session, $tblAccount, $Timeout = 1800 )
     {
 
-        $Entity = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
-            $this->EntityManager->remove( $Entity );
+            $this->loadEntityManager()->remove( $Entity );
         }
         $Entity = new TblAccountSession( $Session );
         $Entity->setTblAccount( $tblAccount );
         $Entity->setTimeout( time() + $Timeout );
-        $this->EntityManager->persist( $Entity );
-        $this->EntityManager->flush();
+        $this->loadEntityManager()->persist( $Entity );
+        $this->loadEntityManager()->flush();
         return true;
     }
 
@@ -148,18 +160,20 @@ class Schema extends Setup
      *
      * @return bool
      */
-    protected function toolDestroySession( $Session = null )
+    protected function actionDestroySession( $Session = null )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         if (null === $Session) {
             $Session = session_id();
         }
 
-        $Entity = $this->EntityManager->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
+        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
-            $this->EntityManager->remove( $Entity );
-            $this->EntityManager->flush();
+            $this->loadEntityManager()->remove( $Entity );
+            $this->loadEntityManager()->flush();
             return true;
         }
         return false;

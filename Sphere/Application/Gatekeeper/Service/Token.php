@@ -18,14 +18,17 @@ class Token extends Schema
     public function __construct()
     {
 
+        $this->getDebugger()->addConstructorCall( __METHOD__ );
+
         $this->connectDatabase( 'Gatekeeper-Token' );
-        parent::__construct();
     }
 
     public function setupSystem()
     {
 
-        $this->toolCreateToken( 'ccccccdilkui' );
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $this->actionCreateToken( 'ccccccdilkui' );
     }
 
     /**
@@ -37,6 +40,8 @@ class Token extends Schema
     public function apiValidateToken( $Value )
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $YubiKey = new Token\Hardware\YubiKey\YubiKey( 19180, 'YJwU33GNiRiw1dE8/MfIMNm8w3Y=' );
         $Key = $YubiKey->parseKey( $Value );
         return $YubiKey->verifyKey( $Key );
@@ -47,10 +52,21 @@ class Token extends Schema
      *
      * @return bool|Schema\TblToken
      */
-    public function schemaTokenById( $Id )
+    public function entityTokenById( $Id )
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         return $this->objectTokenById( $Id );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function entityViewToken()
+    {
+
+        return $this->objectViewToken();
     }
 
     /**
@@ -58,6 +74,8 @@ class Token extends Schema
      */
     public function schemaTableToken()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->getTableToken();
     }

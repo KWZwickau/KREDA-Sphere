@@ -36,6 +36,8 @@ class Client extends Application
     public static function setupApi( Configuration $Configuration )
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         self::$Configuration = $Configuration;
 
         /**
@@ -104,6 +106,8 @@ class Client extends Application
     public function apiMain()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $View = new Landing();
         $View->setTitle( 'Verwaltung' );
@@ -113,6 +117,8 @@ class Client extends Application
 
     protected function setupModuleNavigation()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Property', 'Immobilien', new HomeIcon()
@@ -138,6 +144,8 @@ class Client extends Application
     public function apiProperty()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $this->setupServiceProperty();
         return Property::getApi( '/Sphere/Management/Property' )->apiMain();
@@ -145,6 +153,8 @@ class Client extends Application
 
     private function setupServiceProperty()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/Property/School', 'Schulen', new TileBigIcon()
@@ -160,6 +170,8 @@ class Client extends Application
     public function apiPropertySchool()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $this->setupServiceProperty();
         return Property::getApi( '/Sphere/Management/Property' )->apiMain();
@@ -167,6 +179,8 @@ class Client extends Application
 
     public function apiPropertyBuilding()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $this->setupServiceProperty();
@@ -176,6 +190,8 @@ class Client extends Application
     public function apiPropertyRoom()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $this->setupServiceProperty();
         return Property::getApi( '/Sphere/Management/Property' )->apiMain();
@@ -184,6 +200,8 @@ class Client extends Application
     public function apiPeople()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $this->setupServicePeople();
         return People::getApi( '/Sphere/Management/People' )->apiMain();
@@ -191,6 +209,8 @@ class Client extends Application
 
     private function setupServicePeople()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/People/Staff', 'Personal', new PersonIcon()
@@ -207,6 +227,8 @@ class Client extends Application
     public function apiPeopleStaff()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $this->setupServicePeople();
         return People::getApi( '/Sphere/Management/People/Staff' )->apiPeopleStaff();
@@ -215,6 +237,8 @@ class Client extends Application
 
     public function apiPeopleStaffCreate()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $this->setupServicePeople();
@@ -225,6 +249,8 @@ class Client extends Application
     public function apiPeopleStudent()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $this->setupServicePeople();
         return People::getApi( '/Sphere/Management/People/Student' )->apiPeopleStudent();
@@ -233,6 +259,8 @@ class Client extends Application
 
     public function apiPeopleParent()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $this->setupServicePeople();

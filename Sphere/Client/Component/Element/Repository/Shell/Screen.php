@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
 
+use KREDA\Sphere\Application\Debugger;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
@@ -29,6 +30,8 @@ class Screen extends Shell implements IElementInterface
     function __construct()
     {
 
+        Debugger::addConstructorCall( __METHOD__ );
+
         $this->Template = Template::getTemplate( __DIR__.'/Screen.twig' );
         $this->Template->setVariable( 'PathBase', HttpKernel::getRequest()->getPathBase() );
     }
@@ -40,6 +43,8 @@ class Screen extends Shell implements IElementInterface
      */
     public function addToNavigation( Container $Container )
     {
+
+        Debugger::addMethodCall( __METHOD__ );
 
         array_push( $this->PositionNavigation, $Container->getContent() );
         return $this;
@@ -65,6 +70,9 @@ class Screen extends Shell implements IElementInterface
      */
     private function addMessageToContent( \Exception $E, $Name = 'Error' )
     {
+
+        Debugger::addMethodCall( __METHOD__ );
+
         $TraceList = '';
         foreach ((array)$E->getTrace() as $Index => $Trace) {
             $TraceList .= '<br/><samp class="text-info">'
@@ -90,6 +98,8 @@ class Screen extends Shell implements IElementInterface
     public function addToContent( Container $Container )
     {
 
+        Debugger::addMethodCall( __METHOD__ );
+
         array_push( $this->PositionContent, $Container->getContent() );
         return $this;
     }
@@ -113,8 +123,12 @@ class Screen extends Shell implements IElementInterface
     public function getContent()
     {
 
+        Debugger::addMethodCall( __METHOD__ );
+
         $this->Template->setVariable( 'PositionNavigation', implode( '', $this->PositionNavigation ) );
         $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent ) );
+        $this->Template->setVariable( 'PositionDebugger', Debugger::getProtocol() );
+
         return $this->Template->getContent();
     }
 

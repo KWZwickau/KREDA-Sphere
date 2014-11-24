@@ -22,6 +22,8 @@ class Update extends Service
     public function apiUpdate()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $View = new Landing();
         $View->setTitle( 'KREDA Update' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
@@ -33,6 +35,8 @@ class Update extends Service
      */
     public function apiUpdateSimulation()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $View = new Landing();
         $View->setTitle( 'KREDA Update' );
@@ -50,16 +54,29 @@ class Update extends Service
     public function setupDataStructure( $Simulate = true )
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        /**
+         * Prevent Update-Timeout
+         */
+        set_time_limit( 0 );
+
         /**
          * Gatekeeper
          */
 
         $Protocol[] = Token::getApi()->setupDataStructure( $Simulate );
-        Token::getApi()->setupSystem();
+        if (!$Simulate) {
+            Token::getApi()->setupSystem();
+        }
         $Protocol[] = Access::getApi()->setupDataStructure( $Simulate );
-        Access::getApi()->setupSystem();
+        if (!$Simulate) {
+            Access::getApi()->setupSystem();
+        }
         $Protocol[] = Account::getApi()->setupDataStructure( $Simulate );
-        Account::getApi()->setupSystem();
+        if (!$Simulate) {
+            Account::getApi()->setupSystem();
+        }
 
         /**
          * System
@@ -75,6 +92,8 @@ class Update extends Service
      */
     public function apiUpdatePerform()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $View = new Landing();
         $View->setTitle( 'KREDA Update' );

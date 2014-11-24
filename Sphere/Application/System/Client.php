@@ -2,14 +2,17 @@
 namespace KREDA\Sphere\Application\System;
 
 use KREDA\Sphere\Application\Application;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Token;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CertificateIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FlashIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TaskIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WrenchIcon;
 use KREDA\Sphere\Client\Configuration;
 
@@ -32,6 +35,8 @@ class Client extends Application
     public static function setupApi( Configuration $Configuration )
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         self::$Configuration = $Configuration;
         self::addClientNavigationMeta( self::$Configuration,
             '/Sphere/System', 'System', new WrenchIcon()
@@ -42,8 +47,10 @@ class Client extends Application
         self::buildRoute( self::$Configuration, '/Sphere/System/Update/Simulation', __CLASS__.'::apiUpdateSimulation' );
         self::buildRoute( self::$Configuration, '/Sphere/System/Update/Perform', __CLASS__.'::apiUpdatePerform' );
 
-        self::buildRoute( self::$Configuration, '/Sphere/System/Database', __CLASS__.'::apiDatabaseStatus' );
-        self::buildRoute( self::$Configuration, '/Sphere/System/Database/Status', __CLASS__.'::apiDatabaseStatus' );
+        if (Access::getApi()->apiIsValidAccess( '/Sphere/System/Database/Status' )) {
+            self::buildRoute( self::$Configuration, '/Sphere/System/Database', __CLASS__.'::apiDatabaseStatus' );
+            self::buildRoute( self::$Configuration, '/Sphere/System/Database/Status', __CLASS__.'::apiDatabaseStatus' );
+        }
 
         self::buildRoute( self::$Configuration, '/Sphere/System/Account', __CLASS__.'::apiAccount' );
 
@@ -60,6 +67,8 @@ class Client extends Application
     public function apiMain()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $View = new Landing();
         $View->setTitle( 'Systemeinstellungen' );
@@ -70,11 +79,15 @@ class Client extends Application
     public function setupModuleNavigation()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        if (Access::getApi()->apiIsValidAccess( '/Sphere/System/Database/Status' )) {
+            self::addModuleNavigationMain( self::$Configuration,
+                '/Sphere/System/Database', 'Datenbanken', new TaskIcon()
+            );
+        }
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Database', 'Datenbanken', new GearIcon()
-        );
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Update', 'Update', new GearIcon()
+            '/Sphere/System/Update', 'Update', new FlashIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Account', 'Benutzerkonten', new PersonIcon()
@@ -90,6 +103,8 @@ class Client extends Application
     public function apiUpdate()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $this->setupServiceUpdate();
         return Update::getApi()->apiUpdate();
@@ -97,6 +112,8 @@ class Client extends Application
 
     public function setupServiceUpdate()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/System/Update/Simulation', 'Simulation durchführen', new GearIcon()
@@ -113,6 +130,8 @@ class Client extends Application
     public function apiUpdateSimulation()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $this->setupServiceUpdate();
         return Update::getApi()->apiUpdateSimulation();
@@ -123,6 +142,8 @@ class Client extends Application
      */
     public function apiUpdatePerform()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $this->setupServiceUpdate();
@@ -135,6 +156,8 @@ class Client extends Application
     public function apiDatabaseStatus()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         return Database::getApi( '/Sphere/System/Database' )->apiStatus();
     }
@@ -145,6 +168,8 @@ class Client extends Application
     public function apiToken()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $this->setupServiceToken();
         return Token::getApi()->apiToken();
@@ -152,6 +177,8 @@ class Client extends Application
 
     public function setupServiceToken()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/System/Token/Certification', 'Zertifizierung', new CertificateIcon()
@@ -167,6 +194,8 @@ class Client extends Application
      */
     public function apiTokenCertification( $CredentialKey = null )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $this->setupServiceToken();

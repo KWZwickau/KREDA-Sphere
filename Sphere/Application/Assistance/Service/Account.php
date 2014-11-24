@@ -23,6 +23,8 @@ class Account extends Service
     public function apiPasswordForgotten()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $View = new Stage();
         $View->setTitle( 'Hilfe' );
         $View->setDescription( 'Passwort vergessen' );

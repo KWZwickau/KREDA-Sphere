@@ -22,6 +22,15 @@ abstract class Application implements IApplicationInterface
 {
 
     /**
+     * @return Debugger
+     */
+    public static function getDebugger()
+    {
+
+        return new Debugger();
+    }
+
+    /**
      * @param Configuration $Configuration
      * @param string        $Url
      * @param string        $Method
@@ -59,18 +68,33 @@ abstract class Application implements IApplicationInterface
         }
     }
 
+    /**
+     * @param string $Value
+     *
+     * @return UrlParameter
+     */
     private static function prepareParameterUrl( $Value )
     {
 
         return new UrlParameter( $Value );
     }
 
+    /**
+     * @param string $Value
+     *
+     * @return NameParameter
+     */
     private static function prepareParameterName( $Value )
     {
 
         return new NameParameter( $Value );
     }
 
+    /**
+     * @param Icon $Value
+     *
+     * @return Icon|IconParameter
+     */
     private static function prepareParameterIcon( Icon $Value )
     {
 
@@ -80,6 +104,11 @@ abstract class Application implements IApplicationInterface
         return $Value;
     }
 
+    /**
+     * @param UrlParameter $Value
+     *
+     * @return bool
+     */
     private static function prepareParameterActive( UrlParameter $Value )
     {
 
@@ -87,6 +116,12 @@ abstract class Application implements IApplicationInterface
         return 0 === strpos( $Request->getUrlBase().$Request->getPathInfo(), $Value->getValue() );
     }
 
+    /**
+     * @param Configuration $Configuration
+     * @param string        $Url
+     * @param string        $Name
+     * @param Icon          $Icon
+     */
     protected static function addClientNavigationMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
     {
 
@@ -103,6 +138,12 @@ abstract class Application implements IApplicationInterface
         }
     }
 
+    /**
+     * @param Configuration $Configuration
+     * @param string        $Url
+     * @param string        $Name
+     * @param Icon          $Icon
+     */
     protected static function addModuleNavigationMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
     {
 
@@ -119,6 +160,12 @@ abstract class Application implements IApplicationInterface
         }
     }
 
+    /**
+     * @param Configuration $Configuration
+     * @param string        $Url
+     * @param string        $Name
+     * @param Icon          $Icon
+     */
     protected static function addApplicationNavigationMain(
         Configuration &$Configuration,
         $Url,
