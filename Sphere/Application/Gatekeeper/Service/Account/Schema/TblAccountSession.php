@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Account\Schema;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
@@ -17,13 +18,23 @@ class TblAccountSession
     const ATTR_TIMEOUT = 'Timeout';
     const ATTR_TBL_ACCOUNT = 'tblAccount';
 
-    /** @Id @GeneratedValue @Column(type="bigint") */
+    /**
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
     private $Id;
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     */
     private $Session;
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     */
     private $Timeout;
-    /** @Column(type="bigint") */
+    /**
+     * @Column(type="bigint")
+     */
     private $tblAccount;
 
     /**
@@ -87,5 +98,23 @@ class TblAccountSession
     {
 
         $this->Id = $Id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSession()
+    {
+
+        return $this->Session;
+    }
+
+    /**
+     * @param string $Session
+     */
+    public function setSession( $Session )
+    {
+
+        $this->Session = $Session;
     }
 }

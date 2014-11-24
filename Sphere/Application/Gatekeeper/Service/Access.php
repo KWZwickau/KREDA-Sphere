@@ -81,7 +81,6 @@ class Access extends Schema
                 if (false !== ( $AccessList = $this->objectViewAccessByAccessRight( $Right ) )) {
                     self::$AccessCache[] = $Route;
                     return true;
-                    //var_dump( $AccessList );
                 }
             }
         } catch( \Exception $E ) {

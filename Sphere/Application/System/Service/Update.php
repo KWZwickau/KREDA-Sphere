@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\System\Service;
 
-use KREDA\Sphere\Application\Assistance\Service\Youtrack;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;

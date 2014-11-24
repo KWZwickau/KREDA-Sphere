@@ -13,21 +13,42 @@ use Doctrine\ORM\Mapping\Table;
 class ViewAccess
 {
 
-    /** @Id @Column(type="bigint") */
+    /**
+     * @Id
+     * @Column(type="bigint")
+     */
     private $tblAccessRole;
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     */
     private $RoleName;
-    /** @Id @Column(type="bigint") */
+    /**
+     * @Id
+     * @Column(type="bigint")
+     */
     private $tblAccessPrivilegeRoleList;
-    /** @Id @Column(type="bigint") */
+    /**
+     * @Id
+     * @Column(type="bigint")
+     */
     private $tblAccessPrivilege;
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     */
     private $PrivilegeName;
-    /** @Id @Column(type="bigint") */
+    /**
+     * @Id
+     * @Column(type="bigint")
+     */
     private $tblAccessRightPrivilegeList;
-    /** @Id @Column(type="bigint") */
+    /**
+     * @Id
+     * @Column(type="bigint")
+     */
     private $tblAccessRight;
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     */
     private $RightRoute;
 
     /**

@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Account\Schema;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
@@ -19,17 +20,31 @@ class TblAccount
     const ATTR_API_HUMANRESOURCES_PERSON = 'apiHumanResources_Person';
     const ATTR_API_SYSTEM_CONSUMER = 'apiSystem_Consumer';
 
-    /** @Id @GeneratedValue @Column(type="bigint") */
+    /**
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
     private $Id;
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     */
     private $Username;
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     */
     private $Password;
-    /** @Column(type="bigint") */
+    /**
+     * @Column(type="bigint")
+     */
     private $tblToken;
-    /** @Column(type="bigint") */
+    /**
+     * @Column(type="bigint")
+     */
     private $apiHumanResources_Person;
-    /** @Column(type="bigint") */
+    /**
+     * @Column(type="bigint")
+     */
     private $apiSystem_Consumer;
 
     /**

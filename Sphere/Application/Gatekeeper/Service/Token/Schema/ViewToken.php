@@ -13,9 +13,14 @@ use Doctrine\ORM\Mapping\Table;
 class ViewToken
 {
 
-    /** @Id @Column(type="bigint") */
+    /**
+     * @Id
+     * @Column(type="bigint")
+     */
     private $tblToken;
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     */
     private $TokenIdentifier;
 
     /**

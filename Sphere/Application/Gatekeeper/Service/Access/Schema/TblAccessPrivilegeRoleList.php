@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
@@ -16,11 +17,19 @@ class TblAccessPrivilegeRoleList
     const ATTR_TBL_ACCESS_PRIVILEGE = 'tblAccessPrivilege';
     const ATTR_TBL_ACCESS_ROLE = 'tblAccessRole';
 
-    /** @Id @GeneratedValue @Column(type="bigint") */
+    /**
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
     private $Id;
-    /** @Column(type="bigint") */
+    /**
+     * @Column(type="bigint")
+     */
     private $tblAccessPrivilege;
-    /** @Column(type="bigint") */
+    /**
+     * @Column(type="bigint")
+     */
     private $tblAccessRole;
 
     /**

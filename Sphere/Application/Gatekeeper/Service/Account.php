@@ -137,7 +137,7 @@ class Account extends Schema
             return true;
         }
 
-        if (false === ( $Account = $this->objectAccountBySession() )) {
+        if (false === $this->objectAccountBySession()) {
             self::$ValidSessionCache = false;
         } else {
             self::$ValidSessionCache = true;

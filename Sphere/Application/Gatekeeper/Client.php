@@ -8,9 +8,7 @@ use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
@@ -184,6 +182,7 @@ class Client extends Application
      */
     public function apiSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
     {
+
         $this->setupModuleNavigation();
         $View = new SignInManagement();
         switch (Account::getApi()->apiSignIn( $CredentialName, $CredentialLock, $CredentialKey )) {

@@ -126,7 +126,7 @@ abstract class Application implements IApplicationInterface
     {
 
         $Configuration->getClientNavigation()->addLinkToMain(
-            $Link = new LevelClient\Link(
+            new LevelClient\Link(
                 $Url = self::prepareParameterUrl( $Url ),
                 self::prepareParameterName( $Name ),
                 self::prepareParameterIcon( $Icon ),
