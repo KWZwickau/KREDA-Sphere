@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Token;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema\TblToken;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema\ViewToken;
 
 /**
  * Class Schema
@@ -18,6 +19,8 @@ class Schema extends Setup
      */
     protected function objectTokenByIdentifier( $Identifier )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblToken' )
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
@@ -36,8 +39,9 @@ class Schema extends Setup
     protected function objectTokenById( $Id )
     {
 
-        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblToken' )
-            ->find( $Id );
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $Entity = $this->loadEntityManager()->find( __NAMESPACE__.'\Schema\TblToken', $Id );
         if (null === $Entity) {
             return false;
         } else {
@@ -52,6 +56,8 @@ class Schema extends Setup
      */
     protected function actionCreateToken( $Identifier )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblToken' )
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );

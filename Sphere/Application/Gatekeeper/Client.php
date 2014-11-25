@@ -33,6 +33,8 @@ class Client extends Application
     public static function setupApi( Configuration $Configuration )
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         self::$Configuration = $Configuration;
         if (self::apiIsValidSession()) {
             self::addClientNavigationMeta( self::$Configuration,
@@ -75,6 +77,8 @@ class Client extends Application
     public static function apiIsValidSession()
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         return Account::getApi()->apiIsValidSession();
     }
 
@@ -84,6 +88,8 @@ class Client extends Application
     public function apiSignIn()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         return $this->apiMain();
     }
 
@@ -92,6 +98,8 @@ class Client extends Application
      */
     public function apiMain()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $View = new Landing();
@@ -106,6 +114,8 @@ class Client extends Application
      */
     public function setupModuleNavigation()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Gatekeeper/SignIn/Teacher', 'Lehrer', new LockIcon()
@@ -124,6 +134,8 @@ class Client extends Application
     public function apiWelcome()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $View = new Landing();
         $View->setTitle( 'Willkommen' );
         $View->setMessage( '' );
@@ -140,6 +152,8 @@ class Client extends Application
      */
     public function apiSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $View = new SignInTeacher();
@@ -183,6 +197,8 @@ class Client extends Application
     public function apiSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $View = new SignInManagement();
         switch (Account::getApi()->apiSignIn( $CredentialName, $CredentialLock, $CredentialKey )) {
@@ -223,6 +239,8 @@ class Client extends Application
     public function apiSignInStudent( $CredentialName, $CredentialLock )
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->setupModuleNavigation();
         $View = new SignInStudent();
         switch (Account::getApi()->apiSignIn( $CredentialName, $CredentialLock )) {
@@ -255,6 +273,8 @@ class Client extends Application
      */
     public function apiSignOut()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $View = new SignOut();
         Account::getApi()->apiSignOut();

@@ -1,30 +1,18 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Token;
 
-use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\View;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\Tools\Setup as ORMSetup;
-use KREDA\Sphere\Application\Service;
 
 /**
  * Class Setup
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Token
  */
-abstract class Setup extends Service
+abstract class Setup extends \KREDA\Sphere\Application\Setup
 {
-
-    /** @var EntityManager $EntityManager */
-    protected static $EntityManager = null;
-    /** @var null|AbstractSchemaManager $SchemaManager */
-    private static $SchemaManager = null;
-    /** @var null|Schema $Schema */
-    private static $Schema = null;
 
     /**
      * @param bool $Simulate
@@ -33,6 +21,8 @@ abstract class Setup extends Service
      */
     public function setupDataStructure( $Simulate = true )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         /**
          * Table
@@ -75,32 +65,6 @@ abstract class Setup extends Service
     }
 
     /**
-     * @return Schema|null
-     */
-    private function loadSchema()
-    {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-        if (null === self::$Schema) {
-            self::$Schema = $this->loadSchemaManager()->createSchema();
-        }
-        return self::$Schema;
-    }
-
-    /**
-     * @return AbstractSchemaManager|null
-     */
-    private function loadSchemaManager()
-    {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-        if (null === self::$SchemaManager) {
-            self::$SchemaManager = $this->writeData()->getSchemaManager();
-        }
-        return self::$SchemaManager;
-    }
-
-    /**
      * @param Schema $Schema
      *
      * @return Table
@@ -108,6 +72,8 @@ abstract class Setup extends Service
      */
     private function setTableToken( Schema &$Schema )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         /**
          * Install
@@ -133,28 +99,13 @@ abstract class Setup extends Service
     }
 
     /**
-     * @return EntityManager
-     * @throws ORMException
-     */
-    protected function loadEntityManager()
-    {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-        if (null === self::$EntityManager) {
-            self::$EntityManager = EntityManager::create(
-                $this->readData()->getConnection(),
-                ORMSetup::createAnnotationMetadataConfiguration( array( __DIR__.'/Schema' ) )
-            );
-        }
-        return self::$EntityManager;
-    }
-
-    /**
      * @return Table
      * @throws SchemaException
      */
     protected function getTableToken()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->loadSchema()->getTable( 'tblToken' );
     }

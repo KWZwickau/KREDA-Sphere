@@ -30,7 +30,7 @@ class BridgeTest extends \PHPUnit_Framework_TestCase
 
         $Bridge = new TwigTemplate();
 
-        $Bridge->loadFile( new FileParameter( __FILE__ ) );
+        $Bridge->loadFile( new FileParameter( __FILE__ ), true );
 
         $Bridge->setVariable( 'Foo', 'Bar' );
         $Bridge->setVariable( 'Foo', array( 'Bar' ) );
@@ -43,7 +43,7 @@ class BridgeTest extends \PHPUnit_Framework_TestCase
 
         $Bridge = new SmartyTemplate();
 
-        $Bridge->loadFile( new FileParameter( __FILE__ ) );
+        $Bridge->loadFile( new FileParameter( __FILE__ ), true );
 
         $Bridge->setVariable( 'Foo', 'Bar' );
         $Bridge->setVariable( 'Foo', array( 'Bar' ) );

@@ -1,31 +1,19 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Account;
 
-use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\Tools\Setup as ORMSetup;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
-use KREDA\Sphere\Application\Service;
 
 /**
  * Class Setup
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Account
  */
-abstract class Setup extends Service
+abstract class Setup extends \KREDA\Sphere\Application\Setup
 {
-
-    /** @var EntityManager $EntityManager */
-    protected static $EntityManager = null;
-    /** @var null|AbstractSchemaManager $SchemaManager */
-    private static $SchemaManager = null;
-    /** @var null|Schema $Schema */
-    private static $Schema = null;
 
     /**
      * @param bool $Simulate
@@ -62,32 +50,6 @@ abstract class Setup extends Service
             }
         }
         return $this->getInstallProtocol();
-    }
-
-    /**
-     * @return Schema|null
-     */
-    private function loadSchema()
-    {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-        if (null === self::$Schema) {
-            self::$Schema = $this->loadSchemaManager()->createSchema();
-        }
-        return self::$Schema;
-    }
-
-    /**
-     * @return AbstractSchemaManager|null
-     */
-    private function loadSchemaManager()
-    {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-        if (null === self::$SchemaManager) {
-            self::$SchemaManager = $this->writeData()->getSchemaManager();
-        }
-        return self::$SchemaManager;
     }
 
     /**
@@ -240,23 +202,6 @@ abstract class Setup extends Service
             }
         }
         return $Table;
-    }
-
-    /**
-     * @return EntityManager
-     * @throws ORMException
-     */
-    protected function loadEntityManager()
-    {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-        if (null === self::$EntityManager) {
-            self::$EntityManager = EntityManager::create(
-                $this->readData()->getConnection(),
-                ORMSetup::createAnnotationMetadataConfiguration( array( __DIR__.'/Schema' ) )
-            );
-        }
-        return self::$EntityManager;
     }
 
     /**

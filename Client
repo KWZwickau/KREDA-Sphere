@@ -50,15 +50,8 @@ ini_set( 'xdebug.var_display_max_depth', -1 );
 
 set_error_handler( create_function( '$N,$S,$F,$L', 'throw new \ErrorException($S,0,$N,$F,$L);' ), E_ALL );
 
-Debugger::addFileLine( __FILE__, __LINE__ );
-
 $ShellScreen = new Screen();
-
-Debugger::addFileLine( __FILE__, __LINE__ );
-
 $Config = new Configuration( new UniversalRouter(), new LevelClient() );
-
-Debugger::addFileLine( __FILE__, __LINE__ );
 
 if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance/Support' )) {
 
@@ -115,18 +108,12 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
          */
         $Config = GatekeeperApplication::setupApi( $Config );
         $Config = AssistanceApplication::setupApi( $Config );
-
-        Debugger::addFileLine( __FILE__, __LINE__ );
-
         /**
          * Execute Action (if available)
          */
         if (in_array( HttpKernel::getRequest()->getPathInfo(), $Config->getClientRouter()->getRouteList() )) {
             /** @var Element $Route */
             $Route = $Config->getClientRouter()->getRoute();
-
-            Debugger::addFileLine( __FILE__, __LINE__ );
-
             $ShellScreen->addToContent( new Container( $Route ) );
         } else {
             /**
@@ -139,9 +126,6 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
                 try {
                     /** @var Element $Route */
                     $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
-
-                    Debugger::addFileLine( __FILE__, __LINE__ );
-
                     $ShellScreen->addToContent( new Container( $Route ) );
                 } catch( \Exception $E ) {
                     /**
@@ -152,9 +136,6 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             } else {
                 /** @var Element $Route */
                 $Route = $Config->getClientRouter()->getRoute( '/Sphere/Gatekeeper/SignIn' );
-
-                Debugger::addFileLine( __FILE__, __LINE__ );
-
                 $ShellScreen->addToContent( new Container( $Route ) );
             }
         }
@@ -171,9 +152,6 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             $Config = AssistanceApplication::setupApi( $Config );
             /** @var Element $Route */
             $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
-
-            Debugger::addFileLine( __FILE__, __LINE__ );
-
             $ShellScreen->addToContent( new Container( $Route ) );
         } catch( \Exception $E ) {
             /**
@@ -197,9 +175,6 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             Update::getApi()->setupDataStructure( false )
             .new GatekeeperApplication\Redirect\Custom( '', '/Sphere', '', '', 30 )
         );
-
-        Debugger::addFileLine( __FILE__, __LINE__ );
-
         $ShellScreen->addToContent( new Container( $View ) );
     } catch( \Exception $E ) {
         if (false !== strpos( $E->getFile(), 'Sphere\Application\Service' )) {
@@ -216,9 +191,6 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
                 );
                 /** @var Element $Route */
                 $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
-
-                Debugger::addFileLine( __FILE__, __LINE__ );
-
                 $ShellScreen->addToContent( new Container( $Route ) );
             } catch( \Exception $E ) {
                 /**
@@ -234,9 +206,6 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
         }
     }
 }
-
-Debugger::addFileLine( __FILE__, __LINE__ );
-
 /**
  * Define Navigation Client
  */
@@ -259,9 +228,6 @@ if ($Config->hasApplicationNavigation()) {
         new Container( $Config->getApplicationNavigation() )
     );
 }
-
-Debugger::addFileLine( __FILE__, __LINE__ );
-
 /**
  * Create Client
  */

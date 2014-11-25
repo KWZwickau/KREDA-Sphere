@@ -26,7 +26,7 @@ class Certification extends Element implements IElementInterface
     {
 
         $this->Template = Template::getTemplate( __DIR__.'/Certification.twig' );
-        $this->Template->setVariable( 'TokenList', Token::getApi()->entityViewToken() );
+
     }
 
     /**
@@ -36,6 +36,16 @@ class Certification extends Element implements IElementInterface
     {
 
         return $this->Template->getContent();
+    }
+
+    /**
+     * @param array $TokenList
+     */
+    public function setTokenList( $TokenList )
+    {
+
+        krsort( $TokenList );
+        $this->Template->setVariable( 'TokenList', $TokenList );
     }
 
     public function setErrorEmptyKey()

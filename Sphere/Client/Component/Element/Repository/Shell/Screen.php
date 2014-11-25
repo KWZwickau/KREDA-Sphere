@@ -128,6 +128,7 @@ class Screen extends Shell implements IElementInterface
         $this->Template->setVariable( 'PositionNavigation', implode( '', $this->PositionNavigation ) );
         $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent ) );
         $this->Template->setVariable( 'PositionDebugger', Debugger::getProtocol() );
+        $this->Template->setVariable( 'PositionRuntime', Debugger::getRuntime() );
 
         return $this->Template->getContent();
     }

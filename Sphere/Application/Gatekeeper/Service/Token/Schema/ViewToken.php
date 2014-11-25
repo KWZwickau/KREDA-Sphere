@@ -41,4 +41,16 @@ class ViewToken
         return $this->tblToken;
     }
 
+    /**
+     * @return array
+     */
+    function __toArray()
+    {
+
+        return array(
+            'tblToken'        => $this->tblToken,
+            'TokenIdentifier' => $this->TokenIdentifier
+        );
+    }
+
 }

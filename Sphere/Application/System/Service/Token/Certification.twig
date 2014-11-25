@@ -25,16 +25,19 @@
 <table class="table">
     <thead>
     <tr>
+        <th>Geräte-ID</th>
         <th>Gerätenummer</th>
-        <th></th>
+        <th>Aktionen</th>
     </tr>
     </thead>
     <tbody>
-    {% for Id, Token in TokenList %}
+    {% for Token in TokenList %}
         <tr>
-            <td>{{ Id }}</td>
-            <td></td>
-            <td></td>
+            <td>{{ Token.tblToken }}</td>
+            <td class="text-uppercase">{{ Token.TokenIdentifier }}</td>
+            <td>
+
+            </td>
         </tr>
     {% endfor %}
     </tbody>

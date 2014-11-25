@@ -1,11 +1,11 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey;
 
+use KREDA\Sphere\Application\Debugger;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\CurlHandler;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Component\KeyValue;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Component\Request;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\MissingParameterException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
 
 /**
@@ -18,20 +18,14 @@ class YubiKey
 
     /** @var string $KeyDelimiter */
     private $KeyDelimiter = '[:]';
-    /** @var bool $YubiApiSsl */
-    private $YubiApiSsl = false;
-    /** @var bool $YubiApiVerify */
-    private $YubiApiVerify = true;
     /** @var int $YubiApiTimeout */
-    private $YubiApiTimeout = 1;
+    private $YubiApiTimeout = 3;
 
     /** @var int $YubiApiId */
     private $YubiApiId = 0;
     /** @var null|string $YubiApiKey */
     private $YubiApiKey = null;
 
-    /** @var int $YubiApiBalancer */
-    private $YubiApiBalancer = 0;
     /** @var array $YubiApiEndpoint */
     private $YubiApiEndpoint = array(
         'api.yubico.com/wsapi/2.0/verify',
@@ -40,8 +34,6 @@ class YubiKey
         'api4.yubico.com/wsapi/2.0/verify',
         'api5.yubico.com/wsapi/2.0/verify'
     );
-    private $IsReplay = false;
-    private $IsValid = false;
 
     /**
      * @param integer $YubiApiId
@@ -49,6 +41,8 @@ class YubiKey
      */
     final function __construct( $YubiApiId, $YubiApiKey = null )
     {
+
+        Debugger::addConstructorCall( __METHOD__ );
 
         $this->YubiApiId = $YubiApiId;
         if (null !== $YubiApiKey) {
@@ -64,6 +58,8 @@ class YubiKey
      */
     final public function parseKey( $Value )
     {
+
+        Debugger::addMethodCall( __METHOD__ );
 
         if (!preg_match( "/^((.*)".$this->KeyDelimiter.")?".
             "(([cbdefghijklnrtuvCBDEFGHIJKLNRTUV]{0,16})".
@@ -81,16 +77,86 @@ class YubiKey
      * @return bool
      * @throws BadOTPException
      * @throws ComponentException
-     * @throws MissingParameterException
      * @throws ReplayedOTPException
      */
     final public function verifyKey( KeyValue $Key )
     {
 
+        Debugger::addMethodCall( __METHOD__ );
+
         $Parameter = $this->createParameter( $Key );
         $Query = $this->createSignature( $Parameter );
-        $Request = $this->createRequest( $Query );
-        return $this->executeRequest( $Request, $Key );
+
+        $QueryList = array();
+        foreach ((array)$this->YubiApiEndpoint as $YubiApiEndpoint) {
+            $QueryList[] = 'http://'.$YubiApiEndpoint."?".$Query;
+        }
+
+        $Result = CurlHandler::getRequest( $QueryList, array(
+            CURLOPT_PROXY        => '192.168.100.254',
+            CURLOPT_PROXYPORT    => 3128,
+            CURLOPT_PROXYUSERPWD => 'Kunze:Ny58N',
+            CURLOPT_TIMEOUT      => $this->YubiApiTimeout
+        ) );
+
+        $Decision = array();
+        foreach ((array)$Result as $Response) {
+            if (preg_match( "/status=([a-zA-Z0-9_]+)/", $Response, $Status )) {
+                /**
+                 * Case 1.
+                 * OTP or Nonce values doesn't match - ignore response.
+                 */
+                if (!preg_match( "/otp=".$Key->getKeyOTP()."/", $Response ) ||
+                    !preg_match( "/nonce=".$Key->getKeyNOnce()."/", $Response )
+                ) {
+                    Debugger::addFileLine( __FILE__, __LINE__ );
+                    continue;
+                } /**
+                 * Case 2.
+                 * We have a HMAC key.  If signature is invalid - ignore response.
+                 * Return if status=OK or status=REPLAYED_OTP.
+                 */
+                elseif (null !== $this->YubiApiKey) {
+                    Debugger::addFileLine( __FILE__, __LINE__ );
+                    if ($this->checkSignature( $Response, $Status[1] )) {
+                        $Decision[] = 1;
+                    } else {
+                        $Decision[] = 0;
+                    }
+                } /** Case 3.
+                 * We check the status directly
+                 * Return if status=OK or status=REPLAYED_OTP.
+                 */
+                else {
+                    Debugger::addFileLine( __FILE__, __LINE__ );
+                    switch ($Status[1]) {
+                        case 'OK':
+                            $Decision[] = 1;
+                            break;
+                        case 'BAD_OTP':
+                            throw new BadOTPException( $Status[1] );
+                            break;
+                        case 'REPLAYED_OTP':
+                            $Decision[] = 0;
+                            break;
+                        default:
+                            throw new ComponentException( $Status[1] );
+                    }
+                }
+            }
+        }
+        /**
+         *
+         */
+        $Decision = array_sum( $Decision ) / ( count( $Decision ) > 0 ? count( $Decision ) : 1 );
+
+        if ($Decision > 0.5) {
+            return true;
+        } elseif ($Decision == 0) {
+            throw new ReplayedOTPException();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -100,6 +166,8 @@ class YubiKey
      */
     private function createParameter( KeyValue $KeyValue )
     {
+
+        Debugger::addMethodCall( __METHOD__ );
 
         $Parameter = array(
             'id'    => $this->YubiApiId,
@@ -121,6 +189,8 @@ class YubiKey
     private function createNOnce()
     {
 
+        Debugger::addMethodCall( __METHOD__ );
+
         return md5( uniqid( rand() ) );
     }
 
@@ -132,6 +202,8 @@ class YubiKey
     private function createSignature( $Parameter )
     {
 
+        Debugger::addMethodCall( __METHOD__ );
+
         if (null !== $this->YubiApiKey) {
             $Signature = base64_encode( hash_hmac( 'sha1', $Parameter, $this->YubiApiKey, true ) );
             $Signature = preg_replace( '/\+/', '%2B', $Signature );
@@ -141,156 +213,15 @@ class YubiKey
     }
 
     /**
-     * @param string $Query
-     *
-     * @return Request
-     * @throws \Exception
-     */
-    private function createRequest( $Query )
-    {
-
-        $this->resetYubiApiBalancer();
-        $Return = new Request();
-        while (false !== ( $YubiApiEndpoint = $this->fetchYubiApiBalancer() )) {
-            if ($this->YubiApiSsl) {
-                $YubiApiUrl = "https://";
-            } else {
-                $YubiApiUrl = "http://";
-            }
-            $YubiApiUrl .= $YubiApiEndpoint."?".$Query;
-            $CurlHandler = curl_init( $YubiApiUrl );
-            curl_setopt( $CurlHandler, CURLOPT_USERAGENT, "KREDA YubiKey" );
-            curl_setopt( $CurlHandler, CURLOPT_RETURNTRANSFER, 1 );
-            curl_setopt( $CurlHandler, CURLOPT_VERBOSE, true );
-
-            curl_setopt( $CurlHandler, CURLOPT_PROXY, '192.168.100.254' );
-            curl_setopt( $CurlHandler, CURLOPT_PROXYPORT, 3128 );
-            curl_setopt( $CurlHandler, CURLOPT_PROXYUSERPWD, 'Kunze:Ny58N' );
-
-            if (!$this->YubiApiVerify) {
-                curl_setopt( $CurlHandler, CURLOPT_SSL_VERIFYPEER, 0 );
-            }
-            curl_setopt( $CurlHandler, CURLOPT_FAILONERROR, true );
-            curl_setopt( $CurlHandler, CURLOPT_TIMEOUT, $this->YubiApiTimeout );
-            $Return->addCurlHandler( $CurlHandler );
-        }
-        return $Return;
-    }
-
-    /**
-     *
-     */
-    private function resetYubiApiBalancer()
-    {
-
-        $this->YubiApiBalancer = 0;
-    }
-
-    /**
-     * @return bool|string
-     */
-    private function fetchYubiApiBalancer()
-    {
-
-        if ($this->YubiApiBalancer >= count( $this->YubiApiEndpoint )) {
-            return false;
-        } else {
-            return $this->YubiApiEndpoint[$this->YubiApiBalancer++];
-        }
-    }
-
-    /**
-     * @param Request $Request
-     * @param KeyValue $KeyValue
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    private function executeRequest( Request $Request, KeyValue $KeyValue )
-    {
-
-        $this->IsReplay = false;
-        $this->IsValid = false;
-
-        foreach ($Request->getCurlHandler() as $CurlHandler) {
-            if (false !== ( $Result = curl_exec( $CurlHandler ) )) {
-                if (preg_match( "/status=([a-zA-Z0-9_]+)/", $Result, $Status )) {
-                    $Status = $Status[1];
-                    if (!preg_match( "/otp=".$KeyValue->getKeyOTP()."/", $Result ) ||
-                        !preg_match( "/nonce=".$KeyValue->getKeyNOnce()."/", $Result )
-                    ) {
-                        /**
-                         * Case 1.
-                         * OTP or Nonce values doesn't match - ignore response.
-                         */
-                        switch ($Status) {
-                            case 'BAD_OTP':
-                                throw new BadOTPException( $Status );
-                                break;
-                            case 'MISSING_PARAMETER':
-                                throw new MissingParameterException( $Result );
-                                break;
-
-                        }
-                    } elseif (null !== $this->YubiApiKey) {
-                        /**
-                         * Case 2.
-                         * We have a HMAC key.  If signature is invalid - ignore response.
-                         * Return if status=OK or status=REPLAYED_OTP.
-                         */
-                        $this->checkSignature( $Result, $Status );
-                    } else {
-                        /** Case 3.
-                         * We check the status directly
-                         * Return if status=OK or status=REPLAYED_OTP.
-                         */
-                        switch ($Status) {
-                            case 'OK':
-                                $this->IsValid = true;
-                                break;
-                            case 'BAD_OTP':
-                                throw new BadOTPException( $Status );
-                                break;
-                            case 'REPLAYED_OTP':
-                                $this->IsReplay = true;
-                                break;
-                            default:
-                                throw new ComponentException( $Status );
-
-                        }
-                    }
-                }
-            }
-            curl_close( $CurlHandler );
-
-            if ($this->IsValid || $this->IsReplay) {
-                if ($this->IsReplay) {
-                    throw new ReplayedOTPException();
-                }
-                if ($this->IsValid) {
-                    return true;
-                }
-            }
-
-        }
-
-        if ($this->IsReplay) {
-            throw new ReplayedOTPException();
-        }
-        if ($this->IsValid) {
-            return true;
-        }
-        throw new ComponentException();
-    }
-
-    /**
      * @param $Result
      * @param $Status
      *
-     * @return void
+     * @return bool
      */
     private function checkSignature( $Result, $Status )
     {
+
+        Debugger::addMethodCall( __METHOD__ );
 
         $Response = array();
         $ResultLineList = explode( "\r\n", trim( $Result ) );
@@ -327,11 +258,12 @@ class YubiKey
 
         if ($Response['h'] == $Signature) {
             if ($Status == 'REPLAYED_OTP') {
-                $this->IsReplay = true;
+                return false;
             }
             if ($Status == 'OK') {
-                $this->IsValid = true;
+                return true;
             }
         }
+        return false;
     }
 }

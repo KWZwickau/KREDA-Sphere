@@ -97,9 +97,7 @@ class Schema extends Setup
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
-            ->find( $Id );
+        $Entity = $this->loadEntityManager()->find( __NAMESPACE__.'\Schema\TblAccount', $Id );
         if (null === $Entity) {
             return false;
         } else {

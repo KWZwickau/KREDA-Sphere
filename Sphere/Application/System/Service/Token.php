@@ -45,6 +45,11 @@ class Token extends Service
         $View->setMessage( '' );
 
         $Certification = new Certification();
+
+        $TokenList = ServiceToken::getApi()->entityViewToken();
+        array_walk( $TokenList, create_function( '&$V', '$V = $V->__toArray();' ) );
+        $Certification->setTokenList( $TokenList );
+
         $Error = $this->checkFormYubiKey( $Certification, $CredentialKey );
         if ($Error) {
             $View->setContent( $Certification );

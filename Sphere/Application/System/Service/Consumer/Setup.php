@@ -5,14 +5,13 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager as Manager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
-use KREDA\Sphere\Application\Service;
 
 /**
  * Class Setup
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Access
  */
-abstract class Setup extends Service
+abstract class Setup extends \KREDA\Sphere\Application\Setup
 {
 
     /**
