@@ -28,7 +28,8 @@ class Token extends Schema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $this->actionCreateToken( 'ccccccdilkui' );
+        $tblToken = $this->actionCreateToken( 'ccccccdilkui' );
+        Account::getApi()->actionSetAccountToken( Account::getApi()->entityAccountByUsername( 'Root' ), $tblToken );
     }
 
     /**

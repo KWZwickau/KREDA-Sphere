@@ -3,13 +3,14 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Account;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Schema\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Schema\TblAccountSession;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema\TblToken;
 
 /**
  * Class Schema
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Account
  */
-class Schema extends Setup
+abstract class Schema extends Setup
 {
 
     /**
@@ -19,7 +20,7 @@ class Schema extends Setup
      * @param null|integer $apiHumanResources_Person
      * @param null|integer $apiSystem_Consumer
      *
-     * @return bool|null
+     * @return TblAccount
      */
     protected function actionCreateAccount(
         $Username,
@@ -31,19 +32,37 @@ class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $tblAccount = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
+        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
             ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
-        if (null === $tblAccount) {
-            $tblAccount = new TblAccount( $Username );
-            $tblAccount->setPassword( hash( 'sha256', $Password ) );
-            $tblAccount->setTblToken( $tblToken );
-            $tblAccount->setApiHumanResourcesPerson( $apiHumanResources_Person );
-            $tblAccount->setApiSystemConsumer( $apiSystem_Consumer );
-            $this->loadEntityManager()->persist( $tblAccount );
+        if (null === $Entity) {
+            $Entity = new TblAccount( $Username );
+            $Entity->setPassword( hash( 'sha256', $Password ) );
+            $Entity->setTblToken( $tblToken );
+            $Entity->setApiHumanResourcesPerson( $apiHumanResources_Person );
+            $Entity->setApiSystemConsumer( $apiSystem_Consumer );
+            $this->loadEntityManager()->persist( $Entity );
             $this->loadEntityManager()->flush();
-            return true;
         }
-        return null;
+        return $Entity;
+    }
+
+    /**
+     * @param TblAccount    $tblAccount
+     * @param null|TblToken $tblToken
+     *
+     * @return mixed
+     */
+    protected function actionSetAccountToken(
+        $tblAccount,
+        $tblToken = null
+    ) {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $tblAccount->setTblToken( $tblToken );
+        $this->loadEntityManager()->persist( $tblAccount );
+        $this->loadEntityManager()->flush();
+        return $tblAccount;
     }
 
     /**
@@ -133,7 +152,7 @@ class Schema extends Setup
      * @param integer $tblAccount
      * @param integer $Timeout
      *
-     * @return bool
+     * @return TblAccountSession
      */
     protected function actionCreateSession( $Session, $tblAccount, $Timeout = 1800 )
     {
@@ -150,13 +169,13 @@ class Schema extends Setup
         $Entity->setTimeout( time() + $Timeout );
         $this->loadEntityManager()->persist( $Entity );
         $this->loadEntityManager()->flush();
-        return true;
+        return $Entity;
     }
 
     /**
      * @param null|string $Session
      *
-     * @return bool
+     * @return TblAccountSession
      */
     protected function actionDestroySession( $Session = null )
     {
@@ -172,8 +191,7 @@ class Schema extends Setup
         if (null !== $Entity) {
             $this->loadEntityManager()->remove( $Entity );
             $this->loadEntityManager()->flush();
-            return true;
         }
-        return false;
+        return $Entity;
     }
 }

@@ -38,6 +38,21 @@ abstract class Service implements IServiceInterface
     }
 
     /**
+     * @param bool $Simulate
+     *
+     * @return string
+     */
+    public function setupDataStructure( $Simulate = true )
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $this->addInstallProtocol( __CLASS__ );
+        $this->addInstallProtocol( '<span class="text-danger">Missing Configuration!</span>' );
+        return $this->getInstallProtocol();
+    }
+
+    /**
      * @return Debugger
      */
     public static function getDebugger()
@@ -47,25 +62,13 @@ abstract class Service implements IServiceInterface
     }
 
     /**
-     * @param bool $Simulate
-     *
-     * @return string
-     */
-    public function setupDataStructure( $Simulate = true )
-    {
-
-        $this->addInstallProtocol( __CLASS__ );
-        $this->addInstallProtocol( '<span class="text-danger">Missing Configuration!</span>' );
-        return $this->getInstallProtocol();
-    }
-
-    /**
      * @param string $Item
      *
      * @return array
      */
     public function addInstallProtocol( $Item )
     {
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         if (empty( $this->InstallProtocol )) {
             $this->InstallProtocol[] = '<samp>'.$Item.'</samp>';
@@ -79,6 +82,8 @@ abstract class Service implements IServiceInterface
      */
     public function getInstallProtocol()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         if (count( $this->InstallProtocol ) == 1) {
             $this->InstallProtocol[0] .= '<br/>';
@@ -97,12 +102,26 @@ abstract class Service implements IServiceInterface
     }
 
     /**
+     * @return void
+     */
+    public function setupSystem()
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $this->addInstallProtocol( __CLASS__ );
+        $this->addInstallProtocol( '<span class="text-danger">Missing Configuration!</span>' );
+    }
+
+    /**
      * @param string $Route Service Route
      *
      * @return null|string Client-Application Route
      */
     final protected function useRoute( $Route )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return HttpKernel::getRequest()->getUrlBase().static::$BaseRoute.'/'.trim( $Route, '/' );
     }
@@ -112,6 +131,8 @@ abstract class Service implements IServiceInterface
      */
     final protected function readData()
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $SlaveCount = count( static::$DatabaseSlave );
         if ($SlaveCount == 0) {
@@ -129,6 +150,8 @@ abstract class Service implements IServiceInterface
      */
     final protected function connectDatabase( $Service, $Cluster = 'Default' )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Config = __DIR__.'/System/Service/Database/Config/'.$Service.'.ini';
         if (false !== ( $Config = realpath( $Config ) )) {
@@ -183,6 +206,8 @@ abstract class Service implements IServiceInterface
     private final function registerDatabaseMaster( $Username, $Password, $Database, $Driver, $Host, $Port = null )
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $Identifier = sha1( serialize( func_get_args() ) );
         if (!array_key_exists( $Identifier, static::$DatabaseMaster )) {
             static::$DatabaseMaster[$Identifier] = Database::getDatabase( $Username, $Password, $Database, $Driver,
@@ -207,7 +232,13 @@ abstract class Service implements IServiceInterface
     private final function registerDatabaseSlave( $Username, $Password, $Database, $Driver, $Host, $Port = null )
     {
 
-        static::$DatabaseSlave[] = Database::getDatabase( $Username, $Password, $Database, $Driver, $Host, $Port );
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $Identifier = sha1( serialize( func_get_args() ) );
+        if (!array_key_exists( $Identifier, static::$DatabaseSlave )) {
+            static::$DatabaseSlave[$Identifier] = Database::getDatabase( $Username, $Password, $Database, $Driver,
+                $Host, $Port );
+        }
         return $this;
     }
 
@@ -218,6 +249,8 @@ abstract class Service implements IServiceInterface
      */
     protected function dbHasTable( $TableName )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $SchemaManager = $this->writeData()->getSchemaManager();
         $NameList = $SchemaManager->listTableNames();
@@ -231,6 +264,8 @@ abstract class Service implements IServiceInterface
     final protected function writeData()
     {
 
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
         return static::$Database;
     }
 
@@ -241,6 +276,8 @@ abstract class Service implements IServiceInterface
      */
     protected function dbHasView( $ViewName )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $SchemaManager = $this->writeData()->getSchemaManager();
         $NameList = $SchemaManager->listViews();
@@ -256,6 +293,8 @@ abstract class Service implements IServiceInterface
      */
     protected function dbTableHasColumn( $TableName, $ColumnName )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $SchemaManager = $this->writeData()->getSchemaManager();
         $NameList = array_keys( $SchemaManager->listTableColumns( $TableName ) );

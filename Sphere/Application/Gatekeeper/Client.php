@@ -8,7 +8,9 @@ use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
@@ -79,7 +81,34 @@ class Client extends Application
 
         self::getDebugger()->addMethodCall( __METHOD__ );
 
-        return Account::getApi()->apiIsValidSession();
+        return self::serviceAccount()->apiIsValidSession();
+    }
+
+    /**
+     * @return Service\Account
+     */
+    public static function serviceAccount()
+    {
+
+        return Account::getApi();
+    }
+
+    /**
+     * @return Service\Token
+     */
+    public static function serviceToken()
+    {
+
+        return Token::getApi();
+    }
+
+    /**
+     * @return Service\Access
+     */
+    public static function serviceAccess()
+    {
+
+        return Access::getApi();
     }
 
     /**
@@ -157,7 +186,7 @@ class Client extends Application
 
         $this->setupModuleNavigation();
         $View = new SignInTeacher();
-        switch (Account::getApi()->apiSignIn( $CredentialName, $CredentialLock, $CredentialKey )) {
+        switch ($this->serviceAccount()->apiSignIn( $CredentialName, $CredentialLock, $CredentialKey )) {
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
             case Account::API_SIGN_IN_ERROR: {
                 if (null !== $CredentialName && empty( $CredentialName )) {
@@ -201,7 +230,7 @@ class Client extends Application
 
         $this->setupModuleNavigation();
         $View = new SignInManagement();
-        switch (Account::getApi()->apiSignIn( $CredentialName, $CredentialLock, $CredentialKey )) {
+        switch ($this->serviceAccount()->apiSignIn( $CredentialName, $CredentialLock, $CredentialKey )) {
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
             case Account::API_SIGN_IN_ERROR: {
                 if (null !== $CredentialName && empty( $CredentialName )) {
@@ -243,7 +272,7 @@ class Client extends Application
 
         $this->setupModuleNavigation();
         $View = new SignInStudent();
-        switch (Account::getApi()->apiSignIn( $CredentialName, $CredentialLock )) {
+        switch ($this->serviceAccount()->apiSignIn( $CredentialName, $CredentialLock )) {
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
             case Account::API_SIGN_IN_ERROR: {
                 if (null !== $CredentialName && empty( $CredentialName )) {
@@ -277,7 +306,7 @@ class Client extends Application
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $View = new SignOut();
-        Account::getApi()->apiSignOut();
+        $this->serviceAccount()->apiSignOut();
         return $View;
     }
 }

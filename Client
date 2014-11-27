@@ -8,9 +8,6 @@ use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Info;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Warning;
 use KREDA\Sphere\Application\Debugger;
 use KREDA\Sphere\Application\Gatekeeper\Client as GatekeeperApplication;
-use KREDA\Sphere\Application\Graduation\Client as GraduationApplication;
-use KREDA\Sphere\Application\Management\Client as ManagementApplication;
-use KREDA\Sphere\Application\Statistic\Client as StatisticApplication;
 use KREDA\Sphere\Application\System\Client as SystemApplication;
 use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Update;
@@ -99,9 +96,9 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
          */
         if (( $IsValid = GatekeeperApplication::apiIsValidSession() )) {
             $Config = SystemApplication::setupApi( $Config );
-            $Config = ManagementApplication::setupApi( $Config );
-            $Config = GraduationApplication::setupApi( $Config );
-            $Config = StatisticApplication::setupApi( $Config );
+//            $Config = ManagementApplication::setupApi( $Config );
+//            $Config = GraduationApplication::setupApi( $Config );
+//            $Config = StatisticApplication::setupApi( $Config );
         }
         /**
          * Setup Public-Access

@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\System\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Token as ServiceToken;
+use KREDA\Sphere\Application\Gatekeeper\Client as Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
@@ -46,7 +46,7 @@ class Token extends Service
 
         $Certification = new Certification();
 
-        $TokenList = ServiceToken::getApi()->entityViewToken();
+        $TokenList = Gatekeeper::serviceToken()->entityViewToken();
         array_walk( $TokenList, create_function( '&$V', '$V = $V->__toArray();' ) );
         $Certification->setTokenList( $TokenList );
 
@@ -57,7 +57,7 @@ class Token extends Service
         } else {
             if (null !== $CredentialKey) {
                 try {
-                    if (ServiceToken::getApi()->apiValidateToken( $CredentialKey )) {
+                    if (Gatekeeper::serviceToken()->apiValidateToken( $CredentialKey )) {
 
                     }
                 } catch( BadOTPException $E ) {
@@ -80,8 +80,8 @@ class Token extends Service
     }
 
     /**
-     * @param \KREDA\Sphere\Application\System\Service\Token\Certification $View
-     * @param null|string                                                  $CredentialKey
+     * @param Certification $View
+     * @param null|string   $CredentialKey
      *
      * @return bool
      */

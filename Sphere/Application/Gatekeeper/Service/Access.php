@@ -67,6 +67,11 @@ class Access extends Schema
         return $this->getTableAccessRole();
     }
 
+    /**
+     * @param $Route
+     *
+     * @return bool
+     */
     public function apiIsValidAccess( $Route )
     {
 

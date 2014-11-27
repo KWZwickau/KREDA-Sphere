@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema\TblToken;
 
 /**
  * @Entity
@@ -147,21 +149,25 @@ class TblAccount
     }
 
     /**
-     * @return null|string
+     * @return bool|TblToken
      */
     public function getTblToken()
     {
 
-        return $this->tblToken;
+        return Token::getApi()->entityTokenById( $this->tblToken );
     }
 
     /**
-     * @param string $tblToken
+     * @param null|TblToken $tblToken
      */
     public function setTblToken( $tblToken )
     {
 
-        $this->tblToken = $tblToken;
+        if (null === $tblToken) {
+            $this->tblToken = null;
+        } else {
+            $this->tblToken = $tblToken->getId();
+        }
     }
 
 }

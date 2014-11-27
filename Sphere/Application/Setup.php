@@ -72,12 +72,10 @@ abstract class Setup extends Service
 
             $this->getDebugger()->addFileLine( __FILE__, __LINE__ );
 
-            self::$EntityManager = EntityManager::create(
-                $this->readData()->getConnection(),
-                ORMSetup::createAnnotationMetadataConfiguration(
-                    array( __DIR__.'/Schema' ), false, null, new ArrayCache(), true
-                )
-            );
+            $Config = ORMSetup::createAnnotationMetadataConfiguration( array( __DIR__.'/Schema' ) );
+            $Config->setQueryCacheImpl( new ArrayCache() );
+            $Config->setMetadataCacheImpl( new ArrayCache() );
+            self::$EntityManager = EntityManager::create( $this->readData()->getConnection(), $Config );
         }
         return self::$EntityManager;
     }

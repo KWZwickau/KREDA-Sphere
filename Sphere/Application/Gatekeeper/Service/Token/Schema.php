@@ -9,7 +9,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema\ViewToken;
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Token
  */
-class Schema extends Setup
+abstract class Schema extends Setup
 {
 
     /**
@@ -52,7 +52,7 @@ class Schema extends Setup
     /**
      * @param string $Identifier
      *
-     * @return bool|null
+     * @return TblToken
      */
     protected function actionCreateToken( $Identifier )
     {
@@ -65,10 +65,8 @@ class Schema extends Setup
             $Entity = new TblToken( $Identifier );
             $this->loadEntityManager()->persist( $Entity );
             $this->loadEntityManager()->flush();
-            return true;
         }
-
-        return null;
+        return $Entity;
     }
 
     /**

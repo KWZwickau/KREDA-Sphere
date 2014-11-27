@@ -1,9 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\System\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Access;
-use KREDA\Sphere\Application\Gatekeeper\Service\Account;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token;
+use KREDA\Sphere\Application\Gatekeeper\Client as Gatekeeper;
 use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 
@@ -64,17 +62,17 @@ class Update extends Service
          * Gatekeeper
          */
 
-        $Protocol[] = Token::getApi()->setupDataStructure( $Simulate );
+        $Protocol[] = Gatekeeper::serviceToken()->setupDataStructure( $Simulate );
         if (!$Simulate) {
-            Token::getApi()->setupSystem();
+            Gatekeeper::serviceToken()->setupSystem();
         }
-        $Protocol[] = Access::getApi()->setupDataStructure( $Simulate );
+        $Protocol[] = Gatekeeper::serviceAccess()->setupDataStructure( $Simulate );
         if (!$Simulate) {
-            Access::getApi()->setupSystem();
+            Gatekeeper::serviceAccess()->setupSystem();
         }
-        $Protocol[] = Account::getApi()->setupDataStructure( $Simulate );
+        $Protocol[] = Gatekeeper::serviceAccount()->setupDataStructure( $Simulate );
         if (!$Simulate) {
-            Account::getApi()->setupSystem();
+            Gatekeeper::serviceAccount()->setupSystem();
         }
 
         /**
@@ -82,6 +80,9 @@ class Update extends Service
          */
 
         $Protocol[] = Consumer::getApi()->setupDataStructure( $Simulate );
+        if (!$Simulate) {
+            Consumer::getApi()->setupSystem();
+        }
 
         return implode( $Protocol );
     }

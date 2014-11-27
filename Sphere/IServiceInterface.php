@@ -22,4 +22,9 @@ interface IServiceInterface
      * @return string
      */
     public function setupDataStructure( $Simulate = true );
+
+    /**
+     * @return void
+     */
+    public function setupSystem();
 }

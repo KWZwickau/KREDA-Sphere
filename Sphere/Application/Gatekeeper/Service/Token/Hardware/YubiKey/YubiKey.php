@@ -93,15 +93,16 @@ class YubiKey
         }
 
         $Result = CurlHandler::getRequest( $QueryList, array(
-            CURLOPT_PROXY        => '192.168.100.254',
-            CURLOPT_PROXYPORT    => 3128,
-            CURLOPT_PROXYUSERPWD => 'Kunze:Ny58N',
+//            CURLOPT_PROXY        => '192.168.100.254',
+//            CURLOPT_PROXYPORT    => 3128,
+//            CURLOPT_PROXYUSERPWD => 'Kunze:Ny58N',
             CURLOPT_TIMEOUT      => $this->YubiApiTimeout
         ) );
 
         $Decision = array();
         foreach ((array)$Result as $Response) {
             if (preg_match( "/status=([a-zA-Z0-9_]+)/", $Response, $Status )) {
+                Debugger::addProtocol( $Response );
                 /**
                  * Case 1.
                  * OTP or Nonce values doesn't match - ignore response.
@@ -148,6 +149,7 @@ class YubiKey
         /**
          *
          */
+        Debugger::addProtocol( print_r( $Decision, true ) );
         $Decision = array_sum( $Decision ) / ( count( $Decision ) > 0 ? count( $Decision ) : 1 );
 
         if ($Decision > 0.5) {

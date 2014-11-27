@@ -13,7 +13,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\ViewAccess;
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Access
  */
-class Schema extends Setup
+abstract class Schema extends Setup
 {
 
     /**

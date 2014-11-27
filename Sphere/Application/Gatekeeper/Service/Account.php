@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Schema;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema\TblToken;
 
 /**
  * Class Account
@@ -181,4 +182,19 @@ class Account extends Schema
 
         return $this->objectAccountByUsername( $Name );
     }
+
+    /**
+     * @param Schema\TblAccount $tblAccount
+     * @param null|TblToken     $tblToken
+     *
+     * @return mixed
+     */
+    public function actionSetAccountToken(
+        $tblAccount,
+        $tblToken = null
+    ) {
+
+        return parent::actionSetAccountToken( $tblAccount, $tblToken );
+    }
+
 }
