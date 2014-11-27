@@ -53,8 +53,8 @@ abstract class Schema extends Setup
      * @return mixed
      */
     protected function actionSetAccountToken(
-        $tblAccount,
-        $tblToken = null
+        TblAccount $tblAccount,
+        TblToken $tblToken = null
     ) {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );

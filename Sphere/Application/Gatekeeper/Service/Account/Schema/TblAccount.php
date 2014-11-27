@@ -160,7 +160,7 @@ class TblAccount
     /**
      * @param null|TblToken $tblToken
      */
-    public function setTblToken( $tblToken )
+    public function setTblToken( TblToken $tblToken )
     {
 
         if (null === $tblToken) {

@@ -8,6 +8,7 @@ use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
+use KREDA\Sphere\Application\Gatekeeper\Client\SignInError;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
@@ -185,7 +186,22 @@ class Client extends Application
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
-        $View = new SignInTeacher();
+        return $this->apiSignInWithCredentialKey(
+            new SignInTeacher(), $CredentialName, $CredentialLock, $CredentialKey
+        );
+    }
+
+    /**
+     * @param SignInError $View
+     * @param string      $CredentialName
+     * @param string      $CredentialLock
+     * @param string      $CredentialKey
+     *
+     * @return SignIn|SignInError
+     */
+    private function apiSignInWithCredentialKey( SignInError &$View, $CredentialName, $CredentialLock, $CredentialKey )
+    {
+
         switch ($this->serviceAccount()->apiSignIn( $CredentialName, $CredentialLock, $CredentialKey )) {
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
             case Account::API_SIGN_IN_ERROR: {
@@ -229,34 +245,9 @@ class Client extends Application
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
-        $View = new SignInManagement();
-        switch ($this->serviceAccount()->apiSignIn( $CredentialName, $CredentialLock, $CredentialKey )) {
-            case Account::API_SIGN_IN_ERROR_CREDENTIAL:
-            case Account::API_SIGN_IN_ERROR: {
-                if (null !== $CredentialName && empty( $CredentialName )) {
-                    $View->setErrorEmptyName();
-                }
-                if (null !== $CredentialName && !empty( $CredentialName )) {
-                    $View->setErrorWrongName();
-                }
-                if (null !== $CredentialLock && empty( $CredentialLock )) {
-                    $View->setErrorEmptyLock();
-                }
-                if (null !== $CredentialLock && !empty( $CredentialLock )) {
-                    $View->setErrorWrongLock();
-                }
-                break;
-            }
-            case Account::API_SIGN_IN_ERROR_TOKEN: {
-                $View->setErrorWrongKey();
-                break;
-            }
-            case Account::API_SIGN_IN_SUCCESS: {
-                return new SignIn();
-                break;
-            }
-        }
-        return $View;
+        return $this->apiSignInWithCredentialKey(
+            new SignInManagement(), $CredentialName, $CredentialLock, $CredentialKey
+        );
     }
 
     /**

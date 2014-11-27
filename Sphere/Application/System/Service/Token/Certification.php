@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\System\Service\Token;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;

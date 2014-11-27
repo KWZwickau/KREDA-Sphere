@@ -190,8 +190,8 @@ class Account extends Schema
      * @return mixed
      */
     public function actionSetAccountToken(
-        $tblAccount,
-        $tblToken = null
+        Schema\TblAccount $tblAccount,
+        TblToken $tblToken = null
     ) {
 
         return parent::actionSetAccountToken( $tblAccount, $tblToken );
