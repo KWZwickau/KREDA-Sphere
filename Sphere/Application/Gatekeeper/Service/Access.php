@@ -83,7 +83,7 @@ class Access extends Schema
 
         try {
             if (false !== ( $Right = $this->objectAccessRightByRouteName( $Route ) )) {
-                if (false !== ( $AccessList = $this->objectViewAccessByAccessRight( $Right ) )) {
+                if (false !== ( $this->objectViewAccessByAccessRight( $Right ) )) {
                     self::$AccessCache[] = $Route;
                     return true;
                 }
