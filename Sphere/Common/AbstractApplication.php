@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application;
+namespace KREDA\Sphere\Common;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
@@ -14,21 +14,12 @@ use MOC\V\Component\Router\Component\Parameter\Repository\RouteParameter;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
- * Class Application
+ * Class AbstractApplication
  *
  * @package KREDA\Sphere
  */
-abstract class Application implements IApplicationInterface
+abstract class AbstractApplication extends AbstractDebugger implements IApplicationInterface
 {
-
-    /**
-     * @return Debugger
-     */
-    public static function getDebugger()
-    {
-
-        return new Debugger();
-    }
 
     /**
      * @param Configuration $Configuration
@@ -37,7 +28,7 @@ abstract class Application implements IApplicationInterface
      *
      * @return RouteParameter
      */
-    protected static function buildRoute( Configuration &$Configuration, $Url, $Method )
+    protected static function registerClientRoute( Configuration &$Configuration, $Url, $Method )
     {
 
         $Route = new RouteParameter( $Url, $Method );
@@ -73,7 +64,7 @@ abstract class Application implements IApplicationInterface
      *
      * @return UrlParameter
      */
-    private static function prepareParameterUrl( $Value )
+    final private static function prepareParameterUrl( $Value )
     {
 
         return new UrlParameter( $Value );
@@ -84,7 +75,7 @@ abstract class Application implements IApplicationInterface
      *
      * @return NameParameter
      */
-    private static function prepareParameterName( $Value )
+    final private static function prepareParameterName( $Value )
     {
 
         return new NameParameter( $Value );
@@ -95,7 +86,7 @@ abstract class Application implements IApplicationInterface
      *
      * @return Icon|IconParameter
      */
-    private static function prepareParameterIcon( Icon $Value )
+    final private static function prepareParameterIcon( Icon $Value )
     {
 
         if (null !== $Value) {
@@ -109,7 +100,7 @@ abstract class Application implements IApplicationInterface
      *
      * @return bool
      */
-    private static function prepareParameterActive( UrlParameter $Value )
+    final private static function prepareParameterActive( UrlParameter $Value )
     {
 
         $Request = HttpKernel::getRequest();

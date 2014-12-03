@@ -1,10 +1,10 @@
 <?php
-namespace KREDA\Sphere\Application;
+namespace KREDA\Sphere\Common;
 
 /**
  * Class Debugger
  *
- * @package KREDA\Sphere\Application
+ * @package KREDA\Sphere\Common
  */
 class Debugger
 {
@@ -19,7 +19,7 @@ class Debugger
     /**
      *
      */
-    function __construct()
+    final function __construct()
     {
 
         if (!self::$Timestamp) {
@@ -33,7 +33,7 @@ class Debugger
     /**
      * @param $__METHOD__
      */
-    public static function addConstructorCall( $__METHOD__ )
+    final public static function addMethodCall( $__METHOD__ )
     {
 
         self::addProtocol( self::splitNamespace( $__METHOD__ ) );
@@ -43,13 +43,13 @@ class Debugger
      * @param string $Message
      * @param string $Icon
      */
-    public static function addProtocol( $Message, $Icon = 'time' )
+    final public static function addProtocol( $Message, $Icon = 'time' )
     {
 
         $TimeGap = self::getTimeGap() - self::$TimeGap;
 
         $Status = 'muted';
-        if ($TimeGap < 0.020 && $TimeGap >= 0.001) {
+        if ($TimeGap < 0.020 && $TimeGap >= 0.002) {
             $Status = 'success';
         }
         if ($TimeGap >= 0.020) {
@@ -73,7 +73,7 @@ class Debugger
     /**
      * @return float
      */
-    public static function getTimeGap()
+    final public static function getTimeGap()
     {
 
         return ( microtime( true ) - self::$Timestamp );
@@ -82,7 +82,7 @@ class Debugger
     /**
      * @return string
      */
-    public static function getRuntime()
+    final public static function getRuntime()
     {
 
         return round( self::getTimeGap() * 1000, 0 ).'ms';
@@ -93,26 +93,17 @@ class Debugger
      *
      * @return string
      */
-    private static function splitNamespace( $Value )
+    final private static function splitNamespace( $Value )
     {
 
         return str_replace( array( '\\', '/' ), array( '\\&shy;', '/&shy;' ), $Value );
     }
 
     /**
-     * @param $__METHOD__
-     */
-    public static function addMethodCall( $__METHOD__ )
-    {
-
-        self::addProtocol( self::splitNamespace( $__METHOD__ ) );
-    }
-
-    /**
      * @param $__FILE__
      * @param $__LINE__
      */
-    public static function addFileLine( $__FILE__, $__LINE__ )
+    final public static function addFileLine( $__FILE__, $__LINE__ )
     {
 
         self::addProtocol( $__FILE__.' : '.$__LINE__, 'file' );
@@ -121,7 +112,7 @@ class Debugger
     /**
      * @return string
      */
-    public static function getProtocol()
+    final public static function getProtocol()
     {
 
         krsort( self::$Protocol );

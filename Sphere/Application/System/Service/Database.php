@@ -1,16 +1,16 @@
 <?php
 namespace KREDA\Sphere\Application\System\Service;
 
-use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Application\System\Service\Database\Status;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
+use KREDA\Sphere\Common\AbstractService;
 
 /**
  * Class Database
  *
  * @package KREDA\Sphere\Application\System\Service
  */
-class Database extends Service
+class Database extends AbstractService
 {
 
     const STATUS_MISSING = 0;
@@ -60,7 +60,7 @@ class Database extends Service
         }
 
         $Report = new Status( $Report );
-        $Report->setRouteUpdate( $this->useRoute( 'Update' ) );
+        $Report->setRouteUpdate( $this->getClientServiceRoute( 'Update' ) );
 
         $View->setContent( $Report->getContent() );
 

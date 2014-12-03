@@ -17,7 +17,7 @@ interface IApplicationInterface
      *
      * @return Configuration
      */
-    public static function setupApi( Configuration $Configuration );
+    public static function registerApplication( Configuration $Configuration );
 
     /**
      * @return Element

@@ -2,15 +2,15 @@
 namespace KREDA\Sphere\Application\Management\Service;
 
 use KREDA\Sphere\Application\Management\Service\People\Search;
-use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
+use KREDA\Sphere\Common\AbstractService;
 
 /**
  * Class People
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service
  */
-class People extends Service
+class People extends AbstractService
 {
 
     /**
@@ -30,7 +30,7 @@ class People extends Service
 
         $View = new Search();
         $View->setCategory( 'Personal' );
-        $View->setRouteCreate( $this->useRoute( 'Create' ) );
+        $View->setRouteCreate( $this->getClientServiceRoute( 'Create' ) );
         return $View;
     }
 
@@ -48,7 +48,7 @@ class People extends Service
 
         $View = new Search();
         $View->setCategory( 'Schüler' );
-        $View->setRouteCreate( $this->useRoute( 'Create' ) );
+        $View->setRouteCreate( $this->getClientServiceRoute( 'Create' ) );
         return $View;
     }
 
@@ -57,7 +57,7 @@ class People extends Service
 
         $View = new Search();
         $View->setCategory( 'Eltern' );
-        $View->setRouteCreate( $this->useRoute( 'Create' ) );
+        $View->setRouteCreate( $this->getClientServiceRoute( 'Create' ) );
         return $View;
     }
 

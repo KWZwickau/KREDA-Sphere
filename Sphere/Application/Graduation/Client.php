@@ -1,18 +1,18 @@
 <?php
 namespace KREDA\Sphere\Application\Graduation;
 
-use KREDA\Sphere\Application\Application;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\StatisticIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagListIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\AbstractApplication;
 
 /**
  * Class Client
  *
  * @package KREDA\Sphere\Application\Graduation
  */
-class Client extends Application
+class Client extends AbstractApplication
 {
 
     /** @var Configuration $Config */
@@ -23,7 +23,7 @@ class Client extends Application
      *
      * @return Configuration
      */
-    public static function setupApi( Configuration $Configuration )
+    public static function registerApplication( Configuration $Configuration )
     {
 
         self::getDebugger()->addMethodCall( __METHOD__ );
@@ -32,7 +32,7 @@ class Client extends Application
         self::addClientNavigationMain( self::$Configuration,
             '/Sphere/Grade', 'Zensuren', new TagListIcon()
         );
-        self::buildRoute( self::$Configuration, '/Sphere/Grade', __CLASS__.'::apiMain' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Grade', __CLASS__.'::apiMain' );
         return $Configuration;
     }
 

@@ -2,14 +2,14 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\EntityAction;
 
 /**
  * Class Token
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service
  */
-class Token extends Schema
+class Token extends EntityAction
 {
 
     /**
@@ -18,12 +18,12 @@ class Token extends Schema
     public function __construct()
     {
 
-        $this->getDebugger()->addConstructorCall( __METHOD__ );
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->connectDatabase( 'Gatekeeper-Token' );
     }
 
-    public function setupSystem()
+    public function setupDatabaseContent()
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );

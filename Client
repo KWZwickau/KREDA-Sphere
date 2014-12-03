@@ -2,12 +2,15 @@
 namespace KREDA\Client;
 
 use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
+use Doctrine\DBAL\Schema\SchemaException;
 use KREDA\Sphere\Application\Assistance\Client as AssistanceApplication;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Danger;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Info;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Warning;
-use KREDA\Sphere\Application\Debugger;
 use KREDA\Sphere\Application\Gatekeeper\Client as GatekeeperApplication;
+use KREDA\Sphere\Application\Graduation\Client as GraduationApplication;
+use KREDA\Sphere\Application\Management\Client as ManagementApplication;
+use KREDA\Sphere\Application\Statistic\Client as StatisticApplication;
 use KREDA\Sphere\Application\System\Client as SystemApplication;
 use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Update;
@@ -21,6 +24,7 @@ use KREDA\Sphere\Client\Component\Element\Repository\Shell\Screen;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\Debugger;
 use MOC\V\Component\Database\Exception\DatabaseException;
 use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
 use MOC\V\Core\AutoLoader\AutoLoader;
@@ -33,20 +37,26 @@ AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere\Application', __DIR__.'/Sphere
 AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere', __DIR__.'/Sphere' );
 AutoLoader::getNamespaceAutoLoader( 'Markdownify', __DIR__.'/Library/Markdownify/2.1.6/src' );
 
+/**
+ * Init Debugger
+ */
 new Debugger();
 
+/**
+ * Init Php Header
+ */
 header( 'Content-type: text/html; charset=utf-8' );
 error_reporting( E_ALL );
 ini_set( 'display_errors', 1 );
-
 session_start();
-
 ini_set( 'xdebug.var_display_max_data', -1 );
 ini_set( 'xdebug.var_display_max_children', -1 );
 ini_set( 'xdebug.var_display_max_depth', -1 );
-
 set_error_handler( create_function( '$N,$S,$F,$L', 'throw new \ErrorException($S,0,$N,$F,$L);' ), E_ALL );
 
+/**
+ * Run KREDA
+ */
 $ShellScreen = new Screen();
 $Config = new Configuration( new UniversalRouter(), new LevelClient() );
 
@@ -57,7 +67,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
     /**
      * Setup Public-Access
      */
-    $Config = AssistanceApplication::setupApi( $Config );
+    AssistanceApplication::registerApplication( $Config );
     $Config->getClientNavigation()->addLinkToMeta(
         new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
     );
@@ -95,16 +105,16 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
          * Setup Private-Access
          */
         if (( $IsValid = GatekeeperApplication::apiIsValidSession() )) {
-            $Config = SystemApplication::setupApi( $Config );
-//            $Config = ManagementApplication::setupApi( $Config );
-//            $Config = GraduationApplication::setupApi( $Config );
-//            $Config = StatisticApplication::setupApi( $Config );
+            SystemApplication::registerApplication( $Config );
+            ManagementApplication::registerApplication( $Config );
+            GraduationApplication::registerApplication( $Config );
+            StatisticApplication::registerApplication( $Config );
         }
         /**
          * Setup Public-Access
          */
-        $Config = GatekeeperApplication::setupApi( $Config );
-        $Config = AssistanceApplication::setupApi( $Config );
+        GatekeeperApplication::registerApplication( $Config );
+        AssistanceApplication::registerApplication( $Config );
         /**
          * Execute Action (if available)
          */
@@ -146,7 +156,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             /**
              * Setup Public-Access
              */
-            $Config = AssistanceApplication::setupApi( $Config );
+            AssistanceApplication::registerApplication( $Config );
             /** @var Element $Route */
             $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
             $ShellScreen->addToContent( new Container( $Route ) );
@@ -156,50 +166,57 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
              */
             $ShellScreen->addException( $E, get_class( $E ) );
         }
-    } catch( DatabaseObjectNotFoundException $E ) {
-        /**
-         * Repair Database
-         */
-        $View = new Landing();
-        $View->setTitle( 'Systemprüfung' );
-        $View->setDescription( 'Datenbanken' );
-        $View->setMessage(
-            new Danger( 'Die Anwendung hat festgestellt, dass manche Datenbanken nicht korrekt arbeiten.' )
-            .new Warning( 'Sollte das Problem nach dem automatischen Reparaturversuch nicht behoben sein wenden Sie sich bitte an den Support' )
-            .new Info( $E->getMessage() )
-        );
-        $View->setContent(
-            Update::getApi()->setupDataStructure( false )
-            .new GatekeeperApplication\Redirect\Custom( '', '/Sphere', '', '', 30 )
-        );
-        $ShellScreen->addToContent( new Container( $View ) );
     } catch( \Exception $E ) {
-        if (false !== strpos( $E->getFile(), 'Sphere\Application\Service' )) {
+        if (
+            $E instanceof DatabaseObjectNotFoundException
+            || $E instanceof SchemaException
+        ) {
             /**
-             * Show Help
+             * Repair Database
              */
-            try {
+            $View = new Landing();
+            $View->setTitle( 'Systemprüfung' );
+            $View->setDescription( 'Datenbanken' );
+            $View->setMessage(
+                new Danger( 'Die Anwendung hat festgestellt, dass manche Datenbanken nicht korrekt arbeiten.' )
+                .new Warning( 'Sollte das Problem nach dem automatischen Reparaturversuch nicht behoben sein wenden Sie sich bitte an den Support' )
+                .new Info( $E->getMessage() )
+            );
+            $View->setContent(
+                Update::getApi()->setupDatabaseSchema( false )
+                .new GatekeeperApplication\Redirect\Custom( '', '/Sphere', '', '', 30 )
+            );
+            $ShellScreen->addToContent( new Container( $View ) );
+        } else {
+
+            if (false !== strpos( $E->getFile(), 'Sphere\Application\Service' )) {
                 /**
-                 * Setup Public-Access
+                 * Show Help
                  */
-                $Config = AssistanceApplication::setupApi( $Config );
-                $Config->getClientNavigation()->addLinkToMeta(
-                    new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
-                );
-                /** @var Element $Route */
-                $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
-                $ShellScreen->addToContent( new Container( $Route ) );
-            } catch( \Exception $E ) {
+                try {
+                    /**
+                     * Setup Public-Access
+                     */
+                    AssistanceApplication::registerApplication( $Config );
+                    $Config->getClientNavigation()->addLinkToMeta(
+                        new LevelClient\Link( new UrlParameter( '/Sphere' ),
+                            new NameParameter( 'Zurück zur Anwendung' ) )
+                    );
+                    /** @var Element $Route */
+                    $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
+                    $ShellScreen->addToContent( new Container( $Route ) );
+                } catch( \Exception $E ) {
+                    /**
+                     * Unexpected Exception
+                     */
+                    $ShellScreen->addException( $E, get_class( $E ) );
+                }
+            } else {
                 /**
                  * Unexpected Exception
                  */
                 $ShellScreen->addException( $E, get_class( $E ) );
             }
-        } else {
-            /**
-             * Unexpected Exception
-             */
-            $ShellScreen->addException( $E, get_class( $E ) );
         }
     }
 }

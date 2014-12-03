@@ -20,12 +20,12 @@ class Access extends Schema
     public function __construct()
     {
 
-        $this->getDebugger()->addConstructorCall( __METHOD__ );
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->connectDatabase( 'Gatekeeper-Access' );
     }
 
-    public function setupSystem()
+    public function setupDatabaseContent()
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );

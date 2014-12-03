@@ -1,15 +1,15 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
-use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
+use KREDA\Sphere\Common\AbstractService;
 
 /**
  * Class Property
  *
  * @package KREDA\Sphere\Application\Management\Service
  */
-class Property extends Service
+class Property extends AbstractService
 {
 
     /**

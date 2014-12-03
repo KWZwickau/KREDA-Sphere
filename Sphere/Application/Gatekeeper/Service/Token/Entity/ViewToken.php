@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema;
+namespace KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;

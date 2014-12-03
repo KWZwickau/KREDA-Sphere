@@ -1,9 +1,9 @@
 <?php
 namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
 
-use KREDA\Sphere\Application\Debugger;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
+use KREDA\Sphere\Common\Debugger;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
@@ -30,7 +30,7 @@ class Screen extends Shell implements IElementInterface
     function __construct()
     {
 
-        Debugger::addConstructorCall( __METHOD__ );
+        Debugger::addMethodCall( __METHOD__ );
 
         $this->Template = Template::getTemplate( __DIR__.'/Screen.twig' );
         $this->Template->setVariable( 'PathBase', HttpKernel::getRequest()->getPathBase() );

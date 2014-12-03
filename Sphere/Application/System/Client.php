@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\System;
 
-use KREDA\Sphere\Application\Application;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Token;
@@ -15,13 +14,14 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TaskIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WrenchIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\AbstractApplication;
 
 /**
  * Class Client
  *
  * @package KREDA\Sphere\Application\System
  */
-class Client extends Application
+class Client extends AbstractApplication
 {
 
     /** @var Configuration $Config */
@@ -32,7 +32,7 @@ class Client extends Application
      *
      * @return Configuration
      */
-    public static function setupApi( Configuration $Configuration )
+    public static function registerApplication( Configuration $Configuration )
     {
 
         self::getDebugger()->addMethodCall( __METHOD__ );
@@ -41,21 +41,25 @@ class Client extends Application
         self::addClientNavigationMeta( self::$Configuration,
             '/Sphere/System', 'System', new WrenchIcon()
         );
-        self::buildRoute( self::$Configuration, '/Sphere/System', __CLASS__.'::apiMain' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/System', __CLASS__.'::apiMain' );
 
-        self::buildRoute( self::$Configuration, '/Sphere/System/Update', __CLASS__.'::apiUpdate' );
-        self::buildRoute( self::$Configuration, '/Sphere/System/Update/Simulation', __CLASS__.'::apiUpdateSimulation' );
-        self::buildRoute( self::$Configuration, '/Sphere/System/Update/Perform', __CLASS__.'::apiUpdatePerform' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/System/Update', __CLASS__.'::apiUpdate' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/System/Update/Simulation',
+            __CLASS__.'::apiUpdateSimulation' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/System/Update/Perform',
+            __CLASS__.'::apiUpdatePerform' );
 
         if (Access::getApi()->apiIsValidAccess( '/Sphere/System/Database/Status' )) {
-            self::buildRoute( self::$Configuration, '/Sphere/System/Database', __CLASS__.'::apiDatabaseStatus' );
-            self::buildRoute( self::$Configuration, '/Sphere/System/Database/Status', __CLASS__.'::apiDatabaseStatus' );
+            self::registerClientRoute( self::$Configuration, '/Sphere/System/Database',
+                __CLASS__.'::apiDatabaseStatus' );
+            self::registerClientRoute( self::$Configuration, '/Sphere/System/Database/Status',
+                __CLASS__.'::apiDatabaseStatus' );
         }
 
-        self::buildRoute( self::$Configuration, '/Sphere/System/Account', __CLASS__.'::apiAccount' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/System/Account', __CLASS__.'::apiAccount' );
 
-        self::buildRoute( self::$Configuration, '/Sphere/System/Token', __CLASS__.'::apiToken' );
-        self::buildRoute( self::$Configuration, '/Sphere/System/Token/Certification',
+        self::registerClientRoute( self::$Configuration, '/Sphere/System/Token', __CLASS__.'::apiToken' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/System/Token/Certification',
             __CLASS__.'::apiTokenCertification' );
 
         return $Configuration;

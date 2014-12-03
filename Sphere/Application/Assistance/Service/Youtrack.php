@@ -3,8 +3,8 @@ namespace KREDA\Sphere\Application\Assistance\Service;
 
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Danger;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Solution\Support;
-use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Common\AbstractService;
 use Markdownify\Converter;
 
 /**
@@ -12,7 +12,7 @@ use Markdownify\Converter;
  *
  * @package KREDA\Sphere\Application\Assistance\Service
  */
-class Youtrack extends Service
+class Youtrack extends AbstractService
 {
 
     /** @var string $YoutrackDomain */

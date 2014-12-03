@@ -5,13 +5,14 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\View;
+use KREDA\Sphere\Common\AbstractService;
 
 /**
- * Class Setup
+ * Class EntitySchema
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Access
  */
-abstract class Setup extends \KREDA\Sphere\Application\Setup
+abstract class Setup extends AbstractService
 {
 
     /**
@@ -19,7 +20,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
      *
      * @return string
      */
-    public function setupDataStructure( $Simulate = true )
+    public function setupDatabaseSchema( $Simulate = true )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
@@ -27,7 +28,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
         /**
          * Table
          */
-        $Schema = clone $this->loadSchema();
+        $Schema = clone $this->getSchema();
         $tblAccessRight = $this->setTableAccessRight( $Schema );
         $tblAccessPrivilege = $this->setTableAccessPrivilege( $Schema );
         $tblAccessRole = $this->setTableAccessRole( $Schema );
@@ -36,8 +37,8 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
         /**
          * Migration
          */
-        $Statement = $this->loadSchema()->getMigrateToSql( $Schema,
-            $this->writeData()->getConnection()->getDatabasePlatform()
+        $Statement = $this->getSchema()->getMigrateToSql( $Schema,
+            $this->readData()->getConnection()->getDatabasePlatform()
         );
         $this->addInstallProtocol( __CLASS__ );
         if (!empty( $Statement )) {
@@ -70,12 +71,12 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
                 ->innerJoin( 'RiPr', 'tblAccessRight', 'Ri', 'RiPr.tblAccessRight = Ri.Id' )
                 ->getSQL();
             $this->addInstallProtocol( 'viewAccess: '.$viewAccess );
-            $this->loadSchemaManager()->createView( new View( 'viewAccess', $viewAccess ) );
+            $this->getSchemaManager()->createView( new View( 'viewAccess', $viewAccess ) );
         }
         /**
          * Protocol
          */
-        return $this->getInstallProtocol();
+        return $this->getInstallProtocol( $Simulate );
     }
 
     /**
@@ -199,14 +200,14 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
          */
         if (!$this->dbTableHasColumn( 'tblAccessPrivilegeRoleList', 'tblAccessPrivilege' )) {
             $Table->addColumn( 'tblAccessPrivilege', 'bigint' );
-            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccessPrivilege, array( 'tblAccessPrivilege' ),
                     array( 'Id' ) );
             }
         }
         if (!$this->dbTableHasColumn( 'tblAccessPrivilegeRoleList', 'tblAccessRole' )) {
             $Table->addColumn( 'tblAccessRole', 'bigint' );
-            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccessRole, array( 'tblAccessRole' ), array( 'Id' ) );
             }
         }
@@ -244,13 +245,13 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
          */
         if (!$this->dbTableHasColumn( 'tblAccessRightPrivilegeList', 'tblAccessRight' )) {
             $Table->addColumn( 'tblAccessRight', 'bigint' );
-            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccessRight, array( 'tblAccessRight' ), array( 'Id' ) );
             }
         }
         if (!$this->dbTableHasColumn( 'tblAccessRightPrivilegeList', 'tblAccessPrivilege' )) {
             $Table->addColumn( 'tblAccessPrivilege', 'bigint' );
-            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccessPrivilege, array( 'tblAccessPrivilege' ),
                     array( 'Id' ) );
             }
@@ -267,7 +268,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->loadSchema()->getTable( 'tblAccessRight' );
+        return $this->getSchema()->getTable( 'tblAccessRight' );
     }
 
     /**
@@ -279,7 +280,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->loadSchema()->getTable( 'tblAccessPrivilege' );
+        return $this->getSchema()->getTable( 'tblAccessPrivilege' );
     }
 
     /**
@@ -291,7 +292,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->loadSchema()->getTable( 'tblAccessRole' );
+        return $this->getSchema()->getTable( 'tblAccessRole' );
     }
 
     /**
@@ -303,7 +304,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->loadSchema()->getTable( 'tblAccessRightPrivilegeList' );
+        return $this->getSchema()->getTable( 'tblAccessRightPrivilegeList' );
     }
 
     /**
@@ -315,6 +316,6 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->loadSchema()->getTable( 'tblAccessPrivilegeRoleList' );
+        return $this->getSchema()->getTable( 'tblAccessPrivilegeRoleList' );
     }
 }

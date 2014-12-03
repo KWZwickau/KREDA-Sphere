@@ -6,13 +6,14 @@ use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
+use KREDA\Sphere\Common\AbstractService;
 
 /**
- * Class Setup
+ * Class EntitySchema
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Account
  */
-abstract class Setup extends \KREDA\Sphere\Application\Setup
+abstract class Setup extends AbstractService
 {
 
     /**
@@ -20,13 +21,13 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
      *
      * @return string
      */
-    public function setupDataStructure( $Simulate = true )
+    public function setupDatabaseSchema( $Simulate = true )
     {
 
         /**
          * Setup
          */
-        $Schema = clone $this->loadSchema();
+        $Schema = clone $this->getSchema();
         $tblAccountRole = $this->setTableAccountRole( $Schema );
         $tblAccount = $this->setTableAccount( $Schema, Token::getApi()->schemaTableToken() );
         $this->setTableAccountSession( $Schema, $tblAccount );
@@ -34,8 +35,8 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
         /**
          * Migration
          */
-        $Statement = $this->loadSchema()->getMigrateToSql( $Schema,
-            $this->writeData()->getConnection()->getDatabasePlatform()
+        $Statement = $this->getSchema()->getMigrateToSql( $Schema,
+            $this->readData()->getConnection()->getDatabasePlatform()
         );
         /**
          * Execute
@@ -49,7 +50,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
                 }
             }
         }
-        return $this->getInstallProtocol();
+        return $this->getInstallProtocol( $Simulate );
     }
 
     /**
@@ -111,7 +112,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
         }
         if (!$this->dbTableHasColumn( 'tblAccount', 'tblToken' )) {
             $Table->addColumn( 'tblToken', 'bigint', array( 'notnull' => false ) );
-            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblToken, array( 'tblToken' ), array( 'Id' ) );
             }
         }
@@ -155,7 +156,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
         }
         if (!$this->dbTableHasColumn( 'tblAccountSession', 'tblAccount' )) {
             $Table->addColumn( 'tblAccount', 'bigint' );
-            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccount, array( 'tblAccount' ), array( 'Id' ) );
             }
         }
@@ -191,13 +192,13 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
          */
         if (!$this->dbTableHasColumn( 'tblAccountRoleList', 'tblAccountRole' )) {
             $Table->addColumn( 'tblAccountRole', 'bigint' );
-            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccountRole, array( 'tblAccountRole' ), array( 'Id' ) );
             }
         }
         if (!$this->dbTableHasColumn( 'tblAccountRoleList', 'tblAccessRole' )) {
             $Table->addColumn( 'tblAccessRole', 'bigint' );
-            if ($this->loadSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccessRole, array( 'tblAccessRole' ), array( 'Id' ) );
             }
         }
@@ -211,7 +212,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
     protected function getTableAccount()
     {
 
-        return $this->loadSchema()->getTable( 'tblAccount' );
+        return $this->getSchema()->getTable( 'tblAccount' );
     }
 
     /**
@@ -221,7 +222,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
     protected function getTableAccountRole()
     {
 
-        return $this->loadSchema()->getTable( 'tblAccountRole' );
+        return $this->getSchema()->getTable( 'tblAccountRole' );
     }
 
     /**
@@ -231,7 +232,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
     protected function getTableAccountSession()
     {
 
-        return $this->loadSchema()->getTable( 'tblAccountSession' );
+        return $this->getSchema()->getTable( 'tblAccountSession' );
     }
 
     /**
@@ -241,6 +242,6 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
     protected function getTableAccountRoleList()
     {
 
-        return $this->loadSchema()->getTable( 'tblAccountRoleList' );
+        return $this->getSchema()->getTable( 'tblAccountRoleList' );
     }
 }

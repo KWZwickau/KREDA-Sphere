@@ -2,15 +2,15 @@
 namespace KREDA\Sphere\Application\System\Service;
 
 use KREDA\Sphere\Application\Gatekeeper\Client as Gatekeeper;
-use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
+use KREDA\Sphere\Common\AbstractService;
 
 /**
  * Class Update
  *
  * @package KREDA\Sphere\Application\System\Service
  */
-class Update extends Service
+class Update extends AbstractService
 {
 
     /**
@@ -39,7 +39,7 @@ class Update extends Service
         $View->setTitle( 'KREDA Update' );
         $View->setDescription( 'Simulation' );
         $View->setMessage( '' );
-        $View->setContent( Update::getApi()->setupDataStructure( true ) );
+        $View->setContent( Update::getApi()->setupDatabaseSchema( true ) );
         return $View;
     }
 
@@ -48,7 +48,7 @@ class Update extends Service
      *
      * @return string
      */
-    public function setupDataStructure( $Simulate = true )
+    public function setupDatabaseSchema( $Simulate = true )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
@@ -62,26 +62,26 @@ class Update extends Service
          * Gatekeeper
          */
 
-        $Protocol[] = Gatekeeper::serviceToken()->setupDataStructure( $Simulate );
+        $Protocol[] = Gatekeeper::serviceToken()->setupDatabaseSchema( $Simulate );
         if (!$Simulate) {
-            Gatekeeper::serviceToken()->setupSystem();
+            Gatekeeper::serviceToken()->setupDatabaseContent();
         }
-        $Protocol[] = Gatekeeper::serviceAccess()->setupDataStructure( $Simulate );
+        $Protocol[] = Gatekeeper::serviceAccess()->setupDatabaseSchema( $Simulate );
         if (!$Simulate) {
-            Gatekeeper::serviceAccess()->setupSystem();
+            Gatekeeper::serviceAccess()->setupDatabaseContent();
         }
-        $Protocol[] = Gatekeeper::serviceAccount()->setupDataStructure( $Simulate );
+        $Protocol[] = Gatekeeper::serviceAccount()->setupDatabaseSchema( $Simulate );
         if (!$Simulate) {
-            Gatekeeper::serviceAccount()->setupSystem();
+            Gatekeeper::serviceAccount()->setupDatabaseContent();
         }
 
         /**
          * System
          */
 
-        $Protocol[] = Consumer::getApi()->setupDataStructure( $Simulate );
+        $Protocol[] = Consumer::getApi()->setupDatabaseSchema( $Simulate );
         if (!$Simulate) {
-            Consumer::getApi()->setupSystem();
+            Consumer::getApi()->setupDatabaseContent();
         }
 
         return implode( $Protocol );
@@ -98,7 +98,7 @@ class Update extends Service
         $View = new Landing();
         $View->setTitle( 'KREDA Update' );
         $View->setMessage( '' );
-        $View->setContent( Update::getApi()->setupDataStructure( false ) );
+        $View->setContent( Update::getApi()->setupDatabaseSchema( false ) );
         return $View;
     }
 }

@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Management;
 
-use KREDA\Sphere\Application\Application;
 use KREDA\Sphere\Application\Management\Service\People;
 use KREDA\Sphere\Application\Management\Service\Property;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
@@ -16,13 +15,14 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TileListIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TileSmallIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\AbstractApplication;
 
 /**
  * Class Client
  *
  * @package KREDA\Sphere\Application\Management
  */
-class Client extends Application
+class Client extends AbstractApplication
 {
 
     /** @var Configuration $Config */
@@ -33,7 +33,7 @@ class Client extends Application
      *
      * @return Configuration
      */
-    public static function setupApi( Configuration $Configuration )
+    public static function registerApplication( Configuration $Configuration )
     {
 
         self::getDebugger()->addMethodCall( __METHOD__ );
@@ -43,60 +43,60 @@ class Client extends Application
         /**
          * Navigation
          */
-        self::buildRoute( self::$Configuration, '/Sphere/Management', __CLASS__.'::apiMain' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management', __CLASS__.'::apiMain' );
         self::addClientNavigationMain( self::$Configuration, '/Sphere/Management', 'Verwaltung', new GearIcon() );
 
         /**
          * Property
          */
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Property', __CLASS__.'::apiProperty'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Property/School', __CLASS__.'::apiPropertySchool'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Property/Building', __CLASS__.'::apiPropertyBuilding'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Property/Room', __CLASS__.'::apiPropertyRoom'
         );
 
         /**
          * People
          */
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/People', __CLASS__.'::apiPeople'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/People/Staff', __CLASS__.'::apiPeopleStaff'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/People/Staff/Create', __CLASS__.'::apiPeopleStaffCreate'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/People/Student', __CLASS__.'::apiPeopleStudent'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/People/Parent', __CLASS__.'::apiPeopleParent'
         );
 
         /**
          * Arrangement
          */
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Arrangement', __CLASS__.'::apiArrangement'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Arrangement/Group', __CLASS__.'::apiArrangementGroup'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Arrangement/Subject', __CLASS__.'::apiArrangementSubject'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Arrangement/Period', __CLASS__.'::apiArrangementPeriod'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Arrangement/Mission', __CLASS__.'::apiArrangementMission'
         );
 

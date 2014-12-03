@@ -1,15 +1,15 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Token;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema\TblToken;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema\ViewToken;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\ViewToken;
 
 /**
- * Class Schema
+ * Class EntityAction
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Token
  */
-abstract class Schema extends Setup
+abstract class EntityAction extends EntitySchema
 {
 
     /**
@@ -22,7 +22,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblToken' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblToken' )
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
         if (null === $Entity) {
             return false;
@@ -41,7 +41,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->loadEntityManager()->find( __NAMESPACE__.'\Schema\TblToken', $Id );
+        $Entity = $this->getEntityManager()->find( __NAMESPACE__.'\Entity\TblToken', $Id );
         if (null === $Entity) {
             return false;
         } else {
@@ -59,12 +59,12 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblToken' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblToken' )
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
         if (null === $Entity) {
             $Entity = new TblToken( $Identifier );
-            $this->loadEntityManager()->persist( $Entity );
-            $this->loadEntityManager()->flush();
+            $this->getEntityManager()->persist( $Entity );
+            $this->getEntityManager()->flush();
         }
         return $Entity;
     }
@@ -77,7 +77,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $EntityList = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\ViewToken' )->findAll();
+        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\ViewToken' )->findAll();
         if (empty( $EntityList )) {
             return false;
         } else {

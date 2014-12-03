@@ -5,17 +5,17 @@ use KREDA\Sphere\Application\Gatekeeper\Client as Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
-use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Application\System\Service\Token\Certification;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
+use KREDA\Sphere\Common\AbstractService;
 
 /**
  * Class Token
  *
  * @package KREDA\Sphere\Application\System\Service
  */
-class Token extends Service
+class Token extends AbstractService
 {
 
     /**

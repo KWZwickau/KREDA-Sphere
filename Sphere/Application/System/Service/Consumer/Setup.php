@@ -5,13 +5,14 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager as Manager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
+use KREDA\Sphere\Common\AbstractService;
 
 /**
- * Class Setup
+ * Class EntitySchema
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Access
  */
-abstract class Setup extends \KREDA\Sphere\Application\Setup
+abstract class Setup extends AbstractService
 {
 
     /**
@@ -19,13 +20,13 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
      *
      * @return string
      */
-    public function setupDataStructure( $Simulate = true )
+    public function setupDatabaseSchema( $Simulate = true )
     {
 
         /**
          * Prepare
          */
-        $Manager = $this->writeData()->getSchemaManager();
+        $Manager = $this->readData()->getSchemaManager();
         $BaseSchema = $Manager->createSchema();
         $UpgradeSchema = clone $BaseSchema;
         /**
@@ -41,7 +42,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
          * Migration
          */
         $Statement = $BaseSchema->getMigrateToSql( $UpgradeSchema,
-            $this->writeData()->getConnection()->getDatabasePlatform()
+            $this->readData()->getConnection()->getDatabasePlatform()
         );
         /**
          * Upgrade
@@ -55,7 +56,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
                 }
             }
         }
-        return $this->getInstallProtocol();
+        return $this->getInstallProtocol( $Simulate );
     }
 
     /**

@@ -9,7 +9,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\TblAccessRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\ViewAccess;
 
 /**
- * Class Schema
+ * Class EntityAction
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Access
  */
@@ -26,12 +26,12 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRight' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRight' )
             ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Route ) );
         if (null === $Entity) {
             $Entity = new TblAccessRight( $Route );
-            $this->loadEntityManager()->persist( $Entity );
-            $this->loadEntityManager()->flush();
+            $this->getEntityManager()->persist( $Entity );
+            $this->getEntityManager()->flush();
         }
         return $Entity;
     }
@@ -46,12 +46,12 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRole' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRole' )
             ->findOneBy( array( TblAccessRole::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblAccessRole( $Name );
-            $this->loadEntityManager()->persist( $Entity );
-            $this->loadEntityManager()->flush();
+            $this->getEntityManager()->persist( $Entity );
+            $this->getEntityManager()->flush();
         }
         return $Entity;
     }
@@ -66,12 +66,12 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessPrivilege' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessPrivilege' )
             ->findOneBy( array( TblAccessPrivilege::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblAccessPrivilege( $Name );
-            $this->loadEntityManager()->persist( $Entity );
-            $this->loadEntityManager()->flush();
+            $this->getEntityManager()->persist( $Entity );
+            $this->getEntityManager()->flush();
         }
         return $Entity;
     }
@@ -89,7 +89,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRightPrivilegeList' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRightPrivilegeList' )
             ->findOneBy( array(
                 TblAccessRightPrivilegeList::ATTR_TBL_ACCESS_RIGHT     => $TblAccessRight->getId(),
                 TblAccessRightPrivilegeList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId()
@@ -98,8 +98,8 @@ abstract class Schema extends Setup
             $Entity = new TblAccessRightPrivilegeList();
             $Entity->setTblAccessRight( $TblAccessRight->getId() );
             $Entity->setTblAccessPrivilege( $TblAccessPrivilege->getId() );
-            $this->loadEntityManager()->persist( $Entity );
-            $this->loadEntityManager()->flush();
+            $this->getEntityManager()->persist( $Entity );
+            $this->getEntityManager()->flush();
         }
         return $Entity;
     }
@@ -117,7 +117,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessPrivilegeRoleList' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessPrivilegeRoleList' )
             ->findOneBy( array(
                 TblAccessPrivilegeRoleList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId(),
                 TblAccessPrivilegeRoleList::ATTR_TBL_ACCESS_ROLE      => $tblAccessRole->getId()
@@ -126,8 +126,8 @@ abstract class Schema extends Setup
             $Entity = new TblAccessPrivilegeRoleList();
             $Entity->setTblAccessPrivilege( $TblAccessPrivilege->getId() );
             $Entity->setTblAccessRole( $tblAccessRole->getId() );
-            $this->loadEntityManager()->persist( $Entity );
-            $this->loadEntityManager()->flush();
+            $this->getEntityManager()->persist( $Entity );
+            $this->getEntityManager()->flush();
         }
         return $Entity;
     }
@@ -142,7 +142,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRight' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRight' )
             ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Route ) );
         if (null === $Entity) {
             return false;
@@ -161,7 +161,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $EntityList = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\ViewAccess' )
+        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\ViewAccess' )
             ->findBy( array( 'tblAccessRole' => $AccessRole->getId() ) );
         if (empty( $EntityList )) {
             return false;
@@ -181,7 +181,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $EntityList = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\ViewAccess' )
+        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\ViewAccess' )
             ->findBy( array( 'tblAccessPrivilege' => $AccessPrivilege->getId() ) );
         if (empty( $EntityList )) {
             return false;
@@ -200,7 +200,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $EntityList = $this->loadEntityManager()->getRepository( __NAMESPACE__.'\Schema\ViewAccess' )
+        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\ViewAccess' )
             ->findBy( array( 'tblAccessRight' => $AccessRight->getId() ) );
         if (empty( $EntityList )) {
             return false;

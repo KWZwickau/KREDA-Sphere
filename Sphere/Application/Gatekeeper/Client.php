@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper;
 
-use KREDA\Sphere\Application\Application;
 use KREDA\Sphere\Application\Gatekeeper\Client\Redirect\SignIn;
 use KREDA\Sphere\Application\Gatekeeper\Client\Redirect\SignOut;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement;
@@ -16,13 +15,14 @@ use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\AbstractApplication;
 
 /**
  * Class Client
  *
  * @package KREDA\Sphere\Application\Gatekeeper
  */
-class Client extends Application
+class Client extends AbstractApplication
 {
 
     /** @var Configuration $Config */
@@ -33,7 +33,7 @@ class Client extends Application
      *
      * @return Configuration
      */
-    public static function setupApi( Configuration $Configuration )
+    public static function registerApplication( Configuration $Configuration )
     {
 
         self::getDebugger()->addMethodCall( __METHOD__ );
@@ -49,24 +49,24 @@ class Client extends Application
             );
         }
 
-        self::buildRoute( self::$Configuration, '/', __CLASS__.'::apiMain' );
-        self::buildRoute( self::$Configuration, '/Sphere', __CLASS__.'::apiWelcome' );
-        self::buildRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn', __CLASS__.'::apiSignIn' );
-        self::buildRoute( self::$Configuration, '/Sphere/Gatekeeper/SignOut', __CLASS__.'::apiSignOut' );
+        self::registerClientRoute( self::$Configuration, '/', __CLASS__.'::apiMain' );
+        self::registerClientRoute( self::$Configuration, '/Sphere', __CLASS__.'::apiWelcome' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn', __CLASS__.'::apiSignIn' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignOut', __CLASS__.'::apiSignOut' );
 
-        $Route = self::buildRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Teacher',
+        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Teacher',
             __CLASS__.'::apiSignInTeacher' );
         $Route->setParameterDefault( 'CredentialName', null );
         $Route->setParameterDefault( 'CredentialLock', null );
         $Route->setParameterDefault( 'CredentialKey', null );
 
-        $Route = self::buildRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Management',
+        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Management',
             __CLASS__.'::apiSignInManagement' );
         $Route->setParameterDefault( 'CredentialName', null );
         $Route->setParameterDefault( 'CredentialLock', null );
         $Route->setParameterDefault( 'CredentialKey', null );
 
-        $Route = self::buildRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Student',
+        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Student',
             __CLASS__.'::apiSignInStudent' );
         $Route->setParameterDefault( 'CredentialName', null );
         $Route->setParameterDefault( 'CredentialLock', null );

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema\TblToken;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 
 /**
  * @Entity
@@ -158,9 +158,9 @@ class TblAccount
     }
 
     /**
-     * @param null|TblToken $tblToken
+     * @param null|\KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken $tblToken
      */
-    public function setTblToken( TblToken $tblToken )
+    public function setTblToken( Token\Entity\TblToken $tblToken )
     {
 
         if (null === $tblToken) {

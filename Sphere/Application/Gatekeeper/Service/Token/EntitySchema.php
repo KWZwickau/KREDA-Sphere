@@ -5,13 +5,14 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\View;
+use KREDA\Sphere\Common\AbstractService;
 
 /**
- * Class Setup
+ * Class EntitySchema
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Token
  */
-abstract class Setup extends \KREDA\Sphere\Application\Setup
+abstract class EntitySchema extends AbstractService
 {
 
     /**
@@ -19,7 +20,7 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
      *
      * @return string
      */
-    public function setupDataStructure( $Simulate = true )
+    public function setupDatabaseSchema( $Simulate = true )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
@@ -27,13 +28,13 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
         /**
          * Table
          */
-        $Schema = clone $this->loadSchema();
+        $Schema = clone $this->getSchema();
         $this->setTableToken( $Schema );
         /**
          * Migration
          */
-        $Statement = $this->loadSchema()->getMigrateToSql( $Schema,
-            $this->writeData()->getConnection()->getDatabasePlatform()
+        $Statement = $this->getSchema()->getMigrateToSql( $Schema,
+            $this->readData()->getConnection()->getDatabasePlatform()
         );
         $this->addInstallProtocol( __CLASS__ );
         if (!empty( $Statement )) {
@@ -56,12 +57,12 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
                 ->from( 'tblToken' )
                 ->getSQL();
             $this->addInstallProtocol( 'viewToken: '.$viewToken );
-            $this->loadSchemaManager()->createView( new View( 'viewToken', $viewToken ) );
+            $this->getSchemaManager()->createView( new View( 'viewToken', $viewToken ) );
         }
         /**
          * Protocol
          */
-        return $this->getInstallProtocol();
+        return $this->getInstallProtocol( $Simulate );
     }
 
     /**
@@ -107,6 +108,6 @@ abstract class Setup extends \KREDA\Sphere\Application\Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->loadSchema()->getTable( 'tblToken' );
+        return $this->getSchema()->getTable( 'tblToken' );
     }
 }

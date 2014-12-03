@@ -1,19 +1,19 @@
 <?php
 namespace KREDA\Sphere\Application\Assistance;
 
-use KREDA\Sphere\Application\Application;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BookIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\AbstractApplication;
 
 /**
  * Class Client
  *
  * @package KREDA\Sphere\Application\Assistance
  */
-class Client extends Application
+class Client extends AbstractApplication
 {
 
     /** @var Configuration $Config */
@@ -25,7 +25,7 @@ class Client extends Application
      *
      * @return Configuration
      */
-    public static function setupApi( Configuration $Configuration )
+    public static function registerApplication( Configuration $Configuration )
     {
 
         self::getDebugger()->addMethodCall( __METHOD__ );
@@ -35,44 +35,44 @@ class Client extends Application
             '/Sphere/Assistance', 'Hilfe', new QuestionIcon()
         );
 
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance',
             __CLASS__.'::apiMain'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support',
             __CLASS__.'::apiMain'
         );
         /**
          * Youtrack
          */
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Ticket',
             __CLASS__.'::apiSupportTicket'
         );
         /**
          * Account
          */
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Account',
             __CLASS__.'::apiAccount'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Account/Password/Forgotten',
             __CLASS__.'::apiAccountPasswordForgotten'
         );
         /**
          * Application
          */
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Application',
             __CLASS__.'::apiSupportApplication'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Application/Start',
             __CLASS__.'::apiSupportApplicationStart'
         );
-        self::buildRoute( self::$Configuration,
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Application/Missing',
             __CLASS__.'::apiSupportApplicationMissing'
         );

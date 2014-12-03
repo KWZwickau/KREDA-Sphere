@@ -1,12 +1,12 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey;
 
-use KREDA\Sphere\Application\Debugger;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\CurlHandler;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Component\KeyValue;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
+use KREDA\Sphere\Common\Debugger;
 
 /**
  * Class YubiKey
@@ -42,7 +42,7 @@ class YubiKey
     final function __construct( $YubiApiId, $YubiApiKey = null )
     {
 
-        Debugger::addConstructorCall( __METHOD__ );
+        Debugger::addMethodCall( __METHOD__ );
 
         $this->YubiApiId = $YubiApiId;
         if (null !== $YubiApiKey) {
@@ -93,9 +93,9 @@ class YubiKey
         }
 
         $Result = CurlHandler::getRequest( $QueryList, array(
-//            CURLOPT_PROXY        => '192.168.100.254',
-//            CURLOPT_PROXYPORT    => 3128,
-//            CURLOPT_PROXYUSERPWD => 'Kunze:Ny58N',
+            CURLOPT_PROXY        => '192.168.100.254',
+            CURLOPT_PROXYPORT    => 3128,
+            CURLOPT_PROXYUSERPWD => 'Kunze:Ny58N',
             CURLOPT_TIMEOUT      => $this->YubiApiTimeout
         ) );
 

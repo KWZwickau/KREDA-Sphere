@@ -6,8 +6,8 @@ use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Info;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Warning;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Solution\Support;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Solution\User;
-use KREDA\Sphere\Application\Service;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Common\AbstractService;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
@@ -15,7 +15,7 @@ use MOC\V\Core\HttpKernel\HttpKernel;
  *
  * @package KREDA\Sphere\Application\Assistance\Service
  */
-class Application extends Service
+class Application extends AbstractService
 {
 
     /**

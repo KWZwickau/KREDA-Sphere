@@ -21,10 +21,10 @@ interface IServiceInterface
      *
      * @return string
      */
-    public function setupDataStructure( $Simulate = true );
+    public function setupDatabaseSchema( $Simulate = true );
 
     /**
      * @return void
      */
-    public function setupSystem();
+    public function setupDatabaseContent();
 }

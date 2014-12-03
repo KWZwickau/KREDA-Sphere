@@ -3,7 +3,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Schema;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token\Schema\TblToken;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 
 /**
  * Class Account
@@ -25,12 +25,12 @@ class Account extends Schema
     public function __construct()
     {
 
-        $this->getDebugger()->addConstructorCall( __METHOD__ );
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->connectDatabase( 'Gatekeeper-Account' );
     }
 
-    public function setupSystem()
+    public function setupDatabaseContent()
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
