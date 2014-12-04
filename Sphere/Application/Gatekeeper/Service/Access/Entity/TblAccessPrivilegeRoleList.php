@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema;
+namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -9,13 +9,13 @@ use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity
- * @Table(name="tblAccessRightPrivilegeList")
+ * @Table(name="tblAccessPrivilegeRoleList")
  */
-class TblAccessRightPrivilegeList
+class TblAccessPrivilegeRoleList
 {
 
-    const ATTR_TBL_ACCESS_RIGHT = 'tblAccessRight';
     const ATTR_TBL_ACCESS_PRIVILEGE = 'tblAccessPrivilege';
+    const ATTR_TBL_ACCESS_ROLE = 'tblAccessRole';
 
     /**
      * @Id
@@ -26,29 +26,11 @@ class TblAccessRightPrivilegeList
     /**
      * @Column(type="bigint")
      */
-    private $tblAccessRight;
+    private $tblAccessPrivilege;
     /**
      * @Column(type="bigint")
      */
-    private $tblAccessPrivilege;
-
-    /**
-     * @return integer
-     */
-    public function getTblAccessRight()
-    {
-
-        return $this->tblAccessRight;
-    }
-
-    /**
-     * @param integer $tblAccessRight
-     */
-    public function setTblAccessRight( $tblAccessRight )
-    {
-
-        $this->tblAccessRight = $tblAccessRight;
-    }
+    private $tblAccessRole;
 
     /**
      * @return integer
@@ -66,6 +48,24 @@ class TblAccessRightPrivilegeList
     {
 
         $this->tblAccessPrivilege = $tblAccessPrivilege;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getTblAccessRole()
+    {
+
+        return $this->tblAccessRole;
+    }
+
+    /**
+     * @param integer $tblAccessRole
+     */
+    public function setTblAccessRole( $tblAccessRole )
+    {
+
+        $this->tblAccessRole = $tblAccessRole;
     }
 
     /**

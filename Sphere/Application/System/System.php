@@ -17,11 +17,11 @@ use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
 
 /**
- * Class Client
+ * Class System
  *
  * @package KREDA\Sphere\Application\System
  */
-class Client extends AbstractApplication
+class System extends AbstractApplication
 {
 
     /** @var Configuration $Config */

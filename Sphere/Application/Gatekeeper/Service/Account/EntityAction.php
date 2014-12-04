@@ -1,8 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Account;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Account\Schema\TblAccount;
-use KREDA\Sphere\Application\Gatekeeper\Service\Account\Schema\TblAccountSession;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountSession;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 
 /**
@@ -10,13 +10,13 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Account
  */
-abstract class Schema extends Setup
+abstract class EntityAction extends EntitySchema
 {
 
     /**
      * @param string       $Username
      * @param string       $Password
-     * @param null|integer $tblToken
+     * @param null|TblToken $tblToken
      * @param null|integer $apiHumanResources_Person
      * @param null|integer $apiSystem_Consumer
      *
@@ -32,7 +32,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccount' )
             ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
         if (null === $Entity) {
             $Entity = new TblAccount( $Username );
@@ -48,7 +48,7 @@ abstract class Schema extends Setup
 
     /**
      * @param TblAccount    $tblAccount
-     * @param null|\KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken $tblToken
+     * @param null|TblToken $tblToken
      *
      * @return mixed
      */
@@ -70,12 +70,12 @@ abstract class Schema extends Setup
      *
      * @return bool|TblAccount
      */
-    protected function objectAccountByUsername( $Username )
+    protected function entityAccountByUsername( $Username )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccount' )
             ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
         if (null === $Entity) {
             return false;
@@ -89,7 +89,7 @@ abstract class Schema extends Setup
      *
      * @return bool|TblAccount
      */
-    protected function objectAccountBySession( $Session = null )
+    protected function entityAccountBySession( $Session = null )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
@@ -98,12 +98,12 @@ abstract class Schema extends Setup
             $Session = session_id();
         }
         /** @var TblAccountSession $Entity */
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null === $Entity) {
             return false;
         } else {
-            return $this->objectAccountById( $Entity->getTblAccount() );
+            return $this->entityAccountById( $Entity->getTblAccount() );
         }
     }
 
@@ -112,11 +112,11 @@ abstract class Schema extends Setup
      *
      * @return bool|TblAccount
      */
-    protected function objectAccountById( $Id )
+    protected function entityAccountById( $Id )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
-        $Entity = $this->getEntityManager()->find( __NAMESPACE__.'\Schema\TblAccount', $Id );
+        $Entity = $this->getEntityManager()->find( __NAMESPACE__.'\Entity\TblAccount', $Id );
         if (null === $Entity) {
             return false;
         } else {
@@ -130,12 +130,12 @@ abstract class Schema extends Setup
      *
      * @return bool|TblAccount
      */
-    protected function objectAccountByCredential( $Username, $Password )
+    protected function entityAccountByCredential( $Username, $Password )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccount' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccount' )
             ->findOneBy( array(
                 TblAccount::ATTR_USERNAME => $Username,
                 TblAccount::ATTR_PASSWORD => hash( 'sha256', $Password )
@@ -159,7 +159,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
             $this->getEntityManager()->remove( $Entity );
@@ -186,7 +186,7 @@ abstract class Schema extends Setup
             $Session = session_id();
         }
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccountSession' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
             $this->getEntityManager()->remove( $Entity );

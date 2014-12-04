@@ -18,3 +18,23 @@ Branch: Master
 
 [![Coverage Status](https://coveralls.io/repos/DerDu/KREDA-Sphere/badge.png?branch=master)](https://coveralls.io/r/DerDu/KREDA-Sphere?branch=master)
 [![Build Status](https://travis-ci.org/DerDu/KREDA-Sphere.svg?branch=master)](https://travis-ci.org/DerDu/KREDA-Sphere)
+
+
+Additional Software
+===================
+
+- Bootstrap
+- Bootflat
+- jQuery
+- Markdownify
+
+- MOC (Mark V)
+  - Doctrine DBAL/ORM
+  - ApiGen
+  - Twig
+  - Smarty
+  - Symfony
+    - EventDispatcher
+    - HttpKernel
+    - HttpFoundation
+    - Routing

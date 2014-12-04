@@ -12,7 +12,7 @@ use KREDA\Sphere\Common\AbstractService;
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Access
  */
-abstract class Setup extends AbstractService
+abstract class EntitySchema extends AbstractService
 {
 
     /**

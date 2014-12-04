@@ -3,17 +3,18 @@ namespace KREDA\Client;
 
 use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use Doctrine\DBAL\Schema\SchemaException;
-use KREDA\Sphere\Application\Assistance\Client as AssistanceApplication;
+use KREDA\Sphere\Application\Assistance\Assistance;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Danger;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Info;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Warning;
-use KREDA\Sphere\Application\Gatekeeper\Client as GatekeeperApplication;
-use KREDA\Sphere\Application\Graduation\Client as GraduationApplication;
-use KREDA\Sphere\Application\Management\Client as ManagementApplication;
-use KREDA\Sphere\Application\Statistic\Client as StatisticApplication;
-use KREDA\Sphere\Application\System\Client as SystemApplication;
+use KREDA\Sphere\Application\Gatekeeper\Client\Redirect\Custom;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Graduation\Graduation;
+use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Statistic\Statistic;
 use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Update;
+use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
@@ -67,7 +68,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
     /**
      * Setup Public-Access
      */
-    AssistanceApplication::registerApplication( $Config );
+    Assistance::registerApplication( $Config );
     $Config->getClientNavigation()->addLinkToMeta(
         new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
     );
@@ -104,17 +105,17 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
         /**
          * Setup Private-Access
          */
-        if (( $IsValid = GatekeeperApplication::apiIsValidSession() )) {
-            SystemApplication::registerApplication( $Config );
-            ManagementApplication::registerApplication( $Config );
-            GraduationApplication::registerApplication( $Config );
-            StatisticApplication::registerApplication( $Config );
+        if (( $IsValid = Gatekeeper::apiIsValidSession() )) {
+            System::registerApplication( $Config );
+            Management::registerApplication( $Config );
+            Graduation::registerApplication( $Config );
+            Statistic::registerApplication( $Config );
         }
         /**
          * Setup Public-Access
          */
-        GatekeeperApplication::registerApplication( $Config );
-        AssistanceApplication::registerApplication( $Config );
+        Gatekeeper::registerApplication( $Config );
+        Assistance::registerApplication( $Config );
         /**
          * Execute Action (if available)
          */
@@ -156,7 +157,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             /**
              * Setup Public-Access
              */
-            AssistanceApplication::registerApplication( $Config );
+            Assistance::registerApplication( $Config );
             /** @var Element $Route */
             $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
             $ShellScreen->addToContent( new Container( $Route ) );
@@ -184,7 +185,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             );
             $View->setContent(
                 Update::getApi()->setupDatabaseSchema( false )
-                .new GatekeeperApplication\Redirect\Custom( '', '/Sphere', '', '', 30 )
+                .new Custom( '', '/Sphere', '', '', 30 )
             );
             $ShellScreen->addToContent( new Container( $View ) );
         } else {
@@ -197,7 +198,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
                     /**
                      * Setup Public-Access
                      */
-                    AssistanceApplication::registerApplication( $Config );
+                    Assistance::registerApplication( $Config );
                     $Config->getClientNavigation()->addLinkToMeta(
                         new LevelClient\Link( new UrlParameter( '/Sphere' ),
                             new NameParameter( 'Zurück zur Anwendung' ) )

@@ -1,19 +1,19 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Access;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\TblAccessPrivilege;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\TblAccessPrivilegeRoleList;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\TblAccessRight;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\TblAccessRightPrivilegeList;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\TblAccessRole;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema\ViewAccess;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilegeRoleList;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRightPrivilegeList;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRole;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\ViewAccess;
 
 /**
  * Class EntityAction
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service\Access
  */
-abstract class Schema extends Setup
+abstract class EntityAction extends EntitySchema
 {
 
     /**
@@ -26,7 +26,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRight' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessRight' )
             ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Route ) );
         if (null === $Entity) {
             $Entity = new TblAccessRight( $Route );
@@ -46,7 +46,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRole' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessRole' )
             ->findOneBy( array( TblAccessRole::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblAccessRole( $Name );
@@ -66,7 +66,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessPrivilege' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessPrivilege' )
             ->findOneBy( array( TblAccessPrivilege::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblAccessPrivilege( $Name );
@@ -89,7 +89,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRightPrivilegeList' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessRightPrivilegeList' )
             ->findOneBy( array(
                 TblAccessRightPrivilegeList::ATTR_TBL_ACCESS_RIGHT     => $TblAccessRight->getId(),
                 TblAccessRightPrivilegeList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId()
@@ -117,7 +117,7 @@ abstract class Schema extends Setup
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessPrivilegeRoleList' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessPrivilegeRoleList' )
             ->findOneBy( array(
                 TblAccessPrivilegeRoleList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId(),
                 TblAccessPrivilegeRoleList::ATTR_TBL_ACCESS_ROLE      => $tblAccessRole->getId()
@@ -137,12 +137,12 @@ abstract class Schema extends Setup
      *
      * @return bool|TblAccessRight
      */
-    protected function objectAccessRightByRouteName( $Route )
+    protected function entityAccessRightByRouteName( $Route )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\TblAccessRight' )
+        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessRight' )
             ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Route ) );
         if (null === $Entity) {
             return false;
@@ -156,12 +156,12 @@ abstract class Schema extends Setup
      *
      * @return ViewAccess[]|bool
      */
-    protected function objectViewAccessByAccessRole( TblAccessRole $AccessRole )
+    protected function entityViewAccessByAccessRole( TblAccessRole $AccessRole )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\ViewAccess' )
+        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\ViewAccess' )
             ->findBy( array( 'tblAccessRole' => $AccessRole->getId() ) );
         if (empty( $EntityList )) {
             return false;
@@ -176,12 +176,12 @@ abstract class Schema extends Setup
      *
      * @return ViewAccess[]|bool
      */
-    protected function objectViewAccessByAccessPrivilege( TblAccessPrivilege $AccessPrivilege )
+    protected function entityViewAccessByAccessPrivilege( TblAccessPrivilege $AccessPrivilege )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\ViewAccess' )
+        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\ViewAccess' )
             ->findBy( array( 'tblAccessPrivilege' => $AccessPrivilege->getId() ) );
         if (empty( $EntityList )) {
             return false;
@@ -195,12 +195,12 @@ abstract class Schema extends Setup
      *
      * @return ViewAccess[]|bool
      */
-    protected function objectViewAccessByAccessRight( TblAccessRight $AccessRight )
+    protected function entityViewAccessByAccessRight( TblAccessRight $AccessRight )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Schema\ViewAccess' )
+        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\ViewAccess' )
             ->findBy( array( 'tblAccessRight' => $AccessRight->getId() ) );
         if (empty( $EntityList )) {
             return false;

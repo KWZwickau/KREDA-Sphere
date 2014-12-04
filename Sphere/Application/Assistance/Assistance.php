@@ -9,11 +9,11 @@ use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
 
 /**
- * Class Client
+ * Class Assistance
  *
  * @package KREDA\Sphere\Application\Assistance
  */
-class Client extends AbstractApplication
+class Assistance extends AbstractApplication
 {
 
     /** @var Configuration $Config */

@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\EntityAction;
 
 /**
@@ -51,14 +52,14 @@ class Token extends EntityAction
     /**
      * @param integer $Id
      *
-     * @return bool|Schema\TblToken
+     * @return bool|TblToken
      */
     public function entityTokenById( $Id )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->objectTokenById( $Id );
+        return parent::entityTokenById( $Id );
     }
 
     /**
@@ -67,7 +68,7 @@ class Token extends EntityAction
     public function entityViewToken()
     {
 
-        return $this->objectViewToken();
+        return parent::entityViewToken();
     }
 
     /**
@@ -78,6 +79,19 @@ class Token extends EntityAction
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->getTableToken();
+        return parent::getTableToken();
+    }
+
+    /**
+     * @param $OTP
+     *
+     * @return TblToken
+     */
+    public function registerYubiKey( $OTP )
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        return parent::actionCreateToken( substr( $OTP, 0, 12 ) );
     }
 }

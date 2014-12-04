@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\System\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Client as Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper as Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Common\AbstractService;
 

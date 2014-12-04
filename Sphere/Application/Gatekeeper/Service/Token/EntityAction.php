@@ -17,7 +17,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return bool|TblToken
      */
-    protected function objectTokenByIdentifier( $Identifier )
+    protected function entityTokenByIdentifier( $Identifier )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
@@ -36,7 +36,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return bool|TblToken
      */
-    protected function objectTokenById( $Id )
+    protected function entityTokenById( $Id )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
@@ -72,7 +72,7 @@ abstract class EntityAction extends EntitySchema
     /**
      * @return ViewToken[]|bool
      */
-    protected function objectViewToken()
+    protected function entityViewToken()
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );

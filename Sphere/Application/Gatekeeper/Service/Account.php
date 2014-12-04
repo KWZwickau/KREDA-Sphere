@@ -2,7 +2,8 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
-use KREDA\Sphere\Application\Gatekeeper\Service\Account\Schema;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 
 /**
@@ -10,7 +11,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service
  */
-class Account extends Schema
+class Account extends EntityAction
 {
 
     const API_SIGN_IN_ERROR_CREDENTIAL = 21;
@@ -53,7 +54,7 @@ class Account extends Schema
         /**
          * Credentials
          */
-        if (false === ( $Account = $this->objectAccountByCredential( $Username, $Password ) )) {
+        if (false === ( $Account = $this->entityAccountByCredential( $Username, $Password ) )) {
             /**
              * Invalid
              */
@@ -138,7 +139,7 @@ class Account extends Schema
             return true;
         }
 
-        if (false === $this->objectAccountBySession()) {
+        if (false === $this->entityAccountBySession()) {
             self::$ValidSessionCache = false;
         } else {
             self::$ValidSessionCache = true;
@@ -160,37 +161,37 @@ class Account extends Schema
     /**
      * @param integer $Id
      *
-     * @return bool|Schema\TblAccount
+     * @return bool|TblAccount
      */
     public function entityAccountById( $Id )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->objectAccountById( $Id );
+        return parent::entityAccountById( $Id );
     }
 
     /**
      * @param string $Name
      *
-     * @return bool|Schema\TblAccount
+     * @return bool|TblAccount
      */
     public function entityAccountByUsername( $Name )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->objectAccountByUsername( $Name );
+        return parent::entityAccountByUsername( $Name );
     }
 
     /**
-     * @param Schema\TblAccount $tblAccount
+     * @param TblAccount $tblAccount
      * @param null|TblToken     $tblToken
      *
      * @return mixed
      */
     public function actionSetAccountToken(
-        Schema\TblAccount $tblAccount,
+        TblAccount $tblAccount,
         TblToken $tblToken = null
     ) {
 

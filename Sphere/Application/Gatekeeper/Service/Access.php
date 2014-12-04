@@ -2,14 +2,14 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Schema;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\EntityAction;
 
 /**
  * Class Access
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Service
  */
-class Access extends Schema
+class Access extends EntityAction
 {
 
     private static $AccessCache = array();
@@ -82,8 +82,8 @@ class Access extends Schema
         }
 
         try {
-            if (false !== ( $Right = $this->objectAccessRightByRouteName( $Route ) )) {
-                if (false !== ( $this->objectViewAccessByAccessRight( $Right ) )) {
+            if (false !== ( $Right = $this->entityAccessRightByRouteName( $Route ) )) {
+                if (false !== ( $this->entityViewAccessByAccessRight( $Right ) )) {
                     self::$AccessCache[] = $Route;
                     return true;
                 }
