@@ -74,14 +74,9 @@ class Update extends AbstractService
         if (!$Simulate) {
             Gatekeeper::serviceAccount()->setupDatabaseContent();
         }
-
-        /**
-         * System
-         */
-
-        $Protocol[] = Consumer::getApi()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Gatekeeper::serviceConsumer()->setupDatabaseSchema( $Simulate );
         if (!$Simulate) {
-            Consumer::getApi()->setupDatabaseContent();
+            Gatekeeper::serviceConsumer()->setupDatabaseContent();
         }
 
         return implode( $Protocol );

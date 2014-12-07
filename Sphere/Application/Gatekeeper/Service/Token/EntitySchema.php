@@ -28,41 +28,41 @@ abstract class EntitySchema extends AbstractService
         /**
          * Table
          */
-        $Schema = clone $this->getSchema();
+        $Schema = clone $this->getDatabaseHandler()->getSchema();
         $this->setTableToken( $Schema );
         /**
          * Migration
          */
-        $Statement = $this->getSchema()->getMigrateToSql( $Schema,
-            $this->readData()->getConnection()->getDatabasePlatform()
+        $Statement = $this->getDatabaseHandler()->getSchema()->getMigrateToSql( $Schema,
+            $this->getDatabaseHandler()->getDatabasePlatform()
         );
-        $this->addInstallProtocol( __CLASS__ );
+        $this->getDatabaseHandler()->addProtocol( __CLASS__ );
         if (!empty( $Statement )) {
             foreach ((array)$Statement as $Query) {
-                $this->addInstallProtocol( $Query );
+                $this->getDatabaseHandler()->addProtocol( $Query );
                 if (!$Simulate) {
-                    $this->writeData()->prepareStatement( $Query )->executeWrite();
+                    $this->getDatabaseHandler()->setStatement( $Query );
                 }
             }
         }
         /**
          * View
          */
-        if (!$this->dbHasView( 'viewToken' )) {
-            $viewToken = $this->writeData()->getQueryBuilder()
+        if (!$this->getDatabaseHandler()->hasView( 'viewToken' )) {
+            $viewToken = $this->getDatabaseHandler()->getQueryBuilder()
                 ->select( array(
-                    'Id AS tblToken',
-                    'Identifier AS TokenIdentifier',
+                    'T.Id AS tblToken',
+                    'T.Identifier AS TokenIdentifier',
                 ) )
-                ->from( 'tblToken' )
-                ->getSQL();
-            $this->addInstallProtocol( 'viewToken: '.$viewToken );
-            $this->getSchemaManager()->createView( new View( 'viewToken', $viewToken ) );
+                ->from( 'tblToken', 'T' )
+                ->getDQL();
+            $this->getDatabaseHandler()->addProtocol( 'viewToken: '.$viewToken );
+            $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewToken', $viewToken ) );
         }
         /**
          * Protocol
          */
-        return $this->getInstallProtocol( $Simulate );
+        return $this->getDatabaseHandler()->getProtocol( $Simulate );
     }
 
     /**
@@ -79,7 +79,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->dbHasTable( 'tblToken' )) {
+        if (!$this->getDatabaseHandler()->hasTable( 'tblToken' )) {
             $Table = $Schema->createTable( 'tblToken' );
             $Column = $Table->addColumn( 'Id', 'bigint' );
             $Column->setAutoincrement( true );
@@ -92,7 +92,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Upgrade
          */
-        if (!$this->dbTableHasColumn( 'tblToken', 'Identifier' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblToken', 'Identifier' )) {
             $Table->addColumn( 'Identifier', 'string' );
         }
 
@@ -108,6 +108,6 @@ abstract class EntitySchema extends AbstractService
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->getSchema()->getTable( 'tblToken' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblToken' );
     }
 }

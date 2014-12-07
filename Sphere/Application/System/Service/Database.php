@@ -17,45 +17,63 @@ class Database extends AbstractService
     const STATUS_ERROR = 1;
     const STATUS_FAIL = 2;
     const STATUS_OK = 3;
+    /** @var array $ServiceList */
     private $ServiceList = array(
-        'Gatekeeper-Access',
-        'Gatekeeper-Account',
-        'Gatekeeper-Token',
-        'Consumer'
+        'Gatekeeper' => array(
+            'Access'   => array( '' ),
+            'Account'  => array( '' ),
+            'Consumer' => array( '' ),
+            'Token'    => array( '' ),
+        ),
+        'Management' => array(
+            'People'   => array( 'Annaberg', 'Annaberg2' ),
+            'Property' => array( '' ),
+        ),
+        'Graduation' => array(
+            '' => array( '' ),
+        )
     );
 
     /**
      * @return Landing
      */
-    public function apiStatus()
+    public function guiDatabaseStatus()
     {
 
         $View = new Landing();
-        $View->setTitle( 'Datenbanken' );
+        $View->setTitle( 'Datenbank-Status' );
         $View->setMessage( '' );
 
         $Report = array();
 
-        foreach ((array)$this->ServiceList as $Index => $Service) {
-            $Config = __DIR__.'/Database/Config/'.$Service.'.ini';
+        foreach ((array)$this->ServiceList as $Application => $ServiceList) {
+            $Config = __DIR__.'/../Database/Config/'.$Application.'.ini';
             if (false !== ( $Config = realpath( $Config ) )) {
-                $Setting = parse_ini_file( $Config, true );
-                if (empty( $Setting )) {
-                    $Report[$Index][$Service]['Database/Config/'.$Service.'.ini']['-NA-'] = '<div class="badge badge-warning">Konfiguration fehlerhaft</div>';
-                } else {
+                foreach ((array)$ServiceList as $Service => $ConsumerList) {
+                    foreach ((array)$ConsumerList as $Consumer) {
+                        $Setting = parse_ini_file( $Config, true );
+                        if (isset( $Setting[$Service.':'.$Consumer] )) {
 
-                    foreach ((array)$Setting as $Key => $Group) {
-                        $Key = explode( ':', $Key );
-                        try {
-                            $this->connectDatabase( $Service, $Key[1] );
-                            $Report[$Index][$Service][$Group['Host'].'<br/>'.$Key[0].', '.$Key[1].'</div>'][$Group['Database']] = '<div class="badge badge-success">Verbindung erfolgreich</div>';
-                        } catch( \Exception $E ) {
-                            $Report[$Index][$Service][$Group['Host'].'<br/>'.$Key[0].', '.$Key[1].'</div>'][$Group['Database']] = '<div class="badge badge-danger">Nicht verbunden</div>';
+                            $Group = $Setting[$Service.':'.$Consumer];
+                            try {
+                                $this->setDatabaseHandler( $Application, $Service, $Consumer );
+                                if (empty( $Consumer )) {
+                                    $Consumer = '[No Consumer]';
+                                }
+                                $Report[$Application][$Application][''.$Service.'<br/>'.$Consumer.''][$Group['Host'].'<br/>'.$Group['Database']] = '<div class="badge badge-success">Verbindung erfolgreich</div>';
+                            } catch( \Exception $E ) {
+                                if (empty( $Consumer )) {
+                                    $Consumer = '[No Consumer]';
+                                }
+                                $Report[$Application][$Application][''.$Service.'<br/>'.$Consumer.''][$Group['Host'].'<br/>'.$Group['Database']] = '<div class="badge badge-danger">Nicht verbunden</div>';
+                            }
+                        } else {
+                            $Report[$Application][$Application][''.$Service.'<br/>'.$Consumer.'']['-NA-'] = '<div class="badge badge-danger">Konfiguration fehlerhaft</div>';
                         }
                     }
                 }
             } else {
-                $Report[$Index][$Service]['Database/Config/'.$Service.'.ini']['-NA-'] = '<div class="badge badge-primary">Konfiguration fehlt</div>';
+                $Report[$Application][$Application]['System/Database/Config/'.$Application.'.ini']['-NA-'] = '<div class="badge badge-primary">Konfiguration fehlt</div>';
             }
         }
 

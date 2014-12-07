@@ -26,12 +26,11 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessRight' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessRight' )
             ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Route ) );
         if (null === $Entity) {
             $Entity = new TblAccessRight( $Route );
-            $this->getEntityManager()->persist( $Entity );
-            $this->getEntityManager()->flush();
+            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -46,12 +45,11 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessRole' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessRole' )
             ->findOneBy( array( TblAccessRole::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblAccessRole( $Name );
-            $this->getEntityManager()->persist( $Entity );
-            $this->getEntityManager()->flush();
+            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -66,12 +64,11 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessPrivilege' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessPrivilege' )
             ->findOneBy( array( TblAccessPrivilege::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblAccessPrivilege( $Name );
-            $this->getEntityManager()->persist( $Entity );
-            $this->getEntityManager()->flush();
+            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -89,7 +86,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessRightPrivilegeList' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessRightPrivilegeList' )
             ->findOneBy( array(
                 TblAccessRightPrivilegeList::ATTR_TBL_ACCESS_RIGHT     => $TblAccessRight->getId(),
                 TblAccessRightPrivilegeList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId()
@@ -98,8 +95,7 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblAccessRightPrivilegeList();
             $Entity->setTblAccessRight( $TblAccessRight->getId() );
             $Entity->setTblAccessPrivilege( $TblAccessPrivilege->getId() );
-            $this->getEntityManager()->persist( $Entity );
-            $this->getEntityManager()->flush();
+            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -117,7 +113,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessPrivilegeRoleList' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessPrivilegeRoleList' )
             ->findOneBy( array(
                 TblAccessPrivilegeRoleList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId(),
                 TblAccessPrivilegeRoleList::ATTR_TBL_ACCESS_ROLE      => $tblAccessRole->getId()
@@ -126,8 +122,7 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblAccessPrivilegeRoleList();
             $Entity->setTblAccessPrivilege( $TblAccessPrivilege->getId() );
             $Entity->setTblAccessRole( $tblAccessRole->getId() );
-            $this->getEntityManager()->persist( $Entity );
-            $this->getEntityManager()->flush();
+            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -142,7 +137,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccessRight' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessRight' )
             ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Route ) );
         if (null === $Entity) {
             return false;
@@ -161,7 +156,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\ViewAccess' )
+        $EntityList = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'ViewAccess' )
             ->findBy( array( 'tblAccessRole' => $AccessRole->getId() ) );
         if (empty( $EntityList )) {
             return false;
@@ -181,7 +176,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\ViewAccess' )
+        $EntityList = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'ViewAccess' )
             ->findBy( array( 'tblAccessPrivilege' => $AccessPrivilege->getId() ) );
         if (empty( $EntityList )) {
             return false;
@@ -200,7 +195,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\ViewAccess' )
+        $EntityList = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'ViewAccess' )
             ->findBy( array( 'tblAccessRight' => $AccessRight->getId() ) );
         if (empty( $EntityList )) {
             return false;

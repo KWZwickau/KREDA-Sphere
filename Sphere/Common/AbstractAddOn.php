@@ -2,11 +2,11 @@
 namespace KREDA\Sphere\Common;
 
 /**
- * Class AbstractDebugger
+ * Class AbstractAddOn
  *
  * @package KREDA\Sphere\Common
  */
-abstract class AbstractDebugger
+abstract class AbstractAddOn
 {
 
 

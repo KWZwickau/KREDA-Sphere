@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 
@@ -19,6 +20,7 @@ class TblAccount
     const ATTR_USERNAME = 'Username';
     const ATTR_PASSWORD = 'Password';
     const ATTR_TBL_TOKEN = 'tblToken';
+    const ATTR_TBL_ACCOUNT_TYP = 'tblAccountTyp';
     const ATTR_API_HUMANRESOURCES_PERSON = 'apiHumanResources_Person';
     const ATTR_API_SYSTEM_CONSUMER = 'apiSystem_Consumer';
 
@@ -36,6 +38,10 @@ class TblAccount
      * @Column(type="string")
      */
     private $Password;
+    /**
+     * @Column(type="bigint")
+     */
+    private $tblAccountTyp;
     /**
      * @Column(type="bigint")
      */
@@ -167,6 +173,29 @@ class TblAccount
             $this->tblToken = null;
         } else {
             $this->tblToken = $tblToken->getId();
+        }
+    }
+
+
+    /**
+     * @return bool|TblAccountTyp
+     */
+    public function getTblAccountTyp()
+    {
+
+        return Account::getApi()->entityAccountTypById( $this->tblAccountTyp );
+    }
+
+    /**
+     * @param null|TblAccountTyp $tblAccountTyp
+     */
+    public function setTblAccountTyp( TblAccountTyp $tblAccountTyp )
+    {
+
+        if (null === $tblAccountTyp) {
+            $this->tblAccountTyp = null;
+        } else {
+            $this->tblAccountTyp = $tblAccountTyp->getId();
         }
     }
 

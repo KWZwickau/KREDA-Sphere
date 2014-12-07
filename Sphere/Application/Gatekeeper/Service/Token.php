@@ -21,7 +21,7 @@ class Token extends EntityAction
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $this->connectDatabase( 'Gatekeeper-Token' );
+        $this->setDatabaseHandler( 'Gatekeeper', 'Token' );
     }
 
     public function setupDatabaseContent()

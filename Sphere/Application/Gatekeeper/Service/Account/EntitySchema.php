@@ -27,30 +27,34 @@ abstract class EntitySchema extends AbstractService
         /**
          * Setup
          */
-        $Schema = clone $this->getSchema();
+        $Schema = clone $this->getDatabaseHandler()->getSchema();
         $tblAccountRole = $this->setTableAccountRole( $Schema );
-        $tblAccount = $this->setTableAccount( $Schema, Token::getApi()->schemaTableToken() );
+        $tblAccountTyp = $this->setTableAccountTyp( $Schema );
+        $tblAccount = $this->setTableAccount( $Schema, Token::getApi()->schemaTableToken(), $tblAccountTyp );
         $this->setTableAccountSession( $Schema, $tblAccount );
         $this->setTableAccountRoleList( $Schema, $tblAccountRole, Access::getApi()->schemaTableAccessRole() );
         /**
          * Migration
          */
-        $Statement = $this->getSchema()->getMigrateToSql( $Schema,
-            $this->readData()->getConnection()->getDatabasePlatform()
+        $Statement = $this->getDatabaseHandler()->getSchema()->getMigrateToSql( $Schema,
+            $this->getDatabaseHandler()->getDatabasePlatform()
         );
         /**
          * Execute
          */
-        $this->addInstallProtocol( __CLASS__ );
+        $this->getDatabaseHandler()->addProtocol( __CLASS__ );
         if (!empty( $Statement )) {
             foreach ((array)$Statement as $Query) {
-                $this->addInstallProtocol( $Query );
+                $this->getDatabaseHandler()->addProtocol( $Query );
                 if (!$Simulate) {
-                    $this->writeData()->prepareStatement( $Query )->executeWrite();
+                    $this->getDatabaseHandler()->setStatement( $Query );
                 }
             }
         }
-        return $this->getInstallProtocol( $Simulate );
+        /**
+         * Protocol
+         */
+        return $this->getDatabaseHandler()->getProtocol( $Simulate );
     }
 
     /**
@@ -65,7 +69,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->dbHasTable( 'tblAccountRole' )) {
+        if (!$this->getDatabaseHandler()->hasTable( 'tblAccountRole' )) {
             $Table = $Schema->createTable( 'tblAccountRole' );
             $Column = $Table->addColumn( 'Id', 'bigint' );
             $Column->setAutoincrement( true );
@@ -75,7 +79,36 @@ abstract class EntitySchema extends AbstractService
         /**
          * Upgrade
          */
-        if (!$this->dbTableHasColumn( 'tblAccountRole', 'Name' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountRole', 'Name' )) {
+            $Table->addColumn( 'Name', 'string' );
+        }
+        return $Table;
+    }
+
+
+    /**
+     * @param Schema $Schema
+     *
+     * @return Table
+     * @throws SchemaException
+     */
+    private function setTableAccountTyp( Schema &$Schema )
+    {
+
+        /**
+         * Install
+         */
+        if (!$this->getDatabaseHandler()->hasTable( 'tblAccountTyp' )) {
+            $Table = $Schema->createTable( 'tblAccountTyp' );
+            $Column = $Table->addColumn( 'Id', 'bigint' );
+            $Column->setAutoincrement( true );
+            $Table->setPrimaryKey( array( 'Id' ) );
+        }
+        $Table = $Schema->getTable( 'tblAccountTyp' );
+        /**
+         * Upgrade
+         */
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountTyp', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
         return $Table;
@@ -84,17 +117,18 @@ abstract class EntitySchema extends AbstractService
     /**
      * @param Schema $Schema
      * @param Table  $tblToken
+     * @param Table  $tblAccountTyp
      *
-     * @return Table
      * @throws SchemaException
+     * @return Table
      */
-    private function setTableAccount( Schema &$Schema, Table $tblToken )
+    private function setTableAccount( Schema &$Schema, Table $tblToken, Table $tblAccountTyp )
     {
 
         /**
          * Install
          */
-        if (!$this->dbHasTable( 'tblAccount' )) {
+        if (!$this->getDatabaseHandler()->hasTable( 'tblAccount' )) {
             $Table = $Schema->createTable( 'tblAccount' );
             $Column = $Table->addColumn( 'Id', 'bigint' );
             $Column->setAutoincrement( true );
@@ -104,22 +138,28 @@ abstract class EntitySchema extends AbstractService
         /**
          * Upgrade
          */
-        if (!$this->dbTableHasColumn( 'tblAccount', 'Username' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Username' )) {
             $Table->addColumn( 'Username', 'string' );
         }
-        if (!$this->dbTableHasColumn( 'tblAccount', 'Password' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Password' )) {
             $Table->addColumn( 'Password', 'string' );
         }
-        if (!$this->dbTableHasColumn( 'tblAccount', 'tblToken' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'tblToken' )) {
             $Table->addColumn( 'tblToken', 'bigint', array( 'notnull' => false ) );
-            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblToken, array( 'tblToken' ), array( 'Id' ) );
             }
         }
-        if (!$this->dbTableHasColumn( 'tblAccount', 'apiHumanResources_Person' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'tblAccountTyp' )) {
+            $Table->addColumn( 'tblAccountTyp', 'bigint', array( 'notnull' => false ) );
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                $Table->addForeignKeyConstraint( $tblAccountTyp, array( 'tblAccountTyp' ), array( 'Id' ) );
+            }
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'apiHumanResources_Person' )) {
             $Table->addColumn( 'apiHumanResources_Person', 'bigint', array( 'notnull' => false ) );
         }
-        if (!$this->dbTableHasColumn( 'tblAccount', 'apiSystem_Consumer' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'apiSystem_Consumer' )) {
             $Table->addColumn( 'apiSystem_Consumer', 'bigint', array( 'notnull' => false ) );
         }
         return $Table;
@@ -138,7 +178,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->dbHasTable( 'tblAccountSession' )) {
+        if (!$this->getDatabaseHandler()->hasTable( 'tblAccountSession' )) {
             $Table = $Schema->createTable( 'tblAccountSession' );
             $Column = $Table->addColumn( 'Id', 'bigint' );
             $Column->setAutoincrement( true );
@@ -148,15 +188,15 @@ abstract class EntitySchema extends AbstractService
         /**
          * Upgrade
          */
-        if (!$this->dbTableHasColumn( 'tblAccountSession', 'Session' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountSession', 'Session' )) {
             $Table->addColumn( 'Session', 'string' );
         }
-        if (!$this->dbTableHasColumn( 'tblAccountSession', 'Timeout' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountSession', 'Timeout' )) {
             $Table->addColumn( 'Timeout', 'integer' );
         }
-        if (!$this->dbTableHasColumn( 'tblAccountSession', 'tblAccount' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountSession', 'tblAccount' )) {
             $Table->addColumn( 'tblAccount', 'bigint' );
-            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccount, array( 'tblAccount' ), array( 'Id' ) );
             }
         }
@@ -180,7 +220,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->dbHasTable( 'tblAccountRoleList' )) {
+        if (!$this->getDatabaseHandler()->hasTable( 'tblAccountRoleList' )) {
             $Table = $Schema->createTable( 'tblAccountRoleList' );
             $Column = $Table->addColumn( 'Id', 'bigint' );
             $Column->setAutoincrement( true );
@@ -190,15 +230,15 @@ abstract class EntitySchema extends AbstractService
         /**
          * Upgrade
          */
-        if (!$this->dbTableHasColumn( 'tblAccountRoleList', 'tblAccountRole' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountRoleList', 'tblAccountRole' )) {
             $Table->addColumn( 'tblAccountRole', 'bigint' );
-            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccountRole, array( 'tblAccountRole' ), array( 'Id' ) );
             }
         }
-        if (!$this->dbTableHasColumn( 'tblAccountRoleList', 'tblAccessRole' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountRoleList', 'tblAccessRole' )) {
             $Table->addColumn( 'tblAccessRole', 'bigint' );
-            if ($this->getSchemaManager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccessRole, array( 'tblAccessRole' ), array( 'Id' ) );
             }
         }
@@ -212,7 +252,18 @@ abstract class EntitySchema extends AbstractService
     protected function getTableAccount()
     {
 
-        return $this->getSchema()->getTable( 'tblAccount' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccount' );
+    }
+
+
+    /**
+     * @return Table
+     * @throws SchemaException
+     */
+    protected function getTableAccountTyp()
+    {
+
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountTyp' );
     }
 
     /**
@@ -222,7 +273,7 @@ abstract class EntitySchema extends AbstractService
     protected function getTableAccountRole()
     {
 
-        return $this->getSchema()->getTable( 'tblAccountRole' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountRole' );
     }
 
     /**
@@ -232,7 +283,7 @@ abstract class EntitySchema extends AbstractService
     protected function getTableAccountSession()
     {
 
-        return $this->getSchema()->getTable( 'tblAccountSession' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountSession' );
     }
 
     /**
@@ -242,6 +293,6 @@ abstract class EntitySchema extends AbstractService
     protected function getTableAccountRoleList()
     {
 
-        return $this->getSchema()->getTable( 'tblAccountRoleList' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountRoleList' );
     }
 }

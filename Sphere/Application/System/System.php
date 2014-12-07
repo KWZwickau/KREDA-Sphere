@@ -163,7 +163,7 @@ class System extends AbstractApplication
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
-        return Database::getApi( '/Sphere/System/Database' )->apiStatus();
+        return Database::getApi( '/Sphere/System/Database' )->guiDatabaseStatus();
     }
 
     /**

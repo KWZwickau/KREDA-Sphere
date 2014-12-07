@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 
@@ -28,7 +29,7 @@ class Account extends EntityAction
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $this->connectDatabase( 'Gatekeeper-Account' );
+        $this->setDatabaseHandler( 'Gatekeeper', 'Account' );
     }
 
     public function setupDatabaseContent()
@@ -36,7 +37,12 @@ class Account extends EntityAction
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp' );
+        $tblAccountTyp = $this->actionCreateAccountTyp( 'Root' );
+        $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp', $tblAccountTyp );
+
+        $this->actionCreateAccountTyp( 'Schüler' );
+        $this->actionCreateAccountTyp( 'Lehrer' );
+        $this->actionCreateAccountTyp( 'Verwaltung' );
     }
 
     /**
@@ -169,6 +175,19 @@ class Account extends EntityAction
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return parent::entityAccountById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccountTyp
+     */
+    public function entityAccountTypById( $Id )
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        return parent::entityAccountTypById( $Id );
     }
 
     /**

@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Account;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountSession;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 
 /**
@@ -14,17 +15,19 @@ abstract class EntityAction extends EntitySchema
 {
 
     /**
-     * @param string       $Username
-     * @param string       $Password
+     * @param string        $Username
+     * @param string        $Password
+     * @param TblAccountTyp $tblAccountTyp
      * @param null|TblToken $tblToken
-     * @param null|integer $apiHumanResources_Person
-     * @param null|integer $apiSystem_Consumer
+     * @param null|integer  $apiHumanResources_Person
+     * @param null|integer  $apiSystem_Consumer
      *
      * @return TblAccount
      */
     protected function actionCreateAccount(
         $Username,
         $Password,
+        $tblAccountTyp,
         $tblToken = null,
         $apiHumanResources_Person = null,
         $apiSystem_Consumer = null
@@ -32,16 +35,16 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccount' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccount' )
             ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
         if (null === $Entity) {
             $Entity = new TblAccount( $Username );
             $Entity->setPassword( hash( 'sha256', $Password ) );
+            $Entity->setTblAccountTyp( $tblAccountTyp );
             $Entity->setTblToken( $tblToken );
             $Entity->setApiHumanResourcesPerson( $apiHumanResources_Person );
             $Entity->setApiSystemConsumer( $apiSystem_Consumer );
-            $this->getEntityManager()->persist( $Entity );
-            $this->getEntityManager()->flush();
+            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -60,8 +63,7 @@ abstract class EntityAction extends EntitySchema
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $tblAccount->setTblToken( $tblToken );
-        $this->getEntityManager()->persist( $tblAccount );
-        $this->getEntityManager()->flush();
+        $this->getDatabaseHandler()->getEntityManager()->saveEntity( $tblAccount );
         return $tblAccount;
     }
 
@@ -75,7 +77,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccount' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccount' )
             ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
         if (null === $Entity) {
             return false;
@@ -98,7 +100,7 @@ abstract class EntityAction extends EntitySchema
             $Session = session_id();
         }
         /** @var TblAccountSession $Entity */
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccountSession' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null === $Entity) {
             return false;
@@ -116,7 +118,24 @@ abstract class EntityAction extends EntitySchema
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
-        $Entity = $this->getEntityManager()->find( __NAMESPACE__.'\Entity\TblAccount', $Id );
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccount' )->find( $Id );
+        if (null === $Entity) {
+            return false;
+        } else {
+            return $Entity;
+        }
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccount
+     */
+    protected function entityAccountTypById( $Id )
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountTyp' )->find( $Id );
         if (null === $Entity) {
             return false;
         } else {
@@ -135,7 +154,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccount' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccount' )
             ->findOneBy( array(
                 TblAccount::ATTR_USERNAME => $Username,
                 TblAccount::ATTR_PASSWORD => hash( 'sha256', $Password )
@@ -159,16 +178,35 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccountSession' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
-            $this->getEntityManager()->remove( $Entity );
+            $this->getDatabaseHandler()->getEntityManager()->killEntity( $Entity );
         }
         $Entity = new TblAccountSession( $Session );
         $Entity->setTblAccount( $tblAccount );
         $Entity->setTimeout( time() + $Timeout );
-        $this->getEntityManager()->persist( $Entity );
-        $this->getEntityManager()->flush();
+        $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+        return $Entity;
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return TblAccountTyp
+     */
+    protected function actionCreateAccountTyp( $Name )
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountTyp' )
+            ->findOneBy( array( TblAccountTyp::ATTR_NAME => $Name ) );
+        if (null === $Entity) {
+            $Entity = new TblAccountTyp();
+            $Entity->setName( $Name );
+            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+        }
         return $Entity;
     }
 
@@ -186,11 +224,10 @@ abstract class EntityAction extends EntitySchema
             $Session = session_id();
         }
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblAccountSession' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
-            $this->getEntityManager()->remove( $Entity );
-            $this->getEntityManager()->flush();
+            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
     }

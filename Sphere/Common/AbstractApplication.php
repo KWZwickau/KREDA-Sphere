@@ -18,7 +18,7 @@ use MOC\V\Core\HttpKernel\HttpKernel;
  *
  * @package KREDA\Sphere
  */
-abstract class AbstractApplication extends AbstractDebugger implements IApplicationInterface
+abstract class AbstractApplication extends AbstractAddOn implements IApplicationInterface
 {
 
     /**

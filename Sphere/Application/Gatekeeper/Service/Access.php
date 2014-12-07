@@ -22,7 +22,7 @@ class Access extends EntityAction
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $this->connectDatabase( 'Gatekeeper-Access' );
+        $this->setDatabaseHandler( 'Gatekeeper', 'Access' );
     }
 
     public function setupDatabaseContent()

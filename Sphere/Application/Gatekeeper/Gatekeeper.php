@@ -10,6 +10,7 @@ use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
 use KREDA\Sphere\Application\Gatekeeper\Client\SignInError;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
@@ -110,6 +111,15 @@ class Gatekeeper extends AbstractApplication
     {
 
         return Access::getApi();
+    }
+
+    /**
+     * @return Service\Consumer
+     */
+    public static function serviceConsumer()
+    {
+
+        return Consumer::getApi();
     }
 
     /**

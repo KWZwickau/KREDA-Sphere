@@ -22,7 +22,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblToken' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblToken' )
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
         if (null === $Entity) {
             return false;
@@ -41,7 +41,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->find( __NAMESPACE__.'\Entity\TblToken', $Id );
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblToken' )->find( $Id );
         if (null === $Entity) {
             return false;
         } else {
@@ -59,12 +59,11 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\TblToken' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblToken' )
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
         if (null === $Entity) {
             $Entity = new TblToken( $Identifier );
-            $this->getEntityManager()->persist( $Entity );
-            $this->getEntityManager()->flush();
+            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -77,7 +76,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $EntityList = $this->getEntityManager()->getRepository( __NAMESPACE__.'\Entity\ViewToken' )->findAll();
+        $EntityList = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'ViewToken' )->findAll();
         if (empty( $EntityList )) {
             return false;
         } else {
