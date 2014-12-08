@@ -60,8 +60,10 @@ class Connector extends AbstractAddOn
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
+        $Consumer = $Identifier->getConsumer();
         Register::getSingleton()->addDatabase( $Identifier,
-            Database::getDatabase( $Username, $Password, $Database, $Driver->getIdentifier(), $Host, $Port )
+            Database::getDatabase( $Username, $Password, $Database.( empty( $Consumer ) ? '' : '_'.$Consumer ),
+                $Driver->getIdentifier(), $Host, $Port )
         );
     }
 

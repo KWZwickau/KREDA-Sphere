@@ -144,10 +144,10 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Password' )) {
             $Table->addColumn( 'Password', 'string' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'tblToken' )) {
-            $Table->addColumn( 'tblToken', 'bigint', array( 'notnull' => false ) );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'serviceGatekeeper_Token' )) {
+            $Table->addColumn( 'serviceGatekeeper_Token', 'bigint', array( 'notnull' => false ) );
             if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblToken, array( 'tblToken' ), array( 'Id' ) );
+                $Table->addForeignKeyConstraint( $tblToken, array( 'serviceGatekeeper_Token' ), array( 'Id' ) );
             }
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'tblAccountTyp' )) {
@@ -156,11 +156,11 @@ abstract class EntitySchema extends AbstractService
                 $Table->addForeignKeyConstraint( $tblAccountTyp, array( 'tblAccountTyp' ), array( 'Id' ) );
             }
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'apiHumanResources_Person' )) {
-            $Table->addColumn( 'apiHumanResources_Person', 'bigint', array( 'notnull' => false ) );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'serviceHumanResources_Person' )) {
+            $Table->addColumn( 'serviceHumanResources_Person', 'bigint', array( 'notnull' => false ) );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'apiSystem_Consumer' )) {
-            $Table->addColumn( 'apiSystem_Consumer', 'bigint', array( 'notnull' => false ) );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'serviceGatekeeper_Consumer' )) {
+            $Table->addColumn( 'serviceGatekeeper_Consumer', 'bigint', array( 'notnull' => false ) );
         }
         return $Table;
     }

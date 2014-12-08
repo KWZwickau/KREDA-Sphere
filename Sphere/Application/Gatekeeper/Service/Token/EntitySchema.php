@@ -55,7 +55,7 @@ abstract class EntitySchema extends AbstractService
                     'T.Identifier AS TokenIdentifier',
                 ) )
                 ->from( 'tblToken', 'T' )
-                ->getDQL();
+                ->getSQL();
             $this->getDatabaseHandler()->addProtocol( 'viewToken: '.$viewToken );
             $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewToken', $viewToken ) );
         }

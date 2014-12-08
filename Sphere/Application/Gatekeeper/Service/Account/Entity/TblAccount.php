@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
@@ -19,10 +20,10 @@ class TblAccount
 
     const ATTR_USERNAME = 'Username';
     const ATTR_PASSWORD = 'Password';
-    const ATTR_TBL_TOKEN = 'tblToken';
     const ATTR_TBL_ACCOUNT_TYP = 'tblAccountTyp';
-    const ATTR_API_HUMANRESOURCES_PERSON = 'apiHumanResources_Person';
-    const ATTR_API_SYSTEM_CONSUMER = 'apiSystem_Consumer';
+    const ATTR_SERVICE_GATEKEEPER_TOKEN = 'serviceGatekeeper_Token';
+    const ATTR_SERVICE_GATEKEEPER_CONSUMER = 'serviceGatekeeper_Consumer';
+    const ATTR_SERVICE_HUMANRESOURCES_PERSON = 'serviceHumanResources_Person';
 
     /**
      * @Id
@@ -45,15 +46,15 @@ class TblAccount
     /**
      * @Column(type="bigint")
      */
-    private $tblToken;
+    private $serviceGatekeeper_Token;
     /**
      * @Column(type="bigint")
      */
-    private $apiHumanResources_Person;
+    private $serviceHumanResources_Person;
     /**
      * @Column(type="bigint")
      */
-    private $apiSystem_Consumer;
+    private $serviceGatekeeper_Consumer;
 
     /**
      * @param string $Username
@@ -121,58 +122,58 @@ class TblAccount
     /**
      * @return null|integer
      */
-    public function getApiHumanResourcesPerson()
+    public function getServiceHumanResourcesPerson()
     {
 
-        return $this->apiHumanResources_Person;
+        return $this->serviceHumanResources_Person;
     }
 
     /**
-     * @param null|integer $apiHumanResources_Person
+     * @param null|integer $serviceHumanResources_Person
      */
-    public function setApiHumanResourcesPerson( $apiHumanResources_Person )
+    public function setServiceHumanResourcesPerson( $serviceHumanResources_Person )
     {
 
-        $this->apiHumanResources_Person = $apiHumanResources_Person;
+        $this->serviceHumanResources_Person = $serviceHumanResources_Person;
     }
 
     /**
      * @return null|integer
      */
-    public function getApiSystemConsumer()
+    public function getServiceGatekeeperConsumer()
     {
 
-        return $this->apiSystem_Consumer;
+        return $this->serviceGatekeeper_Consumer;
     }
 
     /**
-     * @param null|integer $apiSystem_Consumer
+     * @param null|integer $serviceGatekeeper_Consumer
      */
-    public function setApiSystemConsumer( $apiSystem_Consumer )
+    public function setServiceGatekeeperConsumer( $serviceGatekeeper_Consumer )
     {
 
-        $this->apiSystem_Consumer = $apiSystem_Consumer;
+        $this->serviceGatekeeper_Consumer = $serviceGatekeeper_Consumer;
     }
 
     /**
      * @return bool|TblToken
      */
-    public function getTblToken()
+    public function getServiceGatekeeperToken()
     {
 
-        return Token::getApi()->entityTokenById( $this->tblToken );
+        return Gatekeeper::serviceToken()->entityTokenById( $this->serviceGatekeeper_Token );
     }
 
     /**
-     * @param null|\KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken $tblToken
+     * @param null|TblToken $tblToken
      */
-    public function setTblToken( Token\Entity\TblToken $tblToken )
+    public function setServiceGatekeeperToken( TblToken $tblToken = null )
     {
 
         if (null === $tblToken) {
-            $this->tblToken = null;
+            $this->serviceGatekeeper_Token = null;
         } else {
-            $this->tblToken = $tblToken->getId();
+            $this->serviceGatekeeper_Token = $tblToken->getId();
         }
     }
 

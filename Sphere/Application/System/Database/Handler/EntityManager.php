@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\System\Database\Handler;
 
+use Doctrine\ORM\EntityRepository;
 use KREDA\Sphere\Common\AbstractAddOn;
 
 /**
@@ -30,9 +31,9 @@ class EntityManager extends AbstractAddOn
     }
 
     /**
-     * @param $ClassName
+     * @param string $ClassName
      *
-     * @return \Doctrine\ORM\EntityRepository
+     * @return EntityRepository
      */
     final public function getEntity( $ClassName )
     {
@@ -40,6 +41,23 @@ class EntityManager extends AbstractAddOn
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->EntityManager->getRepository( $this->Namespace.$ClassName );
+    }
+
+    /**
+     * @param string $ClassName
+     * @param int    $Id
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @return EntityRepository
+     */
+    final public function getEntityById( $ClassName, $Id )
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        return $this->EntityManager->find( $this->Namespace.$ClassName, $Id );
     }
 
     /**

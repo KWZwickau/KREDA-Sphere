@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\System\Database\Handler;
 
+use Doctrine\Common\Cache\ApcCache;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
 use Doctrine\DBAL\Schema\Column;
@@ -56,6 +57,8 @@ class Model extends AbstractAddOn
         if (null === self::$EntityManager) {
             $this->getDebugger()->addFileLine( __FILE__, __LINE__ );
             $Config = Setup::createAnnotationMetadataConfiguration( array( $EntityPath ) );
+            $Config->setQueryCacheImpl( new ApcCache() );
+            $Config->setMetadataCacheImpl( new ApcCache() );
             $Config->setQueryCacheImpl( new ArrayCache() );
             $Config->setMetadataCacheImpl( new ArrayCache() );
             self::$EntityManager = EntityManager::create( $this->Connection->getConnection(), $Config );

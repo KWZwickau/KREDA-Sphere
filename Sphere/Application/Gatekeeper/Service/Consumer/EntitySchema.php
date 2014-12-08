@@ -82,8 +82,8 @@ abstract class EntitySchema extends AbstractService
         /**
          * Upgrade
          */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'Name' )) {
-            $Table->addColumn( 'Name', 'string' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'Identifier' )) {
+            $Table->addColumn( 'Identifier', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'TableSuffix' )) {
             $Table->addColumn( 'TableSuffix', 'string' );

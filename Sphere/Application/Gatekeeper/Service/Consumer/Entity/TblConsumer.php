@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity;
+namespace KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity;
 
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
@@ -10,10 +10,10 @@ use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity
- * @Table(name="tblToken")
- * @Cache(usage="NONSTRICT_READ_WRITE")
+ * @Table(name="tblConsumer")
+ * @Cache(usage="READ_ONLY")
  */
-class TblToken
+class TblConsumer
 {
 
     const ATTR_IDENTIFIER = 'Identifier';

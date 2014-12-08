@@ -18,9 +18,9 @@ abstract class EntityAction extends EntitySchema
      * @param string        $Username
      * @param string        $Password
      * @param TblAccountTyp $tblAccountTyp
-     * @param null|TblToken $tblToken
-     * @param null|integer  $apiHumanResources_Person
-     * @param null|integer  $apiSystem_Consumer
+     * @param null|TblToken $serviceGatekeeper_Token
+     * @param null|integer  $serviceHumanResources_Person
+     * @param null|integer  $serviceGatekeeper_Consumer
      *
      * @return TblAccount
      */
@@ -28,9 +28,9 @@ abstract class EntityAction extends EntitySchema
         $Username,
         $Password,
         $tblAccountTyp,
-        $tblToken = null,
-        $apiHumanResources_Person = null,
-        $apiSystem_Consumer = null
+        $serviceGatekeeper_Token = null,
+        $serviceHumanResources_Person = null,
+        $serviceGatekeeper_Consumer = null
     ) {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
@@ -41,9 +41,9 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblAccount( $Username );
             $Entity->setPassword( hash( 'sha256', $Password ) );
             $Entity->setTblAccountTyp( $tblAccountTyp );
-            $Entity->setTblToken( $tblToken );
-            $Entity->setApiHumanResourcesPerson( $apiHumanResources_Person );
-            $Entity->setApiSystemConsumer( $apiSystem_Consumer );
+            $Entity->setServiceGatekeeperToken( $serviceGatekeeper_Token );
+            $Entity->setServiceHumanResourcesPerson( $serviceHumanResources_Person );
+            $Entity->setServiceGatekeeperConsumer( $serviceGatekeeper_Consumer );
             $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
@@ -62,7 +62,7 @@ abstract class EntityAction extends EntitySchema
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $tblAccount->setTblToken( $tblToken );
+        $tblAccount->setServiceGatekeeperToken( $tblToken );
         $this->getDatabaseHandler()->getEntityManager()->saveEntity( $tblAccount );
         return $tblAccount;
     }
@@ -118,7 +118,7 @@ abstract class EntityAction extends EntitySchema
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccount' )->find( $Id );
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblAccount', $Id );
         if (null === $Entity) {
             return false;
         } else {
@@ -135,7 +135,7 @@ abstract class EntityAction extends EntitySchema
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountTyp' )->find( $Id );
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblAccountTyp', $Id );
         if (null === $Entity) {
             return false;
         } else {

@@ -21,4 +21,13 @@ class Consumer extends EntityAction
 
         $this->setDatabaseHandler( 'Gatekeeper', 'Consumer' );
     }
+
+    public function setupDatabaseContent()
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        $tblConsumer = $this->actionCreateConsumer( 'Demo' );
+
+    }
 }

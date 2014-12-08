@@ -105,7 +105,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
         /**
          * Setup Private-Access
          */
-        if (( $IsValid = Gatekeeper::apiIsValidSession() )) {
+        if (( $IsValid = Gatekeeper::checkIsValidSession() )) {
             System::registerApplication( $Config );
             Management::registerApplication( $Config );
             Graduation::registerApplication( $Config );
@@ -161,6 +161,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             /** @var Element $Route */
             $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
             $ShellScreen->addToContent( new Container( $Route ) );
+            var_dump( $E->getMessage() );
         } catch( \Exception $E ) {
             /**
              * Unexpected Exception
@@ -206,6 +207,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
                     /** @var Element $Route */
                     $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
                     $ShellScreen->addToContent( new Container( $Route ) );
+                    var_dump( $E->getMessage() );
                 } catch( \Exception $E ) {
                     /**
                      * Unexpected Exception

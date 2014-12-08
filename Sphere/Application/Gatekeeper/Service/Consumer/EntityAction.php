@@ -1,6 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Consumer;
 
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
+
 /**
  * Class EntityAction
  *

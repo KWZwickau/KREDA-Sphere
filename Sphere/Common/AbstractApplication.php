@@ -31,6 +31,8 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
     protected static function registerClientRoute( Configuration &$Configuration, $Url, $Method )
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         $Route = new RouteParameter( $Url, $Method );
         $Configuration->getClientRouter()->addRoute( $Route );
 
@@ -45,6 +47,8 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
      */
     protected static function addClientNavigationMeta( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
     {
+
+        self::getDebugger()->addMethodCall( __METHOD__ );
 
         $Configuration->getClientNavigation()->addLinkToMeta(
             new LevelClient\Link(
@@ -67,6 +71,8 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
     final private static function prepareParameterUrl( $Value )
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         return new UrlParameter( $Value );
     }
 
@@ -78,6 +84,8 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
     final private static function prepareParameterName( $Value )
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         return new NameParameter( $Value );
     }
 
@@ -88,6 +96,8 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
      */
     final private static function prepareParameterIcon( Icon $Value )
     {
+
+        self::getDebugger()->addMethodCall( __METHOD__ );
 
         if (null !== $Value) {
             $Value = new IconParameter( $Value );
@@ -103,6 +113,8 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
     final private static function prepareParameterActive( UrlParameter $Value )
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         $Request = HttpKernel::getRequest();
         return 0 === strpos( $Request->getUrlBase().$Request->getPathInfo(), $Value->getValue() );
     }
@@ -115,6 +127,8 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
      */
     protected static function addClientNavigationMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
     {
+
+        self::getDebugger()->addMethodCall( __METHOD__ );
 
         $Configuration->getClientNavigation()->addLinkToMain(
             new LevelClient\Link(
@@ -137,6 +151,8 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
      */
     protected static function addModuleNavigationMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
     {
+
+        self::getDebugger()->addMethodCall( __METHOD__ );
 
         $Configuration->getModuleNavigation()->addLinkToMain(
             new LevelModule\Link(
@@ -163,6 +179,8 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
         $Name,
         Icon $Icon = null
     ) {
+
+        self::getDebugger()->addMethodCall( __METHOD__ );
 
         $Configuration->getApplicationNavigation()->addLinkToMain(
             new LevelApplication\Link(

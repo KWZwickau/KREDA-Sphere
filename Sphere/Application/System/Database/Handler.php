@@ -2,9 +2,9 @@
 namespace KREDA\Sphere\Application\System\Database;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\ORM\QueryBuilder;
 use KREDA\Sphere\Application\System\Database\Connector\Connector;
 use KREDA\Sphere\Application\System\Database\Handler\EntityManager;
 use KREDA\Sphere\Application\System\Database\Handler\Model;

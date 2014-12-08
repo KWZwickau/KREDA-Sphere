@@ -29,6 +29,7 @@ class Identifier extends AbstractAddOn
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
+
         $this->Application = $Application;
         $this->Service = $Service;
         $this->Consumer = $Consumer;

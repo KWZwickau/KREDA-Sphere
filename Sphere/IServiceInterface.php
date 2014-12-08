@@ -1,6 +1,8 @@
 <?php
 namespace KREDA\Sphere;
 
+use KREDA\Sphere\Application\System\Database\Handler;
+
 /**
  * Interface IServiceInterface
  *
@@ -27,4 +29,16 @@ interface IServiceInterface
      * @return void
      */
     public function setupDatabaseContent();
+
+    /**
+     * @return Handler|null
+     */
+    public function getDatabaseHandler();
+
+    /**
+     * @param string $Application
+     * @param string $Service
+     * @param string $Consumer
+     */
+    public function setDatabaseHandler( $Application, $Service = '', $Consumer = '' );
 }

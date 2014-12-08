@@ -85,7 +85,7 @@ class Account extends EntityAction
                         /**
                          * Certification
                          */
-                        if (false === ( $Token = Token::getApi()->entityTokenById( $Account->getTblToken() ) )) {
+                        if (false === ( $Token = Token::getApi()->entityTokenById( $Account->getServiceGatekeeperToken() ) )) {
                             /**
                              * Invalid
                              */
@@ -136,7 +136,7 @@ class Account extends EntityAction
     /**
      * @return bool
      */
-    public function apiIsValidSession()
+    public function checkIsValidSession()
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
@@ -204,8 +204,8 @@ class Account extends EntityAction
     }
 
     /**
-     * @param TblAccount $tblAccount
-     * @param null|TblToken     $tblToken
+     * @param TblAccount    $tblAccount
+     * @param null|TblToken $tblToken
      *
      * @return mixed
      */
@@ -213,6 +213,8 @@ class Account extends EntityAction
         TblAccount $tblAccount,
         TblToken $tblToken = null
     ) {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return parent::actionSetAccountToken( $tblAccount, $tblToken );
     }

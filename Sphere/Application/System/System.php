@@ -77,6 +77,15 @@ class System extends AbstractApplication
         $View = new Landing();
         $View->setTitle( 'Systemeinstellungen' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
+
+        ob_start();
+        phpinfo();
+        $PhpInfo = ob_get_clean();
+
+        $View->setContent(
+            $PhpInfo
+        );
+
         return $View;
     }
 

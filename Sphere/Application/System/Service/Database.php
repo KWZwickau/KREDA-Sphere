@@ -26,7 +26,7 @@ class Database extends AbstractService
             'Token'    => array( '' ),
         ),
         'Management' => array(
-            'People'   => array( 'Annaberg', 'Annaberg2' ),
+            'HumanResources' => array( 'Annaberg', 'Waldenburg' ),
             'Property' => array( '' ),
         ),
         'Graduation' => array(
@@ -57,15 +57,9 @@ class Database extends AbstractService
                             $Group = $Setting[$Service.':'.$Consumer];
                             try {
                                 $this->setDatabaseHandler( $Application, $Service, $Consumer );
-                                if (empty( $Consumer )) {
-                                    $Consumer = '[No Consumer]';
-                                }
-                                $Report[$Application][$Application][''.$Service.'<br/>'.$Consumer.''][$Group['Host'].'<br/>'.$Group['Database']] = '<div class="badge badge-success">Verbindung erfolgreich</div>';
+                                $Report[$Application][$Application][''.$Service.'<br/>'.$Consumer.''][$Group['Host'].'<br/>'.$Group['Database'].( empty( $Consumer ) ? '' : '_'.$Consumer )] = '<div class="badge badge-success">Verbindung erfolgreich</div>';
                             } catch( \Exception $E ) {
-                                if (empty( $Consumer )) {
-                                    $Consumer = '[No Consumer]';
-                                }
-                                $Report[$Application][$Application][''.$Service.'<br/>'.$Consumer.''][$Group['Host'].'<br/>'.$Group['Database']] = '<div class="badge badge-danger">Nicht verbunden</div>';
+                                $Report[$Application][$Application][''.$Service.'<br/>'.$Consumer.''][$Group['Host'].'<br/>'.$Group['Database'].( empty( $Consumer ) ? '' : '_'.$Consumer )] = '<div class="badge badge-danger">Nicht verbunden</div>';
                             }
                         } else {
                             $Report[$Application][$Application][''.$Service.'<br/>'.$Consumer.'']['-NA-'] = '<div class="badge badge-danger">Konfiguration fehlerhaft</div>';

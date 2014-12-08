@@ -40,7 +40,7 @@ class Gatekeeper extends AbstractApplication
         self::getDebugger()->addMethodCall( __METHOD__ );
 
         self::$Configuration = $Configuration;
-        if (self::apiIsValidSession()) {
+        if (self::checkIsValidSession()) {
             self::addClientNavigationMeta( self::$Configuration,
                 '/Sphere/Gatekeeper/SignOut', 'Abmelden', new OffIcon()
             );
@@ -78,12 +78,12 @@ class Gatekeeper extends AbstractApplication
     /**
      * @return bool
      */
-    public static function apiIsValidSession()
+    public static function checkIsValidSession()
     {
 
         self::getDebugger()->addMethodCall( __METHOD__ );
 
-        return self::serviceAccount()->apiIsValidSession();
+        return self::serviceAccount()->checkIsValidSession();
     }
 
     /**
@@ -91,6 +91,8 @@ class Gatekeeper extends AbstractApplication
      */
     public static function serviceAccount()
     {
+
+        self::getDebugger()->addMethodCall( __METHOD__ );
 
         return Account::getApi();
     }
@@ -101,6 +103,8 @@ class Gatekeeper extends AbstractApplication
     public static function serviceToken()
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         return Token::getApi();
     }
 
@@ -110,6 +114,8 @@ class Gatekeeper extends AbstractApplication
     public static function serviceAccess()
     {
 
+        self::getDebugger()->addMethodCall( __METHOD__ );
+
         return Access::getApi();
     }
 
@@ -118,6 +124,8 @@ class Gatekeeper extends AbstractApplication
      */
     public static function serviceConsumer()
     {
+
+        self::getDebugger()->addMethodCall( __METHOD__ );
 
         return Consumer::getApi();
     }
@@ -211,6 +219,8 @@ class Gatekeeper extends AbstractApplication
      */
     private function apiSignInWithCredentialKey( SignInError &$View, $CredentialName, $CredentialLock, $CredentialKey )
     {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         switch ($this->serviceAccount()->apiSignIn( $CredentialName, $CredentialLock, $CredentialKey )) {
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:

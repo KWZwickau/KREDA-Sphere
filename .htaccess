@@ -22,7 +22,7 @@
 
 # Restrict Server PHP-File Access
 
-	<Files ~ '^(Client)$'>
+	<Files 'Client'>
 		ForceType application/x-httpd-php
 	</Files>
 	<Files *.php>
