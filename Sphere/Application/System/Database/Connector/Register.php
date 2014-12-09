@@ -23,9 +23,6 @@ class Register extends AbstractAddOn
      */
     final private function __construct()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
     }
 
     /**
@@ -34,9 +31,8 @@ class Register extends AbstractAddOn
     final public static function getSingleton()
     {
 
-        self::getDebugger()->addMethodCall( __METHOD__ );
-
         if (null === self::$Singleton) {
+            self::getDebugger()->addFileLine( __FILE__, __LINE__ );
             self::$Singleton = new self;
         }
         return self::$Singleton;
@@ -50,8 +46,6 @@ class Register extends AbstractAddOn
     final public function hasDatabase( Identifier $Identifier )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return array_key_exists( $Identifier->getIdentifier(), self::$Register );
     }
 
@@ -64,9 +58,8 @@ class Register extends AbstractAddOn
     final public function addDatabase( Identifier $Identifier, IBridgeInterface $Connection )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         if (!array_key_exists( $Identifier->getIdentifier(), self::$Register )) {
+            $this->getDebugger()->addMethodCall( __METHOD__ );
             self::$Register[$Identifier->getIdentifier()] = $Connection;
         }
         return $this;
@@ -81,8 +74,6 @@ class Register extends AbstractAddOn
     final public function getDatabase( Identifier $Identifier )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         if (array_key_exists( $Identifier->getIdentifier(), self::$Register )) {
             return self::$Register[$Identifier->getIdentifier()];
         } else {
@@ -95,8 +86,5 @@ class Register extends AbstractAddOn
      */
     final private function __clone()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
     }
 }

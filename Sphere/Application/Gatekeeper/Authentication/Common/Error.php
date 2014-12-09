@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Authentication;
+namespace KREDA\Sphere\Application\Gatekeeper\Authentication\Common;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;

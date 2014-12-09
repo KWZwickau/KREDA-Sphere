@@ -1,20 +1,20 @@
-<table class="table table-condensed text-left">
+<table class="table text-left table-responsive">
     <thead>
     <tr>
-        <th>Service</th>
-        <th>Connection</th>
-        <th>Datenbank</th>
+        <th>Application</th>
+        <th>Service / Consumer</th>
+        <th>Database</th>
         <th>Status</th>
         {#<th></th>#}
     </tr>
     </thead>
     <tbody>
-    {% for Key, Item in Status %}
+    {% for Application, Item in Status %}
         {% for Service, Server in Item %}
             {% for Connection, Setting in Server %}
                 {% for Database, Status in Setting %}
                     <tr>
-                        <td style="vertical-align: middle;" class="small text-warning">{{ Service }}</td>
+                        <td style="vertical-align: middle;" class="small text-warning">{{ Application }}</td>
                         <td style="vertical-align: middle;" class="small text-info">{{ Connection }}</td>
                         <td style="vertical-align: middle;" class="small text-warning">{{ Database }}</td>
                         <td style="vertical-align: middle;">{{ Status }}</td>

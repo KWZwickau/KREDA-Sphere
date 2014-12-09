@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Authentication;
+namespace KREDA\Sphere\Application\Gatekeeper\Authentication\Common;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
@@ -20,22 +20,16 @@ class Redirect extends Shell implements IElementInterface
     private $Template = null;
 
     /**
-     * @param string $Title
      * @param string $Route
-     * @param string $Description
-     * @param string $Message
      * @param int    $Timeout
      *
      * @throws TemplateTypeException
      */
-    function __construct( $Title, $Route, $Description = '', $Message = '', $Timeout = 15 )
+    function __construct( $Route, $Timeout = 15 )
     {
 
         $this->Template = Template::getTemplate( __DIR__.'/Redirect.twig' );
-        $this->Template->setVariable( 'Title', $Title );
         $this->Template->setVariable( 'Route', '/'.trim( $Route, '/' ) );
-        $this->Template->setVariable( 'Description', $Description );
-        $this->Template->setVariable( 'Message', $Message );
         $this->Template->setVariable( 'Timeout', $Timeout );
         $this->Template->setVariable( 'UrlBase', HttpKernel::getRequest()->getUrlBase() );
 

@@ -17,8 +17,6 @@ class PdoMySql extends AbstractDriver
     function __construct()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setIdentifier( 'pdo_mysql' );
     }
 

@@ -1,14 +1,12 @@
 <?php
 namespace KREDA\Sphere\Application\System\Database;
 
-use KREDA\Sphere\Common\AbstractAddOn;
-
 /**
  * Class Identifier
  *
  * @package KREDA\Sphere\Application\System\Database
  */
-class Identifier extends AbstractAddOn
+class Identifier
 {
 
     /** @var string $Identifier */
@@ -28,8 +26,6 @@ class Identifier extends AbstractAddOn
     final public function __construct( $Application, $Service = '', $Consumer = '' )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->Application = $Application;
         $this->Service = $Service;
         $this->Consumer = $Consumer;
@@ -42,8 +38,6 @@ class Identifier extends AbstractAddOn
     final public function getApplication()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->Application;
     }
 
@@ -52,8 +46,6 @@ class Identifier extends AbstractAddOn
      */
     final public function getConsumer()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->Consumer;
     }
@@ -64,8 +56,6 @@ class Identifier extends AbstractAddOn
     final public function getService()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->Service;
     }
 
@@ -75,8 +65,6 @@ class Identifier extends AbstractAddOn
     public function __toString()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->getIdentifier();
     }
 
@@ -85,8 +73,6 @@ class Identifier extends AbstractAddOn
      */
     final public function getIdentifier()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->Identifier;
     }

@@ -28,8 +28,6 @@ class Assistance extends AbstractApplication
     public static function registerApplication( Configuration $Configuration )
     {
 
-        self::getDebugger()->addMethodCall( __METHOD__ );
-
         self::$Configuration = $Configuration;
         self::addClientNavigationMeta( self::$Configuration,
             '/Sphere/Assistance', 'Hilfe', new QuestionIcon()
@@ -85,8 +83,6 @@ class Assistance extends AbstractApplication
     public function apiMain()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setupModuleNavigation();
         $View = new Landing();
         $View->setTitle( 'Hilfe' );
@@ -96,8 +92,6 @@ class Assistance extends AbstractApplication
 
     public function setupModuleNavigation()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Assistance/Account', 'Benutzerkonto', new QuestionIcon()
@@ -116,8 +110,6 @@ class Assistance extends AbstractApplication
     public function apiAccount()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setupModuleNavigation();
         $this->setupServiceAccount();
         $View = new Landing();
@@ -128,8 +120,6 @@ class Assistance extends AbstractApplication
 
     public function setupServiceAccount()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Assistance/Account/Password/Forgotten', 'Passwort vergessen', new BookIcon()
@@ -143,8 +133,6 @@ class Assistance extends AbstractApplication
     public function apiAccountPasswordForgotten()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setupModuleNavigation();
         $this->setupServiceAccount();
         return Service\Account::getApi()->apiPasswordForgotten();
@@ -156,8 +144,6 @@ class Assistance extends AbstractApplication
     public function apiSupportApplication()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setupModuleNavigation();
         $this->setupServiceApplication();
         $View = new Landing();
@@ -168,8 +154,6 @@ class Assistance extends AbstractApplication
 
     public function setupServiceApplication()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Assistance/Support/Application/Start', 'Starten der Anwendung', new BookIcon()
@@ -189,8 +173,6 @@ class Assistance extends AbstractApplication
     public function apiSupportTicket( $TicketSubject = null, $TicketMessage = null )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setupModuleNavigation();
         return Service\Youtrack::getApi()->apiTicket( $TicketSubject, $TicketMessage );
     }
@@ -202,8 +184,6 @@ class Assistance extends AbstractApplication
     public function apiSupportApplicationStart()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setupModuleNavigation();
         $this->setupServiceApplication();
         return Service\Application::getApi()->apiAidStart();
@@ -214,8 +194,6 @@ class Assistance extends AbstractApplication
      */
     public function apiSupportApplicationMissing()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $this->setupServiceApplication();

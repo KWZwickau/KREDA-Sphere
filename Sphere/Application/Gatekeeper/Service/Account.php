@@ -2,6 +2,8 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
+use KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Error;
+use KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Redirect;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
@@ -46,75 +48,90 @@ class Account extends EntityAction
     }
 
     /**
+     * @return void
+     */
+    public function executeSignOut()
+    {
+
+        $this->actionDestroySession();
+        session_regenerate_id();
+    }
+
+    /**
+     * @param Error  $View
+     * @param string $CredentialName
+     * @param string $CredentialLock
+     * @param string $CredentialKey
+     *
+     * @return \KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Error|\KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Redirect
+     */
+    public function executeSignInWithToken( Error &$View, $CredentialName, $CredentialLock, $CredentialKey )
+    {
+
+        switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, $CredentialKey )) {
+            case Account::API_SIGN_IN_ERROR_CREDENTIAL:
+            case Account::API_SIGN_IN_ERROR: {
+                if (null !== $CredentialName && empty( $CredentialName )) {
+                    $View->setErrorEmptyName();
+                }
+                if (null !== $CredentialName && !empty( $CredentialName )) {
+                    $View->setErrorWrongName();
+                }
+                if (null !== $CredentialLock && empty( $CredentialLock )) {
+                    $View->setErrorEmptyLock();
+                }
+                if (null !== $CredentialLock && !empty( $CredentialLock )) {
+                    $View->setErrorWrongLock();
+                }
+                break;
+            }
+            case Account::API_SIGN_IN_ERROR_TOKEN: {
+                $View->setErrorWrongKey();
+                break;
+            }
+            case Account::API_SIGN_IN_SUCCESS: {
+                return new Redirect( '/Sphere', 1 );
+                break;
+            }
+        }
+        return $View;
+    }
+
+    /**
      * @param string $Username
      * @param string $Password
      * @param bool   $TokenString
      *
      * @return int
      */
-    public function apiSignIn( $Username, $Password, $TokenString = false )
+    public function checkIsValidCredential( $Username, $Password, $TokenString = false )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        /**
-         * Credentials
-         */
         if (false === ( $Account = $this->entityAccountByCredential( $Username, $Password ) )) {
-            /**
-             * Invalid
-             */
             return self::API_SIGN_IN_ERROR_CREDENTIAL;
         } else {
-            /**
-             * Typ
-             */
             if (false === $TokenString) {
-                /**
-                 * Valid
-                 */
                 session_regenerate_id();
                 $this->actionCreateSession( session_id(), $Account->getId() );
                 return self::API_SIGN_IN_SUCCESS;
             } else {
-                /**
-                 * Token
-                 */
                 try {
                     if (Token::getApi()->apiValidateToken( $TokenString )) {
-                        /**
-                         * Certification
-                         */
                         if (false === ( $Token = Token::getApi()->entityTokenById( $Account->getServiceGatekeeperToken() ) )) {
-                            /**
-                             * Invalid
-                             */
                             return self::API_SIGN_IN_ERROR_TOKEN;
                         } else {
                             if ($Token->getIdentifier() == substr( $TokenString, 0, 12 )) {
-                                /**
-                                 * Valid
-                                 */
                                 session_regenerate_id();
                                 $this->actionCreateSession( session_id(), $Account->getId() );
                                 return self::API_SIGN_IN_SUCCESS;
                             } else {
-                                /**
-                                 * Invalid
-                                 */
                                 return self::API_SIGN_IN_ERROR_TOKEN;
                             }
                         }
                     } else {
-                        /**
-                         * Invalid
-                         */
                         return self::API_SIGN_IN_ERROR_TOKEN;
                     }
                 } catch( \Exception $E ) {
-                    /**
-                     * Invalid
-                     */
                     return self::API_SIGN_IN_ERROR_TOKEN;
                 }
             }
@@ -122,15 +139,38 @@ class Account extends EntityAction
     }
 
     /**
+     * @param Error  $View
+     * @param string $CredentialName
+     * @param string $CredentialLock
      *
+     * @return \KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Error|Redirect
      */
-    public function apiSignOut()
+    public function executeSignIn( Error &$View, $CredentialName, $CredentialLock )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        $this->actionDestroySession();
-        session_regenerate_id();
+        switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock )) {
+            case Account::API_SIGN_IN_ERROR_CREDENTIAL:
+            case Account::API_SIGN_IN_ERROR: {
+                if (null !== $CredentialName && empty( $CredentialName )) {
+                    $View->setErrorEmptyName();
+                }
+                if (null !== $CredentialName && !empty( $CredentialName )) {
+                    $View->setErrorWrongName();
+                }
+                if (null !== $CredentialLock && empty( $CredentialLock )) {
+                    $View->setErrorEmptyLock();
+                }
+                if (null !== $CredentialLock && !empty( $CredentialLock )) {
+                    $View->setErrorWrongLock();
+                }
+                break;
+            }
+            case Account::API_SIGN_IN_SUCCESS: {
+                return new Redirect( '/Sphere', 1 );
+                break;
+            }
+        }
+        return $View;
     }
 
     /**

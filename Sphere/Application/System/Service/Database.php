@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\System\Service;
 
 use KREDA\Sphere\Application\System\Service\Database\Status;
+use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Common\AbstractService;
 
@@ -40,9 +41,10 @@ class Database extends AbstractService
     public function guiDatabaseStatus()
     {
 
-        $View = new Landing();
-        $View->setTitle( 'Datenbank-Status' );
-        $View->setMessage( '' );
+        $View = new Stage();
+        $View->setTitle( 'Datenbank-Cluster' );
+        $View->setDescription( 'Status' );
+        $View->setMessage( 'Zeigt die aktuelle Konfiguration und den Verbindungsstatus' );
 
         $Report = array();
 

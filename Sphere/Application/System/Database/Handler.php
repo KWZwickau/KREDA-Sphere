@@ -8,14 +8,13 @@ use Doctrine\DBAL\Schema\Schema;
 use KREDA\Sphere\Application\System\Database\Connector\Connector;
 use KREDA\Sphere\Application\System\Database\Handler\EntityManager;
 use KREDA\Sphere\Application\System\Database\Handler\Model;
-use KREDA\Sphere\Common\AbstractAddOn;
 
 /**
  * Class Handler
  *
  * @package KREDA\Sphere\Application\System\Database\Handler
  */
-class Handler extends AbstractAddOn
+class Handler
 {
 
     /** @var Identifier $Identifier */
@@ -42,8 +41,6 @@ class Handler extends AbstractAddOn
      */
     final public function __construct( Identifier $Identifier )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->Identifier = $Identifier;
         if (!Connector::getInstance()->hasConnection( $Identifier )) {
@@ -76,8 +73,6 @@ class Handler extends AbstractAddOn
     final public function addProtocol( $Item )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->Model->addProtocol( $Item );
     }
 
@@ -90,8 +85,6 @@ class Handler extends AbstractAddOn
     final public function getProtocol( $Simulate = false )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->Model->getProtocol( $Simulate );
     }
 
@@ -101,9 +94,7 @@ class Handler extends AbstractAddOn
     final public function getDatabasePlatform()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
         if (null === $this->DatabasePlatform) {
-            $this->getDebugger()->addFileLine( __FILE__, __LINE__ );
             $this->DatabasePlatform = $this->Model->getConnection()->getConnection()->getDatabasePlatform();
         }
         return $this->DatabasePlatform;
@@ -117,8 +108,6 @@ class Handler extends AbstractAddOn
     final public function setStatement( $Statement )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->Model->getConnection()->prepareStatement( $Statement )->executeWrite();
     }
 
@@ -130,8 +119,6 @@ class Handler extends AbstractAddOn
     final public function getStatement( $Statement )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->Model->getConnection()->prepareStatement( $Statement )->executeRead();
     }
 
@@ -140,8 +127,6 @@ class Handler extends AbstractAddOn
      */
     final public function getSchema()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->Model->getSchema();
     }
@@ -152,8 +137,6 @@ class Handler extends AbstractAddOn
     final public function getSchemaManager()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->Model->getSchemaManager();
     }
 
@@ -163,8 +146,6 @@ class Handler extends AbstractAddOn
     final public function getQueryBuilder()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->Model->getConnection()->getQueryBuilder();
     }
 
@@ -173,8 +154,6 @@ class Handler extends AbstractAddOn
      */
     final public function getEntityManager()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Path = __DIR__
             .'/../../'.$this->Identifier->getApplication()
@@ -195,8 +174,6 @@ class Handler extends AbstractAddOn
     final public function hasTable( $TableName )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->Model->hasTable( $TableName );
     }
 
@@ -209,8 +186,6 @@ class Handler extends AbstractAddOn
     final public function hasColumn( $TableName, $ColumnName )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->Model->hasColumn( $TableName, $ColumnName );
     }
 
@@ -221,8 +196,6 @@ class Handler extends AbstractAddOn
      */
     final public function hasView( $ViewName )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->Model->hasView( $ViewName );
     }

@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Client;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication as ApplicationNavigation;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient as ClientNavigation;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule as ModuleNavigation;
+use KREDA\Sphere\Common\Debugger;
 use MOC\V\Component\Router\Component\IBridgeInterface as Router;
 
 /**
@@ -30,6 +31,7 @@ class Configuration
     function __construct( Router $Router, ClientNavigation $Navigation )
     {
 
+        Debugger::addMethodCall( __METHOD__ );
         $this->Router = $Router;
         $this->ClientNavigation = $Navigation;
     }

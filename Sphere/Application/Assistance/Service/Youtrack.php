@@ -16,8 +16,8 @@ class Youtrack extends AbstractService
 {
 
     /** @var string $YoutrackDomain */
-    //private $YoutrackDomain = 'http://ticket.swe.haus-der-edv.de';
-    private $YoutrackDomain = 'http://192.168.33.150:8080';
+    private $YoutrackDomain = 'http://ticket.swe.haus-der-edv.de';
+    //private $YoutrackDomain = 'http://192.168.33.150:8080';
     /** @var string $YoutrackUser */
     private $YoutrackUser = 'KREDA-Support';
     /** @var string $YoutrackPassword */
@@ -62,7 +62,11 @@ class Youtrack extends AbstractService
             /**
              * Nothing to do
              */
-            $View->setContent( $Ticket.$this->ticketCurrent() );
+            try {
+                $View->setContent( $Ticket.$this->ticketCurrent() );
+            } catch( \Exception $E ) {
+                $View->setContent( new Danger( 'Das Support-System konnten nicht geladen werden' ) );
+            }
         } else {
             /**
              * Submit Ticket
@@ -77,9 +81,7 @@ class Youtrack extends AbstractService
                     .$this->ticketCurrent()
                 );
             } catch( \Exception $E ) {
-                $View->setContent( new Danger( 'Das Ticket konnte nicht übertragen werden' )
-                    .$this->ticketCurrent()
-                );
+                $View->setContent( new Danger( 'Das Problem konnte nicht übertragen werden' ) );
             }
         }
         return $View;
@@ -215,11 +217,12 @@ class Youtrack extends AbstractService
         curl_setopt( $CurlHandler, CURLOPT_HEADER, false );
         curl_setopt( $CurlHandler, CURLOPT_HEADERFUNCTION, array( $this, 'ticketHeader' ) );
         curl_setopt( $CurlHandler, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $CurlHandler, CURLOPT_TIMEOUT, 2 );
 
         $Response = curl_exec( $CurlHandler );
         $Response = simplexml_load_string( $Response );
 
-        if ($Response != 'ok') {
+        if (false === $Response || $Response != 'ok') {
             throw new \Exception();
         }
 
@@ -230,6 +233,7 @@ class Youtrack extends AbstractService
      * @param string $Summary
      * @param string $Description
      *
+     * @throws \Exception
      * @return array
      */
     private function ticketCreate( $Summary, $Description )
@@ -251,9 +255,16 @@ class Youtrack extends AbstractService
         curl_setopt( $CurlHandler, CURLOPT_VERBOSE, false );
         curl_setopt( $CurlHandler, CURLOPT_PUT, true );
         curl_setopt( $CurlHandler, CURLOPT_COOKIE, $this->Cookie );
-        curl_setopt( $CurlHandler, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt( $CurlHandler, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $CurlHandler, CURLOPT_TIMEOUT, 2 );
 
-        curl_exec( $CurlHandler );
+        $Response = curl_exec( $CurlHandler );
+        $Response = simplexml_load_string( $Response );
+
+        if (false === $Response) {
+            throw new \Exception();
+        }
+
         curl_close( $CurlHandler );
     }
 

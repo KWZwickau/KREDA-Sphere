@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn;
 
-use KREDA\Sphere\Application\Gatekeeper\Authentication\Error;
+use KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Error;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;

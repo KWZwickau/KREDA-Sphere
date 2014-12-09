@@ -169,8 +169,6 @@ class YubiKey
     private function createParameter( KeyValue $KeyValue )
     {
 
-        Debugger::addMethodCall( __METHOD__ );
-
         $Parameter = array(
             'id'    => $this->YubiApiId,
             'otp'   => $KeyValue->getKeyOTP(),
@@ -191,8 +189,6 @@ class YubiKey
     private function createNOnce()
     {
 
-        Debugger::addMethodCall( __METHOD__ );
-
         return md5( uniqid( rand() ) );
     }
 
@@ -203,8 +199,6 @@ class YubiKey
      */
     private function createSignature( $Parameter )
     {
-
-        Debugger::addMethodCall( __METHOD__ );
 
         if (null !== $this->YubiApiKey) {
             $Signature = base64_encode( hash_hmac( 'sha1', $Parameter, $this->YubiApiKey, true ) );
@@ -222,8 +216,6 @@ class YubiKey
      */
     private function checkSignature( $Result, $Status )
     {
-
-        Debugger::addMethodCall( __METHOD__ );
 
         $Response = array();
         $ResultLineList = explode( "\r\n", trim( $Result ) );

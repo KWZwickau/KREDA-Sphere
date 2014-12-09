@@ -7,11 +7,9 @@ use KREDA\Sphere\Application\Assistance\Assistance;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Danger;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Info;
 use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Warning;
-use KREDA\Sphere\Application\Gatekeeper\Client\Redirect\Custom;
+use KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Redirect;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
-use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\Statistic\Statistic;
 use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Application\System\System;
@@ -105,11 +103,11 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
         /**
          * Setup Private-Access
          */
-        if (( $IsValid = Gatekeeper::checkIsValidSession() )) {
+        if (( $IsValid = Gatekeeper::serviceAccount()->checkIsValidSession() )) {
             System::registerApplication( $Config );
             Management::registerApplication( $Config );
-            Graduation::registerApplication( $Config );
-            Statistic::registerApplication( $Config );
+//            Graduation::registerApplication( $Config );
+//            Statistic::registerApplication( $Config );
         }
         /**
          * Setup Public-Access
@@ -186,7 +184,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             );
             $View->setContent(
                 Update::getApi()->setupDatabaseSchema( false )
-                .new Custom( '', '/Sphere', '', '', 30 )
+                .new Redirect( '/Sphere', 30 )
             );
             $ShellScreen->addToContent( new Container( $View ) );
         } else {

@@ -3,7 +3,6 @@ namespace KREDA\Sphere\Application\System\Database\Connector;
 
 use KREDA\Sphere\Application\System\Database\AbstractDriver;
 use KREDA\Sphere\Application\System\Database\Identifier;
-use KREDA\Sphere\Common\AbstractAddOn;
 use MOC\V\Component\Database\Component\IBridgeInterface;
 use MOC\V\Component\Database\Database;
 
@@ -12,7 +11,7 @@ use MOC\V\Component\Database\Database;
  *
  * @package KREDA\Sphere\Application\System\Database\Connector
  */
-class Connector extends AbstractAddOn
+class Connector
 {
 
     /**
@@ -20,8 +19,6 @@ class Connector extends AbstractAddOn
      */
     final static public function getInstance()
     {
-
-        self::getDebugger()->addMethodCall( __METHOD__ );
 
         return new Connector();
     }
@@ -33,8 +30,6 @@ class Connector extends AbstractAddOn
      */
     public function hasConnection( Identifier $Identifier )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return Register::getSingleton()->hasDatabase( $Identifier );
     }
@@ -58,8 +53,6 @@ class Connector extends AbstractAddOn
         $Port = null
     ) {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $Consumer = $Identifier->getConsumer();
         Register::getSingleton()->addDatabase( $Identifier,
             Database::getDatabase( $Username, $Password, $Database.( empty( $Consumer ) ? '' : '_'.$Consumer ),
@@ -75,8 +68,6 @@ class Connector extends AbstractAddOn
      */
     final public function getConnection( Identifier $Identifier )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return Register::getSingleton()->getDatabase( $Identifier );
     }

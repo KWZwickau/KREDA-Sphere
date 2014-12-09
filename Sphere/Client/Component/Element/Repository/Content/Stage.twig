@@ -1,8 +1,8 @@
 <br/>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-2 col-xs-1"></div>
-        <div class="col-md-8 col-xs-10">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 col-xs-12">
             <h3>{{ StageTitle }}
                 <small>{{ StageDescription }}</small>
             </h3>
@@ -12,17 +12,18 @@
                 </div>
                 <div class="col-lg-4 col-md-5 col-sm-6 visible-sm visible-md visible-lg text-right">
                     {% if StageMenu is not empty %}
-                    <div class="btn-group">
-                        {% for Route, Title in StageMenu %}
-                            <a href="{{ Route }}" class="btn btn-primary">{{ Title }}</a>
-                        {% endfor %}
-                    </div>
+                        <div class="btn-group">
+                            {% for Route, Title in StageMenu %}
+                                <a href="{{ Route }}" class="btn btn-primary">{{ Title }}</a>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
             </div>
             <hr/>
             {{ StageContent }}
         </div>
-        <div class="col-md-2 col-xs-1"></div>
+        <div class="col-md-1"></div>
     </div>
 </div>
+<br/>

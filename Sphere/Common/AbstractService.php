@@ -27,8 +27,6 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
     final public static function getApi( $BaseRoute = null )
     {
 
-        self::getDebugger()->addMethodCall( __METHOD__ );
-
         static::$BaseRoute = $BaseRoute;
         return new static;
     }
@@ -41,8 +39,6 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
     final public function setDatabaseHandler( $Application, $Service = '', $Consumer = '' )
     {
 
-        self::getDebugger()->addMethodCall( __METHOD__ );
-
         static::$DatabaseHandler = new Handler( new Identifier( $Application, $Service, $Consumer ) );
     }
 
@@ -51,8 +47,6 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
      */
     final public function getDatabaseHandler()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return static::$DatabaseHandler;
     }
@@ -65,8 +59,6 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
     public function setupDatabaseSchema( $Simulate = true )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         static::$DatabaseHandler->addProtocol( __CLASS__ );
         static::$DatabaseHandler->addProtocol( '<span class="text-danger">Missing Database-Schema Configuration!</span>' );
         return static::$DatabaseHandler->getProtocol( $Simulate );
@@ -77,8 +69,6 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
      */
     public function setupDatabaseContent()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         static::$DatabaseHandler->addProtocol( __CLASS__ );
         static::$DatabaseHandler->addProtocol( '<span class="text-danger">Missing Database-Content Configuration!</span>' );
@@ -91,8 +81,6 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
      */
     final protected function getClientServiceRoute( $Route )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return HttpKernel::getRequest()->getUrlBase().static::$BaseRoute.'/'.trim( $Route, '/' );
     }
