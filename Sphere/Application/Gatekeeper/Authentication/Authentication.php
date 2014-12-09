@@ -8,14 +8,14 @@ use KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn\SignInSwitch;
 use KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn\SignInTeacher;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Common\AbstractModule;
+use KREDA\Sphere\Common\AbstractFrontend;
 
 /**
  * Class Authentication
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Authentication
  */
-class Authentication extends AbstractModule
+class Authentication extends AbstractFrontend
 {
 
     /**
