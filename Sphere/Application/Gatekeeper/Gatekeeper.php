@@ -1,13 +1,12 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper;
 
-use KREDA\Sphere\Application\Gatekeeper\Client\Redirect\SignIn;
-use KREDA\Sphere\Application\Gatekeeper\Client\Redirect\SignOut;
-use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement;
-use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent;
-use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInSwitch;
-use KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher;
-use KREDA\Sphere\Application\Gatekeeper\Client\SignInError;
+use KREDA\Sphere\Application\Gatekeeper\Authentication\Error;
+use KREDA\Sphere\Application\Gatekeeper\Authentication\Redirect;
+use KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn\SignInManagement;
+use KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn\SignInStudent;
+use KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn\SignInSwitch;
+use KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn\SignInTeacher;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer;
@@ -196,7 +195,7 @@ class Gatekeeper extends AbstractApplication
      * @param string $CredentialKey
      *
      * @throws \Exception
-     * @return \KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInTeacher
+     * @return \KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn\SignInTeacher
      */
     public function apiSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey )
     {
@@ -210,14 +209,14 @@ class Gatekeeper extends AbstractApplication
     }
 
     /**
-     * @param SignInError $View
-     * @param string      $CredentialName
-     * @param string      $CredentialLock
-     * @param string      $CredentialKey
+     * @param Error  $View
+     * @param string $CredentialName
+     * @param string $CredentialLock
+     * @param string $CredentialKey
      *
-     * @return SignIn|SignInError
+     * @return Error|Redirect
      */
-    private function apiSignInWithCredentialKey( SignInError &$View, $CredentialName, $CredentialLock, $CredentialKey )
+    private function apiSignInWithCredentialKey( Error &$View, $CredentialName, $CredentialLock, $CredentialKey )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
@@ -244,7 +243,7 @@ class Gatekeeper extends AbstractApplication
                 break;
             }
             case Account::API_SIGN_IN_SUCCESS: {
-                return new SignIn();
+                return new Redirect( 'Anmelden', '/Sphere', '', 'Sie werden am System angemeldet...', 1 );
                 break;
             }
         }
@@ -257,7 +256,7 @@ class Gatekeeper extends AbstractApplication
      * @param string $CredentialKey
      *
      * @throws \Exception
-     * @return \KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInManagement
+     * @return \KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn\SignInManagement
      */
     public function apiSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
     {
@@ -274,7 +273,7 @@ class Gatekeeper extends AbstractApplication
      * @param string $CredentialName
      * @param string $CredentialLock
      *
-     * @return \KREDA\Sphere\Application\Gatekeeper\Client\SignIn\SignInStudent
+     * @return Redirect|SignInStudent
      */
     public function apiSignInStudent( $CredentialName, $CredentialLock )
     {
@@ -301,7 +300,7 @@ class Gatekeeper extends AbstractApplication
                 break;
             }
             case Account::API_SIGN_IN_SUCCESS: {
-                return new SignIn();
+                return new Redirect( 'Anmelden', '/Sphere', '', 'Sie werden am System angemeldet...', 1 );
                 break;
             }
         }
@@ -309,14 +308,14 @@ class Gatekeeper extends AbstractApplication
     }
 
     /**
-     * @return SignOut
+     * @return Redirect
      */
     public function apiSignOut()
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $View = new SignOut();
+        $View = new Redirect( 'Abmelden', '/Sphere/Gatekeeper/SignIn', '', 'Sie werden vom System abgemeldet...', 1 );
         $this->serviceAccount()->apiSignOut();
         return $View;
     }

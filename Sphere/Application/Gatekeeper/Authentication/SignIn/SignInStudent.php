@@ -1,18 +1,18 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Client\SignIn;
+namespace KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn;
 
-use KREDA\Sphere\Application\Gatekeeper\Client\SignInError;
+use KREDA\Sphere\Application\Gatekeeper\Authentication\Error;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
- * Class SignInTeacher
+ * Class SignInStudent
  *
- * @package KREDA\Sphere\Application\Gatekeeper\Client\SignIn
+ * @package KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn
  */
-class SignInTeacher extends SignInError implements IElementInterface
+class SignInStudent extends Error implements IElementInterface
 {
 
     /**
@@ -21,7 +21,7 @@ class SignInTeacher extends SignInError implements IElementInterface
     function __construct()
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/SignInTeacher.twig' );
+        $this->Template = Template::getTemplate( __DIR__.'/SignInStudent.twig' );
         $this->Template->setVariable( 'UrlBase', HttpKernel::getRequest()->getUrlBase() );
 
         if (isset( $_REQUEST['CredentialName'] )) {

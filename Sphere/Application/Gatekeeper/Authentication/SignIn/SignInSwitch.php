@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Client\SignIn;
+namespace KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
@@ -11,7 +11,7 @@ use MOC\V\Core\HttpKernel\HttpKernel;
 /**
  * Class SignInSwitch
  *
- * @package KREDA\Sphere\Application\Gatekeeper\Client\SignIn
+ * @package KREDA\Sphere\Application\Gatekeeper\Authentication\SignIn
  */
 class SignInSwitch extends Shell implements IElementInterface
 {

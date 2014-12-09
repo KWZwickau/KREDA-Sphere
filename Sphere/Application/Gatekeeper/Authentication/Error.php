@@ -1,16 +1,16 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Client;
+namespace KREDA\Sphere\Application\Gatekeeper\Authentication;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 
 /**
- * Class SignInError
+ * Class Error
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Client
  */
-abstract class SignInError extends Shell implements IElementInterface
+abstract class Error extends Shell implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */

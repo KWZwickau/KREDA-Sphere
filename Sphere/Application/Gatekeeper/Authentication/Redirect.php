@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Client\Redirect;
+namespace KREDA\Sphere\Application\Gatekeeper\Authentication;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
@@ -9,11 +9,11 @@ use MOC\V\Component\Template\Template;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
- * Class Custom
+ * Class Redirect
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Client\Redirect
  */
-class Custom extends Shell implements IElementInterface
+class Redirect extends Shell implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */
@@ -31,7 +31,7 @@ class Custom extends Shell implements IElementInterface
     function __construct( $Title, $Route, $Description = '', $Message = '', $Timeout = 15 )
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/Custom.twig' );
+        $this->Template = Template::getTemplate( __DIR__.'/Redirect.twig' );
         $this->Template->setVariable( 'Title', $Title );
         $this->Template->setVariable( 'Route', '/'.trim( $Route, '/' ) );
         $this->Template->setVariable( 'Description', $Description );
