@@ -29,10 +29,12 @@ class Database extends AbstractService
         'Management' => array(
             'HumanResources' => array( 'Annaberg', 'Waldenburg' ),
             'Property' => array( '' ),
+            'Grade'   => array( '' ),
+            'Subject' => array( '' ),
         ),
         'Graduation' => array(
             '' => array( '' ),
-        )
+        ),
     );
 
     /**

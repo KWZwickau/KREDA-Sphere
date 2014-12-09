@@ -116,13 +116,16 @@ class System extends AbstractApplication
             </style>'.
             '<div id="phpinfo">'.
             preg_replace( '!,!', ', ',
-                preg_replace( '!<td class="v">(On|enabled|active|Yes)\s*</td>!i',
-                    '<td class="v"><span class="badge badge-success">$1</span></td>',
-                    preg_replace( '!<td class="v">(Off|disabled|No)\s*</td>!i',
-                        '<td class="v"><span class="badge badge-danger">$1</span></td>',
-                        preg_replace( '!<i>no value</i>!',
-                            '<span class="label label-warning">no value</span>',
-                            preg_replace( '%^.*<body>(.*)</body>.*$%ms', '$1', $PhpInfo )
+                preg_replace( '!<th>(enabled)\s*</th>!i',
+                    '<th><span class="badge badge-success">$1</span></th>',
+                    preg_replace( '!<td class="v">(On|enabled|active|Yes)\s*</td>!i',
+                        '<td class="v"><span class="badge badge-success">$1</span></td>',
+                        preg_replace( '!<td class="v">(Off|disabled|No)\s*</td>!i',
+                            '<td class="v"><span class="badge badge-danger">$1</span></td>',
+                            preg_replace( '!<i>no value</i>!',
+                                '<span class="label label-warning">no value</span>',
+                                preg_replace( '%^.*<body>(.*)</body>.*$%ms', '$1', $PhpInfo )
+                            )
                         )
                     )
                 )
