@@ -52,7 +52,17 @@ abstract class Error extends Shell implements IElementInterface
         $this->Template->setVariable( 'CredentialLockFeedbackIcon',
             '<span class="glyphicon glyphicon-remove form-control-feedback"></span>' );
         $this->Template->setVariable( 'CredentialLockFeedbackMessage',
-            '<span class="help-block text-left">Bitte geben Sie ein gültiges Passwort ein</span>' );
+            '<span class="help-block text-left">Bitte geben Sie ein Passwort ein</span>' );
+    }
+
+    public function setErrorEmptyLockSafety()
+    {
+
+        $this->Template->setVariable( 'CredentialLockSafetyGroup', 'has-error has-feedback' );
+        $this->Template->setVariable( 'CredentialLockSafetyFeedbackIcon',
+            '<span class="glyphicon glyphicon-remove form-control-feedback"></span>' );
+        $this->Template->setVariable( 'CredentialLockSafetyFeedbackMessage',
+            '<span class="help-block text-left">Bitte geben Sie ein Passwort ein</span>' );
     }
 
     public function setErrorWrongLock()
@@ -63,6 +73,15 @@ abstract class Error extends Shell implements IElementInterface
             '<span class="glyphicon glyphicon-remove form-control-feedback"></span>' );
         $this->Template->setVariable( 'CredentialLockFeedbackMessage',
             '<span class="help-block text-left">Bitte geben Sie ein gültiges Passwort ein</span>' );
+    }
+
+    public function setErrorWrongLockSafety()
+    {
+
+        $this->Template->setVariable( 'CredentialLockGroup', 'has-error has-feedback' );
+        $this->Template->setVariable( 'CredentialLockSafetyGroup', 'has-error has-feedback' );
+        $this->Template->setVariable( 'CredentialLockSafetyFeedbackMessage',
+            '<span class="help-block text-left">Die beiden Passwörter stimmen nicht überein</span>' );
     }
 
     public function setErrorEmptyKey()

@@ -63,7 +63,7 @@ class Account extends EntityAction
      * @param string $CredentialLock
      * @param string $CredentialKey
      *
-     * @return \KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Error|\KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Redirect
+     * @return Error|Redirect
      */
     public function executeSignInWithToken( Error &$View, $CredentialName, $CredentialLock, $CredentialKey )
     {
@@ -143,7 +143,7 @@ class Account extends EntityAction
      * @param string $CredentialName
      * @param string $CredentialLock
      *
-     * @return \KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Error|Redirect
+     * @return Error|Redirect
      */
     public function executeSignIn( Error &$View, $CredentialName, $CredentialLock )
     {
@@ -170,6 +170,34 @@ class Account extends EntityAction
                 break;
             }
         }
+        return $View;
+    }
+
+    /**
+     * @param Error  $View
+     * @param string $CredentialLock
+     * @param string $CredentialLockSafety
+     *
+     * @return Error
+     */
+    public function executeChangePassword( Error &$View, $CredentialLock, $CredentialLockSafety )
+    {
+
+        if (null !== $CredentialLock && empty( $CredentialLock )) {
+            $View->setErrorEmptyLock();
+        }
+        if (null !== $CredentialLockSafety && empty( $CredentialLockSafety )) {
+            $View->setErrorEmptyLockSafety();
+        }
+        if (!empty( $CredentialLock ) && !empty( $CredentialLockSafety )) {
+
+            if ($CredentialLock == $CredentialLockSafety) {
+                return new Redirect( '/Sphere/Gatekeeper/MyAccount', 1 );
+            } else {
+                $View->setErrorWrongLockSafety();
+            }
+        }
+
         return $View;
     }
 
