@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management;
 
+use KREDA\Sphere\Application\Management\Service\Education;
 use KREDA\Sphere\Application\Management\Service\People;
 use KREDA\Sphere\Application\Management\Service\Property;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
@@ -101,6 +102,15 @@ class Management extends AbstractApplication
         );
 
         return $Configuration;
+    }
+
+    /**
+     * @return Service\Education
+     */
+    public static function serviceEducation()
+    {
+
+        return Education::getApi();
     }
 
     public function apiMain()
@@ -267,5 +277,4 @@ class Management extends AbstractApplication
         return People::getApi( '/Sphere/Management/People/Parent' )->apiPeopleParent();
 
     }
-
 }

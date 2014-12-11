@@ -27,7 +27,8 @@ class Database extends AbstractService
             'Token'    => array( '' ),
         ),
         'Management' => array(
-            'HumanResources' => array( 'Annaberg', 'Waldenburg' ),
+            'HumanResources' => array( 'Annaberg' ),
+            'Education'      => array( 'Annaberg' ),
             'Property' => array( '' ),
             'Grade'   => array( '' ),
             'Subject' => array( '' ),

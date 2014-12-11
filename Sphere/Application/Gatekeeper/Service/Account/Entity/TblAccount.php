@@ -184,7 +184,7 @@ class TblAccount
     public function getTblAccountTyp()
     {
 
-        return Account::getApi()->entityAccountTypById( $this->tblAccountTyp );
+        return Gatekeeper::serviceAccount()->entityAccountTypById( $this->tblAccountTyp );
     }
 
     /**

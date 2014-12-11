@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\System\Service;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper as Gatekeeper;
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Common\AbstractService;
 
@@ -66,12 +67,14 @@ class Update extends AbstractService
         $Protocol[] = Gatekeeper::serviceAccess()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Gatekeeper::serviceAccount()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Gatekeeper::serviceConsumer()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Management::serviceEducation()->setupDatabaseSchema( $Simulate );
 
         if (!$Simulate) {
             Gatekeeper::serviceAccount()->setupDatabaseContent();
             Gatekeeper::serviceToken()->setupDatabaseContent();
             Gatekeeper::serviceAccess()->setupDatabaseContent();
             Gatekeeper::serviceConsumer()->setupDatabaseContent();
+            Management::serviceEducation()->setupDatabaseContent();
         }
 
         return implode( $Protocol );
