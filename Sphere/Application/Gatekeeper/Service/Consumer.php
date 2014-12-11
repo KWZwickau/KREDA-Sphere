@@ -27,7 +27,7 @@ class Consumer extends EntityAction
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $tblConsumer = $this->actionCreateConsumer( 'Demo' );
+        $this->actionCreateConsumer( 'Demo' );
 
     }
 }
