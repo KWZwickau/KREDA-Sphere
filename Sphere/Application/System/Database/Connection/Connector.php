@@ -1,38 +1,12 @@
 <?php
-namespace KREDA\Sphere\Application\System\Database\Connector;
+namespace KREDA\Sphere\Application\System\Database\Connection;
 
-use KREDA\Sphere\Application\System\Database\AbstractDriver;
-use KREDA\Sphere\Application\System\Database\Identifier;
+use KREDA\Sphere\Application\System\Database\Driver\AbstractDriver;
 use MOC\V\Component\Database\Component\IBridgeInterface;
 use MOC\V\Component\Database\Database;
 
-/**
- * Class Connector
- *
- * @package KREDA\Sphere\Application\System\Database\Connector
- */
 class Connector
 {
-
-    /**
-     * @return Connector
-     */
-    final static public function getInstance()
-    {
-
-        return new Connector();
-    }
-
-    /**
-     * @param Identifier $Identifier
-     *
-     * @return bool
-     */
-    public function hasConnection( Identifier $Identifier )
-    {
-
-        return Register::getSingleton()->hasDatabase( $Identifier );
-    }
 
     /**
      * @param Identifier     $Identifier
@@ -58,6 +32,17 @@ class Connector
             Database::getDatabase( $Username, $Password, $Database.( empty( $Consumer ) ? '' : '_'.$Consumer ),
                 $Driver->getIdentifier(), $Host, $Port )
         );
+    }
+
+    /**
+     * @param Identifier $Identifier
+     *
+     * @return bool
+     */
+    public function hasConnection( Identifier $Identifier )
+    {
+
+        return Register::getSingleton()->hasDatabase( $Identifier );
     }
 
     /**

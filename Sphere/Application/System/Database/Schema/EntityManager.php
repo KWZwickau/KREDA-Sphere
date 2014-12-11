@@ -1,15 +1,9 @@
 <?php
-namespace KREDA\Sphere\Application\System\Database\Handler;
+namespace KREDA\Sphere\Application\System\Database\Schema;
 
 use Doctrine\ORM\EntityRepository;
-use KREDA\Sphere\Common\AbstractAddOn;
 
-/**
- * Class EntityManager
- *
- * @package KREDA\Sphere\Application\System\Database\Handler
- */
-class EntityManager extends AbstractAddOn
+class EntityManager
 {
 
     /** @var \Doctrine\ORM\EntityManager|null $EntityManager */
@@ -24,8 +18,6 @@ class EntityManager extends AbstractAddOn
     final function __construct( \Doctrine\ORM\EntityManager $EntityManager, $Namespace )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->EntityManager = $EntityManager;
         $this->Namespace = $Namespace;
     }
@@ -37,8 +29,6 @@ class EntityManager extends AbstractAddOn
      */
     final public function getEntity( $ClassName )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->EntityManager->getRepository( $this->Namespace.$ClassName );
     }
@@ -55,8 +45,6 @@ class EntityManager extends AbstractAddOn
     final public function getEntityById( $ClassName, $Id )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->EntityManager->find( $this->Namespace.$ClassName, $Id );
     }
 
@@ -67,8 +55,6 @@ class EntityManager extends AbstractAddOn
      */
     final public function killEntity( $Entity )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->EntityManager->remove( $Entity );
         $this->flushCache();
@@ -81,8 +67,6 @@ class EntityManager extends AbstractAddOn
     final public function flushCache()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->EntityManager->flush();
         return $this;
     }
@@ -94,8 +78,6 @@ class EntityManager extends AbstractAddOn
      */
     final public function saveEntity( $Entity )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->EntityManager->persist( $Entity );
         $this->flushCache();

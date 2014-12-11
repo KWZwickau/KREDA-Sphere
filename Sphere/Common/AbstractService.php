@@ -1,8 +1,8 @@
 <?php
 namespace KREDA\Sphere\Common;
 
+use KREDA\Sphere\Application\System\Database\Connection\Identifier;
 use KREDA\Sphere\Application\System\Database\Handler;
-use KREDA\Sphere\Application\System\Database\Identifier;
 use KREDA\Sphere\IServiceInterface;
 use MOC\V\Core\HttpKernel\HttpKernel;
 

@@ -1,11 +1,6 @@
 <?php
-namespace KREDA\Sphere\Application\System\Database;
+namespace KREDA\Sphere\Application\System\Database\Driver;
 
-/**
- * Class AbstractDriver
- *
- * @package KREDA\Sphere\Application\System\Database
- */
 abstract class AbstractDriver
 {
 
@@ -29,5 +24,4 @@ abstract class AbstractDriver
 
         $this->Identifier = $Identifier;
     }
-
 }

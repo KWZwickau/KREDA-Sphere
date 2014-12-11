@@ -5,9 +5,10 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
 use Doctrine\DBAL\Schema\Schema;
-use KREDA\Sphere\Application\System\Database\Connector\Connector;
-use KREDA\Sphere\Application\System\Database\Handler\EntityManager;
-use KREDA\Sphere\Application\System\Database\Handler\Model;
+use KREDA\Sphere\Application\System\Database\Connection\Connector;
+use KREDA\Sphere\Application\System\Database\Connection\Identifier;
+use KREDA\Sphere\Application\System\Database\Schema\EntityManager;
+use KREDA\Sphere\Application\System\Database\Schema\Model;
 
 /**
  * Class Handler
@@ -43,7 +44,8 @@ class Handler
     {
 
         $this->Identifier = $Identifier;
-        if (!Connector::getInstance()->hasConnection( $Identifier )) {
+        $Connector = new Connector();
+        if (!$Connector->hasConnection( $Identifier )) {
             $Config = __DIR__.'/Config/'.$Identifier->getApplication().'.ini';
             if (false !== ( $Config = realpath( $Config ) )) {
                 $Setting = parse_ini_file( $Config, true );
@@ -51,8 +53,8 @@ class Handler
 
                     $Setting = $Setting[$Identifier->getService().':'.$Identifier->getConsumer()];
 
-                    $Driver = __NAMESPACE__.'\\Driver\\'.$Setting['Driver'];
-                    Connector::getInstance()->addConnection(
+                    $Driver = __NAMESPACE__.'\\Driver\\Platform\\'.$Setting['Driver'];
+                    $Connector->addConnection(
                         $Identifier, new $Driver,
                         $Setting['Username'], $Setting['Password'], $Setting['Database'],
                         $Setting['Host'], empty( $Setting['Port'] ) ? null : $Setting['Port']
@@ -64,7 +66,7 @@ class Handler
                 throw new \Exception( 'Missing Database-Configuration for '.$Identifier->getApplication().'['.$Identifier->getService().':'.$Identifier->getConsumer().']' );
             }
         }
-        $this->Model = new Model( $Identifier );
+        $this->Model = new Model( $this->Identifier );
     }
 
     /**

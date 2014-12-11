@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\System\Database\Handler;
+namespace KREDA\Sphere\Application\System\Database\Schema;
 
 use Doctrine\Common\Cache\ApcCache;
 use Doctrine\Common\Cache\ArrayCache;
@@ -10,23 +10,13 @@ use Doctrine\DBAL\Schema\View;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
-use KREDA\Sphere\Application\System\Database\Connector\Connector;
-use KREDA\Sphere\Application\System\Database\Identifier;
-use KREDA\Sphere\Common\AbstractAddOn;
+use KREDA\Sphere\Application\System\Database\Connection\Connector;
+use KREDA\Sphere\Application\System\Database\Connection\Identifier;
 use MOC\V\Component\Database\Component\IBridgeInterface;
 
-/**
- * Class Model
- *
- * @package KREDA\Sphere\Application\System\Database\Handler
- */
-class Model extends AbstractAddOn
+class Model
 {
 
-    /** @var null|SchemaManager */
-    private static $SchemaManager = null;
-    /** @var null|EntityManager */
-    private static $EntityManager = null;
     /** @var IBridgeInterface $Connection */
     private $Connection = null;
     /** @var array $Protocol */
@@ -38,9 +28,8 @@ class Model extends AbstractAddOn
     final public function __construct( Identifier $Identifier )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        $this->Connection = Connector::getInstance()->getConnection( $Identifier );
+        $Connector = new Connector();
+        $this->Connection = $Connector->getConnection( $Identifier );
     }
 
     /**
@@ -52,18 +41,12 @@ class Model extends AbstractAddOn
     final public function getEntityManager( $EntityPath )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        if (null === self::$EntityManager) {
-            $this->getDebugger()->addFileLine( __FILE__, __LINE__ );
-            $Config = Setup::createAnnotationMetadataConfiguration( array( $EntityPath ) );
-            $Config->setQueryCacheImpl( new ApcCache() );
-            $Config->setMetadataCacheImpl( new ApcCache() );
-            $Config->setQueryCacheImpl( new ArrayCache() );
-            $Config->setMetadataCacheImpl( new ArrayCache() );
-            self::$EntityManager = EntityManager::create( $this->Connection->getConnection(), $Config );
-        }
-        return self::$EntityManager;
+        $Config = Setup::createAnnotationMetadataConfiguration( array( $EntityPath ) );
+        $Config->setQueryCacheImpl( new ApcCache() );
+        $Config->setMetadataCacheImpl( new ApcCache() );
+        $Config->setQueryCacheImpl( new ArrayCache() );
+        $Config->setMetadataCacheImpl( new ArrayCache() );
+        return EntityManager::create( $this->Connection->getConnection(), $Config );
     }
 
     /**
@@ -71,8 +54,6 @@ class Model extends AbstractAddOn
      */
     final public function getSchema()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->getSchemaManager()->createSchema();
     }
@@ -83,13 +64,7 @@ class Model extends AbstractAddOn
     final public function getSchemaManager()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        if (null === self::$SchemaManager) {
-            $this->getDebugger()->addFileLine( __FILE__, __LINE__ );
-            self::$SchemaManager = $this->Connection->getSchemaManager();
-        }
-        return self::$SchemaManager;
+        return $this->Connection->getSchemaManager();
     }
 
     /**
@@ -99,8 +74,6 @@ class Model extends AbstractAddOn
      */
     final public function hasView( $ViewName )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $SchemaManager = $this->getSchemaManager();
         $NameList = array_map( function ( View $V ) {
@@ -119,8 +92,6 @@ class Model extends AbstractAddOn
     final public function hasColumn( $TableName, $ColumnName )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $SchemaManager = $this->getSchemaManager();
         $NameList = array_map( function ( Column $V ) {
 
@@ -137,8 +108,6 @@ class Model extends AbstractAddOn
     final public function hasTable( $TableName )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $SchemaManager = $this->getSchemaManager();
         return in_array( $TableName, $SchemaManager->listTableNames() );
     }
@@ -148,8 +117,6 @@ class Model extends AbstractAddOn
      */
     final public function addProtocol( $Item )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         if (empty( $this->Protocol )) {
             $this->Protocol[] = '<samp>'.$Item.'</samp>';
@@ -165,8 +132,6 @@ class Model extends AbstractAddOn
      */
     final public function getProtocol( $Simulate = false )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         if (count( $this->Protocol ) == 1) {
             $this->Protocol[0] .= '<br/>';
@@ -196,8 +161,6 @@ class Model extends AbstractAddOn
      */
     final public function getConnection()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->Connection;
     }
