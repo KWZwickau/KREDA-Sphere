@@ -1,11 +1,11 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Access;
 
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilegeRoleList;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilegeList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRightPrivilegeList;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRole;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRightList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\ViewAccess;
 
 /**
@@ -38,17 +38,17 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param string $Name
      *
-     * @return TblAccessRole
+     * @return TblAccess
      */
-    protected function actionCreateAccessRole( $Name )
+    protected function actionCreateAccess( $Name )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessRole' )
-            ->findOneBy( array( TblAccessRole::ATTR_NAME => $Name ) );
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccess' )
+            ->findOneBy( array( TblAccess::ATTR_NAME => $Name ) );
         if (null === $Entity) {
-            $Entity = new TblAccessRole( $Name );
+            $Entity = new TblAccess( $Name );
             $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
@@ -77,24 +77,24 @@ abstract class EntityAction extends EntitySchema
      * @param TblAccessRight     $TblAccessRight
      * @param TblAccessPrivilege $TblAccessPrivilege
      *
-     * @return TblAccessRightPrivilegeList
+     * @return TblAccessRightList
      */
-    protected function actionCreateAccessRightPrivilegeList(
+    protected function actionCreateAccessRightList(
         TblAccessRight $TblAccessRight,
         TblAccessPrivilege $TblAccessPrivilege
     ) {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessRightPrivilegeList' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessRightList' )
             ->findOneBy( array(
-                TblAccessRightPrivilegeList::ATTR_TBL_ACCESS_RIGHT     => $TblAccessRight->getId(),
-                TblAccessRightPrivilegeList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId()
+                TblAccessRightList::ATTR_TBL_ACCESS_RIGHT     => $TblAccessRight->getId(),
+                TblAccessRightList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId()
             ) );
         if (null === $Entity) {
-            $Entity = new TblAccessRightPrivilegeList();
-            $Entity->setTblAccessRight( $TblAccessRight->getId() );
-            $Entity->setTblAccessPrivilege( $TblAccessPrivilege->getId() );
+            $Entity = new TblAccessRightList();
+            $Entity->setTblAccessRight( $TblAccessRight );
+            $Entity->setTblAccessPrivilege( $TblAccessPrivilege );
             $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
@@ -102,26 +102,26 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblAccessPrivilege $TblAccessPrivilege
-     * @param TblAccessRole      $tblAccessRole
+     * @param TblAccess          $tblAccess
      *
-     * @return TblAccessPrivilegeRoleList
+     * @return TblAccessPrivilegeList
      */
-    protected function actionCreateAccessPrivilegeRoleList(
+    protected function actionCreateAccessPrivilegeList(
         TblAccessPrivilege $TblAccessPrivilege,
-        TblAccessRole $tblAccessRole
+        TblAccess $tblAccess
     ) {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessPrivilegeRoleList' )
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessPrivilegeList' )
             ->findOneBy( array(
-                TblAccessPrivilegeRoleList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId(),
-                TblAccessPrivilegeRoleList::ATTR_TBL_ACCESS_ROLE      => $tblAccessRole->getId()
+                TblAccessPrivilegeList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId(),
+                TblAccessPrivilegeList::ATTR_TBL_ACCESS           => $tblAccess->getId()
             ) );
         if (null === $Entity) {
-            $Entity = new TblAccessPrivilegeRoleList();
-            $Entity->setTblAccessPrivilege( $TblAccessPrivilege->getId() );
-            $Entity->setTblAccessRole( $tblAccessRole->getId() );
+            $Entity = new TblAccessPrivilegeList();
+            $Entity->setTblAccessPrivilege( $TblAccessPrivilege );
+            $Entity->setTblAccess( $tblAccess );
             $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
@@ -139,30 +139,20 @@ abstract class EntityAction extends EntitySchema
 
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessRight' )
             ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Route ) );
-        if (null === $Entity) {
-            return false;
-        } else {
-            return $Entity;
-        }
+        return ( null === $Entity ? false : $Entity );
     }
 
     /**
-     * @param TblAccessRole $AccessRole
+     * @param TblAccess $Access
      *
      * @return ViewAccess[]|bool
      */
-    protected function entityViewAccessByAccessRole( TblAccessRole $AccessRole )
+    protected function entityViewAccessByAccessRole( TblAccess $Access )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $EntityList = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'ViewAccess' )
-            ->findBy( array( 'tblAccessRole' => $AccessRole->getId() ) );
-        if (empty( $EntityList )) {
-            return false;
-        } else {
-            return $EntityList;
-        }
+            ->findBy( array( 'tblAccess' => $Access->getId() ) );
+        return ( empty( $EntityList ) ? false : $EntityList );
     }
 
 
@@ -174,15 +164,9 @@ abstract class EntityAction extends EntitySchema
     protected function entityViewAccessByAccessPrivilege( TblAccessPrivilege $AccessPrivilege )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $EntityList = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'ViewAccess' )
             ->findBy( array( 'tblAccessPrivilege' => $AccessPrivilege->getId() ) );
-        if (empty( $EntityList )) {
-            return false;
-        } else {
-            return $EntityList;
-        }
+        return ( empty( $EntityList ) ? false : $EntityList );
     }
 
     /**
@@ -193,14 +177,44 @@ abstract class EntityAction extends EntitySchema
     protected function entityViewAccessByAccessRight( TblAccessRight $AccessRight )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $EntityList = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'ViewAccess' )
             ->findBy( array( 'tblAccessRight' => $AccessRight->getId() ) );
-        if (empty( $EntityList )) {
-            return false;
-        } else {
-            return $EntityList;
-        }
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccess
+     */
+    protected function entityAccessById( $Id )
+    {
+
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblAccess', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccessPrivilege
+     */
+    protected function entityAccessPrivilegeById( $Id )
+    {
+
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblAccessPrivilege', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccessRight
+     */
+    protected function entityAccessRightById( $Id )
+    {
+
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblAccessRight', $Id );
+        return ( null === $Entity ? false : $Entity );
     }
 }

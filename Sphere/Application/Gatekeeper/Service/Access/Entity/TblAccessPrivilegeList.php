@@ -6,16 +6,17 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 
 /**
  * @Entity
- * @Table(name="tblAccessPrivilegeRoleList")
+ * @Table(name="tblAccessPrivilegeList")
  */
-class TblAccessPrivilegeRoleList
+class TblAccessPrivilegeList
 {
 
     const ATTR_TBL_ACCESS_PRIVILEGE = 'tblAccessPrivilege';
-    const ATTR_TBL_ACCESS_ROLE = 'tblAccessRole';
+    const ATTR_TBL_ACCESS = 'tblAccess';
 
     /**
      * @Id
@@ -30,42 +31,42 @@ class TblAccessPrivilegeRoleList
     /**
      * @Column(type="bigint")
      */
-    private $tblAccessRole;
+    private $tblAccess;
 
     /**
-     * @return integer
+     * @return bool|TblAccessPrivilege
      */
     public function getTblAccessPrivilege()
     {
 
-        return $this->tblAccessPrivilege;
+        return Gatekeeper::serviceAccess()->entityAccessPrivilegeById( $this->tblAccessPrivilege );
     }
 
     /**
-     * @param integer $tblAccessPrivilege
+     * @param null|TblAccessPrivilege $tblAccessPrivilege
      */
-    public function setTblAccessPrivilege( $tblAccessPrivilege )
+    public function setTblAccessPrivilege( TblAccessPrivilege $tblAccessPrivilege = null )
     {
 
-        $this->tblAccessPrivilege = $tblAccessPrivilege;
+        $this->tblAccessPrivilege = ( null === $tblAccessPrivilege ? null : $tblAccessPrivilege->getId() );
     }
 
     /**
-     * @return integer
+     * @return bool|TblAccess
      */
-    public function getTblAccessRole()
+    public function getTblAccess()
     {
 
-        return $this->tblAccessRole;
+        return Gatekeeper::serviceAccess()->entityAccessById( $this->tblAccess );
     }
 
     /**
-     * @param integer $tblAccessRole
+     * @param null|TblAccess $tblAccess
      */
-    public function setTblAccessRole( $tblAccessRole )
+    public function setTblAccess( TblAccess $tblAccess = null )
     {
 
-        $this->tblAccessRole = $tblAccessRole;
+        $this->tblAccess = ( null === $tblAccess ? null : $tblAccess->getId() );
     }
 
     /**

@@ -6,12 +6,13 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 
 /**
  * @Entity
- * @Table(name="tblAccessRightPrivilegeList")
+ * @Table(name="tblAccessRightList")
  */
-class TblAccessRightPrivilegeList
+class TblAccessRightList
 {
 
     const ATTR_TBL_ACCESS_RIGHT = 'tblAccessRight';
@@ -33,39 +34,39 @@ class TblAccessRightPrivilegeList
     private $tblAccessPrivilege;
 
     /**
-     * @return integer
+     * @return bool|TblAccessRight
      */
     public function getTblAccessRight()
     {
 
-        return $this->tblAccessRight;
+        return Gatekeeper::serviceAccess()->entityAccessRightById( $this->tblAccessRight );
     }
 
     /**
-     * @param integer $tblAccessRight
+     * @param null|TblAccessRight $tblAccessRight
      */
-    public function setTblAccessRight( $tblAccessRight )
+    public function setTblAccessRight( TblAccessRight $tblAccessRight = null )
     {
 
-        $this->tblAccessRight = $tblAccessRight;
+        $this->tblAccessRight = ( null === $tblAccessRight ? null : $tblAccessRight->getId() );
     }
 
     /**
-     * @return integer
+     * @return bool|TblAccessPrivilege
      */
     public function getTblAccessPrivilege()
     {
 
-        return $this->tblAccessPrivilege;
+        return Gatekeeper::serviceAccess()->entityAccessPrivilegeById( $this->tblAccessPrivilege );
     }
 
     /**
-     * @param integer $tblAccessPrivilege
+     * @param null|TblAccessPrivilege $tblAccessPrivilege
      */
-    public function setTblAccessPrivilege( $tblAccessPrivilege )
+    public function setTblAccessPrivilege( TblAccessPrivilege $tblAccessPrivilege = null )
     {
 
-        $this->tblAccessPrivilege = $tblAccessPrivilege;
+        $this->tblAccessPrivilege = ( null === $tblAccessPrivilege ? null : $tblAccessPrivilege->getId() );
     }
 
     /**

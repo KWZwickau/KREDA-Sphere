@@ -12,22 +12,16 @@ abstract class EntityAction extends EntitySchema
 {
 
     /**
-     * @param string $Identifier
+     * @param string $Name
      *
      * @return bool|TblConsumer
      */
-    protected function entityConsumerByIdentifier( $Identifier )
+    protected function entityConsumerByName( $Name )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblConsumer' )
-            ->findOneBy( array( TblConsumer::ATTR_IDENTIFIER => $Identifier ) );
-        if (null === $Entity) {
-            return false;
-        } else {
-            return $Entity;
-        }
+            ->findOneBy( array( TblConsumer::ATTR_NAME => $Name ) );
+        return ( null === $Entity ? false : $Entity );
     }
 
     /**
@@ -38,30 +32,24 @@ abstract class EntityAction extends EntitySchema
     protected function entityConsumerById( $Id )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblConsumer' )->find( $Id );
-        if (null === $Entity) {
-            return false;
-        } else {
-            return $Entity;
-        }
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblConsumer', $Id );
+        return ( null === $Entity ? false : $Entity );
     }
 
     /**
-     * @param string $Identifier
+     * @param string $Name
      *
      * @return TblConsumer
      */
-    protected function actionCreateConsumer( $Identifier )
+    protected function actionCreateConsumer( $Name )
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblConsumer' )
-            ->findOneBy( array( TblConsumer::ATTR_IDENTIFIER => $Identifier ) );
+            ->findOneBy( array( TblConsumer::ATTR_NAME => $Name ) );
         if (null === $Entity) {
-            $Entity = new TblConsumer( $Identifier );
+            $Entity = new TblConsumer( $Name );
             $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
@@ -73,13 +61,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityViewConsumer()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $EntityList = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'ViewConsumer' )->findAll();
-        if (empty( $EntityList )) {
-            return false;
-        } else {
-            return $EntityList;
-        }
+        return ( empty( $EntityList ) ? false : $EntityList );
     }
 }

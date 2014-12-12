@@ -3,6 +3,11 @@ namespace KREDA\Sphere\Application\System\Database\Connection;
 
 use MOC\V\Component\Database\Component\IBridgeInterface;
 
+/**
+ * Class Register
+ *
+ * @package KREDA\Sphere\Application\System\Database\Connection
+ */
 class Register
 {
 

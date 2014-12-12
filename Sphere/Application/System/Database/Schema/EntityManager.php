@@ -3,6 +3,11 @@ namespace KREDA\Sphere\Application\System\Database\Schema;
 
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * Class EntityManager
+ *
+ * @package KREDA\Sphere\Application\System\Database\Schema
+ */
 class EntityManager
 {
 

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Management\Management;
 
 /**
  * @Entity
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
 class TblConsumer
 {
 
-    const ATTR_IDENTIFIER = 'Identifier';
+    const ATTR_NAME = 'Name';
 
     /**
      * @Id
@@ -27,15 +28,81 @@ class TblConsumer
     /**
      * @Column(type="string")
      */
-    private $Identifier;
+    private $Name;
+    /**
+     * @Column(type="string")
+     */
+    private $TableSuffix;
+    /**
+     * @Column(type="string")
+     */
+    private $DatabaseSuffix;
+    /**
+     * @Column(type="bigint")
+     */
+    private $serviceManagement_Address;
 
     /**
-     * @param string $Identifier
+     * @param string $Name
      */
-    function __construct( $Identifier )
+    function __construct( $Name )
     {
 
-        $this->Identifier = $Identifier;
+        $this->Name = $Name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatabaseSuffix()
+    {
+
+        return $this->DatabaseSuffix;
+    }
+
+    /**
+     * @param string $DatabaseSuffix
+     */
+    public function setDatabaseSuffix( $DatabaseSuffix )
+    {
+
+        $this->DatabaseSuffix = $DatabaseSuffix;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTableSuffix()
+    {
+
+        return $this->TableSuffix;
+    }
+
+    /**
+     * @param string $TableSuffix
+     */
+    public function setTableSuffix( $TableSuffix )
+    {
+
+        $this->TableSuffix = $TableSuffix;
+    }
+
+    /**
+     * @return bool|TblAddress
+     */
+    public function getServiceManagementAddress()
+    {
+
+        return Management::serviceAddress()->entityAddressById( $this->serviceManagement_Address );
+    }
+
+    /**
+     * @param null|TblAddress $tblAddress
+     */
+    public function setServiceManagementAddress( TblAddress $tblAddress = null )
+    {
+
+        $this->serviceManagement_Address = ( null === $tblAddress ? null : $tblAddress->getId() );
     }
 
     /**
@@ -59,18 +126,18 @@ class TblConsumer
     /**
      * @return string
      */
-    public function getIdentifier()
+    public function getName()
     {
 
-        return $this->Identifier;
+        return $this->Name;
     }
 
     /**
-     * @param string $Identifier
+     * @param string $Name
      */
-    public function setIdentifier( $Identifier )
+    public function setName( $Name )
     {
 
-        $this->Identifier = $Identifier;
+        $this->Name = $Name;
     }
 }

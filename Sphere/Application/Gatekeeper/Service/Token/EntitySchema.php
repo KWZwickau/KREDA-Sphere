@@ -23,8 +23,6 @@ abstract class EntitySchema extends AbstractService
     public function setupDatabaseSchema( $Simulate = true )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         /**
          * Table
          */
@@ -74,8 +72,6 @@ abstract class EntitySchema extends AbstractService
     private function setTableToken( Schema &$Schema )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         /**
          * Install
          */
@@ -105,8 +101,6 @@ abstract class EntitySchema extends AbstractService
      */
     protected function getTableToken()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->getDatabaseHandler()->getSchema()->getTable( 'tblToken' );
     }

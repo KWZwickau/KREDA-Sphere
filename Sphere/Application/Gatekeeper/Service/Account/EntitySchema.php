@@ -4,8 +4,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Account;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Common\AbstractService;
 
 /**
@@ -30,9 +29,19 @@ abstract class EntitySchema extends AbstractService
         $Schema = clone $this->getDatabaseHandler()->getSchema();
         $tblAccountRole = $this->setTableAccountRole( $Schema );
         $tblAccountTyp = $this->setTableAccountTyp( $Schema );
-        $tblAccount = $this->setTableAccount( $Schema, Token::getApi()->schemaTableToken(), $tblAccountTyp );
-        $this->setTableAccountSession( $Schema, $tblAccount );
-        $this->setTableAccountRoleList( $Schema, $tblAccountRole, Access::getApi()->schemaTableAccessRole() );
+        $tblAccount = $this->setTableAccount( $Schema,
+            Gatekeeper::serviceToken()->schemaTableToken(),
+            Gatekeeper::serviceConsumer()->schemaTableConsumer(),
+            $tblAccountTyp,
+            $tblAccountRole
+        );
+        $this->setTableAccountSession( $Schema,
+            $tblAccount
+        );
+        $this->setTableAccountRoleList( $Schema,
+            $tblAccountRole,
+            Gatekeeper::serviceAccess()->schemaTableAccess()
+        );
         /**
          * Migration
          */
@@ -117,13 +126,20 @@ abstract class EntitySchema extends AbstractService
     /**
      * @param Schema $Schema
      * @param Table  $tblToken
+     * @param Table  $tblConsumer
      * @param Table  $tblAccountTyp
+     * @param Table  $tblAccountRole
      *
      * @throws SchemaException
      * @return Table
      */
-    private function setTableAccount( Schema &$Schema, Table $tblToken, Table $tblAccountTyp )
-    {
+    private function setTableAccount(
+        Schema &$Schema,
+        Table $tblToken,
+        Table $tblConsumer,
+        Table $tblAccountTyp,
+        Table $tblAccountRole
+    ) {
 
         /**
          * Install
@@ -144,23 +160,32 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Password' )) {
             $Table->addColumn( 'Password', 'string' );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'tblAccountTyp' )) {
+            $Table->addColumn( 'tblAccountTyp', 'bigint' );
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                $Table->addForeignKeyConstraint( $tblAccountTyp, array( 'tblAccountTyp' ), array( 'Id' ) );
+            }
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'tblAccountRole' )) {
+            $Table->addColumn( 'tblAccountRole', 'bigint' );
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                $Table->addForeignKeyConstraint( $tblAccountRole, array( 'tblAccountRole' ), array( 'Id' ) );
+            }
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'serviceGatekeeper_Token' )) {
             $Table->addColumn( 'serviceGatekeeper_Token', 'bigint', array( 'notnull' => false ) );
             if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblToken, array( 'serviceGatekeeper_Token' ), array( 'Id' ) );
             }
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'tblAccountTyp' )) {
-            $Table->addColumn( 'tblAccountTyp', 'bigint', array( 'notnull' => false ) );
-            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblAccountTyp, array( 'tblAccountTyp' ), array( 'Id' ) );
-            }
-        }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'serviceHumanResources_Person' )) {
-            $Table->addColumn( 'serviceHumanResources_Person', 'bigint', array( 'notnull' => false ) );
-        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'serviceGatekeeper_Consumer' )) {
             $Table->addColumn( 'serviceGatekeeper_Consumer', 'bigint', array( 'notnull' => false ) );
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                $Table->addForeignKeyConstraint( $tblConsumer, array( 'serviceGatekeeper_Consumer' ), array( 'Id' ) );
+            }
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'serviceManagement_Person' )) {
+            $Table->addColumn( 'serviceManagement_Person', 'bigint', array( 'notnull' => false ) );
         }
         return $Table;
     }
@@ -206,7 +231,7 @@ abstract class EntitySchema extends AbstractService
     /**
      * @param Schema $Schema
      * @param Table  $tblAccountRole
-     * @param Table  $tblAccessRole
+     * @param Table  $tblAccess
      *
      * @throws SchemaException
      * @return Table
@@ -214,7 +239,7 @@ abstract class EntitySchema extends AbstractService
     private function setTableAccountRoleList(
         Schema &$Schema,
         Table $tblAccountRole,
-        Table $tblAccessRole
+        Table $tblAccess
     ) {
 
         /**
@@ -236,10 +261,10 @@ abstract class EntitySchema extends AbstractService
                 $Table->addForeignKeyConstraint( $tblAccountRole, array( 'tblAccountRole' ), array( 'Id' ) );
             }
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountRoleList', 'tblAccessRole' )) {
-            $Table->addColumn( 'tblAccessRole', 'bigint' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountRoleList', 'serviceGatekeeper_Access' )) {
+            $Table->addColumn( 'serviceGatekeeper_Access', 'bigint', array( 'notnull' => false ) );
             if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblAccessRole, array( 'tblAccessRole' ), array( 'Id' ) );
+                $Table->addForeignKeyConstraint( $tblAccess, array( 'serviceGatekeeper_Access' ), array( 'Id' ) );
             }
         }
         return $Table;

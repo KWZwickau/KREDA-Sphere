@@ -99,21 +99,6 @@ class System extends AbstractApplication
         $PhpInfo = ob_get_clean();
 
         $View->setContent(
-            '<style type="text/css">
-            #phpinfo { text-align: left; }
-            #phpinfo a { color: red;}
-            #phpinfo a:link { color: red;}
-            #phpinfo a:hover {  color: red;}
-            #phpinfo table { width: 100%; }
-            #phpinfo td, th {  border: 1px solid silver; padding: 5px; }
-            #phpinfo th { padding: 5px; }
-            #phpinfo h1 { font-size: 1.3em; }
-            #phpinfo h2 { font-size: 1.2em; text-transform: capitalize; border-bottom: 1px solid red; }
-            #phpinfo .p { margin: 0; }
-            #phpinfo .e { background: #CCC; width: 30%; }
-            #phpinfo .h { background: #DDD; }
-            #phpinfo img { display: none; }
-            </style>'.
             '<div id="phpinfo">'.
             preg_replace( '!,!', ', ',
                 preg_replace( '!<th>(enabled)\s*</th>!i',

@@ -20,15 +20,9 @@ abstract class EntityAction extends EntitySchema
     protected function entityTokenByIdentifier( $Identifier )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblToken' )
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
-        if (null === $Entity) {
-            return false;
-        } else {
-            return $Entity;
-        }
+        return ( null === $Entity ? false : $Entity );
     }
 
     /**
@@ -39,14 +33,8 @@ abstract class EntityAction extends EntitySchema
     protected function entityTokenById( $Id )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblToken' )->find( $Id );
-        if (null === $Entity) {
-            return false;
-        } else {
-            return $Entity;
-        }
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblToken', $Id );
+        return ( null === $Entity ? false : $Entity );
     }
 
     /**
@@ -74,13 +62,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityViewToken()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $EntityList = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'ViewToken' )->findAll();
-        if (empty( $EntityList )) {
-            return false;
-        } else {
-            return $EntityList;
-        }
+        return ( empty( $EntityList ) ? false : $EntityList );
     }
 }

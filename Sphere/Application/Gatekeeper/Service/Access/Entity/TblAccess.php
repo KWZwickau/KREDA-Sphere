@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity
- * @Table(name="tblAccessRole")
+ * @Table(name="tblAccess")
  */
-class TblAccessRole
+class TblAccess
 {
 
     const ATTR_NAME = 'Name';

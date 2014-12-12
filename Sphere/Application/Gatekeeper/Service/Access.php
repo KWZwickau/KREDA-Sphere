@@ -2,6 +2,9 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\EntityAction;
 
 /**
@@ -36,12 +39,12 @@ class Access extends EntityAction
         $Privilege = $this->actionCreateAccessPrivilege( 'Application::System:Database' );
 
         $Right = $this->actionCreateAccessRight( '/Sphere/System/Database' );
-        $this->actionCreateAccessRightPrivilegeList( $Right, $Privilege );
+        $this->actionCreateAccessRightList( $Right, $Privilege );
         $Right = $this->actionCreateAccessRight( '/Sphere/System/Database/Status' );
-        $this->actionCreateAccessRightPrivilegeList( $Right, $Privilege );
+        $this->actionCreateAccessRightList( $Right, $Privilege );
 
-        $Role = $this->actionCreateAccessRole( 'Administrator::GodMode' );
-        $this->actionCreateAccessPrivilegeRoleList( $Privilege, $Role );
+        $Role = $this->actionCreateAccess( 'Administrator::GodMode' );
+        $this->actionCreateAccessPrivilegeList( $Privilege, $Role );
 
         /**
          * System:Token
@@ -49,22 +52,22 @@ class Access extends EntityAction
         $Privilege = $this->actionCreateAccessPrivilege( 'Application::System:Token' );
 
         $Right = $this->actionCreateAccessRight( '/Sphere/System/Token/Certification' );
-        $this->actionCreateAccessRightPrivilegeList( $Right, $Privilege );
+        $this->actionCreateAccessRightList( $Right, $Privilege );
 
-        $Role = $this->actionCreateAccessRole( 'Administrator::GodMode' );
-        $this->actionCreateAccessPrivilegeRoleList( $Privilege, $Role );
+        $Role = $this->actionCreateAccess( 'Administrator::GodMode' );
+        $this->actionCreateAccessPrivilegeList( $Privilege, $Role );
 
     }
 
     /**
      * @return Table
      */
-    public function schemaTableAccessRole()
+    public function schemaTableAccess()
     {
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
-        return $this->getTableAccessRole();
+        return $this->getTableAccess();
     }
 
     /**
@@ -92,5 +95,38 @@ class Access extends EntityAction
 
         }
         return false;
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccess
+     */
+    public function entityAccessById( $Id )
+    {
+
+        return parent::entityAccessById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccessPrivilege
+     */
+    public function entityAccessPrivilegeById( $Id )
+    {
+
+        return parent::entityAccessPrivilegeById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccessRight
+     */
+    public function entityAccessRightById( $Id )
+    {
+
+        return parent::entityAccessRightById( $Id );
     }
 }

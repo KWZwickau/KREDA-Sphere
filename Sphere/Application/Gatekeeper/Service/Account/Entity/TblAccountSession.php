@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 
 /**
  * @Entity
@@ -47,21 +48,21 @@ class TblAccountSession
     }
 
     /**
-     * @return integer
+     * @return bool|TblAccount
      */
     public function getTblAccount()
     {
 
-        return $this->tblAccount;
+        return Gatekeeper::serviceAccount()->entityAccountById( $this->tblAccount );
     }
 
     /**
-     * @param integer $tblAccount
+     * @param null|TblAccount $tblAccount
      */
-    public function setTblAccount( $tblAccount )
+    public function setTblAccount( TblAccount $tblAccount = null )
     {
 
-        $this->tblAccount = $tblAccount;
+        $this->tblAccount = ( null === $tblAccount ? null : $tblAccount->getId() );
     }
 
     /**

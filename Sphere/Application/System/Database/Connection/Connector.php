@@ -5,6 +5,11 @@ use KREDA\Sphere\Application\System\Database\Driver\AbstractDriver;
 use MOC\V\Component\Database\Component\IBridgeInterface;
 use MOC\V\Component\Database\Database;
 
+/**
+ * Class Connector
+ *
+ * @package KREDA\Sphere\Application\System\Database\Connection
+ */
 class Connector
 {
 

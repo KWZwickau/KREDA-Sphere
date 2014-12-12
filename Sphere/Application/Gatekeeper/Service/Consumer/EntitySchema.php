@@ -82,17 +82,17 @@ abstract class EntitySchema extends AbstractService
         /**
          * Upgrade
          */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'Identifier' )) {
-            $Table->addColumn( 'Identifier', 'string' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'Name' )) {
+            $Table->addColumn( 'Name', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'TableSuffix' )) {
-            $Table->addColumn( 'TableSuffix', 'string' );
+            $Table->addColumn( 'TableSuffix', 'string', array( 'notnull' => false ) );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'DatabaseSuffix' )) {
-            $Table->addColumn( 'DatabaseSuffix', 'string' );
+            $Table->addColumn( 'DatabaseSuffix', 'string', array( 'notnull' => false ) );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'apiManagement_Address' )) {
-            $Table->addColumn( 'apiManagement_Address', 'string' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'serviceManagement_Address' )) {
+            $Table->addColumn( 'serviceManagement_Address', 'bigint', array( 'notnull' => false ) );
         }
 
         return $Table;

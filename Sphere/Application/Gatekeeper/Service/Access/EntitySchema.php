@@ -23,17 +23,15 @@ abstract class EntitySchema extends AbstractService
     public function setupDatabaseSchema( $Simulate = true )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         /**
          * Table
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
         $tblAccessRight = $this->setTableAccessRight( $Schema );
         $tblAccessPrivilege = $this->setTableAccessPrivilege( $Schema );
-        $tblAccessRole = $this->setTableAccessRole( $Schema );
-        $this->setTableAccessPrivilegeRoleList( $Schema, $tblAccessPrivilege, $tblAccessRole );
-        $this->setTableAccessRightPrivilegeList( $Schema, $tblAccessRight, $tblAccessPrivilege );
+        $tblAccess = $this->setTableAccess( $Schema );
+        $this->setTableAccessPrivilegeList( $Schema, $tblAccessPrivilege, $tblAccess );
+        $this->setTableAccessRightList( $Schema, $tblAccessRight, $tblAccessPrivilege );
         /**
          * Migration
          */
@@ -55,19 +53,19 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasView( 'viewAccess' )) {
             $viewAccess = $this->getDatabaseHandler()->getQueryBuilder()
                 ->select( array(
-                    'Ro.Id AS tblAccessRole',
+                    'Ro.Id AS tblAccess',
                     'Ro.Name AS RoleName',
-                    'PrRo.Id AS tblAccessPrivilegeRoleList',
+                    'PrRo.Id AS tblAccessPrivilegeList',
                     'Pr.Id AS tblAccessPrivilege',
                     'Pr.Name AS PrivilegeName',
-                    'RiPr.Id AS tblAccessRightPrivilegeList',
+                    'RiPr.Id AS tblAccessRightList',
                     'Ri.Id AS tblAccessRight',
                     'Ri.Route AS RightRoute',
                 ) )
-                ->from( 'tblAccessRole', 'Ro' )
-                ->innerJoin( 'Ro', 'tblAccessPrivilegeRoleList', 'PrRo', 'PrRo.tblAccessRole = Ro.Id' )
+                ->from( 'tblAccess', 'Ro' )
+                ->innerJoin( 'Ro', 'tblAccessPrivilegeList', 'PrRo', 'PrRo.tblAccess = Ro.Id' )
                 ->innerJoin( 'PrRo', 'tblAccessPrivilege', 'Pr', 'PrRo.tblAccessPrivilege = Pr.Id' )
-                ->innerJoin( 'Pr', 'tblAccessRightPrivilegeList', 'RiPr', 'RiPr.tblAccessPrivilege = Pr.Id' )
+                ->innerJoin( 'Pr', 'tblAccessRightList', 'RiPr', 'RiPr.tblAccessPrivilege = Pr.Id' )
                 ->innerJoin( 'RiPr', 'tblAccessRight', 'Ri', 'RiPr.tblAccessRight = Ri.Id' )
                 ->getSQL();
             $this->getDatabaseHandler()->addProtocol( 'viewAccess: '.$viewAccess );
@@ -87,8 +85,6 @@ abstract class EntitySchema extends AbstractService
      */
     private function setTableAccessRight( Schema &$Schema )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         /**
          * Install
@@ -118,8 +114,6 @@ abstract class EntitySchema extends AbstractService
     private function setTableAccessPrivilege( Schema &$Schema )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         /**
          * Install
          */
@@ -145,25 +139,23 @@ abstract class EntitySchema extends AbstractService
      * @return Table
      * @throws SchemaException
      */
-    private function setTableAccessRole( Schema &$Schema )
+    private function setTableAccess( Schema &$Schema )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAccessRole' )) {
-            $Table = $Schema->createTable( 'tblAccessRole' );
+        if (!$this->getDatabaseHandler()->hasTable( 'tblAccess' )) {
+            $Table = $Schema->createTable( 'tblAccess' );
             $Column = $Table->addColumn( 'Id', 'bigint' );
             $Column->setAutoincrement( true );
             $Table->setPrimaryKey( array( 'Id' ) );
         }
-        $Table = $Schema->getTable( 'tblAccessRole' );
+        $Table = $Schema->getTable( 'tblAccess' );
         /**
          * Upgrade
          */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessRole', 'Name' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccess', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
         return $Table;
@@ -172,43 +164,41 @@ abstract class EntitySchema extends AbstractService
     /**
      * @param Schema $Schema
      * @param Table  $tblAccessPrivilege
-     * @param Table  $tblAccessRole
+     * @param Table  $tblAccess
      *
      * @throws SchemaException
      * @return Table
      */
-    private function setTableAccessPrivilegeRoleList(
+    private function setTableAccessPrivilegeList(
         Schema &$Schema,
         Table $tblAccessPrivilege,
-        Table $tblAccessRole
+        Table $tblAccess
     ) {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAccessPrivilegeRoleList' )) {
-            $Table = $Schema->createTable( 'tblAccessPrivilegeRoleList' );
+        if (!$this->getDatabaseHandler()->hasTable( 'tblAccessPrivilegeList' )) {
+            $Table = $Schema->createTable( 'tblAccessPrivilegeList' );
             $Column = $Table->addColumn( 'Id', 'bigint' );
             $Column->setAutoincrement( true );
             $Table->setPrimaryKey( array( 'Id' ) );
         }
-        $Table = $Schema->getTable( 'tblAccessPrivilegeRoleList' );
+        $Table = $Schema->getTable( 'tblAccessPrivilegeList' );
         /**
          * Upgrade
          */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessPrivilegeRoleList', 'tblAccessPrivilege' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessPrivilegeList', 'tblAccessPrivilege' )) {
             $Table->addColumn( 'tblAccessPrivilege', 'bigint' );
             if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccessPrivilege, array( 'tblAccessPrivilege' ),
                     array( 'Id' ) );
             }
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessPrivilegeRoleList', 'tblAccessRole' )) {
-            $Table->addColumn( 'tblAccessRole', 'bigint' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessPrivilegeList', 'tblAccess' )) {
+            $Table->addColumn( 'tblAccess', 'bigint' );
             if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblAccessRole, array( 'tblAccessRole' ), array( 'Id' ) );
+                $Table->addForeignKeyConstraint( $tblAccess, array( 'tblAccess' ), array( 'Id' ) );
             }
         }
         return $Table;
@@ -222,34 +212,32 @@ abstract class EntitySchema extends AbstractService
      * @throws SchemaException
      * @return Table
      */
-    private function setTableAccessRightPrivilegeList(
+    private function setTableAccessRightList(
         Schema &$Schema,
         Table $tblAccessRight,
         Table $tblAccessPrivilege
     ) {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAccessRightPrivilegeList' )) {
-            $Table = $Schema->createTable( 'tblAccessRightPrivilegeList' );
+        if (!$this->getDatabaseHandler()->hasTable( 'tblAccessRightList' )) {
+            $Table = $Schema->createTable( 'tblAccessRightList' );
             $Column = $Table->addColumn( 'Id', 'bigint' );
             $Column->setAutoincrement( true );
             $Table->setPrimaryKey( array( 'Id' ) );
         }
-        $Table = $Schema->getTable( 'tblAccessRightPrivilegeList' );
+        $Table = $Schema->getTable( 'tblAccessRightList' );
         /**
          * Upgrade
          */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessRightPrivilegeList', 'tblAccessRight' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessRightList', 'tblAccessRight' )) {
             $Table->addColumn( 'tblAccessRight', 'bigint' );
             if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccessRight, array( 'tblAccessRight' ), array( 'Id' ) );
             }
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessRightPrivilegeList', 'tblAccessPrivilege' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessRightList', 'tblAccessPrivilege' )) {
             $Table->addColumn( 'tblAccessPrivilege', 'bigint' );
             if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccessPrivilege, array( 'tblAccessPrivilege' ),
@@ -266,8 +254,6 @@ abstract class EntitySchema extends AbstractService
     protected function getTableAccessRight()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccessRight' );
     }
 
@@ -278,8 +264,6 @@ abstract class EntitySchema extends AbstractService
     protected function getTableAccessPrivilege()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccessPrivilege' );
     }
 
@@ -287,35 +271,29 @@ abstract class EntitySchema extends AbstractService
      * @return Table
      * @throws SchemaException
      */
-    protected function getTableAccessRole()
+    protected function getTableAccess()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccessRole' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccess' );
     }
 
     /**
      * @return Table
      * @throws SchemaException
      */
-    protected function getTableAccessRightPrivilegeList()
+    protected function getTableAccessRightList()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccessRightPrivilegeList' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccessRightList' );
     }
 
     /**
      * @return Table
      * @throws SchemaException
      */
-    protected function getTableAccessPrivilegeRoleList()
+    protected function getTableAccessPrivilegeList()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccessPrivilegeRoleList' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccessPrivilegeList' );
     }
 }

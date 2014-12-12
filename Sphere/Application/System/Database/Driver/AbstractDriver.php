@@ -1,6 +1,11 @@
 <?php
 namespace KREDA\Sphere\Application\System\Database\Driver;
 
+/**
+ * Class AbstractDriver
+ *
+ * @package KREDA\Sphere\Application\System\Database\Driver
+ */
 abstract class AbstractDriver
 {
 

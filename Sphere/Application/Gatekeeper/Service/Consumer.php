@@ -1,6 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
+use Doctrine\DBAL\Schema\Table;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\EntityAction;
 
 /**
@@ -17,17 +19,32 @@ class Consumer extends EntityAction
     public function __construct()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setDatabaseHandler( 'Gatekeeper', 'Consumer' );
     }
 
     public function setupDatabaseContent()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->actionCreateConsumer( 'Demo' );
+    }
 
+    /**
+     * @return Table
+     */
+    public function schemaTableConsumer()
+    {
+
+        return $this->getTableConsumer();
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblConsumer
+     */
+    public function entityConsumerById( $Id )
+    {
+
+        return parent::entityConsumerById( $Id );
     }
 }

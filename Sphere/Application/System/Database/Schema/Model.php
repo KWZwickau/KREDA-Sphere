@@ -14,6 +14,11 @@ use KREDA\Sphere\Application\System\Database\Connection\Connector;
 use KREDA\Sphere\Application\System\Database\Connection\Identifier;
 use MOC\V\Component\Database\Component\IBridgeInterface;
 
+/**
+ * Class Model
+ *
+ * @package KREDA\Sphere\Application\System\Database\Schema
+ */
 class Model
 {
 

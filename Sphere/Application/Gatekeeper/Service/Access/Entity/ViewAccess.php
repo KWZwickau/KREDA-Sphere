@@ -19,7 +19,7 @@ class ViewAccess
      * @Id
      * @Column(type="bigint")
      */
-    private $tblAccessRole;
+    private $tblAccess;
     /**
      * @Column(type="string")
      */
@@ -28,7 +28,7 @@ class ViewAccess
      * @Id
      * @Column(type="bigint")
      */
-    private $tblAccessPrivilegeRoleList;
+    private $tblAccessPrivilegeList;
     /**
      * @Id
      * @Column(type="bigint")
@@ -42,7 +42,7 @@ class ViewAccess
      * @Id
      * @Column(type="bigint")
      */
-    private $tblAccessRightPrivilegeList;
+    private $tblAccessRightList;
     /**
      * @Id
      * @Column(type="bigint")
@@ -92,10 +92,10 @@ class ViewAccess
     /**
      * @return integer
      */
-    public function getTblAccessPrivilegeRoleList()
+    public function getTblAccessPrivilegeList()
     {
 
-        return $this->tblAccessPrivilegeRoleList;
+        return $this->tblAccessPrivilegeList;
     }
 
     /**
@@ -110,18 +110,18 @@ class ViewAccess
     /**
      * @return integer
      */
-    public function getTblAccessRightPrivilegeList()
+    public function getTblAccessRightList()
     {
 
-        return $this->tblAccessRightPrivilegeList;
+        return $this->tblAccessRightList;
     }
 
     /**
      * @return integer
      */
-    public function getTblAccessRole()
+    public function getTblAccess()
     {
 
-        return $this->tblAccessRole;
+        return $this->tblAccess;
     }
 }

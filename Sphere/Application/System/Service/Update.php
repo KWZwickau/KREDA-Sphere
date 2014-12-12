@@ -65,8 +65,9 @@ class Update extends AbstractService
 
         $Protocol[] = Gatekeeper::serviceToken()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Gatekeeper::serviceAccess()->setupDatabaseSchema( $Simulate );
-        $Protocol[] = Gatekeeper::serviceAccount()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Gatekeeper::serviceConsumer()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Gatekeeper::serviceAccount()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Management::servicePerson()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Management::serviceEducation()->setupDatabaseSchema( $Simulate );
 
         if (!$Simulate) {

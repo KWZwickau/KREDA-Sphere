@@ -1,6 +1,11 @@
 <?php
 namespace KREDA\Sphere\Application\System\Database\Connection;
 
+/**
+ * Class Identifier
+ *
+ * @package KREDA\Sphere\Application\System\Database\Connection
+ */
 class Identifier
 {
 

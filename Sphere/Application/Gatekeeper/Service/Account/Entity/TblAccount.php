@@ -8,8 +8,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
+use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 
 /**
  * @Entity
@@ -21,9 +24,10 @@ class TblAccount
     const ATTR_USERNAME = 'Username';
     const ATTR_PASSWORD = 'Password';
     const ATTR_TBL_ACCOUNT_TYP = 'tblAccountTyp';
+    const ATTR_TBL_ACCOUNT_ROLE = 'tblAccountRole';
     const ATTR_SERVICE_GATEKEEPER_TOKEN = 'serviceGatekeeper_Token';
     const ATTR_SERVICE_GATEKEEPER_CONSUMER = 'serviceGatekeeper_Consumer';
-    const ATTR_SERVICE_HUMANRESOURCES_PERSON = 'serviceHumanResources_Person';
+    const ATTR_SERVICE_MANAGEMENT_PERSON = 'serviceManagement_Person';
 
     /**
      * @Id
@@ -46,11 +50,15 @@ class TblAccount
     /**
      * @Column(type="bigint")
      */
+    private $tblAccountRole;
+    /**
+     * @Column(type="bigint")
+     */
     private $serviceGatekeeper_Token;
     /**
      * @Column(type="bigint")
      */
-    private $serviceHumanResources_Person;
+    private $serviceManagement_Person;
     /**
      * @Column(type="bigint")
      */
@@ -120,39 +128,39 @@ class TblAccount
     }
 
     /**
-     * @return null|integer
+     * @return bool|TblPerson
      */
-    public function getServiceHumanResourcesPerson()
+    public function getServiceManagementPerson()
     {
 
-        return $this->serviceHumanResources_Person;
+        return Management::servicePerson()->entityPersonById( $this->serviceManagement_Person );
     }
 
     /**
-     * @param null|integer $serviceHumanResources_Person
+     * @param null|TblPerson $tblPerson
      */
-    public function setServiceHumanResourcesPerson( $serviceHumanResources_Person )
+    public function setServiceManagementPerson( TblPerson $tblPerson = null )
     {
 
-        $this->serviceHumanResources_Person = $serviceHumanResources_Person;
+        $this->serviceManagement_Person = ( null === $tblPerson ? null : $tblPerson->getId() );
     }
 
     /**
-     * @return null|integer
+     * @return bool|TblConsumer
      */
     public function getServiceGatekeeperConsumer()
     {
 
-        return $this->serviceGatekeeper_Consumer;
+        return Gatekeeper::serviceConsumer()->entityConsumerById( $this->serviceGatekeeper_Consumer );
     }
 
     /**
-     * @param null|integer $serviceGatekeeper_Consumer
+     * @param null|TblConsumer $tblConsumer
      */
-    public function setServiceGatekeeperConsumer( $serviceGatekeeper_Consumer )
+    public function setServiceGatekeeperConsumer( TblConsumer $tblConsumer = null )
     {
 
-        $this->serviceGatekeeper_Consumer = $serviceGatekeeper_Consumer;
+        $this->serviceGatekeeper_Consumer = ( null === $tblConsumer ? null : $tblConsumer->getId() );
     }
 
     /**
@@ -170,11 +178,7 @@ class TblAccount
     public function setServiceGatekeeperToken( TblToken $tblToken = null )
     {
 
-        if (null === $tblToken) {
-            $this->serviceGatekeeper_Token = null;
-        } else {
-            $this->serviceGatekeeper_Token = $tblToken->getId();
-        }
+        $this->serviceGatekeeper_Token = ( null === $tblToken ? null : $tblToken->getId() );
     }
 
 
@@ -190,14 +194,28 @@ class TblAccount
     /**
      * @param null|TblAccountTyp $tblAccountTyp
      */
-    public function setTblAccountTyp( TblAccountTyp $tblAccountTyp )
+    public function setTblAccountTyp( TblAccountTyp $tblAccountTyp = null )
     {
 
-        if (null === $tblAccountTyp) {
-            $this->tblAccountTyp = null;
-        } else {
-            $this->tblAccountTyp = $tblAccountTyp->getId();
-        }
+        $this->tblAccountTyp = ( null === $tblAccountTyp ? null : $tblAccountTyp->getId() );
     }
 
+
+    /**
+     * @return bool|TblAccountRole
+     */
+    public function getTblAccountRole()
+    {
+
+        return Gatekeeper::serviceAccount()->entityAccountRoleById( $this->tblAccountRole );
+    }
+
+    /**
+     * @param null|TblAccountRole $tblAccountRole
+     */
+    public function setTblAccountRole( TblAccountRole $tblAccountRole = null )
+    {
+
+        $this->tblAccountRole = ( null === $tblAccountRole ? null : $tblAccountRole->getId() );
+    }
 }

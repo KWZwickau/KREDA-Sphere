@@ -93,13 +93,9 @@ class TblGroup
     /**
      * @param null|TblLevel $tblLevel
      */
-    public function setTblLevel( TblLevel $tblLevel )
+    public function setTblLevel( TblLevel $tblLevel = null )
     {
 
-        if (null === $tblLevel) {
-            $this->tblLevel = null;
-        } else {
-            $this->tblLevel = $tblLevel->getId();
-        }
+        $this->tblLevel = ( null === $tblLevel ? null : $tblLevel->getId() );
     }
 }

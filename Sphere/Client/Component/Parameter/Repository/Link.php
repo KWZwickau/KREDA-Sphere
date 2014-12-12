@@ -4,6 +4,11 @@ namespace KREDA\Sphere\Client\Component\Parameter\Repository;
 use KREDA\Sphere\Client\Component\IParameterInterface;
 use KREDA\Sphere\Client\Component\Parameter\Parameter;
 
+/**
+ * Class Link
+ *
+ * @package KREDA\Sphere\Client\Component\Parameter\Repository
+ */
 abstract class Link extends Parameter implements IParameterInterface
 {
 

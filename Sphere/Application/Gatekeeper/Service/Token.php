@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\ViewToken;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\EntityAction;
 
 /**
@@ -44,8 +45,6 @@ class Token extends EntityAction
     public function apiValidateToken( $Value )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $YubiKey = new Token\Hardware\YubiKey\YubiKey( 19180, 'YJwU33GNiRiw1dE8/MfIMNm8w3Y=' );
         $Key = $YubiKey->parseKey( $Value );
         return $YubiKey->verifyKey( $Key );
@@ -59,18 +58,14 @@ class Token extends EntityAction
     public function entityTokenById( $Id )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return parent::entityTokenById( $Id );
     }
 
     /**
-     * @return mixed
+     * @return bool|ViewToken[]
      */
     public function entityViewToken()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return parent::entityViewToken();
     }
@@ -80,8 +75,6 @@ class Token extends EntityAction
      */
     public function schemaTableToken()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return parent::getTableToken();
     }
@@ -93,8 +86,6 @@ class Token extends EntityAction
      */
     public function registerYubiKey( $OTP )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return parent::actionCreateToken( substr( $OTP, 0, 12 ) );
     }

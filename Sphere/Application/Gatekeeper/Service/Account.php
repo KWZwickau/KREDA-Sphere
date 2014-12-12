@@ -4,7 +4,9 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Error;
 use KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Redirect;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
@@ -39,8 +41,12 @@ class Account extends EntityAction
 
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
+        /**
+         * Create SystemAdmin (Root)
+         */
+        $tblAccountRole = $this->actionCreateAccountRole( 'Root' );
         $tblAccountTyp = $this->actionCreateAccountTyp( 'Root' );
-        $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp', $tblAccountTyp );
+        $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp', $tblAccountTyp, $tblAccountRole, null, null, null );
 
         $this->actionCreateAccountTyp( 'Schüler' );
         $this->actionCreateAccountTyp( 'Lehrer' );
@@ -112,17 +118,17 @@ class Account extends EntityAction
         } else {
             if (false === $TokenString) {
                 session_regenerate_id();
-                $this->actionCreateSession( session_id(), $Account->getId() );
+                $this->actionCreateSession( session_id(), $Account );
                 return self::API_SIGN_IN_SUCCESS;
             } else {
                 try {
-                    if (Token::getApi()->apiValidateToken( $TokenString )) {
-                        if (false === ( $Token = Token::getApi()->entityTokenById( $Account->getServiceGatekeeperToken() ) )) {
+                    if (Gatekeeper::serviceToken()->apiValidateToken( $TokenString )) {
+                        if (false === ( $Token = Gatekeeper::serviceToken()->entityTokenById( $Account->getServiceGatekeeperToken() ) )) {
                             return self::API_SIGN_IN_ERROR_TOKEN;
                         } else {
                             if ($Token->getIdentifier() == substr( $TokenString, 0, 12 )) {
                                 session_regenerate_id();
-                                $this->actionCreateSession( session_id(), $Account->getId() );
+                                $this->actionCreateSession( session_id(), $Account );
                                 return self::API_SIGN_IN_SUCCESS;
                             } else {
                                 return self::API_SIGN_IN_ERROR_TOKEN;
@@ -256,6 +262,17 @@ class Account extends EntityAction
         $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return parent::entityAccountTypById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccountRole
+     */
+    public function entityAccountRoleById( $Id )
+    {
+
+        return parent::entityAccountRoleById( $Id );
     }
 
     /**
