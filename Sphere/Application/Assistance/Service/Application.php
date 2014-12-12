@@ -47,6 +47,48 @@ class Application extends AbstractService
     /**
      * @return Stage
      */
+    public function apiAidFatal()
+    {
+
+        $this->getDebugger()->addMethodCall( __METHOD__ );
+
+        var_dump( error_get_last() );
+
+        $View = new Stage();
+        $View->setTitle( 'Hilfe' );
+        $View->setDescription( 'Fehler in der Anwendung' );
+        $View->setMessage( '<strong>Problem:</strong> Nach Aufruf der Anwendung arbeitet diese nicht wie erwartet' );
+        $View->setContent(
+            ( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal'
+                ? '<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> <samp>'.HttpKernel::getRequest()->getPathInfo().'</samp></div>'
+                : ''
+            )
+            .( ( $Error = error_get_last() )
+                ? '<div class="alert alert-warning"><span class="glyphicon glyphicon-info-sign"></span> <samp>'.$Error['message'].'<br/>'.$Error['file'].':'.$Error['line'].'</samp></div>'
+                : ''
+            )
+            .'<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
+            .new Info( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
+            .new Danger( 'Die Anwendung hat erkannt, dass das System nicht fehlerfrei arbeiten kann' )
+            .new Danger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Programmen kann gestört sein' )
+            .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
+            .new User( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
+            .new Support( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
+        );
+        if (HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal') {
+            $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Fehler in der Anwendung'
+                .( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal'
+                    ? ': '.urlencode( HttpKernel::getRequest()->getPathInfo().' | '.$Error['message'].'<br/>'.$Error['file'].':'.$Error['line'] )
+                    : ''
+                ),
+                'Support-Ticket' );
+        }
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
     public function apiAidMissingResource()
     {
 
@@ -70,12 +112,14 @@ class Application extends AbstractService
             .new User( 'Vermeiden Sie es die Addresse im Browser manuell zu bearbeiten' )
             .new Support( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
-        $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Nicht gefundene Resource'
-            .( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing'
-                ? ': '.HttpKernel::getRequest()->getPathInfo()
-                : ''
-            ),
-            'Support-Ticket' );
+        if (HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing') {
+            $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Nicht gefundene Resource'
+                .( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing'
+                    ? ': '.HttpKernel::getRequest()->getPathInfo()
+                    : ''
+                ),
+                'Support-Ticket' );
+        }
         return $View;
     }
 

@@ -51,13 +51,45 @@ session_start();
 ini_set( 'xdebug.var_display_max_data', -1 );
 ini_set( 'xdebug.var_display_max_children', -1 );
 ini_set( 'xdebug.var_display_max_depth', -1 );
-set_error_handler( create_function( '$N,$S,$F,$L', 'throw new \ErrorException($S,0,$N,$F,$L);' ), E_ALL );
-
 /**
  * Run KREDA
  */
 $ShellScreen = new Screen();
 $Config = new Configuration( new UniversalRouter(), new LevelClient() );
+
+set_error_handler(
+    function ( $N, $S, $F, $L ) {
+
+        throw new \ErrorException( $S, 0, $N, $F, $L );
+    }, E_ALL
+);
+register_shutdown_function(
+    function ( Screen $S, Configuration $C ) {
+
+        $Error = error_get_last();
+
+        if (!$Error) {
+            return;
+        }
+
+        $S->addToNavigation(
+            new Container( $C->getClientNavigation() )
+        );
+        if ($C->hasModuleNavigation()) {
+            $S->addToNavigation(
+                new Container( $C->getModuleNavigation() )
+            );
+        }
+        if ($C->hasApplicationNavigation()) {
+            $S->addToNavigation(
+                new Container( $C->getApplicationNavigation() )
+            );
+        }
+        $R = $C->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Fatal' );
+        $S->addToContent( new Container( $R ) );
+        print $S->getContent();
+    }, $ShellScreen, $Config
+);
 
 if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance/Support' )) {
 
@@ -159,7 +191,6 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             /** @var Element $Route */
             $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
             $ShellScreen->addToContent( new Container( $Route ) );
-            var_dump( $E->getMessage() );
         } catch( \Exception $E ) {
             /**
              * Unexpected Exception
@@ -205,7 +236,6 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
                     /** @var Element $Route */
                     $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
                     $ShellScreen->addToContent( new Container( $Route ) );
-                    var_dump( $E->getMessage() );
                 } catch( \Exception $E ) {
                     /**
                      * Unexpected Exception

@@ -74,6 +74,10 @@ class Assistance extends AbstractApplication
             '/Sphere/Assistance/Support/Application/Missing',
             __CLASS__.'::apiSupportApplicationMissing'
         );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Assistance/Support/Application/Fatal',
+            __CLASS__.'::apiSupportApplicationFatal'
+        );
         return $Configuration;
     }
 
@@ -159,6 +163,9 @@ class Assistance extends AbstractApplication
             '/Sphere/Assistance/Support/Application/Start', 'Starten der Anwendung', new BookIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Assistance/Support/Application/Fatal', 'Fehler in der Anwendung', new BookIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Assistance/Support/Application/Missing', 'Nicht gefundene Resource', new BookIcon()
         );
 
@@ -198,6 +205,17 @@ class Assistance extends AbstractApplication
         $this->setupModuleNavigation();
         $this->setupServiceApplication();
         return Service\Application::getApi()->apiAidMissingResource();
+    }
+
+    /**
+     * @return Stage
+     */
+    public function apiSupportApplicationFatal()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupServiceApplication();
+        return Service\Application::getApi()->apiAidFatal();
     }
 
 }
