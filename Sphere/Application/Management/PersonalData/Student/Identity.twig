@@ -1,0 +1,98 @@
+<h4>Grunddaten</h4>
+<form action="" method="post">
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="form-group {{ PersonGenderGroup }}">
+                <div class="input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-adjust"></span>
+            </span>
+                    <select name="PersonGender">
+                        <option>Männlich</option>
+                        <option>Weiblich</option>
+                    </select>
+                    {{ PersonGenderFeedbackIcon }}
+                </div>
+                {{ PersonGenderFeedbackMessage }}
+            </div>
+
+            <div class="form-group {{ PersonFirstNameGroup }}">
+                <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-user"></span>
+                        </span>
+                    <input type="text" class="form-control" name="PersonFirstName" placeholder="Vorname"
+                           value="{{ PersonFirstNameValue }}"/>
+                    {{ PersonFirstNameFeedbackIcon }}
+                </div>
+                {{ PersonFirstNameFeedbackMessage }}
+            </div>
+
+            <div class="form-group {{ PersonMiddleNameGroup }}">
+                <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-user"></span>
+                        </span>
+                    <input type="text" class="form-control" name="PersonMiddleName" placeholder="Zweitname"
+                           value="{{ PersonMiddleNameValue }}"/>
+                    {{ PersonMiddleNameFeedbackIcon }}
+                </div>
+                {{ PersonMiddleNameFeedbackMessage }}
+            </div>
+
+            <div class="form-group {{ PersonLastNameGroup }}">
+                <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-user"></span>
+                        </span>
+                    <input type="text" class="form-control" name="PersonLastName" placeholder="Nachname"
+                           value="{{ PersonLastNameValue }}"/>
+                    {{ PersonLastNameFeedbackIcon }}
+                </div>
+                {{ PersonLastNameFeedbackMessage }}
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+
+            <div class="form-group {{ PersonFirstNameGroup }}">
+                <div class="input-group date">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-user"></span>
+                        </span>
+                    <input type="text" class="form-control" name="PersonFirstName" placeholder=""
+                           data-date-format="DD.MM.YYYY" data-date-language="de" data-date-pickTime="false"
+                           data-bv-date-format="DD.MM.YYYY"
+                           value="{{ PersonFirstNameValue }}"/>
+
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    {{ PersonFirstNameFeedbackIcon }}
+                </div>
+                {{ PersonFirstNameFeedbackMessage }}
+            </div>
+
+
+            <div class="form-group">
+                <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-user"></span>
+                        </span>
+                    <input class="form-control" type="text" data-source="['1','12','13']" autocomplete="off">
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <button type="submit" class="btn btn-primary">Anlegen</button>
+        </div>
+    </div>
+</form>
+

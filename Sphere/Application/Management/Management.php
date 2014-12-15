@@ -1,6 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\Management;
 
+use KREDA\Sphere\Application\Management\PersonalData\PersonalData;
+use KREDA\Sphere\Application\Management\Service\Address;
 use KREDA\Sphere\Application\Management\Service\Education;
 use KREDA\Sphere\Application\Management\Service\Person;
 use KREDA\Sphere\Application\Management\Subject\Subject;
@@ -65,6 +67,25 @@ class Management extends AbstractApplication
             '/Sphere/Management/Education/Mission', __CLASS__.'::guiEducationMission'
         );
 
+        /**
+         * Person
+         */
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person', __CLASS__.'::guiPerson'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/Student', __CLASS__.'::guiPersonStudent'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/Student/Create', __CLASS__.'::guiPersonStudentCreate'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/Teacher', __CLASS__.'::guiPersonTeacher'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/Teacher/Create', __CLASS__.'::guiPersonTeacherCreate'
+        );
+
         return $Configuration;
     }
 
@@ -87,6 +108,15 @@ class Management extends AbstractApplication
     }
 
     /**
+     * @return Service\Address
+     */
+    public static function serviceAddress()
+    {
+
+        return Address::getApi();
+    }
+
+    /**
      * @return Stage
      */
     public function guiEducationSubject()
@@ -98,8 +128,6 @@ class Management extends AbstractApplication
 
     protected function setupModuleNavigation()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Campus', 'Immobilien', new HomeIcon()
@@ -123,10 +151,11 @@ class Management extends AbstractApplication
         );
     }
 
+    /**
+     * @return Landing
+     */
     public function apiMain()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $View = new Landing();
@@ -134,4 +163,51 @@ class Management extends AbstractApplication
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
     }
+
+    /**
+     * @return Stage
+     */
+    public function guiPerson()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupPersonNavigation();
+        return PersonalData::guiPerson();
+    }
+
+    protected function setupPersonNavigation()
+    {
+
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Person/Student', 'Schüler', new PersonIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Person/Teacher', 'Lehrer', new PersonIcon()
+        );
+
+    }
+
+    /**
+     * @return Stage
+     */
+    public function guiPersonStudent()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupPersonNavigation();
+        return PersonalData::guiPersonStudent();
+    }
+
+    /**
+     * @return Stage
+     */
+    public function guiPersonStudentCreate()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupPersonNavigation();
+        return PersonalData::guiPersonStudentCreate();
+    }
+
+
 }
