@@ -25,7 +25,7 @@ class Consumer extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $this->actionCreateConsumer( 'Demo', 'Demo' );
+        $this->actionCreateConsumer( 'Root', '', null, '' );
     }
 
     /**
@@ -46,5 +46,27 @@ class Consumer extends EntityAction
     {
 
         return parent::entityConsumerById( $Id );
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblConsumer
+     */
+    public function entityConsumerByName( $Name )
+    {
+
+        return parent::entityConsumerByName( $Name );
+    }
+
+    /**
+     * @param null|string $Session
+     *
+     * @return bool|TblConsumer
+     */
+    public function entityConsumerBySession( $Session = null )
+    {
+
+        return parent::entityConsumerBySession( $Session );
     }
 }

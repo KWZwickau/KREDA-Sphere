@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblLevel;
 use KREDA\Sphere\Application\Management\Service\Education\EntityAction;
 
@@ -12,12 +13,18 @@ use KREDA\Sphere\Application\Management\Service\Education\EntityAction;
 class Education extends EntityAction
 {
 
+    /**
+     *
+     */
     function __construct()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        $this->setDatabaseHandler( 'Management', 'Education', 'Annaberg' );
+        if (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
+            $Consumer = $tblConsumer->getDatabaseSuffix();
+        } else {
+            $Consumer = 'Annaberg';
+        }
+        $this->setDatabaseHandler( 'Management', 'Education', $Consumer );
     }
 
     public function setupDatabaseContent()

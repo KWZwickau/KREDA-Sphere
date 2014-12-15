@@ -92,8 +92,6 @@ abstract class EntityAction extends EntitySchema
     protected function entityAccountBySession( $Session = null )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         if (null === $Session) {
             $Session = session_id();
         }
@@ -194,8 +192,6 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateAccountTyp( $Name )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountTyp' )
             ->findOneBy( array( TblAccountTyp::ATTR_NAME => $Name ) );
         if (null === $Entity) {
@@ -213,8 +209,6 @@ abstract class EntityAction extends EntitySchema
      */
     protected function actionCreateAccountRole( $Name )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountRole' )
             ->findOneBy( array( TblAccountRole::ATTR_NAME => $Name ) );

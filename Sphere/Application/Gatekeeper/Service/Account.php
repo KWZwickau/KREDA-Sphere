@@ -31,22 +31,24 @@ class Account extends EntityAction
     public function __construct()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setDatabaseHandler( 'Gatekeeper', 'Account' );
     }
 
     public function setupDatabaseContent()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         /**
          * Create SystemAdmin (Root)
          */
         $tblAccountRole = $this->actionCreateAccountRole( 'Root' );
         $tblAccountTyp = $this->actionCreateAccountTyp( 'Root' );
-        $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp', $tblAccountTyp, $tblAccountRole, null, null, null );
+        // Call to foreign Service
+        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerByName( 'Root' );
+        // Reconnect to own Service
+        $this->setDatabaseHandler( 'Gatekeeper', 'Account' );
+        $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp',
+            $tblAccountTyp, $tblAccountRole, null, null, $tblConsumer
+        );
 
         $this->actionCreateAccountTyp( 'Schüler' );
         $this->actionCreateAccountTyp( 'Lehrer' );
@@ -213,8 +215,6 @@ class Account extends EntityAction
     public function checkIsValidSession()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         if (self::$ValidSessionCache) {
             return true;
         }
@@ -228,12 +228,21 @@ class Account extends EntityAction
     }
 
     /**
+     * @param null|string $Session
+     *
+     * @return bool|TblAccount
+     */
+    public function entityAccountBySession( $Session = null )
+    {
+
+        return parent::entityAccountBySession( $Session );
+    }
+
+    /**
      * @return Table
      */
     public function schemaTableAccount()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->getTableAccount();
     }
@@ -246,8 +255,6 @@ class Account extends EntityAction
     public function entityAccountById( $Id )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return parent::entityAccountById( $Id );
     }
 
@@ -258,8 +265,6 @@ class Account extends EntityAction
      */
     public function entityAccountTypById( $Id )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return parent::entityAccountTypById( $Id );
     }
@@ -283,8 +288,6 @@ class Account extends EntityAction
     public function entityAccountByUsername( $Name )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return parent::entityAccountByUsername( $Name );
     }
 
@@ -299,9 +302,6 @@ class Account extends EntityAction
         TblToken $tblToken = null
     ) {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return parent::actionSetAccountToken( $tblAccount, $tblToken );
     }
-
 }

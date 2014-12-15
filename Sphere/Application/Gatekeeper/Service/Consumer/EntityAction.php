@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Consumer;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTypList;
@@ -38,6 +39,21 @@ abstract class EntityAction extends EntitySchema
 
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblConsumer', $Id );
         return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param null|string $Session
+     *
+     * @return bool|TblConsumer
+     */
+    protected function entityConsumerBySession( $Session = null )
+    {
+
+        if (false !== ( $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession( $Session ) )) {
+            return $tblAccount->getServiceGatekeeperConsumer();
+        } else {
+            return false;
+        }
     }
 
     /**

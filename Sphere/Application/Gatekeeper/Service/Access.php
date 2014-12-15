@@ -23,8 +23,6 @@ class Access extends EntityAction
     public function __construct()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setDatabaseHandler( 'Gatekeeper', 'Access' );
     }
 

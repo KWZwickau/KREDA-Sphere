@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
 
@@ -18,9 +19,12 @@ class Person extends EntityAction
     function __construct()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        $this->setDatabaseHandler( 'Management', 'Person', 'Annaberg' );
+        if (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
+            $Consumer = $tblConsumer->getDatabaseSuffix();
+        } else {
+            $Consumer = 'Annaberg';
+        }
+        $this->setDatabaseHandler( 'Management', 'Person', $Consumer );
     }
 
     /**
