@@ -25,7 +25,7 @@ class Consumer extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $this->actionCreateConsumer( 'Demo' );
+        $this->actionCreateConsumer( 'Demo', 'Demo' );
     }
 
     /**

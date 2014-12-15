@@ -54,7 +54,7 @@ hr {
     width: 100%;
 }
 
-#phpinfo td, th {
+#phpinfo td, #phpinfo th {
     border: 1px solid silver;
     padding: 5px;
 }

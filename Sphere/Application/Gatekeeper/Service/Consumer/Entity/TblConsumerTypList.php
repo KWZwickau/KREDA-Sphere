@@ -15,8 +15,8 @@ use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 class TblConsumerTypList
 {
 
-    const ATTR_TBL_CONSUMER_RIGHT = 'tblConsumerTyp';
-    const ATTR_TBL_CONSUMER_PRIVILEGE = 'tblConsumer';
+    const ATTR_TBL_CONSUMER_TYP = 'tblConsumerTyp';
+    const ATTR_TBL_CONSUMER = 'tblConsumer';
 
     /**
      * @Id

@@ -24,8 +24,6 @@ class Application extends AbstractService
     public function apiAidStart()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $View = new Stage();
         $View->setTitle( 'Hilfe' );
         $View->setDescription( 'Starten der Anwendung' );
@@ -49,10 +47,6 @@ class Application extends AbstractService
      */
     public function apiAidFatal()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
-        var_dump( error_get_last() );
 
         $View = new Stage();
         $View->setTitle( 'Hilfe' );
@@ -91,8 +85,6 @@ class Application extends AbstractService
      */
     public function apiAidMissingResource()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $View = new Stage();
         $View->setTitle( 'Hilfe' );

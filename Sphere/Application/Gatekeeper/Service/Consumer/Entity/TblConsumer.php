@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 
 /**
  * @Entity

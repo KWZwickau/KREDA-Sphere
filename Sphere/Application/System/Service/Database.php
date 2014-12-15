@@ -27,15 +27,10 @@ class Database extends AbstractService
             'Token'    => array( '' ),
         ),
         'Management' => array(
-            'HumanResources' => array( 'Annaberg' ),
-            'Education'      => array( 'Annaberg' ),
-            'Property' => array( '' ),
-            'Grade'   => array( '' ),
-            'Subject' => array( '' ),
-        ),
-        'Graduation' => array(
-            '' => array( '' ),
-        ),
+            'Person'    => array( 'Annaberg' ),
+            'Address'   => array( 'Annaberg' ),
+            'Education' => array( 'Annaberg' ),
+        )
     );
 
     /**
@@ -51,10 +46,13 @@ class Database extends AbstractService
 
         $Report = array();
 
+        ksort( $this->ServiceList );
         foreach ((array)$this->ServiceList as $Application => $ServiceList) {
             $Config = __DIR__.'/../Database/Config/'.$Application.'.ini';
             if (false !== ( $Config = realpath( $Config ) )) {
+                ksort( $ServiceList );
                 foreach ((array)$ServiceList as $Service => $ConsumerList) {
+                    ksort( $ConsumerList );
                     foreach ((array)$ConsumerList as $Consumer) {
                         $Setting = parse_ini_file( $Config, true );
                         if (isset( $Setting[$Service.':'.$Consumer] )) {

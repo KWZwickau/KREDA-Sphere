@@ -69,7 +69,9 @@ abstract class EntitySchema extends AbstractService
                 ->innerJoin( 'RiPr', 'tblAccessRight', 'Ri', 'RiPr.tblAccessRight = Ri.Id' )
                 ->getSQL();
             $this->getDatabaseHandler()->addProtocol( 'viewAccess: '.$viewAccess );
-            $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewAccess', $viewAccess ) );
+            if (!$Simulate) {
+                $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewAccess', $viewAccess ) );
+            }
         }
         /**
          * Protocol

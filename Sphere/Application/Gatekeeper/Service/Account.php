@@ -118,7 +118,7 @@ class Account extends EntityAction
         } else {
             if (false === $TokenString) {
                 session_regenerate_id();
-                $this->actionCreateSession( session_id(), $Account );
+                $this->actionCreateSession( $Account, session_id() );
                 return self::API_SIGN_IN_SUCCESS;
             } else {
                 try {
@@ -128,7 +128,7 @@ class Account extends EntityAction
                         } else {
                             if ($Token->getIdentifier() == substr( $TokenString, 0, 12 )) {
                                 session_regenerate_id();
-                                $this->actionCreateSession( session_id(), $Account );
+                                $this->actionCreateSession( $Account, session_id() );
                                 return self::API_SIGN_IN_SUCCESS;
                             } else {
                                 return self::API_SIGN_IN_ERROR_TOKEN;

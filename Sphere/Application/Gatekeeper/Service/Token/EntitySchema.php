@@ -55,7 +55,9 @@ abstract class EntitySchema extends AbstractService
                 ->from( 'tblToken', 'T' )
                 ->getSQL();
             $this->getDatabaseHandler()->addProtocol( 'viewToken: '.$viewToken );
-            $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewToken', $viewToken ) );
+            if (!$Simulate) {
+                $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewToken', $viewToken ) );
+            }
         }
         /**
          * Protocol

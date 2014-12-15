@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\System;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
+use KREDA\Sphere\Application\System\Installer\Installer;
 use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Token;
 use KREDA\Sphere\Application\System\Service\Update;
@@ -82,6 +83,15 @@ class System extends AbstractApplication
     }
 
     /**
+     * @return Service\Update
+     */
+    public static function serviceUpdate()
+    {
+
+        return Update::getApi();
+    }
+
+    /**
      * @return Element|Landing
      */
     public function apiMain()
@@ -149,11 +159,9 @@ class System extends AbstractApplication
     public function apiUpdate()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setupModuleNavigation();
         $this->setupServiceUpdate();
-        return Update::getApi()->apiUpdate();
+        return Installer::guiSummary();
     }
 
     public function setupServiceUpdate()
@@ -176,11 +184,9 @@ class System extends AbstractApplication
     public function apiUpdateSimulation()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setupModuleNavigation();
         $this->setupServiceUpdate();
-        return Update::getApi()->apiUpdateSimulation();
+        return Installer::guiUpdateSimulation();
     }
 
     /**
@@ -189,11 +195,9 @@ class System extends AbstractApplication
     public function apiUpdatePerform()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setupModuleNavigation();
         $this->setupServiceUpdate();
-        return Update::getApi()->apiUpdatePerform();
+        return Installer::guiUpdatePerform();
     }
 
     /**
@@ -201,8 +205,6 @@ class System extends AbstractApplication
      */
     public function apiDatabaseStatus()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         return Database::getApi( '/Sphere/System/Database' )->guiDatabaseStatus();

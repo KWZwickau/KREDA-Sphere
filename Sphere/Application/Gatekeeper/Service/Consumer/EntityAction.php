@@ -2,6 +2,10 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Consumer;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTyp;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTypList;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\ViewConsumer;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 
 /**
  * Class EntityAction
@@ -37,22 +41,100 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param string $Name
+     * @param string          $Name
+     * @param string          $DatabaseSuffix
+     * @param null|TblAddress $TblAddress
+     * @param string          $TableSuffix
      *
      * @return TblConsumer
      */
-    protected function actionCreateConsumer( $Name )
+    protected function actionCreateConsumer( $Name, $DatabaseSuffix, TblAddress $TblAddress = null, $TableSuffix = '' )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
+        if (empty( $TableSuffix )) {
+            $TableSuffix = $DatabaseSuffix;
+        }
 
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblConsumer' )
             ->findOneBy( array( TblConsumer::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblConsumer( $Name );
+            $Entity->setDatabaseSuffix( $DatabaseSuffix );
+            $Entity->setTableSuffix( $TableSuffix );
+            $Entity->setServiceManagementAddress( $TblAddress );
             $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return TblConsumer
+     */
+    protected function actionCreateConsumerTyp( $Name )
+    {
+
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblConsumerTyp' )
+            ->findOneBy( array( TblConsumerTyp::ATTR_NAME => $Name ) );
+        if (null === $Entity) {
+            $Entity = new TblConsumerTyp( $Name );
+            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
+     * @param TblConsumer    $tblConsumer
+     * @param TblConsumerTyp $tblConsumerTyp
+     *
+     * @return TblConsumerTypList
+     */
+    protected function actionCreateConsumerTypList( TblConsumer $tblConsumer, TblConsumerTyp $tblConsumerTyp )
+    {
+
+        $Entity = $this->entityConsumerTypList( $tblConsumer, $tblConsumerTyp );
+        if (!$Entity) {
+            $Entity = new TblConsumerTypList();
+            $Entity->setTblConsumer( $tblConsumer );
+            $Entity->setTblConsumerTyp( $tblConsumerTyp );
+            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
+     * @param TblConsumer    $tblConsumer
+     * @param TblConsumerTyp $tblConsumerTyp
+     *
+     * @return bool|TblConsumer
+     */
+    private function entityConsumerTypList( TblConsumer $tblConsumer, TblConsumerTyp $tblConsumerTyp )
+    {
+
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblConsumerTypList' )
+            ->findOneBy( array(
+                TblConsumerTypList::ATTR_TBL_CONSUMER     => $tblConsumer->getId(),
+                TblConsumerTypList::ATTR_TBL_CONSUMER_TYP => $tblConsumerTyp->getId()
+            ) );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblConsumer    $tblConsumer
+     * @param TblConsumerTyp $tblConsumerTyp
+     *
+     * @return bool
+     */
+    protected function actionDestroyConsumerTypList( TblConsumer $tblConsumer, TblConsumerTyp $tblConsumerTyp )
+    {
+
+        $Entity = $this->entityConsumerTypList( $tblConsumer, $tblConsumerTyp );
+        if ($Entity) {
+            $this->getDatabaseHandler()->getEntityManager()->killEntity( $Entity );
+            return true;
+        }
+        return false;
     }
 
     /**

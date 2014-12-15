@@ -161,16 +161,18 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param string     $Session
-     * @param TblAccount $tblAccount
-     * @param integer    $Timeout
+     * @param TblAccount  $tblAccount
+     * @param null|string $Session
+     * @param integer     $Timeout
      *
      * @return TblAccountSession
      */
-    protected function actionCreateSession( $Session, TblAccount $tblAccount, $Timeout = 1800 )
+    protected function actionCreateSession( TblAccount $tblAccount, $Session = null, $Timeout = 1800 )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
+        if (null === $Session) {
+            $Session = session_id();
+        }
 
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
@@ -227,12 +229,10 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param null|string $Session
      *
-     * @return TblAccountSession
+     * @return bool
      */
     protected function actionDestroySession( $Session = null )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         if (null === $Session) {
             $Session = session_id();
@@ -241,8 +241,9 @@ abstract class EntityAction extends EntitySchema
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
-            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+            $this->getDatabaseHandler()->getEntityManager()->killEntity( $Entity );
+            return true;
         }
-        return $Entity;
+        return false;
     }
 }
