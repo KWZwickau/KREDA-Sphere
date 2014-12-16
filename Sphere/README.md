@@ -16,3 +16,13 @@ Service:
 - definiert Anwendungs-Gui
 	- Aktionen MÜSSEN IMMER auf AKTUELLER Route ausgeführt werden
 - definiert Datenbankverbindung
+
+#ALLE DATENBANK ABLÄUFE MÜSSEN ZWICHENGESPEICHERT WERDEN !!! EINE VERSCHACHTELUNG IST NICHT MÖGLICH !!!
+
+Falsch: 
+
+- ```App:Service1()->actionWrong( App:Service2()->entityExample() );```
+
+Richtig: 
+
+- ```$Entity = App:Service2()->entityExample(); App:Service1()->actionRight( $Entity );```

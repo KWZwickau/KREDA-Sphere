@@ -9,7 +9,6 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 
 /**
  * Class Account
@@ -42,13 +41,7 @@ class Account extends EntityAction
          */
         $tblAccountRole = $this->actionCreateAccountRole( 'Root' );
         $tblAccountTyp = $this->actionCreateAccountTyp( 'Root' );
-        // Call to foreign Service
-        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerByName( 'Root' );
-        // Reconnect to own Service
-        $this->setDatabaseHandler( 'Gatekeeper', 'Account' );
-        $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp',
-            $tblAccountTyp, $tblAccountRole, null, null, $tblConsumer
-        );
+        $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp', $tblAccountTyp, $tblAccountRole, null, null, null );
 
         $this->actionCreateAccountTyp( 'Schüler' );
         $this->actionCreateAccountTyp( 'Lehrer' );
@@ -289,19 +282,5 @@ class Account extends EntityAction
     {
 
         return parent::entityAccountByUsername( $Name );
-    }
-
-    /**
-     * @param TblAccount    $tblAccount
-     * @param null|TblToken $tblToken
-     *
-     * @return mixed
-     */
-    public function actionSetAccountToken(
-        TblAccount $tblAccount,
-        TblToken $tblToken = null
-    ) {
-
-        return parent::actionSetAccountToken( $tblAccount, $tblToken );
     }
 }

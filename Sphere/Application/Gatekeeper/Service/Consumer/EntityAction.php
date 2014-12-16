@@ -42,6 +42,18 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param integer $Id
+     *
+     * @return bool|TblConsumerTyp
+     */
+    protected function entityConsumerTypById( $Id )
+    {
+
+        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblConsumerTyp', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param null|string $Session
      *
      * @return bool|TblConsumer

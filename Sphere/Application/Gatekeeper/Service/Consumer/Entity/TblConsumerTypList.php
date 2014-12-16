@@ -39,7 +39,11 @@ class TblConsumerTypList
     public function getTblConsumerTyp()
     {
 
-        return Gatekeeper::serviceConsumer()->entityConsumerTypById( $this->tblConsumerTyp );
+        if (null === $this->tblConsumerTyp) {
+            return false;
+        } else {
+            return Gatekeeper::serviceConsumer()->entityConsumerTypById( $this->tblConsumerTyp );
+        }
     }
 
     /**
@@ -57,7 +61,11 @@ class TblConsumerTypList
     public function getTblConsumer()
     {
 
-        return Gatekeeper::serviceConsumer()->entityConsumerById( $this->tblConsumer );
+        if (null === $this->tblConsumer) {
+            return false;
+        } else {
+            return Gatekeeper::serviceConsumer()->entityConsumerById( $this->tblConsumer );
+        }
     }
 
     /**

@@ -133,7 +133,11 @@ class TblAccount
     public function getServiceManagementPerson()
     {
 
-        return Management::servicePerson()->entityPersonById( $this->serviceManagement_Person );
+        if (null === $this->serviceManagement_Person) {
+            return false;
+        } else {
+            return Management::servicePerson()->entityPersonById( $this->serviceManagement_Person );
+        }
     }
 
     /**
@@ -151,7 +155,11 @@ class TblAccount
     public function getServiceGatekeeperConsumer()
     {
 
-        return Gatekeeper::serviceConsumer()->entityConsumerById( $this->serviceGatekeeper_Consumer );
+        if (null === $this->serviceGatekeeper_Consumer) {
+            return false;
+        } else {
+            return Gatekeeper::serviceConsumer()->entityConsumerById( $this->serviceGatekeeper_Consumer );
+        }
     }
 
     /**
@@ -169,7 +177,11 @@ class TblAccount
     public function getServiceGatekeeperToken()
     {
 
-        return Gatekeeper::serviceToken()->entityTokenById( $this->serviceGatekeeper_Token );
+        if (null === $this->serviceGatekeeper_Token) {
+            return false;
+        } else {
+            return Gatekeeper::serviceToken()->entityTokenById( $this->serviceGatekeeper_Token );
+        }
     }
 
     /**
@@ -188,7 +200,11 @@ class TblAccount
     public function getTblAccountTyp()
     {
 
-        return Gatekeeper::serviceAccount()->entityAccountTypById( $this->tblAccountTyp );
+        if (null === $this->tblAccountTyp) {
+            return false;
+        } else {
+            return Gatekeeper::serviceAccount()->entityAccountTypById( $this->tblAccountTyp );
+        }
     }
 
     /**
@@ -207,7 +223,11 @@ class TblAccount
     public function getTblAccountRole()
     {
 
-        return Gatekeeper::serviceAccount()->entityAccountRoleById( $this->tblAccountRole );
+        if (null === $this->tblAccountRole) {
+            return false;
+        } else {
+            return Gatekeeper::serviceAccount()->entityAccountRoleById( $this->tblAccountRole );
+        }
     }
 
     /**

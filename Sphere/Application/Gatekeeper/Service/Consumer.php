@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\EntityAction;
 
 /**
@@ -46,6 +47,17 @@ class Consumer extends EntityAction
     {
 
         return parent::entityConsumerById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblConsumerTyp
+     */
+    public function entityConsumerTypById( $Id )
+    {
+
+        return parent::entityConsumerTypById( $Id );
     }
 
     /**

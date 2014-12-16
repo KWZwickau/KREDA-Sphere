@@ -1,0 +1,13 @@
+<div class="form-group {{ PersonFirstNameGroup }}">
+    <label>Vorname</label>
+
+    <div class="input-group">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-user"></span>
+        </span>
+        <input type="text" class="form-control" name="PersonFirstName" placeholder="Vorname"
+               value="{{ PersonFirstNameValue }}"/>
+        {{ PersonFirstNameFeedbackIcon }}
+    </div>
+    {{ PersonFirstNameFeedbackMessage }}
+</div>

@@ -94,7 +94,11 @@ class TblConsumer
     public function getServiceManagementAddress()
     {
 
-        return Management::serviceAddress()->entityAddressById( $this->serviceManagement_Address );
+        if (null === $this->serviceManagement_Address) {
+            return false;
+        } else {
+            return Management::serviceAddress()->entityAddressById( $this->serviceManagement_Address );
+        }
     }
 
     /**

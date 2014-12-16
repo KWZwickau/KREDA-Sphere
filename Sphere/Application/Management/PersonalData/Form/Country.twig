@@ -1,0 +1,51 @@
+<div class="form-group {{ PersonCountryGroup }}">
+    <label>Land</label>
+
+    <div class="input-group">
+        <span class="input-group-addon">
+           <span class="glyphicon glyphicon-user"></span>
+        </span>
+        <input type="text" class="form-control Typeahead_Country" name="PersonCountry" placeholder="Land"
+               value="{{ PersonCountryValue }}"/>
+        {{ PersonCountryFeedbackIcon }}
+    </div>
+    {{ PersonCountryFeedbackMessage }}
+</div>
+
+<script type="text/javascript">
+
+    jQuery( function()
+    {
+        var data = [
+            'Deutschland'
+        ];
+
+        // constructs the suggestion engine
+        var states = new Bloodhound( {
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace( 'value' ),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            // `states` is an array of state names defined in "The Basics"
+            local: $.map( data, function( state )
+            {
+                return {value: state};
+            } )
+        } );
+
+        // kicks off the loading/processing of `local` and `prefetch`
+        states.initialize();
+
+        jQuery( '.Typeahead_Country' ).typeahead( {
+                hint: true,
+                highlight: true,
+                minLength: 1
+            },
+            {
+                name: 'states',
+                displayKey: 'value',
+                // `ttAdapter` wraps the suggestion engine in an adapter that
+                // is compatible with the typeahead jQuery plugin
+                source: states.ttAdapter()
+            } );
+
+    } );
+</script>

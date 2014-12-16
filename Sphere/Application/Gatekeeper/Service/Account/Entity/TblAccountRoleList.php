@@ -60,7 +60,11 @@ class TblAccountRoleList
     public function getServiceGatekeeperAccess()
     {
 
-        return Gatekeeper::serviceAccess()->entityAccessById( $this->serviceGatekeeper_Access );
+        if (null === $this->serviceGatekeeper_Access) {
+            return false;
+        } else {
+            return Gatekeeper::serviceAccess()->entityAccessById( $this->serviceGatekeeper_Access );
+        }
     }
 
     /**
@@ -78,7 +82,11 @@ class TblAccountRoleList
     public function getTblAccountRole()
     {
 
-        return Gatekeeper::serviceAccount()->entityAccountRoleById( $this->tblAccountRole );
+        if (null === $this->tblAccountRole) {
+            return false;
+        } else {
+            return Gatekeeper::serviceAccount()->entityAccountRoleById( $this->tblAccountRole );
+        }
     }
 
     /**

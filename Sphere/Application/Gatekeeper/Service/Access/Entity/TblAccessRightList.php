@@ -39,7 +39,11 @@ class TblAccessRightList
     public function getTblAccessRight()
     {
 
-        return Gatekeeper::serviceAccess()->entityAccessRightById( $this->tblAccessRight );
+        if (null === $this->tblAccessRight) {
+            return false;
+        } else {
+            return Gatekeeper::serviceAccess()->entityAccessRightById( $this->tblAccessRight );
+        }
     }
 
     /**
@@ -57,7 +61,11 @@ class TblAccessRightList
     public function getTblAccessPrivilege()
     {
 
-        return Gatekeeper::serviceAccess()->entityAccessPrivilegeById( $this->tblAccessPrivilege );
+        if (null === $this->tblAccessPrivilege) {
+            return false;
+        } else {
+            return Gatekeeper::serviceAccess()->entityAccessPrivilegeById( $this->tblAccessPrivilege );
+        }
     }
 
     /**

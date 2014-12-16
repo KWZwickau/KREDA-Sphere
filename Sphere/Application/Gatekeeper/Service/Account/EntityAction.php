@@ -38,8 +38,6 @@ abstract class EntityAction extends EntitySchema
         $tblConsumer = null
     ) {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccount' )
             ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
         if (null === $Entity) {
@@ -53,22 +51,6 @@ abstract class EntityAction extends EntitySchema
             $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
         }
         return $Entity;
-    }
-
-    /**
-     * @param TblAccount    $tblAccount
-     * @param null|TblToken $tblToken
-     *
-     * @return mixed
-     */
-    protected function actionSetAccountToken(
-        TblAccount $tblAccount,
-        TblToken $tblToken = null
-    ) {
-
-        $tblAccount->setServiceGatekeeperToken( $tblToken );
-        $this->getDatabaseHandler()->getEntityManager()->saveEntity( $tblAccount );
-        return $tblAccount;
     }
 
     /**

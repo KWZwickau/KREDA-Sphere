@@ -53,7 +53,11 @@ class TblAccountSession
     public function getTblAccount()
     {
 
-        return Gatekeeper::serviceAccount()->entityAccountById( $this->tblAccount );
+        if (null === $this->tblAccount) {
+            return false;
+        } else {
+            return Gatekeeper::serviceAccount()->entityAccountById( $this->tblAccount );
+        }
     }
 
     /**

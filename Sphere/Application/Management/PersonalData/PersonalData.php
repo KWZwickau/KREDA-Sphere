@@ -1,7 +1,15 @@
 <?php
 namespace KREDA\Sphere\Application\Management\PersonalData;
 
-use KREDA\Sphere\Application\Management\PersonalData\Student\Identity;
+use KREDA\Sphere\Application\Management\PersonalData\Form\Birthday;
+use KREDA\Sphere\Application\Management\PersonalData\Form\City;
+use KREDA\Sphere\Application\Management\PersonalData\Form\FirstName;
+use KREDA\Sphere\Application\Management\PersonalData\Form\Gender;
+use KREDA\Sphere\Application\Management\PersonalData\Form\LastName;
+use KREDA\Sphere\Application\Management\PersonalData\Form\MiddleName;
+use KREDA\Sphere\Application\Management\PersonalData\Form\Nationality;
+use KREDA\Sphere\Application\Management\PersonalData\Form\State;
+use KREDA\Sphere\Application\Management\PersonalData\Student\Form;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
 
@@ -57,7 +65,34 @@ class PersonalData extends AbstractFrontend
         $View->setDescription( 'Schüler hinzufügen' );
         $View->setMessage( '' );
         $View->setContent(
-            new Identity()
+            new Form(
+                array(
+                    'Grunddaten'       => array(
+                        array(
+                            new FirstName(),
+                            new MiddleName(),
+                        ),
+                        array(
+                            new LastName(),
+                            new Birthday(),
+                        ),
+                        array(
+                            new Gender(),
+                            new City()
+                        ),
+                        array(
+                            '&nbsp;',
+                            '&nbsp;'
+                        ),
+                        array(
+                            new Nationality(),
+                            new State()
+                        ),
+                    ),
+                    'Sorgeberechtigte' => array(),
+                    'Schulinterna'     => array()
+                )
+            )
         );
         return $View;
     }
