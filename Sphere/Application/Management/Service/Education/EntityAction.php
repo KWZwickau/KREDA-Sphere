@@ -21,8 +21,6 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateSubject( $Name, $Acronym )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblSubject' )
             ->findOneBy( array( TblSubject::ATTR_ACRONYM => $Acronym ) );
         if (null === $Entity) {
@@ -41,7 +39,6 @@ abstract class EntityAction extends EntitySchema
     protected function entityLevelById( $Id )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblLevel', $Id );
         if (null === $Entity) {
             return false;

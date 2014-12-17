@@ -277,4 +277,4 @@ if ($Config->hasApplicationNavigation()) {
 /**
  * Create Client
  */
-print $ShellScreen->getContent();
+echo $ShellScreen->getContent();

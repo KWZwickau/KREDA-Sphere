@@ -33,8 +33,6 @@ class Person extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
     }
 
     /**

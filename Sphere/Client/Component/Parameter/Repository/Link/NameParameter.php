@@ -3,14 +3,14 @@ namespace KREDA\Sphere\Client\Component\Parameter\Repository\Link;
 
 use KREDA\Sphere\Client\Component\Exception\ComponentException;
 use KREDA\Sphere\Client\Component\IParameterInterface;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Link;
+use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractLink;
 
 /**
  * Class NameParameter
  *
  * @package KREDA\Sphere\Client\Component\Parameter\Repository\Link
  */
-class NameParameter extends Link implements IParameterInterface
+class NameParameter extends AbstractLink implements IParameterInterface
 {
 
     /**

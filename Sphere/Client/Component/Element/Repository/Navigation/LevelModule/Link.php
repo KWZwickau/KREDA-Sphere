@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
 
+use KREDA\Sphere\Client\Component\Element\Repository\Navigation\AbstractLink;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\IconParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
@@ -11,7 +12,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule
  */
-class Link extends \KREDA\Sphere\Client\Component\Element\Repository\Navigation\Link implements IElementInterface
+class Link extends AbstractLink implements IElementInterface
 {
 
     /**

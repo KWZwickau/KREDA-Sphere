@@ -4,11 +4,11 @@ namespace KREDA\Sphere\Client\Component\Parameter;
 use KREDA\Sphere\Client\Component\IParameterInterface;
 
 /**
- * Class Parameter
+ * Class AbstractParameter
  *
  * @package KREDA\Sphere\Client\Component\Parameter
  */
-abstract class Parameter implements IParameterInterface
+abstract class AbstractParameter implements IParameterInterface
 {
 
 }

@@ -30,8 +30,6 @@ class Education extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->actionCreateSubject( 'Astronomie', 'Ast' );
         $this->actionCreateSubject( 'Biologie', 'Bio' );
         $this->actionCreateSubject( 'Chemie', 'Ch' );
@@ -72,8 +70,6 @@ class Education extends EntityAction
      */
     public function entityLevelById( $Id )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return parent::entityLevelById( $Id );
     }

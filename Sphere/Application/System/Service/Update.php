@@ -21,8 +21,6 @@ class Update extends AbstractService
     public function setupDatabaseSchema( $Simulate = true )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         /**
          * Prevent Update-Timeout
          */

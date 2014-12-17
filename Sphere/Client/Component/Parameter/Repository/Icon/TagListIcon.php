@@ -2,19 +2,22 @@
 namespace KREDA\Sphere\Client\Component\Parameter\Repository\Icon;
 
 use KREDA\Sphere\Client\Component\IParameterInterface;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
 
 /**
  * Class TagListIcon
  *
  * @package KREDA\Sphere\Client\Component\Parameter\Repository\Icon
  */
-class TagListIcon extends Icon implements IParameterInterface
+class TagListIcon extends AbstractIcon implements IParameterInterface
 {
 
+    /**
+     *
+     */
     function __construct()
     {
 
-        $this->setValue( Icon::ICON_TAG_LIST );
+        $this->setValue( AbstractIcon::ICON_TAG_LIST );
     }
 }

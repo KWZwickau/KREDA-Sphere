@@ -23,8 +23,6 @@ abstract class EntitySchema extends AbstractService
     public function setupDatabaseSchema( $Simulate = true )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         /**
          * Table
          */
@@ -86,7 +84,6 @@ abstract class EntitySchema extends AbstractService
     private function setTableConsumer( Schema &$Schema )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
         /**
          * Install
          */
@@ -128,7 +125,6 @@ abstract class EntitySchema extends AbstractService
     private function setTableConsumerTyp( Schema &$Schema )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
         /**
          * Install
          */
@@ -164,8 +160,6 @@ abstract class EntitySchema extends AbstractService
         Table $tblConsumer,
         Table $tblConsumerTyp
     ) {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         /**
          * Install
@@ -206,8 +200,6 @@ abstract class EntitySchema extends AbstractService
     protected function getTableConsumer()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->getDatabaseHandler()->getSchema()->getTable( 'tblConsumer' );
     }
 
@@ -218,8 +210,6 @@ abstract class EntitySchema extends AbstractService
     protected function getTableConsumerTyp()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->getDatabaseHandler()->getSchema()->getTable( 'tblConsumerTyp' );
     }
 
@@ -229,8 +219,6 @@ abstract class EntitySchema extends AbstractService
      */
     protected function getTableConsumerTypList()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         return $this->getDatabaseHandler()->getSchema()->getTable( 'tblConsumerTypList' );
     }

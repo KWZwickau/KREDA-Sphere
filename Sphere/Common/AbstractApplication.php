@@ -4,7 +4,7 @@ namespace KREDA\Sphere\Common;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\IconParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
@@ -20,6 +20,9 @@ use MOC\V\Core\HttpKernel\HttpKernel;
  */
 abstract class AbstractApplication extends AbstractAddOn implements IApplicationInterface
 {
+
+    /** @var null $ActiveRequest */
+    private static $ActiveRequest = null;
 
     /**
      * @param Configuration $Configuration
@@ -41,10 +44,14 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
      * @param Configuration $Configuration
      * @param string        $Url
      * @param string        $Name
-     * @param Icon          $Icon
+     * @param AbstractIcon  $Icon
      */
-    protected static function addClientNavigationMeta( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
-    {
+    protected static function addClientNavigationMeta(
+        Configuration &$Configuration,
+        $Url,
+        $Name,
+        AbstractIcon $Icon = null
+    ) {
 
         $Configuration->getClientNavigation()->addLinkToMeta(
             new LevelClient\Link(
@@ -82,11 +89,11 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
     }
 
     /**
-     * @param Icon $Value
+     * @param AbstractIcon $Value
      *
-     * @return Icon|IconParameter
+     * @return AbstractIcon|IconParameter
      */
-    final private static function prepareParameterIcon( Icon $Value )
+    final private static function prepareParameterIcon( AbstractIcon $Value )
     {
 
         if (null !== $Value) {
@@ -103,18 +110,25 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
     final private static function prepareParameterActive( UrlParameter $Value )
     {
 
-        $Request = HttpKernel::getRequest();
-        return 0 === strpos( $Request->getUrlBase().$Request->getPathInfo(), $Value->getValue() );
+        if (null === self::$ActiveRequest) {
+            self::$ActiveRequest = HttpKernel::getRequest();
+        }
+        return 0 === strpos( self::$ActiveRequest->getUrlBase().self::$ActiveRequest->getPathInfo(),
+            $Value->getValue() );
     }
 
     /**
      * @param Configuration $Configuration
      * @param string        $Url
      * @param string        $Name
-     * @param Icon          $Icon
+     * @param AbstractIcon  $Icon
      */
-    protected static function addClientNavigationMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
-    {
+    protected static function addClientNavigationMain(
+        Configuration &$Configuration,
+        $Url,
+        $Name,
+        AbstractIcon $Icon = null
+    ) {
 
         $Configuration->getClientNavigation()->addLinkToMain(
             new LevelClient\Link(
@@ -133,10 +147,14 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
      * @param Configuration $Configuration
      * @param string        $Url
      * @param string        $Name
-     * @param Icon          $Icon
+     * @param AbstractIcon  $Icon
      */
-    protected static function addModuleNavigationMain( Configuration &$Configuration, $Url, $Name, Icon $Icon = null )
-    {
+    protected static function addModuleNavigationMain(
+        Configuration &$Configuration,
+        $Url,
+        $Name,
+        AbstractIcon $Icon = null
+    ) {
 
         $Configuration->getModuleNavigation()->addLinkToMain(
             new LevelModule\Link(
@@ -155,13 +173,13 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
      * @param Configuration $Configuration
      * @param string        $Url
      * @param string        $Name
-     * @param Icon          $Icon
+     * @param AbstractIcon  $Icon
      */
     protected static function addApplicationNavigationMain(
         Configuration &$Configuration,
         $Url,
         $Name,
-        Icon $Icon = null
+        AbstractIcon $Icon = null
     ) {
 
         $Configuration->getApplicationNavigation()->addLinkToMain(

@@ -3,15 +3,14 @@ namespace KREDA\Sphere\Client\Component\Parameter\Repository\Link;
 
 use KREDA\Sphere\Client\Component\Exception\ComponentException;
 use KREDA\Sphere\Client\Component\IParameterInterface;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Link;
-use MOC\V\Core\HttpKernel\HttpKernel;
+use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractLink;
 
 /**
  * Class UrlParameter
  *
  * @package KREDA\Sphere\Client\Component\Parameter\Repository\Link
  */
-class UrlParameter extends Link implements IParameterInterface
+class UrlParameter extends AbstractLink implements IParameterInterface
 {
 
     /**
@@ -34,7 +33,7 @@ class UrlParameter extends Link implements IParameterInterface
     {
 
         if (preg_match( $this->PatternLinkRoute, $Value )) {
-            $this->Value = HttpKernel::getRequest()->getUrlBase().$Value;
+            $this->Value = $this->getUrlBase().$Value;
         } else {
             throw new ComponentException( $Value );
         }

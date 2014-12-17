@@ -2,14 +2,14 @@
 namespace KREDA\Sphere\Client\Component\Parameter\Repository;
 
 use KREDA\Sphere\Client\Component\IParameterInterface;
-use KREDA\Sphere\Client\Component\Parameter\Parameter;
+use KREDA\Sphere\Client\Component\Parameter\AbstractParameter;
 
 /**
- * Class Icon
+ * Class AbstractIcon
  *
  * @package KREDA\Sphere\Client\Component\Parameter\Repository
  */
-abstract class Icon extends Parameter implements IParameterInterface
+abstract class AbstractIcon extends AbstractParameter implements IParameterInterface
 {
 
     const ICON_LOCK = 'glyphicon glyphicon-lock';

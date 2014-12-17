@@ -37,8 +37,6 @@ class System extends AbstractApplication
     public static function registerApplication( Configuration $Configuration )
     {
 
-        self::getDebugger()->addMethodCall( __METHOD__ );
-
         self::$Configuration = $Configuration;
         self::addClientNavigationMeta( self::$Configuration,
             '/Sphere/System', 'System', new WrenchIcon()
@@ -97,8 +95,6 @@ class System extends AbstractApplication
     public function apiMain()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setupModuleNavigation();
         $View = new Landing();
         $View->setTitle( 'Systemeinstellungen' );
@@ -134,8 +130,6 @@ class System extends AbstractApplication
     public function setupModuleNavigation()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Database', 'Datenbanken', new TaskIcon()
         );
@@ -166,8 +160,6 @@ class System extends AbstractApplication
 
     public function setupServiceUpdate()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/System/Update/Simulation', 'Simulation durchführen', new GearIcon()
@@ -216,8 +208,6 @@ class System extends AbstractApplication
     public function apiToken()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $this->setupModuleNavigation();
         $this->setupServiceToken();
         return Token::getApi()->apiToken();
@@ -225,8 +215,6 @@ class System extends AbstractApplication
 
     public function setupServiceToken()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/System/Token/Certification', 'Zertifizierung', new CertificateIcon()
@@ -242,8 +230,6 @@ class System extends AbstractApplication
      */
     public function apiTokenCertification( $CredentialKey = null )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $this->setupServiceToken();

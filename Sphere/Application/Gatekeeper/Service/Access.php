@@ -29,8 +29,6 @@ class Access extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         /**
          * System:Database
          */
@@ -63,8 +61,6 @@ class Access extends EntityAction
     public function schemaTableAccess()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         return $this->getTableAccess();
     }
 
@@ -75,8 +71,6 @@ class Access extends EntityAction
      */
     public function apiIsValidAccess( $Route )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__.':'.$Route );
 
         if (in_array( $Route, self::$AccessCache )) {
             return true;

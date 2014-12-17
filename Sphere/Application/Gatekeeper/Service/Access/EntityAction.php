@@ -24,8 +24,6 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateAccessRight( $Route )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessRight' )
             ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Route ) );
         if (null === $Entity) {
@@ -43,8 +41,6 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateAccess( $Name )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccess' )
             ->findOneBy( array( TblAccess::ATTR_NAME => $Name ) );
         if (null === $Entity) {
@@ -61,8 +57,6 @@ abstract class EntityAction extends EntitySchema
      */
     protected function actionCreateAccessPrivilege( $Name )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessPrivilege' )
             ->findOneBy( array( TblAccessPrivilege::ATTR_NAME => $Name ) );
@@ -83,8 +77,6 @@ abstract class EntityAction extends EntitySchema
         TblAccessRight $TblAccessRight,
         TblAccessPrivilege $TblAccessPrivilege
     ) {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessRightList' )
             ->findOneBy( array(
@@ -111,8 +103,6 @@ abstract class EntityAction extends EntitySchema
         TblAccess $tblAccess
     ) {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessPrivilegeList' )
             ->findOneBy( array(
                 TblAccessPrivilegeList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId(),
@@ -134,8 +124,6 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityAccessRightByRouteName( $Route )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccessRight' )
             ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Route ) );

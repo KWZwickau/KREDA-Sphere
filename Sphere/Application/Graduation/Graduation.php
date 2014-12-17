@@ -26,8 +26,6 @@ class Graduation extends AbstractApplication
     public static function registerApplication( Configuration $Configuration )
     {
 
-        self::getDebugger()->addMethodCall( __METHOD__ );
-
         self::$Configuration = $Configuration;
         self::addClientNavigationMain( self::$Configuration,
             '/Sphere/Grade', 'Zensuren', new TagListIcon()
@@ -36,10 +34,11 @@ class Graduation extends AbstractApplication
         return $Configuration;
     }
 
+    /**
+     * @return Landing
+     */
     public function apiMain()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->setupModuleNavigation();
         $View = new Landing();
@@ -50,8 +49,6 @@ class Graduation extends AbstractApplication
 
     public function setupModuleNavigation()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Class', 'Zensurentypen', new StatisticIcon()

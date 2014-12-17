@@ -16,8 +16,8 @@ class Youtrack extends AbstractService
 {
 
     /** @var string $YoutrackDomain */
-    private $YoutrackDomain = 'http://ticket.swe.haus-der-edv.de';
-    //private $YoutrackDomain = 'http://192.168.33.150:8080';
+//    private $YoutrackDomain = 'http://ticket.swe.haus-der-edv.de';
+    private $YoutrackDomain = 'http://192.168.33.150:8080';
     /** @var string $YoutrackUser */
     private $YoutrackUser = 'KREDA-Support';
     /** @var string $YoutrackPassword */
@@ -35,8 +35,6 @@ class Youtrack extends AbstractService
      */
     public function apiTicket( $TicketSubject, $TicketMessage )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $View = new Stage();
         $View->setTitle( 'Support' );
@@ -93,8 +91,6 @@ class Youtrack extends AbstractService
     private function ticketCurrent()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $Issues = $this->ticketList();
 
         foreach ((array)$Issues as $Index => $Content) {
@@ -144,8 +140,6 @@ class Youtrack extends AbstractService
      */
     private function ticketList()
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $this->ticketLogin();
         $CurlHandler = curl_init();
@@ -207,8 +201,6 @@ class Youtrack extends AbstractService
     private function ticketLogin()
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $CurlHandler = curl_init();
         curl_setopt( $CurlHandler, CURLOPT_URL, $this->YoutrackDomain.'/rest/user/login' );
         curl_setopt( $CurlHandler, CURLOPT_POST, true );
@@ -238,8 +230,6 @@ class Youtrack extends AbstractService
      */
     private function ticketCreate( $Summary, $Description )
     {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Markdown = new Converter();
         $Markdown->setKeepHTML( false );
@@ -280,8 +270,6 @@ class Youtrack extends AbstractService
         $CurlHandler,
         $String
     ) {
-
-        $this->getDebugger()->addMethodCall( __METHOD__ );
 
         $Length = strlen( $String );
         if (!strncmp( $String, "Set-Cookie:", 11 )) {

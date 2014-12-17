@@ -10,7 +10,7 @@ h6 small,
 .h4 small,
 .h5 small,
 .h6 small {
-    color: #999;
+    color: rgb(153, 153, 153);
 }
 
 h1,
@@ -23,31 +23,31 @@ h3,
 }
 
 hr {
-    border-top: 1px solid #999;
+    border-top: 1px solid rgb(153, 153, 153);
 }
 
-.glyphicon.glyphicon-yubikey:before {
-    display: block;
-    width: 14px;
-    height: 14px;
-    content: " ";
-    background: url("Resource/YubiKeyIcon-16x16.ico") center;
-}
+/*.glyphicon.glyphicon-yubikey:before {*/
+/*display: block;*/
+/*width: 14px;*/
+/*height: 14px;*/
+/*content: " ";*/
+/*background: url("Resource/YubiKeyIcon-16x16.ico") center;*/
+/*}*/
 
 #phpinfo {
     text-align: left;
 }
 
 #phpinfo a {
-    color: red;
+    color: rgb(255, 0, 0);
 }
 
 #phpinfo a:link {
-    color: red;
+    color: rgb(255, 0, 0);
 }
 
 #phpinfo a:hover {
-    color: red;
+    color: rgb(255, 0, 0);
 }
 
 #phpinfo table {
@@ -55,7 +55,7 @@ hr {
 }
 
 #phpinfo td, #phpinfo th {
-    border: 1px solid silver;
+    border: 1px solid rgb(192, 192, 192);
     padding: 5px;
 }
 
@@ -70,7 +70,7 @@ hr {
 #phpinfo h2 {
     font-size: 1.2em;
     text-transform: capitalize;
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid rgb(255, 0, 0);
 }
 
 #phpinfo .p {
@@ -78,12 +78,12 @@ hr {
 }
 
 #phpinfo .e {
-    background: #CCC;
+    background: rgb(204, 204, 204);
     width: 30%;
 }
 
 #phpinfo .h {
-    background: #DDD;
+    background: rgb(221, 221, 221);
 }
 
 #phpinfo img {
@@ -102,16 +102,17 @@ hr {
 
 .bootstrap-datetimepicker-widget.dropdown-menu {
     background: inherit;
-    border: 1px solid #ccc;
+    border: 1px solid rgb(204, 204, 204);
+    /*noinspection CssOverwrittenProperties*/
     border: 1px solid rgba(0, 0, 0, .15);
 }
 
 .bootstrap-datetimepicker-widget td span:hover,
 .bootstrap-datetimepicker-widget td.day:hover, .bootstrap-datetimepicker-widget td.hour:hover, .bootstrap-datetimepicker-widget td.minute:hover, .bootstrap-datetimepicker-widget td.second:hover,
 .bootstrap-datetimepicker-widget thead tr:first-child th:hover {
-    background: #ccc;
+    background: rgb(204, 204, 204);
 }
 
 .bootstrap-datetimepicker-widget td.old, .bootstrap-datetimepicker-widget td.new {
-    color: #766;
+    color: rgb(119, 102, 102);
 }

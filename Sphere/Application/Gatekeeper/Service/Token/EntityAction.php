@@ -45,8 +45,6 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateToken( $Identifier )
     {
 
-        $this->getDebugger()->addMethodCall( __METHOD__ );
-
         $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblToken' )
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
         if (null === $Entity) {

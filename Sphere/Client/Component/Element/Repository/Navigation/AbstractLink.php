@@ -10,11 +10,11 @@ use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 
 /**
- * Class Link
+ * Class AbstractLink
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Navigation
  */
-abstract class Link implements IElementInterface
+abstract class AbstractLink implements IElementInterface
 {
 
     /** @var string $TemplateDirectory */

@@ -2,21 +2,23 @@
 namespace KREDA\Sphere\Client\Component\Parameter\Repository;
 
 use KREDA\Sphere\Client\Component\IParameterInterface;
-use KREDA\Sphere\Client\Component\Parameter\Parameter;
+use KREDA\Sphere\Client\Component\Parameter\AbstractParameter;
+use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
- * Class Link
+ * Class AbstractLink
  *
  * @package KREDA\Sphere\Client\Component\Parameter\Repository
  */
-abstract class Link extends Parameter implements IParameterInterface
+abstract class AbstractLink extends AbstractParameter implements IParameterInterface
 {
 
+    /** @var null $ActiveBase */
+    private static $ActiveBase = null;
     /** @var string $PatternLinkRoute */
     protected $PatternLinkRoute = '|^[a-z/]+$|is';
     /** @var string $PatternLinkName */
     protected $PatternLinkName = '|^[a-z\söäüß\-]+$|is';
-
     /** @var null|string $Value */
     protected $Value = null;
 
@@ -36,5 +38,17 @@ abstract class Link extends Parameter implements IParameterInterface
     {
 
         $this->Value = $Value;
+    }
+
+    /**
+     * @return bool|string
+     */
+    protected function getUrlBase()
+    {
+
+        if (null === self::$ActiveBase) {
+            self::$ActiveBase = HttpKernel::getRequest()->getUrlBase();
+        }
+        return self::$ActiveBase;
     }
 }

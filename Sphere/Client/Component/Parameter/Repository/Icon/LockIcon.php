@@ -2,19 +2,22 @@
 namespace KREDA\Sphere\Client\Component\Parameter\Repository\Icon;
 
 use KREDA\Sphere\Client\Component\IParameterInterface;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
 
 /**
  * Class LockIcon
  *
  * @package KREDA\Sphere\Client\Component\Parameter\Repository\Icon
  */
-class LockIcon extends Icon implements IParameterInterface
+class LockIcon extends AbstractIcon implements IParameterInterface
 {
 
+    /**
+     *
+     */
     function __construct()
     {
 
-        $this->setValue( Icon::ICON_LOCK );
+        $this->setValue( AbstractIcon::ICON_LOCK );
     }
 }

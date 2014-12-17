@@ -52,7 +52,7 @@ class Register
     final public function hasDatabase( Identifier $Identifier )
     {
 
-        return array_key_exists( $Identifier->getIdentifier(), $this->Register );
+        return isset( $this->Register[$Identifier->getIdentifier()] );
     }
 
     /**

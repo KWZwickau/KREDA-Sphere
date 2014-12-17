@@ -2,19 +2,22 @@
 namespace KREDA\Sphere\Client\Component\Parameter\Repository\Icon;
 
 use KREDA\Sphere\Client\Component\IParameterInterface;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
 
 /**
  * Class BookIcon
  *
  * @package KREDA\Sphere\Client\Component\Parameter\Repository\Icon
  */
-class BookIcon extends Icon implements IParameterInterface
+class BookIcon extends AbstractIcon implements IParameterInterface
 {
 
+    /**
+     *
+     */
     function __construct()
     {
 
-        $this->setValue( Icon::ICON_BOOK );
+        $this->setValue( AbstractIcon::ICON_BOOK );
     }
 }

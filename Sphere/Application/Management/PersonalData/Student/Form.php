@@ -16,6 +16,8 @@ class Form extends Error implements IElementInterface
 {
 
     /**
+     * @param array $Form
+     *
      * @throws TemplateTypeException
      */
     function __construct( $Form )

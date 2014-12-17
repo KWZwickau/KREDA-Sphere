@@ -2,14 +2,14 @@
 namespace KREDA\Sphere\Client\Component\Parameter\Repository\Icon;
 
 use KREDA\Sphere\Client\Component\IParameterInterface;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
 
 /**
  * Class FlashIcon
  *
  * @package KREDA\Sphere\Client\Component\Parameter\Repository\Icon
  */
-class FlashIcon extends Icon implements IParameterInterface
+class FlashIcon extends AbstractIcon implements IParameterInterface
 {
 
     /**
@@ -18,6 +18,6 @@ class FlashIcon extends Icon implements IParameterInterface
     function __construct()
     {
 
-        $this->setValue( Icon::ICON_FLASH );
+        $this->setValue( AbstractIcon::ICON_FLASH );
     }
 }

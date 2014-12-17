@@ -37,8 +37,6 @@ class Management extends AbstractApplication
     public static function registerApplication( Configuration $Configuration )
     {
 
-        self::getDebugger()->addMethodCall( __METHOD__ );
-
         self::$Configuration = $Configuration;
 
         /**
@@ -208,6 +206,5 @@ class Management extends AbstractApplication
         $this->setupPersonNavigation();
         return PersonalData::guiPersonStudentCreate();
     }
-
 
 }
