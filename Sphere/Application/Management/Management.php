@@ -84,6 +84,13 @@ class Management extends AbstractApplication
             '/Sphere/Management/Person/Teacher/Create', __CLASS__.'::guiPersonTeacherCreate'
         );
 
+        /**
+         * Campus
+         */
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Campus', __CLASS__.'::guiCampus'
+        );
+
         return $Configuration;
     }
 
@@ -207,4 +214,14 @@ class Management extends AbstractApplication
         return PersonalData::guiPersonStudentCreate();
     }
 
+    /**
+     * @return Stage
+     */
+    public function guiCampus()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupCampusNavigation();
+        return Campus::guiCampus();
+    }
 }

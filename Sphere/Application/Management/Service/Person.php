@@ -22,7 +22,7 @@ class Person extends EntityAction
         if (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
             $Consumer = $tblConsumer->getDatabaseSuffix();
         } else {
-            $Consumer = 'Annaberg';
+            $Consumer = 'EGE';
         }
         $this->setDatabaseHandler( 'Management', 'Person', $Consumer );
     }

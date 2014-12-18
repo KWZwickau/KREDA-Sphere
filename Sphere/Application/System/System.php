@@ -2,11 +2,13 @@
 namespace KREDA\Sphere\Application\System;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
+use KREDA\Sphere\Application\System\Consumer\Consumer;
 use KREDA\Sphere\Application\System\Installer\Installer;
 use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Token;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Client\Component\Element\Element;
+use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CertificateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FlashIcon;
@@ -64,6 +66,9 @@ class System extends AbstractApplication
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Consumer', __CLASS__.'::apiConsumer'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Consumer/Create', __CLASS__.'::apiConsumerCreate'
         );
 
         self::registerClientRoute( self::$Configuration,
@@ -145,6 +150,37 @@ class System extends AbstractApplication
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Token', 'Hardware-Schlüssel', new CertificateIcon()
         );
+    }
+
+    /**
+     * @return Landing
+     */
+    public function apiConsumer()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupServiceConsumer();
+        return Consumer::guiSummary();
+    }
+
+    public function setupServiceConsumer()
+    {
+
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Consumer/Create', 'Mandant anlegen', new GearIcon()
+        );
+
+    }
+
+    /**
+     * @return Stage
+     */
+    public function apiConsumerCreate()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupServiceConsumer();
+        return Consumer::guiConsumerCreate();
     }
 
     /**

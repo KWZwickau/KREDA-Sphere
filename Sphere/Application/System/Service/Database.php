@@ -27,9 +27,24 @@ class Database extends AbstractService
             'Token'    => array( '' ),
         ),
         'Management' => array(
-            'Person'    => array( 'Annaberg' ),
-            'Address'   => array( 'Annaberg' ),
-            'Education' => array( 'Annaberg' ),
+            'Person'    => array(
+                'EGE',
+                'ESZC'
+            ),
+            'Address'   => array(
+                'EGE',
+                'ESZC'
+            ),
+            'Education' => array(
+                'EGE',
+                'ESZC'
+            ),
+        ),
+        'Graduation' => array(
+            'Weight' => array(
+                'EGE',
+                'ESZC'
+            )
         )
     );
 

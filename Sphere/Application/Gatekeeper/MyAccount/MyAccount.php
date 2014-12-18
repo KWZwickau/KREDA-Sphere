@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Gatekeeper\MyAccount;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\MyAccount\Consumer\ChangeConsumer;
 use KREDA\Sphere\Application\Gatekeeper\MyAccount\Password\ChangePassword;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
@@ -42,6 +43,24 @@ class MyAccount extends AbstractFrontend
         $View->setMessage( 'Bitte legen Sie ein neues Password fest' );
         $View->setContent( Gatekeeper::serviceAccount()->executeChangePassword(
             new ChangePassword(), $CredentialLock, $CredentialLockSafety
+        ) );
+        return $View;
+    }
+
+    /**
+     * @param integer $tblConsumer
+     *
+     * @return Stage
+     */
+    public static function guiChangeConsumer( $tblConsumer )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Mein Account' );
+        $View->setDescription( 'Mandant ändern' );
+        $View->setMessage( 'Bitte wählen Sie einen Mandanten' );
+        $View->setContent( Gatekeeper::serviceAccount()->executeChangeConsumer(
+            new ChangeConsumer(), $tblConsumer
         ) );
         return $View;
     }

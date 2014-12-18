@@ -1,0 +1,27 @@
+<form class="form-horizontal" action="" method="post">
+    <div class="form-group {{ CredentialLockGroup }}">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-lock"></span>
+            </span>
+            <input type="password" class="form-control" name="CredentialLock" placeholder="Neues Passwort"/>
+            {{ CredentialLockFeedbackIcon }}
+        </div>
+        {{ CredentialLockFeedbackMessage }}
+    </div>
+    <div class="form-group {{ CredentialLockSafetyGroup }}">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-repeat"></span>
+            </span>
+            <input type="password" class="form-control" name="CredentialLockSafety" placeholder="Passwort wiederholen"/>
+            {{ CredentialLockSafetyFeedbackIcon }}
+        </div>
+        {{ CredentialLockSafetyFeedbackMessage }}
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <button type="submit" class="btn btn-primary">Neues Passwort speichern</button>
+        </div>
+    </div>
+</form>

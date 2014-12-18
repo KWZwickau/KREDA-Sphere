@@ -178,4 +178,14 @@ abstract class EntityAction extends EntitySchema
         $EntityList = $this->getEntityManager()->getEntity( 'ViewConsumer' )->findAll();
         return ( empty( $EntityList ) ? false : $EntityList );
     }
+
+    /**
+     * @return tblConsumer[]|bool
+     */
+    protected function entityConsumerAll()
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblConsumer' )->findAll();
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
 }

@@ -183,6 +183,25 @@ class Account extends EntityAction
     }
 
     /**
+     * @param Error   $View
+     * @param integer $tblConsumer
+     *
+     * @return Error
+     */
+    public function executeChangeConsumer( Error &$View, $tblConsumer )
+    {
+
+        if (null !== $tblConsumer && empty( $tblConsumer )) {
+
+        }
+        if (!empty( $tblConsumer ) && is_numeric( $tblConsumer )) {
+            // TODO: Change Consumer
+            return new Redirect( '/Sphere/Gatekeeper/MyAccount', 1 );
+        }
+        return $View;
+    }
+
+    /**
      * @param Error  $View
      * @param string $CredentialLock
      * @param string $CredentialLockSafety
@@ -201,6 +220,7 @@ class Account extends EntityAction
         if (!empty( $CredentialLock ) && !empty( $CredentialLockSafety )) {
 
             if ($CredentialLock == $CredentialLockSafety) {
+                // TODO: Change Password
                 return new Redirect( '/Sphere/Gatekeeper/MyAccount', 1 );
             } else {
                 $View->setErrorWrongLockSafety();

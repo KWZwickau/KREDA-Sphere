@@ -22,7 +22,7 @@ class Education extends EntityAction
         if (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
             $Consumer = $tblConsumer->getDatabaseSuffix();
         } else {
-            $Consumer = 'Annaberg';
+            $Consumer = 'EGE';
         }
         $this->setDatabaseHandler( 'Management', 'Education', $Consumer );
     }
