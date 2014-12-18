@@ -53,18 +53,18 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasView( 'viewAccess' )) {
             $viewAccess = $this->getDatabaseHandler()->getQueryBuilder()
                 ->select( array(
-                    'Ro.Id AS tblAccess',
-                    'Ro.Name AS RoleName',
-                    'PrRo.Id AS tblAccessPrivilegeList',
+                    'Ac.Id AS tblAccess',
+                    'Ac.Name AS AccessName',
+                    'PrAc.Id AS tblAccessPrivilegeList',
                     'Pr.Id AS tblAccessPrivilege',
                     'Pr.Name AS PrivilegeName',
                     'RiPr.Id AS tblAccessRightList',
                     'Ri.Id AS tblAccessRight',
                     'Ri.Route AS RightRoute',
                 ) )
-                ->from( 'tblAccess', 'Ro' )
-                ->innerJoin( 'Ro', 'tblAccessPrivilegeList', 'PrRo', 'PrRo.tblAccess = Ro.Id' )
-                ->innerJoin( 'PrRo', 'tblAccessPrivilege', 'Pr', 'PrRo.tblAccessPrivilege = Pr.Id' )
+                ->from( 'tblAccess', 'Ac' )
+                ->innerJoin( 'Ac', 'tblAccessPrivilegeList', 'PrAc', 'PrAc.tblAccess = Ac.Id' )
+                ->innerJoin( 'PrAc', 'tblAccessPrivilege', 'Pr', 'PrAc.tblAccessPrivilege = Pr.Id' )
                 ->innerJoin( 'Pr', 'tblAccessRightList', 'RiPr', 'RiPr.tblAccessPrivilege = Pr.Id' )
                 ->innerJoin( 'RiPr', 'tblAccessRight', 'Ri', 'RiPr.tblAccessRight = Ri.Id' )
                 ->getSQL();

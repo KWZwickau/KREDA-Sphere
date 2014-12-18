@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Account;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Schema\View;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Common\AbstractService;
 
@@ -24,7 +25,7 @@ abstract class EntitySchema extends AbstractService
     {
 
         /**
-         * Setup
+         * Table
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
         $tblAccountRole = $this->setTableAccountRole( $Schema );
@@ -38,7 +39,7 @@ abstract class EntitySchema extends AbstractService
         $this->setTableAccountSession( $Schema,
             $tblAccount
         );
-        $this->setTableAccountRoleList( $Schema,
+        $this->setTableAccountAccessList( $Schema,
             $tblAccountRole,
             Gatekeeper::serviceAccess()->schemaTableAccess()
         );
@@ -48,9 +49,6 @@ abstract class EntitySchema extends AbstractService
         $Statement = $this->getDatabaseHandler()->getSchema()->getMigrateToSql( $Schema,
             $this->getDatabaseHandler()->getDatabasePlatform()
         );
-        /**
-         * Execute
-         */
         $this->getDatabaseHandler()->addProtocol( __CLASS__ );
         if (!empty( $Statement )) {
             foreach ((array)$Statement as $Query) {
@@ -58,6 +56,32 @@ abstract class EntitySchema extends AbstractService
                 if (!$Simulate) {
                     $this->getDatabaseHandler()->setStatement( $Query );
                 }
+            }
+        }
+        /**
+         * View
+         */
+        if (!$this->getDatabaseHandler()->hasView( 'viewAccount' )) {
+            $viewAccount = $this->getDatabaseHandler()->getQueryBuilder()
+                ->select( array(
+                    'Ac.Id AS tblAccount',
+                    'Ac.Username AS AccountUsername',
+                    'Ac.Password AS AccountPassword',
+                    'Ac.serviceGatekeeper_Consumer AS serviceGatekeeper_Consumer',
+                    'Ac.serviceManagement_Person AS serviceManagement_Person',
+                    'Ac.serviceGatekeeper_Token AS serviceGatekeeper_Token',
+                    'At.Id AS tblAccountTyp',
+                    'At.Name AS TypName',
+                    'Ar.Id AS tblAccountRole',
+                    'Ar.Name AS RoleName'
+                ) )
+                ->from( 'tblAccount', 'Ac' )
+                ->innerJoin( 'Ac', 'tblAccountTyp', 'At', 'Ac.tblAccountTyp = At.Id' )
+                ->innerJoin( 'Ac', 'tblAccountRole', 'Ar', 'Ac.tblAccountRole = Ar.Id' )
+                ->getSQL();
+            $this->getDatabaseHandler()->addProtocol( 'viewAccount: '.$viewAccount );
+            if (!$Simulate) {
+                $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewAccount', $viewAccount ) );
             }
         }
         /**
@@ -236,7 +260,7 @@ abstract class EntitySchema extends AbstractService
      * @throws SchemaException
      * @return Table
      */
-    private function setTableAccountRoleList(
+    private function setTableAccountAccessList(
         Schema &$Schema,
         Table $tblAccountRole,
         Table $tblAccess
@@ -245,23 +269,23 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAccountRoleList' )) {
-            $Table = $Schema->createTable( 'tblAccountRoleList' );
+        if (!$this->getDatabaseHandler()->hasTable( 'tblAccountAccessList' )) {
+            $Table = $Schema->createTable( 'tblAccountAccessList' );
             $Column = $Table->addColumn( 'Id', 'bigint' );
             $Column->setAutoincrement( true );
             $Table->setPrimaryKey( array( 'Id' ) );
         }
-        $Table = $Schema->getTable( 'tblAccountRoleList' );
+        $Table = $Schema->getTable( 'tblAccountAccessList' );
         /**
          * Upgrade
          */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountRoleList', 'tblAccountRole' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountAccessList', 'tblAccountRole' )) {
             $Table->addColumn( 'tblAccountRole', 'bigint' );
             if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccountRole, array( 'tblAccountRole' ), array( 'Id' ) );
             }
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountRoleList', 'serviceGatekeeper_Access' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountAccessList', 'serviceGatekeeper_Access' )) {
             $Table->addColumn( 'serviceGatekeeper_Access', 'bigint', array( 'notnull' => false ) );
             if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblAccess, array( 'serviceGatekeeper_Access' ), array( 'Id' ) );
@@ -315,9 +339,9 @@ abstract class EntitySchema extends AbstractService
      * @return Table
      * @throws SchemaException
      */
-    protected function getTableAccountRoleList()
+    protected function getTableAccountAccessList()
     {
 
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountRoleList' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountAccessList' );
     }
 }

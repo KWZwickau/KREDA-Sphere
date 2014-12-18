@@ -21,12 +21,13 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateSubject( $Name, $Acronym )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblSubject' )
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblSubject' )
             ->findOneBy( array( TblSubject::ATTR_ACRONYM => $Acronym ) );
         if (null === $Entity) {
             $Entity = new TblSubject( $Acronym );
             $Entity->setName( $Name );
-            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+            $Manager->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -39,7 +40,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityLevelById( $Id )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblLevel', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblLevel', $Id );
         if (null === $Entity) {
             return false;
         } else {

@@ -19,7 +19,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityPersonById( $Id )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblPerson', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblPerson', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 }

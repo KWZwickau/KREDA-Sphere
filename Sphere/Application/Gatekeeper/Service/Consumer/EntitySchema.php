@@ -55,6 +55,7 @@ abstract class EntitySchema extends AbstractService
                     'Co.Name AS ConsumerName',
                     'Co.DatabaseSuffix AS ConsumerDatabaseSuffix',
                     'Co.TableSuffix AS ConsumerTableSuffix',
+                    'Co.serviceManagement_Address AS serviceManagement_Address',
                     'CoTy.Id AS tblConsumerTypList',
                     'Ty.Id AS tblConsumerTyp',
                     'Ty.Name AS TypName',

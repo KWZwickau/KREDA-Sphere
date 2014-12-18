@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Common;
 
 use KREDA\Sphere\Application\System\Database\Connection\Identifier;
 use KREDA\Sphere\Application\System\Database\Handler;
+use KREDA\Sphere\Application\System\Database\Schema\EntityManager;
 use KREDA\Sphere\IServiceInterface;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
@@ -43,15 +44,6 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
     }
 
     /**
-     * @return Handler|null
-     */
-    final public function getDatabaseHandler()
-    {
-
-        return static::$DatabaseHandler;
-    }
-
-    /**
      * @param bool $Simulate
      *
      * @return string
@@ -85,4 +77,21 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
         return HttpKernel::getRequest()->getUrlBase().static::$BaseRoute.'/'.trim( $Route, '/' );
     }
 
+    /**
+     * @return EntityManager
+     */
+    final protected function getEntityManager()
+    {
+
+        return $this->getDatabaseHandler()->getEntityManager();
+    }
+
+    /**
+     * @return Handler|null
+     */
+    final public function getDatabaseHandler()
+    {
+
+        return static::$DatabaseHandler;
+    }
 }

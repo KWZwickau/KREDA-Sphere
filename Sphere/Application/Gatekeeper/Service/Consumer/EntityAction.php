@@ -24,7 +24,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityConsumerByName( $Name )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblConsumer' )
+        $Entity = $this->getEntityManager()->getEntity( 'TblConsumer' )
             ->findOneBy( array( TblConsumer::ATTR_NAME => $Name ) );
         return ( null === $Entity ? false : $Entity );
     }
@@ -37,7 +37,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityConsumerById( $Id )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblConsumer', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblConsumer', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -49,7 +49,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityConsumerTypById( $Id )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblConsumerTyp', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblConsumerTyp', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -83,14 +83,15 @@ abstract class EntityAction extends EntitySchema
             $TableSuffix = $DatabaseSuffix;
         }
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblConsumer' )
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblConsumer' )
             ->findOneBy( array( TblConsumer::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblConsumer( $Name );
             $Entity->setDatabaseSuffix( $DatabaseSuffix );
             $Entity->setTableSuffix( $TableSuffix );
             $Entity->setServiceManagementAddress( $TblAddress );
-            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+            $Manager->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -103,11 +104,12 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateConsumerTyp( $Name )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblConsumerTyp' )
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblConsumerTyp' )
             ->findOneBy( array( TblConsumerTyp::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblConsumerTyp( $Name );
-            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+            $Manager->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -121,12 +123,13 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateConsumerTypList( TblConsumer $tblConsumer, TblConsumerTyp $tblConsumerTyp )
     {
 
+        $Manager = $this->getEntityManager();
         $Entity = $this->entityConsumerTypList( $tblConsumer, $tblConsumerTyp );
         if (!$Entity) {
             $Entity = new TblConsumerTypList();
             $Entity->setTblConsumer( $tblConsumer );
             $Entity->setTblConsumerTyp( $tblConsumerTyp );
-            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+            $Manager->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -140,7 +143,7 @@ abstract class EntityAction extends EntitySchema
     private function entityConsumerTypList( TblConsumer $tblConsumer, TblConsumerTyp $tblConsumerTyp )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblConsumerTypList' )
+        $Entity = $this->getEntityManager()->getEntity( 'TblConsumerTypList' )
             ->findOneBy( array(
                 TblConsumerTypList::ATTR_TBL_CONSUMER     => $tblConsumer->getId(),
                 TblConsumerTypList::ATTR_TBL_CONSUMER_TYP => $tblConsumerTyp->getId()
@@ -157,9 +160,10 @@ abstract class EntityAction extends EntitySchema
     protected function actionDestroyConsumerTypList( TblConsumer $tblConsumer, TblConsumerTyp $tblConsumerTyp )
     {
 
+        $Manager = $this->getEntityManager();
         $Entity = $this->entityConsumerTypList( $tblConsumer, $tblConsumerTyp );
         if ($Entity) {
-            $this->getDatabaseHandler()->getEntityManager()->killEntity( $Entity );
+            $Manager->killEntity( $Entity );
             return true;
         }
         return false;
@@ -171,7 +175,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityViewConsumer()
     {
 
-        $EntityList = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'ViewConsumer' )->findAll();
+        $EntityList = $this->getEntityManager()->getEntity( 'ViewConsumer' )->findAll();
         return ( empty( $EntityList ) ? false : $EntityList );
     }
 }

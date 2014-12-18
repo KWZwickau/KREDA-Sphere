@@ -23,7 +23,7 @@ class ViewAccess
     /**
      * @Column(type="string")
      */
-    private $RoleName;
+    private $AccessName;
     /**
      * @Id
      * @Column(type="bigint")
@@ -74,10 +74,10 @@ class ViewAccess
     /**
      * @return string
      */
-    public function getRoleName()
+    public function getAccessName()
     {
 
-        return $this->RoleName;
+        return $this->AccessName;
     }
 
     /**

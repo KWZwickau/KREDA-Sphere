@@ -38,7 +38,8 @@ abstract class EntityAction extends EntitySchema
         $tblConsumer = null
     ) {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccount' )
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAccount' )
             ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
         if (null === $Entity) {
             $Entity = new TblAccount( $Username );
@@ -48,7 +49,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setServiceGatekeeperToken( $tblToken );
             $Entity->setServiceManagementPerson( $tblPerson );
             $Entity->setServiceGatekeeperConsumer( $tblConsumer );
-            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+            $Manager->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -61,7 +62,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityAccountByUsername( $Username )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccount' )
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )
             ->findOneBy( array( TblAccount::ATTR_USERNAME => $Username ) );
         return ( null === $Entity ? false : $Entity );
     }
@@ -78,7 +79,7 @@ abstract class EntityAction extends EntitySchema
             $Session = session_id();
         }
         /** @var TblAccountSession $Entity */
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountSession' )
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null === $Entity) {
             return false;
@@ -95,19 +96,34 @@ abstract class EntityAction extends EntitySchema
     protected function entityAccountById( $Id )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblAccount', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAccount', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
     /**
      * @param integer $Id
      *
-     * @return bool|TblAccount
+     * @return bool|TblAccountTyp
      */
     protected function entityAccountTypById( $Id )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblAccountTyp', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAccountTyp', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblAccountTyp
+     */
+    protected function entityAccountTypByName( $Name )
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccountTyp' )
+            ->findOneBy( array(
+                TblAccountTyp::ATTR_NAME => $Name
+            ) );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -119,23 +135,25 @@ abstract class EntityAction extends EntitySchema
     protected function entityAccountRoleById( $Id )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblAccountRole', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAccountRole', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
     /**
-     * @param string $Username
-     * @param string $Password
+     * @param string        $Username
+     * @param string        $Password
+     * @param TblAccountTyp $tblAccountTyp
      *
      * @return bool|TblAccount
      */
-    protected function entityAccountByCredential( $Username, $Password )
+    protected function entityAccountByCredential( $Username, $Password, TblAccountTyp $tblAccountTyp )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccount' )
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )
             ->findOneBy( array(
-                TblAccount::ATTR_USERNAME => $Username,
-                TblAccount::ATTR_PASSWORD => hash( 'sha256', $Password )
+                TblAccount::ATTR_USERNAME        => $Username,
+                TblAccount::ATTR_PASSWORD        => hash( 'sha256', $Password ),
+                TblAccount::ATTR_TBL_ACCOUNT_TYP => $tblAccountTyp->getId()
             ) );
         return ( null === $Entity ? false : $Entity );
     }
@@ -153,16 +171,16 @@ abstract class EntityAction extends EntitySchema
         if (null === $Session) {
             $Session = session_id();
         }
-
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountSession' )
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
-            $this->getDatabaseHandler()->getEntityManager()->killEntity( $Entity );
+            $Manager->killEntity( $Entity );
         }
         $Entity = new TblAccountSession( $Session );
         $Entity->setTblAccount( $tblAccount );
         $Entity->setTimeout( time() + $Timeout );
-        $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+        $Manager->saveEntity( $Entity );
         return $Entity;
     }
 
@@ -174,12 +192,13 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateAccountTyp( $Name )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountTyp' )
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAccountTyp' )
             ->findOneBy( array( TblAccountTyp::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblAccountTyp();
             $Entity->setName( $Name );
-            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+            $Manager->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -192,12 +211,13 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateAccountRole( $Name )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountRole' )
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAccountRole' )
             ->findOneBy( array( TblAccountRole::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblAccountRole();
             $Entity->setName( $Name );
-            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+            $Manager->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -214,10 +234,11 @@ abstract class EntityAction extends EntitySchema
             $Session = session_id();
         }
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAccountSession' )
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
-            $this->getDatabaseHandler()->getEntityManager()->killEntity( $Entity );
+            $Manager->killEntity( $Entity );
             return true;
         }
         return false;

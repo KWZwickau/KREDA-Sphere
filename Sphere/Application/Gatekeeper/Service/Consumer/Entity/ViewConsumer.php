@@ -33,12 +33,14 @@ class ViewConsumer
      */
     private $ConsumerTableSuffix;
     /**
-     * @Id
+     * @Column(type="bigint")
+     */
+    private $serviceManagement_Address;
+    /**
      * @Column(type="bigint")
      */
     private $tblConsumerTypList;
     /**
-     * @Id
      * @Column(type="bigint")
      */
     private $tblConsumerTyp;
@@ -108,5 +110,14 @@ class ViewConsumer
     {
 
         return $this->tblConsumer;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getServiceManagementAddress()
+    {
+
+        return $this->serviceManagement_Address;
     }
 }

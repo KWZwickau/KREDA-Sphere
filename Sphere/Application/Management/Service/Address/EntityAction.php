@@ -22,7 +22,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityAddressById( $Id )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblAddress', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAddress', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -34,7 +34,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityAddressCityById( $Id )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblAddressCity', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAddressCity', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -46,7 +46,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityAddressStateById( $Id )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntityById( 'TblAddressState', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAddressState', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -56,7 +56,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityAddressState()
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAddressState' )->findAll();
+        $Entity = $this->getEntityManager()->getEntity( 'TblAddressState' )->findAll();
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -68,12 +68,13 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateAddressState( $Name )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAddressState' )
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAddressState' )
             ->findOneBy( array( TblAddressState::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblAddressState();
             $Entity->setName( $Name );
-            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+            $Manager->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -88,7 +89,8 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateAddressCity( $Code, $Name, $District = null )
     {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAddressCity' )
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAddressCity' )
             ->findOneBy( array(
                 TblAddressCity::ATTR_CODE => $Code,
                 TblAddressCity::ATTR_NAME => $Name
@@ -98,7 +100,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setCode( $Code );
             $Entity->setName( $Name );
             $Entity->setDistrict( $District );
-            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+            $Manager->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -120,7 +122,8 @@ abstract class EntityAction extends EntitySchema
         $PostOfficeBox = null
     ) {
 
-        $Entity = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'TblAddress' )
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAddress' )
             ->findOneBy( array(
                 TblAddress::ATTR_TBL_ADDRESS_STATE => $TblAddressState->getId(),
                 TblAddress::ATTR_TBL_ADDRESS_CITY  => $TblAddressCity->getId(),
@@ -135,7 +138,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setPostOfficeBox( $PostOfficeBox );
             $Entity->setTblAddressState( $TblAddressState );
             $Entity->setTblAddressCity( $TblAddressCity );
-            $this->getDatabaseHandler()->getEntityManager()->saveEntity( $Entity );
+            $Manager->saveEntity( $Entity );
         }
         return $Entity;
     }
@@ -146,7 +149,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityViewAddress()
     {
 
-        $EntityList = $this->getDatabaseHandler()->getEntityManager()->getEntity( 'ViewAddress' )->findAll();
+        $EntityList = $this->getEntityManager()->getEntity( 'ViewAddress' )->findAll();
         return ( empty( $EntityList ) ? false : $EntityList );
     }
 }

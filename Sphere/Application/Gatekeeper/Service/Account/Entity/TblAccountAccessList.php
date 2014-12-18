@@ -13,9 +13,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 
 /**
  * @Entity
- * @Table(name="tblAccountRoleList")
+ * @Table(name="tblAccountAccessList")
  */
-class TblAccountRoleList
+class TblAccountAccessList
 {
 
     const ATTR_TBL_ACCOUNT_ROLE = 'tblAccountRole';
