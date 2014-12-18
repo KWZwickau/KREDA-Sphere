@@ -249,7 +249,6 @@ class Youtrack extends AbstractService
         curl_setopt( $CurlHandler, CURLOPT_TIMEOUT, 2 );
 
         $Response = curl_exec( $CurlHandler );
-        $Response = simplexml_load_string( $Response );
 
         if (false === $Response) {
             throw new \Exception();

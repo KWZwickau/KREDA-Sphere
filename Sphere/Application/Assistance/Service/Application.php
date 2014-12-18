@@ -70,12 +70,14 @@ class Application extends AbstractService
             .new Support( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
         if (HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal') {
-            $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Fehler in der Anwendung'
-                .( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal'
-                    ? ': '.urlencode( HttpKernel::getRequest()->getPathInfo().' | '.$Error['message'].'<br/>'.$Error['file'].':'.$Error['line'] )
-                    : ''
-                ),
-                'Support-Ticket' );
+            $View->addButton(
+                trim( '/Sphere/Assistance/Support/Ticket'
+                    .'?TicketSubject='.urlencode( 'Fehler in der Anwendung' )
+                    .'&TicketMessage='.urlencode( HttpKernel::getRequest()->getPathInfo().': '.$Error['message'].'<br/>'.$Error['file'].':'.$Error['line'] ),
+                    '/' )
+                , 'Fehlerbericht senden'
+            );
+
         }
         return $View;
     }
