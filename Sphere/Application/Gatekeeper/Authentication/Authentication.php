@@ -33,7 +33,8 @@ class Authentication extends AbstractFrontend
         $View->setDescription( 'Lehrer' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
-            new SignInTeacher(), $CredentialName, $CredentialLock, $CredentialKey
+            new SignInTeacher(), $CredentialName, $CredentialLock, $CredentialKey,
+            Gatekeeper::serviceAccount()->entityAccountTypByName( 'Lehrer' )
         ) );
         return $View;
     }
@@ -52,7 +53,8 @@ class Authentication extends AbstractFrontend
         $View->setDescription( 'Schüler' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeSignIn(
-            new SignInStudent(), $CredentialName, $CredentialLock
+            new SignInStudent(), $CredentialName, $CredentialLock,
+            Gatekeeper::serviceAccount()->entityAccountTypByName( 'Schüler' )
         ) );
         return $View;
     }
@@ -72,7 +74,8 @@ class Authentication extends AbstractFrontend
         $View->setDescription( 'Verwaltung' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
-            new SignInManagement(), $CredentialName, $CredentialLock, $CredentialKey
+            new SignInManagement(), $CredentialName, $CredentialLock, $CredentialKey,
+            Gatekeeper::serviceAccount()->entityAccountTypByName( 'Verwaltung' )
         ) );
         return $View;
     }

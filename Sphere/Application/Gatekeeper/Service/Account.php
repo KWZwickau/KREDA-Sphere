@@ -59,17 +59,23 @@ class Account extends EntityAction
     }
 
     /**
-     * @param Error  $View
-     * @param string $CredentialName
-     * @param string $CredentialLock
-     * @param string $CredentialKey
+     * @param Error         $View
+     * @param string        $CredentialName
+     * @param string        $CredentialLock
+     * @param string        $CredentialKey
+     * @param TblAccountTyp $tblAccountTyp
      *
      * @return Error|Redirect
      */
-    public function executeSignInWithToken( Error &$View, $CredentialName, $CredentialLock, $CredentialKey )
-    {
+    public function executeSignInWithToken(
+        Error &$View,
+        $CredentialName,
+        $CredentialLock,
+        $CredentialKey,
+        TblAccountTyp $tblAccountTyp
+    ) {
 
-        switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, $CredentialKey )) {
+        switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, $CredentialKey, $tblAccountTyp )) {
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
             case Account::API_SIGN_IN_ERROR: {
                 if (null !== $CredentialName && empty( $CredentialName )) {
@@ -99,16 +105,17 @@ class Account extends EntityAction
     }
 
     /**
-     * @param string $Username
-     * @param string $Password
-     * @param bool   $TokenString
+     * @param string        $Username
+     * @param string        $Password
+     * @param bool          $TokenString
+     * @param TblAccountTyp $tblAccountTyp
      *
      * @return int
      */
-    public function checkIsValidCredential( $Username, $Password, $TokenString = false )
+    public function checkIsValidCredential( $Username, $Password, $TokenString, TblAccountTyp $tblAccountTyp )
     {
 
-        if (false === ( $Account = $this->entityAccountByCredential( $Username, $Password ) )) {
+        if (false === ( $Account = $this->entityAccountByCredential( $Username, $Password, $tblAccountTyp ) )) {
             return self::API_SIGN_IN_ERROR_CREDENTIAL;
         } else {
             if (false === $TokenString) {
@@ -140,16 +147,17 @@ class Account extends EntityAction
     }
 
     /**
-     * @param Error  $View
-     * @param string $CredentialName
-     * @param string $CredentialLock
+     * @param Error         $View
+     * @param string        $CredentialName
+     * @param string        $CredentialLock
+     * @param TblAccountTyp $tblAccountTyp
      *
      * @return Error|Redirect
      */
-    public function executeSignIn( Error &$View, $CredentialName, $CredentialLock )
+    public function executeSignIn( Error &$View, $CredentialName, $CredentialLock, TblAccountTyp $tblAccountTyp )
     {
 
-        switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock )) {
+        switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, false, $tblAccountTyp )) {
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
             case Account::API_SIGN_IN_ERROR: {
                 if (null !== $CredentialName && empty( $CredentialName )) {
@@ -260,6 +268,17 @@ class Account extends EntityAction
     {
 
         return parent::entityAccountTypById( $Id );
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblAccountTyp
+     */
+    public function entityAccountTypByName( $Name )
+    {
+
+        return parent::entityAccountTypByName( $Name );
     }
 
     /**
