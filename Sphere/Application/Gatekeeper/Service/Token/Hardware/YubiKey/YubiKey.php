@@ -6,7 +6,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Component
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
-use KREDA\Sphere\Common\Debugger;
+use KREDA\Sphere\Common\AddOn\Debugger;
 
 /**
  * Class YubiKey

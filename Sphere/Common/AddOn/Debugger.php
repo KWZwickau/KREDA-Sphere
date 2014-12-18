@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Common;
+namespace KREDA\Sphere\Common\AddOn;
 
 /**
  * Class Debugger

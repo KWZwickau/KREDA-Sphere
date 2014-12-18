@@ -3,7 +3,7 @@ namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
-use KREDA\Sphere\Common\Debugger;
+use KREDA\Sphere\Common\AddOn\Debugger;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
