@@ -2,7 +2,6 @@
 namespace KREDA\Sphere\Application\Gatekeeper\MyAccount\Consumer;
 
 use KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Error;
-use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
@@ -25,7 +24,7 @@ class ChangeConsumer extends Error implements IElementInterface
         $this->Template = Template::getTemplate( __DIR__.'/ChangeConsumer.twig' );
         $this->Template->setVariable( 'UrlBase', HttpKernel::getRequest()->getUrlBase() );
 
-        var_dump( Gatekeeper::serviceConsumer()->entityConsumerAll() );
+        //var_dump( Gatekeeper::serviceConsumer()->entityConsumerAll() );
     }
 
 }

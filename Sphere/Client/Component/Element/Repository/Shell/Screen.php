@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use KREDA\Sphere\Common\AddOn\Debugger;
@@ -119,6 +120,9 @@ class Screen extends Shell implements IElementInterface
         $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent ) );
         $this->Template->setVariable( 'PositionDebugger', Debugger::getProtocol() );
         $this->Template->setVariable( 'PositionRuntime', Debugger::getRuntime() );
+        $Consumer = Gatekeeper::serviceConsumer()->entityConsumerBySession();
+        $this->Template->setVariable( 'PositionConsumer',
+            ( $Consumer ? $Consumer->getName().' ('.$Consumer->getDatabaseSuffix().')' : '-NA-' ) );
 
         return $this->Template->getContent();
     }

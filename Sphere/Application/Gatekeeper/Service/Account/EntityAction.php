@@ -68,27 +68,6 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param null|string $Session
-     *
-     * @return bool|TblAccount
-     */
-    protected function entityAccountBySession( $Session = null )
-    {
-
-        if (null === $Session) {
-            $Session = session_id();
-        }
-        /** @var TblAccountSession $Entity */
-        $Entity = $this->getEntityManager()->getEntity( 'TblAccountSession' )
-            ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
-        if (null === $Entity) {
-            return false;
-        } else {
-            return $this->entityAccountById( $Entity->getTblAccount() );
-        }
-    }
-
-    /**
      * @param integer $Id
      *
      * @return bool|TblAccount
@@ -242,5 +221,49 @@ abstract class EntityAction extends EntitySchema
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param string          $Password
+     * @param null|TblAccount $tblAccount
+     *
+     * @return bool
+     */
+    protected function actionChangePassword( $Password, TblAccount $tblAccount = null )
+    {
+
+        if (null === $tblAccount) {
+            $tblAccount = $this->entityAccountBySession();
+        }
+        $Manager = $this->getEntityManager();
+        /** @var TblAccount $Entity */
+        $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
+        if (null !== $Entity) {
+            $Entity->setPassword( hash( 'sha256', $Password ) );
+            $Manager->saveEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param null|string $Session
+     *
+     * @return bool|TblAccount
+     */
+    protected function entityAccountBySession( $Session = null )
+    {
+
+        if (null === $Session) {
+            $Session = session_id();
+        }
+        /** @var TblAccountSession $Entity */
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccountSession' )
+            ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
+        if (null === $Entity) {
+            return false;
+        } else {
+            return $Entity->getTblAccount();
+        }
     }
 }

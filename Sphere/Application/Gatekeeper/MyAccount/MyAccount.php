@@ -4,6 +4,9 @@ namespace KREDA\Sphere\Application\Gatekeeper\MyAccount;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\MyAccount\Consumer\ChangeConsumer;
 use KREDA\Sphere\Application\Gatekeeper\MyAccount\Password\ChangePassword;
+use KREDA\Sphere\Application\Gatekeeper\MyAccount\Summary\Account;
+use KREDA\Sphere\Application\Gatekeeper\MyAccount\Summary\AccountTyp;
+use KREDA\Sphere\Application\Gatekeeper\MyAccount\Summary\Consumer;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -25,6 +28,9 @@ class MyAccount extends AbstractFrontend
         $View = new Landing();
         $View->setTitle( 'Mein Account' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
+        $View->setContent(
+            new Account( Gatekeeper::serviceAccount()->entityAccountBySession() )
+        );
         return $View;
     }
 

@@ -28,6 +28,7 @@ class Consumer extends EntityAction
     {
 
         $this->actionCreateConsumer( 'Root', '', null, '' );
+        $this->actionCreateConsumer( 'Evangelische Schulgemeinschaft Erzgebirge', 'EGE', null, 'EGE' );
     }
 
     /**

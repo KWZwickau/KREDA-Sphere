@@ -52,9 +52,7 @@ class Token extends AbstractService
         } else {
             if (null !== $CredentialKey) {
                 try {
-                    if (Gatekeeper::serviceToken()->apiValidateToken( $CredentialKey )) {
-                        var_dump( Gatekeeper::serviceToken()->registerYubiKey( $CredentialKey ) );
-                    }
+                    Gatekeeper::serviceToken()->executeRegisterYubiKey( $CredentialKey );
                 } catch( BadOTPException $E ) {
                     $Certification->setErrorWrongKey();
                     $View->setContent( $Certification );

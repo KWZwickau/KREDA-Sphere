@@ -1,6 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\System\Consumer;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\System\Consumer\Setting\CreateConsumer;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -35,7 +37,7 @@ class Consumer extends AbstractFrontend
         $View->setTitle( 'Mandanten' );
         $View->setDescription( 'Hinzufügen' );
         $View->setMessage( '' );
-        $View->setContent( '...' );
+        $View->setContent( new CreateConsumer( Gatekeeper::serviceConsumer()->entityConsumerAll() ) );
         return $View;
     }
 }

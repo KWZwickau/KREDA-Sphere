@@ -116,3 +116,9 @@ hr {
 .bootstrap-datetimepicker-widget td.old, .bootstrap-datetimepicker-widget td.new {
     color: rgb(119, 102, 102);
 }
+
+@media (min-width: 769px) {
+    .footer-nav {
+        width: 40%;
+    }
+}

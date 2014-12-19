@@ -43,9 +43,13 @@ class Account extends EntityAction
         $tblAccountTyp = $this->actionCreateAccountTyp( 'Root' );
         $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp', $tblAccountTyp, $tblAccountRole, null, null, null );
 
-        $this->actionCreateAccountTyp( 'Schüler' );
-        $this->actionCreateAccountTyp( 'Lehrer' );
-        $this->actionCreateAccountTyp( 'Verwaltung' );
+        $tblAccountTyp = $this->actionCreateAccountTyp( 'Schüler' );
+
+        $tblAccountRole = $this->actionCreateAccountRole( 'Lehrkraft' );
+        $tblAccountTyp = $this->actionCreateAccountTyp( 'Lehrer' );
+        $this->actionCreateAccount( 'Schubert', 'Micha', $tblAccountTyp, $tblAccountRole, null, null, null );
+
+        $tblAccountTyp = $this->actionCreateAccountTyp( 'Verwaltung' );
     }
 
     /**
@@ -115,22 +119,22 @@ class Account extends EntityAction
     public function checkIsValidCredential( $Username, $Password, $TokenString, TblAccountTyp $tblAccountTyp )
     {
 
-        if (false === ( $Account = $this->entityAccountByCredential( $Username, $Password, $tblAccountTyp ) )) {
+        if (false === ( $tblAccount = $this->entityAccountByCredential( $Username, $Password, $tblAccountTyp ) )) {
             return self::API_SIGN_IN_ERROR_CREDENTIAL;
         } else {
             if (false === $TokenString) {
                 session_regenerate_id();
-                $this->actionCreateSession( $Account, session_id() );
+                $this->actionCreateSession( $tblAccount, session_id() );
                 return self::API_SIGN_IN_SUCCESS;
             } else {
                 try {
                     if (Gatekeeper::serviceToken()->apiValidateToken( $TokenString )) {
-                        if (false === ( $Token = Gatekeeper::serviceToken()->entityTokenById( $Account->getServiceGatekeeperToken() ) )) {
+                        if (false === ( $Token = $tblAccount->getServiceGatekeeperToken() )) {
                             return self::API_SIGN_IN_ERROR_TOKEN;
                         } else {
                             if ($Token->getIdentifier() == substr( $TokenString, 0, 12 )) {
                                 session_regenerate_id();
-                                $this->actionCreateSession( $Account, session_id() );
+                                Gatekeeper::serviceAccount()->actionCreateSession( $tblAccount, session_id() );
                                 return self::API_SIGN_IN_SUCCESS;
                             } else {
                                 return self::API_SIGN_IN_ERROR_TOKEN;
@@ -220,7 +224,7 @@ class Account extends EntityAction
         if (!empty( $CredentialLock ) && !empty( $CredentialLockSafety )) {
 
             if ($CredentialLock == $CredentialLockSafety) {
-                // TODO: Change Password
+                $this->actionChangePassword( $CredentialLock );
                 return new Redirect( '/Sphere/Gatekeeper/MyAccount', 1 );
             } else {
                 $View->setErrorWrongLockSafety();

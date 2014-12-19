@@ -15,7 +15,7 @@
 
 # Set Default Encoding to UTF-8
 
-	<FilesMatch "\.(html|css|js|php)$">
+	<FilesMatch "\.(html|css|js|php|map)$">
 		AddDefaultCharset UTF-8
 		DefaultLanguage en-US
 	</FilesMatch>
@@ -57,7 +57,7 @@
 	</FilesMatch>
 	# 480 weeks
 	<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|woff|map)$">
-		Header set Cache-Control "max-age=290304000, public"
+		Header set Cache-Control "max-age=290304000, public, must-revalidate"
 	</FilesMatch>
 	# 2 DAYS
 	<FilesMatch "\.(xml|txt)$">
@@ -65,7 +65,7 @@
 	</FilesMatch>
 	# 2 HOURS
 	<FilesMatch "\.(html|htm)$">
-		Header set Cache-Control "max-age=7200, public"
+		Header set Cache-Control "max-age=7200, public, must-revalidate"
 	</FilesMatch>
 
 # Compress everything except images

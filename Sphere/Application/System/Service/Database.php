@@ -75,12 +75,12 @@ class Database extends AbstractService
                             $Group = $Setting[$Service.':'.$Consumer];
                             try {
                                 $this->setDatabaseHandler( $Application, $Service, $Consumer );
-                                $Report[$Application][$Application][''.$Service.'<br/>'.$Consumer.''][$Group['Host'].'<br/>'.$Group['Database'].( empty( $Consumer ) ? '' : '_'.$Consumer )] = '<div class="badge badge-success">Verbindung erfolgreich</div>';
+                                $Report[$Application][$Application]['<span class="text-muted">Service:</span> '.$Service.' <span class="text-muted">Consumer:</span> '.( $Consumer ? $Consumer : '---' )]['<span class="text-muted">Server:</span> '.$Group['Host'].' <span class="text-muted">Schema:</span> '.$Group['Database'].( empty( $Consumer ) ? '' : '_'.$Consumer )] = '<div class="badge badge-success">Verbunden</div>';
                             } catch( \Exception $E ) {
-                                $Report[$Application][$Application][''.$Service.'<br/>'.$Consumer.''][$Group['Host'].'<br/>'.$Group['Database'].( empty( $Consumer ) ? '' : '_'.$Consumer )] = '<div class="badge badge-danger">Nicht verbunden</div>';
+                                $Report[$Application][$Application]['<span class="text-muted">Service:</span> '.$Service.' <span class="text-muted">Consumer:</span> '.( $Consumer ? $Consumer : '---' )]['<span class="text-muted">Server:</span> '.$Group['Host'].' <span class="text-muted">Schema:</span> '.$Group['Database'].( empty( $Consumer ) ? '' : '_'.$Consumer )] = '<div class="badge badge-danger">Fehler</div>';
                             }
                         } else {
-                            $Report[$Application][$Application][''.$Service.'<br/>'.$Consumer.'']['-NA-'] = '<div class="badge badge-danger">Konfiguration fehlerhaft</div>';
+                            $Report[$Application][$Application]['<span class="text-muted">Service:</span> '.$Service.' <span class="text-muted">Consumer:</span> '.( $Consumer ? $Consumer : '---' )]['-NA-'] = '<div class="badge badge-danger">Konfiguration fehlerhaft</div>';
                         }
                     }
                 }

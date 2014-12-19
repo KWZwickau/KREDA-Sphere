@@ -30,20 +30,6 @@ class Token extends EntityAction
     }
 
     /**
-     * @param string $Value
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function apiValidateToken( $Value )
-    {
-
-        $YubiKey = new Token\Hardware\YubiKey\YubiKey( 19180, 'YJwU33GNiRiw1dE8/MfIMNm8w3Y=' );
-        $Key = $YubiKey->parseKey( $Value );
-        return $YubiKey->verifyKey( $Key );
-    }
-
-    /**
      * @param integer $Id
      *
      * @return bool|TblToken
@@ -73,13 +59,32 @@ class Token extends EntityAction
     }
 
     /**
-     * @param $OTP
+     * @param string $CredentialKey
      *
-     * @return TblToken
+     * @return bool|TblToken
      */
-    public function registerYubiKey( $OTP )
+    public function executeRegisterYubiKey( $CredentialKey )
     {
 
-        return parent::actionCreateToken( substr( $OTP, 0, 12 ) );
+        if ($this->apiValidateToken( $CredentialKey )) {
+            return parent::actionCreateToken( substr( $CredentialKey, 0, 12 ) );
+        } else {
+            return false;
+        }
     }
+
+    /**
+     * @param string $Value
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function apiValidateToken( $Value )
+    {
+
+        $YubiKey = new Token\Hardware\YubiKey\YubiKey( 19180, 'YJwU33GNiRiw1dE8/MfIMNm8w3Y=' );
+        $Key = $YubiKey->parseKey( $Value );
+        return $YubiKey->verifyKey( $Key );
+    }
+
 }

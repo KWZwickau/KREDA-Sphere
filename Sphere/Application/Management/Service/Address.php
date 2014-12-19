@@ -57,6 +57,10 @@ class Address extends EntityAction
         $tblAddressState = $this->actionCreateAddressState( 'Sachsen' );
         $tblAddressCity = $this->actionCreateAddressCity( '08056', 'Zwickau' );
         $this->actionCreateAddress( $tblAddressState, $tblAddressCity, 'Am Bahnhof', '4' );
+
+        $tblAddressState = $this->actionCreateAddressState( 'Sachsen' );
+        $tblAddressCity = $this->actionCreateAddressCity( '09456', 'Annaberg-Buchholz' );
+        $this->actionCreateAddress( $tblAddressState, $tblAddressCity, 'Straße der Freundschaft', '11' );
     }
 
     /**

@@ -1,26 +1,28 @@
-<table class="table text-left table-responsive table-condensed">
-    <thead>
-    <tr>
-        <th>Application</th>
-        <th>Service / Consumer</th>
-        <th>Database</th>
-        <th>Status</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for Application, Item in Status %}
-        {% for Service, Server in Item %}
-            {% for Connection, Setting in Server %}
-                {% for Database, Status in Setting %}
-                    <tr>
-                        <td style="vertical-align: middle;" class="small text-warning">{{ Application }}</td>
-                        <td style="vertical-align: middle;" class="small text-info">{{ Connection }}</td>
-                        <td style="vertical-align: middle;" class="small text-warning">{{ Database }}</td>
-                        <td style="vertical-align: middle;">{{ Status }}</td>
-                    </tr>
+<div class="table-responsive">
+    <table class="table text-left">
+        <thead>
+        <tr>
+            <th>Status</th>
+            <th>Application</th>
+            <th>Service</th>
+            <th>Database</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for Application, Item in Status %}
+            {% for Service, Server in Item %}
+                {% for Connection, Setting in Server %}
+                    {% for Database, Status in Setting %}
+                        <tr>
+                            <td style="vertical-align: middle;">{{ Status }}</td>
+                            <td style="vertical-align: middle;" class="small text-warning">{{ Application }}</td>
+                            <td style="vertical-align: middle;" class="small text-info">{{ Connection }}</td>
+                            <td style="vertical-align: middle;" class="small text-danger">{{ Database }}</td>
+                        </tr>
+                    {% endfor %}
                 {% endfor %}
             {% endfor %}
         {% endfor %}
-    {% endfor %}
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
