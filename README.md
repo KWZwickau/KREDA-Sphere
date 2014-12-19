@@ -23,8 +23,9 @@ Branch: Master
 Additional Software
 ===================
 
-- Bootstrap
 - Bootflat
+- Bootstrap
+- Bootstrap.DateTimePicker
 - jQuery
 - Markdownify
 
@@ -38,3 +39,7 @@ Additional Software
     - HttpKernel
     - HttpFoundation
     - Routing
+
+- Moment
+- Twitter.Typeahead
+- Twitter.Typeahead.Bootstrap

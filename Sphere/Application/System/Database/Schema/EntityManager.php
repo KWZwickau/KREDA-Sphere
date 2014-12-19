@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\System\Database\Schema;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\Entity;
 
 /**
  * Class EntityManager
@@ -45,7 +46,7 @@ class EntityManager
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\TransactionRequiredException
-     * @return EntityRepository
+     * @return Entity
      */
     final public function getEntityById( $ClassName, $Id )
     {
