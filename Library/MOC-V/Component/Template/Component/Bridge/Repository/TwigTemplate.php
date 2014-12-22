@@ -36,10 +36,13 @@ class TwigTemplate extends Bridge implements IBridgeInterface
      */
     public function loadFile( FileParameter $Location, $Reload = false )
     {
+
         $this->Instance = new \Twig_Environment(
             new \Twig_Loader_Filesystem( array( dirname( $Location->getFile() ) ) ),
             array( 'auto_reload' => $Reload, 'autoescape' => false, 'cache' => realpath( __DIR__.'/TwigTemplate' ) )
         );
+        $this->Instance->addFilter( new \Twig_SimpleFilter( 'utf8_encode', 'utf8_encode' ) );
+        $this->Instance->addFilter( new \Twig_SimpleFilter( 'utf8_decode', 'utf8_decode' ) );
         $this->Template = $this->Instance->loadTemplate( basename( $Location->getFile() ) );
         return $this;
     }
