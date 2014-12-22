@@ -21,7 +21,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return TblAccessRight
      */
-    protected function actionCreateAccessRight( $Route )
+    protected function actionCreateRight( $Route )
     {
 
         $Manager = $this->getEntityManager();
@@ -57,7 +57,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return TblAccessPrivilege
      */
-    protected function actionCreateAccessPrivilege( $Name )
+    protected function actionCreatePrivilege( $Name )
     {
 
         $Manager = $this->getEntityManager();
@@ -71,26 +71,26 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param TblAccessRight     $TblAccessRight
      * @param TblAccessPrivilege $TblAccessPrivilege
+     * @param TblAccessRight     $TblAccessRight
      *
      * @return TblAccessRightList
      */
-    protected function actionCreateAccessRightList(
-        TblAccessRight $TblAccessRight,
-        TblAccessPrivilege $TblAccessPrivilege
+    protected function actionAddPrivilegeRight(
+        TblAccessPrivilege $TblAccessPrivilege,
+        TblAccessRight $TblAccessRight
     ) {
 
         $Manager = $this->getEntityManager();
         $Entity = $Manager->getEntity( 'TblAccessRightList' )
             ->findOneBy( array(
-                TblAccessRightList::ATTR_TBL_ACCESS_RIGHT     => $TblAccessRight->getId(),
-                TblAccessRightList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId()
+                TblAccessRightList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId(),
+                TblAccessRightList::ATTR_TBL_ACCESS_RIGHT     => $TblAccessRight->getId()
             ) );
         if (null === $Entity) {
             $Entity = new TblAccessRightList();
-            $Entity->setTblAccessRight( $TblAccessRight );
             $Entity->setTblAccessPrivilege( $TblAccessPrivilege );
+            $Entity->setTblAccessRight( $TblAccessRight );
             $Manager->saveEntity( $Entity );
         }
         return $Entity;
@@ -98,40 +98,88 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblAccessPrivilege $TblAccessPrivilege
+     * @param TblAccessRight     $TblAccessRight
+     *
+     * @return bool
+     */
+    protected function actionRemovePrivilegeRight(
+        TblAccessPrivilege $TblAccessPrivilege,
+        TblAccessRight $TblAccessRight
+    ) {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAccessRightList' )
+            ->findOneBy( array(
+                TblAccessRightList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId(),
+                TblAccessRightList::ATTR_TBL_ACCESS_RIGHT     => $TblAccessRight->getId()
+            ) );
+        if (null !== $Entity) {
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @param TblAccess          $tblAccess
+     * @param TblAccessPrivilege $TblAccessPrivilege
      *
      * @return TblAccessPrivilegeList
      */
-    protected function actionCreateAccessPrivilegeList(
-        TblAccessPrivilege $TblAccessPrivilege,
-        TblAccess $tblAccess
+    protected function actionAddAccessPrivilege(
+        TblAccess $tblAccess,
+        TblAccessPrivilege $TblAccessPrivilege
     ) {
 
         $Manager = $this->getEntityManager();
         $Entity = $Manager->getEntity( 'TblAccessPrivilegeList' )
             ->findOneBy( array(
-                TblAccessPrivilegeList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId(),
-                TblAccessPrivilegeList::ATTR_TBL_ACCESS           => $tblAccess->getId()
+                TblAccessPrivilegeList::ATTR_TBL_ACCESS           => $tblAccess->getId(),
+                TblAccessPrivilegeList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId()
             ) );
         if (null === $Entity) {
             $Entity = new TblAccessPrivilegeList();
-            $Entity->setTblAccessPrivilege( $TblAccessPrivilege );
             $Entity->setTblAccess( $tblAccess );
+            $Entity->setTblAccessPrivilege( $TblAccessPrivilege );
             $Manager->saveEntity( $Entity );
         }
         return $Entity;
     }
 
     /**
-     * @param string $Route
+     * @param TblAccess          $tblAccess
+     * @param TblAccessPrivilege $TblAccessPrivilege
+     *
+     * @return bool
+     */
+    protected function actionRemoveAccessPrivilege(
+        TblAccess $tblAccess,
+        TblAccessPrivilege $TblAccessPrivilege
+    ) {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAccessPrivilegeList' )
+            ->findOneBy( array(
+                TblAccessPrivilegeList::ATTR_TBL_ACCESS           => $tblAccess->getId(),
+                TblAccessPrivilegeList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId()
+            ) );
+        if (null !== $Entity) {
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param string $Name
      *
      * @return bool|TblAccessRight
      */
-    protected function entityAccessRightByRouteName( $Route )
+    protected function entityAccessRightByRouteName( $Name )
     {
 
         $Entity = $this->getEntityManager()->getEntity( 'TblAccessRight' )
-            ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Route ) );
+            ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Name ) );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -140,7 +188,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return ViewAccess[]|bool
      */
-    protected function entityViewAccessByAccessRole( TblAccess $Access )
+    protected function entityViewAccessByAccess( TblAccess $Access )
     {
 
         $EntityList = $this->getEntityManager()->getEntity( 'ViewAccess' )
@@ -150,28 +198,28 @@ abstract class EntityAction extends EntitySchema
 
 
     /**
-     * @param TblAccessPrivilege $AccessPrivilege
+     * @param TblAccessPrivilege $tblAccessPrivilege
      *
      * @return ViewAccess[]|bool
      */
-    protected function entityViewAccessByAccessPrivilege( TblAccessPrivilege $AccessPrivilege )
+    protected function entityViewAccessByPrivilege( TblAccessPrivilege $tblAccessPrivilege )
     {
 
         $EntityList = $this->getEntityManager()->getEntity( 'ViewAccess' )
-            ->findBy( array( 'tblAccessPrivilege' => $AccessPrivilege->getId() ) );
+            ->findBy( array( 'tblAccessPrivilege' => $tblAccessPrivilege->getId() ) );
         return ( empty( $EntityList ) ? false : $EntityList );
     }
 
     /**
-     * @param TblAccessRight $AccessRight
+     * @param TblAccessRight $tblAccessRight
      *
      * @return ViewAccess[]|bool
      */
-    protected function entityViewAccessByAccessRight( TblAccessRight $AccessRight )
+    protected function entityViewAccessByRight( TblAccessRight $tblAccessRight )
     {
 
         $EntityList = $this->getEntityManager()->getEntity( 'ViewAccess' )
-            ->findBy( array( 'tblAccessRight' => $AccessRight->getId() ) );
+            ->findBy( array( 'tblAccessRight' => $tblAccessRight->getId() ) );
         return ( empty( $EntityList ) ? false : $EntityList );
     }
 
@@ -192,7 +240,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return bool|TblAccessPrivilege
      */
-    protected function entityAccessPrivilegeById( $Id )
+    protected function entityPrivilegeById( $Id )
     {
 
         $Entity = $this->getEntityManager()->getEntityById( 'TblAccessPrivilege', $Id );
@@ -204,7 +252,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return bool|TblAccessRight
      */
-    protected function entityAccessRightById( $Id )
+    protected function entityRightById( $Id )
     {
 
         $Entity = $this->getEntityManager()->getEntityById( 'TblAccessRight', $Id );

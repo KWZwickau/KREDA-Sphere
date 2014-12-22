@@ -32,26 +32,26 @@ class Access extends EntityAction
         /**
          * System:Database
          */
-        $Privilege = $this->actionCreateAccessPrivilege( 'Application::System:Database' );
+        $Privilege = $this->actionCreatePrivilege( 'Application::System:Database' );
 
-        $Right = $this->actionCreateAccessRight( '/Sphere/System/Database' );
-        $this->actionCreateAccessRightList( $Right, $Privilege );
-        $Right = $this->actionCreateAccessRight( '/Sphere/System/Database/Status' );
-        $this->actionCreateAccessRightList( $Right, $Privilege );
+        $Right = $this->actionCreateRight( '/Sphere/System/Database' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Database/Status' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
 
-        $Role = $this->actionCreateAccess( 'Administrator::GodMode' );
-        $this->actionCreateAccessPrivilegeList( $Privilege, $Role );
+        $Access = $this->actionCreateAccess( 'Administrator::GodMode' );
+        $this->actionAddAccessPrivilege( $Access, $Privilege );
 
         /**
          * System:Token
          */
-        $Privilege = $this->actionCreateAccessPrivilege( 'Application::System:Token' );
+        $Privilege = $this->actionCreatePrivilege( 'Application::System:Token' );
 
-        $Right = $this->actionCreateAccessRight( '/Sphere/System/Token/Certification' );
-        $this->actionCreateAccessRightList( $Right, $Privilege );
+        $Right = $this->actionCreateRight( '/Sphere/System/Token/Certification' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
 
-        $Role = $this->actionCreateAccess( 'Administrator::GodMode' );
-        $this->actionCreateAccessPrivilegeList( $Privilege, $Role );
+        $Access = $this->actionCreateAccess( 'Administrator::GodMode' );
+        $this->actionAddAccessPrivilege( $Access, $Privilege );
 
     }
 
@@ -65,11 +65,11 @@ class Access extends EntityAction
     }
 
     /**
-     * @param $Route
+     * @param string $Route
      *
      * @return bool
      */
-    public function apiIsValidAccess( $Route )
+    public function checkIsValidAccess( $Route )
     {
 
         if (in_array( $Route, self::$AccessCache )) {
@@ -78,7 +78,7 @@ class Access extends EntityAction
 
         try {
             if (false !== ( $Right = $this->entityAccessRightByRouteName( $Route ) )) {
-                if (false !== ( $this->entityViewAccessByAccessRight( $Right ) )) {
+                if (false !== ( $this->entityViewAccessByRight( $Right ) )) {
                     self::$AccessCache[] = $Route;
                     return true;
                 }
@@ -105,10 +105,10 @@ class Access extends EntityAction
      *
      * @return bool|TblAccessPrivilege
      */
-    public function entityAccessPrivilegeById( $Id )
+    public function entityPrivilegeById( $Id )
     {
 
-        return parent::entityAccessPrivilegeById( $Id );
+        return parent::entityPrivilegeById( $Id );
     }
 
     /**
@@ -116,9 +116,9 @@ class Access extends EntityAction
      *
      * @return bool|TblAccessRight
      */
-    public function entityAccessRightById( $Id )
+    public function entityRightById( $Id )
     {
 
-        return parent::entityAccessRightById( $Id );
+        return parent::entityRightById( $Id );
     }
 }

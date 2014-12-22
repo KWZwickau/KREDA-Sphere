@@ -45,6 +45,12 @@ class Database extends AbstractService
                 'EGE',
                 'ESZC'
             )
+        ),
+        'Billing'    => array(
+            '' => array(
+                'EGE',
+                'ESZC'
+            )
         )
     );
 

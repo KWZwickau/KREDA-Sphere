@@ -266,4 +266,50 @@ abstract class EntityAction extends EntitySchema
             return $Entity->getTblAccount();
         }
     }
+
+    /**
+     * @param TblConsumer     $tblConsumer
+     * @param null|TblAccount $tblAccount
+     *
+     * @return bool
+     */
+    protected function actionChangeConsumer( TblConsumer $tblConsumer, TblAccount $tblAccount = null )
+    {
+
+        if (null === $tblAccount) {
+            $tblAccount = $this->entityAccountBySession();
+        }
+        $Manager = $this->getEntityManager();
+        /** @var TblAccount $Entity */
+        $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
+        if (null !== $Entity) {
+            $Entity->setServiceGatekeeperConsumer( $tblConsumer );
+            $Manager->saveEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblPerson       $tblPerson
+     * @param null|TblAccount $tblAccount
+     *
+     * @return bool
+     */
+    protected function actionChangePerson( TblPerson $tblPerson, TblAccount $tblAccount = null )
+    {
+
+        if (null === $tblAccount) {
+            $tblAccount = $this->entityAccountBySession();
+        }
+        $Manager = $this->getEntityManager();
+        /** @var TblAccount $Entity */
+        $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
+        if (null !== $Entity) {
+            $Entity->setServiceManagementPerson( $tblPerson );
+            $Manager->saveEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
 }

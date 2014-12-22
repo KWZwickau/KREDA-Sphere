@@ -14,3 +14,10 @@
     </div>
     {{ PersonBirthdayFeedbackMessage }}
 </div>
+<script type="text/javascript">
+    require( ['ModPicker'], function()
+        {
+            jQuery( 'input[type="text"][name="PersonBirthday"]' ).datetimepicker();
+        }
+    );
+</script>

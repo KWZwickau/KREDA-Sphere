@@ -11,17 +11,42 @@
     <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"/>
     <link rel="schema.DCTERMS" href="http://purl.org/dc/terms/"/>
 
-    <link rel="stylesheet" href="{{ PathBase }}/Library/Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs.css" property="">
-    <link rel="stylesheet"
-          href="{{ PathBase }}/Library/Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min.css"
-          property="">
     <link rel="stylesheet" href="{{ PathBase }}/Library/Bootstrap/3.2.0/dist/css/bootstrap.min.css" property="">
     <link rel="stylesheet" href="{{ PathBase }}/Library/Bootflat/2.0.4/bootflat/css/bootflat.min.css" property="">
-    <link rel="stylesheet" href="{{ PathBase }}/Sphere/Client/Style/Style.css" property=""/>
+    <link rel="stylesheet" href="{{ PathBase }}/Sphere/Client/Style/Style.css" property="">
 
     <link rel="shortcut icon" type="image/x-icon" href="{{ PathBase }}/favicon.ico"/>
     <link rel="apple-touch-icon" href="{{ PathBase }}/apple-touch-icon.png"/>
 
+    <script src="{{ PathBase }}/Library/Require.Js/2.1.15/require.min.js"></script>
+    <script>
+        require.config( {
+            baseUrl: '{{ PathBase }}/Library/',
+            shim: {
+                "ModPicker": {"deps": ['jQuery', 'Moment']},
+                "ModSelecter": {"deps": ['jQuery']},
+                "ModStepper": {"deps": ['jQuery']},
+                "ModCompleter": {"deps": ['jQuery']},
+
+                "Bootstrap": {"deps": ['jQuery']}
+            },
+            paths: {
+                ModPicker: 'Bootstrap.DateTimePicker/3.1.3/build/js/bootstrap-datetimepicker.min',
+                ModSelecter: 'jQuery.Selecter/3.2.3/jquery.fs.selecter.min',
+                ModStepper: 'jQuery.Stepper/3.0.8/jquery.fs.stepper.min',
+                ModCompleter: 'Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min',
+
+                jQuery: 'jQuery/1.11.1/dist/jquery.min',
+                Bootstrap: 'Bootstrap/3.2.0/dist/js/bootstrap.min',
+                Moment: 'Moment.Js/2.8.4/min/moment-with-locales.min',
+                Check: 'Bootflat/2.0.4/bootflat/js/icheck.min',
+                Css: 'Require.Css/0.1.8/css.min'
+            },
+            waitSeconds: 120
+        } );
+        require( ['Css!Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs'] );
+        require( ['Css!Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min'] );
+    </script>
 </head>
 <body>
 
@@ -65,23 +90,8 @@
         </div>
     </div>
 </div>
-<!-- jQuery -->
-<script src="{{ PathBase }}/Library/jQuery/1.11.1/dist/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="{{ PathBase }}/Library/Bootstrap/3.2.0/dist/js/bootstrap.min.js"></script>
-<script src="{{ PathBase }}/Library/Moment/2.8.4/min/moment-with-locales.min.js"></script>
-<script src="{{ PathBase }}/Library/Bootstrap.DateTimePicker/3.1.3/build/js/bootstrap-datetimepicker.min.js"></script>
-<script src="{{ PathBase }}/Library/Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min.js"></script>
-<!-- Bootflat's JS files.-->
-<script src="{{ PathBase }}/Library/Bootflat/2.0.4/bootflat/js/icheck.min.js"></script>
-<script src="{{ PathBase }}/Library/Bootflat/2.0.4/bootflat/js/jquery.fs.selecter.min.js"></script>
-<script src="{{ PathBase }}/Library/Bootflat/2.0.4/bootflat/js/jquery.fs.stepper.min.js"></script>
-<script type="text/javascript">
-    jQuery( function()
-        {
-            jQuery( 'input[type="text"][data-date-format]' ).datetimepicker();
-        }
-    );
+<script>
+    require( ['Bootstrap'] );
 </script>
 </body>
 </html>

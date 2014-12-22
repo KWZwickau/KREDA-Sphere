@@ -42,7 +42,7 @@ class TblAccessPrivilegeList
         if (null === $this->tblAccessPrivilege) {
             return false;
         } else {
-            return Gatekeeper::serviceAccess()->entityAccessPrivilegeById( $this->tblAccessPrivilege );
+            return Gatekeeper::serviceAccess()->entityPrivilegeById( $this->tblAccessPrivilege );
         }
     }
 

@@ -9,7 +9,6 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Consumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\HomeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
@@ -236,9 +235,9 @@ class Gatekeeper extends AbstractApplication
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Gatekeeper/MyAccount/ChangePassword', 'Passwort ändern', new LockIcon()
         );
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Gatekeeper/MyAccount/ChangeConsumer', 'Mandant ändern', new HomeIcon()
-        );
+//        self::addModuleNavigationMain( self::$Configuration,
+//            '/Sphere/Gatekeeper/MyAccount/ChangeConsumer', 'Mandant ändern', new HomeIcon()
+//        );
     }
 
     /**

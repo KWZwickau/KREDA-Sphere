@@ -43,13 +43,13 @@ class Account extends EntityAction
         $tblAccountTyp = $this->actionCreateAccountTyp( 'Root' );
         $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp', $tblAccountTyp, $tblAccountRole, null, null, null );
 
-        $tblAccountTyp = $this->actionCreateAccountTyp( 'Schüler' );
+        $this->actionCreateAccountTyp( 'Schüler' );
 
         $tblAccountRole = $this->actionCreateAccountRole( 'Lehrkraft' );
         $tblAccountTyp = $this->actionCreateAccountTyp( 'Lehrer' );
         $this->actionCreateAccount( 'Schubert', 'Micha', $tblAccountTyp, $tblAccountRole, null, null, null );
 
-        $tblAccountTyp = $this->actionCreateAccountTyp( 'Verwaltung' );
+        $this->actionCreateAccountTyp( 'Verwaltung' );
     }
 
     /**
