@@ -27,7 +27,14 @@ Additional Software
 - Bootstrap
 - Bootstrap.DateTimePicker
 - jQuery
+- jQuery.Selecter
+- jQuery.Stepper
 - Markdownify
+- Moment.Js
+- Require.Css
+- Require.Js
+- Twitter.Typeahead
+- Twitter.Typeahead.Bootstrap
 
 - MOC (Mark V)
   - Doctrine DBAL/ORM
@@ -39,7 +46,3 @@ Additional Software
     - HttpKernel
     - HttpFoundation
     - Routing
-
-- Moment
-- Twitter.Typeahead
-- Twitter.Typeahead.Bootstrap
