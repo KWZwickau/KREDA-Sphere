@@ -1,10 +1,10 @@
 <?php
-namespace KREDA\Sphere\Application\System\Database\Driver;
+namespace KREDA\Sphere\Common\Database\Driver;
 
 /**
  * Class AbstractDriver
  *
- * @package KREDA\Sphere\Application\System\Database\Driver
+ * @package KREDA\Sphere\Common\Database
  */
 abstract class AbstractDriver
 {

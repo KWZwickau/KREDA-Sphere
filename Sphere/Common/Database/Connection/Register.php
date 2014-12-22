@@ -1,12 +1,12 @@
 <?php
-namespace KREDA\Sphere\Application\System\Database\Connection;
+namespace KREDA\Sphere\Common\Database\Connection;
 
 use MOC\V\Component\Database\Component\IBridgeInterface;
 
 /**
  * Class Register
  *
- * @package KREDA\Sphere\Application\System\Database\Connection
+ * @package KREDA\Sphere\Common\Database
  */
 class Register
 {

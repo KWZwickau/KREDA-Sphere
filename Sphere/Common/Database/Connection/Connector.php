@@ -1,14 +1,14 @@
 <?php
-namespace KREDA\Sphere\Application\System\Database\Connection;
+namespace KREDA\Sphere\Common\Database\Connection;
 
-use KREDA\Sphere\Application\System\Database\Driver\AbstractDriver;
+use KREDA\Sphere\Common\Database\Driver\AbstractDriver;
 use MOC\V\Component\Database\Component\IBridgeInterface;
 use MOC\V\Component\Database\Database;
 
 /**
  * Class Connector
  *
- * @package KREDA\Sphere\Application\System\Database\Connection
+ * @package KREDA\Sphere\Common\Database
  */
 class Connector
 {

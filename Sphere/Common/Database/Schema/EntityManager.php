@@ -1,18 +1,21 @@
 <?php
-namespace KREDA\Sphere\Application\System\Database\Schema;
+namespace KREDA\Sphere\Common\Database\Schema;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\TransactionRequiredException;
 
 /**
  * Class EntityManager
  *
- * @package KREDA\Sphere\Application\System\Database\Schema
+ * @package KREDA\Sphere\Common\Database
  */
 class EntityManager
 {
 
-    /** @var \Doctrine\ORM\EntityManager|null $EntityManager */
+    /** @var \Doctrine\ORM\EntityManager $EntityManager */
     private $EntityManager = null;
     /** @var string $Namespace */
     private $Namespace = '';
@@ -43,9 +46,9 @@ class EntityManager
      * @param string $ClassName
      * @param int    $Id
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws TransactionRequiredException
      * @return Entity
      */
     final public function getEntityById( $ClassName, $Id )

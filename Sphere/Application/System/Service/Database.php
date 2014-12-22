@@ -63,7 +63,7 @@ class Database extends AbstractService
 
         ksort( $this->ServiceList );
         foreach ((array)$this->ServiceList as $Application => $ServiceList) {
-            $Config = __DIR__.'/../Database/Config/'.$Application.'.ini';
+            $Config = __DIR__.'/../../../Common/Database/Config/'.$Application.'.ini';
             if (false !== ( $Config = realpath( $Config ) )) {
                 ksort( $ServiceList );
                 foreach ((array)$ServiceList as $Service => $ConsumerList) {

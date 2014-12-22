@@ -1,9 +1,9 @@
 <?php
 namespace KREDA\Sphere\Common;
 
-use KREDA\Sphere\Application\System\Database\Connection\Identifier;
-use KREDA\Sphere\Application\System\Database\Handler;
-use KREDA\Sphere\Application\System\Database\Schema\EntityManager;
+use KREDA\Sphere\Common\Database\Connection\Identifier;
+use KREDA\Sphere\Common\Database\Handler;
+use KREDA\Sphere\Common\Database\Schema\EntityManager;
 use KREDA\Sphere\IServiceInterface;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
@@ -17,7 +17,7 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
 
     /** @var null|string $BaseRoute Client-Application Route */
     protected static $BaseRoute = null;
-    /** @var null|Handler $DatabaseHandler */
+    /** @var null|\KREDA\Sphere\Common\Database\Handler $DatabaseHandler */
     protected static $DatabaseHandler = null;
 
     /**

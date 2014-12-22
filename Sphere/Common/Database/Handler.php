@@ -1,19 +1,19 @@
 <?php
-namespace KREDA\Sphere\Application\System\Database;
+namespace KREDA\Sphere\Common\Database;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
 use Doctrine\DBAL\Schema\Schema;
-use KREDA\Sphere\Application\System\Database\Connection\Connector;
-use KREDA\Sphere\Application\System\Database\Connection\Identifier;
-use KREDA\Sphere\Application\System\Database\Schema\EntityManager;
-use KREDA\Sphere\Application\System\Database\Schema\Model;
+use KREDA\Sphere\Common\Database\Connection\Connector;
+use KREDA\Sphere\Common\Database\Connection\Identifier;
+use KREDA\Sphere\Common\Database\Schema\EntityManager;
+use KREDA\Sphere\Common\Database\Schema\Model;
 
 /**
  * Class Handler
  *
- * @package KREDA\Sphere\Application\System\Database\Handler
+ * @package KREDA\Sphere\Common\Database
  */
 class Handler
 {

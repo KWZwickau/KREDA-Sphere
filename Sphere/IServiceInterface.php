@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere;
 
-use KREDA\Sphere\Application\System\Database\Handler;
+use KREDA\Sphere\Common\Database\Handler;
 
 /**
  * Interface IServiceInterface

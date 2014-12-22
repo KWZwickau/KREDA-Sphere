@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\System\Database\Schema;
+namespace KREDA\Sphere\Common\Database\Schema;
 
 use Doctrine\Common\Cache\ApcCache;
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
@@ -9,14 +9,14 @@ use Doctrine\DBAL\Schema\View;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
-use KREDA\Sphere\Application\System\Database\Connection\Connector;
-use KREDA\Sphere\Application\System\Database\Connection\Identifier;
+use KREDA\Sphere\Common\Database\Connection\Connector;
+use KREDA\Sphere\Common\Database\Connection\Identifier;
 use MOC\V\Component\Database\Component\IBridgeInterface;
 
 /**
  * Class Model
  *
- * @package KREDA\Sphere\Application\System\Database\Schema
+ * @package KREDA\Sphere\Common\Database
  */
 class Model
 {
@@ -48,8 +48,6 @@ class Model
         $Config = Setup::createAnnotationMetadataConfiguration( array( $EntityPath ) );
         $Config->setQueryCacheImpl( new ApcCache() );
         $Config->setMetadataCacheImpl( new ApcCache() );
-//        $Config->setQueryCacheImpl( new ArrayCache() );
-//        $Config->setMetadataCacheImpl( new ArrayCache() );
         return EntityManager::create( $this->Connection->getConnection(), $Config );
     }
 
