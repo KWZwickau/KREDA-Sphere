@@ -1,11 +1,11 @@
 <?php
 namespace KREDA\Sphere\Application\Management;
 
-use KREDA\Sphere\Application\Management\PersonalData\PersonalData;
+use KREDA\Sphere\Application\Management\Frontend\PersonalData\PersonalData;
+use KREDA\Sphere\Application\Management\Frontend\Subject\Subject;
 use KREDA\Sphere\Application\Management\Service\Address;
 use KREDA\Sphere\Application\Management\Service\Education;
 use KREDA\Sphere\Application\Management\Service\Person;
-use KREDA\Sphere\Application\Management\Subject\Subject;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BookIcon;

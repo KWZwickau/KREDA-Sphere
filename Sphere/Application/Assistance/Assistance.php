@@ -1,6 +1,9 @@
 <?php
 namespace KREDA\Sphere\Application\Assistance;
 
+use KREDA\Sphere\Application\Assistance\Frontend\Account\Account;
+use KREDA\Sphere\Application\Assistance\Frontend\Application\Application;
+use KREDA\Sphere\Application\Assistance\Frontend\Support\Support;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BookIcon;
@@ -46,7 +49,7 @@ class Assistance extends AbstractApplication
          */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Ticket',
-            __CLASS__.'::apiSupportTicket'
+            __CLASS__.'::frontendSupport_Ticket'
         );
         /**
          * Account
@@ -57,7 +60,7 @@ class Assistance extends AbstractApplication
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Account/Password/Forgotten',
-            __CLASS__.'::apiAccountPasswordForgotten'
+            __CLASS__.'::frontendAccount_ForgottenPassword'
         );
         /**
          * Application
@@ -68,17 +71,26 @@ class Assistance extends AbstractApplication
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Application/Start',
-            __CLASS__.'::apiSupportApplicationStart'
+            __CLASS__.'::frontendApplication_Launch'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Application/Missing',
-            __CLASS__.'::apiSupportApplicationMissing'
+            __CLASS__.'::frontendApplication_Missing'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Application/Fatal',
-            __CLASS__.'::apiSupportApplicationFatal'
+            __CLASS__.'::frontendApplication_Fatal'
         );
         return $Configuration;
+    }
+
+    /**
+     * @return Service\Youtrack
+     */
+    public static function serviceYoutrack()
+    {
+
+        return Service\Youtrack::getApi();
     }
 
     /**
@@ -115,14 +127,14 @@ class Assistance extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceAccount();
+        $this->setupFrontendAccount();
         $View = new Landing();
         $View->setTitle( 'Benutzerkonto' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
     }
 
-    public function setupServiceAccount()
+    public function setupFrontendAccount()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -134,12 +146,12 @@ class Assistance extends AbstractApplication
     /**
      * @return Stage
      */
-    public function apiAccountPasswordForgotten()
+    public function frontendAccount_ForgottenPassword()
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceAccount();
-        return Service\Account::getApi()->apiPasswordForgotten();
+        $this->setupFrontendAccount();
+        return Account::stageForgottenPassword();
     }
 
     /**
@@ -149,14 +161,14 @@ class Assistance extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceApplication();
+        $this->setupFrontendApplication();
         $View = new Landing();
         $View->setTitle( 'Anwendungsfehler' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
     }
 
-    public function setupServiceApplication()
+    public function setupFrontendApplication()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -177,45 +189,43 @@ class Assistance extends AbstractApplication
      *
      * @return Stage
      */
-    public function apiSupportTicket( $TicketSubject = null, $TicketMessage = null )
+    public function frontendSupport_Ticket( $TicketSubject = null, $TicketMessage = null )
     {
 
         $this->setupModuleNavigation();
-        return Service\Youtrack::getApi()->apiTicket( $TicketSubject, $TicketMessage );
-    }
-
-
-    /**
-     * @return Stage
-     */
-    public function apiSupportApplicationStart()
-    {
-
-        $this->setupModuleNavigation();
-        $this->setupServiceApplication();
-        return Service\Application::getApi()->apiAidStart();
+        return Support::stageTicket( $TicketSubject, $TicketMessage );
     }
 
     /**
      * @return Stage
      */
-    public function apiSupportApplicationMissing()
+    public function frontendApplication_Launch()
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceApplication();
-        return Service\Application::getApi()->apiAidMissingResource();
+        $this->setupFrontendApplication();
+        return Application::stageLaunch();
     }
 
     /**
      * @return Stage
      */
-    public function apiSupportApplicationFatal()
+    public function frontendApplication_Missing()
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceApplication();
-        return Service\Application::getApi()->apiAidFatal();
+        $this->setupFrontendApplication();
+        return Application::stageMissing();
     }
 
+    /**
+     * @return Stage
+     */
+    public function frontendApplication_Fatal()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupFrontendApplication();
+        return Application::stageFatal();
+    }
 }

@@ -6,7 +6,6 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Component
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
-use KREDA\Sphere\Common\AddOn\Debugger;
 
 /**
  * Class YubiKey
@@ -42,8 +41,6 @@ class YubiKey
     final function __construct( $YubiApiId, $YubiApiKey = null )
     {
 
-        Debugger::addMethodCall( __METHOD__ );
-
         $this->YubiApiId = $YubiApiId;
         if (null !== $YubiApiKey) {
             $this->YubiApiKey = base64_decode( $YubiApiKey );
@@ -58,8 +55,6 @@ class YubiKey
      */
     final public function parseKey( $Value )
     {
-
-        Debugger::addMethodCall( __METHOD__ );
 
         if (!preg_match( "/^((.*)".$this->KeyDelimiter.")?".
             "(([cbdefghijklnrtuvCBDEFGHIJKLNRTUV]{0,16})".
@@ -82,8 +77,6 @@ class YubiKey
     final public function verifyKey( KeyValue $Key )
     {
 
-        Debugger::addMethodCall( __METHOD__ );
-
         $Parameter = $this->createParameter( $Key );
         $Query = $this->createSignature( $Parameter );
 
@@ -102,7 +95,6 @@ class YubiKey
         $Decision = array();
         foreach ((array)$Result as $Response) {
             if (preg_match( "/status=([a-zA-Z0-9_]+)/", $Response, $Status )) {
-                Debugger::addProtocol( $Response );
                 /**
                  * Case 1.
                  * OTP or Nonce values doesn't match - ignore response.
@@ -110,7 +102,6 @@ class YubiKey
                 if (!preg_match( "/otp=".$Key->getKeyOTP()."/", $Response ) ||
                     !preg_match( "/nonce=".$Key->getKeyNOnce()."/", $Response )
                 ) {
-                    Debugger::addFileLine( __FILE__, __LINE__ );
                     continue;
                 } /**
                  * Case 2.
@@ -118,7 +109,6 @@ class YubiKey
                  * Return if status=OK or status=REPLAYED_OTP.
                  */
                 elseif (null !== $this->YubiApiKey) {
-                    Debugger::addFileLine( __FILE__, __LINE__ );
                     if ($this->checkSignature( $Response, $Status[1] )) {
                         $Decision[] = 1;
                     } else {
@@ -129,7 +119,6 @@ class YubiKey
                  * Return if status=OK or status=REPLAYED_OTP.
                  */
                 else {
-                    Debugger::addFileLine( __FILE__, __LINE__ );
                     switch ($Status[1]) {
                         case 'OK':
                             $Decision[] = 1;
@@ -149,7 +138,6 @@ class YubiKey
         /**
          *
          */
-        Debugger::addProtocol( print_r( $Decision, true ) );
         $Decision = array_sum( $Decision ) / ( count( $Decision ) > 0 ? count( $Decision ) : 1 );
 
         if ($Decision > 0.5) {

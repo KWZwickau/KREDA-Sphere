@@ -16,6 +16,8 @@ use MOC\V\Core\HttpKernel\HttpKernel;
 /**
  * Class AbstractApplication
  *
+ * - Methods MUST RETURN Stage
+ *
  * @package KREDA\Sphere
  */
 abstract class AbstractApplication extends AbstractAddOn implements IApplicationInterface

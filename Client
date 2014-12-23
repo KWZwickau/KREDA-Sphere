@@ -4,10 +4,9 @@ namespace KREDA\Client;
 use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use Doctrine\DBAL\Schema\SchemaException;
 use KREDA\Sphere\Application\Assistance\Assistance;
-use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Danger;
-use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Info;
-use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Warning;
-use KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Redirect;
+use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Danger;
+use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Info;
+use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Warning;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\System\Service\Database;
@@ -23,6 +22,7 @@ use KREDA\Sphere\Client\Component\Element\Repository\Shell\Screen;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\AbstractFrontend\Redirect;
 use KREDA\Sphere\Common\AddOn\Debugger;
 use MOC\V\Component\Database\Exception\DatabaseException;
 use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
@@ -94,8 +94,6 @@ register_shutdown_function(
 
 if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance/Support' )) {
 
-    Debugger::addFileLine( __FILE__, __LINE__ );
-
     /**
      * Setup Public-Access
      */
@@ -123,11 +121,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
         }
     }
 
-    Debugger::addFileLine( __FILE__, __LINE__ );
-
 } else {
-
-    Debugger::addFileLine( __FILE__, __LINE__ );
 
     /**
      * Setup Application

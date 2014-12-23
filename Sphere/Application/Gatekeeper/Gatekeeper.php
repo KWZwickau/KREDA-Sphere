@@ -1,14 +1,13 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper;
 
-use KREDA\Sphere\Application\Gatekeeper\Authentication\Authentication;
-use KREDA\Sphere\Application\Gatekeeper\MyAccount\MyAccount;
+use KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication;
+use KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount\MyAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
@@ -47,39 +46,45 @@ class Gatekeeper extends AbstractApplication
                 '/Sphere/Gatekeeper/SignIn', 'Anmeldung', new LockIcon()
             );
         }
-
-        self::registerClientRoute( self::$Configuration, '/', __CLASS__.'::apiMain' );
-        self::registerClientRoute( self::$Configuration, '/Sphere', __CLASS__.'::guiWelcome' );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn', __CLASS__.'::guiSignIn' );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignOut', __CLASS__.'::guiSignOut' );
-
-        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount', __CLASS__.'::guiMyAccount' );
-
-        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangePassword',
-            __CLASS__.'::guiMyAccountChangePassword' );
-        $Route->setParameterDefault( 'CredentialLock', null );
-        $Route->setParameterDefault( 'CredentialLockSafety', null );
-
-        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangeConsumer',
-            __CLASS__.'::guiMyAccountChangeConsumer' );
-        $Route->setParameterDefault( 'tblConsumer', null );
-
+        /**
+         * Authentication
+         */
+        self::registerClientRoute( self::$Configuration, '/',
+            __CLASS__.'::frontendAuthentication_SignInSwitch' );
+        self::registerClientRoute( self::$Configuration, '/Sphere',
+            __CLASS__.'::frontendAuthentication_Welcome' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn',
+            __CLASS__.'::frontendAuthentication_SignInSwitch' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignOut',
+            __CLASS__.'::frontendAuthentication_SignOut' );
         $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Teacher',
-            __CLASS__.'::guiSignInTeacher' );
+            __CLASS__.'::frontendAuthentication_SignInTeacher' );
         $Route->setParameterDefault( 'CredentialName', null );
         $Route->setParameterDefault( 'CredentialLock', null );
         $Route->setParameterDefault( 'CredentialKey', null );
 
         $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Management',
-            __CLASS__.'::guiSignInManagement' );
+            __CLASS__.'::frontendAuthentication_SignInManagement' );
         $Route->setParameterDefault( 'CredentialName', null );
         $Route->setParameterDefault( 'CredentialLock', null );
         $Route->setParameterDefault( 'CredentialKey', null );
 
         $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Student',
-            __CLASS__.'::guiSignInStudent' );
+            __CLASS__.'::frontendAuthentication_SignInStudent' );
         $Route->setParameterDefault( 'CredentialName', null );
         $Route->setParameterDefault( 'CredentialLock', null );
+        /**
+         * MyAccount
+         */
+        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount',
+            __CLASS__.'::frontendMyAccount_Summary' );
+        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangePassword',
+            __CLASS__.'::frontendMyAccount_ChangePassword' );
+        $Route->setParameterDefault( 'CredentialLock', null );
+        $Route->setParameterDefault( 'CredentialLockSafety', null );
+        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangeConsumer',
+            __CLASS__.'::frontendMyAccount_ChangeConsumer' );
+        $Route->setParameterDefault( 'tblConsumer', null );
 
         return $Configuration;
     }
@@ -123,20 +128,11 @@ class Gatekeeper extends AbstractApplication
     /**
      * @return Stage
      */
-    public function guiSignIn()
-    {
-
-        return $this->apiMain();
-    }
-
-    /**
-     * @return Stage
-     */
-    public function apiMain()
+    public function frontendAuthentication_SignInSwitch()
     {
 
         $this->setupModuleNavigation();
-        return Authentication::guiSignInSwitch();
+        return Authentication::stageSignInSwitch();
     }
 
     /**
@@ -157,15 +153,12 @@ class Gatekeeper extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
-    public function guiWelcome()
+    public function frontendAuthentication_Welcome()
     {
 
-        $View = new Landing();
-        $View->setTitle( 'Willkommen' );
-        $View->setMessage( date( 'd.m.Y - H:i:s' ) );
-        return $View;
+        return Authentication::stageWelcome();
     }
 
     /**
@@ -175,11 +168,11 @@ class Gatekeeper extends AbstractApplication
      *
      * @return Stage
      */
-    public function guiSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey )
+    public function frontendAuthentication_SignInTeacher( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
         $this->setupModuleNavigation();
-        return Authentication::guiSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey );
+        return Authentication::stageSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey );
     }
 
     /**
@@ -189,11 +182,11 @@ class Gatekeeper extends AbstractApplication
      *
      * @return Stage
      */
-    public function guiSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
+    public function frontendAuthentication_SignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
         $this->setupModuleNavigation();
-        return Authentication::guiSignInManagement( $CredentialName, $CredentialLock, $CredentialKey );
+        return Authentication::stageSignInManagement( $CredentialName, $CredentialLock, $CredentialKey );
     }
 
     /**
@@ -202,31 +195,31 @@ class Gatekeeper extends AbstractApplication
      *
      * @return Stage
      */
-    public function guiSignInStudent( $CredentialName, $CredentialLock )
+    public function frontendAuthentication_SignInStudent( $CredentialName, $CredentialLock )
     {
 
         $this->setupModuleNavigation();
-        return Authentication::guiSignInStudent( $CredentialName, $CredentialLock );
+        return Authentication::stageSignInStudent( $CredentialName, $CredentialLock );
     }
 
     /**
      * @return Stage
      */
-    public function guiSignOut()
+    public function frontendAuthentication_SignOut()
     {
 
         $this->setupModuleNavigation();
-        return Authentication::guiSignOut();
+        return Authentication::stageSignOut();
     }
 
     /**
      * @return Stage
      */
-    public function guiMyAccount()
+    public function frontendMyAccount_Summary()
     {
 
         $this->setupModuleMyAccount();
-        return MyAccount::guiSummary();
+        return MyAccount::landingSummary();
     }
 
     public function setupModuleMyAccount()
@@ -235,9 +228,6 @@ class Gatekeeper extends AbstractApplication
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Gatekeeper/MyAccount/ChangePassword', 'Passwort ändern', new LockIcon()
         );
-//        self::addModuleNavigationMain( self::$Configuration,
-//            '/Sphere/Gatekeeper/MyAccount/ChangeConsumer', 'Mandant ändern', new HomeIcon()
-//        );
     }
 
     /**
@@ -246,22 +236,10 @@ class Gatekeeper extends AbstractApplication
      *
      * @return Stage
      */
-    public function guiMyAccountChangePassword( $CredentialLock, $CredentialLockSafety )
+    public function frontendMyAccount_ChangePassword( $CredentialLock, $CredentialLockSafety )
     {
 
         $this->setupModuleMyAccount();
-        return MyAccount::guiChangePassword( $CredentialLock, $CredentialLockSafety );
-    }
-
-    /**
-     * @param integer $tblConsumer
-     *
-     * @return Stage
-     */
-    public function guiMyAccountChangeConsumer( $tblConsumer )
-    {
-
-        $this->setupModuleMyAccount();
-        return MyAccount::guiChangeConsumer( $tblConsumer );
+        return MyAccount::stageChangePassword( $CredentialLock, $CredentialLockSafety );
     }
 }

@@ -1,9 +1,10 @@
 <?php
 namespace KREDA\Sphere\Application\Assistance\Service;
 
-use KREDA\Sphere\Application\Assistance\Client\Aid\Cause\Danger;
-use KREDA\Sphere\Application\Assistance\Client\Aid\Solution\Support;
-use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Danger;
+use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Solution\Support;
+use KREDA\Sphere\Application\Assistance\Frontend\Support\Youtrack\Ticket;
+use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\AbstractService;
 use Markdownify\Converter;
 
@@ -28,20 +29,15 @@ class Youtrack extends AbstractService
     private $CookieList = null;
 
     /**
-     * @param string $TicketSubject
-     * @param string $TicketMessage
+     * @param Ticket      $Ticket
+     * @param null|string $TicketSubject
+     * @param null|string $TicketMessage
      *
-     * @return Stage
+     * @return Danger|string
      */
-    public function apiTicket( $TicketSubject, $TicketMessage )
+    public function executeCreateTicket( Ticket &$Ticket, $TicketSubject, $TicketMessage )
     {
 
-        $View = new Stage();
-        $View->setTitle( 'Support' );
-        $View->setDescription( 'Ticket erstellen' );
-        $View->setMessage( '' );
-
-        $Ticket = new Youtrack\Youtrack( $TicketSubject, $TicketMessage );
         $Error = false;
         if (empty( $TicketSubject ) && null !== $TicketSubject) {
             $Ticket->setErrorEmptySubject();
@@ -61,28 +57,21 @@ class Youtrack extends AbstractService
              * Nothing to do
              */
             try {
-                $View->setContent( $Ticket.$this->ticketCurrent() );
+                return $Ticket.$this->ticketCurrent();
             } catch( \Exception $E ) {
-                $View->setContent( new Danger( 'Das Support-System konnten nicht geladen werden' ) );
+                return new Danger( 'Das Support-System konnten nicht geladen werden' );
             }
         } else {
             /**
              * Submit Ticket
              */
-            $View = new Stage();
-            $View->setTitle( 'Support' );
-            $View->setDescription( 'Ticket erstellen' );
-            $View->setMessage( '' );
             try {
                 $this->ticketCreate( $TicketSubject, $TicketMessage );
-                $View->setContent( new Support( 'Das Problem wurde erfolgreich dem Support mitgeteilt' )
-                    .$this->ticketCurrent()
-                );
+                return new Support( 'Das Problem wurde erfolgreich dem Support mitgeteilt' ).$this->ticketCurrent();
             } catch( \Exception $E ) {
-                $View->setContent( new Danger( 'Das Problem konnte nicht übertragen werden' ) );
+                return new Danger( 'Das Problem konnte nicht übertragen werden' );
             }
         }
-        return $View;
     }
 
     /**

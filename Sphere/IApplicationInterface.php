@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere;
 
-use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Configuration;
 
 /**
@@ -18,9 +17,4 @@ interface IApplicationInterface
      * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration );
-
-    /**
-     * @return Element
-     */
-    public function apiMain();
 }

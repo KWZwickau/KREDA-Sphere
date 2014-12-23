@@ -2,13 +2,13 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
-use KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Error;
-use KREDA\Sphere\Application\Gatekeeper\Authentication\Common\Redirect;
+use KREDA\Sphere\Application\Gatekeeper\Frontend\AbstractError;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
+use KREDA\Sphere\Common\AbstractFrontend\Redirect;
 
 /**
  * Class Account
@@ -63,16 +63,16 @@ class Account extends EntityAction
     }
 
     /**
-     * @param Error         $View
+     * @param AbstractError $View
      * @param string        $CredentialName
      * @param string        $CredentialLock
      * @param string        $CredentialKey
      * @param TblAccountTyp $tblAccountTyp
      *
-     * @return Error|Redirect
+     * @return AbstractError|Redirect
      */
     public function executeSignInWithToken(
-        Error &$View,
+        AbstractError &$View,
         $CredentialName,
         $CredentialLock,
         $CredentialKey,
@@ -151,15 +151,19 @@ class Account extends EntityAction
     }
 
     /**
-     * @param Error         $View
+     * @param AbstractError $View
      * @param string        $CredentialName
      * @param string        $CredentialLock
      * @param TblAccountTyp $tblAccountTyp
      *
-     * @return Error|Redirect
+     * @return AbstractError
      */
-    public function executeSignIn( Error &$View, $CredentialName, $CredentialLock, TblAccountTyp $tblAccountTyp )
-    {
+    public function executeSignIn(
+        AbstractError &$View,
+        $CredentialName,
+        $CredentialLock,
+        TblAccountTyp $tblAccountTyp
+    ) {
 
         switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, false, $tblAccountTyp )) {
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
@@ -187,12 +191,12 @@ class Account extends EntityAction
     }
 
     /**
-     * @param Error   $View
-     * @param integer $tblConsumer
+     * @param AbstractError $View
+     * @param integer       $tblConsumer
      *
-     * @return Error
+     * @return AbstractError
      */
-    public function executeChangeConsumer( Error &$View, $tblConsumer )
+    public function executeChangeConsumer( AbstractError &$View, $tblConsumer )
     {
 
         if (null !== $tblConsumer && empty( $tblConsumer )) {
@@ -206,13 +210,13 @@ class Account extends EntityAction
     }
 
     /**
-     * @param Error  $View
-     * @param string $CredentialLock
-     * @param string $CredentialLockSafety
+     * @param AbstractError $View
+     * @param string        $CredentialLock
+     * @param string        $CredentialLockSafety
      *
-     * @return Error
+     * @return AbstractError
      */
-    public function executeChangePassword( Error &$View, $CredentialLock, $CredentialLockSafety )
+    public function executeChangePassword( AbstractError &$View, $CredentialLock, $CredentialLockSafety )
     {
 
         if (null !== $CredentialLock && empty( $CredentialLock )) {
