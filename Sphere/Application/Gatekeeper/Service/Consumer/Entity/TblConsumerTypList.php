@@ -7,12 +7,13 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblConsumerTypList")
  */
-class TblConsumerTypList
+class TblConsumerTypList extends AbstractEntity
 {
 
     const ATTR_TBL_CONSUMER_TYP = 'tblConsumerTyp';
@@ -23,15 +24,15 @@ class TblConsumerTypList
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="bigint")
      */
-    private $tblConsumerTyp;
+    protected $tblConsumerTyp;
     /**
      * @Column(type="bigint")
      */
-    private $tblConsumer;
+    protected $tblConsumer;
 
     /**
      * @return bool|TblConsumerTyp

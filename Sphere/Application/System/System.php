@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\System\Consumer\Consumer;
 use KREDA\Sphere\Application\System\Installer\Installer;
 use KREDA\Sphere\Application\System\Service\Database;
+use KREDA\Sphere\Application\System\Service\Protocol;
 use KREDA\Sphere\Application\System\Service\Token;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Client\Component\Element\Element;
@@ -82,6 +83,13 @@ class System extends AbstractApplication
             '/Sphere/System/Token/Certification', __CLASS__.'::apiTokenCertification'
         );
 
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Protocol', __CLASS__.'::apiProtocol'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Protocol/Live', __CLASS__.'::apiProtocolLive'
+        );
+
         return $Configuration;
     }
 
@@ -92,6 +100,15 @@ class System extends AbstractApplication
     {
 
         return Update::getApi();
+    }
+
+    /**
+     * @return Service\Protocol
+     */
+    public static function serviceProtocol()
+    {
+
+        return Protocol::getApi();
     }
 
     /**
@@ -149,6 +166,9 @@ class System extends AbstractApplication
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Token', 'Hardware-Schlüssel', new CertificateIcon()
+        );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/System/Protocol', 'Protokoll', new TaskIcon()
         );
     }
 
@@ -270,5 +290,15 @@ class System extends AbstractApplication
         $this->setupModuleNavigation();
         $this->setupServiceToken();
         return Token::getApi()->apiTokenCertification( $CredentialKey );
+    }
+
+    /**
+     * @return Stage
+     */
+    public function apiProtocol()
+    {
+
+        $this->setupModuleNavigation();
+        return Frontend\Protocol\Protocol::stageLive();
     }
 }

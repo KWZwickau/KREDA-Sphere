@@ -20,6 +20,9 @@ class Database extends AbstractService
     const STATUS_OK = 3;
     /** @var array $ServiceList */
     private $ServiceList = array(
+        'System' => array(
+            'Protocol' => array( '' )
+        ),
         'Gatekeeper' => array(
             'Access'   => array( '' ),
             'Account'  => array( '' ),

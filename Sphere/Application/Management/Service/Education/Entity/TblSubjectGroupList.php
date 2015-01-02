@@ -8,13 +8,14 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblSubjectGroupList")
  * @Cache(usage="NONSTRICT_READ_WRITE")
  */
-class TblSubjectGroupList
+class TblSubjectGroupList extends AbstractEntity
 {
 
     const ATTR_TBL_SUBJECT = 'tblSubject';
@@ -25,15 +26,15 @@ class TblSubjectGroupList
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="bigint")
      */
-    private $tblSubject;
+    protected $tblSubject;
     /**
      * @Column(type="bigint")
      */
-    private $tblGroup;
+    protected $tblGroup;
 
     /**
      * @return bool|TblSubject

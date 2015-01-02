@@ -3,7 +3,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\ViewToken;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\EntityAction;
 
 /**
@@ -41,12 +40,12 @@ class Token extends EntityAction
     }
 
     /**
-     * @return bool|ViewToken[]
+     * @return bool|TblToken[]
      */
-    public function entityViewToken()
+    public function entityTokenAll()
     {
 
-        return parent::entityViewToken();
+        return parent::entityTokenAll();
     }
 
     /**

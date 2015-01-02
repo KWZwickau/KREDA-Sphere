@@ -6,7 +6,6 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilegeList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRightList;
-use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\ViewAccess;
 
 /**
  * Class EntityAction
@@ -181,46 +180,6 @@ abstract class EntityAction extends EntitySchema
         $Entity = $this->getEntityManager()->getEntity( 'TblAccessRight' )
             ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Name ) );
         return ( null === $Entity ? false : $Entity );
-    }
-
-    /**
-     * @param TblAccess $Access
-     *
-     * @return ViewAccess[]|bool
-     */
-    protected function entityViewAccessByAccess( TblAccess $Access )
-    {
-
-        $EntityList = $this->getEntityManager()->getEntity( 'ViewAccess' )
-            ->findBy( array( 'tblAccess' => $Access->getId() ) );
-        return ( empty( $EntityList ) ? false : $EntityList );
-    }
-
-
-    /**
-     * @param TblAccessPrivilege $tblAccessPrivilege
-     *
-     * @return ViewAccess[]|bool
-     */
-    protected function entityViewAccessByPrivilege( TblAccessPrivilege $tblAccessPrivilege )
-    {
-
-        $EntityList = $this->getEntityManager()->getEntity( 'ViewAccess' )
-            ->findBy( array( 'tblAccessPrivilege' => $tblAccessPrivilege->getId() ) );
-        return ( empty( $EntityList ) ? false : $EntityList );
-    }
-
-    /**
-     * @param TblAccessRight $tblAccessRight
-     *
-     * @return ViewAccess[]|bool
-     */
-    protected function entityViewAccessByRight( TblAccessRight $tblAccessRight )
-    {
-
-        $EntityList = $this->getEntityManager()->getEntity( 'ViewAccess' )
-            ->findBy( array( 'tblAccessRight' => $tblAccessRight->getId() ) );
-        return ( empty( $EntityList ) ? false : $EntityList );
     }
 
     /**

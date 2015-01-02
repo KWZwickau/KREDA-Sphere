@@ -7,13 +7,14 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblAddressCity")
  * @Cache(usage="READ_ONLY")
  */
-class TblAddressCity
+class TblAddressCity extends AbstractEntity
 {
 
     const ATTR_CODE = 'Code';
@@ -25,19 +26,19 @@ class TblAddressCity
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="string")
      */
-    private $Code;
+    protected $Code;
     /**
      * @Column(type="string")
      */
-    private $Name;
+    protected $Name;
     /**
      * @Column(type="string")
      */
-    private $District;
+    protected $District;
 
     /**
      * @return integer

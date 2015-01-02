@@ -185,6 +185,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             Assistance::registerApplication( $Config );
             /** @var Element $Route */
             $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
+            $Route->getDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
             $ShellScreen->addToContent( new Container( $Route ) );
         } catch( \Exception $E ) {
             /**
@@ -230,6 +231,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
                     );
                     /** @var Element $Route */
                     $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
+                    $Route->getDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
                     $ShellScreen->addToContent( new Container( $Route ) );
                 } catch( \Exception $E ) {
                     /**

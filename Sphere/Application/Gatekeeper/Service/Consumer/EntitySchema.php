@@ -4,7 +4,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Consumer;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\View;
 use KREDA\Sphere\Common\AbstractService;
 
 /**
@@ -43,31 +42,6 @@ abstract class EntitySchema extends AbstractService
                 if (!$Simulate) {
                     $this->getDatabaseHandler()->setStatement( $Query );
                 }
-            }
-        }
-        /**
-         * View
-         */
-        if (!$this->getDatabaseHandler()->hasView( 'viewConsumer' )) {
-            $viewConsumer = $this->getDatabaseHandler()->getQueryBuilder()
-                ->select( array(
-                    'Co.Id AS tblConsumer',
-                    'Co.Name AS ConsumerName',
-                    'Co.DatabaseSuffix AS ConsumerDatabaseSuffix',
-                    'Co.TableSuffix AS ConsumerTableSuffix',
-                    'Co.serviceManagement_Address AS serviceManagement_Address',
-                    'CoTy.Id AS tblConsumerTypList',
-                    'Ty.Id AS tblConsumerTyp',
-                    'Ty.Name AS TypName',
-                ) )
-                ->from( 'tblConsumer', 'Co' )
-                ->innerJoin( 'Co', 'tblConsumerTypList', 'CoTy', 'CoTy.tblConsumer = Co.Id' )
-                ->innerJoin( 'CoTy', 'tblConsumerTyp', 'Ty', 'CoTy.tblConsumerTyp = Ty.Id' )
-                ->getSQL();
-            $this->getDatabaseHandler()->addProtocol( 'viewConsumer: '.$viewConsumer );
-            if (!$Simulate) {
-                $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewConsumer',
-                    $viewConsumer ) );
             }
         }
         /**

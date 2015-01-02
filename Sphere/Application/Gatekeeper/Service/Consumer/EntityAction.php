@@ -5,7 +5,6 @@ use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTypList;
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\ViewConsumer;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 
 /**
@@ -167,16 +166,6 @@ abstract class EntityAction extends EntitySchema
             return true;
         }
         return false;
-    }
-
-    /**
-     * @return ViewConsumer[]|bool
-     */
-    protected function entityViewConsumer()
-    {
-
-        $EntityList = $this->getEntityManager()->getEntity( 'ViewConsumer' )->findAll();
-        return ( empty( $EntityList ) ? false : $EntityList );
     }
 
     /**

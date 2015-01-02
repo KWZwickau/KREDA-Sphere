@@ -7,12 +7,13 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblAccessPrivilegeList")
  */
-class TblAccessPrivilegeList
+class TblAccessPrivilegeList extends AbstractEntity
 {
 
     const ATTR_TBL_ACCESS_PRIVILEGE = 'tblAccessPrivilege';
@@ -23,15 +24,15 @@ class TblAccessPrivilegeList
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="bigint")
      */
-    private $tblAccessPrivilege;
+    protected $tblAccessPrivilege;
     /**
      * @Column(type="bigint")
      */
-    private $tblAccess;
+    protected $tblAccess;
 
     /**
      * @return bool|TblAccessPrivilege

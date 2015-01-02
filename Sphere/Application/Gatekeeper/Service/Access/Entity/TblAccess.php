@@ -6,12 +6,13 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblAccess")
  */
-class TblAccess
+class TblAccess extends AbstractEntity
 {
 
     const ATTR_NAME = 'Name';
@@ -21,11 +22,11 @@ class TblAccess
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="string")
      */
-    private $Name;
+    protected $Name;
 
     /**
      * @param string $Name

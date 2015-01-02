@@ -7,6 +7,11 @@ use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
+/**
+ * Class ChangePassword
+ *
+ * @package KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount
+ */
 class ChangePassword extends AbstractError implements IElementInterface
 {
 

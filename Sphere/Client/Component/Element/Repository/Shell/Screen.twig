@@ -13,6 +13,10 @@
 
     <link rel="stylesheet" href="{{ PathBase }}/Library/Bootstrap/3.2.0/dist/css/bootstrap.min.css" property="">
     <link rel="stylesheet" href="{{ PathBase }}/Library/Bootflat/2.0.4/bootflat/css/bootflat.min.css" property="">
+    <link rel="stylesheet" href="{{ PathBase }}/Library/Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs.css" property="">
+    <link rel="stylesheet"
+          href="{{ PathBase }}/Library/Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min.css"
+          property="">
     <link rel="stylesheet" href="{{ PathBase }}/Sphere/Client/Style/Style.css" property="">
 
     <link rel="shortcut icon" type="image/x-icon" href="{{ PathBase }}/favicon.ico"/>
@@ -39,13 +43,13 @@
                 jQuery: '/Library/jQuery/1.11.1/dist/jquery.min',
                 Bootstrap: '/Library/Bootstrap/3.2.0/dist/js/bootstrap.min',
                 Moment: '/Library/Moment.Js/2.8.4/min/moment-with-locales.min',
-                Check: '/Library/Bootflat/2.0.4/bootflat/js/icheck.min',
-                Css: '/Library/Require.Css/0.1.8/css.min'
+                Check: '/Library/Bootflat/2.0.4/bootflat/js/icheck.min'
+                //Css: '/Library/Require.Css/0.1.8/css.min'
             },
             waitSeconds: 120
         } );
-        require( ['Css!Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs'] );
-        require( ['Css!Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min'] );
+        //require( ['Css!Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs'] );
+        //require( ['Css!Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min'] );
     </script>
 </head>
 <body>
@@ -74,19 +78,26 @@
                 <dl class="footer-nav">
                     <dt class="nav-title">Applikation</dt>
                     <dd class="nav-item">
-                        <a href="#">Impressum</a>
+                        <a href="{{ PathBase }}/Client/Sphere/Assistance/Impressum">Impressum</a>
                     </dd>
                     <dd class="nav-item">
                         <a href="http://www.haus-der-edv.de">Support</a>
                     </dd>
                 </dl>
+                <dl class="footer-nav">
+                    <dt class="nav-title">Hilfe</dt>
+                    <dd class="nav-item">
+                        <a href="{{ PathBase }}/Client/Sphere/Assistance">Dokumentation</a>
+                    </dd>
+                </dl>
             </div>
-            <div class="footer-copyright text-center">© 2014 - Mandant: {{ PositionConsumer }} - Erstellt
-                in {{ PositionRuntime }}</div>
-
-            {#<div>#}
-            {#{{ PositionDebugger }}#}
-            {#</div>#}
+            <div class="footer-copyright text-center">
+                © 2014 - {{ "now"|date("Y") }} | Mandant: {{ PositionConsumer }} | Erstellt in {{ PositionRuntime }}
+                <div>
+                    <br/>
+                    {{ PositionDebugger }}
+                </div>
+            </div>
         </div>
     </div>
 </div>

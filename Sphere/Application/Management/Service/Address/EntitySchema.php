@@ -4,7 +4,6 @@ namespace KREDA\Sphere\Application\Management\Service\Address;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\View;
 use KREDA\Sphere\Common\AbstractService;
 
 /**
@@ -43,32 +42,6 @@ abstract class EntitySchema extends AbstractService
                 if (!$Simulate) {
                     $this->getDatabaseHandler()->setStatement( $Query );
                 }
-            }
-        }
-        /**
-         * View
-         */
-        if (!$this->getDatabaseHandler()->hasView( 'viewAddress' )) {
-            $viewAddress = $this->getDatabaseHandler()->getQueryBuilder()
-                ->select( array(
-                    'Ad.Id AS tblAddress',
-                    'Ad.StreetName AS AddressStreetName',
-                    'Ad.StreetNumber AS AddressStreetNumber',
-                    'Ad.PostOfficeBox AS AddressPostOfficeBox',
-                    'St.Id AS tblAddressState',
-                    'St.Name AS StateName',
-                    'Cy.Id AS tblAddressCity',
-                    'Cy.Code AS CityCode',
-                    'Cy.Name AS CityName',
-                    'Cy.District AS CityDistrict',
-                ) )
-                ->from( 'tblAddress', 'Ad' )
-                ->innerJoin( 'Ad', 'tblAddressState', 'St', 'Ad.tblAddressState = St.Id' )
-                ->innerJoin( 'Ad', 'tblAddressCity', 'Cy', 'Ad.tblAddressCity = Cy.Id' )
-                ->getSQL();
-            $this->getDatabaseHandler()->addProtocol( 'viewAddress: '.$viewAddress );
-            if (!$Simulate) {
-                $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewAddress', $viewAddress ) );
             }
         }
         /**

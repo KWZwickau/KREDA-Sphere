@@ -4,7 +4,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTyp;
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\ViewConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\EntityAction;
 
 /**
@@ -82,15 +81,6 @@ class Consumer extends EntityAction
     {
 
         return parent::entityConsumerBySession( $Session );
-    }
-
-    /**
-     * @return bool|ViewConsumer[]
-     */
-    public function entityViewConsumer()
-    {
-
-        return parent::entityViewConsumer();
     }
 
     /**

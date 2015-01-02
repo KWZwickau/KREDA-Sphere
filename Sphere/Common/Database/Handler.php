@@ -103,6 +103,15 @@ class Handler
     }
 
     /**
+     * @return string
+     */
+    final public function getDatabaseName()
+    {
+
+        return $this->Model->getConnection()->getConnection()->getDatabase();
+    }
+
+    /**
      * @param $Statement
      *
      * @return int The number of affected rows

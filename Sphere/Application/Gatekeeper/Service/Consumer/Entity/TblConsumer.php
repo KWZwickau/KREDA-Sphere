@@ -9,13 +9,14 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblConsumer")
  * @Cache(usage="READ_ONLY")
  */
-class TblConsumer
+class TblConsumer extends AbstractEntity
 {
 
     const ATTR_NAME = 'Name';
@@ -25,23 +26,23 @@ class TblConsumer
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="string")
      */
-    private $Name;
+    protected $Name;
     /**
      * @Column(type="string")
      */
-    private $TableSuffix;
+    protected $TableSuffix;
     /**
      * @Column(type="string")
      */
-    private $DatabaseSuffix;
+    protected $DatabaseSuffix;
     /**
      * @Column(type="bigint")
      */
-    private $serviceManagement_Address;
+    protected $serviceManagement_Address;
 
     /**
      * @param string $Name

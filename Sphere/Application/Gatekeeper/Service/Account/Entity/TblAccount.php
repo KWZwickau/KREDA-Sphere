@@ -13,12 +13,13 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblAccount")
  */
-class TblAccount
+class TblAccount extends AbstractEntity
 {
 
     const ATTR_USERNAME = 'Username';
@@ -34,35 +35,35 @@ class TblAccount
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="string")
      */
-    private $Username;
+    protected $Username;
     /**
      * @Column(type="string")
      */
-    private $Password;
+    protected $Password;
     /**
      * @Column(type="bigint")
      */
-    private $tblAccountTyp;
+    protected $tblAccountTyp;
     /**
      * @Column(type="bigint")
      */
-    private $tblAccountRole;
+    protected $tblAccountRole;
     /**
      * @Column(type="bigint")
      */
-    private $serviceGatekeeper_Token;
+    protected $serviceGatekeeper_Token;
     /**
      * @Column(type="bigint")
      */
-    private $serviceManagement_Person;
+    protected $serviceManagement_Person;
     /**
      * @Column(type="bigint")
      */
-    private $serviceGatekeeper_Consumer;
+    protected $serviceGatekeeper_Consumer;
 
     /**
      * @param string $Username

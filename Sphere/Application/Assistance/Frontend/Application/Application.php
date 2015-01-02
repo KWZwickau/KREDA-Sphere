@@ -29,7 +29,15 @@ class Application extends AbstractFrontend
         $View->setDescription( 'Starten der Anwendung' );
         $View->setMessage( '<strong>Problem:</strong> Nach Aufruf der Anwendung arbeitet diese nicht wie erwartet' );
         $View->setContent(
-            '<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
+            ( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Start'
+                ? '<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> <samp>'.HttpKernel::getRequest()->getPathInfo().'</samp></div>'
+                : ''
+            )
+            .( ( $Error = error_get_last() )
+                ? '<div class="alert alert-warning"><span class="glyphicon glyphicon-info-sign"></span> <samp>'.$Error['message'].'<br/>'.$Error['file'].':'.$Error['line'].'</samp></div>'
+                : ''
+            )
+            .'<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
             .new Info( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
             .new Warning( 'Die Anwendung kann wegen Kapazitätsproblemen im Moment nicht verwendet werden' )
             .new Danger( 'Die Anwendung hat erkannt, dass das System nicht fehlerfrei arbeiten kann' )
@@ -38,7 +46,13 @@ class Application extends AbstractFrontend
             .new User( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
             .new Support( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
-        $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Starten der Anwendung', 'Support-Ticket' );
+        $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Starten der Anwendung'
+            .( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Start'
+                ? ': '.HttpKernel::getRequest()->getPathInfo()
+                : ''
+            ),
+            'Support-Ticket'
+        );
         return $View;
     }
 

@@ -2,7 +2,6 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Token;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\ViewToken;
 
 /**
  * Class EntityAction
@@ -23,6 +22,16 @@ abstract class EntityAction extends EntitySchema
         $Entity = $this->getEntityManager()->getEntity( 'TblToken' )
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
         return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @return TblToken[]|bool
+     */
+    protected function entityTokenAll()
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblToken' )->findAll();
+        return ( empty( $EntityList ) ? false : $EntityList );
     }
 
     /**
@@ -53,15 +62,5 @@ abstract class EntityAction extends EntitySchema
             $Manager->saveEntity( $Entity );
         }
         return $Entity;
-    }
-
-    /**
-     * @return ViewToken[]|bool
-     */
-    protected function entityViewToken()
-    {
-
-        $EntityList = $this->getEntityManager()->getEntity( 'ViewToken' )->findAll();
-        return ( empty( $EntityList ) ? false : $EntityList );
     }
 }

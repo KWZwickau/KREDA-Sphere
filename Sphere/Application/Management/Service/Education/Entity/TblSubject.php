@@ -7,13 +7,14 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblSubject")
  * @Cache(usage="NONSTRICT_READ_WRITE")
  */
-class TblSubject
+class TblSubject extends AbstractEntity
 {
 
     const ATTR_NAME = 'Name';
@@ -23,15 +24,15 @@ class TblSubject
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="string")
      */
-    private $Acronym;
+    protected $Acronym;
     /**
      * @Column(type="string")
      */
-    private $Name;
+    protected $Name;
 
     /**
      * @param string $Acronym

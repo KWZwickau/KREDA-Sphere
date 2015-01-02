@@ -78,7 +78,7 @@ class Access extends EntityAction
 
         try {
             if (false !== ( $Right = $this->entityAccessRightByRouteName( $Route ) )) {
-                if (false !== ( $this->entityViewAccessByRight( $Right ) )) {
+                if (false !== ( $this->entityRightById( $Right->getId() ) )) {
                     self::$AccessCache[] = $Route;
                     return true;
                 }
@@ -87,6 +87,17 @@ class Access extends EntityAction
 
         }
         return false;
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccessRight
+     */
+    public function entityRightById( $Id )
+    {
+
+        return parent::entityRightById( $Id );
     }
 
     /**
@@ -109,16 +120,5 @@ class Access extends EntityAction
     {
 
         return parent::entityPrivilegeById( $Id );
-    }
-
-    /**
-     * @param integer $Id
-     *
-     * @return bool|TblAccessRight
-     */
-    public function entityRightById( $Id )
-    {
-
-        return parent::entityRightById( $Id );
     }
 }

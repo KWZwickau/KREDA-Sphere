@@ -4,7 +4,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Account;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\View;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Common\AbstractService;
 
@@ -56,32 +55,6 @@ abstract class EntitySchema extends AbstractService
                 if (!$Simulate) {
                     $this->getDatabaseHandler()->setStatement( $Query );
                 }
-            }
-        }
-        /**
-         * View
-         */
-        if (!$this->getDatabaseHandler()->hasView( 'viewAccount' )) {
-            $viewAccount = $this->getDatabaseHandler()->getQueryBuilder()
-                ->select( array(
-                    'Ac.Id AS tblAccount',
-                    'Ac.Username AS AccountUsername',
-                    'Ac.Password AS AccountPassword',
-                    'Ac.serviceGatekeeper_Consumer AS serviceGatekeeper_Consumer',
-                    'Ac.serviceManagement_Person AS serviceManagement_Person',
-                    'Ac.serviceGatekeeper_Token AS serviceGatekeeper_Token',
-                    'At.Id AS tblAccountTyp',
-                    'At.Name AS TypName',
-                    'Ar.Id AS tblAccountRole',
-                    'Ar.Name AS RoleName'
-                ) )
-                ->from( 'tblAccount', 'Ac' )
-                ->innerJoin( 'Ac', 'tblAccountTyp', 'At', 'Ac.tblAccountTyp = At.Id' )
-                ->innerJoin( 'Ac', 'tblAccountRole', 'Ar', 'Ac.tblAccountRole = Ar.Id' )
-                ->getSQL();
-            $this->getDatabaseHandler()->addProtocol( 'viewAccount: '.$viewAccount );
-            if (!$Simulate) {
-                $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewAccount', $viewAccount ) );
             }
         }
         /**

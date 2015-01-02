@@ -7,12 +7,13 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblAccountSession")
  */
-class TblAccountSession
+class TblAccountSession extends AbstractEntity
 {
 
     const ATTR_SESSION = 'Session';
@@ -24,19 +25,19 @@ class TblAccountSession
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="string")
      */
-    private $Session;
+    protected $Session;
     /**
      * @Column(type="integer")
      */
-    private $Timeout;
+    protected $Timeout;
     /**
      * @Column(type="bigint")
      */
-    private $tblAccount;
+    protected $tblAccount;
 
     /**
      * @param string $Session

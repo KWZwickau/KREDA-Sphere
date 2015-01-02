@@ -4,7 +4,6 @@ namespace KREDA\Sphere\Application\Management\Service\Address;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressState;
-use KREDA\Sphere\Application\Management\Service\Address\Entity\ViewAddress;
 
 /**
  * Class EntityAction
@@ -143,13 +142,4 @@ abstract class EntityAction extends EntitySchema
         return $Entity;
     }
 
-    /**
-     * @return ViewAddress[]|bool
-     */
-    protected function entityViewAddress()
-    {
-
-        $EntityList = $this->getEntityManager()->getEntity( 'ViewAddress' )->findAll();
-        return ( empty( $EntityList ) ? false : $EntityList );
-    }
 }

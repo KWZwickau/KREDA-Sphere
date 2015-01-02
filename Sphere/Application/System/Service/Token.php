@@ -70,7 +70,7 @@ class Token extends AbstractService
             $View->setContent( $Certification );
         }
 
-        $TokenList = Gatekeeper::serviceToken()->entityViewToken();
+        $TokenList = Gatekeeper::serviceToken()->entityTokenAll();
         if (false === $TokenList) {
             $TokenList = array();
         } else {

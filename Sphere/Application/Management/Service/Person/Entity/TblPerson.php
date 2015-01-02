@@ -7,13 +7,14 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblPerson")
  * @Cache(usage="READ_ONLY")
  */
-class TblPerson
+class TblPerson extends AbstractEntity
 {
 
     /**
@@ -21,31 +22,31 @@ class TblPerson
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="string")
      */
-    private $Salutation;
+    protected $Salutation;
     /**
      * @Column(type="string")
      */
-    private $FirstName;
+    protected $FirstName;
     /**
      * @Column(type="string")
      */
-    private $MiddleName;
+    protected $MiddleName;
     /**
      * @Column(type="string")
      */
-    private $LastName;
+    protected $LastName;
     /**
      * @Column(type="string")
      */
-    private $Gender;
+    protected $Gender;
     /**
      * @Column(type="string")
      */
-    private $Birthday;
+    protected $Birthday;
 
     /**
      * @return string

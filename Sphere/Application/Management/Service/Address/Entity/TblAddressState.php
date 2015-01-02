@@ -7,13 +7,14 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblAddressState")
  * @Cache(usage="READ_ONLY")
  */
-class TblAddressState
+class TblAddressState extends AbstractEntity
 {
 
     const ATTR_NAME = 'Name';
@@ -23,11 +24,11 @@ class TblAddressState
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="string")
      */
-    private $Name;
+    protected $Name;
 
     /**
      * @return integer

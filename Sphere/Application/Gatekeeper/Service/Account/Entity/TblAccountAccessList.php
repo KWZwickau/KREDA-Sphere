@@ -10,12 +10,13 @@ use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblAccountAccessList")
  */
-class TblAccountAccessList
+class TblAccountAccessList extends AbstractEntity
 {
 
     const ATTR_TBL_ACCOUNT_ROLE = 'tblAccountRole';
@@ -26,15 +27,15 @@ class TblAccountAccessList
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="bigint")
      */
-    private $tblAccountRole;
+    protected $tblAccountRole;
     /**
      * @Column(type="bigint")
      */
-    private $serviceGatekeeper_Access;
+    protected $serviceGatekeeper_Access;
 
     /**
      * @return integer

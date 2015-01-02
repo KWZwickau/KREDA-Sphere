@@ -4,7 +4,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\View;
 use KREDA\Sphere\Common\AbstractService;
 
 /**
@@ -45,32 +44,6 @@ abstract class EntitySchema extends AbstractService
                 if (!$Simulate) {
                     $this->getDatabaseHandler()->setStatement( $Query );
                 }
-            }
-        }
-        /**
-         * View
-         */
-        if (!$this->getDatabaseHandler()->hasView( 'viewAccess' )) {
-            $viewAccess = $this->getDatabaseHandler()->getQueryBuilder()
-                ->select( array(
-                    'Ac.Id AS tblAccess',
-                    'Ac.Name AS AccessName',
-                    'PrAc.Id AS tblAccessPrivilegeList',
-                    'Pr.Id AS tblAccessPrivilege',
-                    'Pr.Name AS PrivilegeName',
-                    'RiPr.Id AS tblAccessRightList',
-                    'Ri.Id AS tblAccessRight',
-                    'Ri.Route AS RightRoute',
-                ) )
-                ->from( 'tblAccess', 'Ac' )
-                ->innerJoin( 'Ac', 'tblAccessPrivilegeList', 'PrAc', 'PrAc.tblAccess = Ac.Id' )
-                ->innerJoin( 'PrAc', 'tblAccessPrivilege', 'Pr', 'PrAc.tblAccessPrivilege = Pr.Id' )
-                ->innerJoin( 'Pr', 'tblAccessRightList', 'RiPr', 'RiPr.tblAccessPrivilege = Pr.Id' )
-                ->innerJoin( 'RiPr', 'tblAccessRight', 'Ri', 'RiPr.tblAccessRight = Ri.Id' )
-                ->getSQL();
-            $this->getDatabaseHandler()->addProtocol( 'viewAccess: '.$viewAccess );
-            if (!$Simulate) {
-                $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewAccess', $viewAccess ) );
             }
         }
         /**

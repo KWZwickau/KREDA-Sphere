@@ -8,6 +8,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
+use KREDA\Sphere\Application\System\System;
 
 /**
  * Class EntityAction
@@ -160,6 +161,8 @@ abstract class EntityAction extends EntitySchema
         $Entity->setTblAccount( $tblAccount );
         $Entity->setTimeout( time() + $Timeout );
         $Manager->saveEntity( $Entity );
+        $DatabaseName = $this->getDatabaseHandler()->getDatabaseName();
+        System::serviceProtocol()->executeCreateEntry( $DatabaseName, null, $Entity );
         return $Entity;
     }
 
@@ -217,6 +220,8 @@ abstract class EntityAction extends EntitySchema
         $Entity = $Manager->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
+            $DatabaseName = $this->getDatabaseHandler()->getDatabaseName();
+            System::serviceProtocol()->executeCreateEntry( $DatabaseName, $Entity, null );
             $Manager->killEntity( $Entity );
             return true;
         }

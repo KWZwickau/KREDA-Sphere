@@ -8,13 +8,14 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblAddress")
  * @Cache(usage="READ_ONLY")
  */
-class TblAddress
+class TblAddress extends AbstractEntity
 {
 
     const ATTR_STREET_NAME = 'StreetName';
@@ -27,27 +28,27 @@ class TblAddress
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="string")
      */
-    private $StreetName;
+    protected $StreetName;
     /**
      * @Column(type="string")
      */
-    private $StreetNumber;
+    protected $StreetNumber;
     /**
      * @Column(type="string")
      */
-    private $PostOfficeBox;
+    protected $PostOfficeBox;
     /**
      * @Column(type="bigint")
      */
-    private $tblAddressCity;
+    protected $tblAddressCity;
     /**
      * @Column(type="bigint")
      */
-    private $tblAddressState;
+    protected $tblAddressState;
 
     /**
      * @return mixed

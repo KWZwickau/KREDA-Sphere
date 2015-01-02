@@ -4,7 +4,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\View;
 use KREDA\Sphere\Common\AbstractService;
 
 /**
@@ -41,22 +40,6 @@ abstract class EntitySchema extends AbstractService
                 if (!$Simulate) {
                     $this->getDatabaseHandler()->setStatement( $Query );
                 }
-            }
-        }
-        /**
-         * View
-         */
-        if (!$this->getDatabaseHandler()->hasView( 'viewToken' )) {
-            $viewToken = $this->getDatabaseHandler()->getQueryBuilder()
-                ->select( array(
-                    'T.Id AS tblToken',
-                    'T.Identifier AS TokenIdentifier',
-                ) )
-                ->from( 'tblToken', 'T' )
-                ->getSQL();
-            $this->getDatabaseHandler()->addProtocol( 'viewToken: '.$viewToken );
-            if (!$Simulate) {
-                $this->getDatabaseHandler()->getSchemaManager()->createView( new View( 'viewToken', $viewToken ) );
             }
         }
         /**

@@ -7,6 +7,11 @@ use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 
+/**
+ * Class Account
+ *
+ * @package KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount
+ */
 class Account extends AbstractError implements IElementInterface
 {
 

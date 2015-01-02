@@ -9,13 +9,14 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Education;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblGroup")
  * @Cache(usage="NONSTRICT_READ_WRITE")
  */
-class TblGroup
+class TblGroup extends AbstractEntity
 {
 
     const ATTR_NAME = 'Name';
@@ -26,15 +27,15 @@ class TblGroup
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="string")
      */
-    private $Name;
+    protected $Name;
     /**
      * @Column(type="bigint")
      */
-    private $tblLevel;
+    protected $tblLevel;
 
     /**
      * @param string $Name

@@ -117,8 +117,14 @@ hr {
     color: rgb(119, 102, 102);
 }
 
+span.twitter-typeahead .tt-dropdown-menu {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: 0;
+}
+
 @media (min-width: 769px) {
-    .footer-nav {
+    .footer dl.footer-nav:first-of-type {
         width: 40%;
     }
 }

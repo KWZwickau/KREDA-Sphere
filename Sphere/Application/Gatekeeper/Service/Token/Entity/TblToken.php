@@ -7,13 +7,14 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
  * @Table(name="tblToken")
  * @Cache(usage="NONSTRICT_READ_WRITE")
  */
-class TblToken
+class TblToken extends AbstractEntity
 {
 
     const ATTR_IDENTIFIER = 'Identifier';
@@ -23,11 +24,11 @@ class TblToken
      * @GeneratedValue
      * @Column(type="bigint")
      */
-    private $Id;
+    protected $Id;
     /**
      * @Column(type="string")
      */
-    private $Identifier;
+    protected $Identifier;
 
     /**
      * @param string $Identifier
