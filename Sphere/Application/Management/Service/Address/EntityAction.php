@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Management\Service\Address;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressState;
+use KREDA\Sphere\Application\System\System;
 
 /**
  * Class EntityAction
@@ -74,6 +75,7 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblAddressState();
             $Entity->setName( $Name );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -100,6 +102,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setName( $Name );
             $Entity->setDistrict( $District );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -138,6 +141,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTblAddressState( $TblAddressState );
             $Entity->setTblAddressCity( $TblAddressCity );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }

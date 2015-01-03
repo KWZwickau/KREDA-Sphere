@@ -24,7 +24,6 @@ class ChangeConsumer extends AbstractError implements IElementInterface
         $this->Template = Template::getTemplate( __DIR__.'/ChangeConsumer.twig' );
         $this->Template->setVariable( 'UrlBase', HttpKernel::getRequest()->getUrlBase() );
 
-        //var_dump( Gatekeeper::serviceConsumer()->entityConsumerAll() );
     }
 
 }

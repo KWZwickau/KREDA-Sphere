@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Management\Service\Education;
 
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblLevel;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
+use KREDA\Sphere\Application\System\System;
 
 /**
  * Class EntityAction
@@ -28,6 +29,7 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblSubject( $Acronym );
             $Entity->setName( $Name );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }

@@ -5,6 +5,7 @@ use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\EntityAction;
+use KREDA\Sphere\Common\Database\Handler;
 
 /**
  * Class Consumer
@@ -13,6 +14,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\EntityAction;
  */
 class Consumer extends EntityAction
 {
+
+    /** @var null|Handler $DatabaseHandler */
+    protected static $DatabaseHandler = null;
 
     /**
      * @throws \Exception

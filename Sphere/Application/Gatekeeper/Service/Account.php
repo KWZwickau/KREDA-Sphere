@@ -9,6 +9,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
 use KREDA\Sphere\Common\AbstractFrontend\Redirect;
+use KREDA\Sphere\Common\Database\Handler;
 
 /**
  * Class Account
@@ -22,6 +23,8 @@ class Account extends EntityAction
     const API_SIGN_IN_ERROR_TOKEN = 22;
     const API_SIGN_IN_ERROR = 23;
     const API_SIGN_IN_SUCCESS = 11;
+    /** @var null|Handler $DatabaseHandler */
+    protected static $DatabaseHandler = null;
     private static $ValidSessionCache = false;
 
     /**

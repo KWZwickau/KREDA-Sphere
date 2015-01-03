@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilegeList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRightList;
+use KREDA\Sphere\Application\System\System;
 
 /**
  * Class EntityAction
@@ -29,6 +30,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblAccessRight( $Route );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -47,6 +49,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblAccess( $Name );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -65,6 +68,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblAccessPrivilege( $Name );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -91,6 +95,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTblAccessPrivilege( $TblAccessPrivilege );
             $Entity->setTblAccessRight( $TblAccessRight );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -107,12 +112,14 @@ abstract class EntityAction extends EntitySchema
     ) {
 
         $Manager = $this->getEntityManager();
+        /** @var TblAccessRightList $Entity */
         $Entity = $Manager->getEntity( 'TblAccessRightList' )
             ->findOneBy( array(
                 TblAccessRightList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId(),
                 TblAccessRightList::ATTR_TBL_ACCESS_RIGHT     => $TblAccessRight->getId()
             ) );
         if (null !== $Entity) {
+            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }
@@ -141,6 +148,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTblAccess( $tblAccess );
             $Entity->setTblAccessPrivilege( $TblAccessPrivilege );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -157,12 +165,14 @@ abstract class EntityAction extends EntitySchema
     ) {
 
         $Manager = $this->getEntityManager();
+        /** @var TblAccessPrivilegeList $Entity */
         $Entity = $Manager->getEntity( 'TblAccessPrivilegeList' )
             ->findOneBy( array(
                 TblAccessPrivilegeList::ATTR_TBL_ACCESS           => $tblAccess->getId(),
                 TblAccessPrivilegeList::ATTR_TBL_ACCESS_PRIVILEGE => $TblAccessPrivilege->getId()
             ) );
         if (null !== $Entity) {
+            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }

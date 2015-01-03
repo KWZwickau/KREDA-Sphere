@@ -36,6 +36,10 @@ interface IServiceInterface
     public function getDatabaseHandler();
 
     /**
+     * Class MUST OVERWRITE $DatabaseHandler to use this
+     *
+     * protected static $DatabaseHandler = null;
+     *
      * @param string $Application
      * @param string $Service
      * @param string $Consumer

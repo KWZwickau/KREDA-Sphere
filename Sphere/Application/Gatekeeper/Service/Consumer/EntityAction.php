@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTypList;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
+use KREDA\Sphere\Application\System\System;
 
 /**
  * Class EntityAction
@@ -91,6 +92,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTableSuffix( $TableSuffix );
             $Entity->setServiceManagementAddress( $TblAddress );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -109,6 +111,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblConsumerTyp( $Name );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -129,6 +132,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTblConsumer( $tblConsumer );
             $Entity->setTblConsumerTyp( $tblConsumerTyp );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -162,6 +166,7 @@ abstract class EntityAction extends EntitySchema
         $Manager = $this->getEntityManager();
         $Entity = $this->entityConsumerTypList( $tblConsumer, $tblConsumerTyp );
         if ($Entity) {
+            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }

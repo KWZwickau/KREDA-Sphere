@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Common\Database\Schema;
 
 use Doctrine\Common\Cache\ApcCache;
+use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Schema;
@@ -46,8 +47,13 @@ class Model
     {
 
         $Config = Setup::createAnnotationMetadataConfiguration( array( $EntityPath ) );
-        $Config->setQueryCacheImpl( new ApcCache() );
-        $Config->setMetadataCacheImpl( new ApcCache() );
+        if (function_exists( 'apc_fetch' )) {
+            $Config->setQueryCacheImpl( new ApcCache() );
+            $Config->setMetadataCacheImpl( new ApcCache() );
+        } else {
+            $Config->setQueryCacheImpl( new ArrayCache() );
+            $Config->setMetadataCacheImpl( new ArrayCache() );
+        }
         return EntityManager::create( $this->Connection->getConnection(), $Config );
     }
 

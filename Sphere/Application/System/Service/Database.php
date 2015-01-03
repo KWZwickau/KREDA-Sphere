@@ -1,9 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\System\Service;
 
-use KREDA\Sphere\Application\System\Service\Database\Status;
-use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Common\AbstractService;
 
 /**
@@ -14,10 +11,6 @@ use KREDA\Sphere\Common\AbstractService;
 class Database extends AbstractService
 {
 
-    const STATUS_MISSING = 0;
-    const STATUS_ERROR = 1;
-    const STATUS_FAIL = 2;
-    const STATUS_OK = 3;
     /** @var array $ServiceList */
     private $ServiceList = array(
         'System' => array(
@@ -58,18 +51,12 @@ class Database extends AbstractService
     );
 
     /**
-     * @return Landing
+     * @return array
      */
-    public function guiDatabaseStatus()
+    public function executeDatabaseStatus()
     {
 
-        $View = new Stage();
-        $View->setTitle( 'Datenbank-Cluster' );
-        $View->setDescription( 'Status' );
-        $View->setMessage( 'Zeigt die aktuelle Konfiguration und den Verbindungsstatus' );
-
         $Report = array();
-
         ksort( $this->ServiceList );
         foreach ((array)$this->ServiceList as $Application => $ServiceList) {
             $Config = __DIR__.'/../../../Common/Database/Config/'.$Application.'.ini';
@@ -80,7 +67,6 @@ class Database extends AbstractService
                     foreach ((array)$ConsumerList as $Consumer) {
                         $Setting = parse_ini_file( $Config, true );
                         if (isset( $Setting[$Service.':'.$Consumer] )) {
-
                             $Group = $Setting[$Service.':'.$Consumer];
                             try {
                                 $this->setDatabaseHandler( $Application, $Service, $Consumer );
@@ -97,12 +83,6 @@ class Database extends AbstractService
                 $Report[$Application][$Application]['System/Database/Config/'.$Application.'.ini']['-NA-'] = '<div class="badge badge-primary">Konfiguration fehlt</div>';
             }
         }
-
-        $Report = new Status( $Report );
-        $Report->setRouteUpdate( $this->getClientServiceRoute( 'Update' ) );
-
-        $View->setContent( $Report->getContent() );
-
-        return $View;
+        return $Report;
     }
 }

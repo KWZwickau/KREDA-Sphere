@@ -51,6 +51,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setServiceManagementPerson( $tblPerson );
             $Entity->setServiceGatekeeperConsumer( $tblConsumer );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -152,17 +153,18 @@ abstract class EntityAction extends EntitySchema
             $Session = session_id();
         }
         $Manager = $this->getEntityManager();
+        /** @var TblAccountSession $Entity */
         $Entity = $Manager->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
+            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
             $Manager->killEntity( $Entity );
         }
         $Entity = new TblAccountSession( $Session );
         $Entity->setTblAccount( $tblAccount );
         $Entity->setTimeout( time() + $Timeout );
         $Manager->saveEntity( $Entity );
-        $DatabaseName = $this->getDatabaseHandler()->getDatabaseName();
-        System::serviceProtocol()->executeCreateEntry( $DatabaseName, null, $Entity );
+        System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         return $Entity;
     }
 
@@ -181,6 +183,7 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblAccountTyp();
             $Entity->setName( $Name );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -200,6 +203,7 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblAccountRole();
             $Entity->setName( $Name );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -217,11 +221,11 @@ abstract class EntityAction extends EntitySchema
         }
 
         $Manager = $this->getEntityManager();
+        /** @var TblAccountSession $Entity */
         $Entity = $Manager->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
-            $DatabaseName = $this->getDatabaseHandler()->getDatabaseName();
-            System::serviceProtocol()->executeCreateEntry( $DatabaseName, $Entity, null );
+            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }
@@ -241,11 +245,16 @@ abstract class EntityAction extends EntitySchema
             $tblAccount = $this->entityAccountBySession();
         }
         $Manager = $this->getEntityManager();
-        /** @var TblAccount $Entity */
-        $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
-        if (null !== $Entity) {
-            $Entity->setPassword( hash( 'sha256', $Password ) );
-            $Manager->saveEntity( $Entity );
+        /**
+         * @var TblAccount $From
+         * @var TblAccount $To
+         */
+        $To = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
+        $From = clone $To;
+        if (null !== $To) {
+            $To->setPassword( hash( 'sha256', $Password ) );
+            $Manager->saveEntity( $To );
+            System::serviceProtocol()->executeUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(), $From, $To );
             return true;
         }
         return false;
@@ -290,6 +299,7 @@ abstract class EntityAction extends EntitySchema
         if (null !== $Entity) {
             $Entity->setServiceGatekeeperConsumer( $tblConsumer );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
             return true;
         }
         return false;
@@ -313,6 +323,7 @@ abstract class EntityAction extends EntitySchema
         if (null !== $Entity) {
             $Entity->setServiceManagementPerson( $tblPerson );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
             return true;
         }
         return false;

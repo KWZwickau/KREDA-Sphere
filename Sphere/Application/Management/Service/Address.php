@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressState;
 use KREDA\Sphere\Application\Management\Service\Address\EntityAction;
+use KREDA\Sphere\Common\Database\Handler;
 
 /**
  * Class Address
@@ -14,6 +15,9 @@ use KREDA\Sphere\Application\Management\Service\Address\EntityAction;
  */
 class Address extends EntityAction
 {
+
+    /** @var null|Handler $DatabaseHandler */
+    protected static $DatabaseHandler = null;
 
     /**
      *

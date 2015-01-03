@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Token;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
+use KREDA\Sphere\Application\System\System;
 
 /**
  * Class EntityAction
@@ -60,6 +61,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblToken( $Identifier );
             $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }

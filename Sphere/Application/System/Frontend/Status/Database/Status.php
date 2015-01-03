@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\System\Service\Database;
+namespace KREDA\Sphere\Application\System\Frontend\Status\Database;
 
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\IElementInterface;
@@ -11,7 +11,7 @@ use MOC\V\Core\HttpKernel\HttpKernel;
 /**
  * Class Status
  *
- * @package KREDA\Sphere\Application\System\Service\Database
+ * @package KREDA\Sphere\Application\System\Frontend\Status
  */
 class Status extends Element implements IElementInterface
 {

@@ -4,7 +4,6 @@ namespace KREDA\Sphere\Application\System\Service;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\System\Service\Protocol\Entity\TblProtocol;
 use KREDA\Sphere\Application\System\Service\Protocol\EntityAction;
-use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
@@ -33,14 +32,12 @@ class Protocol extends EntityAction
     }
 
     /**
-     * @param string              $DatabaseName
-     * @param null|AbstractEntity $EntityFrom
-     * @param null|AbstractEntity $EntityTo
+     * @param string         $DatabaseName
+     * @param AbstractEntity $Entity
      */
     public function executeCreateEntry(
         $DatabaseName,
-        AbstractEntity $EntityFrom = null,
-        AbstractEntity $EntityTo = null
+        AbstractEntity $Entity
     ) {
 
         $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession();
@@ -52,14 +49,71 @@ class Protocol extends EntityAction
             $tblConsumer = null;
         }
 
-        System::serviceProtocol();
         parent::actionCreateProtocolEntry(
             $DatabaseName,
             ( $tblAccount ? $tblAccount : null ),
             ( $tblPerson ? $tblPerson : null ),
             ( $tblConsumer ? $tblConsumer : null ),
-            $EntityFrom,
-            $EntityTo
+            null,
+            $Entity
+        );
+    }
+
+    /**
+     * @param string         $DatabaseName
+     * @param AbstractEntity $From
+     * @param AbstractEntity $To
+     */
+    public function executeUpdateEntry(
+        $DatabaseName,
+        AbstractEntity $From,
+        AbstractEntity $To
+    ) {
+
+        $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession();
+        if ($tblAccount) {
+            $tblPerson = $tblAccount->getServiceManagementPerson();
+            $tblConsumer = $tblAccount->getServiceGatekeeperConsumer();
+        } else {
+            $tblPerson = null;
+            $tblConsumer = null;
+        }
+
+        parent::actionCreateProtocolEntry(
+            $DatabaseName,
+            ( $tblAccount ? $tblAccount : null ),
+            ( $tblPerson ? $tblPerson : null ),
+            ( $tblConsumer ? $tblConsumer : null ),
+            $From,
+            $To
+        );
+    }
+
+    /**
+     * @param string              $DatabaseName
+     * @param null|AbstractEntity $Entity
+     */
+    public function executeDeleteEntry(
+        $DatabaseName,
+        AbstractEntity $Entity = null
+    ) {
+
+        $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession();
+        if ($tblAccount) {
+            $tblPerson = $tblAccount->getServiceManagementPerson();
+            $tblConsumer = $tblAccount->getServiceGatekeeperConsumer();
+        } else {
+            $tblPerson = null;
+            $tblConsumer = null;
+        }
+
+        parent::actionCreateProtocolEntry(
+            $DatabaseName,
+            ( $tblAccount ? $tblAccount : null ),
+            ( $tblPerson ? $tblPerson : null ),
+            ( $tblConsumer ? $tblConsumer : null ),
+            $Entity,
+            null
         );
     }
 

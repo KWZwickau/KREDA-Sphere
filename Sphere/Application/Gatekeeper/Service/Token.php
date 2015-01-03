@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\EntityAction;
+use KREDA\Sphere\Common\Database\Handler;
 
 /**
  * Class Token
@@ -12,6 +13,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\EntityAction;
  */
 class Token extends EntityAction
 {
+
+    /** @var null|Handler $DatabaseHandler */
+    protected static $DatabaseHandler = null;
 
     /**
      * @throws \Exception

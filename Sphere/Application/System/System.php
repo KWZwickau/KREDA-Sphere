@@ -2,8 +2,9 @@
 namespace KREDA\Sphere\Application\System;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
-use KREDA\Sphere\Application\System\Consumer\Consumer;
-use KREDA\Sphere\Application\System\Installer\Installer;
+use KREDA\Sphere\Application\System\Frontend\Consumer\Consumer;
+use KREDA\Sphere\Application\System\Frontend\Installer\Installer;
+use KREDA\Sphere\Application\System\Frontend\Status\Status;
 use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Protocol;
 use KREDA\Sphere\Application\System\Service\Token;
@@ -49,10 +50,10 @@ class System extends AbstractApplication
         );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Database', __CLASS__.'::apiDatabaseStatus'
+            '/Sphere/System/Database', __CLASS__.'::frontendDatabase_Status'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Database/Status', __CLASS__.'::apiDatabaseStatus'
+            '/Sphere/System/Database/Status', __CLASS__.'::frontendDatabase_Status'
         );
 
         self::registerClientRoute( self::$Configuration,
@@ -109,6 +110,15 @@ class System extends AbstractApplication
     {
 
         return Protocol::getApi();
+    }
+
+    /**
+     * @return Service\Database
+     */
+    public static function serviceDatabase()
+    {
+
+        return Database::getApi();
     }
 
     /**
@@ -249,13 +259,13 @@ class System extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
-    public function apiDatabaseStatus()
+    public function frontendDatabase_Status()
     {
 
         $this->setupModuleNavigation();
-        return Database::getApi( '/Sphere/System/Database' )->guiDatabaseStatus();
+        return Status::stageDatabaseStatus();
     }
 
     /**

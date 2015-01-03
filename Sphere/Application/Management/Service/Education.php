@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Management\Service;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblLevel;
 use KREDA\Sphere\Application\Management\Service\Education\EntityAction;
+use KREDA\Sphere\Common\Database\Handler;
 
 /**
  * Class Education
@@ -12,6 +13,9 @@ use KREDA\Sphere\Application\Management\Service\Education\EntityAction;
  */
 class Education extends EntityAction
 {
+
+    /** @var null|Handler $DatabaseHandler */
+    protected static $DatabaseHandler = null;
 
     /**
      *

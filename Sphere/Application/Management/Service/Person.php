@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Management\Service;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
+use KREDA\Sphere\Common\Database\Handler;
 
 /**
  * Class Person
@@ -12,6 +13,9 @@ use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
  */
 class Person extends EntityAction
 {
+
+    /** @var null|Handler $DatabaseHandler */
+    protected static $DatabaseHandler = null;
 
     /**
      *

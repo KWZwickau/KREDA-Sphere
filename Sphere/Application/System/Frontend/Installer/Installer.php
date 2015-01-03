@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\System\Installer;
+namespace KREDA\Sphere\Application\System\Frontend\Installer;
 
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;

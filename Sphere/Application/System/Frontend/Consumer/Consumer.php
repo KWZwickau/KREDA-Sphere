@@ -1,8 +1,8 @@
 <?php
-namespace KREDA\Sphere\Application\System\Consumer;
+namespace KREDA\Sphere\Application\System\Frontend\Consumer;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
-use KREDA\Sphere\Application\System\Consumer\Setting\CreateConsumer;
+use KREDA\Sphere\Application\System\Frontend\Consumer\Setting\CreateConsumer;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Common\AbstractFrontend;

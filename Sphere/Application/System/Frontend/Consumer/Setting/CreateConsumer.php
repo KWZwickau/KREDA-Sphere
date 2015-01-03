@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\System\Consumer\Setting;
+namespace KREDA\Sphere\Application\System\Frontend\Consumer\Setting;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;

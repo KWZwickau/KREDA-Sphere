@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\EntityAction;
+use KREDA\Sphere\Common\Database\Handler;
 
 /**
  * Class Access
@@ -14,6 +15,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\EntityAction;
  */
 class Access extends EntityAction
 {
+
+    /** @var null|Handler $DatabaseHandler */
+    protected static $DatabaseHandler = null;
 
     private static $AccessCache = array();
 

@@ -9,7 +9,6 @@ use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Info;
 use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Warning;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Element;
@@ -46,7 +45,8 @@ new Debugger();
  */
 header( 'Content-type: text/html; charset=utf-8' );
 error_reporting( E_ALL );
-ini_set( 'display_errors', 0 );
+ini_set( 'display_errors', 1 );
+set_time_limit( 240 );
 session_start();
 ini_set( 'xdebug.var_display_max_data', -1 );
 ini_set( 'xdebug.var_display_max_children', -1 );
