@@ -1,6 +1,9 @@
 <?php
 namespace KREDA\Sphere\Application\Graduation;
 
+use KREDA\Sphere\Application\Graduation\Service\Grade;
+use KREDA\Sphere\Application\Graduation\Service\Score;
+use KREDA\Sphere\Application\Graduation\Service\Weight;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\StatisticIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagListIcon;
@@ -35,6 +38,33 @@ class Graduation extends AbstractApplication
     }
 
     /**
+     * @return Service\Score
+     */
+    public static function serviceScore()
+    {
+
+        return Score::getApi();
+    }
+
+    /**
+     * @return Service\Grade
+     */
+    public static function serviceGrade()
+    {
+
+        return Grade::getApi();
+    }
+
+    /**
+     * @return Service\Weight
+     */
+    public static function serviceWeight()
+    {
+
+        return Weight::getApi();
+    }
+
+    /**
      * @return Landing
      */
     public function apiMain()
@@ -54,4 +84,5 @@ class Graduation extends AbstractApplication
             '/Sphere/Management/Class', 'Zensurentypen', new StatisticIcon()
         );
     }
+
 }

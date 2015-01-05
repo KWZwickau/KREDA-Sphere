@@ -37,6 +37,14 @@ class Database extends AbstractService
             ),
         ),
         'Graduation' => array(
+            'Score' => array(
+                'EGE',
+                'ESZC'
+            ),
+            'Grade' => array(
+                'EGE',
+                'ESZC'
+            ),
             'Weight' => array(
                 'EGE',
                 'ESZC'
