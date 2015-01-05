@@ -8,19 +8,20 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Graduation\Graduation;
+use KREDA\Sphere\Application\Graduation\Service\Grade\Entity\TblGradeType;
 use KREDA\Sphere\Application\Graduation\Service\Score;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
- * @Table(name="tblScoreRuleConditionList")
+ * @Table(name="tblScoreConditionGradeTypeList")
  * @Cache(usage="READ_ONLY")
  */
-class TblScoreRuleConditionList extends AbstractEntity
+class TblScoreConditionGradeTypeList extends AbstractEntity
 {
 
-    const ATTR_TBL_SCORE_RULE = 'tblScoreRule';
     const ATTR_TBL_SCORE_CONDITION = 'tblScoreCondition';
+    const ATTR_SERVICE_GRADUATION_GRADE = 'serviceGraduation_Grade';
 
     /**
      * @Id
@@ -31,7 +32,7 @@ class TblScoreRuleConditionList extends AbstractEntity
     /**
      * @Column(type="bigint")
      */
-    protected $tblScoreRule;
+    protected $serviceGraduation_Grade;
     /**
      * @Column(type="bigint")
      */
@@ -56,25 +57,25 @@ class TblScoreRuleConditionList extends AbstractEntity
     }
 
     /**
-     * @return bool|TblScoreRule
+     * @return bool|TblScoreGroup
      */
-    public function getTblScoreRule()
+    public function getServiceGraduationGrade()
     {
 
-        if (null === $this->tblScoreRule) {
+        if (null === $this->serviceGraduation_Grade) {
             return false;
         } else {
-            return Graduation::serviceScore()->entityScoreRuleById( $this->tblScoreRule );
+            return Graduation::serviceGrade()->entityGradeTypeById( $this->serviceGraduation_Grade );
         }
     }
 
     /**
-     * @param null|TblScoreRule $tblScoreRule
+     * @param null|TblGradeType $serviceGraduation_Grade
      */
-    public function setTblScoreRule( TblScoreRule $tblScoreRule = null )
+    public function setServiceGraduationGrade( TblGradeType $serviceGraduation_Grade = null )
     {
 
-        $this->tblScoreRule = ( null === $tblScoreRule ? null : $tblScoreRule->getId() );
+        $this->serviceGraduation_Grade = ( null === $serviceGraduation_Grade ? null : $serviceGraduation_Grade->getId() );
     }
 
     /**

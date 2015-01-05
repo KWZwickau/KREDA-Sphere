@@ -8,6 +8,7 @@ use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Danger;
 use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Info;
 use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Warning;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Application\System\System;
@@ -133,7 +134,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
         if (( $IsValid = Gatekeeper::serviceAccount()->checkIsValidSession() )) {
             System::registerApplication( $Config );
             Management::registerApplication( $Config );
-//            Graduation::registerApplication( $Config );
+            Graduation::registerApplication( $Config );
 //            Statistic::registerApplication( $Config );
         }
         /**

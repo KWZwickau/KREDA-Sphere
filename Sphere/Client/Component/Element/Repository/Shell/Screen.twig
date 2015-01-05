@@ -23,9 +23,9 @@
     <link rel="apple-touch-icon" href="{{ PathBase }}/apple-touch-icon.png"/>
 
     <script src="{{ PathBase }}/Library/Require.Js/2.1.15/require.min.js"></script>
-    <script>
+    <script type="text/javascript" property="">
         require.config( {
-            baseUrl: '{{ PathBase }}',
+            {#baseUrl: '{{ PathBase }}',#}
             shim: {
                 "ModPicker": {"deps": ['jQuery', 'Moment']},
                 "ModSelecter": {"deps": ['jQuery']},

@@ -41,9 +41,9 @@ class Update extends AbstractService
         $Protocol[] = Management::serviceEducation()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Management::serviceAddress()->setupDatabaseSchema( $Simulate );
 
+        $Protocol[] = Graduation::serviceGrade()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Graduation::serviceScore()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Graduation::serviceWeight()->setupDatabaseSchema( $Simulate );
-        $Protocol[] = Graduation::serviceGrade()->setupDatabaseSchema( $Simulate );
 
         if (!$Simulate) {
 
@@ -57,9 +57,9 @@ class Update extends AbstractService
             Gatekeeper::serviceConsumer()->setupDatabaseContent();
             Management::serviceEducation()->setupDatabaseContent();
 
+            Graduation::serviceGrade()->setupDatabaseContent();
             Graduation::serviceScore()->setupDatabaseContent();
             Graduation::serviceWeight()->setupDatabaseContent();
-            Graduation::serviceGrade()->setupDatabaseContent();
         }
 
         return implode( $Protocol );

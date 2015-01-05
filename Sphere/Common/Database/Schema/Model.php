@@ -22,6 +22,12 @@ use MOC\V\Component\Database\Component\IBridgeInterface;
 class Model
 {
 
+    /** @var array $hasViewCache */
+    private static $hasViewCache = array();
+    /** @var array $hasColumnCache */
+    private static $hasColumnCache = array();
+    /** @var array $hasTableCache */
+    private static $hasTableCache = array();
     /** @var IBridgeInterface $Connection */
     private $Connection = null;
     /** @var array $Protocol */
@@ -83,12 +89,15 @@ class Model
     final public function hasView( $ViewName )
     {
 
+        if (in_array( $ViewName, self::$hasViewCache )) {
+            return true;
+        }
         $SchemaManager = $this->getSchemaManager();
-        $NameList = array_map( function ( View $V ) {
+        self::$hasViewCache = array_map( function ( View $V ) {
 
             return $V->getName();
         }, $SchemaManager->listViews() );
-        return in_array( $ViewName, $NameList );
+        return in_array( $ViewName, self::$hasViewCache );
     }
 
     /**
@@ -100,12 +109,15 @@ class Model
     final public function hasColumn( $TableName, $ColumnName )
     {
 
+        if (isset( self::$hasColumnCache[$TableName] )) {
+            return in_array( $ColumnName, self::$hasColumnCache[$TableName] );
+        }
         $SchemaManager = $this->getSchemaManager();
-        $NameList = array_map( function ( Column $V ) {
+        self::$hasColumnCache[$TableName] = array_map( function ( Column $V ) {
 
             return $V->getName();
         }, $SchemaManager->listTableColumns( $TableName ) );
-        return in_array( $ColumnName, $NameList );
+        return in_array( $ColumnName, self::$hasColumnCache[$TableName] );
     }
 
     /**
@@ -116,8 +128,12 @@ class Model
     final public function hasTable( $TableName )
     {
 
+        if (in_array( $TableName, self::$hasTableCache )) {
+            return true;
+        }
         $SchemaManager = $this->getSchemaManager();
-        return in_array( $TableName, $SchemaManager->listTableNames() );
+        self::$hasTableCache = $SchemaManager->listTableNames();
+        return in_array( $TableName, self::$hasTableCache );
     }
 
     /**

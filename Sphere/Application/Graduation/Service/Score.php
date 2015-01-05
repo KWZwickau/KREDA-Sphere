@@ -2,7 +2,9 @@
 namespace KREDA\Sphere\Application\Graduation\Service;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreCondition;
+use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreGroup;
 use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreRule;
 use KREDA\Sphere\Application\Graduation\Service\Score\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
@@ -35,10 +37,19 @@ class Score extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $this->actionCreateScoreRule(
+        $tblScoreRule = $this->actionCreateScoreRule(
             'KA 40:60 Rest',
             'Alle Klassenarbeiten werden 40:60 mit den restlichen Noten verrechnet.'
         );
+        $tblScoreCondition = $this->actionCreateScoreCondition( 'Voreinstellung', 1, null );
+        $tblScoreGroup = $this->actionCreateScoreGroup( 'Voreinstellung', 1, null );
+        $this->actionAddRuleCondition( $tblScoreRule, $tblScoreCondition );
+        $this->actionAddConditionGroup( $tblScoreCondition, $tblScoreGroup );
+
+        $tblGradeType = Graduation::serviceGrade()->entityGradeTypeByAcronym( 'LK' );
+        $this->actionAddGroupGradeType( $tblScoreGroup, $tblGradeType, 0.6 );
+        $tblGradeType = Graduation::serviceGrade()->entityGradeTypeByAcronym( 'KA' );
+        $this->actionAddGroupGradeType( $tblScoreGroup, $tblGradeType, 0.4 );
     }
 
     /**
@@ -50,6 +61,17 @@ class Score extends EntityAction
     {
 
         return parent::entityScoreRuleById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblScoreGroup
+     */
+    public function entityScoreGroupById( $Id )
+    {
+
+        return parent::entityScoreGroupById( $Id );
     }
 
     /**

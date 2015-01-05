@@ -26,9 +26,13 @@ abstract class EntitySchema extends AbstractService
          * Table
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
-        $this->setTableScoreRule( $Schema );
-        $this->setTableScoreGroup( $Schema );
-        $this->setTableScoreCondition( $Schema );
+        $tblScoreRule = $this->setTableScoreRule( $Schema );
+        $tblScoreCondition = $this->setTableScoreCondition( $Schema );
+        $tblScoreGroup = $this->setTableScoreGroup( $Schema );
+        $this->setTableScoreRuleConditionList( $Schema, $tblScoreRule, $tblScoreCondition );
+        $this->setTableScoreConditionGroupList( $Schema, $tblScoreCondition, $tblScoreGroup );
+        $this->setTableScoreGroupGradeTypeList( $Schema, $tblScoreGroup );
+        $this->setTableScoreConditionGradeTypeList( $Schema, $tblScoreCondition );
         /**
          * Migration
          */
@@ -91,44 +95,6 @@ abstract class EntitySchema extends AbstractService
      * @return Table
      * @throws SchemaException
      */
-    private function setTableScoreGroup( Schema &$Schema )
-    {
-
-        /**
-         * Install
-         */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblScoreGroup' )) {
-            $Table = $Schema->createTable( 'tblScoreGroup' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblScoreGroup' );
-        /**
-         * Upgrade
-         */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreGroup', 'Name' )) {
-            $Table->addColumn( 'Name', 'string' );
-        }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreGroup', 'Round' )) {
-            $Table->addColumn( 'Round', 'boolean' );
-        }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreGroup', 'Multiplier' )) {
-            $Table->addColumn( 'Multiplier', 'float' );
-        }
-
-        return $Table;
-    }
-
-    /**
-     * @param Schema $Schema
-     *
-     * @return Table
-     * @throws SchemaException
-     */
     private function setTableScoreCondition( Schema &$Schema )
     {
 
@@ -152,10 +118,225 @@ abstract class EntitySchema extends AbstractService
             $Table->addColumn( 'Name', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreCondition', 'Round' )) {
-            $Table->addColumn( 'Round', 'boolean' );
+            $Table->addColumn( 'Round', 'boolean', array( 'notnull' => false ) );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreCondition', 'Priority' )) {
             $Table->addColumn( 'Priority', 'integer' );
+        }
+
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     *
+     * @return Table
+     * @throws SchemaException
+     */
+    private function setTableScoreGroup( Schema &$Schema )
+    {
+
+        /**
+         * Install
+         */
+        if (!$this->getDatabaseHandler()->hasTable( 'tblScoreGroup' )) {
+            $Table = $Schema->createTable( 'tblScoreGroup' );
+            $Column = $Table->addColumn( 'Id', 'bigint' );
+            $Column->setAutoincrement( true );
+            $Table->setPrimaryKey( array( 'Id' ) );
+        }
+        /**
+         * Fetch
+         */
+        $Table = $Schema->getTable( 'tblScoreGroup' );
+        /**
+         * Upgrade
+         */
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreGroup', 'Name' )) {
+            $Table->addColumn( 'Name', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreGroup', 'Round' )) {
+            $Table->addColumn( 'Round', 'boolean', array( 'notnull' => false ) );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreGroup', 'Multiplier' )) {
+            $Table->addColumn( 'Multiplier', 'float' );
+        }
+
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table  $TblScoreRule
+     * @param Table  $TblScoreCondition
+     *
+     * @return Table
+     * @throws SchemaException
+     */
+    private function setTableScoreRuleConditionList(
+        Schema &$Schema,
+        Table $TblScoreRule,
+        Table $TblScoreCondition
+    ) {
+
+        /**
+         * Install
+         */
+        if (!$this->getDatabaseHandler()->hasTable( 'tblScoreRuleConditionList' )) {
+            $Table = $Schema->createTable( 'tblScoreRuleConditionList' );
+            $Column = $Table->addColumn( 'Id', 'bigint' );
+            $Column->setAutoincrement( true );
+            $Table->setPrimaryKey( array( 'Id' ) );
+        }
+        /**
+         * Fetch
+         */
+        $Table = $Schema->getTable( 'tblScoreRuleConditionList' );
+        /**
+         * Upgrade
+         */
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreRuleConditionList', 'tblScoreRule' )) {
+            $Table->addColumn( 'tblScoreRule', 'bigint' );
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                $Table->addForeignKeyConstraint( $TblScoreRule, array( 'tblScoreRule' ), array( 'Id' ) );
+            }
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreRuleConditionList', 'tblScoreCondition' )) {
+            $Table->addColumn( 'tblScoreCondition', 'bigint' );
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                $Table->addForeignKeyConstraint( $TblScoreCondition, array( 'tblScoreCondition' ), array( 'Id' ) );
+            }
+        }
+
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table  $TblScoreCondition
+     * @param Table  $TblScoreGroup
+     *
+     * @return Table
+     * @throws SchemaException
+     */
+    private function setTableScoreConditionGroupList(
+        Schema &$Schema,
+        Table $TblScoreCondition,
+        Table $TblScoreGroup
+    ) {
+
+        /**
+         * Install
+         */
+        if (!$this->getDatabaseHandler()->hasTable( 'tblScoreConditionGroupList' )) {
+            $Table = $Schema->createTable( 'tblScoreConditionGroupList' );
+            $Column = $Table->addColumn( 'Id', 'bigint' );
+            $Column->setAutoincrement( true );
+            $Table->setPrimaryKey( array( 'Id' ) );
+        }
+        /**
+         * Fetch
+         */
+        $Table = $Schema->getTable( 'tblScoreConditionGroupList' );
+        /**
+         * Upgrade
+         */
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreConditionGroupList', 'tblScoreCondition' )) {
+            $Table->addColumn( 'tblScoreCondition', 'bigint' );
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                $Table->addForeignKeyConstraint( $TblScoreCondition, array( 'tblScoreCondition' ), array( 'Id' ) );
+            }
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreConditionGroupList', 'tblScoreGroup' )) {
+            $Table->addColumn( 'tblScoreGroup', 'bigint' );
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                $Table->addForeignKeyConstraint( $TblScoreGroup, array( 'tblScoreGroup' ), array( 'Id' ) );
+            }
+        }
+
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table  $TblScoreGroup
+     *
+     * @return Table
+     * @throws SchemaException
+     */
+    private function setTableScoreGroupGradeTypeList(
+        Schema &$Schema,
+        Table $TblScoreGroup
+    ) {
+
+        /**
+         * Install
+         */
+        if (!$this->getDatabaseHandler()->hasTable( 'tblScoreGroupGradeTypeList' )) {
+            $Table = $Schema->createTable( 'tblScoreGroupGradeTypeList' );
+            $Column = $Table->addColumn( 'Id', 'bigint' );
+            $Column->setAutoincrement( true );
+            $Table->setPrimaryKey( array( 'Id' ) );
+        }
+        /**
+         * Fetch
+         */
+        $Table = $Schema->getTable( 'tblScoreGroupGradeTypeList' );
+        /**
+         * Upgrade
+         */
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreGroupGradeTypeList', 'tblScoreGroup' )) {
+            $Table->addColumn( 'tblScoreGroup', 'bigint' );
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                $Table->addForeignKeyConstraint( $TblScoreGroup, array( 'tblScoreGroup' ), array( 'Id' ) );
+            }
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreGroupGradeTypeList', 'serviceGraduation_Grade' )) {
+            $Table->addColumn( 'serviceGraduation_Grade', 'bigint', array( 'notnull' => false ) );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreGroupGradeTypeList', 'Multiplier' )) {
+            $Table->addColumn( 'Multiplier', 'float' );
+        }
+
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table  $TblScoreCondition
+     *
+     * @return Table
+     * @throws SchemaException
+     */
+    private function setTableScoreConditionGradeTypeList(
+        Schema &$Schema,
+        Table $TblScoreCondition
+    ) {
+
+        /**
+         * Install
+         */
+        if (!$this->getDatabaseHandler()->hasTable( 'tblScoreConditionGradeTypeList' )) {
+            $Table = $Schema->createTable( 'tblScoreConditionGradeTypeList' );
+            $Column = $Table->addColumn( 'Id', 'bigint' );
+            $Column->setAutoincrement( true );
+            $Table->setPrimaryKey( array( 'Id' ) );
+        }
+        /**
+         * Fetch
+         */
+        $Table = $Schema->getTable( 'tblScoreConditionGradeTypeList' );
+        /**
+         * Upgrade
+         */
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreConditionGradeTypeList', 'tblScoreCondition' )) {
+            $Table->addColumn( 'tblScoreCondition', 'bigint' );
+            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+                $Table->addForeignKeyConstraint( $TblScoreCondition, array( 'tblScoreCondition' ), array( 'Id' ) );
+            }
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblScoreConditionGradeTypeList', 'serviceGraduation_Grade' )) {
+            $Table->addColumn( 'serviceGraduation_Grade', 'bigint', array( 'notnull' => false ) );
         }
 
         return $Table;

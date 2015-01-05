@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Graduation\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Graduation\Service\Grade\Entity\TblGradeType;
 use KREDA\Sphere\Application\Graduation\Service\Grade\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
 
@@ -22,15 +22,35 @@ class Grade extends EntityAction
     public function __construct()
     {
 
-        if (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
-            $Consumer = $tblConsumer->getDatabaseSuffix();
-        } else {
-            $Consumer = 'EGE';
-        }
-        $this->setDatabaseHandler( 'Graduation', 'Grade', $Consumer );
+        $this->setDatabaseHandler( 'Graduation', 'Grade', $this->getConsumerSuffix() );
     }
 
     public function setupDatabaseContent()
     {
+
+        $this->actionCreateGradeType( 'LK', 'Leistungskontrolle' );
+        $this->actionCreateGradeType( 'KA', 'Klassenarbeit' );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblGradeType
+     */
+    public function entityGradeTypeById( $Id )
+    {
+
+        return parent::entityGradeTypeById( $Id );
+    }
+
+    /**
+     * @param string $Acronym
+     *
+     * @return bool|TblGradeType
+     */
+    public function entityGradeTypeByAcronym( $Acronym )
+    {
+
+        return parent::entityGradeTypeByAcronym( $Acronym );
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Common;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Common\Database\Connection\Identifier;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Database\Schema\EntityManager;
@@ -64,6 +65,19 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
 
         static::$DatabaseHandler->addProtocol( __CLASS__ );
         static::$DatabaseHandler->addProtocol( '<span class="text-danger">Missing Database-Content Configuration!</span>' );
+    }
+
+    /**
+     * @return string
+     */
+    final public function getConsumerSuffix()
+    {
+
+        if (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
+            return $tblConsumer->getDatabaseSuffix();
+        } else {
+            return 'EGE';
+        }
     }
 
     /**

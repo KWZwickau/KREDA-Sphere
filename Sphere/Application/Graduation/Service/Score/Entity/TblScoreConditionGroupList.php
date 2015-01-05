@@ -13,13 +13,13 @@ use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
- * @Table(name="tblScoreRuleConditionList")
+ * @Table(name="tblScoreConditionGroupList")
  * @Cache(usage="READ_ONLY")
  */
-class TblScoreRuleConditionList extends AbstractEntity
+class TblScoreConditionGroupList extends AbstractEntity
 {
 
-    const ATTR_TBL_SCORE_RULE = 'tblScoreRule';
+    const ATTR_TBL_SCORE_GROUP = 'tblScoreGroup';
     const ATTR_TBL_SCORE_CONDITION = 'tblScoreCondition';
 
     /**
@@ -31,7 +31,7 @@ class TblScoreRuleConditionList extends AbstractEntity
     /**
      * @Column(type="bigint")
      */
-    protected $tblScoreRule;
+    protected $tblScoreGroup;
     /**
      * @Column(type="bigint")
      */
@@ -56,25 +56,25 @@ class TblScoreRuleConditionList extends AbstractEntity
     }
 
     /**
-     * @return bool|TblScoreRule
+     * @return bool|TblScoreGroup
      */
-    public function getTblScoreRule()
+    public function getTblScoreGroup()
     {
 
-        if (null === $this->tblScoreRule) {
+        if (null === $this->tblScoreGroup) {
             return false;
         } else {
-            return Graduation::serviceScore()->entityScoreRuleById( $this->tblScoreRule );
+            return Graduation::serviceScore()->entityScoreGroupById( $this->tblScoreGroup );
         }
     }
 
     /**
-     * @param null|TblScoreRule $tblScoreRule
+     * @param null|TblScoreGroup $tblScoreGroup
      */
-    public function setTblScoreRule( TblScoreRule $tblScoreRule = null )
+    public function setTblScoreGroup( TblScoreGroup $tblScoreGroup = null )
     {
 
-        $this->tblScoreRule = ( null === $tblScoreRule ? null : $tblScoreRule->getId() );
+        $this->tblScoreGroup = ( null === $tblScoreGroup ? null : $tblScoreGroup->getId() );
     }
 
     /**

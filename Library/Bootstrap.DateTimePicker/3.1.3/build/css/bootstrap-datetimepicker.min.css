@@ -179,7 +179,7 @@
 }
 
 .bootstrap-datetimepicker-widget td.disabled, .bootstrap-datetimepicker-widget td.disabled:hover {
-    background: 0 0;
+    background: 0;
     color: #777;
     cursor: not-allowed
 }
@@ -209,7 +209,7 @@
 }
 
 .bootstrap-datetimepicker-widget td span.disabled, .bootstrap-datetimepicker-widget td span.disabled:hover {
-    background: 0 0;
+    background: 0;
     color: #777;
     cursor: not-allowed
 }
@@ -229,7 +229,7 @@
 }
 
 .bootstrap-datetimepicker-widget th.disabled, .bootstrap-datetimepicker-widget th.disabled:hover {
-    background: 0 0;
+    background: 0;
     color: #777;
     cursor: not-allowed
 }

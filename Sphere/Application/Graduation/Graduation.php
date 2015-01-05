@@ -5,7 +5,6 @@ use KREDA\Sphere\Application\Graduation\Service\Grade;
 use KREDA\Sphere\Application\Graduation\Service\Score;
 use KREDA\Sphere\Application\Graduation\Service\Weight;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\StatisticIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagListIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
@@ -31,9 +30,16 @@ class Graduation extends AbstractApplication
 
         self::$Configuration = $Configuration;
         self::addClientNavigationMain( self::$Configuration,
-            '/Sphere/Grade', 'Zensuren', new TagListIcon()
+            '/Sphere/Graduation', 'Zensuren', new TagListIcon()
         );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Grade', __CLASS__.'::apiMain' );
+
+        self::registerClientRoute( self::$Configuration, '/Sphere/Graduation',
+            __CLASS__.'::frontendGrade' );
+        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type',
+            __CLASS__.'::frontendGrade_Type' );
+        $Route->setParameterDefault( 'GradeName', null );
+        $Route->setParameterDefault( 'GradeAcronym', null );
+
         return $Configuration;
     }
 
@@ -67,7 +73,7 @@ class Graduation extends AbstractApplication
     /**
      * @return Landing
      */
-    public function apiMain()
+    public function frontendGrade()
     {
 
         $this->setupModuleNavigation();
@@ -81,8 +87,21 @@ class Graduation extends AbstractApplication
     {
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Management/Class', 'Zensurentypen', new StatisticIcon()
+            '/Sphere/Graduation/Grade/Type', 'Zensurentypen', new TagListIcon()
         );
+    }
+
+    /**
+     * @return Landing
+     */
+    public function frontendGrade_Type()
+    {
+
+        $this->setupModuleNavigation();
+        $View = new Landing();
+        $View->setTitle( 'Zensuren' );
+        $View->setMessage( 'Bitte wählen Sie ein Thema' );
+        return $View;
     }
 
 }

@@ -45,4 +45,9 @@ interface IServiceInterface
      * @param string $Consumer
      */
     public function setDatabaseHandler( $Application, $Service = '', $Consumer = '' );
+
+    /**
+     * @return string
+     */
+    public function getConsumerSuffix();
 }

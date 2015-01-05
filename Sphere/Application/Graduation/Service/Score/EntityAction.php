@@ -1,8 +1,14 @@
 <?php
 namespace KREDA\Sphere\Application\Graduation\Service\Score;
 
+use KREDA\Sphere\Application\Graduation\Service\Grade\Entity\TblGradeType;
 use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreCondition;
+use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreConditionGradeTypeList;
+use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreConditionGroupList;
+use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreGroup;
+use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreGroupGradeTypeList;
 use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreRule;
+use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreRuleConditionList;
 use KREDA\Sphere\Application\System\System;
 
 /**
@@ -25,6 +31,17 @@ abstract class EntityAction extends EntitySchema
         return ( null === $Entity ? false : $Entity );
     }
 
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblScoreGroup
+     */
+    protected function entityScoreGroupById( $Id )
+    {
+
+        $Entity = $this->getEntityManager()->getEntityById( 'TblScoreGroup', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
 
     /**
      * @param integer $Id
@@ -58,4 +75,163 @@ abstract class EntityAction extends EntitySchema
         }
         return $Entity;
     }
+
+    /**
+     * @param string    $Name
+     * @param float     $Multiplier
+     * @param null|bool $Round
+     *
+     * @return TblScoreGroup
+     */
+    protected function actionCreateScoreGroup( $Name, $Multiplier = 1.0, $Round = null )
+    {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblScoreGroup' )
+            ->findOneBy( array( TblScoreGroup::ATTR_NAME => $Name ) );
+        if (null === $Entity) {
+            $Entity = new TblScoreGroup( $Name );
+            $Entity->setMultiplier( $Multiplier );
+            $Entity->setRound( $Round );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
+     * @param string    $Name
+     * @param int       $Priority
+     * @param null|bool $Round
+     *
+     * @return TblScoreCondition
+     */
+    protected function actionCreateScoreCondition( $Name, $Priority = 1, $Round = null )
+    {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblScoreCondition' )
+            ->findOneBy( array( TblScoreCondition::ATTR_NAME => $Name ) );
+        if (null === $Entity) {
+            $Entity = new TblScoreCondition( $Name );
+            $Entity->setPriority( $Priority );
+            $Entity->setRound( $Round );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+        return $Entity;
+    }
+
+
+    /**
+     * @param TblScoreRule      $tblScoreRule
+     * @param TblScoreCondition $tblScoreCondition
+     *
+     * @return TblScoreRuleConditionList
+     */
+    protected function actionAddRuleCondition(
+        TblScoreRule $tblScoreRule,
+        TblScoreCondition $tblScoreCondition
+    ) {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblScoreRuleConditionList' )
+            ->findOneBy( array(
+                TblScoreRuleConditionList::ATTR_TBL_SCORE_RULE      => $tblScoreRule->getId(),
+                TblScoreRuleConditionList::ATTR_TBL_SCORE_CONDITION => $tblScoreCondition->getId()
+            ) );
+        if (null === $Entity) {
+            $Entity = new TblScoreRuleConditionList();
+            $Entity->setTblScoreRule( $tblScoreRule );
+            $Entity->setTblScoreCondition( $tblScoreCondition );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
+     * @param TblScoreCondition $tblScoreCondition
+     * @param TblScoreGroup     $tblScoreGroup
+     *
+     * @return TblScoreConditionGroupList
+     */
+    protected function actionAddConditionGroup(
+        TblScoreCondition $tblScoreCondition,
+        TblScoreGroup $tblScoreGroup
+    ) {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblScoreConditionGroupList' )
+            ->findOneBy( array(
+                TblScoreConditionGroupList::ATTR_TBL_SCORE_CONDITION => $tblScoreCondition->getId(),
+                TblScoreConditionGroupList::ATTR_TBL_SCORE_GROUP     => $tblScoreGroup->getId()
+            ) );
+        if (null === $Entity) {
+            $Entity = new TblScoreConditionGroupList();
+            $Entity->setTblScoreCondition( $tblScoreCondition );
+            $Entity->setTblScoreGroup( $tblScoreGroup );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
+     * @param TblScoreCondition $tblScoreCondition
+     * @param TblGradeType      $tblGradeType
+     *
+     * @return TblScoreConditionGradeTypeList
+     */
+    protected function actionAddConditionGradeType(
+        TblScoreCondition $tblScoreCondition,
+        TblGradeType $tblGradeType
+    ) {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblScoreConditionGradeTypeList' )
+            ->findOneBy( array(
+                TblScoreConditionGradeTypeList::ATTR_TBL_SCORE_CONDITION      => $tblScoreCondition->getId(),
+                TblScoreConditionGradeTypeList::ATTR_SERVICE_GRADUATION_GRADE => $tblGradeType->getId()
+            ) );
+        if (null === $Entity) {
+            $Entity = new TblScoreConditionGradeTypeList();
+            $Entity->setTblScoreCondition( $tblScoreCondition );
+            $Entity->setServiceGraduationGrade( $tblGradeType );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
+     * @param TblScoreGroup $tblScoreGroup
+     * @param TblGradeType  $tblGradeType
+     * @param float         $Multiplier
+     *
+     * @return TblScoreGroupGradeTypeList
+     */
+    protected function actionAddGroupGradeType(
+        TblScoreGroup $tblScoreGroup,
+        TblGradeType $tblGradeType,
+        $Multiplier = 1.0
+    ) {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblScoreGroupGradeTypeList' )
+            ->findOneBy( array(
+                TblScoreGroupGradeTypeList::ATTR_TBL_SCORE_GROUP          => $tblScoreGroup->getId(),
+                TblScoreGroupGradeTypeList::ATTR_SERVICE_GRADUATION_GRADE => $tblGradeType->getId()
+            ) );
+        if (null === $Entity) {
+            $Entity = new TblScoreGroupGradeTypeList();
+            $Entity->setTblScoreGroup( $tblScoreGroup );
+            $Entity->setServiceGraduationGrade( $tblGradeType );
+            $Entity->setMultiplier( $Multiplier );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+        return $Entity;
+    }
+
 }
