@@ -24,6 +24,8 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
     const ICON_OFF = 'glyphicon glyphicon-off';
     const ICON_BOOK = 'glyphicon glyphicon-book';
     const ICON_BRIEFCASE = 'glyphicon glyphicon-briefcase';
+    const ICON_MONEY = 'glyphicon glyphicon-money';
+    const ICON_MONEY_EURO = 'glyphicon glyphicon-euro';
 
     const ICON_TILE_BIG = 'glyphicon glyphicon-th-large';
     const ICON_TILE_SMALL = 'glyphicon glyphicon-th';
@@ -36,6 +38,8 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
     const ICON_CERTIFICATE = 'glyphicon glyphicon-certificate';
     const ICON_FLASH = 'glyphicon glyphicon-flash';
     const ICON_MAP_MARKER = 'glyphicon glyphicon-map-marker';
+
+    const ICON_EDUCATION = 'glyphicon glyphicon-education';
 
     /** @var null|string $Value */
     private $Value = null;

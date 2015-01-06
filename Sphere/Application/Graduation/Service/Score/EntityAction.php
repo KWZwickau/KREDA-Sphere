@@ -205,6 +205,32 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblScoreCondition $tblScoreCondition
+     * @param TblGradeType      $tblGradeType
+     *
+     * @return bool
+     */
+    protected function actionRemoveConditionGradeType(
+        TblScoreCondition $tblScoreCondition,
+        TblGradeType $tblGradeType
+    ) {
+
+        $Manager = $this->getEntityManager();
+        /** @var TblScoreConditionGradeTypeList $Entity */
+        $Entity = $Manager->getEntity( 'TblScoreConditionGradeTypeList' )
+            ->findOneBy( array(
+                TblScoreConditionGradeTypeList::ATTR_TBL_SCORE_CONDITION      => $tblScoreCondition->getId(),
+                TblScoreConditionGradeTypeList::ATTR_SERVICE_GRADUATION_GRADE => $tblGradeType->getId()
+            ) );
+        if (null !== $Entity) {
+            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @param TblScoreGroup $tblScoreGroup
      * @param TblGradeType  $tblGradeType
      * @param float         $Multiplier
@@ -234,4 +260,29 @@ abstract class EntityAction extends EntitySchema
         return $Entity;
     }
 
+    /**
+     * @param TblScoreGroup $tblScoreGroup
+     * @param TblGradeType  $tblGradeType
+     *
+     * @return bool
+     */
+    protected function actionRemoveGroupGradeType(
+        TblScoreGroup $tblScoreGroup,
+        TblGradeType $tblGradeType
+    ) {
+
+        $Manager = $this->getEntityManager();
+        /** @var TblScoreGroupGradeTypeList $Entity */
+        $Entity = $Manager->getEntity( 'TblScoreGroupGradeTypeList' )
+            ->findOneBy( array(
+                TblScoreGroupGradeTypeList::ATTR_TBL_SCORE_GROUP          => $tblScoreGroup->getId(),
+                TblScoreGroupGradeTypeList::ATTR_SERVICE_GRADUATION_GRADE => $tblGradeType->getId()
+            ) );
+        if (null !== $Entity) {
+            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
 }

@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Graduation\Service\Grade;
 use KREDA\Sphere\Application\Graduation\Service\Score;
 use KREDA\Sphere\Application\Graduation\Service\Weight;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EducationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagListIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
@@ -30,7 +31,7 @@ class Graduation extends AbstractApplication
 
         self::$Configuration = $Configuration;
         self::addClientNavigationMain( self::$Configuration,
-            '/Sphere/Graduation', 'Zensuren', new TagListIcon()
+            '/Sphere/Graduation', 'Zensuren', new EducationIcon()
         );
 
         self::registerClientRoute( self::$Configuration, '/Sphere/Graduation',

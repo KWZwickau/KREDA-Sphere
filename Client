@@ -7,6 +7,7 @@ use KREDA\Sphere\Application\Assistance\Assistance;
 use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Danger;
 use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Info;
 use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Warning;
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
@@ -135,6 +136,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             System::registerApplication( $Config );
             Management::registerApplication( $Config );
             Graduation::registerApplication( $Config );
+            Billing::registerApplication( $Config );
 //            Statistic::registerApplication( $Config );
         }
         /**
