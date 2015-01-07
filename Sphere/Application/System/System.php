@@ -136,51 +136,24 @@ class System extends AbstractApplication
         phpinfo();
         $PhpInfo = ob_get_clean();
 
-        $GlyphIconStyle = '<style>';
-        $GlyphIconTable = '';
-
-        $GlyphIconTable .= '<h2>Halflings</h2><div class="clearfix">';
-
-        for ($Run = 0; $Run < 273; $Run++) {
-            $GlyphIconStyle .= '.glyphicon-halfling-'.$Run.':before { font-family: "Glyphicons Halflings"; content: "\e'.str_pad( $Run,
-                    3, '0', STR_PAD_LEFT ).'"; font-size: 30px; }';
-            $GlyphIconTable .= '<div class="pull-left" style="width: 70px; padding: 5px; margin: 5px; border: 1px dotted silver;"><span class="glyphicon glyphicon-halfling-'.$Run.'"></span><hr style="margin:0;"/>\e'.str_pad( $Run,
-                    3, '0', STR_PAD_LEFT ).'</div>';
-        }
-
-        $GlyphIconTable .= '</div><hr/><h2>Regular</h2>';
-        $GlyphIconTable .= '<div class="clearfix">';
-
-        for ($Run = 0; $Run < 611; $Run++) {
-            $GlyphIconStyle .= '.glyphicon-regular-'.$Run.':before { font-family: "Glyphicons Regular"; content: "\e'.str_pad( $Run,
-                    3, '0', STR_PAD_LEFT ).'"; font-size: 30px; }';
-            $GlyphIconTable .= '<div class="pull-left" style="width: 70px; padding: 5px; margin: 5px; border: 1px dotted silver;"><span class="glyphicon glyphicon-regular-'.$Run.'"></span><hr style="margin:0;"/>\e'.str_pad( $Run,
-                    3, '0', STR_PAD_LEFT ).'</div>';
-        }
-
-        $GlyphIconTable .= '</div>';
-        $GlyphIconStyle .= '</style>';
-
         $View->setContent(
-//            '<div id="phpinfo">'.
-//            preg_replace( '!,!', ', ',
-//                preg_replace( '!<th>(enabled)\s*</th>!i',
-//                    '<th><span class="badge badge-success">$1</span></th>',
-//                    preg_replace( '!<td class="v">(On|enabled|active|Yes)\s*</td>!i',
-//                        '<td class="v"><span class="badge badge-success">$1</span></td>',
-//                        preg_replace( '!<td class="v">(Off|disabled|No)\s*</td>!i',
-//                            '<td class="v"><span class="badge badge-danger">$1</span></td>',
-//                            preg_replace( '!<i>no value</i>!',
-//                                '<span class="label label-warning">no value</span>',
-//                                preg_replace( '%^.*<body>(.*)</body>.*$%ms', '$1', $PhpInfo )
-//                            )
-//                        )
-//                    )
-//                )
-//            )
-//            .'</div>'
-
-            '<div>'.$GlyphIconStyle.$GlyphIconTable.'</div>'
+            '<div id="phpinfo">'.
+            preg_replace( '!,!', ', ',
+                preg_replace( '!<th>(enabled)\s*</th>!i',
+                    '<th><span class="badge badge-success">$1</span></th>',
+                    preg_replace( '!<td class="v">(On|enabled|active|Yes)\s*</td>!i',
+                        '<td class="v"><span class="badge badge-success">$1</span></td>',
+                        preg_replace( '!<td class="v">(Off|disabled|No)\s*</td>!i',
+                            '<td class="v"><span class="badge badge-danger">$1</span></td>',
+                            preg_replace( '!<i>no value</i>!',
+                                '<span class="label label-warning">no value</span>',
+                                preg_replace( '%^.*<body>(.*)</body>.*$%ms', '$1', $PhpInfo )
+                            )
+                        )
+                    )
+                )
+            )
+            .'</div>'
         );
         return $View;
     }
