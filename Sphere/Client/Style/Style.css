@@ -128,3 +128,7 @@ span.twitter-typeahead .tt-dropdown-menu {
         width: 40%;
     }
 }
+
+.glyphicon, .halflings, .glyphicons {
+    vertical-align: text-top;
+}

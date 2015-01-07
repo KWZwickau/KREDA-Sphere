@@ -10,7 +10,7 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BookIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BriefcaseIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\HomeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagListIcon;
@@ -43,7 +43,7 @@ class Management extends AbstractApplication
          * Navigation
          */
         self::registerClientRoute( self::$Configuration, '/Sphere/Management', __CLASS__.'::apiMain' );
-        self::addClientNavigationMain( self::$Configuration, '/Sphere/Management', 'Verwaltung', new GearIcon() );
+        self::addClientNavigationMain( self::$Configuration, '/Sphere/Management', 'Verwaltung', new GroupIcon() );
 
         /**
          * Education

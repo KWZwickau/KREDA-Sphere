@@ -12,13 +12,14 @@ use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CertificateIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EyeOpenIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FlashIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GearIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\HomeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TaskIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WrenchIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
 
@@ -43,7 +44,7 @@ class System extends AbstractApplication
 
         self::$Configuration = $Configuration;
         self::addClientNavigationMeta( self::$Configuration,
-            '/Sphere/System', 'System', new WrenchIcon()
+            '/Sphere/System', 'System', new CogWheelsIcon()
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System', __CLASS__.'::apiMain'
@@ -75,6 +76,10 @@ class System extends AbstractApplication
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Account', __CLASS__.'::apiAccount'
+        );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Authorization', __CLASS__.'::apiAuthorization'
         );
 
         self::registerClientRoute( self::$Configuration,
@@ -174,7 +179,10 @@ class System extends AbstractApplication
             '/Sphere/System/Account', 'Benutzerkonten', new PersonIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Token', 'Hardware-Schlüssel', new CertificateIcon()
+            '/Sphere/System/Authorization', 'Berechtigungen', new EyeOpenIcon()
+        );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/System/Token', 'Hardware-Schlüssel', new YubiKeyIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Protocol', 'Protokoll', new TaskIcon()
@@ -196,7 +204,7 @@ class System extends AbstractApplication
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Consumer/Create', 'Mandant anlegen', new GearIcon()
+            '/Sphere/System/Consumer/Create', 'Mandant anlegen', new CogIcon()
         );
 
     }
@@ -227,10 +235,10 @@ class System extends AbstractApplication
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Update/Simulation', 'Simulation durchführen', new GearIcon()
+            '/Sphere/System/Update/Simulation', 'Simulation durchführen', new CogIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Update/Perform', 'Update durchführen', new GearIcon()
+            '/Sphere/System/Update/Perform', 'Update durchführen', new CogWheelsIcon()
         );
 
     }
@@ -282,7 +290,7 @@ class System extends AbstractApplication
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Token/Certification', 'Zertifizierung', new CertificateIcon()
+            '/Sphere/System/Token/Certification', 'Zertifizierung', new YubiKeyIcon()
         );
 
     }

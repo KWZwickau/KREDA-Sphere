@@ -5,11 +5,11 @@ use KREDA\Sphere\Client\Component\IParameterInterface;
 use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
 
 /**
- * Class GearIcon
+ * Class GroupIcon
  *
  * @package KREDA\Sphere\Client\Component\Parameter\Repository\Icon
  */
-class GearIcon extends AbstractIcon implements IParameterInterface
+class GroupIcon extends AbstractIcon implements IParameterInterface
 {
 
     /**
@@ -18,6 +18,6 @@ class GearIcon extends AbstractIcon implements IParameterInterface
     function __construct()
     {
 
-        $this->setValue( AbstractIcon::ICON_GEAR );
+        $this->setValue( AbstractIcon::ICON_GROUP );
     }
 }
