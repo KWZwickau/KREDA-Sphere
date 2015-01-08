@@ -187,7 +187,16 @@ class Management extends AbstractApplication
             '/Sphere/Management/Person/Student', 'Schüler', new PersonIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Person/', 'Sorgeberechtigte', new PersonIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/Person/Teacher', 'Lehrer', new PersonIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Person/', 'Verwaltung', new PersonIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Person/', 'Sonstige', new PersonIcon()
         );
 
     }

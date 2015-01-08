@@ -47,7 +47,39 @@ class PersonalData extends AbstractFrontend
         $View->setDescription( 'Schüler' );
         $View->setMessage( 'Alle Schüler' );
         $View->setContent(
-            '{viewStudent}[]'
+            '<table id="tbl1" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" ><thead>
+    <tr>
+    <th>A</th>
+    <th>B</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+</tr>
+</tbody></table>
+
+<script>
+        require( ["ModTable"], function()
+            {
+               jQuery(document).ready(function() {
+                   jQuery("#tbl1").DataTable({
+                    iDisplayLength: 2,
+                    "lengthMenu": [ [1, 2, 3, -1], ["Nuff", 2, 3, "All"] ]
+                   });
+               } );
+            }
+        );
+</script>
+'
         );
         $View->addButton( '/Sphere/Management/Person/Student/Create', 'Schüler hinzufügen' );
         return $View;
