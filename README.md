@@ -26,13 +26,14 @@ Additional Software
 - Bootflat
 - Bootstrap
 - Bootstrap.DateTimePicker
+- Bootstrap.Glyphicons
 - jQuery
+- jQuery.DataTable
+- jQuery.DataTable.Plugins
 - jQuery.Selecter
 - jQuery.Stepper
 - Markdownify
 - Moment.Js
-- Require.Css
-- Require.Js
 - Twitter.Typeahead
 - Twitter.Typeahead.Bootstrap
 
