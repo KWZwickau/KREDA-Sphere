@@ -9,8 +9,19 @@ use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\LastName;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\MiddleName;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\Nationality;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\State;
+use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\Title;
+use KREDA\Sphere\Application\Management\Frontend\PersonalData\Guardian\PersonList as GuardianPersonList;
+use KREDA\Sphere\Application\Management\Frontend\PersonalData\Others\PersonList as OthersPersonList;
+use KREDA\Sphere\Application\Management\Frontend\PersonalData\Staff\PersonList as StaffPersonList;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Student\Form;
+use KREDA\Sphere\Application\Management\Frontend\PersonalData\Student\PersonDetail as StudentPersonDetail;
+use KREDA\Sphere\Application\Management\Frontend\PersonalData\Student\PersonList as StudentPersonList;
+use KREDA\Sphere\Application\Management\Frontend\PersonalData\Summary\Summary;
+use KREDA\Sphere\Application\Management\Frontend\PersonalData\Teacher\PersonList as TeacherPersonList;
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 
 /**
@@ -24,64 +35,52 @@ class PersonalData extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function guiPerson()
+    public static function stagePerson()
     {
 
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Übersicht' );
-        $View->setMessage( 'Alle Personen' );
-        $View->setContent( '' );
-        $View->addButton( '/Sphere/Management/Person/Create', 'Person hinzufügen' );
+        $View->setMessage( 'Zeigt die Anzahl an Personen in den jeweiligen Personengruppen' );
+        $View->setContent( new Summary( array(
+            new GroupIcon().'&nbsp;&nbsp;Alle'              => count( Management::servicePerson()->entityPersonAll() ),
+            new PersonIcon().'&nbsp;&nbsp;Schüler'          => count( Management::servicePerson()->entityPersonAll() ),
+            new PersonIcon().'&nbsp;&nbsp;Sorgeberechtigte' => count( Management::servicePerson()->entityPersonAll() ),
+            new PersonIcon().'&nbsp;&nbsp;Lehrer'           => count( Management::servicePerson()->entityPersonAll() ),
+            new PersonIcon().'&nbsp;&nbsp;Verwaltung'       => count( Management::servicePerson()->entityPersonAll() ),
+            new PersonIcon().'&nbsp;&nbsp;Sonstige'         => count( Management::servicePerson()->entityPersonAll() )
+        ) ) );
         return $View;
     }
 
     /**
      * @return Stage
      */
-    public static function guiPersonStudent()
+    public static function stagePersonStudent()
     {
 
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Schüler' );
-        $View->setMessage( 'Alle Schüler' );
-        $View->setContent(
-            '<table id="tbl1" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" ><thead>
-    <tr>
-    <th>A</th>
-    <th>B</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>2</td>
-<td>2</td>
-</tr>
-<tr>
-<td>3</td>
-<td>3</td>
-</tr>
-</tbody></table>
-
-<script>
-        require( ["ModTable"], function()
-            {
-               jQuery(document).ready(function() {
-                   jQuery("#tbl1").DataTable({
-                    iDisplayLength: 2,
-                    "lengthMenu": [ [1, 2, 3, -1], ["Nuff", 2, 3, "All"] ]
-                   });
-               } );
-            }
-        );
-</script>
-'
-        );
+        $View->setMessage( '' );
+        $View->setContent( new StudentPersonList( Management::servicePerson()->entityPersonAll() ) );
         $View->addButton( '/Sphere/Management/Person/Student/Create', 'Schüler hinzufügen' );
+        return $View;
+    }
+
+    /**
+     * @param int $Id
+     *
+     * @return Stage
+     */
+    public static function stagePersonStudentDetail( $Id )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Personen' );
+        $View->setDescription( 'Schüler - Detail' );
+        $View->setMessage( '' );
+        $View->setContent( new StudentPersonDetail( Management::servicePerson()->entityPersonById( $Id ) ) );
         return $View;
     }
 
@@ -89,7 +88,7 @@ class PersonalData extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function guiPersonStudentCreate()
+    public static function stagePersonStudentCreate()
     {
 
         $View = new Stage();
@@ -99,7 +98,11 @@ class PersonalData extends AbstractFrontend
         $View->setContent(
             new Form(
                 array(
-                    'Grunddaten'       => array(
+                    'Grunddaten' => array(
+                        array(
+                            new Title(),
+                            new Gender()
+                        ),
                         array(
                             new FirstName(),
                             new MiddleName(),
@@ -109,23 +112,81 @@ class PersonalData extends AbstractFrontend
                             new Birthday(),
                         ),
                         array(
-                            new Gender(),
-                            new City()
-                        ),
-                        array(
                             '&nbsp;',
                             '&nbsp;'
+                        ),
+                        array(
+                            new City()
                         ),
                         array(
                             new Nationality(),
                             new State()
                         ),
-                    ),
-                    'Sorgeberechtigte' => array(),
-                    'Schulinterna'     => array()
+                    )
                 )
             )
         );
         return $View;
     }
+
+    /**
+     * @return Stage
+     */
+    public static function stagePersonTeacher()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Personen' );
+        $View->setDescription( 'Lehrer' );
+        $View->setMessage( '' );
+        $View->setContent( new TeacherPersonList( Management::servicePerson()->entityPersonAll() ) );
+        $View->addButton( '/Sphere/Management/Person/Teacher/Create', 'Lehrer hinzufügen' );
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stagePersonGuardian()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Personen' );
+        $View->setDescription( 'Sorgeberechtigte' );
+        $View->setMessage( '' );
+        $View->setContent( new GuardianPersonList( Management::servicePerson()->entityPersonAll() ) );
+        $View->addButton( '/Sphere/Management/Person/Guardian/Create', 'Sorgeberechtigte hinzufügen' );
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stagePersonStaff()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Personen' );
+        $View->setDescription( 'Verwaltung' );
+        $View->setMessage( '' );
+        $View->setContent( new StaffPersonList( Management::servicePerson()->entityPersonAll() ) );
+        $View->addButton( '/Sphere/Management/Person/Staff/Create', 'Mitarbeiter hinzufügen' );
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stagePersonOthers()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Personen' );
+        $View->setDescription( 'Sonstige' );
+        $View->setMessage( '' );
+        $View->setContent( new OthersPersonList( Management::servicePerson()->entityPersonAll() ) );
+        $View->addButton( '/Sphere/Management/Person/Others/Create', 'Person hinzufügen' );
+        return $View;
+    }
+
 }

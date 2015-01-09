@@ -1,0 +1,42 @@
+<table id="PersonList" class="table table-condensed table-bordered">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Anrede</th>
+        <th>Name, Vorname</th>
+        <th>Geburtstag</th>
+        <th>Geschlecht</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for Person in PersonList %}
+        <tr>
+            <td>{{ Person.Id }}</td>
+            <td>{{ Person.Salutation }}</td>
+            <td>{{ Person.LastName }}, {{ Person.FirstName }} {{ Person.MiddleName }}</td>
+            <td>
+                {% if Person.Birthday is not empty %}
+                    {{ Person.Birthday|date('d.m.Y') }}
+                {% endif %}
+            </td>
+            <td>{{ Person.Gender|utf8_encode }}</td>
+            <td style="width: 1%;">
+                <form action="{{ UrlBase }}/Sphere/Management/Person/Student/Detail" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="{{ Person.Id }}"/>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-primary">Öffnen</button>
+                        </div>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    jQuery( "#PersonList" ).ModTable();
+</script>

@@ -31,7 +31,36 @@ class Screen extends Shell implements IElementInterface
     {
 
         $this->Template = Template::getTemplate( __DIR__.'/Screen.twig' );
-        $this->Template->setVariable( 'PathBase', HttpKernel::getRequest()->getPathBase() );
+        $this->Template->setVariable( 'PathBase', $PathBase = HttpKernel::getRequest()->getPathBase() );
+
+        $this->Template->setVariable( 'Style', array(
+            $PathBase.'/Library/Bootstrap/3.2.0/dist/css/bootstrap.min.css',
+            $PathBase.'/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_halflings/web/html_css/css/glyphicons-halflings.css',
+            $PathBase.'/Library/Bootstrap.Glyphicons/1.9.0/glyphicons/web/html_css/css/glyphicons.css',
+            $PathBase.'/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_filetypes/web/html_css/css/glyphicons-filetypes.css',
+            $PathBase.'/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_social/web/html_css/css/glyphicons-social.css',
+            $PathBase.'/Library/Bootflat/2.0.4/bootflat/css/bootflat.min.css',
+            $PathBase.'/Library/Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs.css',
+            $PathBase.'/Library/Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min.css',
+            $PathBase.'/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.css',
+            $PathBase.'/Sphere/Client/Style/Style.css',
+        ) );
+        $this->Template->setVariable( 'Script', array(
+            $PathBase.'/Library/jQuery/1.11.1/dist/jquery.min.js',
+            $PathBase.'/Library/Moment.Js/2.8.4/min/moment-with-locales.min.js',
+            $PathBase.'/Library/Bootstrap/3.2.0/dist/js/bootstrap.min.js',
+            $PathBase.'/Library/Bootflat/2.0.4/bootflat/js/icheck.min.js',
+            $PathBase.'/Library/jQuery.Selecter/3.2.3/jquery.fs.selecter.min.js',
+            $PathBase.'/Library/jQuery.Stepper/3.0.8/jquery.fs.stepper.min.js',
+            $PathBase.'/Library/jQuery.DataTables/1.10.4/media/js/jquery.dataTables.min.js',
+            $PathBase.'/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.min.js',
+            $PathBase.'/Library/Bootstrap.DateTimePicker/3.1.3/build/js/bootstrap-datetimepicker.min.js',
+            $PathBase.'/Library/Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min.js',
+            $PathBase.'/Sphere/Client/Script/ModTable.js',
+            $PathBase.'/Sphere/Client/Script/ModPicker.js',
+            $PathBase.'/Sphere/Client/Script/ModSelecter.js',
+            $PathBase.'/Sphere/Client/Script/ModCompleter.js',
+        ) );
     }
 
     /**

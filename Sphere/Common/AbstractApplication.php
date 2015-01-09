@@ -192,6 +192,9 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
                 self::prepareParameterActive( $Url )
             )
         );
+        if (self::prepareParameterActive( $Url )) {
+            $Configuration->getApplicationNavigation()->addBreadcrumb( $Name );
+        }
     }
 
     abstract protected function setupModuleNavigation();

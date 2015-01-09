@@ -17,6 +17,8 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblPerson extends AbstractEntity
 {
 
+    const ATTR_PERSON_TYPE = 'tblPersonType';
+
     /**
      * @Id
      * @GeneratedValue
@@ -47,6 +49,10 @@ class TblPerson extends AbstractEntity
      * @Column(type="string")
      */
     protected $Birthday;
+//    /**
+//     * @Column(type="bigint")
+//     */
+//    protected $tblPersonType;
 
     /**
      * @return string

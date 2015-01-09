@@ -1,0 +1,28 @@
+<table id="PersonList" class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>Anrede</th>
+        <th>Name, Vorname</th>
+        <th>Geburtstag</th>
+        <th>Geschlecht</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for Person in PersonList %}
+        <tr>
+            <td>{{ Person.Salutation }}</td>
+            <td>{{ Person.LastName }}, {{ Person.FirstName }} {{ Person.MiddleName }}</td>
+            <td>
+                {% if Person.Birthday is not empty %}
+                    {{ Person.Birthday|date('d.m.Y') }}
+                {% endif %}
+            </td>
+            <td>{{ Person.Gender|utf8_encode }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    jQuery( "#PersonList" ).ModTable();
+</script>

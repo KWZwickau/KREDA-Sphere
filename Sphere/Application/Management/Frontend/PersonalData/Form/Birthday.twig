@@ -1,11 +1,11 @@
 <div class="form-group {{ PersonBirthdayGroup }}">
-    <label>Gebutstag</label>
+    <label>Geburtstag</label>
 
     <div class="input-group">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
-        <input type="text" class="form-control" name="PersonBirthday" placeholder="Gebutstag"
+        <input type="text" class="form-control" name="PersonBirthday" placeholder="Geburtstag"
                data-date-format="DD.MM.YYYY" data-date-language="de" data-date-pickTime="false"
                data-bv-date-format="DD.MM.YYYY"
                value="{{ PersonBirthdayValue }}"/>
@@ -15,9 +15,5 @@
     {{ PersonBirthdayFeedbackMessage }}
 </div>
 <script type="text/javascript">
-    require( ['ModPicker'], function()
-        {
-            jQuery( 'input[type="text"][name="PersonBirthday"]' ).datetimepicker();
-        }
-    );
+    jQuery( 'input[type="text"][name="PersonBirthday"]' ).ModPicker();
 </script>

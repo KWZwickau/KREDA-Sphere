@@ -1,0 +1,64 @@
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th colspan="2">Grunddaten</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th class="col-xs-4 text-right">Anrede:</th>
+            <td class="text-left">{{ PersonDetail.Salutation }}</td>
+        </tr>
+        <tr>
+            <th class="col-xs-4 text-right">Name:</th>
+            <td class="text-left">{{ PersonDetail.LastName }}
+                , {{ PersonDetail.FirstName }} {{ PersonDetail.MiddleName }}</td>
+        </tr>
+        <tr>
+            <th class="col-xs-4 text-right">Geschlecht:</th>
+            <td class="text-left">{{ PersonDetail.Gender|utf8_encode }}</td>
+        </tr>
+        <tr>
+            <th class="col-xs-4 text-right">Geburtstag:</th>
+            <td class="text-left">{{ PersonDetail.Birthday }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th colspan="2">
+                Sorgeberechtigte
+                <a href=""></a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th class="col-xs-4 text-right">Anrede:</th>
+            <td class="text-left">{{ PersonDetail.Salutation }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th colspan="2">Schulinterna</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th class="col-xs-4 text-right">Anrede:</th>
+            <td class="text-left">{{ PersonDetail.Salutation }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

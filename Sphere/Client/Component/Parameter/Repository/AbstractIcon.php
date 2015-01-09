@@ -46,8 +46,23 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
     const ICON_EDUCATION = 'halflings halflings-education';
     const ICON_EYE_OPEN = 'halflings halflings-eye-open';
 
+    const ICON_CLUSTER = 'glyphicons glyphicons-cluster';
+    const ICON_SERVER = 'glyphicons glyphicons-server';
+    const ICON_DATABASE = 'glyphicons glyphicons-database';
+    const ICON_SHARE = 'glyphicons glyphicons-share-alt';
+    const ICON_BUILDING = 'glyphicons glyphicons-building';
+
     /** @var null|string $Value */
     private $Value = null;
+
+    /**
+     * @return string
+     */
+    function __toString()
+    {
+
+        return '<span class="'.$this->getValue().'"></span>';
+    }
 
     /**
      * @return null|string
@@ -66,4 +81,5 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
 
         $this->Value = $Value;
     }
+
 }

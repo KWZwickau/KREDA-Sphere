@@ -10,67 +10,14 @@
 
     <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"/>
     <link rel="schema.DCTERMS" href="http://purl.org/dc/terms/"/>
-
-    <link rel="stylesheet" href="{{ PathBase }}/Library/Bootstrap/3.2.0/dist/css/bootstrap.min.css" property="">
-    <link rel="stylesheet"
-          href="{{ PathBase }}/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_halflings/web/html_css/css/glyphicons-halflings.css"
-          property="">
-    <link rel="stylesheet"
-          href="{{ PathBase }}/Library/Bootstrap.Glyphicons/1.9.0/glyphicons/web/html_css/css/glyphicons.css"
-          property="">
-    <link rel="stylesheet"
-          href="{{ PathBase }}/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_filetypes/web/html_css/css/glyphicons-filetypes.css"
-          property="">
-    <link rel="stylesheet"
-          href="{{ PathBase }}/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_social/web/html_css/css/glyphicons-social.css"
-          property="">
-    <link rel="stylesheet" href="{{ PathBase }}/Library/Bootflat/2.0.4/bootflat/css/bootflat.min.css" property="">
-    <link rel="stylesheet" href="{{ PathBase }}/Library/Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs.css" property="">
-    <link rel="stylesheet"
-          href="{{ PathBase }}/Library/Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min.css"
-          property="">
-    {#<link rel="stylesheet" href="{{ PathBase }}/Library/jQuery.DataTables/1.10.4/media/css/jquery.dataTables.min.css" property="">#}
-    <link rel="stylesheet"
-          href="{{ PathBase }}/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.css"
-          property="">
-    <link rel="stylesheet" href="{{ PathBase }}/Sphere/Client/Style/Style.css" property="">
-
+    {% for Source in Style %}
+        <link rel="stylesheet" href="{{ Source }}"/>
+    {% endfor %}
     <link rel="shortcut icon" type="image/x-icon" href="{{ PathBase }}/favicon.ico"/>
     <link rel="apple-touch-icon" href="{{ PathBase }}/apple-touch-icon.png"/>
-
-    <script src="{{ PathBase }}/Library/Require.Js/2.1.15/require.min.js"></script>
-    <script type="text/javascript" property="">
-        require.config( {
-            {#baseUrl: '{{ PathBase }}',#}
-            shim: {
-                "ModPicker": {"deps": ['jQuery', 'Moment']},
-                "ModSelecter": {"deps": ['jQuery']},
-                "ModStepper": {"deps": ['jQuery']},
-                "ModCompleter": {"deps": ['jQuery']},
-                "Bootstrap": {"deps": ['jQuery']},
-                "ModTable": {"deps": ['jQuery', 'Bootstrap', 'datatables']}
-            },
-            paths: {
-                ModPicker: '{{ PathBase }}/Library/Bootstrap.DateTimePicker/3.1.3/build/js/bootstrap-datetimepicker.min',
-                ModSelecter: '{{ PathBase }}/Library/jQuery.Selecter/3.2.3/jquery.fs.selecter.min',
-                ModStepper: '{{ PathBase }}/Library/jQuery.Stepper/3.0.8/jquery.fs.stepper.min',
-                ModCompleter: '{{ PathBase }}/Library/Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min',
-
-                datatables: '{{ PathBase }}/Library/jQuery.DataTables/1.10.4/media/js/jquery.dataTables',
-                ModTable: '{{ PathBase }}/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.min',
-
-                jQuery: '{{ PathBase }}/Library/jQuery/1.11.1/dist/jquery.min',
-                Bootstrap: '{{ PathBase }}/Library/Bootstrap/3.2.0/dist/js/bootstrap.min',
-                Moment: '{{ PathBase }}/Library/Moment.Js/2.8.4/min/moment-with-locales.min',
-                Check: '{{ PathBase }}/Library/Bootflat/2.0.4/bootflat/js/icheck.min',
-                Css: '{{ PathBase }}/Library/Require.Css/0.1.8/css.min'
-            },
-            waitSeconds: 120
-        } );
-        //require( ['Css!Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs'] );
-        //require( ['Css!Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min'] );
-        //require( ['Css!jQuery.DataTables/1.10.4/media/css/jquery.dataTables.min'] );
-    </script>
+    {% for Source in Script %}
+        <script src="{{ Source }}"></script>
+    {% endfor %}
 </head>
 <body>
 
@@ -83,7 +30,7 @@
         <div class="col-xs-12 footer  small">
             <div class="clearfix">
                 <div class="footer-logo">
-                    <a href="#">KREDA&nbsp;<img src="{{ PathBase }}/Sphere/Client/Style/Resource/logo_kreide.png"
+                    <a href="#">KREDA&nbsp;<img src="{{ PathBase }}/Sphere/Client/Style/Resource/logo_kreide2.png"
                                                 width="105"
                                                 height="61"></a>
                 </div>
@@ -122,9 +69,6 @@
         </div>
     </div>
 </div>
-<script>
-    require( ['Bootstrap'] );
-</script>
 </body>
 </html>
 

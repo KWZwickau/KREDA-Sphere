@@ -19,6 +19,8 @@ class LevelApplication extends Navigation implements IElementInterface
     private $Template = null;
     /** @var LevelApplication\Link[] $MainLinkList */
     private $MainLinkList = array();
+    /** @var array $BreadcrumbList */
+    private $BreadcrumbList = array();
 
     /**
      * @throws TemplateTypeException
@@ -27,6 +29,20 @@ class LevelApplication extends Navigation implements IElementInterface
     {
 
         $this->Template = Template::getTemplate( __DIR__.'/LevelApplication/Main.twig' );
+    }
+
+    /**
+     * @param string $Title
+     *
+     * @return LevelClient
+     */
+    public function addBreadcrumb( $Title )
+    {
+
+        if (!in_array( $Title, $this->BreadcrumbList )) {
+            array_push( $this->BreadcrumbList, $Title );
+        }
+        return $this;
     }
 
     /**
@@ -50,6 +66,8 @@ class LevelApplication extends Navigation implements IElementInterface
     {
 
         $this->Template->setVariable( 'PositionMain', implode( '', $this->MainLinkList ) );
+        $this->Template->setVariable( 'PositionBreadcrumb',
+            ( empty( $this->BreadcrumbList ) ? '' : implode( '', $this->BreadcrumbList ).'&nbsp;&nbsp;' ) );
         return $this->Template->getContent();
     }
 

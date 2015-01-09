@@ -50,4 +50,13 @@ class Person extends EntityAction
         return parent::entityPersonById( $Id );
     }
 
+    /**
+     * @return bool|TblPerson[]
+     */
+    public function entityPersonAll()
+    {
+
+        return parent::entityPersonAll();
+    }
+
 }

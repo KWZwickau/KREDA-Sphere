@@ -22,4 +22,14 @@ abstract class EntityAction extends EntitySchema
         $Entity = $this->getEntityManager()->getEntityById( 'TblPerson', $Id );
         return ( null === $Entity ? false : $Entity );
     }
+
+    /**
+     * @return bool|TblPerson[]
+     */
+    protected function entityPersonAll()
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblPerson' )->findAll();
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
 }

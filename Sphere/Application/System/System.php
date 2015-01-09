@@ -14,6 +14,7 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DatabaseIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EyeOpenIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FlashIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\HomeIcon;
@@ -167,7 +168,7 @@ class System extends AbstractApplication
     {
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Database', 'Datenbanken', new TaskIcon()
+            '/Sphere/System/Database', 'Datenbanken', new DatabaseIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Update', 'Update', new FlashIcon()

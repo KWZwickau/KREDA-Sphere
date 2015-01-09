@@ -15,7 +15,7 @@
 
 # Set Default Encoding to UTF-8
 
-	<FilesMatch "\.(html|css|js|php|map)$">
+	<FilesMatch "\.(html|css|js|php|map|woff2)$">
 		AddDefaultCharset UTF-8
 		DefaultLanguage en-US
 	</FilesMatch>

@@ -32,6 +32,7 @@ class Consumer extends EntityAction
 
         $this->actionCreateConsumer( 'Root', '', null, '' );
         $this->actionCreateConsumer( 'Evangelische Schulgemeinschaft Erzgebirge', 'EGE', null, 'EGE' );
+        $this->actionCreateConsumer( 'Freie Evangelische Schulverein Chemnitz', 'ESZC', null, 'ESZC' );
     }
 
     /**

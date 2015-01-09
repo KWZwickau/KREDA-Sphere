@@ -1,12 +1,28 @@
 <!-- Navigation (Level:Application) -->
-<nav class="navbar" role="navigation"
+<nav class="navbar navbar-application" role="navigation"
      style="border-radius: inherit; margin: inherit; border-bottom: 1px solid rgb(221, 221, 221);">
     <div class="container-fluid">
         <div class="row">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#LevelApplication"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="pull-left">
+                    <a>{{ PositionBreadcrumb }}</a>
+                </span>
+                <span class="pull-right">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </span>
+            </button>
             <div class="col-xs-12">
-                <ul class="nav navbar-nav navbar-left">
-                    {{ PositionMain }}
-                </ul>
+                <div class="navbar-collapse collapse" id="LevelApplication">
+                    <ul class="nav navbar-nav navbar-left">
+                        {{ PositionMain }}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
