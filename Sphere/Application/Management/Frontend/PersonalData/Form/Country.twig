@@ -13,9 +13,12 @@
 </div>
 
 <script type="text/javascript">
-    jQuery( '.Typeahead_Country' ).ModCompleter( {
-        data: [
-            'Deutschland'
-        ]
+    Client.Use( 'ModCompleter', function()
+    {
+        jQuery( '.Typeahead_Country' ).ModCompleter( {
+            data: [
+                'Deutschland'
+            ]
+        } );
     } );
 </script>

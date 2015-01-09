@@ -15,5 +15,9 @@
     {{ PersonBirthdayFeedbackMessage }}
 </div>
 <script type="text/javascript">
-    jQuery( 'input[type="text"][name="PersonBirthday"]' ).ModPicker();
+    Client.Use( 'ModPicker', function()
+        {
+            jQuery( 'input[type="text"][name="PersonBirthday"]' ).ModPicker();
+        }
+    );
 </script>

@@ -38,5 +38,9 @@
 </table>
 
 <script>
-    jQuery( "#PersonList" ).ModTable();
+    Client.Use( 'ModTable', function()
+        {
+            jQuery( "#PersonList" ).ModTable();
+        }
+    );
 </script>

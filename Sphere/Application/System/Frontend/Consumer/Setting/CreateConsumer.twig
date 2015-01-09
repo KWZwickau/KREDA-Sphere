@@ -28,7 +28,7 @@
     </div>
 </form>
 <hr/>
-<table id="ConsumerList" class="table table-responsive table-bordered">
+<table id="ConsumerList" class="table table-striped table-bordered">
     <thead>
     <tr>
         <th>Name des Mandanten</th>
@@ -48,5 +48,9 @@
 </table>
 
 <script>
-    jQuery( '#ConsumerList' ).ModTable();
+    Client.Use( 'ModTable', function()
+        {
+            jQuery( '#ConsumerList' ).ModTable();
+        }
+    );
 </script>
