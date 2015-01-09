@@ -34,7 +34,7 @@ class Gatekeeper extends AbstractApplication
     {
 
         self::$Configuration = $Configuration;
-        if (self::serviceAccount()->checkIsValidSession()) {
+        if (( $ValidSession = self::serviceAccount()->checkIsValidSession() )) {
             self::addClientNavigationMeta( self::$Configuration,
                 '/Sphere/Gatekeeper/MyAccount', 'Mein Account', new PersonIcon()
             );
@@ -49,8 +49,13 @@ class Gatekeeper extends AbstractApplication
         /**
          * Authentication
          */
-        self::registerClientRoute( self::$Configuration, '/',
-            __CLASS__.'::frontendAuthentication_SignInSwitch' );
+        if ($ValidSession) {
+            self::registerClientRoute( self::$Configuration, '/',
+                __CLASS__.'::frontendAuthentication_Welcome' );
+        } else {
+            self::registerClientRoute( self::$Configuration, '/',
+                __CLASS__.'::frontendAuthentication_SignInSwitch' );
+        }
         self::registerClientRoute( self::$Configuration, '/Sphere',
             __CLASS__.'::frontendAuthentication_Welcome' );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn',

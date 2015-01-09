@@ -27,8 +27,8 @@
         </div>
     </div>
 </form>
-
-<table class="table table-responsive table-bordered">
+<hr/>
+<table id="ConsumerList" class="table table-responsive table-bordered">
     <thead>
     <tr>
         <th>Name des Mandanten</th>
@@ -46,3 +46,7 @@
     {% endfor %}
     </tbody>
 </table>
+
+<script>
+    jQuery( '#ConsumerList' ).ModTable();
+</script>
