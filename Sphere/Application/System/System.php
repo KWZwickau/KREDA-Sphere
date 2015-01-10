@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\System;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Access;
+use KREDA\Sphere\Application\System\Frontend\Authorization\Authorization;
 use KREDA\Sphere\Application\System\Frontend\Consumer\Consumer;
 use KREDA\Sphere\Application\System\Frontend\Installer\Installer;
 use KREDA\Sphere\Application\System\Frontend\Status\Status;
@@ -80,7 +81,19 @@ class System extends AbstractApplication
         );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Authorization', __CLASS__.'::apiAuthorization'
+            '/Sphere/System/Authorization', __CLASS__.'::frontendAuthorization'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Authorization/Right', __CLASS__.'::frontendAuthorizationRight'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Authorization/Privilege', __CLASS__.'::frontendAuthorizationPrivilege'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Authorization/Access', __CLASS__.'::frontendAuthorizationAccess'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Authorization/Role', __CLASS__.'::frontendAuthorizationRole'
         );
 
         self::registerClientRoute( self::$Configuration,
@@ -242,6 +255,87 @@ class System extends AbstractApplication
             '/Sphere/System/Update/Perform', 'Update durchführen', new CogWheelsIcon()
         );
 
+    }
+
+    /**
+     * @return Stage
+     */
+    public function frontendAuthorization()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupFrontendAuthorization();
+        return Authorization::stageAuthorization();
+    }
+
+    public function setupFrontendAuthorization()
+    {
+
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Authorization/Role', 'Rollen', new CogIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Authorization/RoleAccess', 'Rollen - Zugriffslevel', new CogIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Authorization/Access', 'Zugriffslevel', new CogIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Authorization/AccessPrivilege', 'Zugriffslevel - Privilegien', new CogIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Authorization/Privilege', 'Privilegien', new CogIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Authorization/PrivilegeRight', 'Privilegien - Rechte', new CogIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Authorization/Right', 'Rechte', new CogIcon()
+        );
+    }
+
+    /**
+     * @return Stage
+     */
+    public function frontendAuthorizationRight()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupFrontendAuthorization();
+        return Authorization::stageAuthorizationRight();
+    }
+
+    /**
+     * @return Stage
+     */
+    public function frontendAuthorizationPrivilege()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupFrontendAuthorization();
+        return Authorization::stageAuthorizationPrivilege();
+    }
+
+    /**
+     * @return Stage
+     */
+    public function frontendAuthorizationAccess()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupFrontendAuthorization();
+        return Authorization::stageAuthorizationAccess();
+    }
+
+    /**
+     * @return Stage
+     */
+    public function frontendAuthorizationRole()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupFrontendAuthorization();
+        return Authorization::stageAuthorizationRole();
     }
 
     /**

@@ -227,4 +227,34 @@ abstract class EntityAction extends EntitySchema
         $Entity = $this->getEntityManager()->getEntityById( 'TblAccessRight', $Id );
         return ( null === $Entity ? false : $Entity );
     }
+
+    /**
+     * @return bool|TblAccessRight[]
+     */
+    protected function entityRightAll()
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblAccessRight' )->findAll();
+        return ( empty($EntityList) ? false : $EntityList );
+    }
+
+    /**
+     * @return bool|TblAccessPrivilege[]
+     */
+    protected function entityPrivilegeAll()
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblAccessPrivilege' )->findAll();
+        return ( empty($EntityList) ? false : $EntityList );
+    }
+
+    /**
+     * @return bool|TblAccess[]
+     */
+    protected function entityAccessAll()
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblAccess' )->findAll();
+        return ( empty($EntityList) ? false : $EntityList );
+    }
 }

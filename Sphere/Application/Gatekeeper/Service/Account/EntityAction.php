@@ -121,6 +121,16 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return bool|TblAccountRole[]
+     */
+    protected function entityAccountRoleAll()
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblAccountRole' )->findAll();
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
      * @param string        $Username
      * @param string        $Password
      * @param TblAccountTyp $tblAccountTyp

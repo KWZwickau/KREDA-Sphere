@@ -105,6 +105,15 @@ class Access extends EntityAction
     }
 
     /**
+     * @return bool|TblAccessRight[]
+     */
+    public function entityRightAll()
+    {
+
+        return parent::entityRightAll();
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblAccess
@@ -116,6 +125,15 @@ class Access extends EntityAction
     }
 
     /**
+     * @return bool|TblAccess[]
+     */
+    public function entityAccessAll()
+    {
+
+        return parent::entityAccessAll();
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblAccessPrivilege
@@ -124,5 +142,15 @@ class Access extends EntityAction
     {
 
         return parent::entityPrivilegeById( $Id );
+    }
+
+
+    /**
+     * @return bool|TblAccessPrivilege[]
+     */
+    public function entityPrivilegeAll()
+    {
+
+        return parent::entityPrivilegeAll();
     }
 }

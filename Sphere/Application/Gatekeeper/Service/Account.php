@@ -324,6 +324,15 @@ class Account extends EntityAction
     }
 
     /**
+     * @return bool|TblAccountRole[]
+     */
+    public function entityAccountRoleAll()
+    {
+
+        return parent::entityAccountRoleAll();
+    }
+
+    /**
      * @param string $Name
      *
      * @return bool|TblAccount
