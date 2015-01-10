@@ -26,6 +26,11 @@ hr {
     border-top: 1px solid rgb(153, 153, 153);
 }
 
+h3 {
+    border-bottom: 1px solid silver;
+    padding-bottom: 2px;
+}
+
 /*.glyphicon.glyphicon-yubikey:before {*/
 /*display: block;*/
 /*width: 14px;*/

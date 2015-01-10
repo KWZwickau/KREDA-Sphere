@@ -33,9 +33,13 @@
             "lengthChange": true,
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Alle"]],
             "pageLength": 25,
-            "dom": "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+            "dom": "<'row'<'col-sm-6'li><'col-sm-6'fp>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-6'i><'col-sm-6'p>>"
+            "<'row'<'col-sm-6'i><'col-sm-6'p>>",
+            stateSave: true
+//            responsive: {
+//                details: true
+//            }
         }, options );
 
         this.DataTable( settings );

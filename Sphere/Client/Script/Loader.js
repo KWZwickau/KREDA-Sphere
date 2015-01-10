@@ -13,6 +13,7 @@ var Client = (function()
             },
             isUsed: false,
             isLoaded: false,
+            Retry: 0,
             isReady: function( Callback )
             {
                 var dependingModule;
@@ -54,6 +55,7 @@ var Client = (function()
             Test: Test,
             isUsed: false,
             isLoaded: false,
+            Retry: 0,
             isReady: function( Callback )
             {
                 var dependingModule;
@@ -99,6 +101,11 @@ var Client = (function()
     var waitModule = function( Module, Callback )
     {
         if (!useConfig[Module].isReady( Callback )) {
+            if (100000 < useConfig[Module].Retry) {
+                return;
+            } else {
+                useConfig[Module].Retry++;
+            }
             window.setTimeout( function()
             {
                 waitModule( Module, Callback );

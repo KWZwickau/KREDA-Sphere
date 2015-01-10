@@ -43,6 +43,7 @@ class Screen extends Shell implements IElementInterface
             $PathBase.'/Library/Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs.css',
             $PathBase.'/Library/Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min.css',
             $PathBase.'/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.css',
+            $PathBase.'/Library/jQuery.DataTables/1.10.4/extensions/Responsive/css/dataTables.responsive.css',
             $PathBase.'/Sphere/Client/Style/Style.css',
         ) );
         $this->Template->setVariable( 'Script', array(

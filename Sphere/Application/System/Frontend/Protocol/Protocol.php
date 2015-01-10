@@ -64,19 +64,27 @@ class Protocol extends AbstractFrontend
                 $Right .= '</tbody></table>';
             }
             if ($Left && $Right) {
-                $Content .= '<tr class="bg-info"><td>'.$System.'</td><td>'.$Left.'</td><td>'.$Right.'</td></tr>';
+                $Content .= '<tr class="bg-info"><td>'.$tblProtocol->getId().'</td><td>'.$System.'</td><td>'.$Left.'</td><td>'.$Right.'</td></tr>';
             } else {
                 if ($Left) {
-                    $Content .= '<tr class="bg-danger"><td>'.$System.'</td><td>'.$Left.'</td><td>'.$Right.'</td></tr>';
+                    $Content .= '<tr class="bg-danger"><td>'.$tblProtocol->getId().'</td><td>'.$System.'</td><td>'.$Left.'</td><td>'.$Right.'</td></tr>';
                 } else {
                     if ($Right) {
-                        $Content .= '<tr class="bg-success"><td>'.$System.'</td><td>'.$Left.'</td><td>'.$Right.'</td></tr>';
+                        $Content .= '<tr class="bg-success"><td>'.$tblProtocol->getId().'</td><td>'.$System.'</td><td>'.$Left.'</td><td>'.$Right.'</td></tr>';
                     }
                 }
             }
         }
 
-        $View->setContent( '<table class="table table-condensed"><thead><tr><th>System</th><th>From</th><th>To</th></tr></thead><tbody>'.$Content.'</tbody></table>' );
+        $View->setContent( '<table id="TableProtocolList" class="table table-condensed table-bordered"><thead><tr><th>Id</th><th>System</th><th>From</th><th>To</th></tr></thead><tbody>'.$Content.'</tbody></table>
+        <script>
+            Client.Use( "ModTable", function()
+                {
+                    jQuery( "#TableProtocolList" ).ModTable();
+                }
+            );
+        </script>
+        ' );
         return $View;
     }
 }
