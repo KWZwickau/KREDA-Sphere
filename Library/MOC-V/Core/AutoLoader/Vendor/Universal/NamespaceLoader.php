@@ -19,7 +19,7 @@ class NamespaceLoader extends NamespaceSearch
     public function loadClass( $ClassName )
     {
 
-        $ClassName = trim( $ClassName, '\\' );
+        //$ClassName = trim( $ClassName, '\\' );
         if ($this->findSource( $ClassName )
 //            || $this->findInclude( $ClassName )
         ) {
@@ -70,7 +70,7 @@ class NamespaceLoader extends NamespaceSearch
     protected function getClassNamespace( $ClassName )
     {
 
-        return trim( substr( $ClassName, 0, strrpos( $ClassName, '\\' ) ), '\\' );
+        return substr( $ClassName, 0, strrpos( $ClassName, '\\' ) );
     }
 
     /**
@@ -101,7 +101,7 @@ class NamespaceLoader extends NamespaceSearch
     {
 
         $ClassName = explode( '\\', $ClassName );
-        return trim( end( $ClassName ), '\\' );
+        return end( $ClassName );
     }
 }
 

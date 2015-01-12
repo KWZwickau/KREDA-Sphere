@@ -22,8 +22,12 @@ abstract class EntityAction extends EntitySchema
     private static $EntityAccessByIdCache = array();
     /** @var TblAccessPrivilege[] $EntityPrivilegeByIdCache */
     private static $EntityPrivilegeByIdCache = array();
+    /** @var TblAccessPrivilege[] $EntityPrivilegeByAccessCache */
+    private static $EntityPrivilegeByAccessCache = array();
     /** @var TblAccessRight[] $EntityRightByIdCache */
     private static $EntityRightByIdCache = array();
+    /** @var TblAccessRight[] $EntityRightByPrivilegeCache */
+    private static $EntityRightByPrivilegeCache = array();
 
     /**
      * @param string $Route
@@ -246,6 +250,9 @@ abstract class EntityAction extends EntitySchema
     protected function entityPrivilegeAllByAccess( TblAccess $tblAccess )
     {
 
+        if (isset( self::$EntityPrivilegeByAccessCache[$tblAccess->getId()] )) {
+            return self::$EntityPrivilegeByAccessCache[$tblAccess->getId()];
+        }
         /** @var TblAccessPrivilegeList[] $EntityList */
         $EntityList = $this->getEntityManager()->getEntity( 'TblAccessPrivilegeList' )->findBy( array(
             TblAccessPrivilegeList::ATTR_TBL_ACCESS => $tblAccess->getId()
@@ -254,6 +261,7 @@ abstract class EntityAction extends EntitySchema
 
             $V = $V->getTblAccessPrivilege();
         } );
+        self::$EntityPrivilegeByAccessCache[$tblAccess->getId()] = $EntityList;
         return ( null === $EntityList ? false : $EntityList );
     }
 
@@ -266,6 +274,9 @@ abstract class EntityAction extends EntitySchema
     protected function entityRightAllByPrivilege( TblAccessPrivilege $tblAccessPrivilege )
     {
 
+        if (isset( self::$EntityRightByPrivilegeCache[$tblAccessPrivilege->getId()] )) {
+            return self::$EntityRightByPrivilegeCache[$tblAccessPrivilege->getId()];
+        }
         /** @var TblAccessRightList[] $EntityList */
         $EntityList = $this->getEntityManager()->getEntity( 'TblAccessRightList' )->findBy( array(
             TblAccessRightList::ATTR_TBL_ACCESS_PRIVILEGE => $tblAccessPrivilege->getId()
@@ -274,6 +285,7 @@ abstract class EntityAction extends EntitySchema
 
             $V = $V->getTblAccessRight();
         } );
+        self::$EntityRightByPrivilegeCache[$tblAccessPrivilege->getId()] = $EntityList;
         return ( null === $EntityList ? false : $EntityList );
     }
 
