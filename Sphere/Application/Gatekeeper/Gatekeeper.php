@@ -34,6 +34,7 @@ class Gatekeeper extends AbstractApplication
     {
 
         self::$Configuration = $Configuration;
+
         if (( $ValidSession = self::serviceAccount()->checkIsValidSession() )) {
             self::addClientNavigationMeta( self::$Configuration,
                 '/Sphere/Gatekeeper/MyAccount', 'Mein Account', new PersonIcon()
@@ -62,6 +63,12 @@ class Gatekeeper extends AbstractApplication
             __CLASS__.'::frontendAuthentication_SignInSwitch' );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignOut',
             __CLASS__.'::frontendAuthentication_SignOut' );
+
+        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Student',
+            __CLASS__.'::frontendAuthentication_SignInStudent' );
+        $Route->setParameterDefault( 'CredentialName', null );
+        $Route->setParameterDefault( 'CredentialLock', null );
+
         $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Teacher',
             __CLASS__.'::frontendAuthentication_SignInTeacher' );
         $Route->setParameterDefault( 'CredentialName', null );
@@ -74,10 +81,12 @@ class Gatekeeper extends AbstractApplication
         $Route->setParameterDefault( 'CredentialLock', null );
         $Route->setParameterDefault( 'CredentialKey', null );
 
-        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Student',
-            __CLASS__.'::frontendAuthentication_SignInStudent' );
+        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/System',
+            __CLASS__.'::frontendAuthentication_SignInSystem' );
         $Route->setParameterDefault( 'CredentialName', null );
         $Route->setParameterDefault( 'CredentialLock', null );
+        $Route->setParameterDefault( 'CredentialKey', null );
+
         /**
          * MyAccount
          */
@@ -178,6 +187,20 @@ class Gatekeeper extends AbstractApplication
 
         $this->setupModuleNavigation();
         return Authentication::stageSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey );
+    }
+
+    /**
+     * @param string $CredentialName
+     * @param string $CredentialLock
+     * @param string $CredentialKey
+     *
+     * @return Stage
+     */
+    public function frontendAuthentication_SignInSystem( $CredentialName, $CredentialLock, $CredentialKey )
+    {
+
+        $this->setupModuleNavigation();
+        return Authentication::stageSignInSystem( $CredentialName, $CredentialLock, $CredentialKey );
     }
 
     /**

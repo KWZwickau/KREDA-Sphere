@@ -44,7 +44,10 @@ class System extends AbstractApplication
     public static function registerApplication( Configuration $Configuration )
     {
 
+        self::setupApplicationAccess( 'System' );
+
         self::$Configuration = $Configuration;
+
         self::addClientNavigationMeta( self::$Configuration,
             '/Sphere/System', 'System', new CogWheelsIcon()
         );

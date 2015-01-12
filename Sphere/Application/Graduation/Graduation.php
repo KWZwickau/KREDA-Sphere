@@ -29,7 +29,10 @@ class Graduation extends AbstractApplication
     public static function registerApplication( Configuration $Configuration )
     {
 
+        self::setupApplicationAccess( 'Graduation' );
+
         self::$Configuration = $Configuration;
+
         self::addClientNavigationMain( self::$Configuration,
             '/Sphere/Graduation', 'Zensuren', new EducationIcon()
         );

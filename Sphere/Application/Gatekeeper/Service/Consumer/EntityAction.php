@@ -30,6 +30,19 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param string $Suffix
+     *
+     * @return bool|TblConsumer
+     */
+    protected function entityConsumerBySuffix( $Suffix )
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblConsumer' )
+            ->findOneBy( array( TblConsumer::ATTR_SUFFIX => $Suffix ) );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblConsumer

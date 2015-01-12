@@ -38,6 +38,8 @@ class Management extends AbstractApplication
     public static function registerApplication( Configuration $Configuration )
     {
 
+        self::setupApplicationAccess( 'Management' );
+
         self::$Configuration = $Configuration;
 
         /**

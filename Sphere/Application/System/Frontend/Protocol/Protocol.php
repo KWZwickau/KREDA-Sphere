@@ -48,7 +48,8 @@ class Protocol extends AbstractFrontend
             $From = unserialize( $tblProtocol->getEntityFrom() );
             $To = unserialize( $tblProtocol->getEntityTo() );
             if ($From) {
-                $Left = '<table class="table table-bordered table-condensed small" style="margin: auto;"><thead><tr><th colspan="2">'.get_class( $From ).'</th></tr></thead><tbody>';
+                $Left = '<table class="table table-bordered table-condensed small" style="margin: auto;"><thead><tr><th colspan="2">'.str_replace( '\\',
+                        '\\&shy;', get_class( $From ) ).'</th></tr></thead><tbody>';
                 $From = $From->__toArray();
                 foreach ($From as $Key => $Value) {
                     $Left .= '<tr><th>'.$Key.'</th><td>'.$Value.'</td></tr>';
@@ -56,7 +57,8 @@ class Protocol extends AbstractFrontend
                 $Left .= '</tbody></table>';
             }
             if ($To) {
-                $Right = '<table class="table table-bordered table-condensed small" style="margin: auto;"><thead><tr><th colspan="2">'.get_class( $To ).'</th></tr></thead><tbody>';
+                $Right = '<table class="table table-bordered table-condensed small" style="margin: auto;"><thead><tr><th colspan="2">'.str_replace( '\\',
+                        '\\&shy;', get_class( $To ) ).'</th></tr></thead><tbody>';
                 $To = $To->__toArray();
                 foreach ($To as $Key => $Value) {
                     $Right .= '<tr><th>'.$Key.'</th><td>'.$Value.'</td></tr>';
@@ -76,11 +78,14 @@ class Protocol extends AbstractFrontend
             }
         }
 
-        $View->setContent( '<table id="TableProtocolList" class="table table-condensed table-bordered"><thead><tr><th>Id</th><th>System</th><th>From</th><th>To</th></tr></thead><tbody>'.$Content.'</tbody></table>
+        $View->setContent( '<table id="TableProtocolList" class="table table-condensed table-bordered small"><thead><tr><th>Id</th><th>System</th><th>From</th><th>To</th></tr></thead><tbody>'.$Content.'</tbody></table>
         <script>
             Client.Use( "ModTable", function()
                 {
-                    jQuery( "#TableProtocolList" ).ModTable();
+                    jQuery( "#TableProtocolList" ).ModTable({
+                        "order": [[ 0, "desc" ]],
+                        "pageLength": 10
+                    });
                 }
             );
         </script>

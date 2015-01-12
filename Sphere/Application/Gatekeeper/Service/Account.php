@@ -4,10 +4,13 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Frontend\AbstractError;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountAccessList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Common\AbstractFrontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 
@@ -25,6 +28,7 @@ class Account extends EntityAction
     const API_SIGN_IN_SUCCESS = 11;
     /** @var null|Handler $DatabaseHandler */
     protected static $DatabaseHandler = null;
+    /** @var bool $ValidSessionCache */
     private static $ValidSessionCache = false;
 
     /**
@@ -40,18 +44,25 @@ class Account extends EntityAction
     {
 
         /**
-         * Create SystemAdmin (Root)
+         * Create SystemAdmin (System)
          */
-        $tblAccountRole = $this->actionCreateAccountRole( 'Root' );
-        $tblAccountTyp = $this->actionCreateAccountTyp( 'Root' );
-        $this->actionCreateAccount( 'Root', 'OvdZ2üA!Lz{AFÖFp', $tblAccountTyp, $tblAccountRole, null, null, null );
-
+        $tblAccountRole = $this->actionCreateAccountRole( 'System' );
+        $tblAccountTyp = $this->actionCreateAccountTyp( 'System' );
+        $this->actionCreateAccount( 'System', 'System', $tblAccountTyp, $tblAccountRole, null, null, null );
+        /**
+         * Create Student
+         */
         $this->actionCreateAccountTyp( 'Schüler' );
-
+        /**
+         * Create Teacher
+         */
         $tblAccountRole = $this->actionCreateAccountRole( 'Lehrkraft' );
         $tblAccountTyp = $this->actionCreateAccountTyp( 'Lehrer' );
-        $this->actionCreateAccount( 'Schubert', 'Micha', $tblAccountTyp, $tblAccountRole, null, null, null );
-
+        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'EGE' );
+        $this->actionCreateAccount( 'Schubert', 'Micha', $tblAccountTyp, $tblAccountRole, null, null, $tblConsumer );
+        /**
+         * Create Management
+         */
         $this->actionCreateAccountTyp( 'Verwaltung' );
     }
 
@@ -242,6 +253,46 @@ class Account extends EntityAction
     }
 
     /**
+     * @param TblToken   $tblToken
+     * @param TblAccount $tblAccount
+     *
+     * @return bool
+     */
+    public function executeChangeToken( TblToken $tblToken, TblAccount $tblAccount = null )
+    {
+
+        return parent::actionChangeToken( $tblToken, $tblAccount );
+    }
+
+    /**
+     * @param TblAccountRole $TblAccountRole
+     * @param TblAccess      $TblAccess
+     *
+     * @return TblAccountAccessList
+     */
+    public function executeAddRoleAccess(
+        TblAccountRole $TblAccountRole,
+        TblAccess $TblAccess
+    ) {
+
+        return parent::actionAddRoleAccess( $TblAccountRole, $TblAccess );
+    }
+
+    /**
+     * @param TblAccountRole $TblAccountRole
+     * @param TblAccess      $TblAccess
+     *
+     * @return bool
+     */
+    public function executeRemoveRoleAccess(
+        TblAccountRole $TblAccountRole,
+        TblAccess $TblAccess
+    ) {
+
+        return parent::actionRemoveRoleAccess( $TblAccountRole, $TblAccess );
+    }
+
+    /**
      * @return bool
      */
     public function checkIsValidSession()
@@ -324,6 +375,17 @@ class Account extends EntityAction
     }
 
     /**
+     * @param string $Name
+     *
+     * @return bool|TblAccountRole
+     */
+    public function entityAccountRoleByName( $Name )
+    {
+
+        return parent::entityAccountRoleByName( $Name );
+    }
+
+    /**
      * @return bool|TblAccountRole[]
      */
     public function entityAccountRoleAll()
@@ -341,5 +403,16 @@ class Account extends EntityAction
     {
 
         return parent::entityAccountByUsername( $Name );
+    }
+
+    /**
+     * @param TblAccountRole $tblAccountRole
+     *
+     * @return bool|TblAccess[]
+     */
+    public function entityAccessAllByAccountRole( TblAccountRole $tblAccountRole )
+    {
+
+        return parent::entityAccessAllByAccountRole( $tblAccountRole );
     }
 }

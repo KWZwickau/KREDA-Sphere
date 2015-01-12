@@ -11,6 +11,7 @@ use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Statistic\Statistic;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Element;
@@ -47,7 +48,7 @@ new Debugger();
  */
 header( 'Content-type: text/html; charset=utf-8' );
 error_reporting( E_ALL );
-ini_set( 'display_errors', 0 );
+ini_set( 'display_errors', 1 );
 set_time_limit( 240 );
 session_start();
 ini_set( 'xdebug.var_display_max_data', -1 );
@@ -133,11 +134,21 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
          * Setup Private-Access
          */
         if (( $IsValid = Gatekeeper::serviceAccount()->checkIsValidSession() )) {
-            System::registerApplication( $Config );
-            Management::registerApplication( $Config );
-            Graduation::registerApplication( $Config );
-            Billing::registerApplication( $Config );
-//            Statistic::registerApplication( $Config );
+            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:System' )) {
+                System::registerApplication( $Config );
+            }
+            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Management' )) {
+                Management::registerApplication( $Config );
+            }
+            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Graduation' )) {
+                Graduation::registerApplication( $Config );
+            }
+            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Billing' )) {
+                Billing::registerApplication( $Config );
+            }
+            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Statistic' )) {
+                Statistic::registerApplication( $Config );
+            }
         }
         /**
          * Setup Public-Access
@@ -147,9 +158,15 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
         /**
          * Execute Action (if available)
          */
-        if (in_array( HttpKernel::getRequest()->getPathInfo(), $Config->getClientRouter()->getRouteList() )) {
+        if (in_array( $CheckAccess = HttpKernel::getRequest()->getPathInfo(),
+            $Config->getClientRouter()->getRouteList() )) {
             /** @var Element $Route */
-            $Route = $Config->getClientRouter()->getRoute();
+            if (Gatekeeper::serviceAccess()->checkIsValidAccess( $CheckAccess )) {
+                $Route = $Config->getClientRouter()->getRoute();
+            } else {
+                /** @var Element $Route */
+                $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
+            }
             $ShellScreen->addToContent( new Container( $Route ) );
         } else {
             /**

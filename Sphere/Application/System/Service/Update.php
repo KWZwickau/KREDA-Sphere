@@ -33,10 +33,12 @@ class Update extends AbstractService
          */
 
         $Protocol[] = System::serviceProtocol()->setupDatabaseSchema( $Simulate );
+
         $Protocol[] = Gatekeeper::serviceToken()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Gatekeeper::serviceAccess()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Gatekeeper::serviceConsumer()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Gatekeeper::serviceAccount()->setupDatabaseSchema( $Simulate );
+
         $Protocol[] = Management::servicePerson()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Management::serviceEducation()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Management::serviceAddress()->setupDatabaseSchema( $Simulate );
@@ -48,13 +50,15 @@ class Update extends AbstractService
         if (!$Simulate) {
 
             System::serviceProtocol()->setupDatabaseContent();
+
             Management::serviceAddress()->setupDatabaseContent();
             Management::servicePerson()->setupDatabaseContent();
 
+            Gatekeeper::serviceConsumer()->setupDatabaseContent();
             Gatekeeper::serviceAccount()->setupDatabaseContent();
             Gatekeeper::serviceToken()->setupDatabaseContent();
             Gatekeeper::serviceAccess()->setupDatabaseContent();
-            Gatekeeper::serviceConsumer()->setupDatabaseContent();
+
             Management::serviceEducation()->setupDatabaseContent();
 
             Graduation::serviceGrade()->setupDatabaseContent();

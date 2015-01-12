@@ -2,9 +2,12 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilegeList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRightList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
 
@@ -32,31 +35,41 @@ class Access extends EntityAction
 
     public function setupDatabaseContent()
     {
+    }
 
-        /**
-         * System:Database
-         */
-        $Privilege = $this->actionCreatePrivilege( 'Application::System:Database' );
+    /**
+     * @param string $ApplicationName
+     *
+     * @return TblAccessRight
+     */
+    public function executeCreateApplicationRight( $ApplicationName )
+    {
 
-        $Right = $this->actionCreateRight( '/Sphere/System/Database' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $Right = $this->actionCreateRight( '/Sphere/System/Database/Status' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        return $this->actionCreateRight( 'Application:'.$ApplicationName );
+    }
 
-        $Access = $this->actionCreateAccess( 'Administrator::GodMode' );
-        $this->actionAddAccessPrivilege( $Access, $Privilege );
+    /**
+     * @param string $ApplicationName
+     * @param string $PrivilegeName
+     *
+     * @return TblAccessPrivilege
+     */
+    public function executeCreateApplicationPrivilege( $ApplicationName, $PrivilegeName )
+    {
 
-        /**
-         * System:Token
-         */
-        $Privilege = $this->actionCreatePrivilege( 'Application::System:Token' );
+        return $this->actionCreatePrivilege( $ApplicationName.':'.$PrivilegeName );
+    }
 
-        $Right = $this->actionCreateRight( '/Sphere/System/Token/Certification' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
+    /**
+     * @param string $ApplicationName
+     * @param string $AccessName
+     *
+     * @return TblAccess
+     */
+    public function executeCreateApplicationAccess( $ApplicationName, $AccessName )
+    {
 
-        $Access = $this->actionCreateAccess( 'Administrator::GodMode' );
-        $this->actionAddAccessPrivilege( $Access, $Privilege );
-
+        return $this->actionCreateAccess( $ApplicationName.':'.$AccessName );
     }
 
     /**
@@ -79,18 +92,65 @@ class Access extends EntityAction
         if (in_array( $Route, self::$AccessCache )) {
             return true;
         }
-
-        try {
-            if (false !== ( $Right = $this->entityAccessRightByRouteName( $Route ) )) {
-                if (false !== ( $this->entityRightById( $Right->getId() ) )) {
-                    self::$AccessCache[] = $Route;
-                    return true;
+        if (false !== ( $Right = $this->entityAccessRightByRouteName( $Route ) )) {
+            if (false !== ( $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession() )) {
+                if (false !== ( $tblAccountRole = $tblAccount->getTblAccountRole() )) {
+                    if (false !== ( $tblAccessList = Gatekeeper::serviceAccount()->entityAccessAllByAccountRole( $tblAccountRole ) )) {
+                        /** @var TblAccess $tblAccess */
+                        foreach ((array)$tblAccessList as $tblAccess) {
+                            $tblPrivilegeList = $this->entityPrivilegeAllByAccess( $tblAccess );
+                            foreach ((array)$tblPrivilegeList as $tblPrivilege) {
+                                $tblRightList = $this->entityRightAllByPrivilege( $tblPrivilege );
+                                /** @var TblAccessRight $tblRight */
+                                foreach ((array)$tblRightList as $tblRight) {
+                                    if ($tblRight->getId() == $Right->getId()) {
+                                        // Access valid -> Access granted
+                                        self::$AccessCache[] = $Route;
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        // Access not valid -> Access denied
+                        return false;
+                    } else {
+                        // Access-List invalid -> Access denied
+                        return false;
+                    }
+                } else {
+                    // Role invalid -> Access denied
+                    return false;
                 }
+            } else {
+                // Session invalid -> Access denied
+                return false;
             }
-        } catch( \Exception $E ) {
-
+        } else {
+            // Resource is not protected -> Access granted
+            return true;
         }
-        return false;
+    }
+
+    /**
+     * @param TblAccess $tblAccess
+     *
+     * @return bool|TblAccessPrivilege[]
+     */
+    public function entityPrivilegeAllByAccess( TblAccess $tblAccess )
+    {
+
+        return parent::entityPrivilegeAllByAccess( $tblAccess );
+    }
+
+    /**
+     * @param TblAccessPrivilege $tblAccessPrivilege
+     *
+     * @return bool|TblAccessRight[]
+     */
+    public function entityRightAllByPrivilege( TblAccessPrivilege $tblAccessPrivilege )
+    {
+
+        return parent::entityRightAllByPrivilege( $tblAccessPrivilege );
     }
 
     /**
@@ -144,7 +204,6 @@ class Access extends EntityAction
         return parent::entityPrivilegeById( $Id );
     }
 
-
     /**
      * @return bool|TblAccessPrivilege[]
      */
@@ -152,5 +211,61 @@ class Access extends EntityAction
     {
 
         return parent::entityPrivilegeAll();
+    }
+
+    /**
+     * @param TblAccessPrivilege $TblAccessPrivilege
+     * @param TblAccessRight     $TblAccessRight
+     *
+     * @return TblAccessRightList
+     */
+    public function executeAddPrivilegeRight(
+        TblAccessPrivilege $TblAccessPrivilege,
+        TblAccessRight $TblAccessRight
+    ) {
+
+        return parent::actionAddPrivilegeRight( $TblAccessPrivilege, $TblAccessRight );
+    }
+
+    /**
+     * @param TblAccessPrivilege $TblAccessPrivilege
+     * @param TblAccessRight     $TblAccessRight
+     *
+     * @return bool
+     */
+    public function executeRemovePrivilegeRight(
+        TblAccessPrivilege $TblAccessPrivilege,
+        TblAccessRight $TblAccessRight
+    ) {
+
+        return parent::actionRemovePrivilegeRight( $TblAccessPrivilege, $TblAccessRight );
+    }
+
+    /**
+     * @param TblAccess          $tblAccess
+     * @param TblAccessPrivilege $TblAccessPrivilege
+     *
+     * @return TblAccessPrivilegeList
+     */
+    public function executeAddAccessPrivilege(
+        TblAccess $tblAccess,
+        TblAccessPrivilege $TblAccessPrivilege
+    ) {
+
+        return parent::actionAddAccessPrivilege( $tblAccess, $TblAccessPrivilege );
+    }
+
+    /**
+     * @param TblAccess          $tblAccess
+     * @param TblAccessPrivilege $TblAccessPrivilege
+     *
+     * @return bool
+     */
+    public function executeRemoveAccessPrivilege(
+        TblAccess $tblAccess,
+        TblAccessPrivilege $TblAccessPrivilege
+    ) {
+
+        return parent::actionRemoveAccessPrivilege( $tblAccess, $TblAccessPrivilege );
     }
 }

@@ -32,6 +32,7 @@ class Assistance extends AbstractApplication
     {
 
         self::$Configuration = $Configuration;
+
         self::addClientNavigationMeta( self::$Configuration,
             '/Sphere/Assistance', 'Hilfe', new QuestionIcon()
         );

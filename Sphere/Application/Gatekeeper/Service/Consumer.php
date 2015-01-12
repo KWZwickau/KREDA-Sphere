@@ -30,7 +30,7 @@ class Consumer extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $this->actionCreateConsumer( 'Root', '', null, '' );
+        $this->actionCreateConsumer( 'System', '', null, '' );
         $this->actionCreateConsumer( 'Evangelische Schulgemeinschaft Erzgebirge', 'EGE', null, 'EGE' );
         $this->actionCreateConsumer( 'Freie Evangelische Schulverein Chemnitz', 'ESZC', null, 'ESZC' );
     }
@@ -95,5 +95,16 @@ class Consumer extends EntityAction
     {
 
         return parent::entityConsumerAll();
+    }
+
+    /**
+     * @param string $Suffix
+     *
+     * @return bool|TblConsumer
+     */
+    public function entityConsumerBySuffix( $Suffix )
+    {
+
+        return parent::entityConsumerBySuffix( $Suffix );
     }
 }

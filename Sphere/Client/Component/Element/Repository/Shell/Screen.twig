@@ -80,6 +80,7 @@
             }
         );
 
+        Client.Module( 'ModAlways', ['Bootstrap', 'jQuery'] );
         Client.Module( 'ModTable',
             ['Bootstrap.DataTable', 'jQuery.DataTable.Responsive', 'jQuery.DataTable', 'jQuery'] );
         Client.Module( 'ModPicker', ['Bootstrap.DatetimePicker', 'Moment.js', 'jQuery'] );
@@ -142,6 +143,11 @@
         </div>
     </div>
 </div>
+<script>
+    Client.Use( 'ModAlways', function()
+    {
+    } );
+</script>
 </body>
 </html>
 

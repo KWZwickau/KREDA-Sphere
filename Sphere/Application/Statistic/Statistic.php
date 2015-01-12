@@ -25,7 +25,10 @@ class Statistic extends AbstractApplication
     public static function registerApplication( Configuration $Configuration )
     {
 
+        self::setupApplicationAccess( 'Statistic' );
+
         self::$Configuration = $Configuration;
+
         self::addClientNavigationMain( self::$Configuration,
             '/Sphere/Statistic', 'Statistik', new StatisticIcon()
         );

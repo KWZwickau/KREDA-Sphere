@@ -55,6 +55,27 @@ class Authentication extends AbstractFrontend
     /**
      * @param string $CredentialName
      * @param string $CredentialLock
+     * @param string $CredentialKey
+     *
+     * @return Stage
+     */
+    public static function stageSignInSystem( $CredentialName, $CredentialLock, $CredentialKey )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Anmeldung' );
+        $View->setDescription( 'System' );
+        $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
+        $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
+            new SignInTeacher(), $CredentialName, $CredentialLock, $CredentialKey,
+            Gatekeeper::serviceAccount()->entityAccountTypByName( 'System' )
+        ) );
+        return $View;
+    }
+
+    /**
+     * @param string $CredentialName
+     * @param string $CredentialLock
      *
      * @return Stage
      */

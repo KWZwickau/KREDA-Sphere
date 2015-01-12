@@ -122,6 +122,11 @@ h3 {
     color: rgb(119, 102, 102);
 }
 
+table.dataTable thead > tr > th {
+    padding-left: 8px;
+    padding-right: 18px;
+}
+
 span.twitter-typeahead .tt-dropdown-menu {
     border-top-left-radius: 0;
     border-top-right-radius: 0;

@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
@@ -29,7 +30,16 @@ class Token extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $this->actionCreateToken( 'ccccccdilkui' );
+        /**
+         * Create SystemAdmin (Token)
+         */
+        $tblToken = $this->actionCreateToken( 'ccccccdilkui' );
+        Gatekeeper::serviceAccount()->executeChangeToken( $tblToken,
+            Gatekeeper::serviceAccount()->entityAccountByUsername( 'System' )
+        );
+        Gatekeeper::serviceAccount()->executeChangeToken( $tblToken,
+            Gatekeeper::serviceAccount()->entityAccountByUsername( 'Schubert' )
+        );
     }
 
     /**

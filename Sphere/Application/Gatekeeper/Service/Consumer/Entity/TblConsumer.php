@@ -20,6 +20,7 @@ class TblConsumer extends AbstractEntity
 {
 
     const ATTR_NAME = 'Name';
+    const ATTR_SUFFIX = 'DatabaseSuffix';
 
     /**
      * @Id

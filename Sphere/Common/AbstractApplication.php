@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Common;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
@@ -195,6 +196,22 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
         if (self::prepareParameterActive( $Url )) {
             $Configuration->getApplicationNavigation()->addBreadcrumb( $Name );
         }
+    }
+
+    /**
+     * @param string $ApplicationName
+     */
+    final protected static function setupApplicationAccess( $ApplicationName )
+    {
+
+        $tblRight = Gatekeeper::serviceAccess()->executeCreateApplicationRight( $ApplicationName );
+        $tblPrivilege = Gatekeeper::serviceAccess()->executeCreateApplicationPrivilege( $ApplicationName,
+            'Administrator' );
+        $tblAccess = Gatekeeper::serviceAccess()->executeCreateApplicationAccess( $ApplicationName, 'Administrator' );
+        Gatekeeper::serviceAccess()->executeAddPrivilegeRight( $tblPrivilege, $tblRight );
+        Gatekeeper::serviceAccess()->executeAddAccessPrivilege( $tblAccess, $tblPrivilege );
+        $tblRole = Gatekeeper::serviceAccount()->entityAccountRoleByName( 'System' );
+        Gatekeeper::serviceAccount()->executeAddRoleAccess( $tblRole, $tblAccess );
     }
 
     abstract protected function setupModuleNavigation();

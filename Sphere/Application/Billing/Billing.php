@@ -24,7 +24,10 @@ class Billing extends AbstractApplication
     public static function registerApplication( Configuration $Configuration )
     {
 
+        self::setupApplicationAccess( 'Billing' );
+
         self::$Configuration = $Configuration;
+
         self::addClientNavigationMain( self::$Configuration,
             '/Sphere/Billing', 'Fakturierung', new MoneyIcon()
         );
