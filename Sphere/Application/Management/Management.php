@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management;
 
+use KREDA\Sphere\Application\Management\Frontend\Campus\Campus;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\PersonalData;
 use KREDA\Sphere\Application\Management\Frontend\Subject\Subject;
 use KREDA\Sphere\Application\Management\Service\Address;
@@ -350,7 +351,7 @@ class Management extends AbstractApplication
 
         $this->setupModuleNavigation();
         $this->setupCampusNavigation();
-        return Campus::guiCampus();
+        return Campus::stageCampus();
     }
 
     protected function setupCampusNavigation()
