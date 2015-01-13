@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Management\Frontend\PersonalData\Student;
 
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Common\Error;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
@@ -16,7 +17,7 @@ class PersonDetail extends Error implements IElementInterface
 {
 
     /**
-     * @param array $PersonDetail
+     * @param TblPerson $PersonDetail
      *
      * @throws TemplateTypeException
      */

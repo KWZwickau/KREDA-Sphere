@@ -105,6 +105,16 @@ h3 {
     border-bottom-right-radius: 4px !important;
 }
 
+.has-feedback .form-control-feedback {
+    top: 0;
+    right: 1px;
+}
+
+.form-horizontal .has-feedback .form-control-feedback {
+    top: 0;
+    right: 1px;
+}
+
 .bootstrap-datetimepicker-widget.dropdown-menu {
     background: inherit;
     border: 1px solid rgb(204, 204, 204);

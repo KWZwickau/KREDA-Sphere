@@ -11,6 +11,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
+use KREDA\Sphere\Common\AbstractFrontend\Form\AbstractForm;
 use KREDA\Sphere\Common\AbstractFrontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 
@@ -77,16 +78,16 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractError $View
+     * @param AbstractForm $View
      * @param string        $CredentialName
      * @param string        $CredentialLock
      * @param string        $CredentialKey
      * @param TblAccountTyp $tblAccountTyp
      *
-     * @return AbstractError|Redirect
+     * @return AbstractForm|Redirect
      */
     public function executeSignInWithToken(
-        AbstractError &$View,
+        AbstractForm &$View,
         $CredentialName,
         $CredentialLock,
         $CredentialKey,
@@ -97,21 +98,24 @@ class Account extends EntityAction
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
             case Account::API_SIGN_IN_ERROR: {
                 if (null !== $CredentialName && empty( $CredentialName )) {
-                    $View->setErrorEmptyName();
+                    $View->setError( 'CredentialName', 'Bitte geben Sie einen gültigen Benutzernamen ein' );
                 }
                 if (null !== $CredentialName && !empty( $CredentialName )) {
-                    $View->setErrorWrongName();
+                    $View->setError( 'CredentialName', 'Bitte geben Sie einen gültigen Benutzernamen ein' );
                 }
                 if (null !== $CredentialLock && empty( $CredentialLock )) {
-                    $View->setErrorEmptyLock();
+                    $View->setError( 'CredentialLock', 'Bitte geben Sie ein Passwort ein' );
                 }
                 if (null !== $CredentialLock && !empty( $CredentialLock )) {
-                    $View->setErrorWrongLock();
+                    $View->setError( 'CredentialLock', 'Bitte geben Sie ein Passwort ein' );
                 }
                 break;
             }
             case Account::API_SIGN_IN_ERROR_TOKEN: {
-                $View->setErrorWrongKey();
+                $View->setSuccess( 'CredentialName', '' );
+                $View->setSuccess( 'CredentialLock', '' );
+                $View->setError( 'CredentialKey', 'Der von Ihnen angegebene YubiKey ist nicht gültig.'
+                    .'<br/>Bitte verwenden Sie Ihren YubiKey um dieses Feld zu befüllen' );
                 break;
             }
             case Account::API_SIGN_IN_SUCCESS: {
@@ -165,15 +169,15 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractError $View
+     * @param AbstractForm $View
      * @param string        $CredentialName
      * @param string        $CredentialLock
      * @param TblAccountTyp $tblAccountTyp
      *
-     * @return AbstractError
+     * @return AbstractForm
      */
     public function executeSignIn(
-        AbstractError &$View,
+        AbstractForm &$View,
         $CredentialName,
         $CredentialLock,
         TblAccountTyp $tblAccountTyp
@@ -183,16 +187,16 @@ class Account extends EntityAction
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
             case Account::API_SIGN_IN_ERROR: {
                 if (null !== $CredentialName && empty( $CredentialName )) {
-                    $View->setErrorEmptyName();
+                    $View->setError( 'CredentialName', 'Bitte geben Sie einen gültigen Benutzernamen ein' );
                 }
                 if (null !== $CredentialName && !empty( $CredentialName )) {
-                    $View->setErrorWrongName();
+                    $View->setError( 'CredentialName', 'Bitte geben Sie einen gültigen Benutzernamen ein' );
                 }
                 if (null !== $CredentialLock && empty( $CredentialLock )) {
-                    $View->setErrorEmptyLock();
+                    $View->setError( 'CredentialLock', 'Bitte geben Sie ein Passwort ein' );
                 }
                 if (null !== $CredentialLock && !empty( $CredentialLock )) {
-                    $View->setErrorWrongLock();
+                    $View->setError( 'CredentialLock', 'Bitte geben Sie ein Passwort ein' );
                 }
                 break;
             }

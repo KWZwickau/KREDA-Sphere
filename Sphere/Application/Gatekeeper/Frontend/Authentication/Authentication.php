@@ -1,13 +1,19 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication;
 
-use KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\SignIn\SignInManagement;
-use KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\SignIn\SignInStudent;
 use KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\SignIn\SignInSwitch;
-use KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\SignIn\SignInTeacher;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputPassword;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputText;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridCol;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridGroup;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridRow;
 
 /**
  * Class Authentication
@@ -46,7 +52,21 @@ class Authentication extends AbstractFrontend
         $View->setDescription( 'Lehrer' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
-            new SignInTeacher(), $CredentialName, $CredentialLock, $CredentialKey,
+            new FormDefault(
+                new GridGroup( array(
+                        new GridRow(
+                            new GridCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
+                        ),
+                        new GridRow(
+                            new GridCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+                        ),
+                        new GridRow(
+                            new GridCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
+                        )
+                    )
+                ), 'Anmelden'
+            ),
+            $CredentialName, $CredentialLock, $CredentialKey,
             Gatekeeper::serviceAccount()->entityAccountTypByName( 'Lehrer' )
         ) );
         return $View;
@@ -67,7 +87,21 @@ class Authentication extends AbstractFrontend
         $View->setDescription( 'System' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
-            new SignInTeacher(), $CredentialName, $CredentialLock, $CredentialKey,
+            new FormDefault(
+                new GridGroup( array(
+                        new GridRow(
+                            new GridCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
+                        ),
+                        new GridRow(
+                            new GridCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+                        ),
+                        new GridRow(
+                            new GridCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
+                        )
+                    )
+                ), 'Anmelden'
+            ),
+            $CredentialName, $CredentialLock, $CredentialKey,
             Gatekeeper::serviceAccount()->entityAccountTypByName( 'System' )
         ) );
         return $View;
@@ -87,7 +121,18 @@ class Authentication extends AbstractFrontend
         $View->setDescription( 'Schüler' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeSignIn(
-            new SignInStudent(), $CredentialName, $CredentialLock,
+            new FormDefault(
+                new GridGroup( array(
+                        new GridRow(
+                            new GridCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
+                        ),
+                        new GridRow(
+                            new GridCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+                        )
+                    )
+                ), 'Anmelden'
+            ),
+            $CredentialName, $CredentialLock,
             Gatekeeper::serviceAccount()->entityAccountTypByName( 'Schüler' )
         ) );
         return $View;
@@ -108,7 +153,21 @@ class Authentication extends AbstractFrontend
         $View->setDescription( 'Verwaltung' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
-            new SignInManagement(), $CredentialName, $CredentialLock, $CredentialKey,
+            new FormDefault(
+                new GridGroup( array(
+                        new GridRow(
+                            new GridCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
+                        ),
+                        new GridRow(
+                            new GridCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+                        ),
+                        new GridRow(
+                            new GridCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
+                        )
+                    )
+                ), 'Anmelden'
+            ),
+            $CredentialName, $CredentialLock, $CredentialKey,
             Gatekeeper::serviceAccount()->entityAccountTypByName( 'Verwaltung' )
         ) );
         return $View;

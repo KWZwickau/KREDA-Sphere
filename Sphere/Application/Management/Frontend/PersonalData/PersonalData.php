@@ -1,28 +1,25 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Frontend\PersonalData;
 
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\Birthday;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\City;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\FirstName;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\Gender;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\LastName;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\MiddleName;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\Nationality;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\State;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Form\Title;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Guardian\PersonList as GuardianPersonList;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Others\PersonList as OthersPersonList;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Staff\PersonList as StaffPersonList;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Student\Form;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Student\PersonDetail as StudentPersonDetail;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Student\PersonList as StudentPersonList;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Summary\Summary;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Teacher\PersonList as TeacherPersonList;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputDate;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputText;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridCol;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridGroup;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridRow;
 
 /**
  * Class PersonalData
@@ -96,34 +93,40 @@ class PersonalData extends AbstractFrontend
         $View->setDescription( 'Schüler hinzufügen' );
         $View->setMessage( '' );
         $View->setContent(
-            new Form(
-                array(
-                    'Grunddaten' => array(
-                        array(
-                            new Title(),
-                            new Gender()
-                        ),
-                        array(
-                            new FirstName(),
-                            new MiddleName(),
-                        ),
-                        array(
-                            new LastName(),
-                            new Birthday(),
-                        ),
-                        array(
-                            '&nbsp;',
-                            '&nbsp;'
-                        ),
-                        array(
-                            new City()
-                        ),
-                        array(
-                            new Nationality(),
-                            new State()
-                        ),
-                    )
-                )
+            new FormDefault(
+                new GridGroup( array(
+                    new GridRow( array(
+                        new GridCol( array(
+                            new InputText( 'PersonTitle', 'Anrede', 'Anrede', new ConversationIcon() ),
+                        ), 4 ),
+                    ) ),
+                    new GridRow( array(
+                        new GridCol( array(
+                            new InputText( 'PersonFirstName', 'Vorname', 'Vorname', new PersonIcon() ),
+                        ), 4 ),
+                        new GridCol( array(
+                            new InputText( 'PersonMiddleName', 'Zweitname', 'Zweitname', new PersonIcon() )
+                        ), 4 ),
+                        new GridCol( array(
+                            new InputText( 'PersonLastName', 'Nachname', 'Nachname', new PersonIcon() ),
+                        ), 4 )
+                    ) ),
+                    new GridRow( array(
+                        new GridCol( array(//                            new Gender(),
+                        ), 4 ),
+                        new GridCol( array(
+                            new InputDate( 'PersonBirthday', 'PersonBirthday', 'PersonBirthday' ),
+                        ), 4 ),
+                        new GridCol( array(//                            new City(),
+                        ), 4 ),
+                    ) ),
+                    new GridRow( array(
+                        new GridCol( array(//                            new Nationality(),
+                        ), 6 ),
+                        new GridCol( array(//                            new State()
+                        ), 6 )
+                    ) )
+                ), 'Grunddaten' )
             )
         );
         return $View;
