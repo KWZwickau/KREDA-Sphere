@@ -52,6 +52,8 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
     const ICON_SHARE = 'glyphicons glyphicons-share-alt';
     const ICON_BUILDING = 'glyphicons glyphicons-building';
     const ICON_CONVERSATION = 'glyphicons glyphicons-conversation';
+    const ICON_NAMEPLATE = 'glyphicons glyphicons-nameplate';
+    const ICON_REPEAT = 'glyphicons glyphicons-repeat';
 
     /** @var null|string $Value */
     private $Value = null;

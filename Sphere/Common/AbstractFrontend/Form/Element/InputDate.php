@@ -29,8 +29,9 @@ class InputDate extends AbstractElement
         AbstractIcon $Icon = null
     ) {
 
+        parent::__construct( $Name );
+
         $this->Template = Template::getTemplate( __DIR__.'/InputDate.twig' );
-        $this->Name = $Name;
 
         $this->Template->setVariable( 'ElementName', $Name );
         $this->Template->setVariable( 'ElementLabel', $Label );

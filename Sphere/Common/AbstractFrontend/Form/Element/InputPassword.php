@@ -29,8 +29,9 @@ class InputPassword extends AbstractElement
         AbstractIcon $Icon = null
     ) {
 
+        parent::__construct( $Name );
+
         $this->Template = Template::getTemplate( __DIR__.'/InputPassword.twig' );
-        $this->Name = $Name;
 
         $this->Template->setVariable( 'ElementName', $Name );
         $this->Template->setVariable( 'ElementLabel', $Label );

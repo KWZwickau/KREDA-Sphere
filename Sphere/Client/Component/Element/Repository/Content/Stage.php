@@ -20,13 +20,13 @@ class Stage extends Shell implements IElementInterface
     private $Template = null;
 
     /** @var string $Title */
-    private $Title = '{ StageTitle }';
+    private $Title = '';
     /** @var string $Description */
-    private $Description = '{ StageDescription }';
+    private $Description = '';
     /** @var string $Message */
-    private $Message = '{ StageMessage }';
+    private $Message = '';
     /** @var string $Content */
-    private $Content = '{ StageContent }';
+    private $Content = '';
     /** @var array $Menu */
     private $Menu = array();
 

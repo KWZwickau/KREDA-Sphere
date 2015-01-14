@@ -7,35 +7,37 @@ use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 
 /**
- * Class InputText
+ * Class InputSelect
  *
  * @package KREDA\Sphere\Common\AbstractFrontend\Form\Element
  */
-class InputText extends AbstractElement
+class InputSelect extends AbstractElement
 {
 
     /**
      * @param string       $Name
-     * @param null|string  $Placeholder
      * @param null|string  $Label
+     * @param array        $Data array( value => title )
      * @param AbstractIcon $Icon
+     *
+     *
      *
      * @throws TemplateTypeException
      */
     function __construct(
         $Name,
-        $Placeholder = '',
         $Label = '',
+        $Data = array(),
         AbstractIcon $Icon = null
     ) {
 
         parent::__construct( $Name );
 
-        $this->Template = Template::getTemplate( __DIR__.'/InputText.twig' );
+        $this->Template = Template::getTemplate( __DIR__.'/InputSelect.twig' );
 
         $this->Template->setVariable( 'ElementName', $Name );
         $this->Template->setVariable( 'ElementLabel', $Label );
-        $this->Template->setVariable( 'ElementPlaceholder', $Placeholder );
+        $this->Template->setVariable( 'ElementData', $Data );
         if (null != $Icon) {
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }

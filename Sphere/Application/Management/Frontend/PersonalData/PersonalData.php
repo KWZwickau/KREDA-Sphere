@@ -12,9 +12,15 @@ use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonDangerLink;
+use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonResetWarning;
+use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputCompleter;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputDate;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputSelect;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputText;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridCol;
@@ -96,37 +102,56 @@ class PersonalData extends AbstractFrontend
             new FormDefault(
                 new GridGroup( array(
                     new GridRow( array(
-                        new GridCol( array(
-                            new InputText( 'PersonTitle', 'Anrede', 'Anrede', new ConversationIcon() ),
+                        new GridCol(
+                            new InputText( 'PersonTitle', 'Anrede', 'Anrede', new ConversationIcon() )
+                        , 12 ),
+                    ) ),
+                    new GridRow( array(
+                        new GridCol(
+                            new InputText( 'PersonFirstName', 'Vorname', 'Vorname', new NameplateIcon() )
+                        , 4 ),
+                        new GridCol(
+                            new InputText( 'PersonMiddleName', 'Zweitname', 'Zweitname', new NameplateIcon() )
+                        , 4 ),
+                        new GridCol(
+                            new InputText( 'PersonLastName', 'Nachname', 'Nachname', new NameplateIcon() )
+                        , 4 )
+                    ) ),
+                    new GridRow( array(
+                        new GridCol(
+                            new InputSelect( 'PersonGender', 'Geschlecht', array(
+                                'Männlich',
+                                'Weiblich'
+                            ), new PersonIcon()
+                        ), 4 ),
+                        new GridCol(
+                            new InputDate( 'PersonBirthday', 'Geburtstag', 'Geburtstag', new PersonIcon() )
+                        , 4 ),
+                        new GridCol(
+                            new InputCompleter( 'PersonCity', 'Geburtsort', 'Geburtsort', array(
+                                'Alabama',
+                                'Alaska',
+                                'Arizona'
+                            ), new PersonIcon()
                         ), 4 ),
                     ) ),
                     new GridRow( array(
-                        new GridCol( array(
-                            new InputText( 'PersonFirstName', 'Vorname', 'Vorname', new PersonIcon() ),
-                        ), 4 ),
-                        new GridCol( array(
-                            new InputText( 'PersonMiddleName', 'Zweitname', 'Zweitname', new PersonIcon() )
-                        ), 4 ),
-                        new GridCol( array(
-                            new InputText( 'PersonLastName', 'Nachname', 'Nachname', new PersonIcon() ),
-                        ), 4 )
-                    ) ),
-                    new GridRow( array(
-                        new GridCol( array(//                            new Gender(),
-                        ), 4 ),
-                        new GridCol( array(
-                            new InputDate( 'PersonBirthday', 'PersonBirthday', 'PersonBirthday' ),
-                        ), 4 ),
-                        new GridCol( array(//                            new City(),
-                        ), 4 ),
-                    ) ),
-                    new GridRow( array(
-                        new GridCol( array(//                            new Nationality(),
+                        new GridCol(
+                            new InputCompleter( 'PersonNationality', 'Staatsangehörigkeit', 'Staatsangehörigkeit', array(
+                                'Deutsch'
+                            ), new PersonIcon()
                         ), 6 ),
-                        new GridCol( array(//                            new State()
+                        new GridCol(
+                            new InputCompleter( 'PersonState', 'Bundesland', 'Bundesland', array(
+                                'Sachsen'
+                            ), new PersonIcon()
                         ), 6 )
                     ) )
-                ), 'Grunddaten' )
+                ), 'Grunddaten' ), array(
+                    new ButtonSubmitPrimary( 'Anlegen' ),
+                    new ButtonResetWarning( 'Zurücksetzen' ),
+                    new ButtonDangerLink( 'Leeren', 'Management/Person/Student/Create' ),
+                )
             )
         );
         return $View;

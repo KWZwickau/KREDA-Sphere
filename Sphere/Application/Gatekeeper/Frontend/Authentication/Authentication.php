@@ -1,13 +1,16 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication;
 
-use KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\SignIn\SignInSwitch;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonDangerLink;
+use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonPrimaryLink;
+use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\AbstractFrontend\Button\Structure\GroupDefault;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputPassword;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputText;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
@@ -64,7 +67,7 @@ class Authentication extends AbstractFrontend
                             new GridCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
-                ), 'Anmelden'
+                ), new ButtonSubmitPrimary( 'Anmelden' )
             ),
             $CredentialName, $CredentialLock, $CredentialKey,
             Gatekeeper::serviceAccount()->entityAccountTypByName( 'Lehrer' )
@@ -99,7 +102,7 @@ class Authentication extends AbstractFrontend
                             new GridCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
-                ), 'Anmelden'
+                ), new ButtonSubmitPrimary( 'Anmelden' )
             ),
             $CredentialName, $CredentialLock, $CredentialKey,
             Gatekeeper::serviceAccount()->entityAccountTypByName( 'System' )
@@ -130,7 +133,7 @@ class Authentication extends AbstractFrontend
                             new GridCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
                         )
                     )
-                ), 'Anmelden'
+                ), new ButtonSubmitPrimary( 'Anmelden' )
             ),
             $CredentialName, $CredentialLock,
             Gatekeeper::serviceAccount()->entityAccountTypByName( 'Schüler' )
@@ -165,7 +168,7 @@ class Authentication extends AbstractFrontend
                             new GridCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
-                ), 'Anmelden'
+                ), new ButtonSubmitPrimary( 'Anmelden' )
             ),
             $CredentialName, $CredentialLock, $CredentialKey,
             Gatekeeper::serviceAccount()->entityAccountTypByName( 'Verwaltung' )
@@ -183,7 +186,23 @@ class Authentication extends AbstractFrontend
         $View->setTitle( 'Anmeldung' );
         $View->setDescription( '' );
         $View->setMessage( 'Bitte wählen Sie den Typ der Anmeldung' );
-        $View->setContent( new SignInSwitch() );
+        $View->setContent(
+        //new SignInSwitch()
+            new GroupDefault( array(
+                new ButtonPrimaryLink(
+                    'Schüler', 'Gatekeeper/SignIn/Student', new LockIcon()
+                ),
+                new ButtonPrimaryLink(
+                    'Lehrer', 'Gatekeeper/SignIn/Teacher', new LockIcon()
+                ),
+                new ButtonPrimaryLink(
+                    'Verwaltung', 'Gatekeeper/SignIn/Management', new LockIcon()
+                ),
+                new ButtonDangerLink(
+                    'System', 'Gatekeeper/SignIn/System', new LockIcon()
+                )
+            ) )
+        );
         return $View;
     }
 

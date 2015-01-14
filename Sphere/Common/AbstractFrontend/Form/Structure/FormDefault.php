@@ -1,6 +1,8 @@
 <?php
 namespace KREDA\Sphere\Common\AbstractFrontend\Form\Structure;
 
+use KREDA\Sphere\Common\AbstractFrontend\Button\AbstractElement;
+use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\AbstractFrontend\Form\AbstractForm;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
@@ -15,13 +17,12 @@ class FormDefault extends AbstractForm
 {
 
     /**
-     * @param GridGroup|GridGroup[] $GridGroupList
-     * @param string                $FormSubmit
-     * @param string                $FormAction
+     * @param GridGroup|GridGroup[]                  $GridGroupList
+     * @param null|AbstractElement|AbstractElement[] $FormButtonList
      *
      * @throws TemplateTypeException
      */
-    function __construct( $GridGroupList, $FormSubmit = 'Absenden', $FormAction = '' )
+    function __construct( $GridGroupList, $FormButtonList = null )
     {
 
         if (!is_array( $GridGroupList )) {
@@ -29,10 +30,17 @@ class FormDefault extends AbstractForm
         }
         $this->GridGroupList = $GridGroupList;
 
+        if (null == $FormButtonList) {
+            $FormButtonList = array( new ButtonSubmitPrimary( 'Absenden' ) );
+        } else {
+            if (!is_array( $FormButtonList )) {
+                $FormButtonList = array( $FormButtonList );
+            }
+        }
+
         $this->Template = Template::getTemplate( __DIR__.'/FormDefault.twig' );
         $this->Template->setVariable( 'UrlBase', HttpKernel::getRequest()->getUrlBase() );
-        $this->Template->setVariable( 'FormAction', $FormAction );
-        $this->Template->setVariable( 'FormSubmit', $FormSubmit );
+        $this->Template->setVariable( 'FormButtonList', $FormButtonList );
     }
 
     /**

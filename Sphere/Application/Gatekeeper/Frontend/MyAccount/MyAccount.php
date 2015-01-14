@@ -1,13 +1,19 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount;
 
-use KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount\Consumer\ChangeConsumer;
-use KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount\Password\ChangePassword;
 use KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount\Summary\Account;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RepeatIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputPassword;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridCol;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridGroup;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridRow;
 
 /**
  * Class MyAccount
@@ -44,27 +50,21 @@ class MyAccount extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Mein Account' );
         $View->setDescription( 'Passwort ändern' );
-        $View->setMessage( 'Bitte legen Sie ein neues Password fest' );
+        $View->setMessage( '' );
+        //$View->setMessage( 'Bitte legen Sie ein neues Password fest' );
         $View->setContent( Gatekeeper::serviceAccount()->executeChangePassword(
-            new ChangePassword(), $CredentialLock, $CredentialLockSafety
-        ) );
-        return $View;
-    }
-
-    /**
-     * @param integer $tblConsumer
-     *
-     * @return Stage
-     */
-    public static function stageChangeConsumer( $tblConsumer )
-    {
-
-        $View = new Stage();
-        $View->setTitle( 'Mein Account' );
-        $View->setDescription( 'Mandant ändern' );
-        $View->setMessage( 'Bitte wählen Sie einen Mandanten' );
-        $View->setContent( Gatekeeper::serviceAccount()->executeChangeConsumer(
-            new ChangeConsumer(), $tblConsumer
+            new FormDefault(
+                new GridGroup(
+                    new GridRow( array(
+                        new GridCol(
+                            new InputPassword( 'CredentialLock', 'Neues Passwort', 'Neues Passwort', new LockIcon() )
+                        , 6 ),
+                        new GridCol(
+                            new InputPassword( 'CredentialLockSafety', 'Passwort wiederholen', 'Passwort wiederholen', new RepeatIcon() )
+                        , 6 )
+                    ) )
+                ), new ButtonSubmitPrimary('Neues Passwort speichern' )
+            ), $CredentialLock, $CredentialLockSafety
         ) );
         return $View;
     }

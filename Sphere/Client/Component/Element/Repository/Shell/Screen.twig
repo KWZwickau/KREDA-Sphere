@@ -39,7 +39,7 @@
             {
             }
         );
-        Client.Source( 'jQuery.Selecter', '/Library/jQuery.Selecter/3.2.3/jquery.fs.selecter.min.js', function()
+        Client.Source( 'jQuery.Selecter', '/Library/jQuery.Selecter/3.2.4/jquery.fs.selecter.min.js', function()
             {
                 return 'undefined' != typeof jQuery.fn.selecter
             }
@@ -88,10 +88,6 @@
         Client.Module( 'ModCompleter', ['Twitter.Typeahead', 'Bootstrap', 'jQuery'] );
     </script>
 
-
-    {#{% for Source in Script %}#}
-    {#<script src="{{ Source }}"></script>#}
-    {#{% endfor %}#}
 </head>
 <body>
 

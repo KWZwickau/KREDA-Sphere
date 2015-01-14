@@ -19,6 +19,15 @@ abstract class AbstractElement extends AbstractFrontend
     protected $Template = null;
 
     /**
+     * @param string $Name
+     */
+    function __construct( $Name )
+    {
+
+        $this->Name = $Name;
+    }
+
+    /**
      * @return string
      */
     public function getContent()

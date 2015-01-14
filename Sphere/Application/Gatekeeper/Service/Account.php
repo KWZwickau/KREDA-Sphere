@@ -2,7 +2,6 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
-use KREDA\Sphere\Application\Gatekeeper\Frontend\AbstractError;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
@@ -209,12 +208,12 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractError $View
-     * @param integer       $tblConsumer
+     * @param AbstractForm $View
+     * @param integer      $tblConsumer
      *
-     * @return AbstractError
+     * @return AbstractForm
      */
-    public function executeChangeConsumer( AbstractError &$View, $tblConsumer )
+    public function executeChangeConsumer( AbstractForm &$View, $tblConsumer )
     {
 
         if (null !== $tblConsumer && empty( $tblConsumer )) {
@@ -228,20 +227,20 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractError $View
-     * @param string        $CredentialLock
-     * @param string        $CredentialLockSafety
+     * @param AbstractForm $View
+     * @param string       $CredentialLock
+     * @param string       $CredentialLockSafety
      *
-     * @return AbstractError
+     * @return AbstractForm
      */
-    public function executeChangePassword( AbstractError &$View, $CredentialLock, $CredentialLockSafety )
+    public function executeChangePassword( AbstractForm &$View, $CredentialLock, $CredentialLockSafety )
     {
 
         if (null !== $CredentialLock && empty( $CredentialLock )) {
-            $View->setErrorEmptyLock();
+            $View->setError( 'CredentialLock', 'Bitte geben Sie ein Passwort ein' );
         }
         if (null !== $CredentialLockSafety && empty( $CredentialLockSafety )) {
-            $View->setErrorEmptyLockSafety();
+            $View->setError( 'CredentialLockSafety', 'Bitte geben Sie das Passwort erneut ein' );
         }
         if (!empty( $CredentialLock ) && !empty( $CredentialLockSafety )) {
 
@@ -249,7 +248,7 @@ class Account extends EntityAction
                 $this->actionChangePassword( $CredentialLock );
                 return new Redirect( '/Sphere/Gatekeeper/MyAccount', 1 );
             } else {
-                $View->setErrorWrongLockSafety();
+                $View->setError( 'CredentialLockSafety', 'Die beiden Passwörter stimmen nicht überein' );
             }
         }
 
