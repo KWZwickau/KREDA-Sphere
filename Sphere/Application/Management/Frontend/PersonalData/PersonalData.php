@@ -15,8 +15,6 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonDangerLink;
-use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonResetWarning;
 use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputCompleter;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputDate;
@@ -104,7 +102,7 @@ class PersonalData extends AbstractFrontend
                     new GridRow( array(
                         new GridCol(
                             new InputText( 'PersonTitle', 'Anrede', 'Anrede', new ConversationIcon() )
-                        , 12 ),
+                        , 4 )
                     ) ),
                     new GridRow( array(
                         new GridCol(
@@ -148,9 +146,7 @@ class PersonalData extends AbstractFrontend
                         ), 6 )
                     ) )
                 ), 'Grunddaten' ), array(
-                    new ButtonSubmitPrimary( 'Anlegen' ),
-                    new ButtonResetWarning( 'Zurücksetzen' ),
-                    new ButtonDangerLink( 'Leeren', 'Management/Person/Student/Create' ),
+                    new ButtonSubmitPrimary( 'Anlegen' )
                 )
             )
         );
