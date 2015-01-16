@@ -1,11 +1,11 @@
 <?php
 namespace KREDA\Sphere\Application\System\Frontend\Protocol;
 
-use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Warning;
 use KREDA\Sphere\Application\System\Service\Protocol\Entity\TblProtocol;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageWarning;
 
 /**
  * Class Protocol
@@ -29,7 +29,7 @@ class Protocol extends AbstractFrontend
         /** @var TblProtocol[] $tblProtocolList */
         $tblProtocolList = System::serviceProtocol()->entityProtocol();
         if (empty( $tblProtocolList )) {
-            $View->setContent( new Warning( 'Keine Daten vorhanden' ) );
+            $View->setContent( new MessageWarning( 'Keine Daten vorhanden' ) );
             return $View;
         }
 

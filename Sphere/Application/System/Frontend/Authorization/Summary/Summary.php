@@ -1,7 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\System\Frontend\Authorization\Summary;
 
-use KREDA\Sphere\Application\System\Frontend\Authorization\AbstractError;
+use KREDA\Sphere\Common\AbstractFrontend;
+use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 
@@ -10,21 +11,31 @@ use MOC\V\Component\Template\Template;
  *
  * @package KREDA\Sphere\Application\System\Frontend\Authorization\Summary
  */
-class Summary extends AbstractError
+class Summary extends AbstractFrontend
 {
+
+    /** @var IBridgeInterface $Template */
+    protected $Template = null;
 
     /**
      * @param array $AccountRoleList
-     * @param array $RightList
      *
      * @throws TemplateTypeException
      */
-    function __construct( $AccountRoleList, $RightList )
+    function __construct( $AccountRoleList )
     {
 
         $this->Template = Template::getTemplate( __DIR__.'/Summary.twig' );
 
         $this->Template->setVariable( 'AccountRoleList', $AccountRoleList );
-        $this->Template->setVariable( 'RightList', $RightList );
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+
+        return $this->Template->getContent();
     }
 }

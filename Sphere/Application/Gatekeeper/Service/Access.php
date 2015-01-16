@@ -9,6 +9,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRightList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\EntityAction;
+use KREDA\Sphere\Common\AbstractFrontend\Form\AbstractForm;
 use KREDA\Sphere\Common\Database\Handler;
 
 /**
@@ -46,6 +47,24 @@ class Access extends EntityAction
     {
 
         return $this->actionCreateRight( 'Application:'.$ApplicationName );
+    }
+
+    /**
+     * @param AbstractForm $View
+     * @param null|string  $ApplicationRoute
+     *
+     * @return TblAccessRight
+     */
+    public function executeCreateApplicationRoute( AbstractForm &$View = null, $ApplicationRoute )
+    {
+
+        if (null !== $ApplicationRoute && empty( $ApplicationRoute )) {
+            $View->setError( 'Access', 'Bitte geben Sie eine gültige Route ein' );
+        } elseif (null !== $ApplicationRoute) {
+            $this->actionCreateRight( $ApplicationRoute );
+            $View->setSuccess( 'Access', 'Route wurde angelegt' );
+        }
+        return $View;
     }
 
     /**

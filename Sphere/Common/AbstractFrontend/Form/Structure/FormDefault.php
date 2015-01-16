@@ -17,7 +17,7 @@ class FormDefault extends AbstractForm
 {
 
     /**
-     * @param GridGroup|GridGroup[]                  $GridGroupList
+     * @param GridFormGroup|GridFormGroup[] $GridGroupList
      * @param null|AbstractElement|AbstractElement[] $FormButtonList
      *
      * @throws TemplateTypeException
@@ -50,6 +50,7 @@ class FormDefault extends AbstractForm
     {
 
         $this->Template->setVariable( 'GridGroupList', $this->GridGroupList );
+        $this->Template->setVariable( 'Hash', $this->getHash() );
         return $this->Template->getContent();
     }
 

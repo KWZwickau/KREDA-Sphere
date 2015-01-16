@@ -3,14 +3,18 @@ namespace KREDA\Sphere\Application\System\Frontend\Authorization;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
-use KREDA\Sphere\Application\System\Frontend\Authorization\Access\Access;
-use KREDA\Sphere\Application\System\Frontend\Authorization\Privilege\Privilege;
-use KREDA\Sphere\Application\System\Frontend\Authorization\Right\Right;
-use KREDA\Sphere\Application\System\Frontend\Authorization\Role\Role;
 use KREDA\Sphere\Application\System\Frontend\Authorization\Summary\Summary;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputText;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\AbstractFrontend\Table\Structure\TableFromData;
 
 /**
  * Class Authorization
@@ -29,7 +33,6 @@ class Authorization extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Überblick' );
-        $View->setMessage( 'Zeigt die aktuell verfügbaren Berechtigungen' );
 
         $TwigData = array();
         $tblAccountRoleList = Gatekeeper::serviceAccount()->entityAccountRoleAll();
@@ -47,6 +50,7 @@ class Authorization extends AbstractFrontend
                 }
                 $TwigData[$tblAccountRole->getId()]['AccessList'][$tblAccess->getId()] = array( 'Access' => $tblAccess );
                 $tblPrivilegeList = Gatekeeper::serviceAccess()->entityPrivilegeAllByAccess( $tblAccess );
+                /** @var TblAccessPrivilege $tblPrivilege */
                 foreach ((array)$tblPrivilegeList as $tblPrivilege) {
                     if (!$tblPrivilege) {
                         continue;
@@ -66,22 +70,40 @@ class Authorization extends AbstractFrontend
             }
 
         }
-        $View->setContent( new Summary( $TwigData, Gatekeeper::serviceAccess()->entityRightAll() ) );
+        $View->setContent(
+            new Summary( $TwigData )
+            .new TableFromData( Gatekeeper::serviceAccess()->entityRightAll(), 'Überwachte Rechte <small>Routen</small>' )
+        );
         return $View;
     }
 
     /**
+     * @param null|string $Access
+     *
      * @return Stage
      */
-    public static function stageAuthorizationRight()
+    public static function stageAuthorizationRight( $Access )
     {
 
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Rechte' );
-        $View->setMessage( 'Zeigt die aktuell verfügbaren Rechte' );
         $View->setContent(
-            new Right( Gatekeeper::serviceAccess()->entityRightAll() )
+            new TableFromData( Gatekeeper::serviceAccess()->entityRightAll(), 'Bestehende Rechte <small>Routen</small>' )
+            .Gatekeeper::serviceAccess()->executeCreateApplicationRoute(
+                new FormDefault(
+                    new GridFormGroup(
+                        new GridFormRow(
+                            new GridFormCol(
+                                new InputText(
+                                    'Access', 'Route', 'Name'
+                                )
+                            )
+                        )
+                    ,'Recht anlegen <small>Route</small>')
+                , new ButtonSubmitPrimary( 'Hinzufügen' )
+                )
+            ,$Access)
         );
         return $View;
     }
@@ -95,9 +117,25 @@ class Authorization extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Privilegien' );
-        $View->setMessage( 'Zeigt die aktuell verfügbaren Privilegien' );
         $View->setContent(
-            new Privilege( Gatekeeper::serviceAccess()->entityPrivilegeAll() )
+            new FormDefault( array(
+                new GridFormGroup(
+                    new GridFormRow(
+                        new GridFormCol(
+                            new TableFromData( Gatekeeper::serviceAccess()->entityPrivilegeAll() )
+                        )
+                    )
+                ,'Bestehende Privilegien <small>Rechtegruppen</small>'),
+                new GridFormGroup(
+                    new GridFormRow(
+                        new GridFormCol(
+                            new InputText(
+                                'AccessPrivilege', 'Name', 'Rechtegruppe'
+                            )
+                        )
+                    )
+                ,'Privileg anlegen <small>Rechtegruppe</small>')
+            ), new ButtonSubmitPrimary( 'Hinzufügen' ))
         );
         return $View;
     }
@@ -111,9 +149,25 @@ class Authorization extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Zugriffslevel' );
-        $View->setMessage( 'Zeigt die aktuell verfügbaren Zugriffslevel' );
         $View->setContent(
-            new Access( Gatekeeper::serviceAccess()->entityAccessAll() )
+            new FormDefault( array(
+                new GridFormGroup(
+                    new GridFormRow(
+                        new GridFormCol(
+                            new TableFromData( Gatekeeper::serviceAccess()->entityAccessAll() )
+                        )
+                    )
+                ,'Bestehende Zugriffslevel <small>Privilegiengruppen</small>'),
+                new GridFormGroup(
+                    new GridFormRow(
+                        new GridFormCol(
+                            new InputText(
+                                'Access', 'Name', 'Privilegiengruppe'
+                            )
+                        )
+                    )
+                ,'Zugriffslevel anlegen <small>Privilegiengruppe</small>')
+            ), new ButtonSubmitPrimary( 'Hinzufügen' ))
         );
         return $View;
     }
@@ -127,9 +181,25 @@ class Authorization extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Rollen' );
-        $View->setMessage( 'Zeigt die aktuell verfügbaren Rollen' );
         $View->setContent(
-            new Role( Gatekeeper::serviceAccount()->entityAccountRoleAll() )
+            new FormDefault( array(
+                new GridFormGroup(
+                    new GridFormRow(
+                        new GridFormCol(
+                            new TableFromData( Gatekeeper::serviceAccount()->entityAccountRoleAll() )
+                        )
+                    )
+                , 'Bestehende Rollen <small>Zugriffslevelgruppen</small>'),
+                new GridFormGroup(
+                    new GridFormRow(
+                        new GridFormCol(
+                            new InputText(
+                                'Access', 'Name', 'Zugriffslevelgruppe'
+                            )
+                        )
+                    )
+                ,'Rolle anlegen <small>Zugriffslevelgruppe</small>')
+            ), new ButtonSubmitPrimary( 'Hinzufügen' ))
         );
         return $View;
     }

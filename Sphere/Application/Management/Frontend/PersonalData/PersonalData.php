@@ -21,9 +21,9 @@ use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputDate;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputSelect;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputText;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridCol;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridGroup;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridRow;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
 
 /**
  * Class PersonalData
@@ -98,34 +98,34 @@ class PersonalData extends AbstractFrontend
         $View->setMessage( '' );
         $View->setContent(
             new FormDefault(
-                new GridGroup( array(
-                    new GridRow( array(
-                        new GridCol(
+                new GridFormGroup( array(
+                    new GridFormRow( array(
+                        new GridFormCol(
                             new InputText( 'PersonTitle', 'Anrede', 'Anrede', new ConversationIcon() )
                         , 4 )
                     ) ),
-                    new GridRow( array(
-                        new GridCol(
+                    new GridFormRow( array(
+                        new GridFormCol(
                             new InputText( 'PersonFirstName', 'Vorname', 'Vorname', new NameplateIcon() )
                         , 4 ),
-                        new GridCol(
+                        new GridFormCol(
                             new InputText( 'PersonMiddleName', 'Zweitname', 'Zweitname', new NameplateIcon() )
                         , 4 ),
-                        new GridCol(
+                        new GridFormCol(
                             new InputText( 'PersonLastName', 'Nachname', 'Nachname', new NameplateIcon() )
                         , 4 )
                     ) ),
-                    new GridRow( array(
-                        new GridCol(
+                    new GridFormRow( array(
+                        new GridFormCol(
                             new InputSelect( 'PersonGender', 'Geschlecht', array(
                                 'Männlich',
                                 'Weiblich'
                             ), new PersonIcon()
                         ), 4 ),
-                        new GridCol(
+                        new GridFormCol(
                             new InputDate( 'PersonBirthday', 'Geburtstag', 'Geburtstag', new PersonIcon() )
                         , 4 ),
-                        new GridCol(
+                        new GridFormCol(
                             new InputCompleter( 'PersonCity', 'Geburtsort', 'Geburtsort', array(
                                 'Alabama',
                                 'Alaska',
@@ -133,13 +133,13 @@ class PersonalData extends AbstractFrontend
                             ), new PersonIcon()
                         ), 4 ),
                     ) ),
-                    new GridRow( array(
-                        new GridCol(
+                    new GridFormRow( array(
+                        new GridFormCol(
                             new InputCompleter( 'PersonNationality', 'Staatsangehörigkeit', 'Staatsangehörigkeit', array(
                                 'Deutsch'
                             ), new PersonIcon()
                         ), 6 ),
-                        new GridCol(
+                        new GridFormCol(
                             new InputCompleter( 'PersonState', 'Bundesland', 'Bundesland', array(
                                 'Sachsen'
                             ), new PersonIcon()

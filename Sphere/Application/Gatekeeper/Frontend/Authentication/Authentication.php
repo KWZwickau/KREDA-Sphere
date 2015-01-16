@@ -14,9 +14,9 @@ use KREDA\Sphere\Common\AbstractFrontend\Button\Structure\GroupDefault;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputPassword;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputText;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridCol;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridGroup;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridRow;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
 
 /**
  * Class Authentication
@@ -56,15 +56,15 @@ class Authentication extends AbstractFrontend
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
             new FormDefault(
-                new GridGroup( array(
-                        new GridRow(
-                            new GridCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
+                new GridFormGroup( array(
+                        new GridFormRow(
+                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
                         ),
-                        new GridRow(
-                            new GridCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+                        new GridFormRow(
+                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
                         ),
-                        new GridRow(
-                            new GridCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
+                        new GridFormRow(
+                            new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
                 ), new ButtonSubmitPrimary( 'Anmelden' )
@@ -91,15 +91,15 @@ class Authentication extends AbstractFrontend
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
             new FormDefault(
-                new GridGroup( array(
-                        new GridRow(
-                            new GridCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
+                new GridFormGroup( array(
+                        new GridFormRow(
+                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
                         ),
-                        new GridRow(
-                            new GridCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+                        new GridFormRow(
+                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
                         ),
-                        new GridRow(
-                            new GridCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
+                        new GridFormRow(
+                            new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
                 ), new ButtonSubmitPrimary( 'Anmelden' )
@@ -125,12 +125,12 @@ class Authentication extends AbstractFrontend
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeSignIn(
             new FormDefault(
-                new GridGroup( array(
-                        new GridRow(
-                            new GridCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
+                new GridFormGroup( array(
+                        new GridFormRow(
+                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
                         ),
-                        new GridRow(
-                            new GridCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+                        new GridFormRow(
+                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
                         )
                     )
                 ), new ButtonSubmitPrimary( 'Anmelden' )
@@ -157,15 +157,15 @@ class Authentication extends AbstractFrontend
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
             new FormDefault(
-                new GridGroup( array(
-                        new GridRow(
-                            new GridCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
+                new GridFormGroup( array(
+                        new GridFormRow(
+                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
                         ),
-                        new GridRow(
-                            new GridCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+                        new GridFormRow(
+                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
                         ),
-                        new GridRow(
-                            new GridCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
+                        new GridFormRow(
+                            new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
                 ), new ButtonSubmitPrimary( 'Anmelden' )

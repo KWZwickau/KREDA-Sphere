@@ -1,0 +1,46 @@
+{% if( Title is not empty ) %}
+    <h4>{{ Title }}</h4>
+{% endif %}
+<table id="{{ Hash }}" class="table table-bordered table-condensed small">
+    {% for GridTableHead in GridHeadList %}
+        <thead>
+        {% for GridTableRow in GridTableHead.getRowList %}
+            <tr>
+                {% for GridTableCol in GridTableRow.getColList %}
+                    <th>{{ GridTableCol }}</th>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </thead>
+    {% endfor %}
+    {% for GridTableBody in GridBodyList %}
+        <tbody>
+        {% for GridTableRow in GridTableBody.getRowList %}
+            <tr>
+                {% for GridTableCol in GridTableRow.getColList %}
+                    <td>{{ GridTableCol }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    {% endfor %}
+    {% if( GridFootList is not empty ) %}
+        {% for GridTableFoot in GridFootList %}
+            <tfoot>
+            {% for GridTableRow in GridTableFoot.getRowList %}
+                <tr>
+                    {% for GridTableCol in GridTableRow.getColList %}
+                        <td>{{ GridTableCol }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tfoot>
+        {% endfor %}
+    {% endif %}
+</table>
+<script>
+    Client.Use( 'ModTable', function()
+    {
+        jQuery( '#{{ Hash }}' ).ModTable( {{ InteractiveOption }} );
+    } )
+</script>

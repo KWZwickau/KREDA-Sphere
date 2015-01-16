@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Common\AbstractFrontend\Form;
 
 use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\AbstractFrontend\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 
 /**
@@ -10,7 +11,7 @@ use MOC\V\Component\Template\Component\IBridgeInterface;
  *
  * @package KREDA\Sphere\Common\AbstractFrontend\Form
  */
-abstract class AbstractElement extends AbstractFrontend
+abstract class AbstractElement extends AbstractFrontend implements IElementInterface
 {
 
     /** @var string $Name */

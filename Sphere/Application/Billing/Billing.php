@@ -1,6 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\Billing;
 
+use KREDA\Sphere\Application\Billing\Frontend\Summary\Summary;
+use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
@@ -24,23 +26,36 @@ class Billing extends AbstractApplication
     public static function registerApplication( Configuration $Configuration )
     {
 
+        /**
+         * Configuration
+         */
         self::setupApplicationAccess( 'Billing' );
-
         self::$Configuration = $Configuration;
-
-        self::addClientNavigationMain( self::$Configuration,
-            '/Sphere/Billing', 'Fakturierung', new MoneyIcon()
-        );
-
-        self::registerClientRoute( self::$Configuration, '/Sphere/Billing',
-            __CLASS__.'::frontendBilling' );
+        /**
+         * Navigation
+         */
+        self::addClientNavigationMain( self::$Configuration, '/Sphere/Billing', 'Fakturierung', new MoneyIcon() );
+        /**
+         *
+         */
+        self::registerClientRoute( self::$Configuration, '/Sphere/Billing', __CLASS__.'::frontendBilling' );
 
         return $Configuration;
     }
 
-    protected function setupModuleNavigation()
+    /**
+     * @return Stage
+     */
+    public function frontendBilling()
     {
-        // TODO: Implement setupModuleNavigation() method.
+
+        $this->setupModuleNavigation();
+        return Summary::stageSummary();
     }
 
+    protected function setupModuleNavigation()
+    {
+
+        self::addModuleNavigationMain( self::$Configuration, '/Sphere/Billing', 'Fakturierung', new MoneyIcon() );
+    }
 }

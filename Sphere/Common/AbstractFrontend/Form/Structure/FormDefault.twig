@@ -1,13 +1,14 @@
-<form action="{{ FormAction }}" method="post">
-    {% for GridGroup in GridGroupList %}
-        {% if( GridGroup.getTitle is not empty ) %}
-            <h4>{{ GridGroup.getTitle }}</h4>
+<form {% if( Hash is not empty ) %}id="{{ Hash }}"{% endif %}
+      action="{{ FormAction }}{% if( Hash is not empty ) %}#{{ Hash }}{% endif %}" method="post">
+    {% for GridFormGroup in GridGroupList %}
+        {% if( GridFormGroup.getTitle is not empty ) %}
+            <h4>{{ GridFormGroup.getTitle }}</h4>
         {% endif %}
-        {% for GridRow in GridGroup.getRowList %}
+        {% for GridFormRow in GridFormGroup.getRowList %}
             <div class="row">
-                {% for GridCol in GridRow.getColList %}
-                    <div class="col-md-{{ GridCol.Size }}">
-                        {% for GridElement in GridCol.getElementList %}
+                {% for GridFormCol in GridFormRow.getColList %}
+                    <div class="col-md-{{ GridFormCol.Size }}">
+                        {% for GridElement in GridFormCol.getElementList %}
                             {{ GridElement }}
                         {% endfor %}
                     </div>

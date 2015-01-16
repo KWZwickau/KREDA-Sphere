@@ -15,7 +15,7 @@ class FormHorizontal extends AbstractForm
 {
 
     /**
-     * @param GridGroup|GridGroup[] $GridGroupList
+     * @param GridFormGroup|GridFormGroup[] $GridGroupList
      * @param string                $FormSubmit
      * @param string                $FormAction
      *
@@ -42,6 +42,7 @@ class FormHorizontal extends AbstractForm
     {
 
         $this->Template->setVariable( 'GridGroupList', $this->GridGroupList );
+        $this->Template->setVariable( 'Hash', $this->getHash() );
         return $this->Template->getContent();
     }
 

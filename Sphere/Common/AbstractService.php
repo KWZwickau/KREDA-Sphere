@@ -18,7 +18,7 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
 
     /** @var null|string $BaseRoute Client-Application Route */
     protected static $BaseRoute = null;
-    /** @var null|\KREDA\Sphere\Common\Database\Handler $DatabaseHandler */
+    /** @var null|Handler $DatabaseHandler */
     protected static $DatabaseHandler = null;
 
     /**

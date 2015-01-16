@@ -47,21 +47,27 @@ class System extends AbstractApplication
         self::setupApplicationAccess( 'System' );
 
         self::$Configuration = $Configuration;
-
+        /**
+         * Navigation
+         */
         self::addClientNavigationMeta( self::$Configuration,
             '/Sphere/System', 'System', new CogWheelsIcon()
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System', __CLASS__.'::apiMain'
         );
-
+        /**
+         * Database
+         */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Database', __CLASS__.'::frontendDatabase_Status'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Database/Status', __CLASS__.'::frontendDatabase_Status'
         );
-
+        /**
+         * Update
+         */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Update', __CLASS__.'::apiUpdate'
         );
@@ -82,13 +88,15 @@ class System extends AbstractApplication
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Account', __CLASS__.'::apiAccount'
         );
-
+        /**
+         * Authorization
+         */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization', __CLASS__.'::frontendAuthorization'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization/Right', __CLASS__.'::frontendAuthorizationRight'
-        );
+        )->setParameterDefault( 'Access', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization/Privilege', __CLASS__.'::frontendAuthorizationPrivilege'
         );
@@ -298,14 +306,16 @@ class System extends AbstractApplication
     }
 
     /**
+     * @param null|string $Access
+     *
      * @return Stage
      */
-    public function frontendAuthorizationRight()
+    public function frontendAuthorizationRight( $Access )
     {
 
         $this->setupModuleNavigation();
         $this->setupFrontendAuthorization();
-        return Authorization::stageAuthorizationRight();
+        return Authorization::stageAuthorizationRight( $Access );
     }
 
     /**

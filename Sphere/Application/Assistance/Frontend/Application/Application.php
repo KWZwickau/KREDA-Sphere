@@ -1,13 +1,12 @@
 <?php
 namespace KREDA\Sphere\Application\Assistance\Frontend\Application;
 
-use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Danger;
-use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Info;
-use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Warning;
-use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Solution\Support;
-use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Solution\User;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageSuccess;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageWarning;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
@@ -38,13 +37,13 @@ class Application extends AbstractFrontend
                 : ''
             )
             .'<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
-            .new Info( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
-            .new Warning( 'Die Anwendung kann wegen Kapazitätsproblemen im Moment nicht verwendet werden' )
-            .new Danger( 'Die Anwendung hat erkannt, dass das System nicht fehlerfrei arbeiten kann' )
-            .new Danger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Datenbanken kann gestört sein' )
+            .new MessageInfo( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
+            .new MessageWarning( 'Die Anwendung kann wegen Kapazitätsproblemen im Moment nicht verwendet werden' )
+            .new MessageDanger( 'Die Anwendung hat erkannt, dass das System nicht fehlerfrei arbeiten kann' )
+            .new MessageDanger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Datenbanken kann gestört sein' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
-            .new User( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
-            .new Support( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
+            .new MessageInfo( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
+            .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
         $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Starten der Anwendung'
             .( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Start'
@@ -76,12 +75,12 @@ class Application extends AbstractFrontend
                 : ''
             )
             .'<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
-            .new Info( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
-            .new Danger( 'Die Anwendung hat erkannt, dass das System nicht fehlerfrei arbeiten kann' )
-            .new Danger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Programmen kann gestört sein' )
+            .new MessageInfo( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
+            .new MessageDanger( 'Die Anwendung hat erkannt, dass das System nicht fehlerfrei arbeiten kann' )
+            .new MessageDanger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Programmen kann gestört sein' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
-            .new User( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
-            .new Support( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
+            .new MessageInfo( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
+            .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
         if (HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal') {
             $View->addButton(
@@ -112,14 +111,14 @@ class Application extends AbstractFrontend
                 : ''
             )
             .'<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
-            .new Info( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
-            .new Warning( 'Sie haben im Browser manuell eine nicht vorhandene Addresse aufgerufen' )
-            .new Danger( 'Sie haben nicht die erforderliche Berechtigung um diese Resourcen verwenden zu können' )
-            .new Danger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Webservern kann gestört sein' )
+            .new MessageInfo( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
+            .new MessageWarning( 'Sie haben im Browser manuell eine nicht vorhandene Addresse aufgerufen' )
+            .new MessageDanger( 'Sie haben nicht die erforderliche Berechtigung um diese Resourcen verwenden zu können' )
+            .new MessageDanger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Webservern kann gestört sein' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
-            .new User( 'Versuchen Sie die Aktion zu einem späteren Zeitpunkt erneut aufzuführen' )
-            .new User( 'Vermeiden Sie es die Addresse im Browser manuell zu bearbeiten' )
-            .new Support( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
+            .new MessageInfo( 'Versuchen Sie die Aktion zu einem späteren Zeitpunkt erneut aufzuführen' )
+            .new MessageInfo( 'Vermeiden Sie es die Addresse im Browser manuell zu bearbeiten' )
+            .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
         if (HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing') {
             $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Nicht gefundene Resource'

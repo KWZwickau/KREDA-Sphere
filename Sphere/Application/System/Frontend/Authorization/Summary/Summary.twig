@@ -1,4 +1,7 @@
-<table id="TableAccountRoleList" class="table table-bordered table-condensed">
+<h4>Rechtestruktur
+    <small>Rollen</small>
+</h4>
+<table id="TableAccountRoleList" class="table table-bordered table-condensed small">
     <thead>
     <tr>
         <th style="width: 1%; white-space: nowrap;">Id</th>
@@ -12,7 +15,7 @@
             <td>{{ oRole.Role.Id }}</td>
             <td>{{ oRole.Role.Name }}</td>
             <td>
-                <table class="table table-condensed" style="margin: auto;">
+                <table class="table table-bordered table-condensed" style="margin: auto;">
                     <thead>
                     <tr>
                         <th style="width: 1%; white-space: nowrap;">Id</th>
@@ -26,7 +29,7 @@
                             <td>{{ oAccess.Access.Id }}</td>
                             <td>{{ oAccess.Access.Name }}</td>
                             <td>
-                                <table class="table table-condensed" style="margin: auto;">
+                                <table class="table table-bordered table-condensed" style="margin: auto;">
                                     <thead>
                                     <tr>
                                         <th style="width: 1%; white-space: nowrap;">Id</th>
@@ -40,7 +43,8 @@
                                             <td>{{ oPrivilege.Privilege.Id }}</td>
                                             <td>{{ oPrivilege.Privilege.Name }}</td>
                                             <td>
-                                                <table class="table table-condensed" style="margin: auto;">
+                                                <table class="table table-bordered table-condensed"
+                                                       style="margin: auto;">
                                                     <thead>
                                                     <tr>
                                                         <th style="width: 1%; white-space: nowrap;">Id</th>
@@ -72,31 +76,10 @@
     </tbody>
 </table>
 
-<h3>Überwachte Routen
-    <small>Rechte</small>
-</h3>
-
-<table id="TableRightList" class="table table-bordered table-condensed">
-    <thead>
-    <tr>
-        <th>Right-Id</th>
-        <th>Right-Route</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for iRight, oRight in RightList %}
-        <tr>
-            <td>{{ oRight.Id }}</td>
-            <td>{{ oRight.Route }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
 
 <script>
     Client.Use( 'ModTable', function()
     {
         jQuery( '#TableAccountRoleList' ).ModTable();
-        jQuery( '#TableRightList' ).ModTable();
     } )
 </script>

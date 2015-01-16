@@ -4,9 +4,6 @@ namespace KREDA\Client;
 use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use Doctrine\DBAL\Schema\SchemaException;
 use KREDA\Sphere\Application\Assistance\Assistance;
-use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Danger;
-use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Info;
-use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Warning;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Graduation\Graduation;
@@ -24,6 +21,9 @@ use KREDA\Sphere\Client\Component\Element\Repository\Shell\Screen;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\AbstractFrontend\Redirect;
 use KREDA\Sphere\Common\AddOn\Debugger;
 use MOC\V\Component\Database\Exception\DatabaseException;
@@ -225,9 +225,9 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             $View->setTitle( 'Systemprüfung' );
             $View->setDescription( 'Datenbanken' );
             $View->setMessage(
-                new Danger( 'Die Anwendung hat festgestellt, dass manche Datenbanken nicht korrekt arbeiten.' )
-                .new Warning( 'Sollte das Problem nach dem automatischen Reparaturversuch nicht behoben sein wenden Sie sich bitte an den Support' )
-                .new Info( $E->getMessage() )
+                new MessageDanger( 'Die Anwendung hat festgestellt, dass manche Datenbanken nicht korrekt arbeiten.' )
+                .new MessageWarning( 'Sollte das Problem nach dem automatischen Reparaturversuch nicht behoben sein wenden Sie sich bitte an den Support' )
+                .new MessageInfo( $E->getMessage() )
             );
             $View->setContent(
                 Update::getApi()->setupDatabaseSchema( false )

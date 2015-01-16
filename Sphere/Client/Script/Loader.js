@@ -116,6 +116,11 @@ var Client = (function()
     };
     var setUse = function setUse( Module, Callback )
     {
+        if ('function' != typeof Callback) {
+            Callback = function Callback()
+            {
+            };
+        }
         return waitModule( Module, Callback );
     };
     return {

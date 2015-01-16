@@ -1,10 +1,16 @@
 <?php
 namespace KREDA\Sphere\Application\Assistance\Service;
 
-use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Cause\Danger;
-use KREDA\Sphere\Application\Assistance\Frontend\Clarification\Solution\Support;
-use KREDA\Sphere\Application\Assistance\Frontend\Support\Youtrack\Ticket;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\AbstractElement;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageSuccess;
+use KREDA\Sphere\Common\AbstractFrontend\Form\AbstractForm;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\AbstractService;
 use Markdownify\Converter;
 
@@ -29,24 +35,24 @@ class Youtrack extends AbstractService
     private $CookieList = null;
 
     /**
-     * @param Ticket      $Ticket
-     * @param null|string $TicketSubject
-     * @param null|string $TicketMessage
+     * @param AbstractForm $Ticket
+     * @param null|string  $TicketSubject
+     * @param null|string  $TicketMessage
      *
-     * @return Danger|string
+     * @return AbstractElement|AbstractForm
      */
-    public function executeCreateTicket( Ticket &$Ticket, $TicketSubject, $TicketMessage )
+    public function executeCreateTicket( AbstractForm &$Ticket, $TicketSubject, $TicketMessage )
     {
 
         $Error = false;
         if (empty( $TicketSubject ) && null !== $TicketSubject) {
-            $Ticket->setErrorEmptySubject();
+            $Ticket->setError( 'TicketSubject', 'Bitte geben Sie ein Thema ein' );
             $Error = true;
         } elseif (null === $TicketSubject) {
             $Error = true;
         }
         if (empty( $TicketMessage ) && null !== $TicketMessage) {
-            $Ticket->setErrorEmptyMessage();
+            $Ticket->setError( 'TicketMessage', 'Bitte geben Sie ein Mitteilung ein' );
             $Error = true;
         } elseif (null === $TicketMessage) {
             $Error = true;
@@ -57,9 +63,10 @@ class Youtrack extends AbstractService
              * Nothing to do
              */
             try {
-                return $Ticket.$this->ticketCurrent();
+                $Ticket->appendGridGroup( $this->ticketCurrent() );
+                return $Ticket;
             } catch( \Exception $E ) {
-                return new Danger( 'Das Support-System konnten nicht geladen werden' );
+                return new MessageDanger( 'Das Support-System konnten nicht geladen werden' );
             }
         } else {
             /**
@@ -67,15 +74,24 @@ class Youtrack extends AbstractService
              */
             try {
                 $this->ticketCreate( $TicketSubject, $TicketMessage );
-                return new Support( 'Das Problem wurde erfolgreich dem Support mitgeteilt' ).$this->ticketCurrent();
+                return new FormDefault( array(
+                    new GridFormGroup(
+                        new GridFormRow(
+                            new GridFormCol(
+                                new MessageSuccess( 'Das Problem wurde erfolgreich dem Support mitgeteilt' )
+                            )
+                        )
+                    ),
+                    $this->ticketCurrent()
+                ));
             } catch( \Exception $E ) {
-                return new Danger( 'Das Problem konnte nicht übertragen werden' );
+                return new MessageDanger( 'Das Problem konnte nicht übertragen werden' );
             }
         }
     }
 
     /**
-     * @return string
+     * @return GridFormGroup
      */
     private function ticketCurrent()
     {
@@ -111,17 +127,23 @@ class Youtrack extends AbstractService
 
             }
 
-            $Issues[$Index] = '<div class="alert alert-info">'
-                .'<strong>'.$Content[0].'</strong>'
+            $Issues[$Index] = new MessageInfo(
+                '<strong>'.$Content[0].'</strong>'
                 .'<div class="pull-right label '.$Label.'"><samp>'.$Content[2].'</samp></div>'
                 .'<hr/><small>'.nl2br( $Content[1] ).'</small>'
-                .'</div>';
+            );
         }
         if (empty( $Issues )) {
-            $Issues[0] = '<div>Keine Supportanfragen vorhanden</div>';
+            $Issues[0] = new MessageInfo( 'Keine Supportanfragen vorhanden' );
         }
         krsort( $Issues );
-        return '<br/><h3>Tickets<small> Aktuelle Anfragen</small></h3>'.implode( '', $Issues );
+        return new GridFormGroup(
+            new GridFormRow(
+                new GridFormCol(
+                    $Issues
+                )
+            )
+        , 'Tickets<small> Aktuelle Anfragen</small>' );
     }
 
     /**

@@ -34,7 +34,9 @@ class Gatekeeper extends AbstractApplication
     {
 
         self::$Configuration = $Configuration;
-
+        /**
+         * Navigation
+         */
         if (( $ValidSession = self::serviceAccount()->checkIsValidSession() )) {
             self::addClientNavigationMeta( self::$Configuration,
                 '/Sphere/Gatekeeper/MyAccount', 'Mein Account', new PersonIcon()
@@ -51,11 +53,9 @@ class Gatekeeper extends AbstractApplication
          * Authentication
          */
         if ($ValidSession) {
-            self::registerClientRoute( self::$Configuration, '/',
-                __CLASS__.'::frontendAuthentication_Welcome' );
+            self::registerClientRoute( self::$Configuration, '/', __CLASS__.'::frontendAuthentication_Welcome' );
         } else {
-            self::registerClientRoute( self::$Configuration, '/',
-                __CLASS__.'::frontendAuthentication_SignInSwitch' );
+            self::registerClientRoute( self::$Configuration, '/', __CLASS__.'::frontendAuthentication_SignInSwitch' );
         }
         self::registerClientRoute( self::$Configuration, '/Sphere',
             __CLASS__.'::frontendAuthentication_Welcome' );
@@ -63,42 +63,37 @@ class Gatekeeper extends AbstractApplication
             __CLASS__.'::frontendAuthentication_SignInSwitch' );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignOut',
             __CLASS__.'::frontendAuthentication_SignOut' );
-
-        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Student',
-            __CLASS__.'::frontendAuthentication_SignInStudent' );
-        $Route->setParameterDefault( 'CredentialName', null );
-        $Route->setParameterDefault( 'CredentialLock', null );
-
-        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Teacher',
-            __CLASS__.'::frontendAuthentication_SignInTeacher' );
-        $Route->setParameterDefault( 'CredentialName', null );
-        $Route->setParameterDefault( 'CredentialLock', null );
-        $Route->setParameterDefault( 'CredentialKey', null );
-
-        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Management',
-            __CLASS__.'::frontendAuthentication_SignInManagement' );
-        $Route->setParameterDefault( 'CredentialName', null );
-        $Route->setParameterDefault( 'CredentialLock', null );
-        $Route->setParameterDefault( 'CredentialKey', null );
-
-        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/System',
-            __CLASS__.'::frontendAuthentication_SignInSystem' );
-        $Route->setParameterDefault( 'CredentialName', null );
-        $Route->setParameterDefault( 'CredentialLock', null );
-        $Route->setParameterDefault( 'CredentialKey', null );
-
+        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Student',
+            __CLASS__.'::frontendAuthentication_SignInStudent' )
+            ->setParameterDefault( 'CredentialName', null )
+            ->setParameterDefault( 'CredentialLock', null );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Teacher',
+            __CLASS__.'::frontendAuthentication_SignInTeacher' )
+            ->setParameterDefault( 'CredentialName', null )
+            ->setParameterDefault( 'CredentialLock', null )
+            ->setParameterDefault( 'CredentialKey', null );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Management',
+            __CLASS__.'::frontendAuthentication_SignInManagement' )
+            ->setParameterDefault( 'CredentialName', null )
+            ->setParameterDefault( 'CredentialLock', null )
+            ->setParameterDefault( 'CredentialKey', null );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/System',
+            __CLASS__.'::frontendAuthentication_SignInSystem' )
+            ->setParameterDefault( 'CredentialName', null )
+            ->setParameterDefault( 'CredentialLock', null )
+            ->setParameterDefault( 'CredentialKey', null );
         /**
          * MyAccount
          */
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount',
             __CLASS__.'::frontendMyAccount_Summary' );
-        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangePassword',
-            __CLASS__.'::frontendMyAccount_ChangePassword' );
-        $Route->setParameterDefault( 'CredentialLock', null );
-        $Route->setParameterDefault( 'CredentialLockSafety', null );
-        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangeConsumer',
-            __CLASS__.'::frontendMyAccount_ChangeConsumer' );
-        $Route->setParameterDefault( 'tblConsumer', null );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangePassword',
+            __CLASS__.'::frontendMyAccount_ChangePassword' )
+            ->setParameterDefault( 'CredentialLock', null )
+            ->setParameterDefault( 'CredentialLockSafety', null );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangeConsumer',
+            __CLASS__.'::frontendMyAccount_ChangeConsumer' )
+            ->setParameterDefault( 'tblConsumer', null );
 
         return $Configuration;
     }

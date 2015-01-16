@@ -11,9 +11,9 @@ use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputPassword;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridCol;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridGroup;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridRow;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
 
 /**
  * Class MyAccount
@@ -54,12 +54,12 @@ class MyAccount extends AbstractFrontend
         //$View->setMessage( 'Bitte legen Sie ein neues Password fest' );
         $View->setContent( Gatekeeper::serviceAccount()->executeChangePassword(
             new FormDefault(
-                new GridGroup(
-                    new GridRow( array(
-                        new GridCol(
+                new GridFormGroup(
+                    new GridFormRow( array(
+                        new GridFormCol(
                             new InputPassword( 'CredentialLock', 'Neues Passwort', 'Neues Passwort', new LockIcon() )
                         , 6 ),
-                        new GridCol(
+                        new GridFormCol(
                             new InputPassword( 'CredentialLockSafety', 'Passwort wiederholen', 'Passwort wiederholen', new RepeatIcon() )
                         , 6 )
                     ) )
