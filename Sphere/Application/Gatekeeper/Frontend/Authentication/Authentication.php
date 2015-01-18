@@ -4,19 +4,10 @@ namespace KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonDangerLink;
 use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonPrimaryLink;
-use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\AbstractFrontend\Button\Structure\GroupDefault;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputPassword;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputText;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
 
 /**
  * Class Authentication
@@ -50,29 +41,7 @@ class Authentication extends AbstractFrontend
     public static function stageSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
-        $View = new Stage();
-        $View->setTitle( 'Anmeldung' );
-        $View->setDescription( 'Lehrer' );
-        $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
-        $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
-            new FormDefault(
-                new GridFormGroup( array(
-                        new GridFormRow(
-                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
-                        ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
-                        ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
-                        )
-                    )
-                ), new ButtonSubmitPrimary( 'Anmelden' )
-            ),
-            $CredentialName, $CredentialLock, $CredentialKey,
-            Gatekeeper::serviceAccount()->entityAccountTypByName( 'Lehrer' )
-        ) );
-        return $View;
+        return SignIn::stageTeacher( $CredentialName, $CredentialLock, $CredentialKey );
     }
 
     /**
@@ -85,29 +54,7 @@ class Authentication extends AbstractFrontend
     public static function stageSignInSystem( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
-        $View = new Stage();
-        $View->setTitle( 'Anmeldung' );
-        $View->setDescription( 'System' );
-        $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
-        $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
-            new FormDefault(
-                new GridFormGroup( array(
-                        new GridFormRow(
-                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
-                        ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
-                        ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
-                        )
-                    )
-                ), new ButtonSubmitPrimary( 'Anmelden' )
-            ),
-            $CredentialName, $CredentialLock, $CredentialKey,
-            Gatekeeper::serviceAccount()->entityAccountTypByName( 'System' )
-        ) );
-        return $View;
+        return SignIn::stageSystem( $CredentialName, $CredentialLock, $CredentialKey );
     }
 
     /**
@@ -119,26 +66,7 @@ class Authentication extends AbstractFrontend
     public static function stageSignInStudent( $CredentialName, $CredentialLock )
     {
 
-        $View = new Stage();
-        $View->setTitle( 'Anmeldung' );
-        $View->setDescription( 'Schüler' );
-        $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
-        $View->setContent( Gatekeeper::serviceAccount()->executeSignIn(
-            new FormDefault(
-                new GridFormGroup( array(
-                        new GridFormRow(
-                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
-                        ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
-                        )
-                    )
-                ), new ButtonSubmitPrimary( 'Anmelden' )
-            ),
-            $CredentialName, $CredentialLock,
-            Gatekeeper::serviceAccount()->entityAccountTypByName( 'Schüler' )
-        ) );
-        return $View;
+        return SignIn::stageStudent( $CredentialName, $CredentialLock );
     }
 
     /**
@@ -151,29 +79,7 @@ class Authentication extends AbstractFrontend
     public static function stageSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
-        $View = new Stage();
-        $View->setTitle( 'Anmeldung' );
-        $View->setDescription( 'Verwaltung' );
-        $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
-        $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
-            new FormDefault(
-                new GridFormGroup( array(
-                        new GridFormRow(
-                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
-                        ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
-                        ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
-                        )
-                    )
-                ), new ButtonSubmitPrimary( 'Anmelden' )
-            ),
-            $CredentialName, $CredentialLock, $CredentialKey,
-            Gatekeeper::serviceAccount()->entityAccountTypByName( 'Verwaltung' )
-        ) );
-        return $View;
+        return SignIn::stageManagement( $CredentialName, $CredentialLock, $CredentialKey );
     }
 
     /**

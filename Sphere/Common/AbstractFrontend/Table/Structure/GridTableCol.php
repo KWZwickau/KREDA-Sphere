@@ -13,14 +13,31 @@ class GridTableCol extends AbstractTable
 
     /** @var string $Content */
     private $Content = '';
+    /** @var int $GridSize */
+    private $GridSize = 1;
+    /** @var string $GridWidth */
+    private $GridWidth = 'auto';
 
     /**
      * @param string $Content
+     * @param int    $GridSize
+     * @param string $GridWidth
      */
-    function __construct( $Content )
+    function __construct( $Content, $GridSize = 1, $GridWidth = 'auto' )
     {
 
         $this->Content = $Content;
+        $this->GridSize = $GridSize;
+        $this->GridWidth = $GridWidth;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSize()
+    {
+
+        return $this->GridSize;
     }
 
     /**
@@ -32,4 +49,12 @@ class GridTableCol extends AbstractTable
         return $this->Content;
     }
 
+    /**
+     * @return string
+     */
+    public function getWidth()
+    {
+
+        return $this->GridWidth;
+    }
 }

@@ -242,7 +242,7 @@ class Gatekeeper extends AbstractApplication
     {
 
         $this->setupModuleMyAccount();
-        return MyAccount::landingSummary();
+        return MyAccount::stageSummary();
     }
 
     public function setupModuleMyAccount()
