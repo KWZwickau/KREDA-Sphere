@@ -78,11 +78,11 @@ class Authorization extends AbstractFrontend
     }
 
     /**
-     * @param null|string $Access
+     * @param null|string $Name
      *
      * @return Stage
      */
-    public static function stageAuthorizationRight( $Access )
+    public static function stageAuthorizationRight( $Name )
     {
 
         $View = new Stage();
@@ -90,116 +90,131 @@ class Authorization extends AbstractFrontend
         $View->setDescription( 'Rechte' );
         $View->setContent(
             new TableFromData( Gatekeeper::serviceAccess()->entityRightAll(), 'Bestehende Rechte <small>Routen</small>' )
-            .Gatekeeper::serviceAccess()->executeCreateApplicationRoute(
+            .Gatekeeper::serviceAccess()->executeCreateRight(
                 new FormDefault(
                     new GridFormGroup(
                         new GridFormRow(
                             new GridFormCol(
                                 new InputText(
-                                    'Access', 'Route', 'Name'
+                                    'RightName', 'Route', 'Name'
                                 )
                             )
                         )
                     ,'Recht anlegen <small>Route</small>')
                 , new ButtonSubmitPrimary( 'Hinzufügen' )
                 )
-            ,$Access)
+            ,$Name)
         );
         return $View;
     }
 
     /**
+     * @param null|string $Name
+     *
      * @return Stage
      */
-    public static function stageAuthorizationPrivilege()
+    public static function stageAuthorizationPrivilege( $Name )
     {
 
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Privilegien' );
         $View->setContent(
-            new FormDefault( array(
-                new GridFormGroup(
-                    new GridFormRow(
-                        new GridFormCol(
-                            new TableFromData( Gatekeeper::serviceAccess()->entityPrivilegeAll() )
-                        )
-                    )
-                ,'Bestehende Privilegien <small>Rechtegruppen</small>'),
-                new GridFormGroup(
-                    new GridFormRow(
-                        new GridFormCol(
-                            new InputText(
-                                'AccessPrivilege', 'Name', 'Rechtegruppe'
+            new TableFromData( Gatekeeper::serviceAccess()->entityPrivilegeAll(), 'Bestehende Privilegien <small>Rechtegruppen</small>' )
+            .Gatekeeper::serviceAccess()->executeCreatePrivilege(
+                new FormDefault(
+                    new GridFormGroup(
+                        new GridFormRow(
+                            new GridFormCol(
+                                new InputText(
+                                    'PrivilegeName', 'Name', 'Rechtegruppe'
+                                )
                             )
                         )
-                    )
-                ,'Privileg anlegen <small>Rechtegruppe</small>')
-            ), new ButtonSubmitPrimary( 'Hinzufügen' ))
+                    ,'Privileg anlegen <small>Rechtegruppe</small>')
+                , new ButtonSubmitPrimary( 'Hinzufügen' )
+                )
+            , $Name)
         );
         return $View;
     }
 
     /**
+     * @param null|string $Name
+     *
      * @return Stage
      */
-    public static function stageAuthorizationAccess()
+    public static function stageAuthorizationAccess( $Name )
     {
 
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Zugriffslevel' );
         $View->setContent(
-            new FormDefault( array(
-                new GridFormGroup(
-                    new GridFormRow(
-                        new GridFormCol(
-                            new TableFromData( Gatekeeper::serviceAccess()->entityAccessAll() )
-                        )
-                    )
-                ,'Bestehende Zugriffslevel <small>Privilegiengruppen</small>'),
-                new GridFormGroup(
-                    new GridFormRow(
-                        new GridFormCol(
-                            new InputText(
-                                'Access', 'Name', 'Privilegiengruppe'
+            new TableFromData( Gatekeeper::serviceAccess()->entityAccessAll(), 'Bestehende Zugriffslevel <small>Privilegiengruppen</small>' )
+            .Gatekeeper::serviceAccess()->executeCreateAccess(
+                new FormDefault(
+                    new GridFormGroup(
+                        new GridFormRow(
+                            new GridFormCol(
+                                new InputText(
+                                    'AccessName', 'Name', 'Privilegiengruppe'
+                                )
                             )
                         )
-                    )
-                ,'Zugriffslevel anlegen <small>Privilegiengruppe</small>')
-            ), new ButtonSubmitPrimary( 'Hinzufügen' ))
+                    ,'Zugriffslevel anlegen <small>Privilegiengruppe</small>')
+                , new ButtonSubmitPrimary( 'Hinzufügen' )
+                )
+            , $Name)
         );
         return $View;
     }
 
     /**
+     * @param null|string $Name
+     *
      * @return Stage
      */
-    public static function stageAuthorizationRole()
+    public static function stageAuthorizationRole( $Name )
     {
 
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Rollen' );
         $View->setContent(
-            new FormDefault( array(
-                new GridFormGroup(
-                    new GridFormRow(
-                        new GridFormCol(
-                            new TableFromData( Gatekeeper::serviceAccount()->entityAccountRoleAll() )
-                        )
-                    )
-                , 'Bestehende Rollen <small>Zugriffslevelgruppen</small>'),
-                new GridFormGroup(
-                    new GridFormRow(
-                        new GridFormCol(
-                            new InputText(
-                                'Access', 'Name', 'Zugriffslevelgruppe'
+            new TableFromData( Gatekeeper::serviceAccount()->entityAccountRoleAll(), 'Bestehende Rollen <small>Zugriffslevelgruppen</small>' )
+            .Gatekeeper::serviceAccount()->executeCreateRole(
+                new FormDefault(
+                    new GridFormGroup(
+                        new GridFormRow(
+                            new GridFormCol(
+                                new InputText(
+                                    'Access', 'Name', 'Zugriffslevelgruppe'
+                                )
                             )
                         )
-                    )
-                ,'Rolle anlegen <small>Zugriffslevelgruppe</small>')
-            ), new ButtonSubmitPrimary( 'Hinzufügen' ))
+                    ,'Rolle anlegen <small>Zugriffslevelgruppe</small>')
+                , new ButtonSubmitPrimary( 'Hinzufügen' )
+                )
+            , $Name)
+        );
+        return $View;
+    }
+
+    /**
+     * @param null|int $Role
+     * @param null|int $Access
+     *
+     * @return Stage
+     */
+    public static function stageAuthorizationRoleAccess( $Role, $Access )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Berechtigungen' );
+        $View->setDescription( 'Rollen' );
+        $View->setContent(
+            new TableFromData( Gatekeeper::serviceAccount()->entityAccountRoleAll(), 'Bestehende Rollen <small>Zugriffslevelgruppen</small>' )
         );
         return $View;
     }

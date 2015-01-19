@@ -46,7 +46,7 @@ class GridTableCol extends AbstractTable
     public function getContent()
     {
 
-        return $this->Content;
+        return (string)$this->Content;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Management\Service;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
+use KREDA\Sphere\Common\AbstractFrontend\Form\AbstractForm;
 use KREDA\Sphere\Common\Database\Handler;
 
 /**
@@ -37,6 +38,10 @@ class Person extends EntityAction
     public function setupDatabaseContent()
     {
 
+        Gatekeeper::serviceAccount()->executeChangePerson(
+            $this->actionCreatePerson( 'Herr', 'Bernd', 'DAS', 'Brot', 'Kastenförmig', 'NA' ),
+            Gatekeeper::serviceAccount()->entityAccountByUsername( 'Bernd' )
+        );
     }
 
     /**
@@ -59,4 +64,54 @@ class Person extends EntityAction
         return parent::entityPersonAll();
     }
 
+    /**
+     * @param AbstractForm $View
+     *
+     * @param null|string  $Salutation
+     * @param null|string  $FirstName
+     * @param null|string  $MiddleName
+     * @param null|string  $LastName
+     * @param null|string  $Gender
+     * @param null|string  $Birthday
+     *
+     * @return AbstractForm
+     */
+    public function executeCreatePerson(
+        AbstractForm &$View = null,
+        $Salutation,
+        $FirstName,
+        $MiddleName,
+        $LastName,
+        $Gender,
+        $Birthday
+    ) {
+
+        $Error = false;
+
+        if (null !== $Salutation && empty( $Salutation )) {
+            $View->setError( 'Salutation', 'Bitte geben Sie eine gültige Route ein' );
+        }
+        if (null !== $FirstName && empty( $FirstName )) {
+            $View->setError( 'FirstName', 'Bitte geben Sie eine gültige Route ein' );
+        }
+        if (null !== $MiddleName && empty( $MiddleName )) {
+            $View->setError( 'MiddleName', 'Bitte geben Sie eine gültige Route ein' );
+        }
+        if (null !== $LastName && empty( $LastName )) {
+            $View->setError( 'LastName', 'Bitte geben Sie eine gültige Route ein' );
+        }
+        if (null !== $Gender && empty( $Gender )) {
+            $View->setError( 'Gender', 'Bitte geben Sie eine gültige Route ein' );
+        }
+        if (null !== $Birthday && empty( $Birthday )) {
+            $View->setError( 'Birthday', 'Bitte geben Sie eine gültige Route ein' );
+        }
+
+        if (!$Error) {
+
+            //$this->actionCreatePerson( $Salutation, $FirstName, $MiddleName, $LastName, $Gender, $Birthday );
+            $View->setSuccess( 'Salutation', 'Route wurde angelegt' );
+        }
+        return $View;
+    }
 }

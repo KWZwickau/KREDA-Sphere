@@ -24,15 +24,6 @@ abstract class AbstractAddress extends AbstractFrontend implements IElementInter
     /**
      * @return string
      */
-    public function getContent()
-    {
-
-        return $this->Template->getContent();
-    }
-
-    /**
-     * @return string
-     */
     public function getHash()
     {
 
@@ -50,4 +41,14 @@ abstract class AbstractAddress extends AbstractFrontend implements IElementInter
 
         return '';
     }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+
+        return $this->Template->getContent();
+    }
+
 }

@@ -41,6 +41,7 @@ class MyAccount extends AbstractFrontend
         $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession();
         $tblPerson = $tblAccount->getServiceManagementPerson();
         $tblConsumer = $tblAccount->getServiceGatekeeperConsumer();
+        $tblAddress = $tblConsumer ? $tblConsumer->getServiceManagementAddress() : false;
         $View->setContent(
             new TableDefault(
                 new GridTableHead(
@@ -74,9 +75,9 @@ class MyAccount extends AbstractFrontend
                         new GridTableCol( 'Name', 1, '20%' ),
                         new GridTableCol(
                             $tblPerson->getSalutation()
-                            .$tblPerson->getFirstName()
-                            .$tblPerson->getMiddleName()
-                            .$tblPerson->getLastName()
+                            .'<br/>'.$tblPerson->getFirstName()
+                            .' '.$tblPerson->getMiddleName()
+                            .', '.$tblPerson->getLastName()
                         )
                     ) ),
                     new GridTableRow( array(
@@ -106,7 +107,8 @@ class MyAccount extends AbstractFrontend
                     ) ),
                     new GridTableRow( array(
                         new GridTableCol( 'Addresse' ),
-                        new GridTableCol( new AddressDefault( $tblConsumer->getServiceManagementAddress() ) )
+                        new GridTableCol( $tblAddress ? new AddressDefault( $tblAddress ) : new MessageWarning( 'Keine Adressdaten verfügbar',
+                            new WarningIcon() ) )
                     ) )
                 ) )
             ) : new MessageWarning( 'Keine Mandantendaten verfügbar', new WarningIcon() ) )

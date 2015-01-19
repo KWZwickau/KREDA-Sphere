@@ -96,16 +96,25 @@ class System extends AbstractApplication
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization/Right', __CLASS__.'::frontendAuthorizationRight'
-        )->setParameterDefault( 'Access', null );
+        )->setParameterDefault( 'RightName', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization/Privilege', __CLASS__.'::frontendAuthorizationPrivilege'
-        );
+        )->setParameterDefault( 'PrivilegeName', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization/Access', __CLASS__.'::frontendAuthorizationAccess'
-        );
+        )->setParameterDefault( 'AccessName', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization/Role', __CLASS__.'::frontendAuthorizationRole'
-        );
+        )->setParameterDefault( 'Access', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Authorization/ListRoleAccess', __CLASS__.'::frontendAuthorizationRoleAccess'
+        )->setParameterDefault( 'Role', null )->setParameterDefault( 'Access', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Authorization/ListAccessPrivilege', __CLASS__.'::frontendAuthorizationAccessPrivilege'
+        )->setParameterDefault( 'Access', null )->setParameterDefault( 'Privilege', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Authorization/ListPrivilegeRight', __CLASS__.'::frontendAuthorizationPrivilegeRight'
+        )->setParameterDefault( 'Privilege', null )->setParameterDefault( 'Right', null );
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Token', __CLASS__.'::apiToken'
@@ -286,19 +295,19 @@ class System extends AbstractApplication
             '/Sphere/System/Authorization/Role', 'Rollen', new CogIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Authorization/RoleAccess', 'Rollen - Zugriffslevel', new CogIcon()
+            '/Sphere/System/Authorization/ListRoleAccess', 'Rollen - Zugriffslevel', new CogIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/System/Authorization/Access', 'Zugriffslevel', new CogIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Authorization/AccessPrivilege', 'Zugriffslevel - Privilegien', new CogIcon()
+            '/Sphere/System/Authorization/ListAccessPrivilege', 'Zugriffslevel - Privilegien', new CogIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/System/Authorization/Privilege', 'Privilegien', new CogIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Authorization/PrivilegeRight', 'Privilegien - Rechte', new CogIcon()
+            '/Sphere/System/Authorization/ListPrivilegeRight', 'Privilegien - Rechte', new CogIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/System/Authorization/Right', 'Rechte', new CogIcon()
@@ -306,49 +315,69 @@ class System extends AbstractApplication
     }
 
     /**
+     * @param null|string $RightName
+     *
+     * @return Stage
+     */
+    public function frontendAuthorizationRight( $RightName )
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupFrontendAuthorization();
+        return Authorization::stageAuthorizationRight( $RightName );
+    }
+
+    /**
+     * @param null|string $PrivilegeName
+     *
+     * @return Stage
+     */
+    public function frontendAuthorizationPrivilege( $PrivilegeName )
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupFrontendAuthorization();
+        return Authorization::stageAuthorizationPrivilege( $PrivilegeName );
+    }
+
+    /**
+     * @param null|string $AccessName
+     *
+     * @return Stage
+     */
+    public function frontendAuthorizationAccess( $AccessName )
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupFrontendAuthorization();
+        return Authorization::stageAuthorizationAccess( $AccessName );
+    }
+
+    /**
      * @param null|string $Access
      *
      * @return Stage
      */
-    public function frontendAuthorizationRight( $Access )
+    public function frontendAuthorizationRole( $Access )
     {
 
         $this->setupModuleNavigation();
         $this->setupFrontendAuthorization();
-        return Authorization::stageAuthorizationRight( $Access );
+        return Authorization::stageAuthorizationRole( $Access );
     }
 
     /**
+     * @param null|int $Role
+     * @param null|int $Access
+     *
      * @return Stage
      */
-    public function frontendAuthorizationPrivilege()
+    public function frontendAuthorizationRoleAccess( $Role, $Access )
     {
 
         $this->setupModuleNavigation();
         $this->setupFrontendAuthorization();
-        return Authorization::stageAuthorizationPrivilege();
-    }
-
-    /**
-     * @return Stage
-     */
-    public function frontendAuthorizationAccess()
-    {
-
-        $this->setupModuleNavigation();
-        $this->setupFrontendAuthorization();
-        return Authorization::stageAuthorizationAccess();
-    }
-
-    /**
-     * @return Stage
-     */
-    public function frontendAuthorizationRole()
-    {
-
-        $this->setupModuleNavigation();
-        $this->setupFrontendAuthorization();
-        return Authorization::stageAuthorizationRole();
+        return Authorization::stageAuthorizationRoleAccess( $Role, $Access );
     }
 
     /**

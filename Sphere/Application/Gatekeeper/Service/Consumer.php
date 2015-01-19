@@ -5,6 +5,7 @@ use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\EntityAction;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Common\Database\Handler;
 
 /**
@@ -106,5 +107,17 @@ class Consumer extends EntityAction
     {
 
         return parent::entityConsumerBySuffix( $Suffix );
+    }
+
+    /**
+     * @param TblAddress       $tblAddress
+     * @param null|TblConsumer $tblConsumer
+     *
+     * @return bool
+     */
+    public function executeChangeAddress( TblAddress $tblAddress, TblConsumer $tblConsumer = null )
+    {
+
+        return parent::actionChangeAddress( $tblAddress, $tblConsumer );
     }
 }

@@ -1,9 +1,9 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount\Summary;
 
-use KREDA\Sphere\Application\Gatekeeper\Frontend\AbstractError;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Client\Component\IElementInterface;
+use KREDA\Sphere\Common\AbstractFrontend;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
 
@@ -12,7 +12,7 @@ use MOC\V\Component\Template\Template;
  *
  * @package KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount
  */
-class Account extends AbstractError implements IElementInterface
+class Account extends AbstractFrontend implements IElementInterface
 {
 
     /**

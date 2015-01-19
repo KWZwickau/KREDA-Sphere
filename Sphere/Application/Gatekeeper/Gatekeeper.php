@@ -117,15 +117,6 @@ class Gatekeeper extends AbstractApplication
     }
 
     /**
-     * @return Service\Access
-     */
-    public static function serviceAccess()
-    {
-
-        return Access::getApi();
-    }
-
-    /**
      * @return Service\Consumer
      */
     public static function serviceConsumer()
@@ -248,9 +239,20 @@ class Gatekeeper extends AbstractApplication
     public function setupModuleMyAccount()
     {
 
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Gatekeeper/MyAccount/ChangePassword', 'Passwort ändern', new LockIcon()
-        );
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Gatekeeper/MyAccount/ChangePassword' )) {
+            self::addModuleNavigationMain( self::$Configuration,
+                '/Sphere/Gatekeeper/MyAccount/ChangePassword', 'Passwort ändern', new LockIcon()
+            );
+        }
+    }
+
+    /**
+     * @return Service\Access
+     */
+    public static function serviceAccess()
+    {
+
+        return Access::getApi();
     }
 
     /**

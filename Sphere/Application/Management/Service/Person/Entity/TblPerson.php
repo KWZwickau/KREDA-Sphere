@@ -19,6 +19,13 @@ class TblPerson extends AbstractEntity
 
     const ATTR_PERSON_TYPE = 'tblPersonType';
 
+    const ATTR_SALUTATION = 'Salutation';
+    const ATTR_FIRST_NAME = 'FirstName';
+    const ATTR_MIDDLE_NAME = 'MiddleName';
+    const ATTR_LAST_NAME = 'LastName';
+    const ATTR_GENDER = 'Gender';
+    const ATTR_BIRTHDAY = 'Birthday';
+
     /**
      * @Id
      * @GeneratedValue

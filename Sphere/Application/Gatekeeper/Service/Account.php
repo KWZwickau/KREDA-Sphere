@@ -10,6 +10,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Common\AbstractFrontend\Form\AbstractForm;
 use KREDA\Sphere\Common\AbstractFrontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
@@ -52,7 +53,10 @@ class Account extends EntityAction
         /**
          * Create Student
          */
-        $this->actionCreateAccountTyp( 'Schüler' );
+        $tblAccountRole = $this->actionCreateAccountRole( 'Schüler' );
+        $tblAccountTyp = $this->actionCreateAccountTyp( 'Schüler' );
+        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'EGE' );
+        $this->actionCreateAccount( 'Bernd', 'Brot', $tblAccountTyp, $tblAccountRole, null, null, $tblConsumer );
         /**
          * Create Teacher
          */
@@ -228,6 +232,25 @@ class Account extends EntityAction
 
     /**
      * @param AbstractForm $View
+     * @param string       $RoleName
+     *
+     * @return AbstractForm
+     */
+    public function executeCreateRole( AbstractForm &$View, $RoleName )
+    {
+
+        if (null !== $RoleName && empty( $RoleName )) {
+            $View->setError( 'Access', 'Bitte geben Sie einen Namen ein' );
+        }
+        if (!empty( $RoleName )) {
+            $View->setSuccess( 'Access', 'Die Rolle wurde hinzugefügt' );
+            $this->actionCreateAccountRole( $RoleName );
+        }
+        return $View;
+    }
+
+    /**
+     * @param AbstractForm $View
      * @param string       $CredentialLock
      * @param string       $CredentialLockSafety
      *
@@ -265,6 +288,18 @@ class Account extends EntityAction
     {
 
         return parent::actionChangeToken( $tblToken, $tblAccount );
+    }
+
+    /**
+     * @param TblPerson  $tblPerson
+     * @param TblAccount $tblAccount
+     *
+     * @return bool
+     */
+    public function executeChangePerson( TblPerson $tblPerson, TblAccount $tblAccount = null )
+    {
+
+        return parent::actionChangePerson( $tblPerson, $tblAccount );
     }
 
     /**

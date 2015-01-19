@@ -60,11 +60,17 @@ class Address extends EntityAction
          */
         $tblAddressState = $this->actionCreateAddressState( 'Sachsen' );
         $tblAddressCity = $this->actionCreateAddressCity( '08056', 'Zwickau' );
-        $this->actionCreateAddress( $tblAddressState, $tblAddressCity, 'Am Bahnhof', '4' );
+        $tblAddress = $this->actionCreateAddress( $tblAddressState, $tblAddressCity, 'Am Bahnhof', '4' );
+
+        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerByName( 'System' );
+        Gatekeeper::serviceConsumer()->executeChangeAddress( $tblAddress, $tblConsumer );
 
         $tblAddressState = $this->actionCreateAddressState( 'Sachsen' );
         $tblAddressCity = $this->actionCreateAddressCity( '09456', 'Annaberg-Buchholz' );
-        $this->actionCreateAddress( $tblAddressState, $tblAddressCity, 'Straße der Freundschaft', '11' );
+        $tblAddress = $this->actionCreateAddress( $tblAddressState, $tblAddressCity, 'Straße der Freundschaft', '11' );
+
+        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'EGE' );
+        Gatekeeper::serviceConsumer()->executeChangeAddress( $tblAddress, $tblConsumer );
     }
 
     /**

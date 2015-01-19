@@ -92,6 +92,63 @@ class Access extends EntityAction
     }
 
     /**
+     * @param AbstractForm $View
+     * @param string       $AccessName
+     *
+     * @return AbstractForm
+     */
+    public function executeCreateAccess( AbstractForm &$View, $AccessName )
+    {
+
+        if (null !== $AccessName && empty( $AccessName )) {
+            $View->setError( 'AccessName', 'Bitte geben Sie einen Namen ein' );
+        }
+        if (!empty( $AccessName )) {
+            $View->setSuccess( 'AccessName', 'Der Zugriffslevel wurde hinzugefügt' );
+            $this->actionCreateAccess( $AccessName );
+        }
+        return $View;
+    }
+
+    /**
+     * @param AbstractForm $View
+     * @param string       $PrivilegeName
+     *
+     * @return AbstractForm
+     */
+    public function executeCreatePrivilege( AbstractForm &$View, $PrivilegeName )
+    {
+
+        if (null !== $PrivilegeName && empty( $PrivilegeName )) {
+            $View->setError( 'PrivilegeName', 'Bitte geben Sie einen Namen ein' );
+        }
+        if (!empty( $PrivilegeName )) {
+            $View->setSuccess( 'PrivilegeName', 'Der Zugriffslevel wurde hinzugefügt' );
+            $this->actionCreatePrivilege( $PrivilegeName );
+        }
+        return $View;
+    }
+
+    /**
+     * @param AbstractForm $View
+     * @param string       $RightName
+     *
+     * @return AbstractForm
+     */
+    public function executeCreateRight( AbstractForm &$View, $RightName )
+    {
+
+        if (null !== $RightName && empty( $RightName )) {
+            $View->setError( 'RightName', 'Bitte geben Sie einen Namen ein' );
+        }
+        if (!empty( $RightName )) {
+            $View->setSuccess( 'RightName', 'Das Recht wurde hinzugefügt' );
+            $this->actionCreateRight( $RightName );
+        }
+        return $View;
+    }
+
+    /**
      * @return Table
      */
     public function schemaTableAccess()

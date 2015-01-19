@@ -67,21 +67,6 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param null|string $Session
-     *
-     * @return bool|TblConsumer
-     */
-    protected function entityConsumerBySession( $Session = null )
-    {
-
-        if (false !== ( $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession( $Session ) )) {
-            return $tblAccount->getServiceGatekeeperConsumer();
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * @param string          $Name
      * @param string          $DatabaseSuffix
      * @param null|TblAddress $TblAddress
@@ -194,5 +179,48 @@ abstract class EntityAction extends EntitySchema
 
         $EntityList = $this->getEntityManager()->getEntity( 'TblConsumer' )->findAll();
         return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @param TblAddress       $tblAddress
+     * @param null|TblConsumer $tblConsumer
+     *
+     * @return bool
+     */
+    protected function actionChangeAddress( TblAddress $tblAddress, TblConsumer $tblConsumer = null )
+    {
+
+        if (null === $tblConsumer) {
+            $tblConsumer = $this->entityConsumerBySession();
+        }
+        $Manager = $this->getEntityManager();
+        /**
+         * @var TblConsumer $From
+         * @var TblConsumer $To
+         */
+        $To = $Manager->getEntityById( 'TblConsumer', $tblConsumer->getId() );
+        $From = clone $To;
+        if (null !== $To) {
+            $To->setServiceManagementAddress( $tblAddress );
+            $Manager->saveEntity( $To );
+            System::serviceProtocol()->executeUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(), $From, $To );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param null|string $Session
+     *
+     * @return bool|TblConsumer
+     */
+    protected function entityConsumerBySession( $Session = null )
+    {
+
+        if (false !== ( $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession( $Session ) )) {
+            return $tblAccount->getServiceGatekeeperConsumer();
+        } else {
+            return false;
+        }
     }
 }

@@ -50,12 +50,16 @@ class Youtrack extends AbstractService
             $Error = true;
         } elseif (null === $TicketSubject) {
             $Error = true;
+        } else {
+            $Ticket->setSuccess( 'TicketSubject', '' );
         }
         if (empty( $TicketMessage ) && null !== $TicketMessage) {
             $Ticket->setError( 'TicketMessage', 'Bitte geben Sie ein Mitteilung ein' );
             $Error = true;
         } elseif (null === $TicketMessage) {
             $Error = true;
+        } else {
+            $Ticket->setSuccess( 'TicketMessage', '' );
         }
 
         if ($Error) {

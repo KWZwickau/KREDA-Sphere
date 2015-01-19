@@ -22,7 +22,7 @@ class AddressDefault extends AbstractAddress
     function __construct( TblAddress $tblAddress )
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/TableInteractive.twig' );
+        $this->Template = Template::getTemplate( __DIR__.'/AddressDefault.twig' );
         $this->Template->setVariable( 'Address', $tblAddress );
     }
 

@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Assistance;
 use KREDA\Sphere\Application\Assistance\Frontend\Account\Account;
 use KREDA\Sphere\Application\Assistance\Frontend\Application\Application;
 use KREDA\Sphere\Application\Assistance\Frontend\Support\Support;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BookIcon;
@@ -41,17 +42,19 @@ class Assistance extends AbstractApplication
             '/Sphere/Assistance',
             __CLASS__.'::apiMain'
         );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Assistance/Support',
-            __CLASS__.'::apiMain'
-        );
-        /**
-         * Youtrack
-         */
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Assistance/Support/Ticket',
-            __CLASS__.'::frontendSupport_Ticket'
-        );
+        if (Gatekeeper::serviceAccount()->checkIsValidSession()) {
+            self::registerClientRoute( self::$Configuration,
+                '/Sphere/Assistance/Support',
+                __CLASS__.'::apiMain'
+            );
+            /**
+             * Youtrack
+             */
+            self::registerClientRoute( self::$Configuration,
+                '/Sphere/Assistance/Support/Ticket',
+                __CLASS__.'::frontendSupport_Ticket'
+            );
+        }
         /**
          * Account
          */
@@ -116,9 +119,11 @@ class Assistance extends AbstractApplication
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Assistance/Support/Application', 'Anwendungsfehler', new QuestionIcon()
         );
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Assistance/Support/Ticket', 'Support', new QuestionIcon()
-        );
+        if (Gatekeeper::serviceAccount()->checkIsValidSession()) {
+            self::addModuleNavigationMain( self::$Configuration,
+                '/Sphere/Assistance/Support/Ticket', 'Support', new QuestionIcon()
+            );
+        }
     }
 
     /**
