@@ -64,11 +64,10 @@ class DebugStack implements SQLLogger
 
         if ($this->enabled) {
             $this->start = microtime( true );
-            $this->queries[++$this->currentQuery] = array(
-                'sql'         => $sql,
-                'params'      => $params,
-                'types'       => $types,
-                'executionMS' => 0
+            $this->queries[++$this->currentQuery] = array( 'sql'         => $sql,
+                                                           'params'      => $params,
+                                                           'types'       => $types,
+                                                           'executionMS' => 0
             );
         }
     }

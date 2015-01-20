@@ -17,7 +17,7 @@ This chapter is split into three different sections.
 - :ref:`collections` are introduced that contain entities in associations.
 
 To gain a full understanding of associations you should also read about :doc:`owning and
-		inverse sides of associations <unitofwork-associations>`
+	inverse sides of associations <unitofwork-associations>`
 
 Many-To-One, Unidirectional
 ---------------------------

@@ -204,7 +204,7 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
 
         if (!$this->_platform->supportsLimitOffset()) {
             $this->markTestSkipped( sprintf( 'Platform "%s" does not support offsets in result limiting.',
-                $this->_platform->getName() ) );
+                    $this->_platform->getName() ) );
         }
 
         $sql = $this->_platform->modifyLimitQuery( 'SELECT * FROM user ORDER BY username DESC', 10, 5 );
@@ -272,7 +272,7 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
 
         if (!$this->_platform->supportsLimitOffset()) {
             $this->markTestSkipped( sprintf( 'Platform "%s" does not support offsets in result limiting.',
-                $this->_platform->getName() ) );
+                    $this->_platform->getName() ) );
         }
 
         $sql = $this->_platform->modifyLimitQuery( 'SELECT * FROM (SELECT u.id as uid, u.name as uname ORDER BY u.name DESC, id ASC) dctrn_result',
@@ -330,7 +330,7 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
 
         if (!$this->_platform->supportsLimitOffset()) {
             $this->markTestSkipped( sprintf( 'Platform "%s" does not support offsets in result limiting.',
-                $this->_platform->getName() ) );
+                    $this->_platform->getName() ) );
         }
 
         $sql = 'SELECT m0_.NOMBRE AS NOMBRE0, m0_.FECHAINICIO AS FECHAINICIO1, m0_.FECHAFIN AS FECHAFIN2 FROM MEDICION m0_ WITH (NOLOCK) INNER JOIN ESTUDIO e1_ ON m0_.ESTUDIO_ID = e1_.ID INNER JOIN CLIENTE c2_ ON e1_.CLIENTE_ID = c2_.ID INNER JOIN USUARIO u3_ ON c2_.ID = u3_.CLIENTE_ID WHERE u3_.ID = ? ORDER BY m0_.FECHAINICIO DESC';
@@ -380,7 +380,7 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
 
         if (!$this->_platform->supportsLimitOffset()) {
             $this->markTestSkipped( sprintf( 'Platform "%s" does not support offsets in result limiting.',
-                $this->_platform->getName() ) );
+                    $this->_platform->getName() ) );
         }
 
         $sql = $this->_platform->modifyLimitQuery(

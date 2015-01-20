@@ -153,7 +153,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = $this->getReader();
         $reader->getPropertyAnnotations( new \ReflectionProperty( 'Doctrine\Tests\Common\Annotations\Fixtures\ClassWithInvalidAnnotationTargetAtProperty',
-            'foo' ) );
+                'foo' ) );
     }
 
     /**
@@ -165,7 +165,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = $this->getReader();
         $reader->getPropertyAnnotations( new \ReflectionProperty( 'Doctrine\Tests\Common\Annotations\Fixtures\ClassWithInvalidAnnotationTargetAtProperty',
-            'bar' ) );
+                'bar' ) );
     }
 
     /**
@@ -177,7 +177,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = $this->getReader();
         $reader->getMethodAnnotations( new \ReflectionMethod( 'Doctrine\Tests\Common\Annotations\Fixtures\ClassWithInvalidAnnotationTargetAtMethod',
-            'functionName' ) );
+                'functionName' ) );
     }
 
     /**
@@ -200,7 +200,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = $this->getReader();
         $reader->getPropertyAnnotations( new \ReflectionProperty( 'Doctrine\Tests\Common\Annotations\Fixtures\ClassWithAnnotationWithTargetSyntaxError',
-            'foo' ) );
+                'foo' ) );
     }
 
     /**
@@ -212,7 +212,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = $this->getReader();
         $reader->getMethodAnnotations( new \ReflectionMethod( 'Doctrine\Tests\Common\Annotations\Fixtures\ClassWithAnnotationWithTargetSyntaxError',
-            'bar' ) );
+                'bar' ) );
     }
 
     /**
@@ -261,7 +261,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = $this->getReader();
         $reader->getMethodAnnotations( new \ReflectionMethod( 'Doctrine\Tests\Common\Annotations\DummyClassMethodSyntaxError',
-            'foo' ) );
+                'foo' ) );
     }
 
     /**
@@ -273,7 +273,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = $this->getReader();
         $reader->getPropertyAnnotations( new \ReflectionProperty( 'Doctrine\Tests\Common\Annotations\DummyClassPropertySyntaxError',
-            'foo' ) );
+                'foo' ) );
     }
 
     /**
@@ -284,7 +284,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = $this->getReader();
         $annots = $reader->getPropertyAnnotations( new \ReflectionProperty( 'Doctrine\Tests\Common\Annotations\DummyClass2',
-            'id' ) );
+                'id' ) );
         $this->assertEquals( 3, count( $annots ) );
     }
 
@@ -294,7 +294,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
         $reader = $this->getReader();
 
         $this->assertNotNull( $annot = $reader->getPropertyAnnotation( new \ReflectionProperty( 'Doctrine\Tests\Common\Annotations\DummyClassNonAnnotationProblem',
-            'foo' ), $name = 'Doctrine\Tests\Common\Annotations\DummyAnnotation' ) );
+                    'foo' ), $name = 'Doctrine\Tests\Common\Annotations\DummyAnnotation' ) );
         $this->assertInstanceOf( $name, $annot );
     }
 
@@ -304,7 +304,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
         $reader = $this->getReader();
 
         $reader->getPropertyAnnotations( new \ReflectionProperty( 'Doctrine\Tests\Common\Annotations\Fixtures\ClassWithIgnoreAnnotation',
-            'foo' ) );
+                'foo' ) );
         $this->assertFalse( class_exists( 'Doctrine\Tests\Common\Annotations\Fixtures\IgnoreAnnotationClass', false ) );
     }
 
@@ -317,7 +317,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
         $annotations = $reader->getPropertyAnnotations( $property );
         $this->assertEquals( 1, count( $annotations ) );
         $this->assertNotNull( $reader->getPropertyAnnotation( $property,
-            'Doctrine\Tests\Common\Annotations\DummyAnnotation' ) );
+                'Doctrine\Tests\Common\Annotations\DummyAnnotation' ) );
     }
 
     public function testImportWithInheritance()
@@ -346,7 +346,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = $this->getReader();
         $reader->getPropertyAnnotations( new \ReflectionProperty( 'Doctrine\Tests\Common\Annotations\TestAnnotationNotImportedClass',
-            'field' ) );
+                'field' ) );
     }
 
     /**
@@ -358,7 +358,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = $this->getReader();
         $reader->getPropertyAnnotations( new \ReflectionProperty( 'Doctrine\Tests\Common\Annotations\TestNonExistentAnnotationClass',
-            'field' ) );
+                'field' ) );
     }
 
     public function testTopLevelAnnotation()
@@ -366,7 +366,7 @@ abstract class AbstractReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = $this->getReader();
         $annotations = $reader->getPropertyAnnotations( new \ReflectionProperty( 'Doctrine\Tests\Common\Annotations\TestTopLevelAnnotationClass',
-            'field' ) );
+                'field' ) );
 
         $this->assertEquals( 1, count( $annotations ) );
         $this->assertInstanceOf( '\TopLevelAnnotation', reset( $annotations ) );

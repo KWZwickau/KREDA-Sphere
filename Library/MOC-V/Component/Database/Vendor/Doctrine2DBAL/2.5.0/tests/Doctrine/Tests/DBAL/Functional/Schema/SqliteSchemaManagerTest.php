@@ -67,25 +67,22 @@ EOS
 
         $expected = array(
             new Schema\ForeignKeyConstraint( array( 'log' ), 'log', array( null ), 'FK_3',
-                array(
-                    'onUpdate'   => 'SET NULL',
-                    'onDelete'   => 'NO ACTION',
-                    'deferrable' => false,
-                    'deferred'   => false
+                array( 'onUpdate'   => 'SET NULL',
+                       'onDelete'   => 'NO ACTION',
+                       'deferrable' => false,
+                       'deferred'   => false
                 ) ),
             new Schema\ForeignKeyConstraint( array( 'parent' ), 'user', array( 'id' ), '1',
-                array(
-                    'onUpdate'   => 'NO ACTION',
-                    'onDelete'   => 'CASCADE',
-                    'deferrable' => false,
-                    'deferred'   => false
+                array( 'onUpdate'   => 'NO ACTION',
+                       'onDelete'   => 'CASCADE',
+                       'deferrable' => false,
+                       'deferred'   => false
                 ) ),
             new Schema\ForeignKeyConstraint( array( 'page' ), 'page', array( 'key' ), 'FK_1',
-                array(
-                    'onUpdate'   => 'NO ACTION',
-                    'onDelete'   => 'NO ACTION',
-                    'deferrable' => true,
-                    'deferred'   => true
+                array( 'onUpdate'   => 'NO ACTION',
+                       'onDelete'   => 'NO ACTION',
+                       'deferrable' => true,
+                       'deferred'   => true
                 ) ),
         );
 

@@ -73,7 +73,7 @@ class DialogHelper extends InputAwareHelper
                     // Check for a separated comma values
                     if (!preg_match( '/^[a-zA-Z0-9_-]+(?:,[a-zA-Z0-9_-]+)*$/', $selectedChoices, $matches )) {
                         throw new \InvalidArgumentException( sprintf( $errorMessage, $picked ) );
-                    }
+                }
                     $selectedChoices = explode( ",", $selectedChoices );
                 } else {
                     $selectedChoices = array( $picked );
@@ -84,7 +84,7 @@ class DialogHelper extends InputAwareHelper
                 foreach ($selectedChoices as $value) {
                     if (empty( $choices[$value] )) {
                         throw new \InvalidArgumentException( sprintf( $errorMessage, $value ) );
-                    }
+                }
                     array_push( $multiselectChoices, $value );
                 }
 

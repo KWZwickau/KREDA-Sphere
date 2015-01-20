@@ -87,7 +87,7 @@ Inside the ``Setup`` methods several assumptions are made:
 -  If third argument `$proxyDir` is not set, use the systems temporary directory.
 
 If you want to configure Doctrine in more detail, take a look at the :doc:`Advanced
-		Configuration <reference/advanced-configuration>` section.
+	Configuration <reference/advanced-configuration>` section.
 
 .. note::
 

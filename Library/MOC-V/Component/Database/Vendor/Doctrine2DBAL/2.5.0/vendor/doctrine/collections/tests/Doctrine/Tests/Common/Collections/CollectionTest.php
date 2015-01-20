@@ -43,13 +43,13 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->_coll->add( "two" );
         $exists = $this->_coll->exists( function ( $k, $e ) {
 
-            return $e == "one";
-        } );
+                return $e == "one";
+            } );
         $this->assertTrue( $exists );
         $exists = $this->_coll->exists( function ( $k, $e ) {
 
-            return $e == "other";
-        } );
+                return $e == "other";
+            } );
         $this->assertFalse( $exists );
     }
 
@@ -60,8 +60,8 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->_coll->add( 2 );
         $res = $this->_coll->map( function ( $e ) {
 
-            return $e * 2;
-        } );
+                return $e * 2;
+            } );
         $this->assertEquals( array( 2, 4 ), $res->toArray() );
     }
 
@@ -73,8 +73,8 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->_coll->add( 3 );
         $res = $this->_coll->filter( function ( $e ) {
 
-            return is_numeric( $e );
-        } );
+                return is_numeric( $e );
+            } );
         $this->assertEquals( array( 0 => 1, 2 => 3 ), $res->toArray() );
     }
 
@@ -161,12 +161,12 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->_coll[] = 'two';
         $this->assertEquals( $this->_coll->forAll( function ( $k, $e ) {
 
-            return is_string( $e );
-        } ), true );
+                    return is_string( $e );
+                } ), true );
         $this->assertEquals( $this->_coll->forAll( function ( $k, $e ) {
 
-            return is_array( $e );
-        } ), false );
+                    return is_array( $e );
+                } ), false );
     }
 
     public function testPartition()
@@ -176,8 +176,8 @@ class CollectionTest extends \Doctrine\Tests\DoctrineTestCase
         $this->_coll[] = false;
         $partition = $this->_coll->partition( function ( $k, $e ) {
 
-            return $e == true;
-        } );
+                return $e == true;
+            } );
         $this->assertEquals( $partition[0][0], true );
         $this->assertEquals( $partition[1][0], false );
     }

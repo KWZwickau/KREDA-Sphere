@@ -56,12 +56,12 @@ class DbalFunctionalTestCase extends DbalTestCase
             foreach (array_reverse( $this->_sqlLoggerStack->queries ) as $query) {
                 $params = array_map( function ( $p ) {
 
-                    if (is_object( $p )) {
-                        return get_class( $p );
-                    } else {
-                        return "'".$p."'";
-                    }
-                }, $query['params'] ?: array() );
+                        if (is_object( $p )) {
+                            return get_class( $p );
+                        } else {
+                            return "'".$p."'";
+                        }
+                    }, $query['params'] ?: array() );
                 $queries .= ( $i + 1 ).". SQL: '".$query['sql']."' Params: ".implode( ", ", $params ).PHP_EOL;
                 $i--;
             }

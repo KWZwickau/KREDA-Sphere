@@ -28,10 +28,10 @@ class ClientTest extends \Guzzle\Tests\GuzzleTestCase
 
         $this->serviceTest = new ServiceDescription( array(
             'test_command' => new Operation( array(
-                'doc'    => 'documentationForCommand',
+                'doc'   => 'documentationForCommand',
                 'method' => 'DELETE',
-                'class'  => 'Guzzle\\Tests\\Service\\Mock\\Command\\MockCommand',
-                'args'   => array(
+                'class' => 'Guzzle\\Tests\\Service\\Mock\\Command\\MockCommand',
+                'args'  => array(
                     'bucket' => array(
                         'required' => true
                     ),

@@ -695,8 +695,8 @@ class DataAccessTest extends \Doctrine\Tests\DbalFunctionalTestCase
         $row = array_keys( $stmt->fetch() );
         $this->assertEquals( 0, count( array_filter( $row, function ( $v ) {
 
-            return !is_numeric( $v );
-        } ) ), "should be no non-numerical elements in the result." );
+                        return !is_numeric( $v );
+                    } ) ), "should be no non-numerical elements in the result." );
     }
 
     /**

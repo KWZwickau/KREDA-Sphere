@@ -115,17 +115,6 @@ class PHP_CodeCoverage_Filter
     }
 
     /**
-     * Adds a file to the blacklist.
-     *
-     * @param string $filename
-     */
-    public function addFileToBlacklist( $filename )
-    {
-
-        $this->blacklistedFiles[realpath( $filename )] = true;
-    }
-
-    /**
      * Removes a directory from the blacklist (recursively).
      *
      * @param string $directory
@@ -344,6 +333,17 @@ class PHP_CodeCoverage_Filter
         foreach ($files as $file) {
             $this->addFileToBlacklist( $file );
         }
+    }
+
+    /**
+     * Adds a file to the blacklist.
+     *
+     * @param string $filename
+     */
+    public function addFileToBlacklist( $filename )
+    {
+
+        $this->blacklistedFiles[realpath( $filename )] = true;
     }
 
     /**

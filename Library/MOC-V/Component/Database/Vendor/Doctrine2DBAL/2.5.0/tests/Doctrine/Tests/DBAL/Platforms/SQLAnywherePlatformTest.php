@@ -432,7 +432,7 @@ class SQLAnywherePlatformTest extends AbstractPlatformTestCase
 
         $this->setExpectedException( '\InvalidArgumentException' );
         $this->_platform->getForeignKeyDeclarationSQL( new ForeignKeyConstraint( array(), 'foreign_tbl',
-            array( 'c', 'd' ) ) );
+                array( 'c', 'd' ) ) );
     }
 
     public function testCannotGenerateForeignKeyConstraintSQLWithEmptyForeignColumns()
@@ -440,7 +440,7 @@ class SQLAnywherePlatformTest extends AbstractPlatformTestCase
 
         $this->setExpectedException( '\InvalidArgumentException' );
         $this->_platform->getForeignKeyDeclarationSQL( new ForeignKeyConstraint( array( 'a', 'b' ), 'foreign_tbl',
-            array() ) );
+                array() ) );
     }
 
     public function testCannotGenerateForeignKeyConstraintSQLWithEmptyForeignTableName()
@@ -448,7 +448,7 @@ class SQLAnywherePlatformTest extends AbstractPlatformTestCase
 
         $this->setExpectedException( '\InvalidArgumentException' );
         $this->_platform->getForeignKeyDeclarationSQL( new ForeignKeyConstraint( array( 'a', 'b' ), '',
-            array( 'c', 'd' ) ) );
+                array( 'c', 'd' ) ) );
     }
 
     public function testCannotGenerateCommonIndexWithCreateConstraintSQL()

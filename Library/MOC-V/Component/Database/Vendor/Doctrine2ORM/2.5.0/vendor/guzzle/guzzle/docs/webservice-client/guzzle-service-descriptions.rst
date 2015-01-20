@@ -116,12 +116,12 @@ endpoint and HTTP method. If an API has a ``DELETE /users/:id`` operation, a sat
 :header: "Property Name", "Value", "Description"
    :widths: 20, 15, 65
 
-		    "extends", "string", "Extend from another operation by name. The parent operation must be defined before the child."
-		    "httpMethod", "string", "HTTP method used with the operation (e.g. GET, POST, PUT, DELETE, PATCH, etc)"
-		    "uri", "string", "URI of the operation. The uri attribute can contain URI templates. The variables of the URI template are parameters of the operation with a location value of uri"
-		    "summary", "string", "Short summary of what the operation does"
-		    "class", "string", "Custom class to instantiate instead of the default Guzzle\\Service\\Command\\OperationCommand. Using this attribute allows you to define an operation using a service description, but allows more customized logic to be implemented in user-land code."
-		    "responseClass", "string", "Defined what is returned from the method. Can be a primitive, class name, or model name. You can specify the name of a class to return a more customized result from the operation (for example, a domain model object). When using the name of a PHP class, the class must implement ``Guzzle\Service\Command\ResponseClassInterface``."
+	    "extends", "string", "Extend from another operation by name. The parent operation must be defined before the child."
+	    "httpMethod", "string", "HTTP method used with the operation (e.g. GET, POST, PUT, DELETE, PATCH, etc)"
+	    "uri", "string", "URI of the operation. The uri attribute can contain URI templates. The variables of the URI template are parameters of the operation with a location value of uri"
+	    "summary", "string", "Short summary of what the operation does"
+	    "class", "string", "Custom class to instantiate instead of the default Guzzle\\Service\\Command\\OperationCommand. Using this attribute allows you to define an operation using a service description, but allows more customized logic to be implemented in user-land code."
+	    "responseClass", "string", "Defined what is returned from the method. Can be a primitive, class name, or model name. You can specify the name of a class to return a more customized result from the operation (for example, a domain model object). When using the name of a PHP class, the class must implement ``Guzzle\Service\Command\ResponseClassInterface``."
     "responseNotes", "string", "A description of the response returned by the operation"
     "responseType", "string", "The type of response that the operation creates: one of primitive, class, model, or documentation. If not specified, this value will be automatically inferred based on whether or not there is a model matching the name, if a matching class name is found, or set to 'primitive' by default."
     "deprecated", "boolean", "Whether or not the operation is deprecated"
@@ -266,16 +266,16 @@ Parameters in both operations and models are represented using the
 :header: "Property Name", "Value", "Description"
    :widths: 20, 15, 65
 
-		    "name", "string", "Unique name of the parameter"
-		    "type", "string|array", "Type of variable (string, number, integer, boolean, object, array, numeric, null, any). Types are using for validation and determining the structure of a parameter. You can use a union type by providing an array of simple types. If one of the union types matches the provided value, then the value is valid."
-		    "instanceOf", "string", "When the type is an object, you can specify the class that the object must implement"
-		    "required", "boolean", "Whether or not the parameter is required"
-		    "default", "mixed", "Default value to use if no value is supplied"
-		    "static", "boolean", "Set to true to specify that the parameter value cannot be changed from the default setting"
-		    "description", "string", "Documentation of the parameter"
-		    "location", "string", "The location of a request used to apply a parameter. Custom locations can be registered with a command, but the defaults are uri, query, statusCode, reasonPhrase, header, body, json, xml, postField, postFile, responseBody"
-		    "sentAs", "string", "Specifies how the data being modeled is sent over the wire. For example, you may wish to include certain headers in a response model that have a normalized casing of FooBar, but the actual header is x-foo-bar. In this case, sentAs would be set to x-foo-bar."
-		    "filters", "array", "Array of functions to to run a parameter value through."
+	    "name", "string", "Unique name of the parameter"
+	    "type", "string|array", "Type of variable (string, number, integer, boolean, object, array, numeric, null, any). Types are using for validation and determining the structure of a parameter. You can use a union type by providing an array of simple types. If one of the union types matches the provided value, then the value is valid."
+	    "instanceOf", "string", "When the type is an object, you can specify the class that the object must implement"
+	    "required", "boolean", "Whether or not the parameter is required"
+	    "default", "mixed", "Default value to use if no value is supplied"
+	    "static", "boolean", "Set to true to specify that the parameter value cannot be changed from the default setting"
+	    "description", "string", "Documentation of the parameter"
+	    "location", "string", "The location of a request used to apply a parameter. Custom locations can be registered with a command, but the defaults are uri, query, statusCode, reasonPhrase, header, body, json, xml, postField, postFile, responseBody"
+	    "sentAs", "string", "Specifies how the data being modeled is sent over the wire. For example, you may wish to include certain headers in a response model that have a normalized casing of FooBar, but the actual header is x-foo-bar. In this case, sentAs would be set to x-foo-bar."
+	    "filters", "array", "Array of functions to to run a parameter value through."
 
 filters
 ~~~~~~~

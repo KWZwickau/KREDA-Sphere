@@ -111,11 +111,10 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(
-            array(
-                'class'         => 'Class',
-                'code'          => ExceptionTest::ERROR_CODE,
-                'message'       => ExceptionTest::ERROR_MESSAGE,
-                'message_regex' => ''
+            array( 'class'         => 'Class',
+                   'code'          => ExceptionTest::ERROR_CODE,
+                   'message'       => ExceptionTest::ERROR_MESSAGE,
+                   'message_regex' => ''
             ),
             PHPUnit_Util_Test::getExpectedException( 'ExceptionTest', 'testNine' )
         );
@@ -126,11 +125,10 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(
-            array(
-                'class'         => 'Class',
-                'code'          => My\Space\ExceptionNamespaceTest::ERROR_CODE,
-                'message'       => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE,
-                'message_regex' => ''
+            array( 'class'         => 'Class',
+                   'code'          => My\Space\ExceptionNamespaceTest::ERROR_CODE,
+                   'message'       => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE,
+                   'message_regex' => ''
             ),
             PHPUnit_Util_Test::getExpectedException( 'My\Space\ExceptionNamespaceTest', 'testConstants' )
         );
@@ -146,32 +144,29 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(
-            array(
-                'class'         => 'Class',
-                'code'          => 1234,
-                'message'       => 'Message',
-                'message_regex' => 'ExceptionTest::UNKNOWN_MESSAGE_REGEX_CONSTANT'
+            array( 'class'         => 'Class',
+                   'code'          => 1234,
+                   'message'       => 'Message',
+                   'message_regex' => 'ExceptionTest::UNKNOWN_MESSAGE_REGEX_CONSTANT'
             ),
             PHPUnit_Util_Test::getExpectedException( 'ExceptionTest', 'testWithUnknowRegexMessageFromClassConstant' )
         );
 
         // Ensure the Class::CONST expression is only evaluated when the constant really exists
         $this->assertSame(
-            array(
-                'class'         => 'Class',
-                'code'          => 'ExceptionTest::UNKNOWN_CODE_CONSTANT',
-                'message'       => 'ExceptionTest::UNKNOWN_MESSAGE_CONSTANT',
-                'message_regex' => ''
+            array( 'class'         => 'Class',
+                   'code'          => 'ExceptionTest::UNKNOWN_CODE_CONSTANT',
+                   'message'       => 'ExceptionTest::UNKNOWN_MESSAGE_CONSTANT',
+                   'message_regex' => ''
             ),
             PHPUnit_Util_Test::getExpectedException( 'ExceptionTest', 'testUnknownConstants' )
         );
 
         $this->assertSame(
-            array(
-                'class'         => 'Class',
-                'code'          => 'My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT',
-                'message'       => 'My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT',
-                'message_regex' => ''
+            array( 'class'         => 'Class',
+                   'code'          => 'My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT',
+                   'message'       => 'My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT',
+                   'message_regex' => ''
             ),
             PHPUnit_Util_Test::getExpectedException( 'My\Space\ExceptionNamespaceTest', 'testUnknownConstants' )
         );

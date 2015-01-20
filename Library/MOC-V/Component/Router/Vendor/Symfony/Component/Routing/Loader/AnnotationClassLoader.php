@@ -134,13 +134,13 @@ abstract class AnnotationClassLoader implements LoaderInterface
     {
 
         $globals = array(
-            'path'     => '',
+            'path'    => '',
             'requirements' => array(),
-            'options'  => array(),
+            'options' => array(),
             'defaults' => array(),
-            'schemes'  => array(),
-            'methods'  => array(),
-            'host'     => '',
+            'schemes' => array(),
+            'methods' => array(),
+            'host'    => '',
             'condition' => '',
         );
 

@@ -48,8 +48,8 @@ class Template implements IVendorInterface
                 break;
             }
             default: {
-            throw new TemplateTypeException( $Type );
-            break;
+                throw new TemplateTypeException( ( $Type ? $Type : '-NA-' ) );
+                break;
             }
         }
     }
@@ -68,7 +68,7 @@ class Template implements IVendorInterface
             )
         );
 
-        $Template->getBridgeInterface()->loadFile( new FileParameter( $Location ), true );
+        $Template->getBridgeInterface()->loadFile( new FileParameter( $Location ) );
 
         return $Template->getBridgeInterface();
     }

@@ -20,7 +20,7 @@ Doctrine ORM don't panic. You can get help from different sources:
 -  On `StackOverflow <http://stackoverflow.com/questions/tagged/doctrine2>`_
 
 If you need more structure over the different topics you can browse the :doc:`table
-		of contents <toc>`.
+	of contents <toc>`.
 
 Getting Started
 ---------------

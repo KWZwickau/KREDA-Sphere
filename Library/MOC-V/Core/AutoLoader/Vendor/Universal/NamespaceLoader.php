@@ -19,10 +19,7 @@ class NamespaceLoader extends NamespaceSearch
     public function loadClass( $ClassName )
     {
 
-        //$ClassName = trim( $ClassName, '\\' );
-        if ($this->findSource( $ClassName )
-//            || $this->findInclude( $ClassName )
-        ) {
+        if ($this->findSource( $ClassName )) {
             return true;
         }
         return false;
@@ -71,37 +68,6 @@ class NamespaceLoader extends NamespaceSearch
     {
 
         return substr( $ClassName, 0, strrpos( $ClassName, '\\' ) );
-    }
-
-    /**
-     * @param string $ClassName
-     *
-     * @return bool
-     */
-    private function findInclude( $ClassName )
-    {
-
-        $LoadFile = str_replace( '_', DIRECTORY_SEPARATOR, $this->getClassName( $ClassName ) ).'.php';
-        if ($File = stream_resolve_include_path( $LoadFile )) {
-            /** @noinspection PhpIncludeInspection */
-            // @codeCoverageIgnoreStart
-            require_once( $File );
-            return true;
-            // @codeCoverageIgnoreEnd
-        }
-        return false;
-    }
-
-    /**
-     * @param string $ClassName
-     *
-     * @return string
-     */
-    protected function getClassName( $ClassName )
-    {
-
-        $ClassName = explode( '\\', $ClassName );
-        return end( $ClassName );
     }
 }
 

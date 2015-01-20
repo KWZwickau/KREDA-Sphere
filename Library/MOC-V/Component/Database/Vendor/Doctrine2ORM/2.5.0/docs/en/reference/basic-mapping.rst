@@ -259,7 +259,7 @@ built-in mapping types:
 -  ``blob``: Type that maps a SQL BLOB to a PHP resource stream
 
 A cookbook article shows how to define :doc:`your own custom mapping types
-		<../cookbook/custom-mapping-types>`.
+	<../cookbook/custom-mapping-types>`.
 
 .. note::
 
@@ -453,7 +453,7 @@ which means you can only use composite keys if you generate the primary key
 values yourself before calling ``EntityManager#persist()`` on the entity.
 
 More details on composite primary keys are discussed in a :doc:`dedicated tutorial
-		<../tutorials/composite-primary-keys>`.
+	<../tutorials/composite-primary-keys>`.
 
 Quoting Reserved Words
 ----------------------

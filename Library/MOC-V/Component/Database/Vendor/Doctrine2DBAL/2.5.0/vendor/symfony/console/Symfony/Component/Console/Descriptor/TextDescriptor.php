@@ -203,7 +203,7 @@ class TextDescriptor extends Descriptor
 
             if ($describedNamespace) {
                 $this->writeText( sprintf( "<comment>Available commands for the \"%s\" namespace:</comment>",
-                    $describedNamespace ), $options );
+                        $describedNamespace ), $options );
             } else {
                 $this->writeText( '<comment>Available commands:</comment>', $options );
             }
@@ -218,7 +218,7 @@ class TextDescriptor extends Descriptor
                 foreach ($namespace['commands'] as $name) {
                     $this->writeText( "\n" );
                     $this->writeText( sprintf( "  <info>%-${width}s</info> %s", $name,
-                        $description->getCommand( $name )->getDescription() ), $options );
+                            $description->getCommand( $name )->getDescription() ), $options );
                 }
             }
 

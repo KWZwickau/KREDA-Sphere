@@ -185,10 +185,10 @@ class Controller
                     $objectIdentityId = $name === 'classFieldAces' ? null : $ace->getAcl()->getId();
 
                     $this->connection->executeQuery( $this->getInsertAccessControlEntrySql( $classId, $objectIdentityId,
-                        $field, $i, $sid, $ace->getStrategy(), $ace->getMask(), $ace->isGranting(),
-                        $ace->isAuditSuccess(), $ace->isAuditFailure() ) );
+                            $field, $i, $sid, $ace->getStrategy(), $ace->getMask(), $ace->isGranting(),
+                            $ace->isAuditSuccess(), $ace->isAuditFailure() ) );
                     $aceId = $this->connection->executeQuery( $this->getSelectAccessControlEntryIdSql( $classId,
-                        $objectIdentityId, $field, $i ) )->fetchColumn();
+                            $objectIdentityId, $field, $i ) )->fetchColumn();
                     $this->loadedAces[$aceId] = $ace;
 
                     $aceIdProperty = new \ReflectionProperty( 'Symfony\Component\Security\Acl\Domain\Entry', 'id' );
@@ -270,10 +270,10 @@ class Controller
                 $objectIdentityId = $name === 'classAces' ? null : $ace->getAcl()->getId();
 
                 $this->connection->executeQuery( $this->getInsertAccessControlEntrySql( $classId, $objectIdentityId,
-                    null, $i, $sid, $ace->getStrategy(), $ace->getMask(), $ace->isGranting(),
-                    $ace->isAuditSuccess(), $ace->isAuditFailure() ) );
+                        null, $i, $sid, $ace->getStrategy(), $ace->getMask(), $ace->isGranting(),
+                        $ace->isAuditSuccess(), $ace->isAuditFailure() ) );
                 $aceId = $this->connection->executeQuery( $this->getSelectAccessControlEntryIdSql( $classId,
-                    $objectIdentityId, null, $i ) )->fetchColumn();
+                        $objectIdentityId, null, $i ) )->fetchColumn();
                 $this->loadedAces[$aceId] = $ace;
 
                 $aceIdProperty = new \ReflectionProperty( $ace, 'id' );

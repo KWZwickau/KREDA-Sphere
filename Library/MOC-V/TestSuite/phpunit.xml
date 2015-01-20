@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="./phpunit.php" colors="true"
-         verbose="true" backupGlobals="true" backupStaticAttributes="false" stopOnError="true" stopOnFailure="true"
+         verbose="true" backupGlobals="true" backupStaticAttributes="false" stopOnError="false" stopOnFailure="false"
          stopOnIncomplete="false" stopOnSkipped="false" timeoutForLargeTests="120" timeoutForMediumTests="30"
          timeoutForSmallTests="10" xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.2/phpunit.xsd"
          processIsolation="false">
@@ -9,6 +9,9 @@
             <directory suffix=".php">./Tests/Core</directory>
             <directory suffix=".php">./Tests/Component</directory>
         </testsuite>
+        <!--<testsuite name="Development">-->
+        <!--<directory suffix=".php">./Tests/Component/Document</directory>-->
+        <!--</testsuite>-->
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="false">
@@ -17,6 +20,7 @@
             <directory suffix=".php">./../Core</directory>
             <directory suffix=".php">./../Component</directory>
             <exclude>
+                <directory>./../Core/AutoLoader/Vendor/Symfony</directory>
                 <directory>./../Core/HttpKernel/Vendor/Symfony</directory>
                 <directory>./../Component/Router/Vendor/Symfony</directory>
                 <directory>./../Component/Database/Vendor/Doctrine2DBAL</directory>
@@ -25,6 +29,8 @@
                 <directory>./../Component/Template/Vendor/Smarty</directory>
                 <directory>./../Component/Documentation/Vendor/ApiGen</directory>
                 <directory>./../Component/Documentation/Vendor/Template</directory>
+                <directory>./../Component/Document/Vendor/PhpExcel</directory>
+                <directory>./../Component/Document/Vendor/DomPdf</directory>
             </exclude>
         </whitelist>
     </filter>
