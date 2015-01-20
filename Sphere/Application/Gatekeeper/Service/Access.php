@@ -203,6 +203,7 @@ class Access extends EntityAction
             }
         } else {
             // Resource is not protected -> Access granted
+            self::$AccessCache[] = $Route;
             return true;
         }
     }
