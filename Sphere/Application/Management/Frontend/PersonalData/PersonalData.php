@@ -1,14 +1,10 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Frontend\PersonalData;
 
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Guardian\PersonList as GuardianPersonList;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Others\PersonList as OthersPersonList;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Staff\PersonList as StaffPersonList;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Student\PersonDetail as StudentPersonDetail;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Student\PersonList as StudentPersonList;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\Summary\Summary;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\Teacher\PersonList as TeacherPersonList;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
@@ -24,6 +20,7 @@ use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\AbstractFrontend\Table\Structure\TableFromData;
 
 /**
  * Class PersonalData
@@ -63,8 +60,28 @@ class PersonalData extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Schüler' );
-        $View->setMessage( '' );
-        $View->setContent( new StudentPersonList( Management::servicePerson()->entityPersonAll() ) );
+        $PersonList = Management::servicePerson()->entityPersonAll();
+        array_walk( $PersonList, function ( TblPerson &$V, $I, $B ) {
+
+            $V->Option =
+                '<form action="'.$B.'/Sphere/Management/Person/Student/Detail" method="post">
+                <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                <div class="form-group">
+                    <div class="input-group">
+                        <button type="submit" class="btn btn-primary">Öffnen</button>
+                    </div>
+                </div>
+            </form>';
+        }, self::getUrlBase() );
+        $View->setContent( new TableFromData( $PersonList, '', true, array(
+            'Salutation',
+            'FirstName',
+            'MiddleName',
+            'LastName',
+            'Gender',
+            'Birthday',
+            'Option'
+        ) ) );
         $View->addButton( '/Sphere/Management/Person/Student/Create', 'Schüler hinzufügen' );
         return $View;
     }
@@ -84,7 +101,6 @@ class PersonalData extends AbstractFrontend
         $View->setContent( new StudentPersonDetail( Management::servicePerson()->entityPersonById( $Id ) ) );
         return $View;
     }
-
 
     /**
      * @return Stage
@@ -162,8 +178,20 @@ class PersonalData extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Lehrer' );
-        $View->setMessage( '' );
-        $View->setContent( new TeacherPersonList( Management::servicePerson()->entityPersonAll() ) );
+        $PersonList = Management::servicePerson()->entityPersonAll();
+        array_walk( $PersonList, function ( TblPerson &$V, $I, $B ) {
+
+            $V->Option =
+                '<form action="'.$B.'/Sphere/Management/Person/Teacher/Detail" method="post">
+                <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                <div class="form-group">
+                    <div class="input-group">
+                        <button type="submit" class="btn btn-primary">Öffnen</button>
+                    </div>
+                </div>
+            </form>';
+        }, self::getUrlBase() );
+        $View->setContent( new TableFromData( $PersonList ) );
         $View->addButton( '/Sphere/Management/Person/Teacher/Create', 'Lehrer hinzufügen' );
         return $View;
     }
@@ -177,8 +205,20 @@ class PersonalData extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Sorgeberechtigte' );
-        $View->setMessage( '' );
-        $View->setContent( new GuardianPersonList( Management::servicePerson()->entityPersonAll() ) );
+        $PersonList = Management::servicePerson()->entityPersonAll();
+        array_walk( $PersonList, function ( TblPerson &$V, $I, $B ) {
+
+            $V->Option =
+                '<form action="'.$B.'/Sphere/Management/Person/Guardian/Detail" method="post">
+                <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                <div class="form-group">
+                    <div class="input-group">
+                        <button type="submit" class="btn btn-primary">Öffnen</button>
+                    </div>
+                </div>
+            </form>';
+        }, self::getUrlBase() );
+        $View->setContent( new TableFromData( $PersonList ) );
         $View->addButton( '/Sphere/Management/Person/Guardian/Create', 'Sorgeberechtigte hinzufügen' );
         return $View;
     }
@@ -192,8 +232,20 @@ class PersonalData extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Verwaltung' );
-        $View->setMessage( '' );
-        $View->setContent( new StaffPersonList( Management::servicePerson()->entityPersonAll() ) );
+        $PersonList = Management::servicePerson()->entityPersonAll();
+        array_walk( $PersonList, function ( TblPerson &$V, $I, $B ) {
+
+            $V->Option =
+                '<form action="'.$B.'/Sphere/Management/Person/Staff/Detail" method="post">
+                <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                <div class="form-group">
+                    <div class="input-group">
+                        <button type="submit" class="btn btn-primary">Öffnen</button>
+                    </div>
+                </div>
+            </form>';
+        }, self::getUrlBase() );
+        $View->setContent( new TableFromData( $PersonList ) );
         $View->addButton( '/Sphere/Management/Person/Staff/Create', 'Mitarbeiter hinzufügen' );
         return $View;
     }
@@ -207,8 +259,20 @@ class PersonalData extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Sonstige' );
-        $View->setMessage( '' );
-        $View->setContent( new OthersPersonList( Management::servicePerson()->entityPersonAll() ) );
+        $PersonList = Management::servicePerson()->entityPersonAll();
+        array_walk( $PersonList, function ( TblPerson &$V, $I, $B ) {
+
+            $V->Option =
+                '<form action="'.$B.'/Sphere/Management/Person/Others/Detail" method="post">
+                <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                <div class="form-group">
+                    <div class="input-group">
+                        <button type="submit" class="btn btn-primary">Öffnen</button>
+                    </div>
+                </div>
+            </form>';
+        }, self::getUrlBase() );
+        $View->setContent( new TableFromData( $PersonList ) );
         $View->addButton( '/Sphere/Management/Person/Others/Create', 'Person hinzufügen' );
         return $View;
     }

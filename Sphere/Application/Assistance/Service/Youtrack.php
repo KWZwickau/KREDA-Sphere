@@ -7,7 +7,6 @@ use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageInfo;
 use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageSuccess;
 use KREDA\Sphere\Common\AbstractFrontend\Form\AbstractForm;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
@@ -78,16 +77,7 @@ class Youtrack extends AbstractService
              */
             try {
                 $this->ticketCreate( $TicketSubject, $TicketMessage );
-                return new FormDefault( array(
-                    new GridFormGroup(
-                        new GridFormRow(
-                            new GridFormCol(
-                                new MessageSuccess( 'Das Problem wurde erfolgreich dem Support mitgeteilt' )
-                            )
-                        )
-                    ),
-                    $this->ticketCurrent()
-                ));
+                return new MessageSuccess( 'Das Problem wurde erfolgreich dem Support mitgeteilt' );
             } catch( \Exception $E ) {
                 return new MessageDanger( 'Das Problem konnte nicht übertragen werden' );
             }

@@ -2,8 +2,10 @@
 namespace KREDA\Sphere\Common;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Shell;
+use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\AbstractFrontend\Redirect;
 use MOC\V\Component\Template\Component\IBridgeInterface;
+use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class AbstractFrontend
@@ -22,7 +24,7 @@ abstract class AbstractFrontend extends Shell
      *
      * @return Redirect
      */
-    final static protected function getRedirect( $Route, $Timeout = 15 )
+    final protected static function getRedirect( $Route, $Timeout = 15 )
     {
 
         return new Redirect( $Route, $Timeout );
@@ -33,7 +35,7 @@ abstract class AbstractFrontend extends Shell
      * @param string           $ElementName
      * @param string           $ErrorMessage
      */
-    final static protected function setFormError( IBridgeInterface &$Template, $ElementName, $ErrorMessage )
+    final protected static function setFormError( IBridgeInterface &$Template, $ElementName, $ErrorMessage )
     {
 
         $Template->setVariable(
@@ -52,7 +54,7 @@ abstract class AbstractFrontend extends Shell
      * @param string           $RequestKey
      * @param string           $VariableName
      */
-    final static protected function setRequestValue( IBridgeInterface &$Template, $RequestKey, $VariableName )
+    final protected static function setRequestValue( IBridgeInterface &$Template, $RequestKey, $VariableName )
     {
 
         if (isset( $_REQUEST[$RequestKey] )) {
@@ -65,7 +67,7 @@ abstract class AbstractFrontend extends Shell
      *
      * @param IBridgeInterface $Template
      */
-    final static protected function setRequestValues( IBridgeInterface &$Template )
+    final protected static function setRequestValues( IBridgeInterface &$Template )
     {
 
         foreach ((array)$_REQUEST as $Key => $Value) {
@@ -77,11 +79,21 @@ abstract class AbstractFrontend extends Shell
 
     /**
      * @return string
-     * @throws \Exception
+     */
+    final protected static function getUrlBase()
+    {
+
+        return HttpKernel::getRequest()->getUrlBase();
+    }
+
+    /**
+     * @return string
      */
     public function getContent()
     {
 
-        throw new \Exception( __CLASS__.' MUST NOT create content.' );
+        $Error = new MessageDanger( __METHOD__.' MUST NOT create content.' );
+        return $Error->getContent();
     }
+
 }
