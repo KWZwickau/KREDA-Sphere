@@ -319,7 +319,7 @@ ApiGen.elements = [
     ],
     [
         "c",
-        "MOC\\V\\Core\\AutoLoader\\Component\\Bridge\\Repository\\SymfonyClassLoader"
+        "MOC\\V\\Core\\AutoLoader\\Component\\Bridge\\Repository\\MultitonNamespace"
     ],
     [
         "c",
@@ -368,6 +368,10 @@ ApiGen.elements = [
     [
         "c",
         "MOC\\V\\Core\\AutoLoader\\Exception\\AutoLoaderException"
+    ],
+    [
+        "c",
+        "MOC\\V\\Core\\AutoLoader\\Vendor\\Multiton\\NamespaceLoader"
     ],
     [
         "c",

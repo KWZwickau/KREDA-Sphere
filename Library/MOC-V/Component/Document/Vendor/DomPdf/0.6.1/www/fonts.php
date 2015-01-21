@@ -73,55 +73,55 @@ $extensions = array( "ttf", "afm", "afm.php", "ufm", "ufm.php" );
             }
             ?>
         </td>
-        <?php
-        $i = 0;
-        foreach ($variants as $name => $path) {
-            if ($i > 0) {
-                echo "<tr>";
-            }
+            <?php
+            $i = 0;
+            foreach ($variants as $name => $path) {
+                if ($i > 0) {
+                    echo "<tr>";
+                }
 
-            echo "
+                echo "
         <td>
           <strong style='width: 10em;'>".htmlentities( $name )."</strong> : ".htmlentities( $path )."<br />
         </td>";
 
-            foreach ($extensions as $ext) {
-                $v = "";
-                $class = "";
+                foreach ($extensions as $ext) {
+                    $v = "";
+                    $class = "";
 
-                if (is_readable( "$path.$ext" )) {
-                    // if not cache file
-                    if (strpos( $ext, ".php" ) === false) {
-                        $class = "ok";
-                        $v = $ext;
-                    } // cache file
-                    else {
-                        // check if old cache format
-                        $content = file_get_contents( "$path.$ext", null, null, null, 50 );
-                        if (strpos( $content, '$this->' )) {
-                            $v = "DEPREC.";
-                        } else {
-                            ob_start();
-                            $d = include "$path.$ext";
-                            ob_end_clean();
-
-                            if ($d == 1) {
+                    if (is_readable( "$path.$ext" )) {
+                        // if not cache file
+                        if (strpos( $ext, ".php" ) === false) {
+                            $class = "ok";
+                            $v = $ext;
+                        } // cache file
+                        else {
+                            // check if old cache format
+                            $content = file_get_contents( "$path.$ext", null, null, null, 50 );
+                            if (strpos( $content, '$this->' )) {
                                 $v = "DEPREC.";
                             } else {
-                                $class = "ok";
-                                $v = $d["_version_"];
+                                ob_start();
+                                $d = include "$path.$ext";
+                                ob_end_clean();
+
+                                if ($d == 1) {
+                                    $v = "DEPREC.";
+                                } else {
+                                    $class = "ok";
+                                    $v = $d["_version_"];
+                                }
                             }
                         }
                     }
+
+                    echo "<td style='width: 2em; text-align: center;' class='$class'>$v</td>";
                 }
 
-                echo "<td style='width: 2em; text-align: center;' class='$class'>$v</td>";
+                echo "</tr>";
+                $i++;
             }
-
-            echo "</tr>";
-            $i++;
-        }
-        ?>
+            ?>
         <?php } ?>
 
 </table>
@@ -130,39 +130,39 @@ $extensions = array( "ttf", "afm", "afm.php", "ufm", "ufm.php" );
 
 <script type="text/javascript">
     function checkFileName( form )
-    {
-        var fields = {
-            normal: "Normal",
-            bold: "Bold",
-            bold_italic: "Bold italic",
-            italic: "Italic"
-        };
-        var pattern = /\.[ot]tf$/i;
-        var ok = true;
-
-        if (!form.elements.family.value) {
-            alert( "The font name is required" );
-            form.elements.family.focus();
-            return false;
-        }
-
-        $.each( fields, function( key, name )
         {
-            var value = form.elements["file[" + key + "]"].value;
+            var fields = {
+                normal: "Normal",
+                bold: "Bold",
+                bold_italic: "Bold italic",
+                italic: "Italic"
+            };
+            var pattern = /\.[ot]tf$/i;
+            var ok = true;
 
-            if (!value) {
-                return;
-            }
-
-            if (!value.match( pattern )) {
-                alert( "The font name specified for " + name + " is not a TrueType font" );
-                ok = false;
+            if (!form.elements.family.value) {
+                alert( "The font name is required" );
+                form.elements.family.focus();
                 return false;
             }
-        } );
 
-        return ok;
-    }
+            $.each( fields, function( key, name )
+            {
+                var value = form.elements["file[" + key + "]"].value;
+
+                if (!value) {
+                    return;
+                }
+
+                if (!value.match( pattern )) {
+                    alert( "The font name specified for " + name + " is not a TrueType font" );
+                    ok = false;
+                    return false;
+                }
+            } );
+
+            return ok;
+        }
 </script>
 
 <?php

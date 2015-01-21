@@ -2057,13 +2057,11 @@
                         h = h.toLowerCase();
                     }
                     m = 0;
-                    for (var q = g.length, p; m < q; m++) {
-                        if (p = g[m]) {
-                            for (; (p = p.previousSibling) && p.nodeType !== 1;) {
-                                ;
-                            }
-                            g[m] = l || p && p.nodeName.toLowerCase() === h ? p || false : p === h
+                    for (var q = g.length, p; m < q; m++)if (p = g[m]) {
+                        for (; (p = p.previousSibling) && p.nodeType !== 1;) {
+                            ;
                         }
+                        g[m] = l || p && p.nodeName.toLowerCase() === h ? p || false : p === h
                     }
                     l && k.filter( h, g, true )
                 }, ">": function( g, h )
@@ -2285,10 +2283,10 @@
                     var q = h[1], p = n.filters[q];
                     if (p) {
                         return p( g, l, h, m );
-                    } else {
+                    } else
                         if (q === "contains") {
                             return (g.textContent || g.innerText || a( [g] ) || "").indexOf( h[3] ) >= 0;
-                        } else {
+                        } else
                             if (q === "not") {
                                 h =
                                     h[3];
@@ -2302,8 +2300,6 @@
                             } else {
                                 k.error( "Syntax error, unrecognized expression: " + q )
                             }
-                        }
-                    }
                 }, CHILD: function( g, h )
                 {
                     var l = h[1], m = g;
@@ -2432,47 +2428,41 @@
                 }
                 return g
             };
-        } else {
-            if ("sourceIndex"in s.documentElement) {
-                B = function( g, h )
+        } else
+            if ("sourceIndex"in s.documentElement)B = function( g, h )
+            {
+                if (!g.sourceIndex || !h.sourceIndex) {
+                    if (g == h) {
+                        i = true;
+                    }
+                    return g.sourceIndex ? -1 : 1
+                }
+                g = g.sourceIndex - h.sourceIndex;
+                if (g === 0) {
+                    i = true;
+                }
+                return g
+            }; else
+                if (s.createRange)B = function( g, h )
                 {
-                    if (!g.sourceIndex || !h.sourceIndex) {
+                    if (!g.ownerDocument || !h.ownerDocument) {
                         if (g == h) {
                             i = true;
                         }
-                        return g.sourceIndex ? -1 : 1
+                        return g.ownerDocument ? -1 : 1
                     }
-                    g = g.sourceIndex - h.sourceIndex;
+                    var l = g.ownerDocument.createRange(), m =
+                        h.ownerDocument.createRange();
+                    l.setStart( g, 0 );
+                    l.setEnd( g, 0 );
+                    m.setStart( h, 0 );
+                    m.setEnd( h, 0 );
+                    g = l.compareBoundaryPoints( Range.START_TO_END, m );
                     if (g === 0) {
                         i = true;
                     }
                     return g
                 };
-            } else {
-                if (s.createRange) {
-                    B = function( g, h )
-                    {
-                        if (!g.ownerDocument || !h.ownerDocument) {
-                            if (g == h) {
-                                i = true;
-                            }
-                            return g.ownerDocument ? -1 : 1
-                        }
-                        var l = g.ownerDocument.createRange(), m =
-                            h.ownerDocument.createRange();
-                        l.setStart( g, 0 );
-                        l.setEnd( g, 0 );
-                        m.setStart( h, 0 );
-                        m.setEnd( h, 0 );
-                        g = l.compareBoundaryPoints( Range.START_TO_END, m );
-                        if (g === 0) {
-                            i = true;
-                        }
-                        return g
-                    };
-                }
-            }
-        }
         (function()
         {
             var g = s.createElement( "div" ), h = "script" + (new Date).getTime();
@@ -2531,11 +2521,9 @@
                 k = function( m, q, p, v )
                 {
                     q = q || s;
-                    if (!v && q.nodeType === 9 && !x( q )) {
-                        try {
-                            return z( q.querySelectorAll( m ), p )
-                        } catch( t ) {
-                        }
+                    if (!v && q.nodeType === 9 && !x( q ))try {
+                        return z( q.querySelectorAll( m ), p )
+                    } catch( t ) {
                     }
                     return g( m, q, p, v )
                 };
@@ -2605,13 +2593,11 @@
             {
                 return !!b.call( e, j, e ) === d
             } );
-        } else {
-            if (b.nodeType) {
-                return c.grep( a, function( e )
-                {
-                    return e === b === d
-                } );
-            } else {
+        } else
+            if (b.nodeType)return c.grep( a, function( e )
+            {
+                return e === b === d
+            } ); else
                 if (typeof b === "string") {
                     var f = c.grep( a, function( e )
                     {
@@ -2623,8 +2609,6 @@
                         b = c.filter( b, f )
                     }
                 }
-            }
-        }
         return c.grep( a, function( e )
         {
             return c.inArray( e, b ) >= 0 === d
@@ -2636,15 +2620,9 @@
             for (var b = this.pushStack( "", "find", a ), d = 0, f = 0, e = this.length; f < e; f++) {
                 d = b.length;
                 c.find( a, this[f], b );
-                if (f > 0) {
-                    for (var j = d; j < b.length; j++) {
-                        for (var i = 0; i < d; i++) {
-                            if (b[i] === b[j]) {
-                                b.splice( j--, 1 );
-                                break
-                            }
-                        }
-                    }
+                if (f > 0)for (var j = d; j < b.length; j++)for (var i = 0; i < d; i++)if (b[i] === b[j]) {
+                    b.splice( j--, 1 );
+                    break
                 }
             }
             return b
@@ -2914,13 +2892,12 @@
                 {
                     this.parentNode.insertBefore( b, this )
                 } );
-            } else {
+            } else
                 if (arguments.length) {
                     var a = c( arguments[0] );
                     a.push.apply( a, this.toArray() );
                     return this.pushStack( a, "before", arguments )
                 }
-            }
         }, after: function()
         {
             if (this[0] && this[0].parentNode) {
@@ -2929,23 +2906,20 @@
                     this.parentNode.insertBefore( b,
                         this.nextSibling )
                 } );
-            } else {
+            } else
                 if (arguments.length) {
                     var a = this.pushStack( this, "after", arguments );
                     a.push.apply( a, c( arguments[0] ).toArray() );
                     return a
                 }
-            }
         }, remove: function( a, b )
         {
-            for (var d = 0, f; (f = this[d]) != null; d++) {
-                if (!a || c.filter( a, [f] ).length) {
-                    if (!b && f.nodeType === 1) {
-                        c.cleanData( f.getElementsByTagName( "*" ) );
-                        c.cleanData( [f] )
-                    }
-                    f.parentNode && f.parentNode.removeChild( f )
+            for (var d = 0, f; (f = this[d]) != null; d++)if (!a || c.filter( a, [f] ).length) {
+                if (!b && f.nodeType === 1) {
+                    c.cleanData( f.getElementsByTagName( "*" ) );
+                    c.cleanData( [f] )
                 }
+                f.parentNode && f.parentNode.removeChild( f )
             }
             return this
         }, empty: function()
@@ -2983,33 +2957,28 @@
             if (a === w) {
                 return this[0] && this[0].nodeType === 1 ? this[0].innerHTML.replace( Ja,
                     "" ) : null;
-            } else {
+            } else
                 if (typeof a === "string" && !ta.test( a ) && (c.support.leadingWhitespace || !V.test( a )) && !F[(La.exec( a ) || [
                         "",
                         ""
                     ])[1].toLowerCase()]) {
                     a = a.replace( Ka, Ma );
                     try {
-                        for (var b = 0, d = this.length; b < d; b++) {
-                            if (this[b].nodeType === 1) {
-                                c.cleanData( this[b].getElementsByTagName( "*" ) );
-                                this[b].innerHTML = a
-                            }
+                        for (var b = 0, d = this.length; b < d; b++)if (this[b].nodeType === 1) {
+                            c.cleanData( this[b].getElementsByTagName( "*" ) );
+                            this[b].innerHTML = a
                         }
                     } catch( f ) {
                         this.empty().append( a )
                     }
-                } else {
-                    c.isFunction( a ) ? this.each( function( e )
+                } else c.isFunction( a ) ? this.each( function( e )
+                {
+                    var j = c( this ), i = j.html();
+                    j.empty().append( function()
                     {
-                        var j = c( this ), i = j.html();
-                        j.empty().append( function()
-                        {
-                            return a.call( this, e, i )
-                        } )
-                    } ) : this.empty().append( a );
-                }
-            }
+                        return a.call( this, e, i )
+                    } )
+                } ) : this.empty().append( a );
             return this
         }, replaceWith: function( a )
         {
@@ -3120,7 +3089,7 @@
                 if (i) {
                     if (typeof i === "string" && !jb.test( i )) {
                         i = b.createTextNode( i );
-                    } else {
+                    } else
                         if (typeof i === "string") {
                             i = i.replace( Ka, Ma );
                             var o = (La.exec( i ) || [
@@ -3142,7 +3111,6 @@
                                 r.firstChild );
                             i = r.childNodes
                         }
-                    }
                     if (i.nodeType) {
                         e.push( i );
                     } else {
@@ -3151,37 +3119,31 @@
                     }
                 }
             }
-            if (d) {
-                for (j = 0; e[j]; j++) {
-                    if (f && c.nodeName( e[j],
-                            "script" ) && (!e[j].type || e[j].type.toLowerCase() === "text/javascript")) {
-                        f.push( e[j].parentNode ? e[j].parentNode.removeChild( e[j] ) : e[j] );
-                    } else {
-                        e[j].nodeType === 1 && e.splice.apply( e,
-                            [j + 1, 0].concat( c.makeArray( e[j].getElementsByTagName( "script" ) ) ) );
-                        d.appendChild( e[j] )
-                    }
-                }
+            if (d)for (j = 0; e[j]; j++)if (f && c.nodeName( e[j],
+                    "script" ) && (!e[j].type || e[j].type.toLowerCase() === "text/javascript")) {
+                f.push( e[j].parentNode ? e[j].parentNode.removeChild( e[j] ) : e[j] );
+            } else {
+                e[j].nodeType === 1 && e.splice.apply( e,
+                    [j + 1, 0].concat( c.makeArray( e[j].getElementsByTagName( "script" ) ) ) );
+                d.appendChild( e[j] )
             }
             return e
         }, cleanData: function( a )
         {
-            for (var b, d, f = c.cache, e = c.event.special, j = c.support.deleteExpando, i = 0, o; (o = a[i]) != null; i++) {
-                if (d = o[c.expando]) {
-                    b = f[d];
-                    if (b.events) {
-                        for (var k in b.events) {
-                            e[k] ?
-                                c.event.remove( o, k ) : Ca( o, k, b.handle );
-                        }
+            for (var b, d, f = c.cache, e = c.event.special, j = c.support.deleteExpando, i = 0, o; (o = a[i]) != null; i++)if (d = o[c.expando]) {
+                b = f[d];
+                if (b.events) {
+                    for (var k in b.events) {
+                        e[k] ?
+                            c.event.remove( o, k ) : Ca( o, k, b.handle );
                     }
-                    if (j) {
-                        delete o[c.expando];
-                    } else {
-                        o.removeAttribute && o.removeAttribute( c.expando );
-                    }
-                    delete f[d]
                 }
+                if (j) {
+                    delete o[c.expando];
+                } else {
+                    o.removeAttribute && o.removeAttribute( c.expando );
+                }
+                delete f[d]
             }
         }
     } );
@@ -3275,7 +3237,7 @@
             }
             if (!d && e && e[b]) {
                 f = e[b];
-            } else {
+            } else
                 if (rb) {
                     if (ha.test( b )) {
                         b = "float";
@@ -3292,7 +3254,7 @@
                     if (b === "opacity" && f === "") {
                         f = "1"
                     }
-                } else {
+                } else
                     if (a.currentStyle) {
                         d = b.replace( ia, ja );
                         f = a.currentStyle[b] || a.currentStyle[d];
@@ -3306,8 +3268,6 @@
                             a.runtimeStyle.left = j
                         }
                     }
-                }
-            }
             return f
         }, swap: function( a, b, d )
         {
@@ -3352,17 +3312,14 @@
                 a = a.slice( 0, f )
             }
             f = "GET";
-            if (b) {
-                if (c.isFunction( b )) {
-                    d = b;
-                    b = null
-                } else {
-                    if (typeof b === "object") {
-                        b = c.param( b, c.ajaxSettings.traditional );
-                        f = "POST"
-                    }
+            if (b)if (c.isFunction( b )) {
+                d = b;
+                b = null
+            } else
+                if (typeof b === "object") {
+                    b = c.param( b, c.ajaxSettings.traditional );
+                    f = "POST"
                 }
-            }
             var j = this;
             c.ajax( {
                 url: a, type: f, dataType: "html", data: b, complete: function( i, o )
@@ -3580,20 +3537,18 @@
                         if (x) {
                             x.onreadystatechange = c.noop
                         }
-                    } else {
+                    } else
                         if (!E && x && (x.readyState === 4 || q === "timeout")) {
                             E = true;
                             x.onreadystatechange = c.noop;
                             i = q === "timeout" ? "timeout" : !c.httpSuccess( x ) ? "error" : e.ifModified && c.httpNotModified( x,
                                 e.url ) ? "notmodified" : "success";
                             var p;
-                            if (i === "success") {
-                                try {
-                                    o = c.httpData( x, e.dataType, e )
-                                } catch( v ) {
-                                    i = "parsererror";
-                                    p = v
-                                }
+                            if (i === "success")try {
+                                o = c.httpData( x, e.dataType, e )
+                            } catch( v ) {
+                                i = "parsererror";
+                                p = v
                             }
                             if (i === "success" || i === "notmodified") {
                                 j || b();
@@ -3606,7 +3561,6 @@
                                 x = null
                             }
                         }
-                    }
                 };
                 try {
                     var h = x.abort;
@@ -3866,11 +3820,9 @@
             a && this.queue( [] );
             this.each( function()
             {
-                for (var f = d.length - 1; f >= 0; f--) {
-                    if (d[f].elem === this) {
-                        b && d[f]( true );
-                        d.splice( f, 1 )
-                    }
+                for (var f = d.length - 1; f >= 0; f--)if (d[f].elem === this) {
+                    b && d[f]( true );
+                    d.splice( f, 1 )
                 }
             } );
             b || this.dequeue();
@@ -4042,15 +3994,13 @@
             }
         }
     } );
-    if (c.expr && c.expr.filters) {
-        c.expr.filters.animated = function( a )
+    if (c.expr && c.expr.filters)c.expr.filters.animated = function( a )
+    {
+        return c.grep( c.timers, function( b )
         {
-            return c.grep( c.timers, function( b )
-            {
-                return a === b.elem
-            } ).length
-        };
-    }
+            return a === b.elem
+        } ).length
+    };
     c.fn.offset = "getBoundingClientRect"in s.documentElement ?
         function( a )
         {

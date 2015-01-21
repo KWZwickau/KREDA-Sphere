@@ -79,11 +79,11 @@ if (( $gm = extension_loaded( "gmagick" ) ) || ( $im = extension_loaded( "imagic
 ?>
 
 <table class="setup">
-    <tr>
-        <th></th>
-        <th>Required</th>
-        <th>Present</th>
-    </tr>
+        <tr>
+            <th></th>
+            <th>Required</th>
+            <th>Present</th>
+        </tr>
 
     <?php foreach ($server_configs as $label => $server_config) { ?>
         <tr>
@@ -94,7 +94,7 @@ if (( $gm = extension_loaded( "gmagick" ) ) || ( $im = extension_loaded( "imagic
                 echo $server_config["value"];
                 if ($server_config["result"] && !$server_config["value"]) {
                     echo "Yes";
-                }
+                    }
                 if (!$server_config["result"]) {
                     if (isset( $server_config["fallback"] )) {
                         echo "<div>No. ".$server_config["fallback"]."</div>";
@@ -102,7 +102,7 @@ if (( $gm = extension_loaded( "gmagick" ) ) || ( $im = extension_loaded( "imagic
                     if (isset( $server_config["failure"] )) {
                         echo "<div>".$server_config["failure"]."</div>";
                     }
-                }
+                    }
                 ?>
             </td>
         </tr>
@@ -233,12 +233,12 @@ $constants = array(
 ?>
 
 <table class="setup">
-    <tr>
-        <th>Config name</th>
-        <th>Value</th>
-        <th>Description</th>
-        <th>Status</th>
-    </tr>
+        <tr>
+            <th>Config name</th>
+            <th>Value</th>
+            <th>Description</th>
+            <th>Status</th>
+        </tr>
 
     <?php foreach ($defined_constants["user"] as $const => $value) { ?>
         <tr>

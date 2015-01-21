@@ -20,7 +20,6 @@ for ( $i = 0; $i < 30; $i++) {
                rand(1,40));
 }
 
-
 </script>
 <?php
 echo "<p>Current PHP version: ".phpversion().".  ";
