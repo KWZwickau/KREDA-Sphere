@@ -151,7 +151,7 @@ ApiGen.elements = [
     ],
     [
         "c",
-        "MOC\\V\\Component\\Documentation\\Component\\Bridge\\Repository\\ApiGenDocumentation"
+        "MOC\\V\\Component\\Documentation\\Component\\Bridge\\Repository\\ApiGen"
     ],
     [
         "c",
@@ -184,6 +184,10 @@ ApiGen.elements = [
     [
         "c",
         "MOC\\V\\Component\\Documentation\\Component\\Parameter\\Repository\\DirectoryParameter"
+    ],
+    [
+        "c",
+        "MOC\\V\\Component\\Documentation\\Component\\Parameter\\Repository\\ExcludeParameter"
     ],
     [
         "c",

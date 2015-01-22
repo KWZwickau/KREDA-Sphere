@@ -292,7 +292,7 @@ $constants = array(
                         break;
                 }
                 echo 'class="'.( $success ? "ok" : "failed" ).'"';
-            }
+                }
             ?>><?php echo $message; ?></td>
         </tr>
     <?php } ?>

@@ -1,6 +1,7 @@
 <?php
 namespace MOC\V\TestSuite\Tests\Component\Documentation;
 
+use MOC\V\Component\Documentation\Component\Parameter\Repository\DirectoryParameter;
 use MOC\V\Component\Documentation\Documentation;
 use MOC\V\Component\Documentation\Vendor\Vendor;
 
@@ -11,6 +12,31 @@ use MOC\V\Component\Documentation\Vendor\Vendor;
  */
 class ModuleTest extends \PHPUnit_Framework_TestCase
 {
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function tearDown()
+    {
+
+        if (false !== ( $Path = realpath( __DIR__.'/Content' ) )) {
+            $Iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator( $Path, \RecursiveDirectoryIterator::SKIP_DOTS ),
+                \RecursiveIteratorIterator::CHILD_FIRST
+            );
+            /** @var \SplFileInfo $FileInfo */
+            foreach ($Iterator as $FileInfo) {
+                if ($FileInfo->getBasename() != 'README.md') {
+                    if ($FileInfo->isFile()) {
+                        unlink( $FileInfo->getPathname() );
+                    }
+                    if ($FileInfo->isDir()) {
+                        rmdir( $FileInfo->getPathname() );
+                    }
+                }
+            }
+        }
+    }
 
     public function testModule()
     {
@@ -29,20 +55,25 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf( 'MOC\V\Component\Documentation\Component\IBridgeInterface',
             $Module->getBridgeInterface()
         );
-
     }
 
     public function testStaticApiGenDocumentation()
     {
 
-        $Documentation = Documentation::getApiGenDocumentation();
+        $Documentation = Documentation::getApiGenDocumentation( 'MOC', 'Test',
+            new DirectoryParameter( __DIR__ ),
+            new DirectoryParameter( __DIR__.'/Content/' )
+        );
         $this->assertInstanceOf( 'MOC\V\Component\Documentation\Component\IBridgeInterface', $Documentation );
     }
 
     public function testStaticDocumentation()
     {
 
-        $Documentation = Documentation::getDocumentation();
+        $Documentation = Documentation::getDocumentation( 'MOC', 'Test',
+            new DirectoryParameter( __DIR__ ),
+            new DirectoryParameter( __DIR__.'/Content/' )
+        );
         $this->assertInstanceOf( 'MOC\V\Component\Documentation\Component\IBridgeInterface', $Documentation );
     }
 }
