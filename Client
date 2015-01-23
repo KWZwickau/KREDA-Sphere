@@ -8,7 +8,6 @@ use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\Statistic\Statistic;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Element;
@@ -145,9 +144,9 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Billing' )) {
                 Billing::registerApplication( $Config );
             }
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Statistic' )) {
-                Statistic::registerApplication( $Config );
-            }
+//            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Statistic' )) {
+//                Statistic::registerApplication( $Config );
+//            }
         }
         /**
          * Setup Public-Access

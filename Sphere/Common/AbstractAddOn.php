@@ -2,6 +2,8 @@
 namespace KREDA\Sphere\Common;
 
 use KREDA\Sphere\Common\AddOn\Debugger;
+use MOC\V\Component\Document\Component\Bridge\Repository\DomPdf;
+use MOC\V\Component\Document\Document;
 
 /**
  * Class AbstractAddOn
@@ -19,5 +21,14 @@ abstract class AbstractAddOn
     {
 
         return new Debugger();
+    }
+
+    /**
+     * @return DomPdf
+     */
+    final public static function getAddonDocumentPdf( $Location )
+    {
+
+        return Document::getPdfDocument( $Location );
     }
 }
