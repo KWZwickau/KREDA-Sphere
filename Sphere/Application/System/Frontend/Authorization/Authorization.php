@@ -181,8 +181,23 @@ class Authorization extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Rollen' );
+
+        $RoleList = Gatekeeper::serviceAccount()->entityAccountRoleAll();
+        array_walk( $RoleList, function ( TblAccountRole &$V, $I, $B ) {
+
+            $V->Option =
+                '<form action="'.$B.'/Sphere/System/Authorization/Role/Access" method="post">
+                <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                <div class="form-group">
+                    <div class="input-group">
+                        <button type="submit" class="btn btn-primary">Zugriffslevel</button>
+                    </div>
+                </div>
+            </form>';
+        }, self::getUrlBase() );
+
         $View->setContent(
-            new TableFromData( Gatekeeper::serviceAccount()->entityAccountRoleAll(), 'Bestehende Rollen <small>Zugriffslevelgruppen</small>' )
+            new TableFromData( $RoleList, 'Bestehende Rollen <small>Zugriffslevelgruppen</small>' )
             .Gatekeeper::serviceAccount()->executeCreateRole(
                 new FormDefault(
                     new GridFormGroup(
