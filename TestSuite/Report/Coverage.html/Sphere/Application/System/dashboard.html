@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for D:\WebProject\KREDA-Sphere/Sphere/Application/System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../css/nv.d3.css" rel="stylesheet">
+  <link href="../../../css/style.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+  <script src="../../../js/html5shiv.js"></script>
+  <script src="../../../js/respond.min.js"></script>
+  <![endif]-->
+ </head>
+ <body>
+  <header>
+   <div class="container">
+    <div class="row">
+     <div class="col-md-12">
+      <ol class="breadcrumb">
+        <li><a href="../../../index.html">D:\WebProject\KREDA-Sphere</a></li>
+        <li><a href="../../index.html">Sphere</a></li>
+        <li><a href="../index.html">Application</a></li>
+        <li><a href="index.html">System</a></li>
+        <li class="active">(Dashboard)</li>
+
+      </ol>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntitySchema.php.html#14">EntitySchema</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntityAction.php.html#15">EntityAction</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token.php.html#18">Token</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token/Certification.php.html#14">Certification</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#33">System</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Update.php.html#15">Update</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#17">TblProtocol</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Database.php.html#11">Database</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Consumer.php.html#25">Consumer</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Summary/Summary.php.html#13">Summary</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Setting/CreateConsumer.php.html#14">CreateConsumer</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Installer/Installer.php.html#14">Installer</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Status/Status.php.html#13">Status</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol.php.html#14">Protocol</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Authorization.php.html#24">Authorization</a></td><td class="text-right">0%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntitySchema.php.html#14">EntitySchema</a></td><td class="text-right">380</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol.php.html#14">Protocol</a></td><td class="text-right">342</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Authorization.php.html#24">Authorization</a></td><td class="text-right">272</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Database.php.html#11">Database</a></td><td class="text-right">156</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token.php.html#18">Token</a></td><td class="text-right">132</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntityAction.php.html#15">EntityAction</a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Consumer.php.html#25">Consumer</a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Setting/CreateConsumer.php.html#14">CreateConsumer</a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Update.php.html#15">Update</a></td><td class="text-right">6</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Sphere/Application/System/Service/Token/Certification.php.html#49"><abbr title="Certification::setErrorEmptyKey">setErrorEmptyKey</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token/Certification.php.html#42"><abbr title="Certification::setTokenList">setTokenList</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token/Certification.php.html#33"><abbr title="Certification::getContent">getContent</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token/Certification.php.html#23"><abbr title="Certification::__construct">__construct</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token/Certification.php.html#59"><abbr title="Certification::setErrorWrongKey">setErrorWrongKey</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token/Certification.php.html#69"><abbr title="Certification::setErrorReplayedKey">setErrorReplayedKey</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#139"><abbr title="System::serviceUpdate">serviceUpdate</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#44"><abbr title="System::registerApplication">registerApplication</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Update.php.html#23"><abbr title="Update::setupDatabaseSchema">setupDatabaseSchema</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token/Certification.php.html#79"><abbr title="Certification::setErrorNetworkKey">setErrorNetworkKey</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token.php.html#90"><abbr title="Token::checkFormYubiKey">checkFormYubiKey</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token.php.html#39"><abbr title="Token::apiTokenCertification">apiTokenCertification</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#303"><abbr title="TblProtocol::setId">setId</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#294"><abbr title="TblProtocol::getId">getId</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#285"><abbr title="TblProtocol::setEntityTo">setEntityTo</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#276"><abbr title="TblProtocol::getEntityTo">getEntityTo</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntityAction.php.html#28"><abbr title="EntityAction::actionCreateProtocolEntry">actionCreateProtocolEntry</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntityAction.php.html#67"><abbr title="EntityAction::entityProtocolAll">entityProtocolAll</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token.php.html#24"><abbr title="Token::apiToken">apiToken</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntitySchema.php.html#124"><abbr title="EntitySchema::getTableProtocol">getTableProtocol</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntitySchema.php.html#57"><abbr title="EntitySchema::setTableProtocol">setTableProtocol</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntitySchema.php.html#22"><abbr title="EntitySchema::setupDatabaseSchema">setupDatabaseSchema</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#148"><abbr title="System::serviceProtocol">serviceProtocol</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#157"><abbr title="System::serviceDatabase">serviceDatabase</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#386"><abbr title="System::apiUpdateSimulation">apiUpdateSimulation</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#375"><abbr title="System::frontendAuthorizationRoleAccess">frontendAuthorizationRoleAccess</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#361"><abbr title="System::frontendAuthorizationRole">frontendAuthorizationRole</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#348"><abbr title="System::frontendAuthorizationAccess">frontendAuthorizationAccess</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#397"><abbr title="System::apiUpdatePerform">apiUpdatePerform</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#408"><abbr title="System::frontendDatabase_Status">frontendDatabase_Status</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#452"><abbr title="System::apiProtocol">apiProtocol</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#441"><abbr title="System::apiTokenCertification">apiTokenCertification</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#426"><abbr title="System::setupServiceToken">setupServiceToken</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#418"><abbr title="System::apiToken">apiToken</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#335"><abbr title="System::frontendAuthorizationPrivilege">frontendAuthorizationPrivilege</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#322"><abbr title="System::frontendAuthorizationRight">frontendAuthorizationRight</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#237"><abbr title="System::setupServiceConsumer">setupServiceConsumer</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#229"><abbr title="System::apiConsumer">apiConsumer</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#200"><abbr title="System::setupModuleNavigation">setupModuleNavigation</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#166"><abbr title="System::apiMain">apiMain</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#249"><abbr title="System::apiConsumerCreate">apiConsumerCreate</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#260"><abbr title="System::apiUpdate">apiUpdate</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#291"><abbr title="System::setupFrontendAuthorization">setupFrontendAuthorization</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#283"><abbr title="System::frontendAuthorization">frontendAuthorization</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/System.php.html#268"><abbr title="System::setupServiceUpdate">setupServiceUpdate</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#267"><abbr title="TblProtocol::setEntityFrom">setEntityFrom</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#258"><abbr title="TblProtocol::getEntityFrom">getEntityFrom</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Installer/Installer.php.html#32"><abbr title="Installer::guiUpdateSimulation">guiUpdateSimulation</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Installer/Installer.php.html#20"><abbr title="Installer::guiSummary">guiSummary</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Setting/CreateConsumer.php.html#40"><abbr title="CreateConsumer::getContent">getContent</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Setting/CreateConsumer.php.html#22"><abbr title="CreateConsumer::__construct">__construct</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Installer/Installer.php.html#46"><abbr title="Installer::guiUpdatePerform">guiUpdatePerform</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol.php.html#20"><abbr title="Protocol::__construct">__construct</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol.php.html#96"><abbr title="Protocol::executeDeleteEntry">executeDeleteEntry</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol.php.html#67"><abbr title="Protocol::executeUpdateEntry">executeUpdateEntry</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol.php.html#38"><abbr title="Protocol::executeCreateEntry">executeCreateEntry</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol.php.html#29"><abbr title="Protocol::setupDatabaseContent">setupDatabaseContent</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Consumer.php.html#53"><abbr title="Consumer::anonymous function">anonymous function</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Consumer.php.html#43"><abbr title="Consumer::guiConsumerCreate">guiConsumerCreate</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Authorization.php.html#178"><abbr title="Authorization::stageAuthorizationRole">stageAuthorizationRole</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Authorization.php.html#147"><abbr title="Authorization::stageAuthorizationAccess">stageAuthorizationAccess</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Authorization.php.html#116"><abbr title="Authorization::stageAuthorizationPrivilege">stageAuthorizationPrivilege</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Authorization.php.html#85"><abbr title="Authorization::stageAuthorizationRight">stageAuthorizationRight</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Authorization.php.html#186"><abbr title="Authorization::anonymous function">anonymous function</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Authorization.php.html#225"><abbr title="Authorization::stageAuthorizationRoleAccess">stageAuthorizationRoleAccess</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Consumer.php.html#31"><abbr title="Consumer::guiSummary">guiSummary</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Summary/Summary.php.html#35"><abbr title="Summary::getContent">getContent</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Summary/Summary.php.html#24"><abbr title="Summary::__construct">__construct</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol.php.html#123"><abbr title="Protocol::entityProtocol">entityProtocol</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Status/Status.php.html#19"><abbr title="Status::stageDatabaseStatus">stageDatabaseStatus</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#195"><abbr title="TblProtocol::setPersonLastName">setPersonLastName</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#186"><abbr title="TblProtocol::getPersonLastName">getPersonLastName</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#177"><abbr title="TblProtocol::setPersonFirstName">setPersonFirstName</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#168"><abbr title="TblProtocol::getPersonFirstName">getPersonFirstName</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#204"><abbr title="TblProtocol::getServiceGatekeeperConsumer">getServiceGatekeeperConsumer</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#213"><abbr title="TblProtocol::setServiceGatekeeperConsumer">setServiceGatekeeperConsumer</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#249"><abbr title="TblProtocol::setConsumerSuffix">setConsumerSuffix</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#240"><abbr title="TblProtocol::getConsumerSuffix">getConsumerSuffix</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#231"><abbr title="TblProtocol::setConsumerName">setConsumerName</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#222"><abbr title="TblProtocol::getConsumerName">getConsumerName</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#159"><abbr title="TblProtocol::setServiceManagementPerson">setServiceManagementPerson</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#150"><abbr title="TblProtocol::getServiceManagementPerson">getServiceManagementPerson</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#96"><abbr title="TblProtocol::getProtocolTimestamp">getProtocolTimestamp</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#87"><abbr title="TblProtocol::setProtocolDatabase">setProtocolDatabase</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#78"><abbr title="TblProtocol::getProtocolDatabase">getProtocolDatabase</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Database.php.html#64"><abbr title="Database::executeDatabaseStatus">executeDatabaseStatus</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#105"><abbr title="TblProtocol::setProtocolTimestamp">setProtocolTimestamp</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#114"><abbr title="TblProtocol::getServiceGatekeeperAccount">getServiceGatekeeperAccount</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#141"><abbr title="TblProtocol::setAccountUsername">setAccountUsername</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#132"><abbr title="TblProtocol::getAccountUsername">getAccountUsername</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/Entity/TblProtocol.php.html#123"><abbr title="TblProtocol::setServiceGatekeeperAccount">setServiceGatekeeperAccount</a></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Authorization.php.html#30"><abbr title="Authorization::stageAuthorization">stageAuthorization</a></a></td><td class="text-right">0%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntitySchema.php.html#57"><abbr title="EntitySchema::setTableProtocol">setTableProtocol</abbr></a></td><td class="text-right">210</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Database.php.html#64"><abbr title="Database::executeDatabaseStatus">executeDatabaseStatus</abbr></a></td><td class="text-right">156</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Authorization/Authorization.php.html#30"><abbr title="Authorization::stageAuthorization">stageAuthorization</abbr></a></td><td class="text-right">110</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token.php.html#39"><abbr title="Token::apiTokenCertification">apiTokenCertification</abbr></a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntityAction.php.html#28"><abbr title="EntityAction::actionCreateProtocolEntry">actionCreateProtocolEntry</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol.php.html#67"><abbr title="Protocol::executeUpdateEntry">executeUpdateEntry</abbr></a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol.php.html#38"><abbr title="Protocol::executeCreateEntry">executeCreateEntry</abbr></a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol.php.html#96"><abbr title="Protocol::executeDeleteEntry">executeDeleteEntry</abbr></a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntitySchema.php.html#22"><abbr title="EntitySchema::setupDatabaseSchema">setupDatabaseSchema</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Setting/CreateConsumer.php.html#22"><abbr title="CreateConsumer::__construct">__construct</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Token.php.html#90"><abbr title="Token::checkFormYubiKey">checkFormYubiKey</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Update.php.html#23"><abbr title="Update::setupDatabaseSchema">setupDatabaseSchema</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Sphere/Application/System/Service/Protocol/EntityAction.php.html#67"><abbr title="EntityAction::entityProtocolAll">entityProtocolAll</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Consumer.php.html#53"><abbr title="Consumer::anonymous function">anonymous function</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Sphere/Application/System/Frontend/Consumer/Consumer.php.html#43"><abbr title="Consumer::guiConsumerCreate">guiConsumerCreate</abbr></a></td><td class="text-right">6</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 2.0.9</a> using <a href="http://php.net/" target="_top">PHP 5.3.8</a> and <a href="http://phpunit.de/">PHPUnit 4.1.4</a> at Mon Jan 26 17:14:35 CET 2015.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="../../../js/jquery.js" type="text/javascript"></script>
+  <script src="../../../js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="../../../js/holder.js" type="text/javascript"></script>
+  <script src="../../../js/d3.min.js" type="text/javascript"></script>
+  <script src="../../../js/nv.d3.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([15,0,0,0,0,0,0,0,0,0,0,0], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([92,0,0,0,0,0,0,0,0,0,0,0], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.scatter.onlyCircles(false);
+    chart.tooltipContent(function(key, y, e, graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[0,16,"<a href=\"Sphere\/Application\/System\/Frontend\/Authorization\/Authorization.php.html#24\">Authorization<\/a>"],[0,2,"<a href=\"Sphere\/Application\/System\/Frontend\/Authorization\/Summary\/Summary.php.html#13\">Summary<\/a>"],[0,5,"<a href=\"Sphere\/Application\/System\/Frontend\/Consumer\/Consumer.php.html#25\">Consumer<\/a>"],[0,4,"<a href=\"Sphere\/Application\/System\/Frontend\/Consumer\/Setting\/CreateConsumer.php.html#14\">CreateConsumer<\/a>"],[0,3,"<a href=\"Sphere\/Application\/System\/Frontend\/Installer\/Installer.php.html#14\">Installer<\/a>"],[0,18,"<a href=\"Sphere\/Application\/System\/Service\/Protocol.php.html#14\">Protocol<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Status\/Status.php.html#13\">Status<\/a>"],[0,12,"<a href=\"Sphere\/Application\/System\/Service\/Database.php.html#11\">Database<\/a>"],[0,26,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#17\">TblProtocol<\/a>"],[0,8,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/EntityAction.php.html#15\">EntityAction<\/a>"],[0,19,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/EntitySchema.php.html#14\">EntitySchema<\/a>"],[0,11,"<a href=\"Sphere\/Application\/System\/Service\/Token.php.html#18\">Token<\/a>"],[0,7,"<a href=\"Sphere\/Application\/System\/Service\/Token\/Certification.php.html#14\">Certification<\/a>"],[0,2,"<a href=\"Sphere\/Application\/System\/Service\/Update.php.html#15\">Update<\/a>"],[0,25,"<a href=\"Sphere\/Application\/System\/System.php.html#33\">System<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.scatter.onlyCircles(false);
+    chart.tooltipContent(function(key, y, e, graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[0,10,"<a href=\"Sphere\/Application\/System\/Frontend\/Authorization\/Authorization.php.html#30\">Authorization::stageAuthorization<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Authorization\/Authorization.php.html#85\">Authorization::stageAuthorizationRight<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Authorization\/Authorization.php.html#116\">Authorization::stageAuthorizationPrivilege<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Authorization\/Authorization.php.html#147\">Authorization::stageAuthorizationAccess<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Authorization\/Authorization.php.html#178\">Authorization::stageAuthorizationRole<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Authorization\/Authorization.php.html#186\">Authorization::anonymous function<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Authorization\/Authorization.php.html#225\">Authorization::stageAuthorizationRoleAccess<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Authorization\/Summary\/Summary.php.html#24\">Summary::__construct<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Authorization\/Summary\/Summary.php.html#35\">Summary::getContent<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Consumer\/Consumer.php.html#31\">Consumer::guiSummary<\/a>"],[0,2,"<a href=\"Sphere\/Application\/System\/Frontend\/Consumer\/Consumer.php.html#43\">Consumer::guiConsumerCreate<\/a>"],[0,2,"<a href=\"Sphere\/Application\/System\/Frontend\/Consumer\/Consumer.php.html#53\">Consumer::anonymous function<\/a>"],[0,3,"<a href=\"Sphere\/Application\/System\/Frontend\/Consumer\/Setting\/CreateConsumer.php.html#22\">CreateConsumer::__construct<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Consumer\/Setting\/CreateConsumer.php.html#40\">CreateConsumer::getContent<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Installer\/Installer.php.html#20\">Installer::guiSummary<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Installer\/Installer.php.html#32\">Installer::guiUpdateSimulation<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Installer\/Installer.php.html#46\">Installer::guiUpdatePerform<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol.php.html#20\">Protocol::__construct<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol.php.html#29\">Protocol::setupDatabaseContent<\/a>"],[0,5,"<a href=\"Sphere\/Application\/System\/Service\/Protocol.php.html#38\">Protocol::executeCreateEntry<\/a>"],[0,5,"<a href=\"Sphere\/Application\/System\/Service\/Protocol.php.html#67\">Protocol::executeUpdateEntry<\/a>"],[0,5,"<a href=\"Sphere\/Application\/System\/Service\/Protocol.php.html#96\">Protocol::executeDeleteEntry<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol.php.html#123\">Protocol::entityProtocol<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Frontend\/Status\/Status.php.html#19\">Status::stageDatabaseStatus<\/a>"],[0,12,"<a href=\"Sphere\/Application\/System\/Service\/Database.php.html#64\">Database::executeDatabaseStatus<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#78\">TblProtocol::getProtocolDatabase<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#87\">TblProtocol::setProtocolDatabase<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#96\">TblProtocol::getProtocolTimestamp<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#105\">TblProtocol::setProtocolTimestamp<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#114\">TblProtocol::getServiceGatekeeperAccount<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#123\">TblProtocol::setServiceGatekeeperAccount<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#132\">TblProtocol::getAccountUsername<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#141\">TblProtocol::setAccountUsername<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#150\">TblProtocol::getServiceManagementPerson<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#159\">TblProtocol::setServiceManagementPerson<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#168\">TblProtocol::getPersonFirstName<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#177\">TblProtocol::setPersonFirstName<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#186\">TblProtocol::getPersonLastName<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#195\">TblProtocol::setPersonLastName<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#204\">TblProtocol::getServiceGatekeeperConsumer<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#213\">TblProtocol::setServiceGatekeeperConsumer<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#222\">TblProtocol::getConsumerName<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#231\">TblProtocol::setConsumerName<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#240\">TblProtocol::getConsumerSuffix<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#249\">TblProtocol::setConsumerSuffix<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#258\">TblProtocol::getEntityFrom<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#267\">TblProtocol::setEntityFrom<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#276\">TblProtocol::getEntityTo<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#285\">TblProtocol::setEntityTo<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#294\">TblProtocol::getId<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/Entity\/TblProtocol.php.html#303\">TblProtocol::setId<\/a>"],[0,6,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/EntityAction.php.html#28\">EntityAction::actionCreateProtocolEntry<\/a>"],[0,2,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/EntityAction.php.html#67\">EntityAction::entityProtocolAll<\/a>"],[0,4,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/EntitySchema.php.html#22\">EntitySchema::setupDatabaseSchema<\/a>"],[0,14,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/EntitySchema.php.html#57\">EntitySchema::setTableProtocol<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Protocol\/EntitySchema.php.html#124\">EntitySchema::getTableProtocol<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Token.php.html#24\">Token::apiToken<\/a>"],[0,7,"<a href=\"Sphere\/Application\/System\/Service\/Token.php.html#39\">Token::apiTokenCertification<\/a>"],[0,3,"<a href=\"Sphere\/Application\/System\/Service\/Token.php.html#90\">Token::checkFormYubiKey<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Token\/Certification.php.html#23\">Certification::__construct<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Token\/Certification.php.html#33\">Certification::getContent<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Token\/Certification.php.html#42\">Certification::setTokenList<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Token\/Certification.php.html#49\">Certification::setErrorEmptyKey<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Token\/Certification.php.html#59\">Certification::setErrorWrongKey<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Token\/Certification.php.html#69\">Certification::setErrorReplayedKey<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/Service\/Token\/Certification.php.html#79\">Certification::setErrorNetworkKey<\/a>"],[0,2,"<a href=\"Sphere\/Application\/System\/Service\/Update.php.html#23\">Update::setupDatabaseSchema<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#44\">System::registerApplication<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#139\">System::serviceUpdate<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#148\">System::serviceProtocol<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#157\">System::serviceDatabase<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#166\">System::apiMain<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#200\">System::setupModuleNavigation<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#229\">System::apiConsumer<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#237\">System::setupServiceConsumer<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#249\">System::apiConsumerCreate<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#260\">System::apiUpdate<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#268\">System::setupServiceUpdate<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#283\">System::frontendAuthorization<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#291\">System::setupFrontendAuthorization<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#322\">System::frontendAuthorizationRight<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#335\">System::frontendAuthorizationPrivilege<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#348\">System::frontendAuthorizationAccess<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#361\">System::frontendAuthorizationRole<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#375\">System::frontendAuthorizationRoleAccess<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#386\">System::apiUpdateSimulation<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#397\">System::apiUpdatePerform<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#408\">System::frontendDatabase_Status<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#418\">System::apiToken<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#426\">System::setupServiceToken<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#441\">System::apiTokenCertification<\/a>"],[0,1,"<a href=\"Sphere\/Application\/System\/System.php.html#452\">System::apiProtocol<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>
