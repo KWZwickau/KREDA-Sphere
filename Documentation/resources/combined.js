@@ -1,34 +1,7 @@
+
 var ApiGen = ApiGen || {};
-ApiGen.config = {
-    "require": {"min": "2.8.0"},
-    "resources": {"resources": "resources"},
-    "templates": {
-        "common": {
-            "overview.latte": "index.html",
-            "combined.js.latte": "resources\/combined.js",
-            "elementlist.js.latte": "elementlist.js",
-            "404.latte": "404.html"
-        },
-        "optional": {
-            "sitemap": {"filename": "sitemap.xml", "template": "sitemap.xml.latte"},
-            "opensearch": {"filename": "opensearch.xml", "template": "opensearch.xml.latte"},
-            "robots": {"filename": "robots.txt", "template": "robots.txt.latte"}
-        },
-        "main": {
-            "package": {"filename": "package-%s.html", "template": "package.latte"},
-            "namespace": {"filename": "namespace-%s.html", "template": "namespace.latte"},
-            "class": {"filename": "class-%s.html", "template": "class.latte"},
-            "constant": {"filename": "constant-%s.html", "template": "constant.latte"},
-            "function": {"filename": "function-%s.html", "template": "function.latte"},
-            "source": {"filename": "source-%s.html", "template": "source.latte"},
-            "tree": {"filename": "tree.html", "template": "tree.latte"},
-            "deprecated": {"filename": "deprecated.html", "template": "deprecated.latte"},
-            "todo": {"filename": "todo.html", "template": "todo.latte"}
-        }
-    },
-    "options": {"elementDetailsCollapsed": true, "elementsOrder": "natural"},
-    "config": "D:\\WebProject\\KREDA-Sphere\\Library\\MOC-V\\Component\\Documentation\\Vendor\\Template\\config.neon"
-};
+ApiGen.config = {"require":{"min":"2.8.0"},"resources":{"resources":"resources"},"templates":{"common":{"overview.latte":"index.html","combined.js.latte":"resources\/combined.js","elementlist.js.latte":"elementlist.js","404.latte":"404.html"},"optional":{"sitemap":{"filename":"sitemap.xml","template":"sitemap.xml.latte"},"opensearch":{"filename":"opensearch.xml","template":"opensearch.xml.latte"},"robots":{"filename":"robots.txt","template":"robots.txt.latte"}},"main":{"package":{"filename":"package-%s.html","template":"package.latte"},"namespace":{"filename":"namespace-%s.html","template":"namespace.latte"},"class":{"filename":"class-%s.html","template":"class.latte"},"constant":{"filename":"constant-%s.html","template":"constant.latte"},"function":{"filename":"function-%s.html","template":"function.latte"},"source":{"filename":"source-%s.html","template":"source.latte"},"tree":{"filename":"tree.html","template":"tree.latte"},"deprecated":{"filename":"deprecated.html","template":"deprecated.latte"},"todo":{"filename":"todo.html","template":"todo.latte"}}},"options":{"elementDetailsCollapsed":true,"elementsOrder":"natural"},"config":"D:\\WebProject\\KREDA-Sphere\\Library\\MOC-V\\Component\\Documentation\\Vendor\\Template\\config.neon"};
+
 
 /*! jQuery v1.7 jquery.com | jquery.org/license */
 (function( a, b )
@@ -449,7 +422,7 @@ ApiGen.config = {
         }, f = a.jQuery, g = a.$, h, i = /^(?:[^#<]*(<[\w\W]+>)[^>]*$|#([\w\-]*)$)/, j = /\S/, k = /^\s+/, l = /\s+$/, m = /\d/, n = /^<(\w+)\s*\/?>(?:<\/\1>)?$/, o = /^[\],:{}\s]*$/, p = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, q = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, r = /(?:^|:|,)(?:\s*\[)+/g, s = /(webkit)[ \/]([\w.]+)/, t = /(opera)(?:.*version)?[ \/]([\w.]+)/, u = /(msie) ([\w.]+)/, v = /(mozilla)(?:.*? rv:([\w.]+))?/, w = /-([a-z]|[0-9])/ig, x = /^-ms-/, y = function(
             a,
             b
-        )
+            )
         {
             return (b + "").toUpperCase()
         }, z = d.userAgent, A, B, C, D = Object.prototype.toString, E = Object.prototype.hasOwnProperty, F = Array.prototype.push, G = Array.prototype.slice, H = String.prototype.trim, I = Array.prototype.indexOf, J = {};
@@ -832,7 +805,7 @@ ApiGen.config = {
                     this ), a.superclass = this, a.fn = a.prototype = this(), a.fn.constructor = a, a.sub = this.sub, a.fn.init = function(
                     d,
                     f
-                )
+                    )
                 {
                     f && f instanceof e && !(f instanceof a) && (f = a( f ));
                     return e.fn.init.call( this, d, f, b )
@@ -1701,14 +1674,14 @@ ApiGen.config = {
                 }, i.elem = a), c = L( c ).split( " " );
                 for (k = 0; k < c.length; k++) {
                     l = E.exec( c[k] ) || [], m = l[1], n = (l[2] || "").split( "." ).sort(), s = f.event.special[m] || {}, m = (g ? s.delegateType : s.bindType) || m, s = f.event.special[m] || {}, o = f.extend( {
-                            type: m,
-                            origType: l[1],
-                            data: e,
-                            handler: d,
-                            guid: d.guid,
-                            selector: g,
-                            namespace: n.join( "." )
-                        },
+                        type: m,
+                        origType: l[1],
+                        data: e,
+                        handler: d,
+                        guid: d.guid,
+                        selector: g,
+                        namespace: n.join( "." )
+                    },
                         p ), g && (o.quick = J( g ), !o.quick && f.expr.match.POS.test( g ) && (o.isPositional = !0)), r = j[m];
                     if (!r) {
                         r = j[m] = [], r.delegateCount = 0;
@@ -2791,7 +2764,7 @@ ApiGen.config = {
             a.appendChild( c.createComment( "" ) ), a.getElementsByTagName( "*" ).length > 0 && (o.find.TAG = function(
                 a,
                 b
-            )
+                )
             {
                 var c = b.getElementsByTagName( a[1] );
                 if (a[1] === "*") {
@@ -2991,7 +2964,7 @@ ApiGen.config = {
         }, is: function( a )
         {
             return !!a && (typeof a == "string" ? T.test( a ) ? f( a,
-                    this.context ).index( this[0] ) >= 0 : f.filter( a, this ).length > 0 : this.filter( a ).length > 0)
+                this.context ).index( this[0] ) >= 0 : f.filter( a, this ).length > 0 : this.filter( a ).length > 0)
         }, closest: function( a, b )
         {
             var c = [], d, e, g = this[0];
@@ -3120,7 +3093,7 @@ ApiGen.config = {
         }
     } );
     var Y = "abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video", Z = / jQuery\d+="(?:\d+|null)"/g, $ = /^\s+/, _ = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/ig, ba = /<([\w:]+)/, bb = /<tbody/i, bc = /<|&#?\w+;/, bd = /<(?:script|style)/i, be = /<(?:script|object|embed|option|style)/i, bf = new RegExp( "<(?:" + Y.replace( " ",
-            "|" ) + ")",
+        "|" ) + ")",
         "i" ), bg = /checked\s*(?:[^=]|=\s*.checked.)/i, bh = /\/(java|ecma)script/i, bi = /^\s*<!(?:\[CDATA\[|\-\-)/, bj = {
         option: [
             1,
@@ -3634,7 +3607,7 @@ ApiGen.config = {
     {
         var b = a.offsetWidth, c = a.offsetHeight;
         return b === 0 && c === 0 || !f.support.reliableHiddenOffsets && (a.style && a.style.display || f.css( a,
-                "display" )) === "none"
+            "display" )) === "none"
     }, f.expr.filters.visible = function( a )
     {
         return !f.expr.filters.hidden( a )
@@ -3949,7 +3922,7 @@ ApiGen.config = {
                     d = c.createElement( "script" ), d.async = "async", a.scriptCharset && (d.charset = a.scriptCharset), d.src = a.url, d.onload = d.onreadystatechange = function(
                         a,
                         c
-                    )
+                        )
                     {
                         if (c || !d.readyState || /loaded|complete/.test( d.readyState )) {
                             d.onload = d.onreadystatechange = null, e && d.parentNode && e.removeChild( d ), d = b, c || g( 200,
@@ -4917,7 +4890,6 @@ jQuery.cookie = function( name, value, options )
                 select.hide();
             }
         }
-
         function trimWords( value )
         {
             if (!value) {
@@ -4964,13 +4936,11 @@ jQuery.cookie = function( name, value, options )
                 $( input ).selection( previousValue.length, previousValue.length + sValue.length );
             }
         }
-
         function hideResults()
         {
             clearTimeout( timeout );
             timeout = setTimeout( hideResultsNow, 200 );
         }
-
         function hideResultsNow()
         {
             var wasVisible = select.visible();
@@ -4997,7 +4967,6 @@ jQuery.cookie = function( name, value, options )
                 );
             }
         }
-
         function receiveData( q, data )
         {
             if (data && data.length && hasFocus) {
@@ -5009,7 +4978,6 @@ jQuery.cookie = function( name, value, options )
                 hideResultsNow();
             }
         }
-
         function request( term, success, failure )
         {
             if (!options.matchCase) {
@@ -5056,7 +5024,6 @@ jQuery.cookie = function( name, value, options )
                 }
             }
         }
-
         function parse( data )
         {
             var parsed = [];
@@ -5074,7 +5041,6 @@ jQuery.cookie = function( name, value, options )
             }
             return parsed;
         }
-
         function stopLoading()
         {
             $input.removeClass( options.loadingClass );
@@ -5133,7 +5099,6 @@ jQuery.cookie = function( name, value, options )
             }
             return i == 0 || options.matchContains;
         }
-
         function add( q, value )
         {
             if (length > options.cacheLength) {
@@ -5359,7 +5324,6 @@ jQuery.cookie = function( name, value, options )
                 }
             }
         }
-
         function movePosition( step )
         {
             active += step;
