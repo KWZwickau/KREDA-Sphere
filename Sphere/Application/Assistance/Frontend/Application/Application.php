@@ -3,11 +3,10 @@ namespace KREDA\Sphere\Application\Assistance\Frontend\Application;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageSuccess;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageWarning;
-use MOC\V\Core\HttpKernel\HttpKernel;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 
 /**
  * Class Application
@@ -28,8 +27,8 @@ class Application extends AbstractFrontend
         $View->setDescription( 'Starten der Anwendung' );
         $View->setMessage( '<strong>Problem:</strong> Nach Aufruf der Anwendung arbeitet diese nicht wie erwartet' );
         $View->setContent(
-            ( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Start'
-                ? '<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> <samp>'.HttpKernel::getRequest()->getPathInfo().'</samp></div>'
+            ( self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Start'
+                ? '<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> <samp>'.self::extensionRequest()->getPathInfo().'</samp></div>'
                 : ''
             )
             .( ( $Error = error_get_last() )
@@ -46,8 +45,8 @@ class Application extends AbstractFrontend
             .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
         $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Starten der Anwendung'
-            .( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Start'
-                ? ': '.HttpKernel::getRequest()->getPathInfo()
+            .( self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Start'
+                ? ': '.self::extensionRequest()->getPathInfo()
                 : ''
             ),
             'Support-Ticket'
@@ -66,8 +65,8 @@ class Application extends AbstractFrontend
         $View->setDescription( 'Fehler in der Anwendung' );
         $View->setMessage( '<strong>Problem:</strong> Nach Aufruf der Anwendung arbeitet diese nicht wie erwartet' );
         $View->setContent(
-            ( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal'
-                ? '<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> <samp>'.HttpKernel::getRequest()->getPathInfo().'</samp></div>'
+            ( self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal'
+                ? '<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> <samp>'.self::extensionRequest()->getPathInfo().'</samp></div>'
                 : ''
             )
             .( ( $Error = error_get_last() )
@@ -82,11 +81,11 @@ class Application extends AbstractFrontend
             .new MessageInfo( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
             .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
-        if (HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal') {
+        if (self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal') {
             $View->addButton(
                 trim( '/Sphere/Assistance/Support/Ticket'
                     .'?TicketSubject='.urlencode( 'Fehler in der Anwendung' )
-                    .'&TicketMessage='.urlencode( HttpKernel::getRequest()->getPathInfo().': '.$Error['message'].'<br/>'.$Error['file'].':'.$Error['line'] ),
+                    .'&TicketMessage='.urlencode( self::extensionRequest()->getPathInfo().': '.$Error['message'].'<br/>'.$Error['file'].':'.$Error['line'] ),
                     '/' )
                 , 'Fehlerbericht senden'
             );
@@ -106,8 +105,8 @@ class Application extends AbstractFrontend
         $View->setDescription( 'Nicht gefundene Resource' );
         $View->setMessage( '<strong>Problem:</strong> Die angegebene Url kann keiner Resource oder Aktion zugewiesen werden, ähnlich einer nicht gefundenen Internetadresse' );
         $View->setContent(
-            ( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing'
-                ? '<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> <samp>'.HttpKernel::getRequest()->getPathInfo().'</samp></div>'
+            ( self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing'
+                ? '<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> <samp>'.self::extensionRequest()->getPathInfo().'</samp></div>'
                 : ''
             )
             .'<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
@@ -120,10 +119,10 @@ class Application extends AbstractFrontend
             .new MessageInfo( 'Vermeiden Sie es die Addresse im Browser manuell zu bearbeiten' )
             .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
-        if (HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing') {
+        if (self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing') {
             $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Nicht gefundene Resource'
-                .( HttpKernel::getRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing'
-                    ? ': '.HttpKernel::getRequest()->getPathInfo()
+                .( self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing'
+                    ? ': '.self::extensionRequest()->getPathInfo()
                     : ''
                 ),
                 'Support-Ticket' );

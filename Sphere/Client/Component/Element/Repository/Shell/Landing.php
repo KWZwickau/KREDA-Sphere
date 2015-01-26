@@ -1,19 +1,17 @@
 <?php
 namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
 
-use KREDA\Sphere\Client\Component\Element\Repository\Shell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
-use MOC\V\Component\Template\Template;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class Landing
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Shell
  */
-class Landing extends Shell implements IElementInterface
+class Landing extends AbstractShell implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */
@@ -34,7 +32,7 @@ class Landing extends Shell implements IElementInterface
     function __construct()
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/Landing.twig' );
+        $this->Template = $this->extensionTemplate( __DIR__.'/Landing.twig' );
     }
 
     /**
@@ -84,7 +82,7 @@ class Landing extends Shell implements IElementInterface
         $this->Template->setVariable( 'LandingMessage', $this->Message );
         $this->Template->setVariable( 'LandingContent', $this->Content );
 
-        $this->Template->setVariable( 'UrlBase', HttpKernel::getRequest()->getUrlBase() );
+        $this->Template->setVariable( 'UrlBase', $this->extensionRequest()->getUrlBase() );
 
         return $this->Template->getContent();
     }

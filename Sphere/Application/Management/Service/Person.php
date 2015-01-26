@@ -4,8 +4,8 @@ namespace KREDA\Sphere\Application\Management\Service;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
-use KREDA\Sphere\Common\AbstractFrontend\Form\AbstractForm;
 use KREDA\Sphere\Common\Database\Handler;
+use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 
 /**
  * Class Person

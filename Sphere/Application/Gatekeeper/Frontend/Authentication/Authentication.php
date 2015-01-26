@@ -4,9 +4,9 @@ namespace KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonDangerLink;
-use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonPrimaryLink;
-use KREDA\Sphere\Common\AbstractFrontend\Button\Structure\GroupDefault;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonDangerLink;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonPrimaryLink;
+use KREDA\Sphere\Common\Frontend\Button\Structure\GroupDefault;
 
 /**
  * Class Authentication

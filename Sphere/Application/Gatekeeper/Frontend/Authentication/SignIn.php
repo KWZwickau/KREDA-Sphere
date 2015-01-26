@@ -7,13 +7,13 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputPassword;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputText;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
+use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 
 /**
  * Class SignIn

@@ -1,11 +1,9 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Frontend;
 
-use KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use KREDA\Sphere\Common\AbstractFrontend;
 use MOC\V\Component\Template\Component\IBridgeInterface;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class AbstractError
@@ -25,7 +23,7 @@ abstract class AbstractError extends AbstractFrontend implements IElementInterfa
     {
 
         $this->setRequestValues( $this->Template );
-        $this->Template->setVariable( 'UrlBase', HttpKernel::getRequest()->getUrlBase() );
+        $this->Template->setVariable( 'UrlBase', $this->extensionRequest()->getUrlBase() );
         return $this->Template->getContent();
     }
 

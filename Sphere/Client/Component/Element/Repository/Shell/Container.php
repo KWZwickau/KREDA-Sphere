@@ -2,7 +2,7 @@
 namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
 
 use KREDA\Sphere\Client\Component\Element\Element;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 
 /**
@@ -10,7 +10,7 @@ use KREDA\Sphere\Client\Component\IElementInterface;
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Shell
  */
-class Container extends Shell implements IElementInterface
+class Container extends AbstractShell implements IElementInterface
 {
 
     /** @var Element $Element */

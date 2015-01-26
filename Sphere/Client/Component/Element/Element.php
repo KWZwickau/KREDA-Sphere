@@ -2,14 +2,14 @@
 namespace KREDA\Sphere\Client\Component\Element;
 
 use KREDA\Sphere\Client\Component\IElementInterface;
-use KREDA\Sphere\Common\AbstractAddOn;
+use KREDA\Sphere\Common\AbstractExtension;
 
 /**
  * Class Element
  *
  * @package KREDA\Sphere\Client\Component\Element
  */
-abstract class Element extends AbstractAddOn implements IElementInterface
+abstract class Element extends AbstractExtension implements IElementInterface
 {
 
     /**

@@ -6,14 +6,13 @@ use KREDA\Sphere\Common\Database\Connection\Identifier;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Database\Schema\EntityManager;
 use KREDA\Sphere\IServiceInterface;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class AbstractService
  *
  * @package KREDA\Sphere\Common
  */
-abstract class AbstractService extends AbstractAddOn implements IServiceInterface
+abstract class AbstractService extends AbstractExtension implements IServiceInterface
 {
 
     /** @var null|string $BaseRoute Client-Application Route */
@@ -88,7 +87,7 @@ abstract class AbstractService extends AbstractAddOn implements IServiceInterfac
     final protected function getClientServiceRoute( $Route )
     {
 
-        return HttpKernel::getRequest()->getUrlBase().static::$BaseRoute.'/'.trim( $Route, '/' );
+        return $this->extensionRequest()->getUrlBase().static::$BaseRoute.'/'.trim( $Route, '/' );
     }
 
     /**

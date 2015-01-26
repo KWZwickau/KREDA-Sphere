@@ -4,7 +4,6 @@ namespace KREDA\Sphere\Application\System\Frontend\Authorization\Summary;
 use KREDA\Sphere\Common\AbstractFrontend;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
-use MOC\V\Component\Template\Template;
 
 /**
  * Class Summary
@@ -25,7 +24,7 @@ class Summary extends AbstractFrontend
     function __construct( $AccountRoleList )
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/Summary.twig' );
+        $this->Template = $this->extensionTemplate( __DIR__.'/Summary.twig' );
 
         $this->Template->setVariable( 'AccountRoleList', $AccountRoleList );
     }

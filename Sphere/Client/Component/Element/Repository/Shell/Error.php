@@ -1,18 +1,16 @@
 <?php
 namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
 
-use KREDA\Sphere\Client\Component\Element\Repository\Shell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
-use MOC\V\Component\Template\Template;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class Error
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Shell
  */
-class Error extends Shell implements IElementInterface
+class Error extends AbstractShell implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */
@@ -27,7 +25,7 @@ class Error extends Shell implements IElementInterface
     function __construct( $Code, $Message = null )
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/Error.twig' );
+        $this->Template = $this->extensionTemplate( __DIR__.'/Error.twig' );
         $this->Template->setVariable( 'ErrorCode', $Code );
         if (null === $Message) {
             switch ($Code) {
@@ -43,7 +41,7 @@ class Error extends Shell implements IElementInterface
             $this->Template->setVariable( 'ErrorMessage', $Message );
 
             $this->Template->setVariable( 'ErrorMenu', array(
-                HttpKernel::getRequest()->getUrlBase()
+                $this->extensionRequest()->getUrlBase()
                 .'/'.trim( '/Sphere/Assistance/Support/Ticket'
                     .'?TicketSubject='.urlencode( $Code )
                     .'&TicketMessage='.urlencode( $Message ),

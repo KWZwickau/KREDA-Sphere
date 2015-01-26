@@ -5,16 +5,16 @@ use KREDA\Sphere\Client\Component\IElementInterface;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\IconParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
+use KREDA\Sphere\Common\AbstractExtension;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
-use MOC\V\Component\Template\Template;
 
 /**
  * Class AbstractLink
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Navigation
  */
-abstract class AbstractLink implements IElementInterface
+abstract class AbstractLink extends AbstractExtension implements IElementInterface
 {
 
     /** @var string $TemplateDirectory */
@@ -37,7 +37,7 @@ abstract class AbstractLink implements IElementInterface
         $ToggleActive = false
     ) {
 
-        $this->Template = Template::getTemplate( $this->TemplateDirectory.'/Link.twig' );
+        $this->Template = $this->extensionTemplate( $this->TemplateDirectory.'/Link.twig' );
         $this->Template->setVariable( 'UrlParameter', $Route->getValue() );
         $this->Template->setVariable( 'NameParameter', $Name->getValue() );
         if (null === $Icon) {

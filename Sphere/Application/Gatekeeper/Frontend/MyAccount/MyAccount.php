@@ -7,19 +7,19 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RepeatIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\AbstractFrontend\Address\Structure\AddressDefault;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputPassword;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\AbstractFrontend\Table\Structure\GridTableBody;
-use KREDA\Sphere\Common\AbstractFrontend\Table\Structure\GridTableCol;
-use KREDA\Sphere\Common\AbstractFrontend\Table\Structure\GridTableHead;
-use KREDA\Sphere\Common\AbstractFrontend\Table\Structure\GridTableRow;
-use KREDA\Sphere\Common\AbstractFrontend\Table\Structure\TableDefault;
+use KREDA\Sphere\Common\Frontend\Address\Structure\AddressDefault;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
+use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableBody;
+use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableCol;
+use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableHead;
+use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableRow;
+use KREDA\Sphere\Common\Frontend\Table\Structure\TableDefault;
 
 /**
  * Class MyAccount

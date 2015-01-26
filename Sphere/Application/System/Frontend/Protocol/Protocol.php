@@ -5,7 +5,7 @@ use KREDA\Sphere\Application\System\Service\Protocol\Entity\TblProtocol;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageWarning;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 
 /**
  * Class Protocol

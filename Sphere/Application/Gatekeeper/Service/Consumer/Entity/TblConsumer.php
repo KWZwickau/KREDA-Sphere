@@ -21,7 +21,10 @@ class TblConsumer extends AbstractEntity
 
     const ATTR_NAME = 'Name';
     const ATTR_SUFFIX = 'DatabaseSuffix';
-
+    /**
+     * @Column(type="bigint")
+     */
+    public $serviceManagement_Address;
     /**
      * @Id
      * @GeneratedValue
@@ -40,10 +43,6 @@ class TblConsumer extends AbstractEntity
      * @Column(type="string")
      */
     protected $DatabaseSuffix;
-    /**
-     * @Column(type="bigint")
-     */
-    protected $serviceManagement_Address;
 
     /**
      * @param string $Name

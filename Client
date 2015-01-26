@@ -20,11 +20,11 @@ use KREDA\Sphere\Client\Component\Element\Repository\Shell\Screen;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\AbstractFrontend\Redirect;
-use KREDA\Sphere\Common\AddOn\Debugger;
+use KREDA\Sphere\Common\Extension\Debugger;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
+use KREDA\Sphere\Common\Frontend\Redirect;
 use MOC\V\Component\Database\Exception\DatabaseException;
 use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
 use MOC\V\Core\AutoLoader\AutoLoader;
@@ -203,7 +203,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             Assistance::registerApplication( $Config );
             /** @var Element $Route */
             $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
-            $Route->getDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
+            $Route->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
             $ShellScreen->addToContent( new Container( $Route ) );
         } catch( \Exception $E ) {
             /**
@@ -249,7 +249,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
                     );
                     /** @var Element $Route */
                     $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
-                    $Route->getDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
+                    $Route->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
                     $ShellScreen->addToContent( new Container( $Route ) );
                 } catch( \Exception $E ) {
                     /**

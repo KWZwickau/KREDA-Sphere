@@ -5,7 +5,6 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use KREDA\Sphere\Common\AbstractFrontend;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
-use MOC\V\Component\Template\Template;
 
 /**
  * Class Account
@@ -23,7 +22,7 @@ class Account extends AbstractFrontend implements IElementInterface
     function __construct( $tblAccount )
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/Account.twig' );
+        $this->Template = $this->extensionTemplate( __DIR__.'/Account.twig' );
         $this->Template->setVariable( 'tblAccount', $tblAccount );
     }
 

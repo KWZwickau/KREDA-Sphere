@@ -1,16 +1,15 @@
 <?php
 namespace KREDA\Sphere\Application\Assistance\Service;
 
-use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\AbstractElement;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageSuccess;
-use KREDA\Sphere\Common\AbstractFrontend\Form\AbstractForm;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\AbstractService;
+use KREDA\Sphere\Common\Frontend\Alert\AbstractElement;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
+use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use Markdownify\Converter;
 
 /**
@@ -66,7 +65,7 @@ class Youtrack extends AbstractService
              * Nothing to do
              */
             try {
-                $Ticket->appendGridGroup( $this->ticketCurrent() );
+                $Ticket->prependGridGroup( $this->ticketCurrent() );
                 return $Ticket;
             } catch( \Exception $E ) {
                 return new MessageDanger( 'Das Support-System konnten nicht geladen werden' );

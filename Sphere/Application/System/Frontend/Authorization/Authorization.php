@@ -8,13 +8,13 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\System\Frontend\Authorization\Summary\Summary;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputText;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\AbstractFrontend\Table\Structure\TableFromData;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
+use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\Frontend\Table\Structure\TableFromData;
 
 /**
  * Class Authorization

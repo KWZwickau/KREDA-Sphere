@@ -1,11 +1,10 @@
 <?php
 namespace KREDA\Sphere\Common;
 
-use KREDA\Sphere\Client\Component\Element\Repository\Shell;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\AbstractFrontend\Redirect;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Common\Frontend\Redirect;
 use MOC\V\Component\Template\Component\IBridgeInterface;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class AbstractFrontend
@@ -15,7 +14,7 @@ use MOC\V\Core\HttpKernel\HttpKernel;
  *
  * @package KREDA\Sphere\Common
  */
-abstract class AbstractFrontend extends Shell
+abstract class AbstractFrontend extends AbstractShell
 {
 
     /**
@@ -83,7 +82,7 @@ abstract class AbstractFrontend extends Shell
     final protected static function getUrlBase()
     {
 
-        return HttpKernel::getRequest()->getUrlBase();
+        return self::extensionRequest()->getUrlBase();
     }
 
     /**

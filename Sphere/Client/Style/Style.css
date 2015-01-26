@@ -31,6 +31,11 @@ h3 {
     padding-bottom: 2px;
 }
 
+h4 {
+    border-bottom: 1px solid #dadada;
+    padding-bottom: 1px;
+}
+
 /*.glyphicon.glyphicon-yubikey:before {*/
 /*display: block;*/
 /*width: 14px;*/

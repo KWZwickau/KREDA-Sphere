@@ -1,19 +1,17 @@
 <?php
 namespace KREDA\Sphere\Client\Component\Element\Repository\Content;
 
-use KREDA\Sphere\Client\Component\Element\Repository\Shell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
-use MOC\V\Component\Template\Template;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class Stage
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Content
  */
-class Stage extends Shell implements IElementInterface
+class Stage extends AbstractShell implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */
@@ -36,7 +34,7 @@ class Stage extends Shell implements IElementInterface
     function __construct()
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/Stage.twig' );
+        $this->Template = $this->extensionTemplate( __DIR__.'/Stage.twig' );
     }
 
     /**
@@ -112,7 +110,7 @@ class Stage extends Shell implements IElementInterface
     public function addButton( $Route, $Title )
     {
 
-        $this->Menu[HttpKernel::getRequest()->getUrlBase().'/'.trim( $Route, '/' )] = $Title;
+        $this->Menu[$this->extensionRequest()->getUrlBase().'/'.trim( $Route, '/' )] = $Title;
         return $this;
     }
 

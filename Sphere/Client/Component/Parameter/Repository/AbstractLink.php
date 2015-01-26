@@ -3,7 +3,6 @@ namespace KREDA\Sphere\Client\Component\Parameter\Repository;
 
 use KREDA\Sphere\Client\Component\IParameterInterface;
 use KREDA\Sphere\Client\Component\Parameter\AbstractParameter;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class AbstractLink
@@ -47,7 +46,7 @@ abstract class AbstractLink extends AbstractParameter implements IParameterInter
     {
 
         if (null === self::$ActiveBase) {
-            self::$ActiveBase = HttpKernel::getRequest()->getUrlBase();
+            self::$ActiveBase = $this->extensionRequest()->getUrlBase();
         }
         return self::$ActiveBase;
     }

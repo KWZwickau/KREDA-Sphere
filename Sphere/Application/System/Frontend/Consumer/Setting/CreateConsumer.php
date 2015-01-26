@@ -2,18 +2,16 @@
 namespace KREDA\Sphere\Application\System\Frontend\Consumer\Setting;
 
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
-use MOC\V\Component\Template\Template;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class CreateConsumer
  *
  * @package KREDA\Sphere\Application\System\Consumer\Setting
  */
-class CreateConsumer extends Shell implements IElementInterface
+class CreateConsumer extends AbstractShell implements IElementInterface
 {
 
     /**
@@ -24,8 +22,8 @@ class CreateConsumer extends Shell implements IElementInterface
     function __construct( $tblConsumer )
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/CreateConsumer.twig' );
-        $this->Template->setVariable( 'UrlBase', HttpKernel::getRequest()->getUrlBase() );
+        $this->Template = $this->extensionTemplate( __DIR__.'/CreateConsumer.twig' );
+        $this->Template->setVariable( 'UrlBase', $this->extensionRequest()->getUrlBase() );
 
         if (isset( $_REQUEST['ConsumerName'] )) {
             $this->Template->setVariable( 'ConsumerNameValue', $_REQUEST['ConsumerName'] );

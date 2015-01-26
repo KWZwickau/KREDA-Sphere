@@ -7,6 +7,9 @@ var Client = (function()
         useConfig[Module] = {
             Depending: Depending,
             Source: '/Sphere/Client/Script/' + Module + '.js',
+            /**
+             * @return {boolean}
+             */
             Test: function()
             {
                 return 'undefined' != typeof jQuery.fn[Module];
@@ -20,15 +23,14 @@ var Client = (function()
                 var dependingSize = this.Depending.length - 1;
                 for (dependingSize; 0 <= dependingSize; dependingSize--) {
                     dependingModule = this.Depending[dependingSize];
-                    if (!useConfig[dependingModule].Test()) {
-                        loadModule( dependingModule );
-                        return false;
-                    }
-                    else {
+                    if (useConfig[dependingModule].Test()) {
                         if (!useConfig[dependingModule].isReady()) {
                             loadModule( dependingModule );
                             return false;
                         }
+                    } else {
+                        loadModule( dependingModule );
+                        return false;
                     }
                 }
                 if (this.Test()) {
@@ -62,15 +64,14 @@ var Client = (function()
                 var dependingSize = this.Depending.length - 1;
                 for (dependingSize; 0 <= dependingSize; dependingSize--) {
                     dependingModule = this.Depending[dependingSize];
-                    if (!useConfig[dependingModule].Test()) {
-                        loadModule( dependingModule );
-                        return false;
-                    }
-                    else {
+                    if (useConfig[dependingModule].Test()) {
                         if (!useConfig[dependingModule].isReady()) {
                             loadModule( dependingModule );
                             return false;
                         }
+                    } else {
+                        loadModule( dependingModule );
+                        return false;
                     }
                 }
                 if (this.Test()) {
@@ -100,9 +101,11 @@ var Client = (function()
     };
     var waitModule = function( Module, Callback )
     {
-        if (!useConfig[Module].isReady( Callback )) {
+        if (useConfig[Module].isReady( Callback )) {
+            return Callback();
+        } else {
             if (100000 < useConfig[Module].Retry) {
-                return;
+                return false;
             } else {
                 useConfig[Module].Retry++;
             }
@@ -110,13 +113,13 @@ var Client = (function()
             {
                 waitModule( Module, Callback );
             }, useDelay );
-        } else {
-            return Callback();
         }
+        return null;
     };
     var setUse = function setUse( Module, Callback )
     {
         if ('function' != typeof Callback) {
+            //noinspection AssignmentToFunctionParameterJS
             Callback = function Callback()
             {
             };

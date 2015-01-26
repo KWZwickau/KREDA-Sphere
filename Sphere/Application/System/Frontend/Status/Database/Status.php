@@ -5,8 +5,6 @@ use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
-use MOC\V\Component\Template\Template;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class Status
@@ -30,9 +28,9 @@ class Status extends Element implements IElementInterface
     function __construct( $Status )
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/Status.twig' );
+        $this->Template = $this->extensionTemplate( __DIR__.'/Status.twig' );
         $this->Template->setVariable( 'Status', $Status );
-        $this->Template->setVariable( 'UrlBase', HttpKernel::getRequest()->getUrlBase() );
+        $this->Template->setVariable( 'UrlBase', $this->extensionRequest()->getUrlBase() );
     }
 
     /**

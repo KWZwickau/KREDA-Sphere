@@ -1,18 +1,17 @@
 <?php
 namespace KREDA\Sphere\Client\Component\Element\Repository\Navigation;
 
-use KREDA\Sphere\Client\Component\Element\Repository\Navigation;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractNavigation;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
-use MOC\V\Component\Template\Template;
 
 /**
  * Class LevelModule
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Navigation
  */
-class LevelModule extends Navigation implements IElementInterface
+class LevelModule extends AbstractNavigation implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */
@@ -28,7 +27,7 @@ class LevelModule extends Navigation implements IElementInterface
     function __construct()
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/LevelModule/Main.twig' );
+        $this->Template = $this->extensionTemplate( __DIR__.'/LevelModule/Main.twig' );
     }
 
     /**

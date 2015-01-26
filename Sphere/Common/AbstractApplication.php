@@ -12,7 +12,6 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\IApplicationInterface;
 use MOC\V\Component\Router\Component\Parameter\Repository\RouteParameter;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class AbstractApplication
@@ -21,7 +20,7 @@ use MOC\V\Core\HttpKernel\HttpKernel;
  *
  * @package KREDA\Sphere
  */
-abstract class AbstractApplication extends AbstractAddOn implements IApplicationInterface
+abstract class AbstractApplication extends AbstractExtension implements IApplicationInterface
 {
 
     /** @var null $ActiveRequest */
@@ -96,7 +95,7 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
      *
      * @return AbstractIcon|IconParameter
      */
-    final private static function prepareParameterIcon( AbstractIcon $Value )
+    final private static function prepareParameterIcon( AbstractIcon $Value = null )
     {
 
         if (null !== $Value) {
@@ -114,7 +113,7 @@ abstract class AbstractApplication extends AbstractAddOn implements IApplication
     {
 
         if (null === self::$ActiveRequest) {
-            self::$ActiveRequest = HttpKernel::getRequest();
+            self::$ActiveRequest = self::extensionRequest();
         }
         return 0 === strpos( self::$ActiveRequest->getUrlBase().self::$ActiveRequest->getPathInfo(),
             $Value->getValue() );

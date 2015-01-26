@@ -5,7 +5,6 @@ use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
-use MOC\V\Component\Template\Template;
 
 /**
  * Class Certification
@@ -24,7 +23,7 @@ class Certification extends Element implements IElementInterface
     function __construct()
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/Certification.twig' );
+        $this->Template = $this->extensionTemplate( __DIR__.'/Certification.twig' );
 
     }
 

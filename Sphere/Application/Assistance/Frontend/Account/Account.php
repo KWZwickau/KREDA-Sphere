@@ -3,10 +3,10 @@ namespace KREDA\Sphere\Application\Assistance\Frontend\Account;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageSuccess;
-use KREDA\Sphere\Common\AbstractFrontend\Alert\Element\MessageWarning;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 
 /**
  * Class Account

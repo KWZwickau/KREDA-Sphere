@@ -2,19 +2,17 @@
 namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
-use MOC\V\Component\Template\Template;
-use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class Screen
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Shell
  */
-class Screen extends Shell implements IElementInterface
+class Screen extends AbstractShell implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */
@@ -30,8 +28,8 @@ class Screen extends Shell implements IElementInterface
     function __construct()
     {
 
-        $this->Template = Template::getTemplate( __DIR__.'/Screen.twig' );
-        $this->Template->setVariable( 'PathBase', $PathBase = HttpKernel::getRequest()->getPathBase() );
+        $this->Template = $this->extensionTemplate( __DIR__.'/Screen.twig' );
+        $this->Template->setVariable( 'PathBase', $PathBase = $this->extensionRequest()->getPathBase() );
 
         $this->Template->setVariable( 'Style', array(
             $PathBase.'/Library/Bootstrap/3.2.0/dist/css/bootstrap.min.css',
@@ -131,7 +129,7 @@ class Screen extends Shell implements IElementInterface
 
         $this->Template->setVariable( 'PositionNavigation', implode( '', $this->PositionNavigation ) );
         $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent ) );
-        $Debug = $this->getDebugger();
+        $Debug = $this->extensionDebugger();
         $this->Template->setVariable( 'PositionDebugger', $Debug->getProtocol() );
         $this->Template->setVariable( 'PositionRuntime', $Debug->getRuntime() );
         $Consumer = Gatekeeper::serviceConsumer()->entityConsumerBySession();

@@ -11,16 +11,16 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\AbstractFrontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputCompleter;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputDate;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputSelect;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Element\InputText;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\AbstractFrontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\AbstractFrontend\Table\Structure\TableFromData;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
+use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\Frontend\Table\Structure\TableFromData;
 
 /**
  * Class PersonalData
@@ -83,6 +83,7 @@ class PersonalData extends AbstractFrontend
             'Option'
         ) ) );
         $View->addButton( '/Sphere/Management/Person/Student/Create', 'Schüler hinzufügen' );
+        $View->addButton( '/Sphere/Management/Person/Student/Import', 'Schüler importieren' );
         return $View;
     }
 

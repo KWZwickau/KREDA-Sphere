@@ -1,16 +1,16 @@
 <?php
 namespace KREDA\Sphere\Common\Database\Connection;
 
+use KREDA\Sphere\Common\AbstractExtension;
 use KREDA\Sphere\Common\Database\Driver\AbstractDriver;
 use MOC\V\Component\Database\Component\IBridgeInterface;
-use MOC\V\Component\Database\Database;
 
 /**
  * Class Connector
  *
  * @package KREDA\Sphere\Common\Database
  */
-class Connector
+class Connector extends AbstractExtension
 {
 
     /**
@@ -34,7 +34,7 @@ class Connector
 
         $Consumer = $Identifier->getConsumer();
         Register::getSingleton()->addDatabase( $Identifier,
-            Database::getDatabase( $Username, $Password, $Database.( empty( $Consumer ) ? '' : '_'.$Consumer ),
+            $this->extensionDatabase( $Username, $Password, $Database.( empty( $Consumer ) ? '' : '_'.$Consumer ),
                 $Driver->getIdentifier(), $Host, $Port )
         );
     }
