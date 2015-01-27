@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+    <title>KREDA Professional</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="description" content="KREDA Professional"/>
+
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"/>
+    <link rel="schema.DCTERMS" href="http://purl.org/dc/terms/"/>
+
+    {% for Source in Style %}
+        <link rel="stylesheet" href="{{ Source }}"/>
+    {% endfor %}
+    <link rel="shortcut icon" type="image/x-icon" href="{{ PathBase }}/favicon.ico"/>
+    <link rel="apple-touch-icon" href="{{ PathBase }}/apple-touch-icon.png"/>
+
+    <script src="{{ PathBase }}/Sphere/Client/Script/Loader.js"></script>
+
+    <script>
+        Client.Source( 'jQuery', '/Library/jQuery/1.11.1/dist/jquery.min.js', function()
+            {
+                return 'undefined' != typeof jQuery;
+            }
+        );
+        Client.Source( 'Moment.js', '/Library/Moment.Js/2.8.4/min/moment-with-locales.min.js', function()
+            {
+                return 'undefined' != typeof moment;
+            }
+        );
+        Client.Source( 'Bootstrap', '/Library/Bootstrap/3.2.0/dist/js/bootstrap.min.js', function()
+            {
+                return ('function' == typeof jQuery().emulateTransitionEnd)
+            }
+        );
+        Client.Source( 'jQuery.Check', '/Library/Bootflat/2.0.4/bootflat/js/icheck.min.js', function()
+            {
+            }
+        );
+        Client.Source( 'jQuery.Selecter', '/Library/jQuery.Selecter/3.2.4/jquery.fs.selecter.min.js', function()
+            {
+                return 'undefined' != typeof jQuery.fn.selecter
+            }
+        );
+        Client.Source( 'jQuery.Stepper', '/Library/jQuery.Stepper/3.0.8/jquery.fs.stepper.min.js', function()
+            {
+                return 'undefined' != typeof jQuery.fn.stepper
+            }
+        );
+        Client.Source( 'jQuery.DataTable', '/Library/jQuery.DataTables/1.10.4/media/js/jquery.dataTables.min.js',
+            function()
+            {
+                return 'undefined' != typeof jQuery.fn.DataTable;
+            }
+        );
+        Client.Source( 'jQuery.DataTable.Responsive',
+            '/Library/jQuery.DataTables/1.10.4/extensions/Responsive/js/dataTables.responsive.min.js',
+            function()
+            {
+                return 'undefined' != typeof jQuery.fn.DataTable.Responsive;
+            }
+        );
+        Client.Source( 'Bootstrap.DataTable',
+            '/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.min.js', function()
+            {
+                return 'undefined' != typeof jQuery.fn.DataTable.ext.renderer.pageButton.bootstrap;
+            }
+        );
+        Client.Source( 'Bootstrap.DatetimePicker',
+            '/Library/Bootstrap.DateTimePicker/3.1.3/build/js/bootstrap-datetimepicker.min.js', function()
+            {
+                return 'undefined' != typeof jQuery.fn.datetimepicker
+            }
+        );
+        Client.Source( 'Twitter.Typeahead', '/Library/Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min.js', function()
+            {
+                return 'undefined' != typeof jQuery.fn.typeahead;
+            }
+        );
+
+        Client.Module( 'ModAlways', ['Bootstrap', 'jQuery'] );
+        Client.Module( 'ModTable',
+            ['Bootstrap.DataTable', 'jQuery.DataTable.Responsive', 'jQuery.DataTable', 'jQuery'] );
+        Client.Module( 'ModPicker', ['Bootstrap.DatetimePicker', 'Moment.js', 'jQuery'] );
+        Client.Module( 'ModSelecter', ['jQuery.Selecter', 'jQuery'] );
+        Client.Module( 'ModCompleter', ['Twitter.Typeahead', 'Bootstrap', 'jQuery'] );
+    </script>
+
+</head>
+<body>
+
+{{ PositionNavigation }}
+
+{{ PositionContent }}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 footer  small">
+            <div class="clearfix">
+                <div class="footer-logo">
+                    <a href="#">KREDA&nbsp;<img src="{{ PathBase }}/Sphere/Client/Style/Resource/logo_kreide2.png"
+                                                width="105"
+                                                height="61"></a>
+                </div>
+                <dl class="footer-nav">
+                    <dt class="nav-title">Mandanten</dt>
+                    <dd class="nav-item">
+                        <a href="http://www.ege-annaberg.de/">Evangelische Schulgemeinschaft Erzgebirge e.V. (EGE)</a>
+                    </dd>
+                    <dd class="nav-item">
+                        <a href="http://eszc.de/">Freie Evangelische Schulverein Chemnitz e.V. (ESZC)</a>
+                    </dd>
+                </dl>
+                <dl class="footer-nav">
+                    <dt class="nav-title">Applikation</dt>
+                    <dd class="nav-item">
+                        <a href="{{ PathBase }}/Client/Sphere/Assistance/Impressum">Impressum</a>
+                    </dd>
+                    <dd class="nav-item">
+                        <a href="http://www.haus-der-edv.de">Support</a>
+                    </dd>
+                </dl>
+                <dl class="footer-nav">
+                    <dt class="nav-title">Hilfe</dt>
+                    <dd class="nav-item">
+                        <a href="{{ PathBase }}/Client/Sphere/Assistance">Dokumentation</a>
+                    </dd>
+                </dl>
+            </div>
+            <div class="footer-copyright text-center">
+                © 2014 - {{ "now"|date("Y") }} | Mandant: {{ PositionConsumer }} | Erstellt in {{ PositionRuntime }}
+                <div>
+                    <br/>
+                    {{ PositionDebugger }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    Client.Use( 'ModAlways' );
+</script>
+</body>
+</html>
+
+

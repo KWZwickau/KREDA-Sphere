@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="./phpunit.php" colors="true"
-         verbose="true" backupGlobals="true" backupStaticAttributes="false" stopOnError="true" stopOnFailure="true"
+         verbose="true" backupGlobals="true" backupStaticAttributes="false" stopOnError="false" stopOnFailure="false"
          stopOnIncomplete="false" stopOnSkipped="false" timeoutForLargeTests="120" timeoutForMediumTests="30"
          timeoutForSmallTests="10" xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.2/phpunit.xsd"
          processIsolation="false">
     <testsuites>
-        <testsuite name="MOC\V">
-            <directory suffix=".php">./Tests/Core</directory>
+        <testsuite name="KREDA">
+            <directory suffix=".php">./Tests/Client</directory>
+            <directory suffix=".php">./Tests/Application</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="false">
-            <directory suffix=".php">./Tests/Core</directory>
-            <directory suffix=".php">./../Core</directory>
-            <exclude>
-                <directory>./../Core/HttpKernel/Vendor/Symfony</directory>
-            </exclude>
+            <directory suffix=".php">./Tests/Client</directory>
+            <directory suffix=".php">./Tests/Application</directory>
+            <directory suffix=".php">./../Sphere/Client</directory>
+            <directory suffix=".php">./../Sphere/Application</directory>
         </whitelist>
     </filter>
     <logging>

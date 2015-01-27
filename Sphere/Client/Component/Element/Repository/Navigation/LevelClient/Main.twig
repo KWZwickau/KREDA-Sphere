@@ -1,0 +1,40 @@
+<!-- Navigation (Level:Client) -->
+<nav class="navbar navbar-inverse" role="navigation"
+     style="border-radius: inherit; margin: inherit;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 col-sm-1 col-md-3 col-lg-3">
+                <div class="navbar-header">
+                    <div class="navbar-text">
+                        KREDA
+                        <span class="visible-xs-inline visible-md-inline visible-lg-inline"> Professional</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-8 col-sm-11 col-md-9 col-lg-9">
+                <div class="navbar-collapse collapse" id="LevelClient">
+                    <ul class="nav navbar-nav navbar-left">
+                        {{ PositionMain }}
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        {{ PositionMeta }}
+                    </ul>
+                </div>
+            </div>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#LevelClient"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="pull-left">
+                    <a>{{ PositionBreadcrumb }}</a>
+                </span>
+                <span class="pull-right">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </span>
+            </button>
+        </div>
+    </div>
+</nav>

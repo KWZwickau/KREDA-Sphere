@@ -1,0 +1,58 @@
+{% if( Title is not empty ) %}
+    <h4>{{ Title }}</h4>
+{% endif %}
+<table class="table table-bordered table-condensed small">
+    {% for GridTableHead in GridHeadList %}
+        <thead>
+        {% for GridTableRow in GridTableHead.getRowList %}
+            <tr>
+                {% for GridTableCol in GridTableRow.getColList %}
+                    {% if(GridTableCol.getSize>1) and (GridTableCol.getWidth != 'auto') %}
+                        <th colspan="{{ GridTableCol.getSize }}"
+                            style="width:{{ GridTableCol.getWidth }};">{{ GridTableCol }}</th>
+                    {% elseif(GridTableCol.getSize>1) %}
+                        <th colspan="{{ GridTableCol.getSize }}">{{ GridTableCol }}</th>
+                    {% elseif(GridTableCol.getWidth != 'auto') %}
+                        <th style="width:{{ GridTableCol.getWidth }};">{{ GridTableCol }}</th>
+                    {% else %}
+                        <th>{{ GridTableCol }}</th>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </thead>
+    {% endfor %}
+    {% for GridTableBody in GridBodyList %}
+        <tbody>
+        {% for GridTableRow in GridTableBody.getRowList %}
+            <tr>
+                {% for GridTableCol in GridTableRow.getColList %}
+                    {% if(GridTableCol.getSize>1) and (GridTableCol.getWidth != 'auto') %}
+                        <td colspan="{{ GridTableCol.getSize }}"
+                            style="width:{{ GridTableCol.getWidth }};">{{ GridTableCol }}</td>
+                    {% elseif(GridTableCol.getSize>1) %}
+                        <td colspan="{{ GridTableCol.getSize }}">{{ GridTableCol }}</td>
+                    {% elseif(GridTableCol.getWidth != 'auto') %}
+                        <td style="width:{{ GridTableCol.getWidth }};">{{ GridTableCol }}</td>
+                    {% else %}
+                        <td>{{ GridTableCol }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    {% endfor %}
+    {% if( GridFootList is not empty ) %}
+        {% for GridTableFoot in GridFootList %}
+            <tfoot>
+            {% for GridTableRow in GridTableFoot.getRowList %}
+                <tr>
+                    {% for GridTableCol in GridTableRow.getColList %}
+                        <td>{{ GridTableCol }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tfoot>
+        {% endfor %}
+    {% endif %}
+</table>

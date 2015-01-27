@@ -18,3 +18,62 @@ Branch: Master
 
 [![Coverage Status](https://coveralls.io/repos/DerDu/KREDA-Sphere/badge.png?branch=master)](https://coveralls.io/r/DerDu/KREDA-Sphere?branch=master)
 [![Build Status](https://travis-ci.org/DerDu/KREDA-Sphere.svg?branch=master)](https://travis-ci.org/DerDu/KREDA-Sphere)
+
+Abstract Frontend
+=================
+
+Navigation:
+
+- Redirect
+
+Form:
+
+- Structure
+  - Default
+  - Horizontal
+- Element
+  - Input
+    - Text
+    - Select
+    - Password
+    - Completer
+
+Button:
+
+- Structure
+  - Group
+- Element
+  - Link
+    - Primary
+    - Danger
+  - Button
+    - Reset
+    - Submit
+
+Additional Software
+===================
+
+- Bootflat
+- Bootstrap
+- Bootstrap.DateTimePicker
+- Bootstrap.Glyphicons
+- jQuery
+- jQuery.DataTable
+- jQuery.DataTable.Plugins
+- jQuery.Selecter
+- jQuery.Stepper
+- Markdownify
+- Moment.Js
+- Twitter.Typeahead
+- Twitter.Typeahead.Bootstrap
+
+- MOC (Mark V)
+  - Doctrine DBAL/ORM
+  - ApiGen
+  - Twig
+  - Smarty
+  - Symfony
+    - EventDispatcher
+    - HttpKernel
+    - HttpFoundation
+    - Routing

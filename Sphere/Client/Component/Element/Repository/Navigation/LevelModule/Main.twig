@@ -1,0 +1,29 @@
+<!-- Navigation (Level:Module) -->
+<nav class="navbar navbar-default" role="navigation"
+     style="border-radius: inherit; margin: inherit;">
+    <div class="container-fluid">
+        <div class="row">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#LevelModule"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="pull-left">
+                    <a>{{ PositionBreadcrumb }}</a>
+                </span>
+                <span class="pull-right">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </span>
+            </button>
+            <div class="col-xs-12">
+                <div class="navbar-collapse collapse" id="LevelModule">
+                    <ul class="nav navbar-nav navbar-left">
+                        {{ PositionMain }}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
