@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Common;
 
 use KREDA\Sphere\Common\Extension\Debugger;
+use Markdownify\Converter;
 use MOC\V\Component\Database\Database;
 use MOC\V\Component\Document\Component\Bridge\Repository\DomPdf;
 use MOC\V\Component\Document\Document;
@@ -79,5 +80,14 @@ abstract class AbstractExtension
             self::$extensionRequestCache = HttpKernel::getRequest();
         }
         return self::$extensionRequestCache;
+    }
+
+    /**
+     * @return Converter
+     */
+    final public static function extensionMarkdownify()
+    {
+
+        return new Converter();
     }
 }

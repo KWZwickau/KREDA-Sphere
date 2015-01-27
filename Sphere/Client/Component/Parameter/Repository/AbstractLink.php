@@ -18,8 +18,8 @@ abstract class AbstractLink extends AbstractParameter implements IParameterInter
     protected $PatternLinkRoute = '|^[a-z/]+$|is';
     /** @var string $PatternLinkName */
     protected $PatternLinkName = '|^[a-z\söäüß\-]+$|is';
-    /** @var null|string $Value */
-    protected $Value = null;
+    /** @var string $Value */
+    protected $Value = '';
 
     /**
      * @return null|string

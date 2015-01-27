@@ -10,7 +10,6 @@ use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use Markdownify\Converter;
 
 /**
  * Class Youtrack
@@ -235,7 +234,7 @@ class Youtrack extends AbstractService
     private function ticketCreate( $Summary, $Description )
     {
 
-        $Markdown = new Converter();
+        $Markdown = $this->extensionMarkdownify();
         $Markdown->setKeepHTML( false );
         $Summary = $Markdown->parseString( $Summary );
         $Description = $Markdown->parseString( $Description );
