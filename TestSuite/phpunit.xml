@@ -16,10 +16,6 @@
             <directory suffix=".php">./Tests/Application</directory>
             <directory suffix=".php">./../Sphere/Client</directory>
             <directory suffix=".php">./../Sphere/Application</directory>
-            <exclude>
-                <directory>./../Documentation</directory>
-                <directory>./../Library</directory>
-            </exclude>
         </whitelist>
     </filter>
     <logging>
