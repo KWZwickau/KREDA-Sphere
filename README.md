@@ -22,8 +22,8 @@ Master:
 [![Coverage Status](https://coveralls.io/repos/KWZwickau/KREDA-Sphere/badge.svg?branch=master)](https://coveralls.io/r/KWZwickau/KREDA-Sphere?branch=master)
 [![Build Status](https://travis-ci.org/KWZwickau/KREDA-Sphere.svg?branch=master)](https://travis-ci.org/KWZwickau/KREDA-Sphere)
 
-Abstract Frontend
-=================
+Frontend
+========
 
 Navigation:
 
@@ -34,12 +34,41 @@ Form:
 - Structure
   - Default
   - Horizontal
+  - Grid
+    - Group
+    - Row
+    - Col
 - Element
   - Input
-    - Text
-    - Select
-    - Password
     - Completer
+    - Date
+    - Password
+    - Select
+    - Text
+    - TextArea
+
+Table
+
+- Structure
+  - Default
+    + Interactive
+  - Data
+    + Interactive
+  - Grid
+    - Head
+    - Body
+    - Foot
+    - Row
+    - Col
+
+Alert
+
+- Element
+  - Message
+    - Danger
+    - Info
+    - Success
+    - Warning
 
 Button:
 
@@ -53,8 +82,13 @@ Button:
     - Reset
     - Submit
 
-Additional Software
-===================
+Address
+
+- Structure
+  - Default
+
+Library
+=======
 
 - Bootflat
 - Bootstrap
