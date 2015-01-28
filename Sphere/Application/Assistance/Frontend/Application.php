@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Assistance\Frontend\Application;
+namespace KREDA\Sphere\Application\Assistance\Frontend;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -19,7 +19,19 @@ class Application extends AbstractFrontend
     /**
      * @return Stage
      */
-    static public function stageLaunch()
+    public static function stageWelcome()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Anwendungsfehler' );
+        $View->setMessage( 'Bitte wählen Sie ein Thema' );
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stageLaunch()
     {
 
         $View = new Stage();
@@ -57,7 +69,7 @@ class Application extends AbstractFrontend
     /**
      * @return Stage
      */
-    static public function stageFatal()
+    public static function stageFatal()
     {
 
         $View = new Stage();
@@ -97,7 +109,7 @@ class Application extends AbstractFrontend
     /**
      * @return Stage
      */
-    static public function stageMissing()
+    public static function stageMissing()
     {
 
         $View = new Stage();

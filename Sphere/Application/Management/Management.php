@@ -8,7 +8,6 @@ use KREDA\Sphere\Application\Management\Service\Address;
 use KREDA\Sphere\Application\Management\Service\Education;
 use KREDA\Sphere\Application\Management\Service\Person;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BriefcaseIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BuildingIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ClusterIcon;
@@ -46,7 +45,7 @@ class Management extends AbstractApplication
         /**
          * Navigation
          */
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management', __CLASS__.'::apiMain' );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management', __CLASS__.'::frontendManagement' );
         self::addClientNavigationMain( self::$Configuration, '/Sphere/Management', 'Verwaltung', new CogWheelsIcon() );
 
         /**
@@ -59,7 +58,7 @@ class Management extends AbstractApplication
             '/Sphere/Management/Education/Group', __CLASS__.'::guiEducationGroup'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Education/Subject', __CLASS__.'::guiEducationSubject'
+            '/Sphere/Management/Education/Subject', __CLASS__.'::frontendEducationSubject'
         );
 
         self::registerClientRoute( self::$Configuration,
@@ -76,17 +75,17 @@ class Management extends AbstractApplication
             '/Sphere/Management/Person', __CLASS__.'::frontendPerson'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Student', __CLASS__.'::frontendPerson_StudentList'
+            '/Sphere/Management/Person/Student', __CLASS__.'::frontendPersonStudentList'
         );
         $Route = self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Student/Detail', __CLASS__.'::frontendPerson_StudentDetail'
+            '/Sphere/Management/Person/Student/Detail', __CLASS__.'::frontendPersonStudentDetail'
         );
         $Route->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Student/Create', __CLASS__.'::frontendPerson_StudentCreate'
+            '/Sphere/Management/Person/Student/Create', __CLASS__.'::frontendPersonStudentCreate'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Guardian', __CLASS__.'::frontendPerson_GuardianList'
+            '/Sphere/Management/Person/Guardian', __CLASS__.'::frontendPersonGuardianList'
         );
         $Route = self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Guardian/Detail', __CLASS__.'::frontendPerson_GuardianDetail'
@@ -96,17 +95,17 @@ class Management extends AbstractApplication
             '/Sphere/Management/Person/Guardian/Create', __CLASS__.'::frontendPerson_GuardianCreate'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Teacher', __CLASS__.'::frontendPerson_TeacherList'
+            '/Sphere/Management/Person/Teacher', __CLASS__.'::frontendPersonTeacherList'
         );
         $Route = self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Teacher/Detail', __CLASS__.'::frontendPerson_TeacherDetail'
+            '/Sphere/Management/Person/Teacher/Detail', __CLASS__.'::frontendPersonTeacherDetail'
         );
         $Route->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Teacher/Create', __CLASS__.'::frontendPerson_TeacherCreate'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Staff', __CLASS__.'::frontendPerson_StaffList'
+            '/Sphere/Management/Person/Staff', __CLASS__.'::frontendPersonStaffList'
         );
         $Route = self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Staff/Detail', __CLASS__.'::frontendPerson_StaffDetail'
@@ -116,7 +115,7 @@ class Management extends AbstractApplication
             '/Sphere/Management/Person/Staff/Create', __CLASS__.'::frontendPerson_StaffCreate'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Others', __CLASS__.'::frontendPerson_OthersList'
+            '/Sphere/Management/Person/Others', __CLASS__.'::frontendPersonOthersList'
         );
         $Route = self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Others/Detail', __CLASS__.'::frontendPerson_OthersDetail'
@@ -130,7 +129,7 @@ class Management extends AbstractApplication
          * Campus
          */
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Campus', __CLASS__.'::guiCampus'
+            '/Sphere/Management/Campus', __CLASS__.'::frontendCampus'
         );
 
         return $Configuration;
@@ -166,7 +165,7 @@ class Management extends AbstractApplication
     /**
      * @return Stage
      */
-    public function guiEducationSubject()
+    public function frontendEducationSubject()
     {
 
         $this->setupModuleNavigation();
@@ -199,13 +198,13 @@ class Management extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
-    public function apiMain()
+    public function frontendManagement()
     {
 
         $this->setupModuleNavigation();
-        $View = new Landing();
+        $View = new Stage();
         $View->setTitle( 'Verwaltung' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
@@ -248,11 +247,11 @@ class Management extends AbstractApplication
      *
      * @return Stage
      */
-    public function frontendPerson_StudentDetail( $Id )
+    public function frontendPersonStudentDetail( $Id )
     {
 
         if (null === $Id) {
-            return $this->frontendPerson_StudentList();
+            return $this->frontendPersonStudentList();
         } else {
             $this->setupModuleNavigation();
             $this->setupPersonNavigation();
@@ -263,7 +262,7 @@ class Management extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendPerson_StudentList()
+    public function frontendPersonStudentList()
     {
 
         $this->setupModuleNavigation();
@@ -276,11 +275,11 @@ class Management extends AbstractApplication
      *
      * @return Stage
      */
-    public function frontendPerson_TeacherDetail( $Id )
+    public function frontendPersonTeacherDetail( $Id )
     {
 
         if (null === $Id) {
-            return $this->frontendPerson_TeacherList();
+            return $this->frontendPersonTeacherList();
         } else {
             $this->setupModuleNavigation();
             $this->setupPersonNavigation();
@@ -291,7 +290,7 @@ class Management extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendPerson_TeacherList()
+    public function frontendPersonTeacherList()
     {
 
         $this->setupModuleNavigation();
@@ -302,7 +301,7 @@ class Management extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendPerson_GuardianList()
+    public function frontendPersonGuardianList()
     {
 
         $this->setupModuleNavigation();
@@ -313,7 +312,7 @@ class Management extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendPerson_StaffList()
+    public function frontendPersonStaffList()
     {
 
         $this->setupModuleNavigation();
@@ -324,7 +323,7 @@ class Management extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendPerson_OthersList()
+    public function frontendPersonOthersList()
     {
 
         $this->setupModuleNavigation();
@@ -335,7 +334,7 @@ class Management extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendPerson_StudentCreate()
+    public function frontendPersonStudentCreate()
     {
 
         $this->setupModuleNavigation();
@@ -346,7 +345,7 @@ class Management extends AbstractApplication
     /**
      * @return Stage
      */
-    public function guiCampus()
+    public function frontendCampus()
     {
 
         $this->setupModuleNavigation();

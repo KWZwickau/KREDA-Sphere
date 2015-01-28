@@ -12,7 +12,6 @@ use KREDA\Sphere\Application\System\Service\Token;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DatabaseIcon;
@@ -54,35 +53,35 @@ class System extends AbstractApplication
             '/Sphere/System', 'System', new CogWheelsIcon()
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System', __CLASS__.'::apiMain'
+            '/Sphere/System', __CLASS__.'::frontendSystem'
         );
         /**
          * Database
          */
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Database', __CLASS__.'::frontendDatabase_Status'
+            '/Sphere/System/Database', __CLASS__.'::frontendDatabaseStatus'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Database/Status', __CLASS__.'::frontendDatabase_Status'
+            '/Sphere/System/Database/Status', __CLASS__.'::frontendDatabaseStatus'
         );
         /**
          * Update
          */
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Update', __CLASS__.'::apiUpdate'
+            '/Sphere/System/Update', __CLASS__.'::frontendUpdate'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Update/Simulation', __CLASS__.'::apiUpdateSimulation'
+            '/Sphere/System/Update/Simulation', __CLASS__.'::frontendUpdateSimulation'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Update/Perform', __CLASS__.'::apiUpdatePerform'
+            '/Sphere/System/Update/Perform', __CLASS__.'::frontendUpdatePerform'
         );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Consumer', __CLASS__.'::apiConsumer'
+            '/Sphere/System/Consumer', __CLASS__.'::frontendConsumer'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Consumer/Create', __CLASS__.'::apiConsumerCreate'
+            '/Sphere/System/Consumer/Create', __CLASS__.'::frontendConsumerCreate'
         );
 
         self::registerClientRoute( self::$Configuration,
@@ -117,14 +116,14 @@ class System extends AbstractApplication
         )->setParameterDefault( 'Privilege', null )->setParameterDefault( 'Right', null );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Token', __CLASS__.'::apiToken'
+            '/Sphere/System/Token', __CLASS__.'::frontendToken'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Token/Certification', __CLASS__.'::apiTokenCertification'
+            '/Sphere/System/Token/Certification', __CLASS__.'::frontendTokenCertification'
         );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Protocol', __CLASS__.'::apiProtocol'
+            '/Sphere/System/Protocol', __CLASS__.'::frontendProtocol'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Protocol/Live', __CLASS__.'::apiProtocolLive'
@@ -161,13 +160,13 @@ class System extends AbstractApplication
     }
 
     /**
-     * @return Element|Landing
+     * @return Element|Stage
      */
-    public function apiMain()
+    public function frontendSystem()
     {
 
         $this->setupModuleNavigation();
-        $View = new Landing();
+        $View = new Stage();
         $View->setTitle( 'Systemeinstellungen' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
 
@@ -224,9 +223,9 @@ class System extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
-    public function apiConsumer()
+    public function frontendConsumer()
     {
 
         $this->setupModuleNavigation();
@@ -246,7 +245,7 @@ class System extends AbstractApplication
     /**
      * @return Stage
      */
-    public function apiConsumerCreate()
+    public function frontendConsumerCreate()
     {
 
         $this->setupModuleNavigation();
@@ -255,9 +254,9 @@ class System extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
-    public function apiUpdate()
+    public function frontendUpdate()
     {
 
         $this->setupModuleNavigation();
@@ -381,9 +380,9 @@ class System extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
-    public function apiUpdateSimulation()
+    public function frontendUpdateSimulation()
     {
 
         $this->setupModuleNavigation();
@@ -392,9 +391,9 @@ class System extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
-    public function apiUpdatePerform()
+    public function frontendUpdatePerform()
     {
 
         $this->setupModuleNavigation();
@@ -405,7 +404,7 @@ class System extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendDatabase_Status()
+    public function frontendDatabaseStatus()
     {
 
         $this->setupModuleNavigation();
@@ -413,9 +412,9 @@ class System extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
-    public function apiToken()
+    public function frontendToken()
     {
 
         $this->setupModuleNavigation();
@@ -436,9 +435,9 @@ class System extends AbstractApplication
      * @param null|string $CredentialKey
      *
      * @throws \Exception
-     * @return Landing
+     * @return Stage
      */
-    public function apiTokenCertification( $CredentialKey = null )
+    public function frontendTokenCertification( $CredentialKey = null )
     {
 
         $this->setupModuleNavigation();
@@ -449,7 +448,7 @@ class System extends AbstractApplication
     /**
      * @return Stage
      */
-    public function apiProtocol()
+    public function frontendProtocol()
     {
 
         $this->setupModuleNavigation();

@@ -1,12 +1,11 @@
 <?php
 namespace KREDA\Sphere\Application\Assistance;
 
-use KREDA\Sphere\Application\Assistance\Frontend\Account\Account;
-use KREDA\Sphere\Application\Assistance\Frontend\Application\Application;
-use KREDA\Sphere\Application\Assistance\Frontend\Support\Support;
+use KREDA\Sphere\Application\Assistance\Frontend\Account;
+use KREDA\Sphere\Application\Assistance\Frontend\Application;
+use KREDA\Sphere\Application\Assistance\Frontend\Support;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BookIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
 use KREDA\Sphere\Client\Configuration;
@@ -40,19 +39,19 @@ class Assistance extends AbstractApplication
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance',
-            __CLASS__.'::apiMain'
+            __CLASS__.'::frontendAssistance'
         );
         if (Gatekeeper::serviceAccount()->checkIsValidSession()) {
             self::registerClientRoute( self::$Configuration,
                 '/Sphere/Assistance/Support',
-                __CLASS__.'::apiMain'
+                __CLASS__.'::frontendSupport'
             );
             /**
              * Youtrack
              */
             self::registerClientRoute( self::$Configuration,
                 '/Sphere/Assistance/Support/Ticket',
-                __CLASS__.'::frontendSupport_Ticket'
+                __CLASS__.'::frontendSupportTicket'
             );
         }
         /**
@@ -60,30 +59,30 @@ class Assistance extends AbstractApplication
          */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Account',
-            __CLASS__.'::apiAccount'
+            __CLASS__.'::frontendAccount'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Account/Password/Forgotten',
-            __CLASS__.'::frontendAccount_ForgottenPassword'
+            __CLASS__.'::frontendAccountForgottenPassword'
         );
         /**
          * Application
          */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Application',
-            __CLASS__.'::apiSupportApplication'
+            __CLASS__.'::frontendApplication'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Application/Start',
-            __CLASS__.'::frontendApplication_Launch'
+            __CLASS__.'::frontendApplicationLaunch'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Application/Missing',
-            __CLASS__.'::frontendApplication_Missing'
+            __CLASS__.'::frontendApplicationMissing'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Assistance/Support/Application/Fatal',
-            __CLASS__.'::frontendApplication_Fatal'
+            __CLASS__.'::frontendApplicationFatal'
         );
         return $Configuration;
     }
@@ -98,13 +97,13 @@ class Assistance extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
-    public function apiMain()
+    public function frontendAssistance()
     {
 
         $this->setupModuleNavigation();
-        $View = new Landing();
+        $View = new Stage();
         $View->setTitle( 'Hilfe' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
@@ -127,17 +126,14 @@ class Assistance extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
-    public function apiAccount()
+    public function frontendAccount()
     {
 
         $this->setupModuleNavigation();
         $this->setupFrontendAccount();
-        $View = new Landing();
-        $View->setTitle( 'Benutzerkonto' );
-        $View->setMessage( 'Bitte wählen Sie ein Thema' );
-        return $View;
+        return Account::stageWelcome();
     }
 
     public function setupFrontendAccount()
@@ -152,7 +148,7 @@ class Assistance extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendAccount_ForgottenPassword()
+    public function frontendAccountForgottenPassword()
     {
 
         $this->setupModuleNavigation();
@@ -161,17 +157,14 @@ class Assistance extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
-    public function apiSupportApplication()
+    public function frontendApplication()
     {
 
         $this->setupModuleNavigation();
         $this->setupFrontendApplication();
-        $View = new Landing();
-        $View->setTitle( 'Anwendungsfehler' );
-        $View->setMessage( 'Bitte wählen Sie ein Thema' );
-        return $View;
+        return Application::stageWelcome();
     }
 
     public function setupFrontendApplication()
@@ -189,13 +182,24 @@ class Assistance extends AbstractApplication
 
     }
 
+
+    /**
+     * @return Stage
+     */
+    public function frontendSupport()
+    {
+
+        $this->setupModuleNavigation();
+        return Support::stageWelcome();
+    }
+
     /**
      * @param null|string $TicketSubject
      * @param null|string $TicketMessage
      *
      * @return Stage
      */
-    public function frontendSupport_Ticket( $TicketSubject = null, $TicketMessage = null )
+    public function frontendSupportTicket( $TicketSubject = null, $TicketMessage = null )
     {
 
         $this->setupModuleNavigation();
@@ -205,7 +209,7 @@ class Assistance extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendApplication_Launch()
+    public function frontendApplicationLaunch()
     {
 
         $this->setupModuleNavigation();
@@ -216,7 +220,7 @@ class Assistance extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendApplication_Missing()
+    public function frontendApplicationMissing()
     {
 
         $this->setupModuleNavigation();
@@ -227,7 +231,7 @@ class Assistance extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendApplication_Fatal()
+    public function frontendApplicationFatal()
     {
 
         $this->setupModuleNavigation();

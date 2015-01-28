@@ -40,7 +40,7 @@ class Graduation extends AbstractApplication
         self::registerClientRoute( self::$Configuration, '/Sphere/Graduation',
             __CLASS__.'::frontendGrade' );
         $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type',
-            __CLASS__.'::frontendGrade_Type' );
+            __CLASS__.'::frontendGradeType' );
         $Route->setParameterDefault( 'GradeName', null );
         $Route->setParameterDefault( 'GradeAcronym', null );
 
@@ -98,7 +98,7 @@ class Graduation extends AbstractApplication
     /**
      * @return Landing
      */
-    public function frontendGrade_Type()
+    public function frontendGradeType()
     {
 
         $this->setupModuleNavigation();

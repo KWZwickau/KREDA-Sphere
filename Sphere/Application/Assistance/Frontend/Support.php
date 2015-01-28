@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Assistance\Frontend\Support;
+namespace KREDA\Sphere\Application\Assistance\Frontend;
 
 use KREDA\Sphere\Application\Assistance\Assistance;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
@@ -23,12 +23,24 @@ class Support extends AbstractFrontend
 {
 
     /**
+     * @return Stage
+     */
+    public static function stageWelcome()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Support' );
+        $View->setMessage( 'Bitte wählen Sie ein Thema' );
+        return $View;
+    }
+
+    /**
      * @param $TicketSubject
      * @param $TicketMessage
      *
      * @return Stage
      */
-    static public function stageTicket( $TicketSubject, $TicketMessage )
+    public static function stageTicket( $TicketSubject, $TicketMessage )
     {
 
         $View = new Stage();

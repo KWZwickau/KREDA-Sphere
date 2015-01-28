@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Assistance\Frontend\Account;
+namespace KREDA\Sphere\Application\Assistance\Frontend;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -19,7 +19,19 @@ class Account extends AbstractFrontend
     /**
      * @return Stage
      */
-    static public function stageForgottenPassword()
+    public static function stageWelcome()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Benutzerkonto' );
+        $View->setMessage( 'Bitte wählen Sie ein Thema' );
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stageForgottenPassword()
     {
 
         $View = new Stage();
