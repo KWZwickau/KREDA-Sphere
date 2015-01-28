@@ -30,8 +30,8 @@ abstract class EntitySchema extends AbstractService
         $tblAccountRole = $this->setTableAccountRole( $Schema );
         $tblAccountTyp = $this->setTableAccountTyp( $Schema );
         $tblAccount = $this->setTableAccount( $Schema,
-            Gatekeeper::serviceToken()->schemaTableToken(),
-            Gatekeeper::serviceConsumer()->schemaTableConsumer(),
+            Gatekeeper::serviceToken()->getTableToken(),
+            Gatekeeper::serviceConsumer()->getTableConsumer(),
             $tblAccountTyp,
             $tblAccountRole
         );
@@ -40,7 +40,7 @@ abstract class EntitySchema extends AbstractService
         );
         $this->setTableAccountAccessList( $Schema,
             $tblAccountRole,
-            Gatekeeper::serviceAccess()->schemaTableAccess()
+            Gatekeeper::serviceAccess()->getTableAccess()
         );
         /**
          * Migration

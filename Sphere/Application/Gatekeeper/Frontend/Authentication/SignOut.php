@@ -19,7 +19,7 @@ class SignOut extends AbstractFrontend
     public static function stageSignOut()
     {
 
-        Gatekeeper::serviceAccount()->executeSignOut();
+        Gatekeeper::serviceAccount()->executeActionSignOut();
         $View = new Stage();
         $View->setTitle( 'Abmelden' );
         $View->setDescription( '' );

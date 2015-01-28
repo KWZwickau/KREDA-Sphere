@@ -65,7 +65,7 @@ class Token extends EntityAction
     /**
      * @return Table
      */
-    public function schemaTableToken()
+    public function getTableToken()
     {
 
         return parent::getTableToken();
@@ -76,10 +76,10 @@ class Token extends EntityAction
      *
      * @return bool|TblToken
      */
-    public function executeRegisterYubiKey( $CredentialKey )
+    public function executeCreateToken( $CredentialKey )
     {
 
-        if ($this->apiValidateToken( $CredentialKey )) {
+        if ($this->checkIsValidToken( $CredentialKey )) {
             return parent::actionCreateToken( substr( $CredentialKey, 0, 12 ) );
         } else {
             return false;
@@ -92,7 +92,7 @@ class Token extends EntityAction
      * @return bool
      * @throws \Exception
      */
-    public function apiValidateToken( $Value )
+    public function checkIsValidToken( $Value )
     {
 
         $YubiKey = new Token\Hardware\YubiKey\YubiKey( 19180, 'YJwU33GNiRiw1dE8/MfIMNm8w3Y=' );

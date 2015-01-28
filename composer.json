@@ -1,16 +1,15 @@
 {
-    "name": "derdu/kreda-sphere",
-    "description": "",
-    "minimum-stability": "stable",
-    "license": "proprietary",
-    "authors": [
-        {
-            "name": "DerDu",
-            "email": "gerdchristian.kunze@googlemail.com"
-        }
-    ],
-
-    "require-dev": {
-        "satooshi/php-coveralls": "dev-master"
+  "name": "kwzwickau/kreda-sphere",
+  "description": "Schulverwaltung",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "DerDu",
+      "email": "gerdchristian.kunze@googlemail.com"
     }
+  ],
+  "require-dev": {
+    "codeclimate/php-test-reporter": "dev-master"
+  }
 }

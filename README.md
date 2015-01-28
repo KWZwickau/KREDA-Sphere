@@ -7,17 +7,20 @@ Don't use them in production environments.
 
 Be also aware that current interfaces may change rapidly
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/b406047b-5e7a-4687-97f7-9d57d85a0205/big.png)](https://insight.sensiolabs.com/projects/b406047b-5e7a-4687-97f7-9d57d85a0205)
+-----
 
-Branch: Development
+Development:
 
-[![Coverage Status](https://coveralls.io/repos/DerDu/KREDA-Sphere/badge.png?branch=development)](https://coveralls.io/r/DerDu/KREDA-Sphere?branch=development)
-[![Build Status](https://travis-ci.org/DerDu/KREDA-Sphere.svg?branch=development)](https://travis-ci.org/DerDu/KREDA-Sphere)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/708fc862-a692-4279-903d-792f62333644/big.png)](https://insight.sensiolabs.com/projects/708fc862-a692-4279-903d-792f62333644)
 
-Branch: Master
+[![Code Climate](https://codeclimate.com/github/KWZwickau/KREDA-Sphere/badges/gpa.svg)](https://codeclimate.com/github/KWZwickau/KREDA-Sphere)
+[![Coverage Status](https://coveralls.io/repos/KWZwickau/KREDA-Sphere/badge.svg?branch=development)](https://coveralls.io/r/KWZwickau/KREDA-Sphere?branch=development)
+[![Build Status](https://travis-ci.org/KWZwickau/KREDA-Sphere.svg?branch=development)](https://travis-ci.org/KWZwickau/KREDA-Sphere)
 
-[![Coverage Status](https://coveralls.io/repos/DerDu/KREDA-Sphere/badge.png?branch=master)](https://coveralls.io/r/DerDu/KREDA-Sphere?branch=master)
-[![Build Status](https://travis-ci.org/DerDu/KREDA-Sphere.svg?branch=master)](https://travis-ci.org/DerDu/KREDA-Sphere)
+Master:
+
+[![Coverage Status](https://coveralls.io/repos/KWZwickau/KREDA-Sphere/badge.svg?branch=master)](https://coveralls.io/r/KWZwickau/KREDA-Sphere?branch=master)
+[![Build Status](https://travis-ci.org/KWZwickau/KREDA-Sphere.svg?branch=master)](https://travis-ci.org/KWZwickau/KREDA-Sphere)
 
 Abstract Frontend
 =================

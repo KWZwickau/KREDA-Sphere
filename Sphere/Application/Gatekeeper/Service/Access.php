@@ -151,10 +151,10 @@ class Access extends EntityAction
     /**
      * @return Table
      */
-    public function schemaTableAccess()
+    public function getTableAccess()
     {
 
-        return $this->getTableAccess();
+        return parent::getTableAccess();
     }
 
     /**

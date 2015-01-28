@@ -37,7 +37,7 @@ class SignIn extends AbstractFrontend
         $View->setTitle( 'Anmeldung' );
         $View->setDescription( 'Lehrer' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
-        $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
+        $View->setContent( Gatekeeper::serviceAccount()->executeActionSignInWithToken(
             new FormDefault(
                 new GridFormGroup( array(
                         new GridFormRow(
@@ -72,7 +72,7 @@ class SignIn extends AbstractFrontend
         $View->setTitle( 'Anmeldung' );
         $View->setDescription( 'System' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
-        $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
+        $View->setContent( Gatekeeper::serviceAccount()->executeActionSignInWithToken(
             new FormDefault(
                 new GridFormGroup( array(
                         new GridFormRow(
@@ -106,7 +106,7 @@ class SignIn extends AbstractFrontend
         $View->setTitle( 'Anmeldung' );
         $View->setDescription( 'Schüler' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
-        $View->setContent( Gatekeeper::serviceAccount()->executeSignIn(
+        $View->setContent( Gatekeeper::serviceAccount()->executeActionSignIn(
             new FormDefault(
                 new GridFormGroup( array(
                         new GridFormRow(
@@ -138,7 +138,7 @@ class SignIn extends AbstractFrontend
         $View->setTitle( 'Anmeldung' );
         $View->setDescription( 'Verwaltung' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
-        $View->setContent( Gatekeeper::serviceAccount()->executeSignInWithToken(
+        $View->setContent( Gatekeeper::serviceAccount()->executeActionSignInWithToken(
             new FormDefault(
                 new GridFormGroup( array(
                         new GridFormRow(

@@ -73,7 +73,7 @@ class Account extends EntityAction
     /**
      * @return void
      */
-    public function executeSignOut()
+    public function executeActionSignOut()
     {
 
         $this->actionDestroySession();
@@ -89,7 +89,7 @@ class Account extends EntityAction
      *
      * @return AbstractForm|Redirect
      */
-    public function executeSignInWithToken(
+    public function executeActionSignInWithToken(
         AbstractForm &$View,
         $CredentialName,
         $CredentialLock,
@@ -149,7 +149,7 @@ class Account extends EntityAction
                 return self::API_SIGN_IN_SUCCESS;
             } else {
                 try {
-                    if (Gatekeeper::serviceToken()->apiValidateToken( $TokenString )) {
+                    if (Gatekeeper::serviceToken()->checkIsValidToken( $TokenString )) {
                         if (false === ( $Token = $tblAccount->getServiceGatekeeperToken() )) {
                             return self::API_SIGN_IN_ERROR_TOKEN;
                         } else {
@@ -179,7 +179,7 @@ class Account extends EntityAction
      *
      * @return AbstractForm
      */
-    public function executeSignIn(
+    public function executeActionSignIn(
         AbstractForm &$View,
         $CredentialName,
         $CredentialLock,
@@ -362,10 +362,10 @@ class Account extends EntityAction
     /**
      * @return Table
      */
-    public function schemaTableAccount()
+    public function getTableAccount()
     {
 
-        return $this->getTableAccount();
+        return self::getTableAccount();
     }
 
     /**

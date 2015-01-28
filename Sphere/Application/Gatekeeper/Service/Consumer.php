@@ -39,10 +39,10 @@ class Consumer extends EntityAction
     /**
      * @return Table
      */
-    public function schemaTableConsumer()
+    public function getTableConsumer()
     {
 
-        return $this->getTableConsumer();
+        return self::getTableConsumer();
     }
 
     /**
