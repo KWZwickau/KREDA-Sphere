@@ -604,6 +604,7 @@ ApiGen.config = {"require":{"min":"2.8.0"},"resources":{"resources":"resources"}
                 }
                 var d;
                 for (d in a) {
+                    ;
                 }
                 return d === b || E.call( a, d )
             }, isEmptyObject: function( a )
@@ -2358,6 +2359,7 @@ ApiGen.config = {"require":{"min":"2.8.0"},"resources":{"resources":"resources"}
                     for (var f = 0, g = a.length, h; f < g; f++) {
                         if (h = a[f]) {
                             while ((h = h.previousSibling) && h.nodeType !== 1) {
+                                ;
                             }
                             a[f] = e || h && h.nodeName.toLowerCase() === b ? h || !1 : h === b
                         }
@@ -4617,6 +4619,7 @@ jQuery.cookie = function( name, value, options )
  * Revision: $Id: jquery.autocomplete.js 15 2009-08-22 10:30:27Z joern.zaefferer $
  */
 
+;
 (function( $ )
 {
 
@@ -4889,7 +4892,8 @@ jQuery.cookie = function( name, value, options )
                 stopLoading();
                 select.hide();
             }
-        }
+        };
+
         function trimWords( value )
         {
             if (!value) {
@@ -4935,12 +4939,14 @@ jQuery.cookie = function( name, value, options )
                 // select the portion of the value not typed by the user (so the next character will erase)
                 $( input ).selection( previousValue.length, previousValue.length + sValue.length );
             }
-        }
+        };
+
         function hideResults()
         {
             clearTimeout( timeout );
             timeout = setTimeout( hideResultsNow, 200 );
-        }
+        };
+
         function hideResultsNow()
         {
             var wasVisible = select.visible();
@@ -4966,7 +4972,8 @@ jQuery.cookie = function( name, value, options )
                     }
                 );
             }
-        }
+        };
+
         function receiveData( q, data )
         {
             if (data && data.length && hasFocus) {
@@ -4977,7 +4984,8 @@ jQuery.cookie = function( name, value, options )
             } else {
                 hideResultsNow();
             }
-        }
+        };
+
         function request( term, success, failure )
         {
             if (!options.matchCase) {
@@ -5023,7 +5031,8 @@ jQuery.cookie = function( name, value, options )
                     failure( term );
                 }
             }
-        }
+        };
+
         function parse( data )
         {
             var parsed = [];
@@ -5040,11 +5049,13 @@ jQuery.cookie = function( name, value, options )
                 }
             }
             return parsed;
-        }
+        };
+
         function stopLoading()
         {
             $input.removeClass( options.loadingClass );
-        }
+        };
+
     };
 
     $.Autocompleter.defaults = {
@@ -5098,7 +5109,8 @@ jQuery.cookie = function( name, value, options )
                 return false;
             }
             return i == 0 || options.matchContains;
-        }
+        };
+
         function add( q, value )
         {
             if (length > options.cacheLength) {
@@ -5159,6 +5171,8 @@ jQuery.cookie = function( name, value, options )
                     stMatchSets[""].push( row );
                 }
             }
+            ;
+
             // add the data items to the cache
             $.each( stMatchSets, function( i, value )
             {
@@ -5323,7 +5337,8 @@ jQuery.cookie = function( name, value, options )
                     }
                 }
             }
-        }
+        };
+
         function movePosition( step )
         {
             active += step;
