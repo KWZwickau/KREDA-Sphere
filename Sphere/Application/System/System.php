@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\System;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Access;
 use KREDA\Sphere\Application\System\Frontend\Authorization\Authorization;
 use KREDA\Sphere\Application\System\Frontend\Consumer\Consumer;
 use KREDA\Sphere\Application\System\Frontend\Installer\Installer;

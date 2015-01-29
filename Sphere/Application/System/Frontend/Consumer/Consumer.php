@@ -52,7 +52,7 @@ class Consumer extends AbstractFrontend
         $ConsumerList = Gatekeeper::serviceConsumer()->entityConsumerAll();
         array_walk( $ConsumerList, function ( TblConsumer &$V ) {
 
-            if( false === ( $A = $V->getServiceManagementAddress() ) ) {
+            if (false === $V->getServiceManagementAddress()) {
                 $V->serviceManagement_Address = new MessageWarning( 'Keine Adressdaten verfügbar', new WarningIcon() );
             } else {
                 $V->serviceManagement_Address = new AddressDefault( $V->getServiceManagementAddress() );

@@ -24,7 +24,7 @@ class MessageWarning extends AbstractElement
 
         $this->Template = $this->extensionTemplate( __DIR__.'/MessageWarning.twig' );
         $this->Template->setVariable( 'ElementMessage', $Message );
-        if (null != $Icon) {
+        if (null !== $Icon) {
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }
     }

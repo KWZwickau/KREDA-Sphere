@@ -132,7 +132,7 @@ abstract class EntityAction extends EntitySchema
                 TblAddress::ATTR_TBL_ADDRESS_STATE => $TblAddressState->getId(),
                 TblAddress::ATTR_TBL_ADDRESS_CITY  => $TblAddressCity->getId(),
                 TblAddress::ATTR_STREET_NAME       => $StreetName,
-                TblAddress::ATTR_STREET_Number     => $StreetNumber,
+                TblAddress::ATTR_STREET_NUMBER => $StreetNumber,
                 TblAddress::ATTR_POST_OFFICE_BOX   => $PostOfficeBox
             ) );
         if (null === $Entity) {

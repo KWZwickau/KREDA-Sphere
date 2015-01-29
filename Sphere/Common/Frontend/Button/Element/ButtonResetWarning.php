@@ -27,7 +27,7 @@ class ButtonResetWarning extends AbstractElement
         $this->Template = $this->extensionTemplate( __DIR__.'/ButtonResetWarning.twig' );
 
         $this->Template->setVariable( 'ElementName', $Name );
-        if (null != $Icon) {
+        if (null !== $Icon) {
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }
     }

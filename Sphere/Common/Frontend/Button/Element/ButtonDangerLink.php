@@ -29,7 +29,7 @@ class ButtonDangerLink extends AbstractElement
 
         $this->Template->setVariable( 'ElementName', $Name );
         $this->Template->setVariable( 'ElementPath', $Path );
-        if (null != $Icon) {
+        if (null !== $Icon) {
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }
 

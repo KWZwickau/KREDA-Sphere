@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account;
-use KREDA\Sphere\Application\Gatekeeper\Service\Token;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**

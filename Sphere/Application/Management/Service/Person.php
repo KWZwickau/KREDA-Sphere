@@ -109,7 +109,6 @@ class Person extends EntityAction
 
         if (!$Error) {
 
-            //$this->actionCreatePerson( $Salutation, $FirstName, $MiddleName, $LastName, $Gender, $Birthday );
             $View->setSuccess( 'Salutation', 'Route wurde angelegt' );
         }
         return $View;

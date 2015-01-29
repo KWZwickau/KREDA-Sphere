@@ -226,7 +226,7 @@ class Account extends EntityAction
 
         }
         if (!empty( $tblConsumer ) && is_numeric( $tblConsumer )) {
-            // TODO: Change Consumer
+
             return new Redirect( '/Sphere/Gatekeeper/MyAccount', 1 );
         }
         return $View;

@@ -44,13 +44,11 @@ abstract class AbstractElement extends AbstractFrontend implements IElementInter
     public function setError( $Message, AbstractIcon $Icon = null )
     {
 
-        if (null === $Icon) {
-            // glyphicon glyphicon-remove
-//            $Icon = new QuestionIcon();
-        }
         $this->Template->setVariable( 'ElementGroup', 'has-error has-feedback' );
-//        $this->Template->setVariable( 'ElementFeedbackIcon',
-//            '<span class="'.$Icon->getValue().' form-control-feedback"></span>' );
+        if (null !== $Icon) {
+            $this->Template->setVariable( 'ElementFeedbackIcon',
+                '<span class="'.$Icon->getValue().' form-control-feedback"></span>' );
+        }
         $this->Template->setVariable( 'ElementFeedbackMessage',
             '<span class="help-block text-left">'.$Message.'</span>' );
     }

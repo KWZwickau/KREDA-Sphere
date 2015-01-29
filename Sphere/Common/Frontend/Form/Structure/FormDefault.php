@@ -28,7 +28,7 @@ class FormDefault extends AbstractForm
         }
         $this->GridGroupList = $GridGroupList;
 
-        if (null == $FormButtonList) {
+        if (null === $FormButtonList) {
             $FormButtonList = array( new ButtonSubmitPrimary( 'Absenden' ) );
         } else {
             if (!is_array( $FormButtonList )) {

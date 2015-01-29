@@ -1,10 +1,8 @@
 <?php
 namespace KREDA\Sphere\Common\Frontend\Form\Structure;
 
-use KREDA\Sphere\Common\Frontend\Alert\AbstractElement as AbstractAlert;
 use KREDA\Sphere\Common\Frontend\Form\AbstractElement;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use KREDA\Sphere\Common\Frontend\IElementInterface;
 
 /**
  * Class GridFormCol
@@ -14,14 +12,14 @@ use KREDA\Sphere\Common\Frontend\IElementInterface;
 class GridFormCol extends AbstractForm
 {
 
-    /** @var IElementInterface[]|AbstractAlert[] $GridElementList */
+    /** @var \KREDA\Sphere\Common\Frontend\IElementInterface[]|\KREDA\Sphere\Common\Frontend\Alert\AbstractElement[] $GridElementList */
     private $GridElementList = array();
     /** @var string $GridTitle */
     private $GridSize = 12;
 
     /**
-     * @param IElementInterface|IElementInterface[]|AbstractAlert|AbstractAlert[] $GridElementList
-     * @param int                                                                 $GridSize
+     * @param \KREDA\Sphere\Common\Frontend\IElementInterface|\KREDA\Sphere\Common\Frontend\IElementInterface[]|\KREDA\Sphere\Common\Frontend\Alert\AbstractElement|\KREDA\Sphere\Common\Frontend\Alert\AbstractElement[] $GridElementList
+     * @param int                                                                                                                                                                                                         $GridSize
      */
     function __construct( $GridElementList, $GridSize = 12 )
     {

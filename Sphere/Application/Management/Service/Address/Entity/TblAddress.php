@@ -19,7 +19,7 @@ class TblAddress extends AbstractEntity
 {
 
     const ATTR_STREET_NAME = 'StreetName';
-    const ATTR_STREET_Number = 'StreetNumber';
+    const ATTR_STREET_NUMBER = 'StreetNumber';
     const ATTR_POST_OFFICE_BOX = 'PostOfficeBox';
     const ATTR_TBL_ADDRESS_CITY = 'tblAddressCity';
     const ATTR_TBL_ADDRESS_STATE = 'tblAddressState';

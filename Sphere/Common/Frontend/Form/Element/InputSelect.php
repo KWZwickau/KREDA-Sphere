@@ -37,7 +37,7 @@ class InputSelect extends AbstractElement
         $this->Template->setVariable( 'ElementName', $Name );
         $this->Template->setVariable( 'ElementLabel', $Label );
         $this->Template->setVariable( 'ElementData', $Data );
-        if (null != $Icon) {
+        if (null !== $Icon) {
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }
 
