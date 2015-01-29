@@ -61,7 +61,7 @@ class Database extends AbstractService
     /**
      * @return array
      */
-    public function executeDatabaseStatus()
+    public function extensionDatabaseStatus()
     {
 
         $Report = array();

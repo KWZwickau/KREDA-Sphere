@@ -61,7 +61,8 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblToken( $Identifier );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }

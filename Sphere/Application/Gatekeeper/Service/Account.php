@@ -77,7 +77,9 @@ class Account extends EntityAction
     {
 
         $this->actionDestroySession();
-        session_regenerate_id();
+        if (!headers_sent()) {
+            session_regenerate_id();
+        }
     }
 
     /**
@@ -365,7 +367,7 @@ class Account extends EntityAction
     public function getTableAccount()
     {
 
-        return self::getTableAccount();
+        return parent::getTableAccount();
     }
 
     /**

@@ -71,7 +71,8 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblScoreRule( $Name );
             $Entity->setDescription( $Description );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -94,7 +95,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setMultiplier( $Multiplier );
             $Entity->setRound( $Round );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -117,7 +119,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setPriority( $Priority );
             $Entity->setRound( $Round );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -145,7 +148,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTblScoreRule( $tblScoreRule );
             $Entity->setTblScoreCondition( $tblScoreCondition );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -172,7 +176,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTblScoreCondition( $tblScoreCondition );
             $Entity->setTblScoreGroup( $tblScoreGroup );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -199,7 +204,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTblScoreCondition( $tblScoreCondition );
             $Entity->setServiceGraduationGrade( $tblGradeType );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -223,7 +229,8 @@ abstract class EntityAction extends EntitySchema
                 TblScoreConditionGradeTypeList::ATTR_SERVICE_GRADUATION_GRADE => $tblGradeType->getId()
             ) );
         if (null !== $Entity) {
-            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }
@@ -255,7 +262,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setServiceGraduationGrade( $tblGradeType );
             $Entity->setMultiplier( $Multiplier );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -279,7 +287,8 @@ abstract class EntityAction extends EntitySchema
                 TblScoreGroupGradeTypeList::ATTR_SERVICE_GRADUATION_GRADE => $tblGradeType->getId()
             ) );
         if (null !== $Entity) {
-            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }

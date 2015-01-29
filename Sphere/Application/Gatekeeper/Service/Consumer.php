@@ -42,7 +42,7 @@ class Consumer extends EntityAction
     public function getTableConsumer()
     {
 
-        return self::getTableConsumer();
+        return parent::getTableConsumer();
     }
 
     /**

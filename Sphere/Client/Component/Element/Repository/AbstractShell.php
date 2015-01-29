@@ -12,8 +12,4 @@ use KREDA\Sphere\Client\Component\IElementInterface;
 abstract class AbstractShell extends Element implements IElementInterface
 {
 
-    /**
-     * @return string
-     */
-    abstract public function getContent();
 }

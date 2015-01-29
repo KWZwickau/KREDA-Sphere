@@ -25,7 +25,7 @@ class Status extends AbstractFrontend
         $View->setMessage( 'Zeigt die aktuelle Konfiguration und den Verbindungsstatus' );
         $View->setContent(
             new Database\Status(
-                System::serviceDatabase()->executeDatabaseStatus()
+                System::serviceDatabase()->extensionDatabaseStatus()
             )
         );
         return $View;

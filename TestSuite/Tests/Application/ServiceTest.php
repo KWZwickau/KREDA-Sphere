@@ -1,6 +1,8 @@
 <?php
 namespace KREDA\TestSuite\Tests\Application;
 
+use KREDA\Sphere\Common\AbstractService;
+
 /**
  * Class ServiceTest
  *
@@ -36,6 +38,20 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $this->checkServiceMethodName( $Namespace.'\Address' );
         $this->checkServiceMethodName( $Namespace.'\Education' );
         $this->checkServiceMethodName( $Namespace.'\Person' );
+        /**
+         * Graduation
+         */
+        $Namespace = 'KREDA\Sphere\Application\Graduation\Service';
+        $this->checkServiceMethodName( $Namespace.'\Grade' );
+        $this->checkServiceMethodName( $Namespace.'\Score' );
+        $this->checkServiceMethodName( $Namespace.'\Weight' );
+        /**
+         * System
+         */
+        $Namespace = 'KREDA\Sphere\Application\System\Service';
+        $this->checkServiceMethodName( $Namespace.'\Database' );
+        $this->checkServiceMethodName( $Namespace.'\Protocol' );
+
     }
 
     /**
@@ -62,8 +78,63 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $MethodList = $Class->getMethods( $Realm );
         /** @var \ReflectionMethod $Method */
         foreach ($MethodList as $Method) {
-            $this->assertEquals( 1, preg_match( $Pattern, $Method->getShortName() ),
+            $this->assertEquals( 1, preg_match( $Pattern, $Method->getShortName(), $Result ),
                 $Class->getName().'::'.$Method->getShortName()."\n".' -> '.$Pattern );
+
+            if (!$Class->isAbstract()) {
+                /** @var AbstractService $Object */
+                $Object = $Class->newInstance();
+
+                if (in_array( 'getApi', $Result )) {
+                    $this->assertInstanceOf( '\KREDA\Sphere\Common\AbstractService',
+                        $Object->{$Method->getShortName()}() );
+                }
+                if (in_array( 'getDatabaseHandler', $Result )) {
+                    $this->assertInstanceOf( 'KREDA\Sphere\Common\Database\Handler',
+                        $Object->{$Method->getShortName()}() );
+                }
+                if (in_array( 'setupDatabaseContent', $Result )) {
+                    $Object->{$Method->getShortName()}();
+                }
+                if (in_array( 'getTable', $Result )) {
+                    $this->assertInstanceOf( '\Doctrine\DBAL\Schema\Table',
+                        $Object->{$Method->getShortName()}() );
+                }
+                if (in_array( 'entity', $Result )) {
+                    $this->checkEntity( $Object, $Method );
+                }
+            }
+        }
+    }
+
+    /**
+     * @param AbstractService   $Object
+     * @param \ReflectionMethod $Method
+     */
+    private function checkEntity( AbstractService $Object, \ReflectionMethod $Method )
+    {
+
+        if (preg_match( '!^entity([a-zA-Z]+)All$!', $Method->getShortName() )) {
+            $Result = $Object->{$Method->getShortName()}();
+            if ($Result) {
+                if (count( $Result )) {
+                    $this->assertContainsOnlyInstancesOf( '\KREDA\Sphere\Common\AbstractEntity', $Result );
+                } else {
+                    $this->assertFalse( $Result );
+                }
+            } else {
+                $this->assertInstanceOf( '\KREDA\Sphere\Common\AbstractEntity', $Result );
+            }
+        }
+        if (preg_match( '!^entity([a-zA-Z]+)ById$!', $Method->getShortName() )) {
+            $Result = $Object->{$Method->getShortName()}( 0 );
+            $this->assertFalse( $Result );
+            $Result = $Object->{$Method->getShortName()}( 1 );
+            if ($Result) {
+                $this->assertInstanceOf( '\KREDA\Sphere\Common\AbstractEntity', $Result );
+            } else {
+                $this->assertFalse( $Result );
+            }
         }
     }
 
@@ -130,5 +201,4 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $this->checkMethodName( $Action, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
             \ReflectionMethod::IS_PROTECTED );
     }
-
 }

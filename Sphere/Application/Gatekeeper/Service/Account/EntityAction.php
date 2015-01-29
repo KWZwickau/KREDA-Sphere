@@ -68,7 +68,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setServiceManagementPerson( $tblPerson );
             $Entity->setServiceGatekeeperConsumer( $tblConsumer );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -240,14 +241,15 @@ abstract class EntityAction extends EntitySchema
         $Entity = $Manager->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
-            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
             $Manager->killEntity( $Entity );
         }
         $Entity = new TblAccountSession( $Session );
         $Entity->setTblAccount( $tblAccount );
         $Entity->setTimeout( time() + $Timeout );
         $Manager->saveEntity( $Entity );
-        System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         return $Entity;
     }
 
@@ -266,7 +268,8 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblAccountTyp();
             $Entity->setName( $Name );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -286,7 +289,8 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblAccountRole();
             $Entity->setName( $Name );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -308,7 +312,8 @@ abstract class EntityAction extends EntitySchema
         $Entity = $Manager->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
         if (null !== $Entity) {
-            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }
@@ -337,7 +342,8 @@ abstract class EntityAction extends EntitySchema
         if (null !== $To) {
             $To->setPassword( hash( 'sha256', $Password ) );
             $Manager->saveEntity( $To );
-            System::serviceProtocol()->executeUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(), $From, $To );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(), $From,
+                $To );
             return true;
         }
         return false;
@@ -389,7 +395,8 @@ abstract class EntityAction extends EntitySchema
         if (null !== $To) {
             $To->setServiceGatekeeperToken( $tblToken );
             $Manager->saveEntity( $To );
-            System::serviceProtocol()->executeUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(), $From, $To );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(), $From,
+                $To );
             return true;
         }
         return false;
@@ -413,7 +420,8 @@ abstract class EntityAction extends EntitySchema
         if (null !== $Entity) {
             $Entity->setServiceGatekeeperConsumer( $tblConsumer );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
             return true;
         }
         return false;
@@ -437,7 +445,8 @@ abstract class EntityAction extends EntitySchema
         if (null !== $Entity) {
             $Entity->setServiceManagementPerson( $tblPerson );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
             return true;
         }
         return false;
@@ -465,7 +474,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTblAccountRole( $TblAccountRole );
             $Entity->setServiceGatekeeperAccess( $TblAccess );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -489,7 +499,8 @@ abstract class EntityAction extends EntitySchema
                 TblAccountAccessList::ATTR_SERVICE_GATEKEEPER_ACCESS => $TblAccess->getId()
             ) );
         if (null !== $Entity) {
-            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }

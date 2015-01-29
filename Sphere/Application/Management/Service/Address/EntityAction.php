@@ -75,7 +75,8 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblAddressState();
             $Entity->setName( $Name );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -102,7 +103,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setName( $Name );
             $Entity->setDistrict( $District );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -141,7 +143,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTblAddressState( $TblAddressState );
             $Entity->setTblAddressCity( $TblAddressCity );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }

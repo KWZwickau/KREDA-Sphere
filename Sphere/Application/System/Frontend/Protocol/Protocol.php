@@ -27,7 +27,7 @@ class Protocol extends AbstractFrontend
         $View->setMessage( '' );
 
         /** @var TblProtocol[] $tblProtocolList */
-        $tblProtocolList = System::serviceProtocol()->entityProtocol();
+        $tblProtocolList = System::serviceProtocol()->entityProtocolAll();
         if (empty( $tblProtocolList )) {
             $View->setContent( new MessageWarning( 'Keine Daten vorhanden' ) );
             return $View;

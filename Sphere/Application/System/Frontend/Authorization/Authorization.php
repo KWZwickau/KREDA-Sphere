@@ -186,14 +186,26 @@ class Authorization extends AbstractFrontend
         array_walk( $RoleList, function ( TblAccountRole &$V, $I, $B ) {
 
             $V->Option =
-                '<form action="'.$B.'/Sphere/System/Authorization/Role/Access" method="post">
-                <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
-                <div class="form-group">
-                    <div class="input-group">
-                        <button type="submit" class="btn btn-primary">Zugriffslevel</button>
+                '<div class="pull-right">'
+                .'<form action="'.$B.'/Sphere/System/Authorization/Role/Destroy" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-danger">Löschen</button>
+                        </div>
                     </div>
-                </div>
-            </form>';
+                </form>'
+                .'</div>'
+                .'<div class="pull-right">'
+                .'<form action="'.$B.'/Sphere/System/Authorization/Role/Access" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-primary">Zugriffslevel</button>
+                        </div>
+                    </div>&nbsp;
+                </form>'
+                .'</div>';
         }, self::getUrlBase() );
 
         $View->setContent(

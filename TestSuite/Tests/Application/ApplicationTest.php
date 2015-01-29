@@ -1,14 +1,6 @@
 <?php
 namespace KREDA\TestSuite\Tests\Application;
 
-use KREDA\Sphere\Application\Assistance\Assistance;
-use KREDA\Sphere\Application\Billing\Billing;
-use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
-use KREDA\Sphere\Application\Graduation\Graduation;
-use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\Statistic\Statistic;
-use KREDA\Sphere\Application\System\System;
-
 /**
  * Class ApplicationTest
  *
@@ -29,26 +21,51 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testCodeStyle()
     {
 
-        $this->checkCodeStyle( new Assistance() );
-        $this->checkCodeStyle( new Billing() );
-        $this->checkCodeStyle( new Gatekeeper() );
-        $this->checkCodeStyle( new Graduation() );
-        $this->checkCodeStyle( new Management() );
-        $this->checkCodeStyle( new Statistic() );
-        $this->checkCodeStyle( new System() );
+        $Namespace = 'KREDA\Sphere\Application';
+        $this->checkApplicationMethodName( $Namespace.'\Assistance\Assistance' );
+        $this->checkApplicationMethodName( $Namespace.'\Billing\Billing' );
+        $this->checkApplicationMethodName( $Namespace.'\Gatekeeper\Gatekeeper' );
+        $this->checkApplicationMethodName( $Namespace.'\Graduation\Graduation' );
+        $this->checkApplicationMethodName( $Namespace.'\Management\Management' );
+        $this->checkApplicationMethodName( $Namespace.'\Statistic\Statistic' );
+        $this->checkApplicationMethodName( $Namespace.'\System\System' );
     }
 
     /**
-     * @param \KREDA\Sphere\Common\AbstractApplication $Application
+     * @param string $Application
      */
-    private function checkCodeStyle( $Application )
+    private function checkApplicationMethodName( $Application )
     {
 
-        $Pattern = '!^(register|setup|frontend|service|extension)[a-zA-Z]+$!';
-        $MethodList = get_class_methods( $Application );
+        $Name = '1';
+        $Prefix = 'register|setup|frontend|service|extension';
+        $this->checkMethodName( $Application, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
+            \ReflectionMethod::IS_PUBLIC );
+    }
+
+    /**
+     * @param string $Class
+     * @param string $Pattern
+     * @param int    $Realm
+     */
+    private function checkMethodName( $Class, $Pattern, $Realm = \ReflectionMethod::IS_PUBLIC )
+    {
+
+        $Class = new \ReflectionClass( $Class );
+        $MethodList = $Class->getMethods( $Realm );
+        /** @var \ReflectionMethod $Method */
         foreach ($MethodList as $Method) {
-            $this->assertEquals( 1, preg_match( $Pattern, $Method ),
-                get_class( $Application ).'::'.$Method."\n".' -> '.$Pattern );
+            $this->assertEquals( 1, preg_match( $Pattern, $Method->getShortName(), $Result ),
+                $Class->getName().'::'.$Method->getShortName()."\n".' -> '.$Pattern );
+
+            if (!$Class->isAbstract()) {
+                $Object = $Class->newInstance();
+                if (in_array( 'service', $Result )) {
+                    $this->assertInstanceOf( '\KREDA\Sphere\Common\AbstractService',
+                        $Object->{$Method->getShortName()}()
+                    );
+                }
+            }
         }
     }
 }

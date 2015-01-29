@@ -35,7 +35,7 @@ class Protocol extends EntityAction
      * @param string         $DatabaseName
      * @param AbstractEntity $Entity
      */
-    public function executeCreateEntry(
+    public function executeCreateInsertEntry(
         $DatabaseName,
         AbstractEntity $Entity
     ) {
@@ -64,7 +64,7 @@ class Protocol extends EntityAction
      * @param AbstractEntity $From
      * @param AbstractEntity $To
      */
-    public function executeUpdateEntry(
+    public function executeCreateUpdateEntry(
         $DatabaseName,
         AbstractEntity $From,
         AbstractEntity $To
@@ -93,7 +93,7 @@ class Protocol extends EntityAction
      * @param string              $DatabaseName
      * @param null|AbstractEntity $Entity
      */
-    public function executeDeleteEntry(
+    public function executeCreateDeleteEntry(
         $DatabaseName,
         AbstractEntity $Entity = null
     ) {
@@ -120,7 +120,7 @@ class Protocol extends EntityAction
     /**
      * @return bool|TblProtocol[]
      */
-    public function entityProtocol()
+    public function entityProtocolAll()
     {
 
         return parent::entityProtocolAll();

@@ -8,6 +8,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RepeatIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Address\Structure\AddressDefault;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
@@ -39,11 +40,18 @@ class MyAccount extends AbstractFrontend
         $View->setTitle( 'Mein Account' );
         $View->setDescription( 'Zusammenfassung' );
         $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession();
-        $tblPerson = $tblAccount->getServiceManagementPerson();
-        $tblConsumer = $tblAccount->getServiceGatekeeperConsumer();
-        $tblAddress = $tblConsumer ? $tblConsumer->getServiceManagementAddress() : false;
+        if ($tblAccount) {
+            $tblPerson = $tblAccount->getServiceManagementPerson();
+            $tblConsumer = $tblAccount->getServiceGatekeeperConsumer();
+            $tblAddress = $tblConsumer ? $tblConsumer->getServiceManagementAddress() : false;
+        } else {
+            $tblAccount = false;
+            $tblPerson = false;
+            $tblConsumer = false;
+            $tblAddress = false;
+        }
         $View->setContent(
-            new TableDefault(
+            ( $tblAccount ? new TableDefault(
                 new GridTableHead(
                     new GridTableRow(
                         new GridTableCol( 'Account', 2 )
@@ -62,8 +70,8 @@ class MyAccount extends AbstractFrontend
                         new GridTableCol( 'Berechtigungsstufe' ),
                         new GridTableCol( $tblAccount->getTblAccountRole()->getName() )
                     ) )
-                ) )
-            )
+                ) ) )
+                : new MessageDanger( 'Keine Accountdaten verfügbar', new WarningIcon() ) )
             .( $tblPerson ? new TableDefault(
                 new GridTableHead(
                     new GridTableRow(

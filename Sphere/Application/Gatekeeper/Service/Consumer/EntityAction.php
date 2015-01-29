@@ -90,7 +90,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTableSuffix( $TableSuffix );
             $Entity->setServiceManagementAddress( $TblAddress );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -109,7 +110,8 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblConsumerTyp( $Name );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -130,7 +132,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTblConsumer( $tblConsumer );
             $Entity->setTblConsumerTyp( $tblConsumerTyp );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
@@ -164,7 +167,8 @@ abstract class EntityAction extends EntitySchema
         $Manager = $this->getEntityManager();
         $Entity = $this->entityConsumerTypList( $tblConsumer, $tblConsumerTyp );
         if ($Entity) {
-            System::serviceProtocol()->executeDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }
@@ -203,7 +207,8 @@ abstract class EntityAction extends EntitySchema
         if (null !== $To) {
             $To->setServiceManagementAddress( $tblAddress );
             $Manager->saveEntity( $To );
-            System::serviceProtocol()->executeUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(), $From, $To );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(), $From,
+                $To );
             return true;
         }
         return false;

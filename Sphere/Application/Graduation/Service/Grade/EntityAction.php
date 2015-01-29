@@ -54,7 +54,8 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblGradeType( $Acronym );
             $Entity->setName( $Name );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
         }
         return $Entity;
     }
