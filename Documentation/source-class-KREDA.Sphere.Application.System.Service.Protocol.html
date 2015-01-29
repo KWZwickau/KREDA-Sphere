@@ -8,7 +8,7 @@
 
     <title>File Application/System/Service/Protocol.php | Sphere</title>
 
-    <script type="text/javascript" src="resources/combined.js?3624343741"></script>
+    <script type="text/javascript" src="resources/combined.js?2765992311"></script>
     <script type="text/javascript" src="elementlist.js?2135317251"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
@@ -394,7 +394,7 @@
 </span></span><span id="35" class="l"><a class="l" href="#35"> 35: </a><span class="php-comment">     * @param string         $DatabaseName
 </span></span><span id="36" class="l"><a class="l" href="#36"> 36: </a><span class="php-comment">     * @param AbstractEntity $Entity
 </span></span><span id="37" class="l"><a class="l" href="#37"> 37: </a><span class="php-comment">     */</span>
-</span><span id="38" class="l"><a class="l" href="#38"> 38: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_executeCreateEntry" href="#_executeCreateEntry">executeCreateEntry</a>(
+</span><span id="38" class="l"><a class="l" href="#38"> 38: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_executeCreateInsertEntry" href="#_executeCreateInsertEntry">executeCreateInsertEntry</a>(
 </span><span id="39" class="l"><a class="l" href="#39"> 39: </a>        <span class="php-var">$DatabaseName</span>,
 </span><span id="40" class="l"><a class="l" href="#40"> 40: </a>        AbstractEntity <span class="php-var">$Entity</span>
 </span><span id="41" class="l"><a class="l" href="#41"> 41: </a>    ) {
@@ -423,7 +423,7 @@
 </span></span><span id="64" class="l"><a class="l" href="#64"> 64: </a><span class="php-comment">     * @param AbstractEntity $From
 </span></span><span id="65" class="l"><a class="l" href="#65"> 65: </a><span class="php-comment">     * @param AbstractEntity $To
 </span></span><span id="66" class="l"><a class="l" href="#66"> 66: </a><span class="php-comment">     */</span>
-</span><span id="67" class="l"><a class="l" href="#67"> 67: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_executeUpdateEntry" href="#_executeUpdateEntry">executeUpdateEntry</a>(
+</span><span id="67" class="l"><a class="l" href="#67"> 67: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_executeCreateUpdateEntry" href="#_executeCreateUpdateEntry">executeCreateUpdateEntry</a>(
 </span><span id="68" class="l"><a class="l" href="#68"> 68: </a>        <span class="php-var">$DatabaseName</span>,
 </span><span id="69" class="l"><a class="l" href="#69"> 69: </a>        AbstractEntity <span class="php-var">$From</span>,
 </span><span id="70" class="l"><a class="l" href="#70"> 70: </a>        AbstractEntity <span class="php-var">$To</span>
@@ -452,7 +452,7 @@
 </span></span><span id="93" class="l"><a class="l" href="#93"> 93: </a><span class="php-comment">     * @param string              $DatabaseName
 </span></span><span id="94" class="l"><a class="l" href="#94"> 94: </a><span class="php-comment">     * @param null|AbstractEntity $Entity
 </span></span><span id="95" class="l"><a class="l" href="#95"> 95: </a><span class="php-comment">     */</span>
-</span><span id="96" class="l"><a class="l" href="#96"> 96: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_executeDeleteEntry" href="#_executeDeleteEntry">executeDeleteEntry</a>(
+</span><span id="96" class="l"><a class="l" href="#96"> 96: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_executeCreateDeleteEntry" href="#_executeCreateDeleteEntry">executeCreateDeleteEntry</a>(
 </span><span id="97" class="l"><a class="l" href="#97"> 97: </a>        <span class="php-var">$DatabaseName</span>,
 </span><span id="98" class="l"><a class="l" href="#98"> 98: </a>        AbstractEntity <span class="php-var">$Entity</span> = <span class="php-keyword1">null</span>
 </span><span id="99" class="l"><a class="l" href="#99"> 99: </a>    ) {
@@ -479,7 +479,7 @@
 </span><span id="120" class="l"><a class="l" href="#120">120: </a>    <span class="php-comment">/**
 </span></span><span id="121" class="l"><a class="l" href="#121">121: </a><span class="php-comment">     * @return bool|TblProtocol[]
 </span></span><span id="122" class="l"><a class="l" href="#122">122: </a><span class="php-comment">     */</span>
-</span><span id="123" class="l"><a class="l" href="#123">123: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_entityProtocol" href="#_entityProtocol">entityProtocol</a>()
+</span><span id="123" class="l"><a class="l" href="#123">123: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_entityProtocolAll" href="#_entityProtocolAll">entityProtocolAll</a>()
 </span><span id="124" class="l"><a class="l" href="#124">124: </a>    {
 </span><span id="125" class="l"><a class="l" href="#125">125: </a>
 </span><span id="126" class="l"><a class="l" href="#126">126: </a>        <span class="php-keyword1">return</span> parent::entityProtocolAll();

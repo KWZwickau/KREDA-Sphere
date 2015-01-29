@@ -8,7 +8,7 @@
 
     <title>File Application/Gatekeeper/Service/Token.php | Sphere</title>
 
-    <script type="text/javascript" src="resources/combined.js?3624343741"></script>
+    <script type="text/javascript" src="resources/combined.js?2765992311"></script>
     <script type="text/javascript" src="elementlist.js?2135317251"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
@@ -424,7 +424,7 @@
 </span><span id="65" class="l"><a class="l" href="#65"> 65: </a>    <span class="php-comment">/**
 </span></span><span id="66" class="l"><a class="l" href="#66"> 66: </a><span class="php-comment">     * @return Table
 </span></span><span id="67" class="l"><a class="l" href="#67"> 67: </a><span class="php-comment">     */</span>
-</span><span id="68" class="l"><a class="l" href="#68"> 68: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_schemaTableToken" href="#_schemaTableToken">schemaTableToken</a>()
+</span><span id="68" class="l"><a class="l" href="#68"> 68: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getTableToken" href="#_getTableToken">getTableToken</a>()
 </span><span id="69" class="l"><a class="l" href="#69"> 69: </a>    {
 </span><span id="70" class="l"><a class="l" href="#70"> 70: </a>
 </span><span id="71" class="l"><a class="l" href="#71"> 71: </a>        <span class="php-keyword1">return</span> parent::getTableToken();
@@ -435,10 +435,10 @@
 </span></span><span id="76" class="l"><a class="l" href="#76"> 76: </a><span class="php-comment">     *
 </span></span><span id="77" class="l"><a class="l" href="#77"> 77: </a><span class="php-comment">     * @return bool|TblToken
 </span></span><span id="78" class="l"><a class="l" href="#78"> 78: </a><span class="php-comment">     */</span>
-</span><span id="79" class="l"><a class="l" href="#79"> 79: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_executeRegisterYubiKey" href="#_executeRegisterYubiKey">executeRegisterYubiKey</a>( <span class="php-var">$CredentialKey</span> )
+</span><span id="79" class="l"><a class="l" href="#79"> 79: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_executeCreateToken" href="#_executeCreateToken">executeCreateToken</a>( <span class="php-var">$CredentialKey</span> )
 </span><span id="80" class="l"><a class="l" href="#80"> 80: </a>    {
 </span><span id="81" class="l"><a class="l" href="#81"> 81: </a>
-</span><span id="82" class="l"><a class="l" href="#82"> 82: </a>        <span class="php-keyword1">if</span> (<span class="php-var">$this</span>-&gt;apiValidateToken( <span class="php-var">$CredentialKey</span> )) {
+</span><span id="82" class="l"><a class="l" href="#82"> 82: </a>        <span class="php-keyword1">if</span> (<span class="php-var">$this</span>-&gt;checkIsValidToken( <span class="php-var">$CredentialKey</span> )) {
 </span><span id="83" class="l"><a class="l" href="#83"> 83: </a>            <span class="php-keyword1">return</span> parent::actionCreateToken( <span class="php-keyword2">substr</span>( <span class="php-var">$CredentialKey</span>, <span class="php-num">0</span>, <span class="php-num">12</span> ) );
 </span><span id="84" class="l"><a class="l" href="#84"> 84: </a>        } <span class="php-keyword1">else</span> {
 </span><span id="85" class="l"><a class="l" href="#85"> 85: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
@@ -451,7 +451,7 @@
 </span></span><span id="92" class="l"><a class="l" href="#92"> 92: </a><span class="php-comment">     * @return bool
 </span></span><span id="93" class="l"><a class="l" href="#93"> 93: </a><span class="php-comment">     * @throws \Exception
 </span></span><span id="94" class="l"><a class="l" href="#94"> 94: </a><span class="php-comment">     */</span>
-</span><span id="95" class="l"><a class="l" href="#95"> 95: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_apiValidateToken" href="#_apiValidateToken">apiValidateToken</a>( <span class="php-var">$Value</span> )
+</span><span id="95" class="l"><a class="l" href="#95"> 95: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_checkIsValidToken" href="#_checkIsValidToken">checkIsValidToken</a>( <span class="php-var">$Value</span> )
 </span><span id="96" class="l"><a class="l" href="#96"> 96: </a>    {
 </span><span id="97" class="l"><a class="l" href="#97"> 97: </a>
 </span><span id="98" class="l"><a class="l" href="#98"> 98: </a>        <span class="php-var">$YubiKey</span> = <span class="php-keyword1">new</span> Token\Hardware\YubiKey\YubiKey( <span class="php-num">19180</span>, <span class="php-quote">'YJwU33GNiRiw1dE8/MfIMNm8w3Y='</span> );

@@ -8,7 +8,7 @@
 
     <title>File Application/Management/Frontend/AddressBook/AddressBook.php | Sphere</title>
 
-    <script type="text/javascript" src="resources/combined.js?3624343741"></script>
+    <script type="text/javascript" src="resources/combined.js?2765992311"></script>
     <script type="text/javascript" src="elementlist.js?2135317251"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
@@ -360,50 +360,51 @@
 </span><span id="4" class="l"><a class="l" href="#4"> 4: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\Management\Management;
 </span><span id="5" class="l"><a class="l" href="#5"> 5: </a><span class="php-keyword1">use</span> KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 </span><span id="6" class="l"><a class="l" href="#6"> 6: </a><span class="php-keyword1">use</span> KREDA\Sphere\Common\AbstractFrontend;
-</span><span id="7" class="l"><a class="l" href="#7"> 7: </a>
-</span><span id="8" class="l"><a class="l" href="#8"> 8: </a><span class="php-comment">/**
-</span></span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-comment"> * Class AddressBook
-</span></span><span id="10" class="l"><a class="l" href="#10">10: </a><span class="php-comment"> *
-</span></span><span id="11" class="l"><a class="l" href="#11">11: </a><span class="php-comment"> * @package KREDA\Sphere\Application\Management\AddressBook
-</span></span><span id="12" class="l"><a class="l" href="#12">12: </a><span class="php-comment"> */</span>
-</span><span id="13" class="l"><a class="l" href="#13">13: </a><span class="php-keyword1">class</span> <a id="AddressBook" href="#AddressBook">AddressBook</a> <span class="php-keyword1">extends</span> AbstractFrontend
-</span><span id="14" class="l"><a class="l" href="#14">14: </a>{
-</span><span id="15" class="l"><a class="l" href="#15">15: </a>
-</span><span id="16" class="l"><a class="l" href="#16">16: </a>    <span class="php-comment">/**
-</span></span><span id="17" class="l"><a class="l" href="#17">17: </a><span class="php-comment">     * @return Stage
-</span></span><span id="18" class="l"><a class="l" href="#18">18: </a><span class="php-comment">     */</span>
-</span><span id="19" class="l"><a class="l" href="#19">19: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_guiAddressBook" href="#_guiAddressBook">guiAddressBook</a>()
-</span><span id="20" class="l"><a class="l" href="#20">20: </a>    {
-</span><span id="21" class="l"><a class="l" href="#21">21: </a>
-</span><span id="22" class="l"><a class="l" href="#22">22: </a>        <span class="php-var">$View</span> = <span class="php-keyword1">new</span> Stage();
-</span><span id="23" class="l"><a class="l" href="#23">23: </a>        <span class="php-var">$View</span>-&gt;setTitle( <span class="php-quote">'Adressen'</span> );
-</span><span id="24" class="l"><a class="l" href="#24">24: </a>        <span class="php-var">$View</span>-&gt;setDescription( <span class="php-quote">''</span> );
-</span><span id="25" class="l"><a class="l" href="#25">25: </a>        <span class="php-var">$View</span>-&gt;setMessage( <span class="php-quote">'Bitte wählen Sie ein Thema'</span> );
-</span><span id="26" class="l"><a class="l" href="#26">26: </a>        <span class="php-var">$View</span>-&gt;setContent( <span class="php-quote">''</span> );
-</span><span id="27" class="l"><a class="l" href="#27">27: </a>        <span class="php-var">$View</span>-&gt;addButton( <span class="php-quote">'/Sphere/Management/Address/State'</span>, <span class="php-quote">'Bundesland'</span> );
-</span><span id="28" class="l"><a class="l" href="#28">28: </a>        <span class="php-var">$View</span>-&gt;addButton( <span class="php-quote">'/Sphere/Management/Address/City'</span>, <span class="php-quote">'Stadt'</span> );
-</span><span id="29" class="l"><a class="l" href="#29">29: </a>        <span class="php-var">$View</span>-&gt;addButton( <span class="php-quote">'/Sphere/Management/Address/Address'</span>, <span class="php-quote">'Addresse'</span> );
-</span><span id="30" class="l"><a class="l" href="#30">30: </a>        <span class="php-keyword1">return</span> <span class="php-var">$View</span>;
-</span><span id="31" class="l"><a class="l" href="#31">31: </a>    }
-</span><span id="32" class="l"><a class="l" href="#32">32: </a>
-</span><span id="33" class="l"><a class="l" href="#33">33: </a>    <span class="php-comment">/**
-</span></span><span id="34" class="l"><a class="l" href="#34">34: </a><span class="php-comment">     * @return Stage
-</span></span><span id="35" class="l"><a class="l" href="#35">35: </a><span class="php-comment">     */</span>
-</span><span id="36" class="l"><a class="l" href="#36">36: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_guiAddressBookState" href="#_guiAddressBookState">guiAddressBookState</a>()
-</span><span id="37" class="l"><a class="l" href="#37">37: </a>    {
-</span><span id="38" class="l"><a class="l" href="#38">38: </a>
-</span><span id="39" class="l"><a class="l" href="#39">39: </a>        <span class="php-var">$View</span> = <span class="php-keyword1">new</span> Stage();
-</span><span id="40" class="l"><a class="l" href="#40">40: </a>        <span class="php-var">$View</span>-&gt;setTitle( <span class="php-quote">'Adressen'</span> );
-</span><span id="41" class="l"><a class="l" href="#41">41: </a>        <span class="php-var">$View</span>-&gt;setDescription( <span class="php-quote">'Bundesland'</span> );
-</span><span id="42" class="l"><a class="l" href="#42">42: </a>        <span class="php-var">$View</span>-&gt;setMessage( <span class="php-quote">''</span> );
-</span><span id="43" class="l"><a class="l" href="#43">43: </a>        <span class="php-var">$View</span>-&gt;setContent( <span class="php-quote">''</span> );
-</span><span id="44" class="l"><a class="l" href="#44">44: </a>
-</span><span id="45" class="l"><a class="l" href="#45">45: </a>        <span class="php-keyword2">var_dump</span>( Management::serviceAddress()-&gt;entityAddressState() );
-</span><span id="46" class="l"><a class="l" href="#46">46: </a>
-</span><span id="47" class="l"><a class="l" href="#47">47: </a>        <span class="php-keyword1">return</span> <span class="php-var">$View</span>;
-</span><span id="48" class="l"><a class="l" href="#48">48: </a>    }
-</span><span id="49" class="l"><a class="l" href="#49">49: </a>}
-</span><span id="50" class="l"><a class="l" href="#50">50: </a></span></code></pre>
+</span><span id="7" class="l"><a class="l" href="#7"> 7: </a><span class="php-keyword1">use</span> KREDA\Sphere\Common\Frontend\Table\Structure\TableFromData;
+</span><span id="8" class="l"><a class="l" href="#8"> 8: </a>
+</span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-comment">/**
+</span></span><span id="10" class="l"><a class="l" href="#10">10: </a><span class="php-comment"> * Class AddressBook
+</span></span><span id="11" class="l"><a class="l" href="#11">11: </a><span class="php-comment"> *
+</span></span><span id="12" class="l"><a class="l" href="#12">12: </a><span class="php-comment"> * @package KREDA\Sphere\Application\Management\AddressBook
+</span></span><span id="13" class="l"><a class="l" href="#13">13: </a><span class="php-comment"> */</span>
+</span><span id="14" class="l"><a class="l" href="#14">14: </a><span class="php-keyword1">class</span> <a id="AddressBook" href="#AddressBook">AddressBook</a> <span class="php-keyword1">extends</span> AbstractFrontend
+</span><span id="15" class="l"><a class="l" href="#15">15: </a>{
+</span><span id="16" class="l"><a class="l" href="#16">16: </a>
+</span><span id="17" class="l"><a class="l" href="#17">17: </a>    <span class="php-comment">/**
+</span></span><span id="18" class="l"><a class="l" href="#18">18: </a><span class="php-comment">     * @return Stage
+</span></span><span id="19" class="l"><a class="l" href="#19">19: </a><span class="php-comment">     */</span>
+</span><span id="20" class="l"><a class="l" href="#20">20: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_stageAddressBook" href="#_stageAddressBook">stageAddressBook</a>()
+</span><span id="21" class="l"><a class="l" href="#21">21: </a>    {
+</span><span id="22" class="l"><a class="l" href="#22">22: </a>
+</span><span id="23" class="l"><a class="l" href="#23">23: </a>        <span class="php-var">$View</span> = <span class="php-keyword1">new</span> Stage();
+</span><span id="24" class="l"><a class="l" href="#24">24: </a>        <span class="php-var">$View</span>-&gt;setTitle( <span class="php-quote">'Adressen'</span> );
+</span><span id="25" class="l"><a class="l" href="#25">25: </a>        <span class="php-var">$View</span>-&gt;setDescription( <span class="php-quote">''</span> );
+</span><span id="26" class="l"><a class="l" href="#26">26: </a>        <span class="php-var">$View</span>-&gt;setMessage( <span class="php-quote">'Bitte wählen Sie ein Thema'</span> );
+</span><span id="27" class="l"><a class="l" href="#27">27: </a>        <span class="php-var">$View</span>-&gt;setContent( <span class="php-quote">''</span> );
+</span><span id="28" class="l"><a class="l" href="#28">28: </a>        <span class="php-var">$View</span>-&gt;addButton( <span class="php-quote">'/Sphere/Management/Address/State'</span>, <span class="php-quote">'Bundesland'</span> );
+</span><span id="29" class="l"><a class="l" href="#29">29: </a>        <span class="php-var">$View</span>-&gt;addButton( <span class="php-quote">'/Sphere/Management/Address/City'</span>, <span class="php-quote">'Stadt'</span> );
+</span><span id="30" class="l"><a class="l" href="#30">30: </a>        <span class="php-var">$View</span>-&gt;addButton( <span class="php-quote">'/Sphere/Management/Address/Address'</span>, <span class="php-quote">'Addresse'</span> );
+</span><span id="31" class="l"><a class="l" href="#31">31: </a>        <span class="php-keyword1">return</span> <span class="php-var">$View</span>;
+</span><span id="32" class="l"><a class="l" href="#32">32: </a>    }
+</span><span id="33" class="l"><a class="l" href="#33">33: </a>
+</span><span id="34" class="l"><a class="l" href="#34">34: </a>    <span class="php-comment">/**
+</span></span><span id="35" class="l"><a class="l" href="#35">35: </a><span class="php-comment">     * @return Stage
+</span></span><span id="36" class="l"><a class="l" href="#36">36: </a><span class="php-comment">     */</span>
+</span><span id="37" class="l"><a class="l" href="#37">37: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_stageAddressBookState" href="#_stageAddressBookState">stageAddressBookState</a>()
+</span><span id="38" class="l"><a class="l" href="#38">38: </a>    {
+</span><span id="39" class="l"><a class="l" href="#39">39: </a>
+</span><span id="40" class="l"><a class="l" href="#40">40: </a>        <span class="php-var">$View</span> = <span class="php-keyword1">new</span> Stage();
+</span><span id="41" class="l"><a class="l" href="#41">41: </a>        <span class="php-var">$View</span>-&gt;setTitle( <span class="php-quote">'Adressen'</span> );
+</span><span id="42" class="l"><a class="l" href="#42">42: </a>        <span class="php-var">$View</span>-&gt;setDescription( <span class="php-quote">'Bundesland'</span> );
+</span><span id="43" class="l"><a class="l" href="#43">43: </a>        <span class="php-var">$View</span>-&gt;setMessage( <span class="php-quote">''</span> );
+</span><span id="44" class="l"><a class="l" href="#44">44: </a>        <span class="php-var">$View</span>-&gt;setContent( <span class="php-keyword1">new</span> TableFromData(
+</span><span id="45" class="l"><a class="l" href="#45">45: </a>            Management::serviceAddress()-&gt;entityAddressState()
+</span><span id="46" class="l"><a class="l" href="#46">46: </a>        ) );
+</span><span id="47" class="l"><a class="l" href="#47">47: </a>
+</span><span id="48" class="l"><a class="l" href="#48">48: </a>        <span class="php-keyword1">return</span> <span class="php-var">$View</span>;
+</span><span id="49" class="l"><a class="l" href="#49">49: </a>    }
+</span><span id="50" class="l"><a class="l" href="#50">50: </a>}
+</span><span id="51" class="l"><a class="l" href="#51">51: </a></span></code></pre>
 
 	<div id="footer">
 		Sphere API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>

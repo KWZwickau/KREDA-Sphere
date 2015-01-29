@@ -7,7 +7,7 @@
 
     <title>Class KREDA\Sphere\Application\Gatekeeper\Service\Token | Sphere</title>
 
-    <script type="text/javascript" src="resources/combined.js?3624343741"></script>
+    <script type="text/javascript" src="resources/combined.js?2765992311"></script>
     <script type="text/javascript" src="elementlist.js?2135317251"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
@@ -562,7 +562,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="schemaTableToken" id="_schemaTableToken">
+	<tr data-order="getTableToken" id="_getTableToken">
 
 		<td class="attributes"><code>
 			 public 
@@ -572,8 +572,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_schemaTableToken">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Service.Token.html#65-72" title="Go to source code">schemaTableToken</a>( )</code>
+		<a class="anchor" href="#_getTableToken">#</a>
+		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Service.Token.html#65-72" title="Go to source code">getTableToken</a>( )</code>
 
 		<div class="description short">
 			
@@ -589,13 +589,19 @@
 					<code>Doctrine\DBAL\Schema\Table</code><br />
 				</div>
 
+				<h4>Throws</h4>
+				<div class="list">
+					<code>SchemaException</code><br />
+				</div>
 
 
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Token.EntitySchema.html#_getTableToken">KREDA\Sphere\Application\Gatekeeper\Service\Token\EntitySchema::getTableToken()</a></code></div>
 
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="executeRegisterYubiKey" id="_executeRegisterYubiKey">
+	<tr data-order="executeCreateToken" id="_executeCreateToken">
 
 		<td class="attributes"><code>
 			 public 
@@ -605,8 +611,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_executeRegisterYubiKey">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Service.Token.html#74-87" title="Go to source code">executeRegisterYubiKey</a>( <span>string <var>$CredentialKey</var></span> )</code>
+		<a class="anchor" href="#_executeCreateToken">#</a>
+		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Service.Token.html#74-87" title="Go to source code">executeCreateToken</a>( <span>string <var>$CredentialKey</var></span> )</code>
 
 		<div class="description short">
 			
@@ -633,7 +639,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="apiValidateToken" id="_apiValidateToken">
+	<tr data-order="checkIsValidToken" id="_checkIsValidToken">
 
 		<td class="attributes"><code>
 			 public 
@@ -643,8 +649,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_apiValidateToken">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Service.Token.html#89-101" title="Go to source code">apiValidateToken</a>( <span>string <var>$Value</var></span> )</code>
+		<a class="anchor" href="#_checkIsValidToken">#</a>
+		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Service.Token.html#89-101" title="Go to source code">checkIsValidToken</a>( <span>string <var>$Value</var></span> )</code>
 
 		<div class="description short">
 			
@@ -690,7 +696,6 @@
 	<caption>Methods inherited from <a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Token.EntitySchema.html#methods">KREDA\Sphere\Application\Gatekeeper\Service\Token\EntitySchema</a></caption>
 	<tr>
 		<td><code>
-			<a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Token.EntitySchema.html#_getTableToken">getTableToken()</a>, 
 			<a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Token.EntitySchema.html#_setupDatabaseSchema">setupDatabaseSchema()</a>
 		</code></td>
 	</tr>

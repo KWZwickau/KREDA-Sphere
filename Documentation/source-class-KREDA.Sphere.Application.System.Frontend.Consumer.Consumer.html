@@ -8,7 +8,7 @@
 
     <title>File Application/System/Frontend/Consumer/Consumer.php | Sphere</title>
 
-    <script type="text/javascript" src="resources/combined.js?3624343741"></script>
+    <script type="text/javascript" src="resources/combined.js?2765992311"></script>
     <script type="text/javascript" src="elementlist.js?2135317251"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
@@ -408,7 +408,7 @@
 </span><span id="52" class="l"><a class="l" href="#52">52: </a>        <span class="php-var">$ConsumerList</span> = Gatekeeper::serviceConsumer()-&gt;entityConsumerAll();
 </span><span id="53" class="l"><a class="l" href="#53">53: </a>        <span class="php-keyword2">array_walk</span>( <span class="php-var">$ConsumerList</span>, <span class="php-keyword1">function</span> ( TblConsumer &amp;<span class="php-var">$V</span> ) {
 </span><span id="54" class="l"><a class="l" href="#54">54: </a>
-</span><span id="55" class="l"><a class="l" href="#55">55: </a>            <span class="php-keyword1">if</span>( <span class="php-keyword1">false</span> === ( <span class="php-var">$A</span> = <span class="php-var">$V</span>-&gt;getServiceManagementAddress() ) ) {
+</span><span id="55" class="l"><a class="l" href="#55">55: </a>            <span class="php-keyword1">if</span>( <span class="php-keyword1">false</span> === <span class="php-var">$V</span>-&gt;getServiceManagementAddress() ) {
 </span><span id="56" class="l"><a class="l" href="#56">56: </a>                <span class="php-var">$V</span>-&gt;serviceManagement_Address = <span class="php-keyword1">new</span> MessageWarning( <span class="php-quote">'Keine Adressdaten verfügbar'</span>, <span class="php-keyword1">new</span> WarningIcon() );
 </span><span id="57" class="l"><a class="l" href="#57">57: </a>            } <span class="php-keyword1">else</span> {
 </span><span id="58" class="l"><a class="l" href="#58">58: </a>                <span class="php-var">$V</span>-&gt;serviceManagement_Address = <span class="php-keyword1">new</span> AddressDefault( <span class="php-var">$V</span>-&gt;getServiceManagementAddress() );

@@ -8,7 +8,7 @@
 
     <title>File Application/System/Frontend/Authorization/Authorization.php | Sphere</title>
 
-    <script type="text/javascript" src="resources/combined.js?3624343741"></script>
+    <script type="text/javascript" src="resources/combined.js?2765992311"></script>
     <script type="text/javascript" src="elementlist.js?2135317251"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
@@ -542,56 +542,68 @@
 </span><span id="186" class="l"><a class="l" href="#186">186: </a>        <span class="php-keyword2">array_walk</span>( <span class="php-var">$RoleList</span>, <span class="php-keyword1">function</span> ( TblAccountRole &amp;<span class="php-var">$V</span>, <span class="php-var">$I</span>, <span class="php-var">$B</span> ) {
 </span><span id="187" class="l"><a class="l" href="#187">187: </a>
 </span><span id="188" class="l"><a class="l" href="#188">188: </a>            <span class="php-var">$V</span>-&gt;Option =
-</span><span id="189" class="l"><a class="l" href="#189">189: </a>                <span class="php-quote">'&lt;form action=&quot;'</span>.<span class="php-var">$B</span>.<span class="php-quote">'/Sphere/System/Authorization/Role/Access&quot; method=&quot;post&quot;&gt;
-</span></span><span id="190" class="l"><a class="l" href="#190">190: </a><span class="php-quote">                &lt;input type=&quot;hidden&quot; class=&quot;form-control&quot; name=&quot;Id&quot; placeholder=&quot;&quot; value=&quot;'</span>.<span class="php-var">$V</span>-&gt;getId().<span class="php-quote">'&quot;/&gt;
-</span></span><span id="191" class="l"><a class="l" href="#191">191: </a><span class="php-quote">                &lt;div class=&quot;form-group&quot;&gt;
-</span></span><span id="192" class="l"><a class="l" href="#192">192: </a><span class="php-quote">                    &lt;div class=&quot;input-group&quot;&gt;
-</span></span><span id="193" class="l"><a class="l" href="#193">193: </a><span class="php-quote">                        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Zugriffslevel&lt;/button&gt;
-</span></span><span id="194" class="l"><a class="l" href="#194">194: </a><span class="php-quote">                    &lt;/div&gt;
-</span></span><span id="195" class="l"><a class="l" href="#195">195: </a><span class="php-quote">                &lt;/div&gt;
-</span></span><span id="196" class="l"><a class="l" href="#196">196: </a><span class="php-quote">            &lt;/form&gt;'</span>;
-</span><span id="197" class="l"><a class="l" href="#197">197: </a>        }, self::getUrlBase() );
-</span><span id="198" class="l"><a class="l" href="#198">198: </a>
-</span><span id="199" class="l"><a class="l" href="#199">199: </a>        <span class="php-var">$View</span>-&gt;setContent(
-</span><span id="200" class="l"><a class="l" href="#200">200: </a>            <span class="php-keyword1">new</span> TableFromData( <span class="php-var">$RoleList</span>, <span class="php-quote">'Bestehende Rollen &lt;small&gt;Zugriffslevelgruppen&lt;/small&gt;'</span> )
-</span><span id="201" class="l"><a class="l" href="#201">201: </a>            .Gatekeeper::serviceAccount()-&gt;executeCreateRole(
-</span><span id="202" class="l"><a class="l" href="#202">202: </a>                <span class="php-keyword1">new</span> FormDefault(
-</span><span id="203" class="l"><a class="l" href="#203">203: </a>                    <span class="php-keyword1">new</span> GridFormGroup(
-</span><span id="204" class="l"><a class="l" href="#204">204: </a>                        <span class="php-keyword1">new</span> GridFormRow(
-</span><span id="205" class="l"><a class="l" href="#205">205: </a>                            <span class="php-keyword1">new</span> GridFormCol(
-</span><span id="206" class="l"><a class="l" href="#206">206: </a>                                <span class="php-keyword1">new</span> InputText(
-</span><span id="207" class="l"><a class="l" href="#207">207: </a>                                    <span class="php-quote">'Access'</span>, <span class="php-quote">'Name'</span>, <span class="php-quote">'Zugriffslevelgruppe'</span>
-</span><span id="208" class="l"><a class="l" href="#208">208: </a>                                )
-</span><span id="209" class="l"><a class="l" href="#209">209: </a>                            )
-</span><span id="210" class="l"><a class="l" href="#210">210: </a>                        )
-</span><span id="211" class="l"><a class="l" href="#211">211: </a>                    ,<span class="php-quote">'Rolle anlegen &lt;small&gt;Zugriffslevelgruppe&lt;/small&gt;'</span>)
-</span><span id="212" class="l"><a class="l" href="#212">212: </a>                , <span class="php-keyword1">new</span> ButtonSubmitPrimary( <span class="php-quote">'Hinzufügen'</span> )
-</span><span id="213" class="l"><a class="l" href="#213">213: </a>                )
-</span><span id="214" class="l"><a class="l" href="#214">214: </a>            , <span class="php-var">$Name</span>)
-</span><span id="215" class="l"><a class="l" href="#215">215: </a>        );
-</span><span id="216" class="l"><a class="l" href="#216">216: </a>        <span class="php-keyword1">return</span> <span class="php-var">$View</span>;
-</span><span id="217" class="l"><a class="l" href="#217">217: </a>    }
-</span><span id="218" class="l"><a class="l" href="#218">218: </a>
-</span><span id="219" class="l"><a class="l" href="#219">219: </a>    <span class="php-comment">/**
-</span></span><span id="220" class="l"><a class="l" href="#220">220: </a><span class="php-comment">     * @param null|int $Role
-</span></span><span id="221" class="l"><a class="l" href="#221">221: </a><span class="php-comment">     * @param null|int $Access
-</span></span><span id="222" class="l"><a class="l" href="#222">222: </a><span class="php-comment">     *
-</span></span><span id="223" class="l"><a class="l" href="#223">223: </a><span class="php-comment">     * @return Stage
-</span></span><span id="224" class="l"><a class="l" href="#224">224: </a><span class="php-comment">     */</span>
-</span><span id="225" class="l"><a class="l" href="#225">225: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_stageAuthorizationRoleAccess" href="#_stageAuthorizationRoleAccess">stageAuthorizationRoleAccess</a>( <span class="php-var">$Role</span>, <span class="php-var">$Access</span> )
-</span><span id="226" class="l"><a class="l" href="#226">226: </a>    {
-</span><span id="227" class="l"><a class="l" href="#227">227: </a>
-</span><span id="228" class="l"><a class="l" href="#228">228: </a>        <span class="php-var">$View</span> = <span class="php-keyword1">new</span> Stage();
-</span><span id="229" class="l"><a class="l" href="#229">229: </a>        <span class="php-var">$View</span>-&gt;setTitle( <span class="php-quote">'Berechtigungen'</span> );
-</span><span id="230" class="l"><a class="l" href="#230">230: </a>        <span class="php-var">$View</span>-&gt;setDescription( <span class="php-quote">'Rollen'</span> );
-</span><span id="231" class="l"><a class="l" href="#231">231: </a>        <span class="php-var">$View</span>-&gt;setContent(
-</span><span id="232" class="l"><a class="l" href="#232">232: </a>            <span class="php-keyword1">new</span> TableFromData( Gatekeeper::serviceAccount()-&gt;entityAccountRoleAll(), <span class="php-quote">'Bestehende Rollen &lt;small&gt;Zugriffslevelgruppen&lt;/small&gt;'</span> )
-</span><span id="233" class="l"><a class="l" href="#233">233: </a>        );
-</span><span id="234" class="l"><a class="l" href="#234">234: </a>        <span class="php-keyword1">return</span> <span class="php-var">$View</span>;
-</span><span id="235" class="l"><a class="l" href="#235">235: </a>    }
-</span><span id="236" class="l"><a class="l" href="#236">236: </a>
-</span><span id="237" class="l"><a class="l" href="#237">237: </a>}
-</span><span id="238" class="l"><a class="l" href="#238">238: </a></span></code></pre>
+</span><span id="189" class="l"><a class="l" href="#189">189: </a>                <span class="php-quote">'&lt;div class=&quot;pull-right&quot;&gt;'</span>
+</span><span id="190" class="l"><a class="l" href="#190">190: </a>                .<span class="php-quote">'&lt;form action=&quot;'</span>.<span class="php-var">$B</span>.<span class="php-quote">'/Sphere/System/Authorization/Role/Destroy&quot; method=&quot;post&quot;&gt;
+</span></span><span id="191" class="l"><a class="l" href="#191">191: </a><span class="php-quote">                    &lt;input type=&quot;hidden&quot; class=&quot;form-control&quot; name=&quot;Id&quot; placeholder=&quot;&quot; value=&quot;'</span>.<span class="php-var">$V</span>-&gt;getId().<span class="php-quote">'&quot;/&gt;
+</span></span><span id="192" class="l"><a class="l" href="#192">192: </a><span class="php-quote">                    &lt;div class=&quot;form-group&quot;&gt;
+</span></span><span id="193" class="l"><a class="l" href="#193">193: </a><span class="php-quote">                        &lt;div class=&quot;input-group&quot;&gt;
+</span></span><span id="194" class="l"><a class="l" href="#194">194: </a><span class="php-quote">                            &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger&quot;&gt;Löschen&lt;/button&gt;
+</span></span><span id="195" class="l"><a class="l" href="#195">195: </a><span class="php-quote">                        &lt;/div&gt;
+</span></span><span id="196" class="l"><a class="l" href="#196">196: </a><span class="php-quote">                    &lt;/div&gt;
+</span></span><span id="197" class="l"><a class="l" href="#197">197: </a><span class="php-quote">                &lt;/form&gt;'</span>
+</span><span id="198" class="l"><a class="l" href="#198">198: </a>                .<span class="php-quote">'&lt;/div&gt;'</span>
+</span><span id="199" class="l"><a class="l" href="#199">199: </a>                .<span class="php-quote">'&lt;div class=&quot;pull-right&quot;&gt;'</span>
+</span><span id="200" class="l"><a class="l" href="#200">200: </a>                .<span class="php-quote">'&lt;form action=&quot;'</span>.<span class="php-var">$B</span>.<span class="php-quote">'/Sphere/System/Authorization/Role/Access&quot; method=&quot;post&quot;&gt;
+</span></span><span id="201" class="l"><a class="l" href="#201">201: </a><span class="php-quote">                    &lt;input type=&quot;hidden&quot; class=&quot;form-control&quot; name=&quot;Id&quot; placeholder=&quot;&quot; value=&quot;'</span>.<span class="php-var">$V</span>-&gt;getId().<span class="php-quote">'&quot;/&gt;
+</span></span><span id="202" class="l"><a class="l" href="#202">202: </a><span class="php-quote">                    &lt;div class=&quot;form-group&quot;&gt;
+</span></span><span id="203" class="l"><a class="l" href="#203">203: </a><span class="php-quote">                        &lt;div class=&quot;input-group&quot;&gt;
+</span></span><span id="204" class="l"><a class="l" href="#204">204: </a><span class="php-quote">                            &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Zugriffslevel&lt;/button&gt;
+</span></span><span id="205" class="l"><a class="l" href="#205">205: </a><span class="php-quote">                        &lt;/div&gt;
+</span></span><span id="206" class="l"><a class="l" href="#206">206: </a><span class="php-quote">                    &lt;/div&gt;&amp;nbsp;
+</span></span><span id="207" class="l"><a class="l" href="#207">207: </a><span class="php-quote">                &lt;/form&gt;'</span>
+</span><span id="208" class="l"><a class="l" href="#208">208: </a>                .<span class="php-quote">'&lt;/div&gt;'</span>;
+</span><span id="209" class="l"><a class="l" href="#209">209: </a>        }, self::getUrlBase() );
+</span><span id="210" class="l"><a class="l" href="#210">210: </a>
+</span><span id="211" class="l"><a class="l" href="#211">211: </a>        <span class="php-var">$View</span>-&gt;setContent(
+</span><span id="212" class="l"><a class="l" href="#212">212: </a>            <span class="php-keyword1">new</span> TableFromData( <span class="php-var">$RoleList</span>, <span class="php-quote">'Bestehende Rollen &lt;small&gt;Zugriffslevelgruppen&lt;/small&gt;'</span> )
+</span><span id="213" class="l"><a class="l" href="#213">213: </a>            .Gatekeeper::serviceAccount()-&gt;executeCreateRole(
+</span><span id="214" class="l"><a class="l" href="#214">214: </a>                <span class="php-keyword1">new</span> FormDefault(
+</span><span id="215" class="l"><a class="l" href="#215">215: </a>                    <span class="php-keyword1">new</span> GridFormGroup(
+</span><span id="216" class="l"><a class="l" href="#216">216: </a>                        <span class="php-keyword1">new</span> GridFormRow(
+</span><span id="217" class="l"><a class="l" href="#217">217: </a>                            <span class="php-keyword1">new</span> GridFormCol(
+</span><span id="218" class="l"><a class="l" href="#218">218: </a>                                <span class="php-keyword1">new</span> InputText(
+</span><span id="219" class="l"><a class="l" href="#219">219: </a>                                    <span class="php-quote">'Access'</span>, <span class="php-quote">'Name'</span>, <span class="php-quote">'Zugriffslevelgruppe'</span>
+</span><span id="220" class="l"><a class="l" href="#220">220: </a>                                )
+</span><span id="221" class="l"><a class="l" href="#221">221: </a>                            )
+</span><span id="222" class="l"><a class="l" href="#222">222: </a>                        )
+</span><span id="223" class="l"><a class="l" href="#223">223: </a>                    ,<span class="php-quote">'Rolle anlegen &lt;small&gt;Zugriffslevelgruppe&lt;/small&gt;'</span>)
+</span><span id="224" class="l"><a class="l" href="#224">224: </a>                , <span class="php-keyword1">new</span> ButtonSubmitPrimary( <span class="php-quote">'Hinzufügen'</span> )
+</span><span id="225" class="l"><a class="l" href="#225">225: </a>                )
+</span><span id="226" class="l"><a class="l" href="#226">226: </a>            , <span class="php-var">$Name</span>)
+</span><span id="227" class="l"><a class="l" href="#227">227: </a>        );
+</span><span id="228" class="l"><a class="l" href="#228">228: </a>        <span class="php-keyword1">return</span> <span class="php-var">$View</span>;
+</span><span id="229" class="l"><a class="l" href="#229">229: </a>    }
+</span><span id="230" class="l"><a class="l" href="#230">230: </a>
+</span><span id="231" class="l"><a class="l" href="#231">231: </a>    <span class="php-comment">/**
+</span></span><span id="232" class="l"><a class="l" href="#232">232: </a><span class="php-comment">     * @param null|int $Role
+</span></span><span id="233" class="l"><a class="l" href="#233">233: </a><span class="php-comment">     * @param null|int $Access
+</span></span><span id="234" class="l"><a class="l" href="#234">234: </a><span class="php-comment">     *
+</span></span><span id="235" class="l"><a class="l" href="#235">235: </a><span class="php-comment">     * @return Stage
+</span></span><span id="236" class="l"><a class="l" href="#236">236: </a><span class="php-comment">     */</span>
+</span><span id="237" class="l"><a class="l" href="#237">237: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_stageAuthorizationRoleAccess" href="#_stageAuthorizationRoleAccess">stageAuthorizationRoleAccess</a>( <span class="php-var">$Role</span>, <span class="php-var">$Access</span> )
+</span><span id="238" class="l"><a class="l" href="#238">238: </a>    {
+</span><span id="239" class="l"><a class="l" href="#239">239: </a>
+</span><span id="240" class="l"><a class="l" href="#240">240: </a>        <span class="php-var">$View</span> = <span class="php-keyword1">new</span> Stage();
+</span><span id="241" class="l"><a class="l" href="#241">241: </a>        <span class="php-var">$View</span>-&gt;setTitle( <span class="php-quote">'Berechtigungen'</span> );
+</span><span id="242" class="l"><a class="l" href="#242">242: </a>        <span class="php-var">$View</span>-&gt;setDescription( <span class="php-quote">'Rollen'</span> );
+</span><span id="243" class="l"><a class="l" href="#243">243: </a>        <span class="php-var">$View</span>-&gt;setContent(
+</span><span id="244" class="l"><a class="l" href="#244">244: </a>            <span class="php-keyword1">new</span> TableFromData( Gatekeeper::serviceAccount()-&gt;entityAccountRoleAll(), <span class="php-quote">'Bestehende Rollen &lt;small&gt;Zugriffslevelgruppen&lt;/small&gt;'</span> )
+</span><span id="245" class="l"><a class="l" href="#245">245: </a>        );
+</span><span id="246" class="l"><a class="l" href="#246">246: </a>        <span class="php-keyword1">return</span> <span class="php-var">$View</span>;
+</span><span id="247" class="l"><a class="l" href="#247">247: </a>    }
+</span><span id="248" class="l"><a class="l" href="#248">248: </a>
+</span><span id="249" class="l"><a class="l" href="#249">249: </a>}
+</span><span id="250" class="l"><a class="l" href="#250">250: </a></span></code></pre>
 
 	<div id="footer">
 		Sphere API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
