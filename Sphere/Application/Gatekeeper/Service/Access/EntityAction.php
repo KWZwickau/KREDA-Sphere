@@ -224,7 +224,12 @@ abstract class EntityAction extends EntitySchema
     protected function entityAccessById( $Id )
     {
 
-        return $this->getEntityById( 'TblAccess', $Id );
+        if (isset( self::$EntityAccessByIdCache[$Id] )) {
+            return self::$EntityAccessByIdCache[$Id];
+        }
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAccess', $Id );
+        self::$EntityAccessByIdCache[$Id] = $Entity;
+        return ( null === $Entity ? false : $Entity );
     }
 
     /**
@@ -235,7 +240,12 @@ abstract class EntityAction extends EntitySchema
     protected function entityPrivilegeById( $Id )
     {
 
-        return $this->getEntityById( 'TblAccessPrivilege', $Id );
+        if (isset( self::$EntityPrivilegeByIdCache[$Id] )) {
+            return self::$EntityPrivilegeByIdCache[$Id];
+        }
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAccessPrivilege', $Id );
+        self::$EntityPrivilegeByIdCache[$Id] = $Entity;
+        return ( null === $Entity ? false : $Entity );
     }
 
     /**
@@ -294,7 +304,12 @@ abstract class EntityAction extends EntitySchema
     protected function entityRightById( $Id )
     {
 
-        return $this->getEntityById( 'TblAccessRight', $Id );
+        if (isset( self::$EntityRightByIdCache[$Id] )) {
+            return self::$EntityRightByIdCache[$Id];
+        }
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAccessRight', $Id );
+        self::$EntityRightByIdCache[$Id] = $Entity;
+        return ( null === $Entity ? false : $Entity );
     }
 
     /**

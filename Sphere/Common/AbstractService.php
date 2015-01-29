@@ -19,8 +19,6 @@ abstract class AbstractService extends AbstractExtension implements IServiceInte
     protected static $BaseRoute = null;
     /** @var null|Handler $DatabaseHandler */
     protected static $DatabaseHandler = null;
-    /** @var AbstractEntity[] $EntityByIdCache */
-    protected static $EntityByIdCache = array();
 
     /**
      * @param null|string $BaseRoute Client-Application Route
@@ -82,21 +80,14 @@ abstract class AbstractService extends AbstractExtension implements IServiceInte
     }
 
     /**
-     * @param string $Name
-     * @param int    $Id
-     * @param bool   $Cache
+     * @param string $Route Service Route
      *
-     * @return bool|AbstractEntity
+     * @return null|string Client-Application Route
      */
-    final public function getEntityById( $Name, $Id, $Cache = true )
+    final protected function getClientServiceRoute( $Route )
     {
 
-        if ($Cache && isset( static::$EntityByIdCache[$Name.$Id] )) {
-            return static::$EntityByIdCache[$Name.$Id];
-        }
-        $Entity = $this->getEntityManager()->getEntityById( $Name, $Id );
-        static::$EntityByIdCache[$Name.$Id] = $Entity;
-        return ( null === $Entity ? false : $Entity );
+        return $this->extensionRequest()->getUrlBase().static::$BaseRoute.'/'.trim( $Route, '/' );
     }
 
     /**
@@ -115,16 +106,5 @@ abstract class AbstractService extends AbstractExtension implements IServiceInte
     {
 
         return static::$DatabaseHandler;
-    }
-
-    /**
-     * @param string $Route Service Route
-     *
-     * @return null|string Client-Application Route
-     */
-    final protected function getClientServiceRoute( $Route )
-    {
-
-        return $this->extensionRequest()->getUrlBase().static::$BaseRoute.'/'.trim( $Route, '/' );
     }
 }
