@@ -107,7 +107,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     private function checkSchemaMethodName( $Schema )
     {
 
-        $Name = 'get(Api|ConsumerSuffix|DatabaseHandler|ClientServiceRoute|EntityManager)|setupDatabase(Schema|Content)|setDatabaseHandler';
+        $Name = 'get(Api|ConsumerSuffix|DatabaseHandler|ClientServiceRoute|EntityManager)|setupDatabase(Schema|Content)|setDatabaseHandler|schemaTable(Create|AddForeignKey)';
         $Prefix = 'setTable|getTable|extension';
         $this->checkMethodName( $Schema, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
             \ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED | \ReflectionMethod::IS_PRIVATE );
@@ -139,7 +139,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     private function checkActionMethodName( $Action )
     {
 
-        $Name = 'get(ClientServiceRoute|EntityManager)';
+        $Name = 'get(ClientServiceRoute|EntityManager)|schemaTable(Create|AddForeignKey)';
         $Prefix = 'getTable|action(Create|Destroy|Add|Remove|Change)|entity';
         $this->checkMethodName( $Action, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
             \ReflectionMethod::IS_PROTECTED );
