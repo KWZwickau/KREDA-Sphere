@@ -64,13 +64,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAccessRight' )) {
-            $Table = $Schema->createTable( 'tblAccessRight' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        $Table = $Schema->getTable( 'tblAccessRight' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblAccessRight' );
         /**
          * Upgrade
          */
@@ -92,13 +86,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAccessPrivilege' )) {
-            $Table = $Schema->createTable( 'tblAccessPrivilege' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        $Table = $Schema->getTable( 'tblAccessPrivilege' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblAccessPrivilege' );
         /**
          * Upgrade
          */
@@ -120,13 +108,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAccess' )) {
-            $Table = $Schema->createTable( 'tblAccess' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        $Table = $Schema->getTable( 'tblAccess' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblAccess' );
         /**
          * Upgrade
          */
@@ -153,29 +135,12 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAccessPrivilegeList' )) {
-            $Table = $Schema->createTable( 'tblAccessPrivilegeList' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        $Table = $Schema->getTable( 'tblAccessPrivilegeList' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblAccessPrivilegeList' );
         /**
          * Upgrade
          */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessPrivilegeList', 'tblAccessPrivilege' )) {
-            $Table->addColumn( 'tblAccessPrivilege', 'bigint' );
-            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblAccessPrivilege, array( 'tblAccessPrivilege' ),
-                    array( 'Id' ) );
-            }
-        }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessPrivilegeList', 'tblAccess' )) {
-            $Table->addColumn( 'tblAccess', 'bigint' );
-            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblAccess, array( 'tblAccess' ), array( 'Id' ) );
-            }
-        }
+        $this->schemaTableAddForeignKey( $Table, $tblAccessPrivilege );
+        $this->schemaTableAddForeignKey( $Table, $tblAccess );
         return $Table;
     }
 
@@ -196,29 +161,12 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAccessRightList' )) {
-            $Table = $Schema->createTable( 'tblAccessRightList' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        $Table = $Schema->getTable( 'tblAccessRightList' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblAccessRightList' );
         /**
          * Upgrade
          */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessRightList', 'tblAccessRight' )) {
-            $Table->addColumn( 'tblAccessRight', 'bigint' );
-            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblAccessRight, array( 'tblAccessRight' ), array( 'Id' ) );
-            }
-        }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessRightList', 'tblAccessPrivilege' )) {
-            $Table->addColumn( 'tblAccessPrivilege', 'bigint' );
-            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblAccessPrivilege, array( 'tblAccessPrivilege' ),
-                    array( 'Id' ) );
-            }
-        }
+        $this->schemaTableAddForeignKey( $Table, $tblAccessRight );
+        $this->schemaTableAddForeignKey( $Table, $tblAccessPrivilege );
         return $Table;
     }
 

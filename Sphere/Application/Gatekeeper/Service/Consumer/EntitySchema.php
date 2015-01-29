@@ -62,16 +62,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblConsumer' )) {
-            $Table = $Schema->createTable( 'tblConsumer' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblConsumer' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblConsumer' );
         /**
          * Upgrade
          */
@@ -103,16 +94,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblConsumerTyp' )) {
-            $Table = $Schema->createTable( 'tblConsumerTyp' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblConsumerTyp' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblConsumerTyp' );
         /**
          * Upgrade
          */
@@ -139,32 +121,12 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblConsumerTypList' )) {
-            $Table = $Schema->createTable( 'tblConsumerTypList' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblConsumerTypList' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblConsumerTypList' );
         /**
          * Upgrade
          */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumerTypList', 'tblConsumer' )) {
-            $Table->addColumn( 'tblConsumer', 'bigint' );
-            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblConsumer, array( 'tblConsumer' ),
-                    array( 'Id' ) );
-            }
-        }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumerTypList', 'tblConsumerTyp' )) {
-            $Table->addColumn( 'tblConsumerTyp', 'bigint' );
-            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblConsumerTyp, array( 'tblConsumerTyp' ), array( 'Id' ) );
-            }
-        }
+        $this->schemaTableAddForeignKey( $Table, $tblConsumer );
+        $this->schemaTableAddForeignKey( $Table, $tblConsumerTyp );
         return $Table;
     }
 

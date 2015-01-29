@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Graduation\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Graduation\Service\Weight\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
 
@@ -22,12 +21,7 @@ class Weight extends EntityAction
     public function __construct()
     {
 
-        if (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
-            $Consumer = $tblConsumer->getDatabaseSuffix();
-        } else {
-            $Consumer = 'EGE';
-        }
-        $this->setDatabaseHandler( 'Graduation', 'Weight', $Consumer );
+        $this->setDatabaseHandler( 'Graduation', 'Weight', $this->getConsumerSuffix() );
     }
 
     public function setupDatabaseContent()

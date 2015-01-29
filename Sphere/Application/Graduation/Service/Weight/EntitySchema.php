@@ -60,16 +60,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblWeightDimension' )) {
-            $Table = $Schema->createTable( 'tblWeightDimension' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblWeightDimension' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblWeightDimension' );
         /**
          * Upgrade
          */

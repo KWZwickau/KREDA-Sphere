@@ -62,16 +62,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblSubject' )) {
-            $Table = $Schema->createTable( 'tblSubject' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblSubject' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblSubject' );
         /**
          * Upgrade
          */
@@ -97,16 +88,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblLevel' )) {
-            $Table = $Schema->createTable( 'tblLevel' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblLevel' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblLevel' );
         /**
          * Upgrade
          */
@@ -130,16 +112,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblGroup' )) {
-            $Table = $Schema->createTable( 'tblGroup' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblGroup' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblGroup' );
         /**
          * Upgrade
          */

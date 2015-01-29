@@ -229,7 +229,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             );
             $View->setContent(
                 Update::getApi()->setupDatabaseSchema( false )
-                .new Redirect( '/Sphere', 30 )
+                .new Redirect( '/Sphere', 60 * 10 )
             );
             $ShellScreen->addToContent( new Container( $View ) );
         } else {

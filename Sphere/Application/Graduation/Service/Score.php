@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Graduation\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreCondition;
 use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreGroup;
@@ -26,12 +25,7 @@ class Score extends EntityAction
     public function __construct()
     {
 
-        if (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
-            $Consumer = $tblConsumer->getDatabaseSuffix();
-        } else {
-            $Consumer = 'EGE';
-        }
-        $this->setDatabaseHandler( 'Graduation', 'Score', $Consumer );
+        $this->setDatabaseHandler( 'Graduation', 'Score', $this->getConsumerSuffix() );
     }
 
     public function setupDatabaseContent()

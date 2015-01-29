@@ -62,16 +62,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAddressCity' )) {
-            $Table = $Schema->createTable( 'tblAddressCity' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblAddressCity' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblAddressCity' );
         /**
          * Upgrade
          */
@@ -100,16 +91,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAddressState' )) {
-            $Table = $Schema->createTable( 'tblAddressState' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblAddressState' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblAddressState' );
         /**
          * Upgrade
          */
@@ -134,16 +116,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblAddress' )) {
-            $Table = $Schema->createTable( 'tblAddress' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblAddress' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblAddress' );
         /**
          * Upgrade
          */

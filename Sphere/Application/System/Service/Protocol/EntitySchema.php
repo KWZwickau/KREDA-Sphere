@@ -60,16 +60,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblProtocol' )) {
-            $Table = $Schema->createTable( 'tblProtocol' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblProtocol' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblProtocol' );
         /**
          * Upgrade
          */

@@ -60,16 +60,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblGradeType' )) {
-            $Table = $Schema->createTable( 'tblGradeType' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblGradeType' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblGradeType' );
         /**
          * Upgrade
          */

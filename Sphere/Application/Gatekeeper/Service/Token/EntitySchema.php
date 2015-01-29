@@ -60,16 +60,7 @@ abstract class EntitySchema extends AbstractService
         /**
          * Install
          */
-        if (!$this->getDatabaseHandler()->hasTable( 'tblToken' )) {
-            $Table = $Schema->createTable( 'tblToken' );
-            $Column = $Table->addColumn( 'Id', 'bigint' );
-            $Column->setAutoincrement( true );
-            $Table->setPrimaryKey( array( 'Id' ) );
-        }
-        /**
-         * Fetch
-         */
-        $Table = $Schema->getTable( 'tblToken' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblToken' );
         /**
          * Upgrade
          */

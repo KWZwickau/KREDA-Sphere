@@ -24,12 +24,7 @@ class Person extends EntityAction
     function __construct()
     {
 
-        if (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
-            $Consumer = $tblConsumer->getDatabaseSuffix();
-        } else {
-            $Consumer = 'EGE';
-        }
-        $this->setDatabaseHandler( 'Management', 'Person', $Consumer );
+        $this->setDatabaseHandler( 'Management', 'Person', $this->getConsumerSuffix() );
     }
 
     /**

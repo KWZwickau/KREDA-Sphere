@@ -25,12 +25,7 @@ class Address extends EntityAction
     function __construct()
     {
 
-        if (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
-            $Consumer = $tblConsumer->getDatabaseSuffix();
-        } else {
-            $Consumer = 'EGE';
-        }
-        $this->setDatabaseHandler( 'Management', 'Address', $Consumer );
+        $this->setDatabaseHandler( 'Management', 'Address', $this->getConsumerSuffix() );
     }
 
     /**
@@ -58,18 +53,25 @@ class Address extends EntityAction
         /**
          * Support-Center
          */
-        $tblAddressState = $this->actionCreateAddressState( 'Sachsen' );
-        $tblAddressCity = $this->actionCreateAddressCity( '08056', 'Zwickau' );
-        $tblAddress = $this->actionCreateAddress( $tblAddressState, $tblAddressCity, 'Am Bahnhof', '4' );
-
-        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerByName( 'System' );
-        Gatekeeper::serviceConsumer()->executeChangeAddress( $tblAddress, $tblConsumer );
+//        $tblAddressState = $this->actionCreateAddressState( 'Sachsen' );
+//        $tblAddressCity = $this->actionCreateAddressCity( '08056', 'Zwickau' );
+//        $tblAddress = $this->actionCreateAddress( $tblAddressState, $tblAddressCity, 'Am Bahnhof', '4' );
+//
+//        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerByName( 'System' );
+//        Gatekeeper::serviceConsumer()->executeChangeAddress( $tblAddress, $tblConsumer );
 
         $tblAddressState = $this->actionCreateAddressState( 'Sachsen' );
         $tblAddressCity = $this->actionCreateAddressCity( '09456', 'Annaberg-Buchholz' );
         $tblAddress = $this->actionCreateAddress( $tblAddressState, $tblAddressCity, 'Straße der Freundschaft', '11' );
 
         $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'EGE' );
+        Gatekeeper::serviceConsumer()->executeChangeAddress( $tblAddress, $tblConsumer );
+
+        $tblAddressState = $this->actionCreateAddressState( 'Sachsen' );
+        $tblAddressCity = $this->actionCreateAddressCity( '09130', 'Chemnitz' );
+        $tblAddress = $this->actionCreateAddress( $tblAddressState, $tblAddressCity, 'Tschaikowskistraße', '49' );
+
+        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'ESZC' );
         Gatekeeper::serviceConsumer()->executeChangeAddress( $tblAddress, $tblConsumer );
     }
 
