@@ -37,8 +37,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     private function checkApplicationMethodName( $Application )
     {
 
-        $Name = '1';
-        $Prefix = 'register|setup|frontend|service|extension';
+        $Name = 'registerApplication';
+        $Prefix = 'registerApplication|setup|frontend|service|extension';
         $this->checkMethodName( $Application, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
             \ReflectionMethod::IS_PUBLIC );
     }
@@ -61,9 +61,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             if (!$Class->isAbstract()) {
                 $Object = $Class->newInstance();
                 if (in_array( 'service', $Result )) {
-                    $this->assertInstanceOf( '\KREDA\Sphere\Common\AbstractService',
+                    $this->assertInstanceOf( 'KREDA\Sphere\Common\AbstractService',
                         $Object->{$Method->getShortName()}()
                     );
+                }
+                if (in_array( 'registerApplication', $Result )) {
+                    $Navigantion = new \ReflectionClass( 'KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient' );
+                    $Router = new \ReflectionClass( 'MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter' );
+                    $Configuration = new \ReflectionClass( 'KREDA\Sphere\Client\Configuration' );
+                    $Object->{$Method->getShortName()}( $Configuration->newInstance( $Router->newInstance(),
+                        $Navigantion->newInstance() ) );
+                }
+                if (in_array( 'setupModuleNavigation', $Result )) {
+                    $Object->{$Method->getShortName()}();
                 }
             }
         }
