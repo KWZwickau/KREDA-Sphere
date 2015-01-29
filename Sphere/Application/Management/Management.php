@@ -48,9 +48,22 @@ class Management extends AbstractApplication
         self::registerClientRoute( self::$Configuration, '/Sphere/Management', __CLASS__.'::frontendManagement' );
         self::addClientNavigationMain( self::$Configuration, '/Sphere/Management', 'Verwaltung', new CogWheelsIcon() );
 
+        self::registerApplicationEducation( $Configuration );
+        self::registerApplicationPerson( $Configuration );
+
         /**
-         * Education
+         * Campus
          */
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Campus', __CLASS__.'::frontendCampus'
+        );
+
+        return $Configuration;
+    }
+
+    private static function registerApplicationEducation()
+    {
+
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Education', __CLASS__.'::guiEducation'
         );
@@ -67,6 +80,10 @@ class Management extends AbstractApplication
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Education/Mission', __CLASS__.'::guiEducationMission'
         );
+    }
+
+    private static function registerApplicationPerson()
+    {
 
         /**
          * Person
@@ -84,16 +101,22 @@ class Management extends AbstractApplication
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Student/Create', __CLASS__.'::frontendPersonStudentCreate'
         );
+        /**
+         * Guardian
+         */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Guardian', __CLASS__.'::frontendPersonGuardianList'
         );
         $Route = self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Guardian/Detail', __CLASS__.'::frontendPerson_GuardianDetail'
+            '/Sphere/Management/Person/Guardian/Detail', __CLASS__.'::frontendPersonGuardianDetail'
         );
         $Route->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Guardian/Create', __CLASS__.'::frontendPerson_GuardianCreate'
+            '/Sphere/Management/Person/Guardian/Create', __CLASS__.'::frontendPersonGuardianCreate'
         );
+        /**
+         * Teacher
+         */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Teacher', __CLASS__.'::frontendPersonTeacherList'
         );
@@ -102,37 +125,34 @@ class Management extends AbstractApplication
         );
         $Route->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Teacher/Create', __CLASS__.'::frontendPerson_TeacherCreate'
+            '/Sphere/Management/Person/Teacher/Create', __CLASS__.'::frontendPersonTeacherCreate'
         );
+        /**
+         * Staff
+         */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Staff', __CLASS__.'::frontendPersonStaffList'
         );
         $Route = self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Staff/Detail', __CLASS__.'::frontendPerson_StaffDetail'
+            '/Sphere/Management/Person/Staff/Detail', __CLASS__.'::frontendPersonStaffDetail'
         );
         $Route->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Staff/Create', __CLASS__.'::frontendPerson_StaffCreate'
+            '/Sphere/Management/Person/Staff/Create', __CLASS__.'::frontendPersonStaffCreate'
         );
+        /**
+         * Others
+         */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Others', __CLASS__.'::frontendPersonOthersList'
         );
         $Route = self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Others/Detail', __CLASS__.'::frontendPerson_OthersDetail'
+            '/Sphere/Management/Person/Others/Detail', __CLASS__.'::frontendPersonOthersDetail'
         );
         $Route->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Others/Create', __CLASS__.'::frontendPerson_OthersCreate'
+            '/Sphere/Management/Person/Others/Create', __CLASS__.'::frontendPersonOthersCreate'
         );
-
-        /**
-         * Campus
-         */
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Campus', __CLASS__.'::frontendCampus'
-        );
-
-        return $Configuration;
     }
 
     /**
