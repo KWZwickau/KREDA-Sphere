@@ -1,8 +1,6 @@
 <?php
 namespace KREDA\TestSuite\Tests\Application;
 
-use KREDA\Sphere\Common\AbstractFrontend;
-
 /**
  * Class FrontendTest
  *
@@ -76,27 +74,6 @@ class FrontendTest extends \PHPUnit_Framework_TestCase
         foreach ($MethodList as $Method) {
             $this->assertEquals( 1, preg_match( $Pattern, $Method->getShortName(), $Result ),
                 $Class->getName().'::'.$Method->getShortName()."\n".' -> '.$Pattern );
-
-            if (!$Class->isAbstract()) {
-                /** @var AbstractFrontend $Object */
-                $Object = $Class->newInstance();
-
-                if (in_array( 'stage', $Result )) {
-                    if (count( $ParameterList = $Method->getParameters() ) == 0) {
-                        $this->assertInstanceOf( '\KREDA\Sphere\Client\Component\Element\Repository\Content\Stage',
-                            $Object->{$Method->getShortName()}()
-                        );
-                    } else {
-                        array_walk( $ParameterList, function ( &$V ) {
-
-                            $V = null;
-                        } );
-                        $this->assertInstanceOf( '\KREDA\Sphere\Client\Component\Element\Repository\Content\Stage',
-                            call_user_func_array( array( $Object, $Method->getShortName() ), $ParameterList )
-                        );
-                    }
-                }
-            }
         }
     }
 }

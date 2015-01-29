@@ -1,8 +1,6 @@
 <?php
 namespace KREDA\TestSuite\Tests\Application;
 
-use KREDA\Sphere\Common\AbstractService;
-
 /**
  * Class ServiceTest
  *
@@ -80,61 +78,6 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         foreach ($MethodList as $Method) {
             $this->assertEquals( 1, preg_match( $Pattern, $Method->getShortName(), $Result ),
                 $Class->getName().'::'.$Method->getShortName()."\n".' -> '.$Pattern );
-
-            if (!$Class->isAbstract()) {
-                /** @var AbstractService $Object */
-                $Object = $Class->newInstance();
-
-                if (in_array( 'getApi', $Result )) {
-                    $this->assertInstanceOf( '\KREDA\Sphere\Common\AbstractService',
-                        $Object->{$Method->getShortName()}() );
-                }
-                if (in_array( 'getDatabaseHandler', $Result )) {
-                    $this->assertInstanceOf( 'KREDA\Sphere\Common\Database\Handler',
-                        $Object->{$Method->getShortName()}() );
-                }
-                if (in_array( 'setupDatabaseContent', $Result )) {
-                    $Object->{$Method->getShortName()}();
-                }
-                if (in_array( 'getTable', $Result )) {
-                    $this->assertInstanceOf( '\Doctrine\DBAL\Schema\Table',
-                        $Object->{$Method->getShortName()}() );
-                }
-                if (in_array( 'entity', $Result )) {
-                    $this->checkEntity( $Object, $Method );
-                }
-            }
-        }
-    }
-
-    /**
-     * @param AbstractService   $Object
-     * @param \ReflectionMethod $Method
-     */
-    private function checkEntity( AbstractService $Object, \ReflectionMethod $Method )
-    {
-
-        if (preg_match( '!^entity([a-zA-Z]+)All$!', $Method->getShortName() )) {
-            $Result = $Object->{$Method->getShortName()}();
-            if ($Result) {
-                if (count( $Result )) {
-                    $this->assertContainsOnlyInstancesOf( '\KREDA\Sphere\Common\AbstractEntity', $Result );
-                } else {
-                    $this->assertFalse( $Result );
-                }
-            } else {
-                $this->assertInstanceOf( '\KREDA\Sphere\Common\AbstractEntity', $Result );
-            }
-        }
-        if (preg_match( '!^entity([a-zA-Z]+)ById$!', $Method->getShortName() )) {
-            $Result = $Object->{$Method->getShortName()}( 0 );
-            $this->assertFalse( $Result );
-            $Result = $Object->{$Method->getShortName()}( 1 );
-            if ($Result) {
-                $this->assertInstanceOf( '\KREDA\Sphere\Common\AbstractEntity', $Result );
-            } else {
-                $this->assertFalse( $Result );
-            }
         }
     }
 

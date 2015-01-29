@@ -57,25 +57,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         foreach ($MethodList as $Method) {
             $this->assertEquals( 1, preg_match( $Pattern, $Method->getShortName(), $Result ),
                 $Class->getName().'::'.$Method->getShortName()."\n".' -> '.$Pattern );
-
-            if (!$Class->isAbstract()) {
-                $Object = $Class->newInstance();
-                if (in_array( 'service', $Result )) {
-                    $this->assertInstanceOf( 'KREDA\Sphere\Common\AbstractService',
-                        $Object->{$Method->getShortName()}()
-                    );
-                }
-                if (in_array( 'registerApplication', $Result )) {
-                    $Navigantion = new \ReflectionClass( 'KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient' );
-                    $Router = new \ReflectionClass( 'MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter' );
-                    $Configuration = new \ReflectionClass( 'KREDA\Sphere\Client\Configuration' );
-                    $Object->{$Method->getShortName()}( $Configuration->newInstance( $Router->newInstance(),
-                        $Navigantion->newInstance() ) );
-                }
-                if (in_array( 'setupModuleNavigation', $Result )) {
-                    $Object->{$Method->getShortName()}();
-                }
-            }
         }
     }
 }
