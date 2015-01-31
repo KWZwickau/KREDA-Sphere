@@ -481,7 +481,7 @@
      </tr>
 
      <tr>
-      <td class="danger" colspan="4">&nbsp;<a href="#439">frontendTokenCertification( $CredentialKey = null )</a></td>
+      <td class="danger" colspan="4">&nbsp;<a href="#439">frontendTokenCertification( $CredentialKey )</a></td>
       <td class="danger big">       <div class="progress progress-danger" style="width: 100px;">
         <div class="bar" style="width: 0.00%;"></div>
        </div>
@@ -526,9 +526,9 @@
      <tr><td><div align="right"><a name="5"></a><a href="#5">5</a></div></td><td class="codeLine">use KREDA\Sphere\Application\System\Frontend\Consumer\Consumer;</td></tr>
      <tr><td><div align="right"><a name="6"></a><a href="#6">6</a></div></td><td class="codeLine">use KREDA\Sphere\Application\System\Frontend\Installer\Installer;</td></tr>
      <tr><td><div align="right"><a name="7"></a><a href="#7">7</a></div></td><td class="codeLine">use KREDA\Sphere\Application\System\Frontend\Status\Status;</td></tr>
-     <tr><td><div align="right"><a name="8"></a><a href="#8">8</a></div></td><td class="codeLine">use KREDA\Sphere\Application\System\Service\Database;</td></tr>
-     <tr><td><div align="right"><a name="9"></a><a href="#9">9</a></div></td><td class="codeLine">use KREDA\Sphere\Application\System\Service\Protocol;</td></tr>
-     <tr><td><div align="right"><a name="10"></a><a href="#10">10</a></div></td><td class="codeLine">use KREDA\Sphere\Application\System\Service\Token;</td></tr>
+     <tr><td><div align="right"><a name="8"></a><a href="#8">8</a></div></td><td class="codeLine">use KREDA\Sphere\Application\System\Frontend\Token\Token;</td></tr>
+     <tr><td><div align="right"><a name="9"></a><a href="#9">9</a></div></td><td class="codeLine">use KREDA\Sphere\Application\System\Service\Database;</td></tr>
+     <tr><td><div align="right"><a name="10"></a><a href="#10">10</a></div></td><td class="codeLine">use KREDA\Sphere\Application\System\Service\Protocol;</td></tr>
      <tr><td><div align="right"><a name="11"></a><a href="#11">11</a></div></td><td class="codeLine">use KREDA\Sphere\Application\System\Service\Update;</td></tr>
      <tr><td><div align="right"><a name="12"></a><a href="#12">12</a></div></td><td class="codeLine">use KREDA\Sphere\Client\Component\Element\Element;</td></tr>
      <tr><td><div align="right"><a name="13"></a><a href="#13">13</a></div></td><td class="codeLine">use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;</td></tr>
@@ -640,7 +640,7 @@
      <tr class="danger"><td><div align="right"><a name="119"></a><a href="#119">119</a></div></td><td class="codeLine">        );</td></tr>
      <tr class="danger"><td><div align="right"><a name="120"></a><a href="#120">120</a></div></td><td class="codeLine">        self::registerClientRoute( self::$Configuration,</td></tr>
      <tr class="danger"><td><div align="right"><a name="121"></a><a href="#121">121</a></div></td><td class="codeLine">            '/Sphere/System/Token/Certification', __CLASS__.'::frontendTokenCertification'</td></tr>
-     <tr class="danger"><td><div align="right"><a name="122"></a><a href="#122">122</a></div></td><td class="codeLine">        );</td></tr>
+     <tr class="danger"><td><div align="right"><a name="122"></a><a href="#122">122</a></div></td><td class="codeLine">        )-&gt;setParameterDefault( 'CredentialKey', null );</td></tr>
      <tr><td><div align="right"><a name="123"></a><a href="#123">123</a></div></td><td class="codeLine"></td></tr>
      <tr class="danger"><td><div align="right"><a name="124"></a><a href="#124">124</a></div></td><td class="codeLine">        self::registerClientRoute( self::$Configuration,</td></tr>
      <tr class="danger"><td><div align="right"><a name="125"></a><a href="#125">125</a></div></td><td class="codeLine">            '/Sphere/System/Protocol', __CLASS__.'::frontendProtocol'</td></tr>
@@ -750,7 +750,7 @@
      <tr><td><div align="right"><a name="229"></a><a href="#229">229</a></div></td><td class="codeLine"></td></tr>
      <tr class="danger"><td><div align="right"><a name="230"></a><a href="#230">230</a></div></td><td class="codeLine">        $this-&gt;setupModuleNavigation();</td></tr>
      <tr class="danger"><td><div align="right"><a name="231"></a><a href="#231">231</a></div></td><td class="codeLine">        $this-&gt;setupServiceConsumer();</td></tr>
-     <tr class="danger"><td><div align="right"><a name="232"></a><a href="#232">232</a></div></td><td class="codeLine">        return Consumer::guiSummary();</td></tr>
+     <tr class="danger"><td><div align="right"><a name="232"></a><a href="#232">232</a></div></td><td class="codeLine">        return Consumer::stageSummary();</td></tr>
      <tr><td><div align="right"><a name="233"></a><a href="#233">233</a></div></td><td class="codeLine">    }</td></tr>
      <tr><td><div align="right"><a name="234"></a><a href="#234">234</a></div></td><td class="codeLine"></td></tr>
      <tr><td><div align="right"><a name="235"></a><a href="#235">235</a></div></td><td class="codeLine">    public function setupServiceConsumer()</td></tr>
@@ -770,7 +770,7 @@
      <tr><td><div align="right"><a name="249"></a><a href="#249">249</a></div></td><td class="codeLine"></td></tr>
      <tr class="danger"><td><div align="right"><a name="250"></a><a href="#250">250</a></div></td><td class="codeLine">        $this-&gt;setupModuleNavigation();</td></tr>
      <tr class="danger"><td><div align="right"><a name="251"></a><a href="#251">251</a></div></td><td class="codeLine">        $this-&gt;setupServiceConsumer();</td></tr>
-     <tr class="danger"><td><div align="right"><a name="252"></a><a href="#252">252</a></div></td><td class="codeLine">        return Consumer::guiConsumerCreate();</td></tr>
+     <tr class="danger"><td><div align="right"><a name="252"></a><a href="#252">252</a></div></td><td class="codeLine">        return Consumer::stageConsumerCreate();</td></tr>
      <tr><td><div align="right"><a name="253"></a><a href="#253">253</a></div></td><td class="codeLine">    }</td></tr>
      <tr><td><div align="right"><a name="254"></a><a href="#254">254</a></div></td><td class="codeLine"></td></tr>
      <tr><td><div align="right"><a name="255"></a><a href="#255">255</a></div></td><td class="codeLine">    /**</td></tr>
@@ -939,7 +939,7 @@
      <tr><td><div align="right"><a name="418"></a><a href="#418">418</a></div></td><td class="codeLine"></td></tr>
      <tr class="danger"><td><div align="right"><a name="419"></a><a href="#419">419</a></div></td><td class="codeLine">        $this-&gt;setupModuleNavigation();</td></tr>
      <tr class="danger"><td><div align="right"><a name="420"></a><a href="#420">420</a></div></td><td class="codeLine">        $this-&gt;setupServiceToken();</td></tr>
-     <tr class="danger"><td><div align="right"><a name="421"></a><a href="#421">421</a></div></td><td class="codeLine">        return Token::getApi()-&gt;apiToken();</td></tr>
+     <tr class="danger"><td><div align="right"><a name="421"></a><a href="#421">421</a></div></td><td class="codeLine">        return Token::stageWelcome();</td></tr>
      <tr><td><div align="right"><a name="422"></a><a href="#422">422</a></div></td><td class="codeLine">    }</td></tr>
      <tr><td><div align="right"><a name="423"></a><a href="#423">423</a></div></td><td class="codeLine"></td></tr>
      <tr><td><div align="right"><a name="424"></a><a href="#424">424</a></div></td><td class="codeLine">    public function setupServiceToken()</td></tr>
@@ -957,12 +957,12 @@
      <tr><td><div align="right"><a name="436"></a><a href="#436">436</a></div></td><td class="codeLine">     * @throws \Exception</td></tr>
      <tr><td><div align="right"><a name="437"></a><a href="#437">437</a></div></td><td class="codeLine">     * @return Stage</td></tr>
      <tr><td><div align="right"><a name="438"></a><a href="#438">438</a></div></td><td class="codeLine">     */</td></tr>
-     <tr><td><div align="right"><a name="439"></a><a href="#439">439</a></div></td><td class="codeLine">    public function frontendTokenCertification( $CredentialKey = null )</td></tr>
+     <tr><td><div align="right"><a name="439"></a><a href="#439">439</a></div></td><td class="codeLine">    public function frontendTokenCertification( $CredentialKey )</td></tr>
      <tr><td><div align="right"><a name="440"></a><a href="#440">440</a></div></td><td class="codeLine">    {</td></tr>
      <tr><td><div align="right"><a name="441"></a><a href="#441">441</a></div></td><td class="codeLine"></td></tr>
      <tr class="danger"><td><div align="right"><a name="442"></a><a href="#442">442</a></div></td><td class="codeLine">        $this-&gt;setupModuleNavigation();</td></tr>
      <tr class="danger"><td><div align="right"><a name="443"></a><a href="#443">443</a></div></td><td class="codeLine">        $this-&gt;setupServiceToken();</td></tr>
-     <tr class="danger"><td><div align="right"><a name="444"></a><a href="#444">444</a></div></td><td class="codeLine">        return Token::getApi()-&gt;apiTokenCertification( $CredentialKey );</td></tr>
+     <tr class="danger"><td><div align="right"><a name="444"></a><a href="#444">444</a></div></td><td class="codeLine">        return Token::stageCertification( $CredentialKey );</td></tr>
      <tr><td><div align="right"><a name="445"></a><a href="#445">445</a></div></td><td class="codeLine">    }</td></tr>
      <tr><td><div align="right"><a name="446"></a><a href="#446">446</a></div></td><td class="codeLine"></td></tr>
      <tr><td><div align="right"><a name="447"></a><a href="#447">447</a></div></td><td class="codeLine">    /**</td></tr>
@@ -986,7 +986,7 @@
      <span class="warning"><strong>Dead Code</strong></span>
     </p>
     <p>
-     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.11</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.3</a> and <a href="http://phpunit.de/">PHPUnit 3.7.21</a> at Thu Jan 29 23:25:18 CET 2015.</small>
+     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.11</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.3</a> and <a href="http://phpunit.de/">PHPUnit 3.7.21</a> at Sat Jan 31 16:23:20 CET 2015.</small>
     </p>
    </footer>
   </div>

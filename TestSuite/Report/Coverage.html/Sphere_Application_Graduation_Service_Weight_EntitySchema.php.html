@@ -65,7 +65,7 @@
        </div>
 </td>
       <td class="danger small"><div align="right">0.00%</div></td>
-      <td class="danger small"><div align="right">0&nbsp;/&nbsp;27</div></td>
+      <td class="danger small"><div align="right">0&nbsp;/&nbsp;21</div></td>
      </tr>
 
      <tr>
@@ -82,13 +82,13 @@
 </td>
       <td class="danger small"><div align="right">0.00%</div></td>
       <td class="danger small"><div align="right">0&nbsp;/&nbsp;3</div></td>
-      <td class="danger small">72</td>
+      <td class="danger small">56</td>
       <td class="danger big">       <div class="progress progress-danger" style="width: 100px;">
         <div class="bar" style="width: 0.00%;"></div>
        </div>
 </td>
       <td class="danger small"><div align="right">0.00%</div></td>
-      <td class="danger small"><div align="right">0&nbsp;/&nbsp;27</div></td>
+      <td class="danger small"><div align="right">0&nbsp;/&nbsp;21</div></td>
      </tr>
 
      <tr>
@@ -116,17 +116,17 @@
 </td>
       <td class="danger small"><div align="right">0.00%</div></td>
       <td class="danger small"><div align="right">0&nbsp;/&nbsp;1</div></td>
-      <td class="danger small">12</td>
+      <td class="danger small">6</td>
       <td class="danger big">       <div class="progress progress-danger" style="width: 100px;">
         <div class="bar" style="width: 0.00%;"></div>
        </div>
 </td>
       <td class="danger small"><div align="right">0.00%</div></td>
-      <td class="danger small"><div align="right">0&nbsp;/&nbsp;11</div></td>
+      <td class="danger small"><div align="right">0&nbsp;/&nbsp;5</div></td>
      </tr>
 
      <tr>
-      <td class="danger" colspan="4">&nbsp;<a href="#87">getTableWeightDimension()</a></td>
+      <td class="danger" colspan="4">&nbsp;<a href="#78">getTableWeightDimension()</a></td>
       <td class="danger big">       <div class="progress progress-danger" style="width: 100px;">
         <div class="bar" style="width: 0.00%;"></div>
        </div>
@@ -209,36 +209,27 @@
      <tr><td><div align="right"><a name="60"></a><a href="#60">60</a></div></td><td class="codeLine">        /**</td></tr>
      <tr><td><div align="right"><a name="61"></a><a href="#61">61</a></div></td><td class="codeLine">         * Install</td></tr>
      <tr><td><div align="right"><a name="62"></a><a href="#62">62</a></div></td><td class="codeLine">         */</td></tr>
-     <tr class="danger"><td><div align="right"><a name="63"></a><a href="#63">63</a></div></td><td class="codeLine">        if (!$this-&gt;getDatabaseHandler()-&gt;hasTable( 'tblWeightDimension' )) {</td></tr>
-     <tr class="danger"><td><div align="right"><a name="64"></a><a href="#64">64</a></div></td><td class="codeLine">            $Table = $Schema-&gt;createTable( 'tblWeightDimension' );</td></tr>
-     <tr class="danger"><td><div align="right"><a name="65"></a><a href="#65">65</a></div></td><td class="codeLine">            $Column = $Table-&gt;addColumn( 'Id', 'bigint' );</td></tr>
-     <tr class="danger"><td><div align="right"><a name="66"></a><a href="#66">66</a></div></td><td class="codeLine">            $Column-&gt;setAutoincrement( true );</td></tr>
-     <tr class="danger"><td><div align="right"><a name="67"></a><a href="#67">67</a></div></td><td class="codeLine">            $Table-&gt;setPrimaryKey( array( 'Id' ) );</td></tr>
-     <tr class="danger"><td><div align="right"><a name="68"></a><a href="#68">68</a></div></td><td class="codeLine">        }</td></tr>
-     <tr><td><div align="right"><a name="69"></a><a href="#69">69</a></div></td><td class="codeLine">        /**</td></tr>
-     <tr><td><div align="right"><a name="70"></a><a href="#70">70</a></div></td><td class="codeLine">         * Fetch</td></tr>
-     <tr><td><div align="right"><a name="71"></a><a href="#71">71</a></div></td><td class="codeLine">         */</td></tr>
-     <tr class="danger"><td><div align="right"><a name="72"></a><a href="#72">72</a></div></td><td class="codeLine">        $Table = $Schema-&gt;getTable( 'tblWeightDimension' );</td></tr>
-     <tr><td><div align="right"><a name="73"></a><a href="#73">73</a></div></td><td class="codeLine">        /**</td></tr>
-     <tr><td><div align="right"><a name="74"></a><a href="#74">74</a></div></td><td class="codeLine">         * Upgrade</td></tr>
-     <tr><td><div align="right"><a name="75"></a><a href="#75">75</a></div></td><td class="codeLine">         */</td></tr>
-     <tr class="danger"><td><div align="right"><a name="76"></a><a href="#76">76</a></div></td><td class="codeLine">        if (!$this-&gt;getDatabaseHandler()-&gt;hasColumn( 'tblWeightDimension', 'Name' )) {</td></tr>
-     <tr class="danger"><td><div align="right"><a name="77"></a><a href="#77">77</a></div></td><td class="codeLine">            $Table-&gt;addColumn( 'Name', 'string' );</td></tr>
-     <tr class="danger"><td><div align="right"><a name="78"></a><a href="#78">78</a></div></td><td class="codeLine">        }</td></tr>
-     <tr><td><div align="right"><a name="79"></a><a href="#79">79</a></div></td><td class="codeLine"></td></tr>
-     <tr class="danger"><td><div align="right"><a name="80"></a><a href="#80">80</a></div></td><td class="codeLine">        return $Table;</td></tr>
-     <tr><td><div align="right"><a name="81"></a><a href="#81">81</a></div></td><td class="codeLine">    }</td></tr>
-     <tr><td><div align="right"><a name="82"></a><a href="#82">82</a></div></td><td class="codeLine"></td></tr>
-     <tr><td><div align="right"><a name="83"></a><a href="#83">83</a></div></td><td class="codeLine">    /**</td></tr>
-     <tr><td><div align="right"><a name="84"></a><a href="#84">84</a></div></td><td class="codeLine">     * @return Table</td></tr>
-     <tr><td><div align="right"><a name="85"></a><a href="#85">85</a></div></td><td class="codeLine">     * @throws SchemaException</td></tr>
-     <tr><td><div align="right"><a name="86"></a><a href="#86">86</a></div></td><td class="codeLine">     */</td></tr>
-     <tr><td><div align="right"><a name="87"></a><a href="#87">87</a></div></td><td class="codeLine">    protected function getTableWeightDimension()</td></tr>
-     <tr><td><div align="right"><a name="88"></a><a href="#88">88</a></div></td><td class="codeLine">    {</td></tr>
-     <tr><td><div align="right"><a name="89"></a><a href="#89">89</a></div></td><td class="codeLine"></td></tr>
-     <tr class="danger"><td><div align="right"><a name="90"></a><a href="#90">90</a></div></td><td class="codeLine">        return $this-&gt;getDatabaseHandler()-&gt;getSchema()-&gt;getTable( 'tblWeightDimension' );</td></tr>
-     <tr><td><div align="right"><a name="91"></a><a href="#91">91</a></div></td><td class="codeLine">    }</td></tr>
-     <tr><td><div align="right"><a name="92"></a><a href="#92">92</a></div></td><td class="codeLine">}</td></tr>
+     <tr class="danger"><td><div align="right"><a name="63"></a><a href="#63">63</a></div></td><td class="codeLine">        $Table = $this-&gt;schemaTableCreate( $Schema, 'tblWeightDimension' );</td></tr>
+     <tr><td><div align="right"><a name="64"></a><a href="#64">64</a></div></td><td class="codeLine">        /**</td></tr>
+     <tr><td><div align="right"><a name="65"></a><a href="#65">65</a></div></td><td class="codeLine">         * Upgrade</td></tr>
+     <tr><td><div align="right"><a name="66"></a><a href="#66">66</a></div></td><td class="codeLine">         */</td></tr>
+     <tr class="danger"><td><div align="right"><a name="67"></a><a href="#67">67</a></div></td><td class="codeLine">        if (!$this-&gt;getDatabaseHandler()-&gt;hasColumn( 'tblWeightDimension', 'Name' )) {</td></tr>
+     <tr class="danger"><td><div align="right"><a name="68"></a><a href="#68">68</a></div></td><td class="codeLine">            $Table-&gt;addColumn( 'Name', 'string' );</td></tr>
+     <tr class="danger"><td><div align="right"><a name="69"></a><a href="#69">69</a></div></td><td class="codeLine">        }</td></tr>
+     <tr><td><div align="right"><a name="70"></a><a href="#70">70</a></div></td><td class="codeLine"></td></tr>
+     <tr class="danger"><td><div align="right"><a name="71"></a><a href="#71">71</a></div></td><td class="codeLine">        return $Table;</td></tr>
+     <tr><td><div align="right"><a name="72"></a><a href="#72">72</a></div></td><td class="codeLine">    }</td></tr>
+     <tr><td><div align="right"><a name="73"></a><a href="#73">73</a></div></td><td class="codeLine"></td></tr>
+     <tr><td><div align="right"><a name="74"></a><a href="#74">74</a></div></td><td class="codeLine">    /**</td></tr>
+     <tr><td><div align="right"><a name="75"></a><a href="#75">75</a></div></td><td class="codeLine">     * @return Table</td></tr>
+     <tr><td><div align="right"><a name="76"></a><a href="#76">76</a></div></td><td class="codeLine">     * @throws SchemaException</td></tr>
+     <tr><td><div align="right"><a name="77"></a><a href="#77">77</a></div></td><td class="codeLine">     */</td></tr>
+     <tr><td><div align="right"><a name="78"></a><a href="#78">78</a></div></td><td class="codeLine">    protected function getTableWeightDimension()</td></tr>
+     <tr><td><div align="right"><a name="79"></a><a href="#79">79</a></div></td><td class="codeLine">    {</td></tr>
+     <tr><td><div align="right"><a name="80"></a><a href="#80">80</a></div></td><td class="codeLine"></td></tr>
+     <tr class="danger"><td><div align="right"><a name="81"></a><a href="#81">81</a></div></td><td class="codeLine">        return $this-&gt;getDatabaseHandler()-&gt;getSchema()-&gt;getTable( 'tblWeightDimension' );</td></tr>
+     <tr><td><div align="right"><a name="82"></a><a href="#82">82</a></div></td><td class="codeLine">    }</td></tr>
+     <tr><td><div align="right"><a name="83"></a><a href="#83">83</a></div></td><td class="codeLine">}</td></tr>
 
     </tbody>
    </table>
@@ -250,7 +241,7 @@
      <span class="warning"><strong>Dead Code</strong></span>
     </p>
     <p>
-     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.11</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.3</a> and <a href="http://phpunit.de/">PHPUnit 3.7.21</a> at Thu Jan 29 23:25:18 CET 2015.</small>
+     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.11</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.3</a> and <a href="http://phpunit.de/">PHPUnit 3.7.21</a> at Sat Jan 31 16:23:20 CET 2015.</small>
     </p>
    </footer>
   </div>
