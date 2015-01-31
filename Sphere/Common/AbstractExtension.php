@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Common;
 use KREDA\Sphere\Common\Extension\Debugger;
 use Markdownify\Converter;
 use MOC\V\Component\Database\Database;
+use MOC\V\Component\Database\Exception\DatabaseException;
 use MOC\V\Component\Document\Component\Bridge\Repository\DomPdf;
 use MOC\V\Component\Document\Document;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
@@ -63,11 +64,16 @@ abstract class AbstractExtension
      * @param null   $Port
      *
      * @return \MOC\V\Component\Database\Component\IBridgeInterface
+     * @throws DatabaseException
      */
     final public static function extensionDatabase( $Username, $Password, $Database, $Driver, $Host, $Port = null )
     {
 
-        return Database::getDatabase( $Username, $Password, $Database, $Driver, $Host, $Port );
+        try {
+            return Database::getDatabase( $Username, $Password, $Database, $Driver, $Host, $Port );
+        } catch( \Exception $E ) {
+            throw new DatabaseException( $E->getMessage(), $E->getCode(), $E );
+        }
     }
 
     /**

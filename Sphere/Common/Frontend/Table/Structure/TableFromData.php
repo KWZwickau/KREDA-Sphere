@@ -57,10 +57,19 @@ class TableFromData extends TableDefault
             $R = new GridTableRow( $R );
         }, $ShowCol );
 
-        parent::__construct(
-            new GridTableHead( new GridTableRow( $GridHead ) ), new GridTableBody( $DataList ), $Title, $Interactive,
-            null
-        );
+        if (count( $DataList ) > 5) {
+            parent::__construct(
+                new GridTableHead( new GridTableRow( $GridHead ) ), new GridTableBody( $DataList ), $Title,
+                $Interactive,
+                null
+            );
+        } else {
+            parent::__construct(
+                new GridTableHead( new GridTableRow( $GridHead ) ), new GridTableBody( $DataList ), $Title,
+                false,
+                null
+            );
+        }
     }
 
 }
