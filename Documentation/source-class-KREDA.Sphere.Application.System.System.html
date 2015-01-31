@@ -9,7 +9,7 @@
     <title>File Application/System/System.php | Sphere</title>
 
     <script type="text/javascript" src="resources/combined.js?2765992311"></script>
-    <script type="text/javascript" src="elementlist.js?2135317251"></script>
+    <script type="text/javascript" src="elementlist.js?2232403928"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
 
@@ -197,7 +197,10 @@
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Status.Database.html">Database</a>
 						</li>
-							</ul></li></ul></li>
+							</ul></li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Token.html">Token</a>
+						</li>
+							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Service.html">Service<span></span></a>
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Service.Protocol.html">Protocol<span></span></a>
@@ -361,9 +364,9 @@
 </span><span id="5" class="l"><a class="l" href="#5">  5: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\Frontend\Consumer\Consumer;
 </span><span id="6" class="l"><a class="l" href="#6">  6: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\Frontend\Installer\Installer;
 </span><span id="7" class="l"><a class="l" href="#7">  7: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\Frontend\Status\Status;
-</span><span id="8" class="l"><a class="l" href="#8">  8: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\Service\Database;
-</span><span id="9" class="l"><a class="l" href="#9">  9: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\Service\Protocol;
-</span><span id="10" class="l"><a class="l" href="#10"> 10: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\Service\Token;
+</span><span id="8" class="l"><a class="l" href="#8">  8: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\Frontend\Token\Token;
+</span><span id="9" class="l"><a class="l" href="#9">  9: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\Service\Database;
+</span><span id="10" class="l"><a class="l" href="#10"> 10: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\Service\Protocol;
 </span><span id="11" class="l"><a class="l" href="#11"> 11: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\Service\Update;
 </span><span id="12" class="l"><a class="l" href="#12"> 12: </a><span class="php-keyword1">use</span> KREDA\Sphere\Client\Component\Element\Element;
 </span><span id="13" class="l"><a class="l" href="#13"> 13: </a><span class="php-keyword1">use</span> KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
@@ -475,7 +478,7 @@
 </span><span id="119" class="l"><a class="l" href="#119">119: </a>        );
 </span><span id="120" class="l"><a class="l" href="#120">120: </a>        self::registerClientRoute( self::<span class="php-var">$Configuration</span>,
 </span><span id="121" class="l"><a class="l" href="#121">121: </a>            <span class="php-quote">'/Sphere/System/Token/Certification'</span>, __CLASS__.<span class="php-quote">'::frontendTokenCertification'</span>
-</span><span id="122" class="l"><a class="l" href="#122">122: </a>        );
+</span><span id="122" class="l"><a class="l" href="#122">122: </a>        )-&gt;setParameterDefault( <span class="php-quote">'CredentialKey'</span>, <span class="php-keyword1">null</span> );
 </span><span id="123" class="l"><a class="l" href="#123">123: </a>
 </span><span id="124" class="l"><a class="l" href="#124">124: </a>        self::registerClientRoute( self::<span class="php-var">$Configuration</span>,
 </span><span id="125" class="l"><a class="l" href="#125">125: </a>            <span class="php-quote">'/Sphere/System/Protocol'</span>, __CLASS__.<span class="php-quote">'::frontendProtocol'</span>
@@ -585,7 +588,7 @@
 </span><span id="229" class="l"><a class="l" href="#229">229: </a>
 </span><span id="230" class="l"><a class="l" href="#230">230: </a>        <span class="php-var">$this</span>-&gt;setupModuleNavigation();
 </span><span id="231" class="l"><a class="l" href="#231">231: </a>        <span class="php-var">$this</span>-&gt;setupServiceConsumer();
-</span><span id="232" class="l"><a class="l" href="#232">232: </a>        <span class="php-keyword1">return</span> Consumer::guiSummary();
+</span><span id="232" class="l"><a class="l" href="#232">232: </a>        <span class="php-keyword1">return</span> Consumer::stageSummary();
 </span><span id="233" class="l"><a class="l" href="#233">233: </a>    }
 </span><span id="234" class="l"><a class="l" href="#234">234: </a>
 </span><span id="235" class="l"><a class="l" href="#235">235: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_setupServiceConsumer" href="#_setupServiceConsumer">setupServiceConsumer</a>()
@@ -605,7 +608,7 @@
 </span><span id="249" class="l"><a class="l" href="#249">249: </a>
 </span><span id="250" class="l"><a class="l" href="#250">250: </a>        <span class="php-var">$this</span>-&gt;setupModuleNavigation();
 </span><span id="251" class="l"><a class="l" href="#251">251: </a>        <span class="php-var">$this</span>-&gt;setupServiceConsumer();
-</span><span id="252" class="l"><a class="l" href="#252">252: </a>        <span class="php-keyword1">return</span> Consumer::guiConsumerCreate();
+</span><span id="252" class="l"><a class="l" href="#252">252: </a>        <span class="php-keyword1">return</span> Consumer::stageConsumerCreate();
 </span><span id="253" class="l"><a class="l" href="#253">253: </a>    }
 </span><span id="254" class="l"><a class="l" href="#254">254: </a>
 </span><span id="255" class="l"><a class="l" href="#255">255: </a>    <span class="php-comment">/**
@@ -774,7 +777,7 @@
 </span><span id="418" class="l"><a class="l" href="#418">418: </a>
 </span><span id="419" class="l"><a class="l" href="#419">419: </a>        <span class="php-var">$this</span>-&gt;setupModuleNavigation();
 </span><span id="420" class="l"><a class="l" href="#420">420: </a>        <span class="php-var">$this</span>-&gt;setupServiceToken();
-</span><span id="421" class="l"><a class="l" href="#421">421: </a>        <span class="php-keyword1">return</span> Token::getApi()-&gt;apiToken();
+</span><span id="421" class="l"><a class="l" href="#421">421: </a>        <span class="php-keyword1">return</span> Token::stageWelcome();
 </span><span id="422" class="l"><a class="l" href="#422">422: </a>    }
 </span><span id="423" class="l"><a class="l" href="#423">423: </a>
 </span><span id="424" class="l"><a class="l" href="#424">424: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_setupServiceToken" href="#_setupServiceToken">setupServiceToken</a>()
@@ -792,12 +795,12 @@
 </span></span><span id="436" class="l"><a class="l" href="#436">436: </a><span class="php-comment">     * @throws \Exception
 </span></span><span id="437" class="l"><a class="l" href="#437">437: </a><span class="php-comment">     * @return Stage
 </span></span><span id="438" class="l"><a class="l" href="#438">438: </a><span class="php-comment">     */</span>
-</span><span id="439" class="l"><a class="l" href="#439">439: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_frontendTokenCertification" href="#_frontendTokenCertification">frontendTokenCertification</a>( <span class="php-var">$CredentialKey</span> = <span class="php-keyword1">null</span> )
+</span><span id="439" class="l"><a class="l" href="#439">439: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_frontendTokenCertification" href="#_frontendTokenCertification">frontendTokenCertification</a>( <span class="php-var">$CredentialKey</span> )
 </span><span id="440" class="l"><a class="l" href="#440">440: </a>    {
 </span><span id="441" class="l"><a class="l" href="#441">441: </a>
 </span><span id="442" class="l"><a class="l" href="#442">442: </a>        <span class="php-var">$this</span>-&gt;setupModuleNavigation();
 </span><span id="443" class="l"><a class="l" href="#443">443: </a>        <span class="php-var">$this</span>-&gt;setupServiceToken();
-</span><span id="444" class="l"><a class="l" href="#444">444: </a>        <span class="php-keyword1">return</span> Token::getApi()-&gt;apiTokenCertification( <span class="php-var">$CredentialKey</span> );
+</span><span id="444" class="l"><a class="l" href="#444">444: </a>        <span class="php-keyword1">return</span> Token::stageCertification( <span class="php-var">$CredentialKey</span> );
 </span><span id="445" class="l"><a class="l" href="#445">445: </a>    }
 </span><span id="446" class="l"><a class="l" href="#446">446: </a>
 </span><span id="447" class="l"><a class="l" href="#447">447: </a>    <span class="php-comment">/**
