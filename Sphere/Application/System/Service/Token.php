@@ -19,18 +19,6 @@ class Token extends AbstractService
 {
 
     /**
-     * @return Landing
-     */
-    public function apiToken()
-    {
-
-        $View = new Landing();
-        $View->setTitle( 'Hardware-Schlüssel' );
-        $View->setMessage( 'Bitte wählen Sie ein Thema' );
-        return $View;
-    }
-
-    /**
      * @param null $CredentialKey
      *
      * @throws \Exception

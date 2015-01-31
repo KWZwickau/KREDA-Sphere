@@ -2,7 +2,7 @@
       action="{{ FormAction }}{% if( Hash is not empty ) %}#{{ Hash }}{% endif %}" method="post">
     {% for GridFormGroup in GridGroupList %}
         {% if( GridFormGroup.getTitle is not empty ) %}
-            <h4>{{ GridFormGroup.getTitle }}</h4>
+            {{ GridFormGroup.getTitle }}
         {% endif %}
         {% for GridFormRow in GridFormGroup.getRowList %}
             <div class="row">
@@ -21,7 +21,6 @@
         <div class="btn-group">
             {% for FormButton in FormButtonList %}
                 {{ FormButton }}
-                {#<button type="submit" class="btn btn-primary">{{ FormSubmit }}</button>#}
             {% endfor %}
         </div>
     </div>

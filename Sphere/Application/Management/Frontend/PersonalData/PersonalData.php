@@ -20,6 +20,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableFromData;
 
 /**
@@ -162,7 +163,7 @@ class PersonalData extends AbstractFrontend
                             ), new PersonIcon()
                         ), 6 )
                     ) )
-                ), 'Grunddaten' ), array(
+                ), new GridFormTitle( 'Grunddaten' ) ), array(
                     new ButtonSubmitPrimary( 'Anlegen' )
                 )
             )

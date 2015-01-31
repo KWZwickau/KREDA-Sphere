@@ -4,7 +4,6 @@ namespace KREDA\Sphere\Application\System\Frontend\Consumer;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Address\Structure\AddressDefault;
@@ -15,6 +14,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableFromData;
 
 /**
@@ -28,10 +28,10 @@ class Consumer extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function guiSummary()
+    public static function stageSummary()
     {
 
-        $View = new Landing();
+        $View = new Stage();
         $View->setTitle( 'Mandanten' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
@@ -40,7 +40,7 @@ class Consumer extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function guiConsumerCreate()
+    public static function stageConsumerCreate()
     {
 
         $View = new Stage();
@@ -75,8 +75,7 @@ class Consumer extends AbstractFrontend
                                 'ConsumerSuffix', 'Kürzel des Mandanten', 'Kürzel des Mandanten'
                             )
                         , 6)
-                    ) )
-                ,'Mandant anlegen' )
+                    ) ), new GridFormTitle( 'Mandant anlegen' ) )
             , new ButtonSubmitPrimary( 'Hinzufügen' ) )
 //            new CreateConsumer( Gatekeeper::serviceConsumer()->entityConsumerAll() )
         );

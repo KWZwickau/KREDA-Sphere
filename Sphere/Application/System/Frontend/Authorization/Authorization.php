@@ -14,6 +14,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableFromData;
 
 /**
@@ -99,8 +100,7 @@ class Authorization extends AbstractFrontend
                                     'RightName', 'Route', 'Name'
                                 )
                             )
-                        )
-                    ,'Recht anlegen <small>Route</small>')
+                        ), new GridFormTitle( 'Recht anlegen', 'Route' ) )
                 , new ButtonSubmitPrimary( 'Hinzufügen' )
                 )
             ,$Name)
@@ -130,8 +130,7 @@ class Authorization extends AbstractFrontend
                                     'PrivilegeName', 'Name', 'Rechtegruppe'
                                 )
                             )
-                        )
-                    ,'Privileg anlegen <small>Rechtegruppe</small>')
+                        ), new GridFormTitle( 'Privileg anlegen', 'Rechtegruppe'))
                 , new ButtonSubmitPrimary( 'Hinzufügen' )
                 )
             , $Name)
@@ -161,8 +160,7 @@ class Authorization extends AbstractFrontend
                                     'AccessName', 'Name', 'Privilegiengruppe'
                                 )
                             )
-                        )
-                    ,'Zugriffslevel anlegen <small>Privilegiengruppe</small>')
+                        ), new GridFormTitle( 'Zugriffslevel anlegen', 'Privilegiengruppe'))
                 , new ButtonSubmitPrimary( 'Hinzufügen' )
                 )
             , $Name)
@@ -219,8 +217,7 @@ class Authorization extends AbstractFrontend
                                     'Access', 'Name', 'Zugriffslevelgruppe'
                                 )
                             )
-                        )
-                    ,'Rolle anlegen <small>Zugriffslevelgruppe</small>')
+                        ), new GridFormTitle( 'Rolle anlegen', 'Zugriffslevelgruppe') )
                 , new ButtonSubmitPrimary( 'Hinzufügen' )
                 )
             , $Name)

@@ -17,17 +17,17 @@ class GridFormGroup extends AbstractForm
     private $GridTitle = '';
 
     /**
-     * @param GridFormRow|GridFormRow[] $GridRowList
-     * @param string            $GridTitle
+     * @param GridFormRow|GridFormRow[] $GridFormRowList
+     * @param GridFormTitle             $GridFormTitle
      */
-    function __construct( $GridRowList, $GridTitle = '' )
+    function __construct( $GridFormRowList, $GridFormTitle = null )
     {
 
-        if (!is_array( $GridRowList )) {
-            $GridRowList = array( $GridRowList );
+        if (!is_array( $GridFormRowList )) {
+            $GridFormRowList = array( $GridFormRowList );
         }
-        $this->GridRowList = $GridRowList;
-        $this->GridTitle = $GridTitle;
+        $this->GridRowList = $GridFormRowList;
+        $this->GridTitle = $GridFormTitle;
     }
 
     /**

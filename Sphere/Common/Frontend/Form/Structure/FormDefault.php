@@ -15,12 +15,13 @@ class FormDefault extends AbstractForm
 {
 
     /**
-     * @param GridFormGroup|GridFormGroup[] $GridGroupList
+     * @param GridFormGroup|GridFormGroup[]          $GridGroupList
      * @param null|AbstractElement|AbstractElement[] $FormButtonList
+     * @param string                                 $FormAction
      *
      * @throws TemplateTypeException
      */
-    function __construct( $GridGroupList, $FormButtonList = null )
+    function __construct( $GridGroupList, $FormButtonList = null, $FormAction = '' )
     {
 
         if (!is_array( $GridGroupList )) {
@@ -38,6 +39,7 @@ class FormDefault extends AbstractForm
 
         $this->Template = $this->extensionTemplate( __DIR__.'/FormDefault.twig' );
         $this->Template->setVariable( 'UrlBase', $this->extensionRequest()->getUrlBase() );
+        $this->Template->setVariable( 'FormAction', $FormAction );
         $this->Template->setVariable( 'FormButtonList', $FormButtonList );
     }
 

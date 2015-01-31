@@ -10,6 +10,7 @@ use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
 
 /**
  * Class Youtrack
@@ -134,8 +135,8 @@ class Youtrack extends AbstractService
                 new GridFormCol(
                     $Issues
                 )
-            )
-        , 'Tickets<small> Aktuelle Anfragen</small>' );
+            ), new GridFormTitle( 'Tickets', 'Aktuelle Anfragen' )
+        );
     }
 
     /**

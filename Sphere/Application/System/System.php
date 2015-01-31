@@ -5,9 +5,9 @@ use KREDA\Sphere\Application\System\Frontend\Authorization\Authorization;
 use KREDA\Sphere\Application\System\Frontend\Consumer\Consumer;
 use KREDA\Sphere\Application\System\Frontend\Installer\Installer;
 use KREDA\Sphere\Application\System\Frontend\Status\Status;
+use KREDA\Sphere\Application\System\Frontend\Token\Token;
 use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Protocol;
-use KREDA\Sphere\Application\System\Service\Token;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
@@ -119,7 +119,7 @@ class System extends AbstractApplication
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Token/Certification', __CLASS__.'::frontendTokenCertification'
-        );
+        )->setParameterDefault( 'CredentialKey', null );
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Protocol', __CLASS__.'::frontendProtocol'
@@ -229,7 +229,7 @@ class System extends AbstractApplication
 
         $this->setupModuleNavigation();
         $this->setupServiceConsumer();
-        return Consumer::guiSummary();
+        return Consumer::stageSummary();
     }
 
     public function setupServiceConsumer()
@@ -249,7 +249,7 @@ class System extends AbstractApplication
 
         $this->setupModuleNavigation();
         $this->setupServiceConsumer();
-        return Consumer::guiConsumerCreate();
+        return Consumer::stageConsumerCreate();
     }
 
     /**
@@ -418,7 +418,7 @@ class System extends AbstractApplication
 
         $this->setupModuleNavigation();
         $this->setupServiceToken();
-        return Token::getApi()->apiToken();
+        return Token::stageWelcome();
     }
 
     public function setupServiceToken()
@@ -436,12 +436,12 @@ class System extends AbstractApplication
      * @throws \Exception
      * @return Stage
      */
-    public function frontendTokenCertification( $CredentialKey = null )
+    public function frontendTokenCertification( $CredentialKey )
     {
 
         $this->setupModuleNavigation();
         $this->setupServiceToken();
-        return Token::getApi()->apiTokenCertification( $CredentialKey );
+        return Token::stageCertification( $CredentialKey );
     }
 
     /**

@@ -13,6 +13,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
 
 /**
  * Class Support
@@ -56,7 +57,7 @@ class Support extends AbstractFrontend
                                 'TicketSubject', 'Thema', 'Thema'
                             )
                         )
-                    ), 'Problembeschreibung'
+                    ), new GridFormTitle( 'Problembeschreibung' )
                 ),
                 new GridFormGroup( array(
                         new GridFormRow(
