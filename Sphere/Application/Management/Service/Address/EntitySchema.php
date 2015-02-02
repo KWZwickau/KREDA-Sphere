@@ -30,23 +30,10 @@ abstract class EntitySchema extends AbstractService
         $tblAddressState = $this->setTableAddressState( $Schema );
         $this->setTableAddress( $Schema, $tblAddressCity, $tblAddressState );
         /**
-         * Migration
+         * Migration & Protocol
          */
-        $Statement = $this->getDatabaseHandler()->getSchema()->getMigrateToSql( $Schema,
-            $this->getDatabaseHandler()->getDatabasePlatform()
-        );
         $this->getDatabaseHandler()->addProtocol( __CLASS__ );
-        if (!empty( $Statement )) {
-            foreach ((array)$Statement as $Query) {
-                $this->getDatabaseHandler()->addProtocol( $Query );
-                if (!$Simulate) {
-                    $this->getDatabaseHandler()->setStatement( $Query );
-                }
-            }
-        }
-        /**
-         * Protocol
-         */
+        $this->schemaMigration( $Schema, $Simulate );
         return $this->getDatabaseHandler()->getProtocol( $Simulate );
     }
 

@@ -143,4 +143,24 @@ abstract class AbstractService extends AbstractExtension implements IServiceInte
             }
         }
     }
+
+    /**
+     * @param Schema $Schema
+     * @param bool   $Simulate
+     */
+    final protected function schemaMigration( Schema &$Schema, $Simulate = true )
+    {
+
+        $Statement = $this->getDatabaseHandler()->getSchema()->getMigrateToSql( $Schema,
+            $this->getDatabaseHandler()->getDatabasePlatform()
+        );
+        if (!empty( $Statement )) {
+            foreach ((array)$Statement as $Query) {
+                $this->getDatabaseHandler()->addProtocol( $Query );
+                if (!$Simulate) {
+                    $this->getDatabaseHandler()->setStatement( $Query );
+                }
+            }
+        }
+    }
 }

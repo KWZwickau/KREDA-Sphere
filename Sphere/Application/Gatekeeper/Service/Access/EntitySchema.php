@@ -32,23 +32,10 @@ abstract class EntitySchema extends AbstractService
         $this->setTableAccessPrivilegeList( $Schema, $tblAccessPrivilege, $tblAccess );
         $this->setTableAccessRightList( $Schema, $tblAccessRight, $tblAccessPrivilege );
         /**
-         * Migration
+         * Migration & Protocol
          */
-        $Statement = $this->getDatabaseHandler()->getSchema()->getMigrateToSql( $Schema,
-            $this->getDatabaseHandler()->getDatabasePlatform()
-        );
         $this->getDatabaseHandler()->addProtocol( __CLASS__ );
-        if (!empty( $Statement )) {
-            foreach ((array)$Statement as $Query) {
-                $this->getDatabaseHandler()->addProtocol( $Query );
-                if (!$Simulate) {
-                    $this->getDatabaseHandler()->setStatement( $Query );
-                }
-            }
-        }
-        /**
-         * Protocol
-         */
+        $this->schemaMigration( $Schema, $Simulate );
         return $this->getDatabaseHandler()->getProtocol( $Simulate );
     }
 
