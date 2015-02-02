@@ -99,6 +99,13 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $this->checkSchemaMethodName( $Namespace.'\Address\EntitySchema' );
         $this->checkSchemaMethodName( $Namespace.'\Education\EntitySchema' );
         $this->checkSchemaMethodName( $Namespace.'\Person\EntitySchema' );
+        /**
+         * Graduation
+         */
+        $Namespace = 'KREDA\Sphere\Application\Graduation\Service';
+        $this->checkSchemaMethodName( $Namespace.'\Grade\EntitySchema' );
+        $this->checkSchemaMethodName( $Namespace.'\Score\EntitySchema' );
+        $this->checkSchemaMethodName( $Namespace.'\Weight\EntitySchema' );
     }
 
     /**
@@ -107,7 +114,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     private function checkSchemaMethodName( $Schema )
     {
 
-        $Name = 'get(Api|ConsumerSuffix|DatabaseHandler|ClientServiceRoute|EntityManager)|setupDatabase(Schema|Content)|setDatabaseHandler|schemaTable(Create|AddForeignKey)';
+        $Name = 'get(Api|ConsumerSuffix|DatabaseHandler|ClientServiceRoute|EntityManager)|setupDatabase(Schema|Content)|setDatabaseHandler|schema(Migration|Table(Create|AddForeignKey))';
         $Prefix = 'setTable|getTable|extension';
         $this->checkMethodName( $Schema, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
             \ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED | \ReflectionMethod::IS_PRIVATE );
@@ -139,7 +146,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     private function checkActionMethodName( $Action )
     {
 
-        $Name = 'get(ClientServiceRoute|EntityManager)|schemaTable(Create|AddForeignKey)';
+        $Name = 'get(ClientServiceRoute|EntityManager)|schema(Migration|Table(Create|AddForeignKey))';
         $Prefix = 'getTable|action(Create|Destroy|Add|Remove|Change)|entity';
         $this->checkMethodName( $Action, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
             \ReflectionMethod::IS_PROTECTED );
