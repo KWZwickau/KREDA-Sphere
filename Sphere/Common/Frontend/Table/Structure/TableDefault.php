@@ -2,7 +2,6 @@
 namespace KREDA\Sphere\Common\Frontend\Table\Structure;
 
 use KREDA\Sphere\Common\Frontend\Table\AbstractTable;
-use MOC\V\Component\Template\Exception\TemplateTypeException;
 
 /**
  * Class TableDefault
@@ -13,19 +12,17 @@ class TableDefault extends AbstractTable
 {
 
     /**
-     * @param GridTableHead $GridHead
-     * @param GridTableBody $GridBody
-     * @param string        $Title
-     * @param bool|array    $Interactive
+     * @param GridTableHead  $GridHead
+     * @param GridTableBody  $GridBody
+     * @param GridTableTitle $Title
+     * @param bool|array     $Interactive
      *
-     * @param GridTableFoot $GridFoot
-     *
-     * @throws TemplateTypeException
+     * @param GridTableFoot  $GridFoot
      */
     function __construct(
         GridTableHead $GridHead,
         GridTableBody $GridBody,
-        $Title = '',
+        GridTableTitle $Title = null,
         $Interactive = false,
         GridTableFoot $GridFoot = null
     ) {

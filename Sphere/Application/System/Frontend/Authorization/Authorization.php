@@ -73,7 +73,8 @@ class Authorization extends AbstractFrontend
         }
         $View->setContent(
             new Summary( $TwigData )
-            .new TableFromData( Gatekeeper::serviceAccess()->entityRightAll(), 'Überwachte Rechte <small>Routen</small>' )
+            .new TableFromData( Gatekeeper::serviceAccess()->entityRightAll(),
+                'Überwachte Rechte <small>Routen</small>' )
         );
         return $View;
     }
@@ -90,7 +91,8 @@ class Authorization extends AbstractFrontend
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Rechte' );
         $View->setContent(
-            new TableFromData( Gatekeeper::serviceAccess()->entityRightAll(), 'Bestehende Rechte <small>Routen</small>' )
+            new TableFromData( Gatekeeper::serviceAccess()->entityRightAll(),
+                'Bestehende Rechte <small>Routen</small>' )
             .Gatekeeper::serviceAccess()->executeCreateRight(
                 new FormDefault(
                     new GridFormGroup(
@@ -120,7 +122,8 @@ class Authorization extends AbstractFrontend
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Privilegien' );
         $View->setContent(
-            new TableFromData( Gatekeeper::serviceAccess()->entityPrivilegeAll(), 'Bestehende Privilegien <small>Rechtegruppen</small>' )
+            new TableFromData( Gatekeeper::serviceAccess()->entityPrivilegeAll(),
+                'Bestehende Privilegien <small>Rechtegruppen</small>' )
             .Gatekeeper::serviceAccess()->executeCreatePrivilege(
                 new FormDefault(
                     new GridFormGroup(
@@ -150,7 +153,8 @@ class Authorization extends AbstractFrontend
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Zugriffslevel' );
         $View->setContent(
-            new TableFromData( Gatekeeper::serviceAccess()->entityAccessAll(), 'Bestehende Zugriffslevel <small>Privilegiengruppen</small>' )
+            new TableFromData( Gatekeeper::serviceAccess()->entityAccessAll(),
+                'Bestehende Zugriffslevel <small>Privilegiengruppen</small>' )
             .Gatekeeper::serviceAccess()->executeCreateAccess(
                 new FormDefault(
                     new GridFormGroup(
@@ -238,7 +242,8 @@ class Authorization extends AbstractFrontend
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Rollen' );
         $View->setContent(
-            new TableFromData( Gatekeeper::serviceAccount()->entityAccountRoleAll(), 'Bestehende Rollen <small>Zugriffslevelgruppen</small>' )
+            new TableFromData( Gatekeeper::serviceAccount()->entityAccountRoleAll(),
+                'Bestehende Rollen <small>Zugriffslevelgruppen</small>' )
         );
         return $View;
     }

@@ -13,11 +13,11 @@ class TableFromData extends TableDefault
 
     /**
      * @param AbstractEntity[] $DataList
-     * @param string           $Title
+     * @param GridTableTitle   $Title
      * @param bool|array       $Interactive
      * @param array            $ShowCol
      */
-    function __construct( $DataList, $Title = '', $Interactive = true, $ShowCol = array() )
+    function __construct( $DataList, GridTableTitle $Title = null, $Interactive = true, $ShowCol = array() )
     {
 
         if (!is_array( $DataList )) {
@@ -60,14 +60,11 @@ class TableFromData extends TableDefault
         if (count( $DataList ) > 5) {
             parent::__construct(
                 new GridTableHead( new GridTableRow( $GridHead ) ), new GridTableBody( $DataList ), $Title,
-                $Interactive,
-                null
+                $Interactive, null
             );
         } else {
             parent::__construct(
-                new GridTableHead( new GridTableRow( $GridHead ) ), new GridTableBody( $DataList ), $Title,
-                false,
-                null
+                new GridTableHead( new GridTableRow( $GridHead ) ), new GridTableBody( $DataList ), $Title, false, null
             );
         }
     }

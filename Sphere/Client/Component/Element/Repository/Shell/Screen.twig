@@ -20,61 +20,66 @@
     <script src="{{ PathBase }}/Sphere/Client/Script/Loader.js"></script>
 
     <script>
-        Client.Source( 'jQuery', '/Library/jQuery/1.11.1/dist/jquery.min.js', function()
+        Client.Source( 'jQuery', '{{ PathBase }}/Library/jQuery/1.11.1/dist/jquery.min.js', function()
             {
                 return 'undefined' != typeof jQuery;
             }
         );
-        Client.Source( 'Moment.js', '/Library/Moment.Js/2.8.4/min/moment-with-locales.min.js', function()
+        Client.Source( 'Moment.js', '{{ PathBase }}/Library/Moment.Js/2.8.4/min/moment-with-locales.min.js', function()
             {
                 return 'undefined' != typeof moment;
             }
         );
-        Client.Source( 'Bootstrap', '/Library/Bootstrap/3.2.0/dist/js/bootstrap.min.js', function()
+        Client.Source( 'Bootstrap', '{{ PathBase }}/Library/Bootstrap/3.2.0/dist/js/bootstrap.min.js', function()
             {
                 return ('function' == typeof jQuery().emulateTransitionEnd)
             }
         );
-        Client.Source( 'jQuery.Check', '/Library/Bootflat/2.0.4/bootflat/js/icheck.min.js', function()
+        Client.Source( 'jQuery.Check', '{{ PathBase }}/Library/Bootflat/2.0.4/bootflat/js/icheck.min.js', function()
             {
             }
         );
-        Client.Source( 'jQuery.Selecter', '/Library/jQuery.Selecter/3.2.4/jquery.fs.selecter.min.js', function()
+        Client.Source( 'jQuery.Selecter', '{{ PathBase }}/Library/jQuery.Selecter/3.2.4/jquery.fs.selecter.min.js',
+            function()
             {
                 return 'undefined' != typeof jQuery.fn.selecter
             }
         );
-        Client.Source( 'jQuery.Stepper', '/Library/jQuery.Stepper/3.0.8/jquery.fs.stepper.min.js', function()
+        Client.Source( 'jQuery.Stepper', '{{ PathBase }}/Library/jQuery.Stepper/3.0.8/jquery.fs.stepper.min.js',
+            function()
             {
                 return 'undefined' != typeof jQuery.fn.stepper
             }
         );
-        Client.Source( 'jQuery.DataTable', '/Library/jQuery.DataTables/1.10.4/media/js/jquery.dataTables.min.js',
+        Client.Source( 'jQuery.DataTable',
+            '{{ PathBase }}/Library/jQuery.DataTables/1.10.4/media/js/jquery.dataTables.min.js',
             function()
             {
                 return 'undefined' != typeof jQuery.fn.DataTable;
             }
         );
         Client.Source( 'jQuery.DataTable.Responsive',
-            '/Library/jQuery.DataTables/1.10.4/extensions/Responsive/js/dataTables.responsive.min.js',
+            '{{ PathBase }}/Library/jQuery.DataTables/1.10.4/extensions/Responsive/js/dataTables.responsive.min.js',
             function()
             {
                 return 'undefined' != typeof jQuery.fn.DataTable.Responsive;
             }
         );
         Client.Source( 'Bootstrap.DataTable',
-            '/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.min.js', function()
+            '{{ PathBase }}/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.min.js',
+            function()
             {
                 return 'undefined' != typeof jQuery.fn.DataTable.ext.renderer.pageButton.bootstrap;
             }
         );
         Client.Source( 'Bootstrap.DatetimePicker',
-            '/Library/Bootstrap.DateTimePicker/3.1.3/build/js/bootstrap-datetimepicker.min.js', function()
+            '{{ PathBase }}/Library/Bootstrap.DateTimePicker/3.1.3/build/js/bootstrap-datetimepicker.min.js', function()
             {
                 return 'undefined' != typeof jQuery.fn.datetimepicker
             }
         );
-        Client.Source( 'Twitter.Typeahead', '/Library/Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min.js', function()
+        Client.Source( 'Twitter.Typeahead',
+            '{{ PathBase }}/Library/Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min.js', function()
             {
                 return 'undefined' != typeof jQuery.fn.typeahead;
             }

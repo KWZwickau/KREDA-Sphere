@@ -15,6 +15,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
+use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableFromData;
 
 /**
@@ -46,8 +47,6 @@ class Consumer extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Mandanten' );
         $View->setDescription( 'Hinzufügen' );
-        $View->setMessage( '' );
-
 
         $ConsumerList = Gatekeeper::serviceConsumer()->entityConsumerAll();
         array_walk( $ConsumerList, function ( TblConsumer &$V ) {
@@ -60,7 +59,7 @@ class Consumer extends AbstractFrontend
         } );
 
         $View->setContent(
-            new TableFromData( $ConsumerList, 'Bestehende Mandanten' )
+            new TableFromData( $ConsumerList, new GridTableTitle( 'Bestehende Mandanten' ) )
             .
             new FormDefault(
                 new GridFormGroup(
@@ -77,7 +76,6 @@ class Consumer extends AbstractFrontend
                         , 6)
                     ) ), new GridFormTitle( 'Mandant anlegen' ) )
             , new ButtonSubmitPrimary( 'Hinzufügen' ) )
-//            new CreateConsumer( Gatekeeper::serviceConsumer()->entityConsumerAll() )
         );
         return $View;
     }

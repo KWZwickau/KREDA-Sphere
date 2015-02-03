@@ -74,7 +74,7 @@ class PersonalData extends AbstractFrontend
                 </div>
             </form>';
         }, self::getUrlBase() );
-        $View->setContent( new TableFromData( $PersonList, '', true, array(
+        $View->setContent( new TableFromData( $PersonList, null, true, array(
             'Salutation',
             'FirstName',
             'MiddleName',

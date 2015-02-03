@@ -56,29 +56,27 @@ class MyAccount extends AbstractFrontend
                     new GridTableRow(
                         new GridTableCol( 'Account', 2 )
                     )
-                ),
-                new GridTableBody( array(
-                    new GridTableRow( array(
-                        new GridTableCol( 'Benutzername', 1, '20%' ),
-                        new GridTableCol( $tblAccount->getUsername() )
-                    ) ),
-                    new GridTableRow( array(
-                        new GridTableCol( 'Zugangstyp' ),
-                        new GridTableCol( $tblAccount->getTblAccountTyp()->getName() )
-                    ) ),
-                    new GridTableRow( array(
-                        new GridTableCol( 'Berechtigungsstufe' ),
-                        new GridTableCol( $tblAccount->getTblAccountRole()->getName() )
-                    ) )
-                ) ) )
+                ), new GridTableBody( array(
+                new GridTableRow( array(
+                    new GridTableCol( 'Benutzername', 1, '20%' ),
+                    new GridTableCol( $tblAccount->getUsername() )
+                ) ),
+                new GridTableRow( array(
+                    new GridTableCol( 'Zugangstyp' ),
+                    new GridTableCol( $tblAccount->getTblAccountTyp()->getName() )
+                ) ),
+                new GridTableRow( array(
+                    new GridTableCol( 'Berechtigungsstufe' ),
+                    new GridTableCol( $tblAccount->getTblAccountRole()->getName() )
+                ) )
+            ) ) )
                 : new MessageDanger( 'Keine Accountdaten verfügbar', new WarningIcon() ) )
             .( $tblPerson ? new TableDefault(
                 new GridTableHead(
                     new GridTableRow(
                         new GridTableCol( 'Benutzerdaten', 2 )
                     )
-                ),
-                new GridTableBody( array(
+                ), new GridTableBody( array(
                     new GridTableRow( array(
                         new GridTableCol( 'Name', 1, '20%' ),
                         new GridTableCol(
@@ -103,8 +101,7 @@ class MyAccount extends AbstractFrontend
                     new GridTableRow(
                         new GridTableCol( 'Mandant', 2 )
                     )
-                ),
-                new GridTableBody( array(
+                ), new GridTableBody( array(
                     new GridTableRow( array(
                         new GridTableCol( 'Name', 1, '20%' ),
                         new GridTableCol( $tblConsumer->getName() )

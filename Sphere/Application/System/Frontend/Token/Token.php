@@ -11,6 +11,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
+use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableFromData;
 
 /**
@@ -46,8 +47,8 @@ class Token extends AbstractFrontend
         $View->setDescription( 'Zertifizierung' );
         $View->setContent(
             new TableFromData(
-                Gatekeeper::serviceToken()->entityTokenAll()
-                , 'Zertifizierte Hardware-Schlüssel <small>YubiKey</small>' )
+                Gatekeeper::serviceToken()->entityTokenAll(),
+                new GridTableTitle( 'Zertifizierte Hardware-Schlüssel', 'YubiKey' ) )
             .new FormDefault(
                 new GridFormGroup(
                     new GridFormRow(
