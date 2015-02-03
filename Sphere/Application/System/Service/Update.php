@@ -51,11 +51,13 @@ class Update extends AbstractService
 
             System::serviceProtocol()->setupDatabaseContent();
 
+            Gatekeeper::serviceConsumer()->setupDatabaseContent();
+
             Management::serviceAddress()->setupDatabaseContent();
+
+            Gatekeeper::serviceAccount()->setupDatabaseContent();
             Management::servicePerson()->setupDatabaseContent();
 
-            Gatekeeper::serviceConsumer()->setupDatabaseContent();
-            Gatekeeper::serviceAccount()->setupDatabaseContent();
             Gatekeeper::serviceToken()->setupDatabaseContent();
             Gatekeeper::serviceAccess()->setupDatabaseContent();
 
