@@ -7,7 +7,16 @@
         {% for GridTableRow in GridTableHead.getRowList %}
             <tr>
                 {% for GridTableCol in GridTableRow.getColList %}
-                    <th>{{ GridTableCol }}</th>
+                    {% if(GridTableCol.getSize>1) and (GridTableCol.getWidth != 'auto') %}
+                        <th colspan="{{ GridTableCol.getSize }}"
+                            style="width:{{ GridTableCol.getWidth }};">{{ GridTableCol }}</th>
+                    {% elseif(GridTableCol.getSize>1) %}
+                        <th colspan="{{ GridTableCol.getSize }}">{{ GridTableCol }}</th>
+                    {% elseif(GridTableCol.getWidth != 'auto') %}
+                        <th style="width:{{ GridTableCol.getWidth }};">{{ GridTableCol }}</th>
+                    {% else %}
+                        <th>{{ GridTableCol }}</th>
+                    {% endif %}
                 {% endfor %}
             </tr>
         {% endfor %}
@@ -18,7 +27,16 @@
         {% for GridTableRow in GridTableBody.getRowList %}
             <tr>
                 {% for GridTableCol in GridTableRow.getColList %}
-                    <td>{{ GridTableCol }}</td>
+                    {% if(GridTableCol.getSize>1) and (GridTableCol.getWidth != 'auto') %}
+                        <td colspan="{{ GridTableCol.getSize }}"
+                            style="width:{{ GridTableCol.getWidth }};">{{ GridTableCol }}</td>
+                    {% elseif(GridTableCol.getSize>1) %}
+                        <td colspan="{{ GridTableCol.getSize }}">{{ GridTableCol }}</td>
+                    {% elseif(GridTableCol.getWidth != 'auto') %}
+                        <td style="width:{{ GridTableCol.getWidth }};">{{ GridTableCol }}</td>
+                    {% else %}
+                        <td>{{ GridTableCol }}</td>
+                    {% endif %}
                 {% endfor %}
             </tr>
         {% endfor %}

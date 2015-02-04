@@ -4,11 +4,11 @@ namespace KREDA\Sphere\Common\Frontend\Table\Structure;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
- * Class TableFromData
+ * Class TableData
  *
  * @package KREDA\Sphere\Common\Frontend\Table
  */
-class TableFromData extends TableDefault
+class TableData extends TableDefault
 {
 
     /**

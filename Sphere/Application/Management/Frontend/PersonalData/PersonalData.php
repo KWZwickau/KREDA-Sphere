@@ -21,7 +21,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableFromData;
+use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class PersonalData
@@ -74,7 +74,7 @@ class PersonalData extends AbstractFrontend
                 </div>
             </form>';
         }, self::getUrlBase() );
-        $View->setContent( new TableFromData( $PersonList, null, true, array(
+        $View->setContent( new TableData( $PersonList, null, true, array(
             'Salutation',
             'FirstName',
             'MiddleName',
@@ -193,7 +193,7 @@ class PersonalData extends AbstractFrontend
                 </div>
             </form>';
         }, self::getUrlBase() );
-        $View->setContent( new TableFromData( $PersonList ) );
+        $View->setContent( new TableData( $PersonList ) );
         $View->addButton( '/Sphere/Management/Person/Teacher/Create', 'Lehrer hinzufügen' );
         return $View;
     }
@@ -220,7 +220,7 @@ class PersonalData extends AbstractFrontend
                 </div>
             </form>';
         }, self::getUrlBase() );
-        $View->setContent( new TableFromData( $PersonList ) );
+        $View->setContent( new TableData( $PersonList ) );
         $View->addButton( '/Sphere/Management/Person/Guardian/Create', 'Sorgeberechtigte hinzufügen' );
         return $View;
     }
@@ -247,7 +247,7 @@ class PersonalData extends AbstractFrontend
                 </div>
             </form>';
         }, self::getUrlBase() );
-        $View->setContent( new TableFromData( $PersonList ) );
+        $View->setContent( new TableData( $PersonList ) );
         $View->addButton( '/Sphere/Management/Person/Staff/Create', 'Mitarbeiter hinzufügen' );
         return $View;
     }
@@ -274,7 +274,7 @@ class PersonalData extends AbstractFrontend
                 </div>
             </form>';
         }, self::getUrlBase() );
-        $View->setContent( new TableFromData( $PersonList ) );
+        $View->setContent( new TableData( $PersonList ) );
         $View->addButton( '/Sphere/Management/Person/Others/Create', 'Person hinzufügen' );
         return $View;
     }

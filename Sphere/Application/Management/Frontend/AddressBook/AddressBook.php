@@ -4,7 +4,7 @@ namespace KREDA\Sphere\Application\Management\Frontend\AddressBook;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableFromData;
+use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class AddressBook
@@ -41,7 +41,7 @@ class AddressBook extends AbstractFrontend
         $View->setTitle( 'Adressen' );
         $View->setDescription( 'Bundesland' );
         $View->setMessage( '' );
-        $View->setContent( new TableFromData(
+        $View->setContent( new TableData(
             Management::serviceAddress()->entityAddressState()
         ) );
 

@@ -16,7 +16,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableFromData;
+use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class Update
@@ -59,7 +59,7 @@ class Consumer extends AbstractFrontend
         } );
 
         $View->setContent(
-            new TableFromData( $ConsumerList, new GridTableTitle( 'Bestehende Mandanten' ) )
+            new TableData( $ConsumerList, new GridTableTitle( 'Bestehende Mandanten' ) )
             .
             new FormDefault(
                 new GridFormGroup(
