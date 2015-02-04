@@ -14,23 +14,27 @@ class TableData extends TableDefault
     /**
      * @param AbstractEntity[] $DataList
      * @param GridTableTitle   $Title
+     * @param array            $ColumnDefinition
      * @param bool|array       $Interactive
-     * @param array            $ShowCol
      */
-    function __construct( $DataList, GridTableTitle $Title = null, $Interactive = true, $ShowCol = array() )
+    function __construct( $DataList, GridTableTitle $Title = null, $ColumnDefinition = array(), $Interactive = true )
     {
 
         if (!is_array( $DataList )) {
             $DataList = array( $DataList );
         }
-        if (empty( $ShowCol ) && !empty( $DataList )) {
-            /** @var AbstractEntity[] $DataList */
-            $GridHead = array_keys( $DataList[0]->__toArray() );
-        } elseif (!empty( $ShowCol )) {
-            $GridHead = $ShowCol;
+        if (empty( $ColumnDefinition ) && !empty( $DataList )) {
+            if (is_object( current( $DataList ) )) {
+                /** @var AbstractEntity[] $DataList */
+                $GridHead = array_keys( $DataList[0]->__toArray() );
+            } else {
+                $GridHead = array_keys( $DataList[0] );
+            }
+        } elseif (!empty( $ColumnDefinition )) {
+            // Rename by ShowCol
+            $GridHead = array_values( $ColumnDefinition );
         } else {
             $GridHead = array();
-
         }
 
         array_walk( $GridHead, function ( &$V ) {
@@ -45,17 +49,25 @@ class TableData extends TableDefault
 
                 if (empty( $C )) {
                     $V = new GridTableCol( $V );
-                } elseif (in_array( preg_replace( '!^[^a-z0-9_]*!is', '', $I ), $C )) {
+                } elseif (in_array( preg_replace( '!^[^a-z0-9_]*!is', '', $I ), array_keys( $C ) )) {
                     $V = new GridTableCol( $V );
                 } else {
                     $V = false;
                 }
             }, $C );
-            /** @var AbstractEntity $R */
-            $R = array_filter( $R->__toArray() );
+            // Convert to Array
+            if (is_object( $R )) {
+                /** @var AbstractEntity $R */
+                $R = array_filter( $R->__toArray() );
+            } else {
+                $R = array_filter( $R );
+            }
+            /** @var array $R */
+            // Sort by ShowCol
+            $R = array_merge( array_flip( array_keys( $C ) ), $R );
             /** @noinspection PhpParamsInspection */
             $R = new GridTableRow( $R );
-        }, $ShowCol );
+        }, $ColumnDefinition );
 
         if (count( $DataList ) > 5) {
             parent::__construct(

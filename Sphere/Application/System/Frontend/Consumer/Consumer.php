@@ -59,7 +59,12 @@ class Consumer extends AbstractFrontend
         } );
 
         $View->setContent(
-            new TableData( $ConsumerList, new GridTableTitle( 'Bestehende Mandanten' ) )
+            new TableData( $ConsumerList, new GridTableTitle( 'Bestehende Mandanten' ), array(
+                'Id'                        => 'Id',
+                'serviceManagement_Address' => 'Adresse',
+                'Name'                      => 'Mandanten-Name',
+                'DatabaseSuffix'            => 'Datenbank-Kürzel'
+            ) )
             .
             new FormDefault(
                 new GridFormGroup(

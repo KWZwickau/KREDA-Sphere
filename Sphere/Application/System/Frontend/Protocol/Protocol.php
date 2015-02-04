@@ -6,6 +6,12 @@ use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
+use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableBody;
+use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableCol;
+use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableHead;
+use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableRow;
+use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
+use KREDA\Sphere\Common\Frontend\Table\Structure\TableDefault;
 
 /**
  * Class Protocol
@@ -28,68 +34,111 @@ class Protocol extends AbstractFrontend
 
         /** @var TblProtocol[] $tblProtocolList */
         $tblProtocolList = System::serviceProtocol()->entityProtocolAll();
+
+        array_walk( $tblProtocolList, function ( TblProtocol &$V ) {
+
+            $Editor = new TableDefault(
+                new GridTableHead( new GridTableRow(
+                    new GridTableCol( '', 2 )
+                ) ),
+                new GridTableBody( array(
+                    new GridTableRow( array(
+                        new GridTableCol( 'Database' ),
+                        new GridTableCol( $V->getProtocolDatabase() )
+                    ) ),
+                    new GridTableRow( array(
+                        new GridTableCol( 'Consumer' ),
+                        new GridTableCol( $V->getConsumerName().' '.$V->getConsumerSuffix() )
+                    ) ),
+                    new GridTableRow( array(
+                        new GridTableCol( 'Login' ),
+                        new GridTableCol( $V->getAccountUsername() )
+                    ) ),
+                    new GridTableRow( array(
+                        new GridTableCol( 'Person' ),
+                        new GridTableCol( $V->getPersonFirstName().' '.$V->getPersonLastName() )
+                    ) ),
+                    new GridTableRow( array(
+                        new GridTableCol( 'Time' ),
+                        new GridTableCol( date( 'd.m.Y H:i:s', $V->getProtocolTimestamp() ) )
+                    ) )
+                ) )
+            );
+            $DataOrigin = unserialize( $V->getEntityFrom() );
+            $DataCommit = unserialize( $V->getEntityTo() );
+
+            if ($DataOrigin && $DataCommit) {
+                $Data = $DataOrigin->__toArray();
+                array_walk( $Data, function ( &$V, $I ) {
+
+                    $V = new GridTableRow( array( new GridTableCol( $I ), new GridTableCol( $V ) ) );
+                } );
+                $TableOrigin = new TableDefault(
+                    new GridTableHead( new GridTableRow(
+                        new GridTableCol( str_replace( '\\', '\\&shy;', get_class( $DataOrigin ) ), 2 )
+                    ) ), new GridTableBody( $Data )
+                );
+                $Data = $DataCommit->__toArray();
+                array_walk( $Data, function ( &$V, $I ) {
+
+                    $V = new GridTableRow( array( new GridTableCol( $I ), new GridTableCol( $V ) ) );
+                } );
+                $TableCommit = new TableDefault(
+                    new GridTableHead( new GridTableRow(
+                        new GridTableCol( str_replace( '\\', '\\&shy;', get_class( $DataCommit ) ), 2 )
+                    ) ), new GridTableBody( $Data )
+                );
+
+                $V = array(
+                    'Id'     => $V->getId(),
+                    'Editor' => $Editor,
+                    'Origin' => $TableOrigin,
+                    'Commit' => $TableCommit
+                );
+            } elseif ($DataOrigin) {
+                $Data = $DataOrigin->__toArray();
+                array_walk( $Data, function ( &$V, $I ) {
+
+                    $V = new GridTableRow( array( new GridTableCol( $I ), new GridTableCol( $V ) ) );
+                } );
+                $Table = new TableDefault(
+                    new GridTableHead( new GridTableRow(
+                        new GridTableCol( str_replace( '\\', '\\&shy;', get_class( $DataOrigin ) ), 2 )
+                    ) ), new GridTableBody( $Data )
+                );
+                $V = array(
+                    'Id'     => $V->getId(),
+                    'Editor' => $Editor,
+                    'Origin' => $Table,
+                    'Commit' => ''
+                );
+            } elseif ($DataCommit) {
+                $Data = $DataCommit->__toArray();
+                array_walk( $Data, function ( &$V, $I ) {
+
+                    $V = new GridTableRow( array( new GridTableCol( $I ), new GridTableCol( $V ) ) );
+                } );
+                $Table = new TableDefault(
+                    new GridTableHead( new GridTableRow(
+                        new GridTableCol( str_replace( '\\', '\\&shy;', get_class( $DataCommit ) ), 2 )
+                    ) ), new GridTableBody( $Data )
+                );
+                $V = array(
+                    'Id'     => $V->getId(),
+                    'Editor' => $Editor,
+                    'Origin' => '',
+                    'Commit' => $Table
+                );
+            }
+
+        } );
+
         if (empty( $tblProtocolList )) {
             $View->setContent( new MessageWarning( 'Keine Daten vorhanden' ) );
-            return $View;
+        } else {
+            $View->setContent( new TableData( $tblProtocolList ) );
         }
 
-        krsort( $tblProtocolList );
-        $Content = '';
-        foreach ($tblProtocolList as $tblProtocol) {
-            $System = '<table class="table table-bordered table-condensed small" style="margin: auto;"><tbody>'
-                .'<tr><th>Database</th><td>'.$tblProtocol->getProtocolDatabase().'</td></tr>'
-                .'<tr><th>Consumer</th><td>'.$tblProtocol->getConsumerName().' '.$tblProtocol->getConsumerSuffix().'</td></tr>'
-                .'<tr><th>Login</th><td>'.$tblProtocol->getAccountUsername().'</td></tr>'
-                .'<tr><th>Person</th><td>'.$tblProtocol->getPersonFirstName().' '.$tblProtocol->getPersonLastName().'</td></tr>'
-                .'<tr><th>Time</th><td>'.date( 'd.m.Y H:i:s', $tblProtocol->getProtocolTimestamp() ).'</td></tr>'
-                .'</tbody></table>';
-            $Left = '';
-            $Right = '';
-            $From = unserialize( $tblProtocol->getEntityFrom() );
-            $To = unserialize( $tblProtocol->getEntityTo() );
-            if ($From) {
-                $Left = '<table class="table table-bordered table-condensed small" style="margin: auto;"><thead><tr><th colspan="2">'.str_replace( '\\',
-                        '\\&shy;', get_class( $From ) ).'</th></tr></thead><tbody>';
-                $From = $From->__toArray();
-                foreach ($From as $Key => $Value) {
-                    $Left .= '<tr><th>'.$Key.'</th><td>'.$Value.'</td></tr>';
-                }
-                $Left .= '</tbody></table>';
-            }
-            if ($To) {
-                $Right = '<table class="table table-bordered table-condensed small" style="margin: auto;"><thead><tr><th colspan="2">'.str_replace( '\\',
-                        '\\&shy;', get_class( $To ) ).'</th></tr></thead><tbody>';
-                $To = $To->__toArray();
-                foreach ($To as $Key => $Value) {
-                    $Right .= '<tr><th>'.$Key.'</th><td>'.$Value.'</td></tr>';
-                }
-                $Right .= '</tbody></table>';
-            }
-            if ($Left && $Right) {
-                $Content .= '<tr class="bg-info"><td>'.$tblProtocol->getId().'</td><td>'.$System.'</td><td>'.$Left.'</td><td>'.$Right.'</td></tr>';
-            } else {
-                if ($Left) {
-                    $Content .= '<tr class="bg-danger"><td>'.$tblProtocol->getId().'</td><td>'.$System.'</td><td>'.$Left.'</td><td>'.$Right.'</td></tr>';
-                } else {
-                    if ($Right) {
-                        $Content .= '<tr class="bg-success"><td>'.$tblProtocol->getId().'</td><td>'.$System.'</td><td>'.$Left.'</td><td>'.$Right.'</td></tr>';
-                    }
-                }
-            }
-        }
-
-        $View->setContent( '<table id="TableProtocolList" class="table table-condensed table-bordered small"><thead><tr><th>Id</th><th>System</th><th>From</th><th>To</th></tr></thead><tbody>'.$Content.'</tbody></table>
-        <script>
-            Client.Use( "ModTable", function()
-                {
-                    jQuery( "#TableProtocolList" ).ModTable({
-                        "order": [[ 0, "desc" ]],
-                        "pageLength": 10
-                    });
-                }
-            );
-        </script>
-        ' );
         return $View;
     }
 }

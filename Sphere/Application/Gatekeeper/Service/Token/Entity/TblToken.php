@@ -29,6 +29,10 @@ class TblToken extends AbstractEntity
      * @Column(type="string")
      */
     protected $Identifier;
+    /**
+     * @Column(type="string")
+     */
+    protected $Serial;
 
     /**
      * @param string $Identifier
@@ -73,5 +77,23 @@ class TblToken extends AbstractEntity
     {
 
         $this->Identifier = $Identifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSerial()
+    {
+
+        return $this->Serial;
+    }
+
+    /**
+     * @param string $Serial
+     */
+    public function setSerial( $Serial )
+    {
+
+        $this->Serial = $Serial;
     }
 }

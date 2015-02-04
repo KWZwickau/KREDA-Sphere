@@ -43,7 +43,9 @@
         }, options );
 
         this.DataTable( settings );
-        return this;
+        return {
+            Clear: this.DataTable().state().clear()
+        };
 
     };
 

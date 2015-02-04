@@ -108,6 +108,20 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblToken $tblToken
+     *
+     * @return bool|Entity\TblAccount[]
+     */
+    protected function entityAccountAllByToken( TblToken $tblToken )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblAccount' )->findBy( array(
+            TblAccount::ATTR_SERVICE_GATEKEEPER_TOKEN => $tblToken->getId()
+        ) );
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblAccountTyp

@@ -382,6 +382,17 @@ class Account extends EntityAction
     }
 
     /**
+     * @param TblToken $tblToken
+     *
+     * @return bool|TblAccount[]
+     */
+    public function entityAccountAllByToken( TblToken $tblToken )
+    {
+
+        return parent::entityAccountAllByToken( $tblToken );
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblAccountTyp
