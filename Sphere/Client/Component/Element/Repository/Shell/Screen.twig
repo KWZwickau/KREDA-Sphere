@@ -78,6 +78,12 @@
                 return 'undefined' != typeof jQuery.fn.datetimepicker
             }
         );
+        Client.Source( 'Bootstrap.FileInput',
+            '{{ PathBase }}/Library/Bootstrap.FileInput/4.1.6/js/fileinput.min.js', function()
+            {
+                return 'undefined' != typeof jQuery.fn.fileinput
+            }
+        );
         Client.Source( 'Twitter.Typeahead',
             '{{ PathBase }}/Library/Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min.js', function()
             {
@@ -91,6 +97,7 @@
         Client.Module( 'ModPicker', ['Bootstrap.DatetimePicker', 'Moment.js', 'jQuery'] );
         Client.Module( 'ModSelecter', ['jQuery.Selecter', 'jQuery'] );
         Client.Module( 'ModCompleter', ['Twitter.Typeahead', 'Bootstrap', 'jQuery'] );
+        Client.Module( 'ModUpload', ['Bootstrap.FileInput', 'Bootstrap', 'jQuery'] );
     </script>
 
 </head>
