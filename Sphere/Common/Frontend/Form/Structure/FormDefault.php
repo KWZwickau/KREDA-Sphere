@@ -2,7 +2,6 @@
 namespace KREDA\Sphere\Common\Frontend\Form\Structure;
 
 use KREDA\Sphere\Common\Frontend\Button\AbstractElement;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 
@@ -29,9 +28,7 @@ class FormDefault extends AbstractForm
         }
         $this->GridGroupList = $GridGroupList;
 
-        if (null === $FormButtonList) {
-            $FormButtonList = array( new ButtonSubmitPrimary( 'Absenden' ) );
-        } else {
+        if (null !== $FormButtonList) {
             if (!is_array( $FormButtonList )) {
                 $FormButtonList = array( $FormButtonList );
             }

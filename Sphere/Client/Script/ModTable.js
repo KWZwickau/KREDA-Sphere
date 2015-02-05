@@ -37,15 +37,10 @@
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-6'i><'col-sm-6'p>>",
             stateSave: true
-//            responsive: {
-//                details: true
-//            }
         }, options );
 
         this.DataTable( settings );
-        return {
-            Clear: this.DataTable().state().clear()
-        };
+        return this;
 
     };
 

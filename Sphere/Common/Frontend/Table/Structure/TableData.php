@@ -69,7 +69,7 @@ class TableData extends TableDefault
             $R = new GridTableRow( $R );
         }, $ColumnDefinition );
 
-        if (count( $DataList ) > 5) {
+        if (count( $DataList ) > 0) {
             parent::__construct(
                 new GridTableHead( new GridTableRow( $GridHead ) ), new GridTableBody( $DataList ), $Title,
                 $Interactive, null

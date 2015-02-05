@@ -16,12 +16,13 @@
             </div>
         {% endfor %}
     {% endfor %}
-
-    <div class="form-group">
-        <div class="btn-group">
-            {% for FormButton in FormButtonList %}
-                {{ FormButton }}
-            {% endfor %}
+    {% if( FormButtonList|length > 0) %}
+        <div class="form-group">
+            <div class="btn-group">
+                {% for FormButton in FormButtonList %}
+                    {{ FormButton }}
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 </form>

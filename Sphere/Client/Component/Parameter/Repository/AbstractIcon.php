@@ -23,6 +23,7 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
     const ICON_GROUP = 'glyphicons glyphicons-group';
     const ICON_PERSON = 'glyphicon glyphicon-user';
     const ICON_PERSON_KEY = 'glyphicons glyphicons-user-key';
+    const ICON_WHEELCHAIR = 'glyphicons glyphicons-person-wheelchair';
     const ICON_TASK = 'glyphicon glyphicon-tasks';
     const ICON_OFF = 'glyphicon glyphicon-off';
     const ICON_BOOK = 'glyphicon glyphicon-book';
