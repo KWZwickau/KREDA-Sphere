@@ -9,7 +9,7 @@
     <title>File Application/System/Service/Update.php | Sphere</title>
 
     <script type="text/javascript" src="resources/combined.js?3624343741"></script>
-    <script type="text/javascript" src="elementlist.js?2232403928"></script>
+    <script type="text/javascript" src="elementlist.js?1068914502"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
 
@@ -82,11 +82,9 @@
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.Gatekeeper.Frontend.Authentication.html">Authentication</a>
 						</li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.Gatekeeper.Frontend.MyAccount.html">MyAccount<span></span></a>
-						<ul>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.Gatekeeper.Frontend.MyAccount.Summary.html">Summary</a>
+				<li class="main"><a href="namespace-KREDA.Sphere.Application.Gatekeeper.Frontend.MyAccount.html">MyAccount</a>
 						</li>
-							</ul></li></ul></li>
+							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.Gatekeeper.Service.html">Service<span></span></a>
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.Gatekeeper.Service.Access.html">Access<span></span></a>
@@ -265,11 +263,6 @@
 						</li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.html">Frontend<span></span></a>
 						<ul>
-				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Address.html">Address<span></span></a>
-						<ul>
-				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Address.Structure.html">Structure</a>
-						</li>
-							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Alert.html">Alert<span></span></a>
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Alert.Element.html">Element</a>
@@ -280,6 +273,11 @@
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Button.Element.html">Element</a>
 						</li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Button.Structure.html">Structure</a>
+						</li>
+							</ul></li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Complex.html">Complex<span></span></a>
+						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Complex.Structure.html">Structure</a>
 						</li>
 							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Form.html">Form<span></span></a>
@@ -413,26 +411,28 @@
 </span><span id="51" class="l"><a class="l" href="#51">51: </a>
 </span><span id="52" class="l"><a class="l" href="#52">52: </a>            <span class="php-keyword2">System</span>::serviceProtocol()-&gt;setupDatabaseContent();
 </span><span id="53" class="l"><a class="l" href="#53">53: </a>
-</span><span id="54" class="l"><a class="l" href="#54">54: </a>            Management::serviceAddress()-&gt;setupDatabaseContent();
-</span><span id="55" class="l"><a class="l" href="#55">55: </a>            Management::servicePerson()-&gt;setupDatabaseContent();
-</span><span id="56" class="l"><a class="l" href="#56">56: </a>
-</span><span id="57" class="l"><a class="l" href="#57">57: </a>            Gatekeeper::serviceConsumer()-&gt;setupDatabaseContent();
+</span><span id="54" class="l"><a class="l" href="#54">54: </a>            Gatekeeper::serviceConsumer()-&gt;setupDatabaseContent();
+</span><span id="55" class="l"><a class="l" href="#55">55: </a>
+</span><span id="56" class="l"><a class="l" href="#56">56: </a>            Management::serviceAddress()-&gt;setupDatabaseContent();
+</span><span id="57" class="l"><a class="l" href="#57">57: </a>
 </span><span id="58" class="l"><a class="l" href="#58">58: </a>            Gatekeeper::serviceAccount()-&gt;setupDatabaseContent();
-</span><span id="59" class="l"><a class="l" href="#59">59: </a>            Gatekeeper::serviceToken()-&gt;setupDatabaseContent();
-</span><span id="60" class="l"><a class="l" href="#60">60: </a>            Gatekeeper::serviceAccess()-&gt;setupDatabaseContent();
-</span><span id="61" class="l"><a class="l" href="#61">61: </a>
-</span><span id="62" class="l"><a class="l" href="#62">62: </a>            Management::serviceEducation()-&gt;setupDatabaseContent();
+</span><span id="59" class="l"><a class="l" href="#59">59: </a>            Management::servicePerson()-&gt;setupDatabaseContent();
+</span><span id="60" class="l"><a class="l" href="#60">60: </a>
+</span><span id="61" class="l"><a class="l" href="#61">61: </a>            Gatekeeper::serviceToken()-&gt;setupDatabaseContent();
+</span><span id="62" class="l"><a class="l" href="#62">62: </a>            Gatekeeper::serviceAccess()-&gt;setupDatabaseContent();
 </span><span id="63" class="l"><a class="l" href="#63">63: </a>
-</span><span id="64" class="l"><a class="l" href="#64">64: </a>            Graduation::serviceGrade()-&gt;setupDatabaseContent();
-</span><span id="65" class="l"><a class="l" href="#65">65: </a>            Graduation::serviceScore()-&gt;setupDatabaseContent();
-</span><span id="66" class="l"><a class="l" href="#66">66: </a>            Graduation::serviceWeight()-&gt;setupDatabaseContent();
-</span><span id="67" class="l"><a class="l" href="#67">67: </a>        }
-</span><span id="68" class="l"><a class="l" href="#68">68: </a>
-</span><span id="69" class="l"><a class="l" href="#69">69: </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">implode</span>( <span class="php-var">$Protocol</span> );
-</span><span id="70" class="l"><a class="l" href="#70">70: </a>    }
-</span><span id="71" class="l"><a class="l" href="#71">71: </a>
-</span><span id="72" class="l"><a class="l" href="#72">72: </a>}
-</span><span id="73" class="l"><a class="l" href="#73">73: </a></span></code></pre>
+</span><span id="64" class="l"><a class="l" href="#64">64: </a>            Management::serviceEducation()-&gt;setupDatabaseContent();
+</span><span id="65" class="l"><a class="l" href="#65">65: </a>
+</span><span id="66" class="l"><a class="l" href="#66">66: </a>            Graduation::serviceGrade()-&gt;setupDatabaseContent();
+</span><span id="67" class="l"><a class="l" href="#67">67: </a>            Graduation::serviceScore()-&gt;setupDatabaseContent();
+</span><span id="68" class="l"><a class="l" href="#68">68: </a>            Graduation::serviceWeight()-&gt;setupDatabaseContent();
+</span><span id="69" class="l"><a class="l" href="#69">69: </a>        }
+</span><span id="70" class="l"><a class="l" href="#70">70: </a>
+</span><span id="71" class="l"><a class="l" href="#71">71: </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">implode</span>( <span class="php-var">$Protocol</span> );
+</span><span id="72" class="l"><a class="l" href="#72">72: </a>    }
+</span><span id="73" class="l"><a class="l" href="#73">73: </a>
+</span><span id="74" class="l"><a class="l" href="#74">74: </a>}
+</span><span id="75" class="l"><a class="l" href="#75">75: </a></span></code></pre>
 
 	<div id="footer">
 		Sphere API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>

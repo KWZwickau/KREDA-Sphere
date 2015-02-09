@@ -1,8 +1,8 @@
 <?php
-namespace KREDA\Sphere\Common\Frontend\Address\Structure;
+namespace KREDA\Sphere\Common\Frontend\Complex\Structure;
 
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
-use KREDA\Sphere\Common\Frontend\Address\AbstractAddress;
+use KREDA\Sphere\Common\Frontend\Complex\AbstractStructure;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 
 /**
@@ -10,7 +10,7 @@ use MOC\V\Component\Template\Exception\TemplateTypeException;
  *
  * @package KREDA\Sphere\Common\Frontend\Address\Structure
  */
-class AddressDefault extends AbstractAddress
+class AddressDefault extends AbstractStructure
 {
 
     /**

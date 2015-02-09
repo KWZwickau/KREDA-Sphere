@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Common\Frontend\Address;
+namespace KREDA\Sphere\Common\Frontend\Complex;
 
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -11,7 +11,7 @@ use MOC\V\Component\Template\Component\IBridgeInterface;
  *
  * @package KREDA\Sphere\Common\Frontend\Address
  */
-abstract class AbstractAddress extends AbstractFrontend implements IElementInterface
+abstract class AbstractStructure extends AbstractFrontend implements IElementInterface
 {
 
     /** @var TblAddress $tblAddress */

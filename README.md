@@ -32,16 +32,19 @@ Navigation:
 Form:
 
 - Structure
-  - Default
-  - Horizontal
+  - Type
+    - Default
   - Grid
     - Group
     - Row
     - Col
+    - Title
 - Element
   - Input
     - Completer
     - Date
+    - File
+    - Hidden
     - Password
     - Select
     - Text
@@ -50,16 +53,16 @@ Form:
 Table
 
 - Structure
-  - Default
-    + Interactive
-  - Data
-    + Interactive
+  - Type
+    - Default (Interactive)
+    - Data (Interactive)
   - Grid
     - Head
     - Body
     - Foot
     - Row
     - Col
+    - Title
 
 Alert
 
@@ -82,10 +85,10 @@ Button:
     - Reset
     - Submit
 
-Address
+Complex:
 
 - Structure
-  - Default
+  - Address
 
 Library
 =======
@@ -93,6 +96,7 @@ Library
 - Bootflat
 - Bootstrap
 - Bootstrap.DateTimePicker
+- Bootstrap.FileInput
 - Bootstrap.Glyphicons
 - jQuery
 - jQuery.DataTable
@@ -105,16 +109,30 @@ Library
 - Twitter.Typeahead.Bootstrap
 
 - MOC (Mark V)
-  - Doctrine DBAL/ORM
-  - ApiGen
-  - Twig
-  - Smarty
-  - Symfony
-    - EventDispatcher
-    - HttpKernel
-    - HttpFoundation
-    - Routing
+  - Autoloader
+  - FileSystem
+  - HttpKernel
+    - Symfony
+      - HttpFoundation
+  - Database
+    - Doctrine DBAL
+    - Doctrine ORM
+  - Document
+    - PhpExcel
+    - DomPdf
+  - Documentation
+    - ApiGen
+  - Router
+    - Symfony
+      - EventDispatcher
+      - HttpKernel
+      - Routing
+  - Template
+    - Twig
+    - Smarty
+
+-----
+
+- KREDA-Request Flowchart
 
 ![KREDA-Request Flowchart](TestSuite/Docs/KREDA-Request%20Flowchart.png "KREDA-Request Flowchart")
-
-![KREDA-Application Flowchart](TestSuite/Docs/KREDA-Application%20Flowchart.png "KREDA-Application Flowchart")

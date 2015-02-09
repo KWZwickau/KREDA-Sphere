@@ -1,4 +1,4 @@
-#Despictable and evil robots to keep out :)
+#Despicable and evil robots to keep out :)
 
 User-agent: grub-client
 Disallow: /
@@ -378,11 +378,7 @@ Disallow: /
 #Default settings
 
 User-agent: *
-Disallow: /MOC/
+Disallow: /Documentation/
 Disallow: /Library/
-Disallow: /Generic/
-Disallow: /Upload/
-Disallow: /Script/
-Disallow: /Style/
-Disallow: /Medien/
-Disallow: /Verwaltung/
+Disallow: /Sphere/
+Disallow: /TestSuite/
