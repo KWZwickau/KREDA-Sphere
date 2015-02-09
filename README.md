@@ -114,3 +114,7 @@ Library
     - HttpKernel
     - HttpFoundation
     - Routing
+
+![KREDA-Request Flowchart](TestSuite/Docs/KREDA-Request%20Flowchart.png "KREDA-Request Flowchart")
+
+![KREDA-Application Flowchart](TestSuite/Docs/KREDA-Application%20Flowchart.png "KREDA-Application Flowchart")
