@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblLevel;
 use KREDA\Sphere\Application\Management\Service\Education\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
@@ -17,12 +18,12 @@ class Education extends EntityAction
     protected static $DatabaseHandler = null;
 
     /**
-     *
+     * @param TblConsumer $tblConsumer
      */
-    function __construct()
+    function __construct( TblConsumer $tblConsumer = null )
     {
 
-        $this->setDatabaseHandler( 'Management', 'Education', $this->getConsumerSuffix() );
+        $this->setDatabaseHandler( 'Management', 'Education', $this->getConsumerSuffix( $tblConsumer ) );
     }
 
     public function setupDatabaseContent()

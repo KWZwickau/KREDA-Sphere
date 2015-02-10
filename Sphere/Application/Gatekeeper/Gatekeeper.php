@@ -244,6 +244,11 @@ class Gatekeeper extends AbstractApplication
                 '/Sphere/Gatekeeper/MyAccount/ChangePassword', 'Passwort ändern', new LockIcon()
             );
         }
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Gatekeeper/MyAccount/ChangeConsumer' )) {
+            self::addModuleNavigationMain( self::$Configuration,
+                '/Sphere/Gatekeeper/MyAccount/ChangeConsumer', 'Mandant ändern', new LockIcon()
+            );
+        }
     }
 
     /**

@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Common;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Common\Database\Connection\Identifier;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Database\Schema\EntityManager;
@@ -17,21 +18,18 @@ use KREDA\Sphere\IServiceInterface;
 abstract class AbstractService extends AbstractExtension implements IServiceInterface
 {
 
-    /** @var null|string $BaseRoute Client-Application Route */
-    protected static $BaseRoute = null;
     /** @var null|Handler $DatabaseHandler */
     protected static $DatabaseHandler = null;
 
     /**
-     * @param null|string $BaseRoute Client-Application Route
+     * @param null|TblConsumer $tblConsumer
      *
      * @return static Service Instance
      */
-    final public static function getApi( $BaseRoute = null )
+    final public static function getApi( TblConsumer $tblConsumer = null )
     {
 
-        static::$BaseRoute = $BaseRoute;
-        return new static;
+        return new static( $tblConsumer );
     }
 
     /**
@@ -69,27 +67,20 @@ abstract class AbstractService extends AbstractExtension implements IServiceInte
     }
 
     /**
+     * @param TblConsumer $tblConsumer
+     *
      * @return string
      */
-    final public function getConsumerSuffix()
+    final public function getConsumerSuffix( TblConsumer $tblConsumer = null )
     {
 
-        if (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
+        if (null !== $tblConsumer) {
+            return $tblConsumer->getDatabaseSuffix();
+        } elseif (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
             return $tblConsumer->getDatabaseSuffix();
         } else {
             return 'EGE';
         }
-    }
-
-    /**
-     * @param string $Route Service Route
-     *
-     * @return null|string Client-Application Route
-     */
-    final protected function getClientServiceRoute( $Route )
-    {
-
-        return $this->extensionRequest()->getUrlBase().static::$BaseRoute.'/'.trim( $Route, '/' );
     }
 
     /**

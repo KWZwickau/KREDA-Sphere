@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Management\Service;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
@@ -19,12 +20,12 @@ class Person extends EntityAction
     protected static $DatabaseHandler = null;
 
     /**
-     *
+     * @param TblConsumer $tblConsumer
      */
-    function __construct()
+    function __construct( TblConsumer $tblConsumer = null )
     {
 
-        $this->setDatabaseHandler( 'Management', 'Person', $this->getConsumerSuffix() );
+        $this->setDatabaseHandler( 'Management', 'Person', $this->getConsumerSuffix( $tblConsumer ) );
     }
 
     /**

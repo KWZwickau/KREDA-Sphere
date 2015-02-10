@@ -137,7 +137,7 @@ class TblAccount extends AbstractEntity
         if (null === $this->serviceManagement_Person) {
             return false;
         } else {
-            return Management::servicePerson()->entityPersonById( $this->serviceManagement_Person );
+            return Management::servicePerson( $this->getServiceGatekeeperConsumer() )->entityPersonById( $this->serviceManagement_Person );
         }
     }
 

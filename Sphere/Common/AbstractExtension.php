@@ -25,12 +25,14 @@ abstract class AbstractExtension
     private static $extensionRequestCache = null;
 
     /**
+     * @param string $String
+     *
      * @return ModHex
      */
-    final public static function extensionModHex()
+    final public static function extensionModHex( $String )
     {
 
-        return new ModHex();
+        return ModHex::withString( $String );
     }
 
     /**

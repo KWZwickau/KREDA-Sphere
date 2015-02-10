@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Management\Service;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressState;
@@ -20,12 +21,12 @@ class Address extends EntityAction
     protected static $DatabaseHandler = null;
 
     /**
-     *
+     * @param TblConsumer $tblConsumer
      */
-    function __construct()
+    function __construct( TblConsumer $tblConsumer = null )
     {
 
-        $this->setDatabaseHandler( 'Management', 'Address', $this->getConsumerSuffix() );
+        $this->setDatabaseHandler( 'Management', 'Address', $this->getConsumerSuffix( $tblConsumer ) );
     }
 
     /**

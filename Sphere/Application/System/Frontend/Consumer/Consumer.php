@@ -2,13 +2,9 @@
 namespace KREDA\Sphere\Application\System\Frontend\Consumer;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Complex\Structure\AddressDefault;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
@@ -49,19 +45,9 @@ class Consumer extends AbstractFrontend
         $View->setDescription( 'Hinzufügen' );
 
         $ConsumerList = Gatekeeper::serviceConsumer()->entityConsumerAll();
-        array_walk( $ConsumerList, function ( TblConsumer &$V ) {
-
-            if (false === $V->getServiceManagementAddress()) {
-                $V->serviceManagement_Address = new MessageWarning( 'Keine Adressdaten verfügbar', new WarningIcon() );
-            } else {
-                $V->serviceManagement_Address = new AddressDefault( $V->getServiceManagementAddress() );
-            }
-        } );
-
         $View->setContent(
             new TableData( $ConsumerList, new GridTableTitle( 'Bestehende Mandanten' ), array(
                 'Id'                        => 'Id',
-                'serviceManagement_Address' => 'Adresse',
                 'Name'                      => 'Mandanten-Name',
                 'DatabaseSuffix'            => 'Datenbank-Kürzel'
             ) )

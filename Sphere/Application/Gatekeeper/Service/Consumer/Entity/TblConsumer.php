@@ -98,7 +98,7 @@ class TblConsumer extends AbstractEntity
         if (null === $this->serviceManagement_Address) {
             return false;
         } else {
-            return Management::serviceAddress()->entityAddressById( $this->serviceManagement_Address );
+            return Management::serviceAddress( $this )->entityAddressById( $this->serviceManagement_Address );
         }
     }
 
