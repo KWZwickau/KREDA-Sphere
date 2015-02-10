@@ -65,8 +65,8 @@ class NamespaceLoader
     {
 
         return class_exists( $Name, $Load )
-        || interface_exists( $Name, $Load )
-        || ( function_exists( 'trait_exists' ) && trait_exists( $Name, $Load ) );
+        || interface_exists( $Name, $Load )/*|| ( function_exists( 'trait_exists' ) && trait_exists( $Name, $Load ) )*/
+            ;
     }
 
     /**
@@ -88,8 +88,9 @@ class NamespaceLoader
         if ($this->Path !== null) {
             return is_file( $this->Path.DIRECTORY_SEPARATOR.$File );
         }
+        return false;
         // @codeCoverageIgnoreStart
-        return ( false !== stream_resolve_include_path( $File ) );
+        //return ( false !== stream_resolve_include_path( $File ) );
         // @codeCoverageIgnoreEnd
     }
 }

@@ -15,6 +15,9 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
         /** @var \KREDA\Sphere\Common\AbstractExtension $MockExtension */
         $MockExtension = $this->getMockForAbstractClass( 'KREDA\Sphere\Common\AbstractExtension' );
         $this->assertInstanceOf( 'KREDA\Sphere\Common\AbstractExtension', $MockExtension );
+
+        $this->assertInstanceOf( 'KREDA\Sphere\Common\Extension\Debugger', $MockExtension->extensionDebugger() );
+        $this->assertInstanceOf( 'KREDA\Sphere\Common\Extension\ModHex', $MockExtension->extensionModHex( 'Dummy' ) );
     }
 
     public function testExtensionCodeStyle()

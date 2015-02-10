@@ -51,7 +51,7 @@ ini_set( 'xdebug.var_display_max_depth', -1 );
  * Clear Database Cache
  */
 if (function_exists( 'apc_clear_cache' )) {
-    apc_clear_cache();
+    //apc_clear_cache();
 }
 /**
  * Init Debugger
