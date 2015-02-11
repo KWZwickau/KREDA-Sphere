@@ -3,10 +3,10 @@ namespace KREDA\Sphere\Application\System;
 
 use KREDA\Sphere\Application\System\Frontend\Authorization\Authorization;
 use KREDA\Sphere\Application\System\Frontend\Consumer\Consumer;
+use KREDA\Sphere\Application\System\Frontend\Database\Cache;
+use KREDA\Sphere\Application\System\Frontend\Database\Status;
 use KREDA\Sphere\Application\System\Frontend\Installer\Installer;
-use KREDA\Sphere\Application\System\Frontend\Status\Status;
 use KREDA\Sphere\Application\System\Frontend\Token\Token;
-use KREDA\Sphere\Application\System\Service\Database;
 use KREDA\Sphere\Application\System\Service\Protocol;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Client\Component\Element\Element;
@@ -62,6 +62,9 @@ class System extends AbstractApplication
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Database/Status', __CLASS__.'::frontendDatabaseStatus'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Database/Cache', __CLASS__.'::frontendDatabaseCache'
         );
         /**
          * Update
@@ -150,15 +153,6 @@ class System extends AbstractApplication
     }
 
     /**
-     * @return Service\Database
-     */
-    public static function serviceDatabase()
-    {
-
-        return Database::getApi();
-    }
-
-    /**
      * @return Element|Stage
      */
     public function frontendSystem()
@@ -199,7 +193,7 @@ class System extends AbstractApplication
     {
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Database', 'Datenbanken', new DatabaseIcon()
+            '/Sphere/System/Database/Status', 'Datenbanken', new DatabaseIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Update', 'Update', new FlashIcon()
@@ -228,11 +222,11 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceConsumer();
+        $this->setupApplicationNavigationConsumer();
         return Consumer::stageSummary();
     }
 
-    public function setupServiceConsumer()
+    public function setupApplicationNavigationConsumer()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -248,7 +242,7 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceConsumer();
+        $this->setupApplicationNavigationConsumer();
         return Consumer::stageConsumerCreate();
     }
 
@@ -259,11 +253,11 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceUpdate();
+        $this->setupApplicationNavigationUpdate();
         return Installer::guiSummary();
     }
 
-    public function setupServiceUpdate()
+    public function setupApplicationNavigationUpdate()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -282,11 +276,11 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupFrontendAuthorization();
+        $this->setupApplicationNavigationAuthorization();
         return Authorization::stageAuthorization();
     }
 
-    public function setupFrontendAuthorization()
+    public function setupApplicationNavigationAuthorization()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -321,7 +315,7 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupFrontendAuthorization();
+        $this->setupApplicationNavigationAuthorization();
         return Authorization::stageAuthorizationRight( $RightName );
     }
 
@@ -334,7 +328,7 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupFrontendAuthorization();
+        $this->setupApplicationNavigationAuthorization();
         return Authorization::stageAuthorizationPrivilege( $PrivilegeName );
     }
 
@@ -347,7 +341,7 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupFrontendAuthorization();
+        $this->setupApplicationNavigationAuthorization();
         return Authorization::stageAuthorizationAccess( $AccessName );
     }
 
@@ -360,7 +354,7 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupFrontendAuthorization();
+        $this->setupApplicationNavigationAuthorization();
         return Authorization::stageAuthorizationRole( $Access );
     }
 
@@ -374,7 +368,7 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupFrontendAuthorization();
+        $this->setupApplicationNavigationAuthorization();
         return Authorization::stageAuthorizationRoleAccess( $Role, $Access );
     }
 
@@ -385,7 +379,7 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceUpdate();
+        $this->setupApplicationNavigationUpdate();
         return Installer::guiUpdateSimulation();
     }
 
@@ -396,7 +390,7 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceUpdate();
+        $this->setupApplicationNavigationUpdate();
         return Installer::guiUpdatePerform();
     }
 
@@ -407,7 +401,31 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
+        $this->setupApplicationNavigationDatabase();
         return Status::stageDatabaseStatus();
+    }
+
+    public function setupApplicationNavigationDatabase()
+    {
+
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Database/Status', 'Status', new CogIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Database/Cache', 'Cache', new CogIcon()
+        );
+
+    }
+
+    /**
+     * @return Stage
+     */
+    public function frontendDatabaseCache()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupApplicationNavigationDatabase();
+        return Cache::stageDatabaseCache();
     }
 
     /**
@@ -417,11 +435,11 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceToken();
+        $this->setupApplicationNavigationToken();
         return Token::stageWelcome();
     }
 
-    public function setupServiceToken()
+    public function setupApplicationNavigationToken()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -440,7 +458,7 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupServiceToken();
+        $this->setupApplicationNavigationToken();
         return Token::stageCertification( $CredentialKey );
     }
 

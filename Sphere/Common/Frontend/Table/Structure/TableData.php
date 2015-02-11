@@ -26,9 +26,9 @@ class TableData extends TableDefault
         if (empty( $ColumnDefinition ) && !empty( $DataList )) {
             if (is_object( current( $DataList ) )) {
                 /** @var AbstractEntity[] $DataList */
-                $GridHead = array_keys( $DataList[0]->__toArray() );
+                $GridHead = array_keys( current( $DataList )->__toArray() );
             } else {
-                $GridHead = array_keys( $DataList[0] );
+                $GridHead = array_keys( current( $DataList ) );
             }
         } elseif (!empty( $ColumnDefinition )) {
             // Rename by ShowCol
