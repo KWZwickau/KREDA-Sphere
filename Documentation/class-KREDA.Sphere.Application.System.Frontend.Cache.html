@@ -4,12 +4,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="ApiGen 2.8.0" />
-    <meta name="robots" content="noindex" />
 
-    <title>File Application/System/Frontend/Status/Status.php | Sphere</title>
+    <title>Class KREDA\Sphere\Application\System\Frontend\Cache | Sphere</title>
 
     <script type="text/javascript" src="resources/combined.js?3624343741"></script>
-    <script type="text/javascript" src="elementlist.js?1068914502"></script>
+    <script type="text/javascript" src="elementlist.js?3508969609"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
 
@@ -182,20 +181,6 @@
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Authorization.Summary.html">Summary</a>
 						</li>
 							</ul></li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Consumer.html">Consumer<span></span></a>
-						<ul>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Consumer.Setting.html">Setting</a>
-						</li>
-							</ul></li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Installer.html">Installer</a>
-						</li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Protocol.html">Protocol</a>
-						</li>
-				<li class="active main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Status.html">Status<span></span></a>
-						<ul>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Status.Database.html">Database</a>
-						</li>
-							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Token.html">Token</a>
 						</li>
 							</ul></li>
@@ -247,6 +232,13 @@
 							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.html">Common<span></span></a>
 						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Cache.html">Cache<span></span></a>
+						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Cache.Frontend.html">Frontend</a>
+						</li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Cache.Type.html">Type</a>
+						</li>
+							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Database.html">Database<span></span></a>
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Database.Connection.html">Connection</a>
@@ -291,6 +283,13 @@
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Table.Structure.html">Structure</a>
 						</li>
+							</ul></li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Text.html">Text<span></span></a>
+						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Text.Element.html">Element</a>
+						</li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Text.Structure.html">Structure</a>
+						</li>
 							</ul></li></ul></li></ul></li></ul></li></ul></li>
 				<li><a href="namespace-PHP.html">PHP</a>
 						</li>
@@ -303,7 +302,11 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li class="active"><a href="class-KREDA.Sphere.Application.System.Frontend.Status.Status.html">Status</a></li>
+				<li class="active"><a href="class-KREDA.Sphere.Application.System.Frontend.Cache.html">Cache</a></li>
+				<li><a href="class-KREDA.Sphere.Application.System.Frontend.Consumer.html">Consumer</a></li>
+				<li><a href="class-KREDA.Sphere.Application.System.Frontend.Database.html">Database</a></li>
+				<li><a href="class-KREDA.Sphere.Application.System.Frontend.Protocol.html">Protocol</a></li>
+				<li><a href="class-KREDA.Sphere.Application.System.Frontend.Update.html">Update</a></li>
 			</ul>
 
 
@@ -331,11 +334,10 @@
 				<a href="index.html" title="Overview"><span>Overview</span></a>
 			</li>
 			<li>
-				<a href="namespace-KREDA.Sphere.Application.System.Frontend.Status.html" title="Summary of KREDA\Sphere\Application\System\Frontend\Status"><span>Namespace</span></a>
+				<a href="namespace-KREDA.Sphere.Application.System.Frontend.html" title="Summary of KREDA\Sphere\Application\System\Frontend"><span>Namespace</span></a>
 			</li>
-			<li>
-				<a href="class-KREDA.Sphere.Application.System.Frontend.Status.Status.html" title="Summary of KREDA\Sphere\Application\System\Frontend\Status\Status"><span>Class</span></a>
-			</li>
+			<li class="active">
+<span>Class</span>			</li>
 		</ul>
 		<ul>
 			<li>
@@ -355,41 +357,169 @@
 		</ul>
 	</div>
 
-<pre><code><span id="1" class="l"><a class="l" href="#1"> 1: </a><span class="xlang">&lt;?php</span>
-</span><span id="2" class="l"><a class="l" href="#2"> 2: </a><span class="php-keyword1">namespace</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\Frontend\Status;
-</span><span id="3" class="l"><a class="l" href="#3"> 3: </a>
-</span><span id="4" class="l"><a class="l" href="#4"> 4: </a><span class="php-keyword1">use</span> KREDA\Sphere\Application\<span class="php-keyword2">System</span>\<span class="php-keyword2">System</span>;
-</span><span id="5" class="l"><a class="l" href="#5"> 5: </a><span class="php-keyword1">use</span> KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-</span><span id="6" class="l"><a class="l" href="#6"> 6: </a><span class="php-keyword1">use</span> KREDA\Sphere\Common\AbstractFrontend;
-</span><span id="7" class="l"><a class="l" href="#7"> 7: </a>
-</span><span id="8" class="l"><a class="l" href="#8"> 8: </a><span class="php-comment">/**
-</span></span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-comment"> * Class Status
-</span></span><span id="10" class="l"><a class="l" href="#10">10: </a><span class="php-comment"> *
-</span></span><span id="11" class="l"><a class="l" href="#11">11: </a><span class="php-comment"> * @package KREDA\Sphere\Application\System\Frontend\Status
-</span></span><span id="12" class="l"><a class="l" href="#12">12: </a><span class="php-comment"> */</span>
-</span><span id="13" class="l"><a class="l" href="#13">13: </a><span class="php-keyword1">class</span> <a id="Status" href="#Status">Status</a> <span class="php-keyword1">extends</span> AbstractFrontend
-</span><span id="14" class="l"><a class="l" href="#14">14: </a>{
-</span><span id="15" class="l"><a class="l" href="#15">15: </a>
-</span><span id="16" class="l"><a class="l" href="#16">16: </a>    <span class="php-comment">/**
-</span></span><span id="17" class="l"><a class="l" href="#17">17: </a><span class="php-comment">     * @return Stage
-</span></span><span id="18" class="l"><a class="l" href="#18">18: </a><span class="php-comment">     */</span>
-</span><span id="19" class="l"><a class="l" href="#19">19: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_stageDatabaseStatus" href="#_stageDatabaseStatus">stageDatabaseStatus</a>()
-</span><span id="20" class="l"><a class="l" href="#20">20: </a>    {
-</span><span id="21" class="l"><a class="l" href="#21">21: </a>
-</span><span id="22" class="l"><a class="l" href="#22">22: </a>        <span class="php-var">$View</span> = <span class="php-keyword1">new</span> Stage();
-</span><span id="23" class="l"><a class="l" href="#23">23: </a>        <span class="php-var">$View</span>-&gt;setTitle( <span class="php-quote">'Datenbank-Cluster'</span> );
-</span><span id="24" class="l"><a class="l" href="#24">24: </a>        <span class="php-var">$View</span>-&gt;setDescription( <span class="php-quote">'Status'</span> );
-</span><span id="25" class="l"><a class="l" href="#25">25: </a>        <span class="php-var">$View</span>-&gt;setMessage( <span class="php-quote">'Zeigt die aktuelle Konfiguration und den Verbindungsstatus'</span> );
-</span><span id="26" class="l"><a class="l" href="#26">26: </a>        <span class="php-var">$View</span>-&gt;setContent(
-</span><span id="27" class="l"><a class="l" href="#27">27: </a>            <span class="php-keyword1">new</span> Database\Status(
-</span><span id="28" class="l"><a class="l" href="#28">28: </a>                <span class="php-keyword2">System</span>::serviceDatabase()-&gt;extensionDatabaseStatus()
-</span><span id="29" class="l"><a class="l" href="#29">29: </a>            )
-</span><span id="30" class="l"><a class="l" href="#30">30: </a>        );
-</span><span id="31" class="l"><a class="l" href="#31">31: </a>        <span class="php-keyword1">return</span> <span class="php-var">$View</span>;
-</span><span id="32" class="l"><a class="l" href="#32">32: </a>    }
-</span><span id="33" class="l"><a class="l" href="#33">33: </a>
-</span><span id="34" class="l"><a class="l" href="#34">34: </a>}
-</span><span id="35" class="l"><a class="l" href="#35">35: </a></span></code></pre>
+<div id="content" class="class">
+	<h1>Class Cache</h1>
+
+
+	<div class="description">
+	
+<p>Class Cache</p>
+
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+			<a href="class-KREDA.Sphere.Common.AbstractExtension.html"><span>KREDA\Sphere\Common\AbstractExtension</span></a>
+			
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by" />
+			<a href="class-KREDA.Sphere.Client.Component.Element.Element.html"><span>KREDA\Sphere\Client\Component\Element\Element</span></a>
+			
+			 implements 
+				<a href="class-KREDA.Sphere.Client.Component.IElementInterface.html"><span>KREDA\Sphere\Client\Component\IElementInterface</span></a>
+			
+			
+		</dd>
+		<dd style="padding-left:60px">
+			<img src="resources/inherit.png" alt="Extended by" />
+			<a href="class-KREDA.Sphere.Client.Component.Element.Repository.AbstractShell.html"><span>KREDA\Sphere\Client\Component\Element\Repository\AbstractShell</span></a>
+			
+			 implements 
+				<a href="class-KREDA.Sphere.Client.Component.IElementInterface.html"><span>KREDA\Sphere\Client\Component\IElementInterface</span></a>
+			
+			
+		</dd>
+		<dd style="padding-left:90px">
+			<img src="resources/inherit.png" alt="Extended by" />
+			<a href="class-KREDA.Sphere.Common.AbstractFrontend.html"><span>KREDA\Sphere\Common\AbstractFrontend</span></a>
+			
+			
+			
+		</dd>
+		<dd style="padding-left:120px">
+			<img src="resources/inherit.png" alt="Extended by" />
+<b><span>KREDA\Sphere\Application\System\Frontend\Cache</span></b>			
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-KREDA.html">KREDA</a>\<a href="namespace-KREDA.Sphere.html">Sphere</a>\<a href="namespace-KREDA.Sphere.Application.html">Application</a>\<a href="namespace-KREDA.Sphere.Application.System.html">System</a>\<a href="namespace-KREDA.Sphere.Application.System.Frontend.html">Frontend</a><br />
+		<b>Package:</b> KREDA\Sphere\Application\System\Frontend<br />
+
+		<b>Located at</b> <a href="source-class-KREDA.Sphere.Application.System.Frontend.Cache.html#20-68" title="Go to source code">Application/System/Frontend/Cache.php</a><br />
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="stageStatus" id="_stageStatus">
+
+		<td class="attributes"><code>
+			 public static
+			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_stageStatus">#</a>
+		<code><a href="source-class-KREDA.Sphere.Application.System.Frontend.Cache.html#28-67" title="Go to source code">stageStatus</a>( <span>boolean <var>$Clear</var> = <span class="php-keyword1">false</span> </span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$Clear</var></dt>
+					<dd><code>boolean</code><br>$Clear</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-KREDA.Sphere.Common.AbstractFrontend.html#methods">KREDA\Sphere\Common\AbstractFrontend</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-KREDA.Sphere.Common.AbstractFrontend.html#_getContent">getContent()</a>, 
+			<a href="class-KREDA.Sphere.Common.AbstractFrontend.html#_getRedirect">getRedirect()</a>, 
+			<a href="class-KREDA.Sphere.Common.AbstractFrontend.html#_getUrlBase">getUrlBase()</a>, 
+			<a href="class-KREDA.Sphere.Common.AbstractFrontend.html#_setFormError">setFormError()</a>, 
+			<a href="class-KREDA.Sphere.Common.AbstractFrontend.html#_setRequestValue">setRequestValue()</a>, 
+			<a href="class-KREDA.Sphere.Common.AbstractFrontend.html#_setRequestValues">setRequestValues()</a>
+		</code></td>
+	</tr>
+	</table>
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-KREDA.Sphere.Client.Component.Element.Element.html#methods">KREDA\Sphere\Client\Component\Element\Element</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-KREDA.Sphere.Client.Component.Element.Element.html#___toString">__toString()</a>
+		</code></td>
+	</tr>
+	</table>
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-KREDA.Sphere.Common.AbstractExtension.html#methods">KREDA\Sphere\Common\AbstractExtension</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionDatabase">extensionDatabase()</a>, 
+			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionDebugger">extensionDebugger()</a>, 
+			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionDocumentPdf">extensionDocumentPdf()</a>, 
+			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionMarkdownify">extensionMarkdownify()</a>, 
+			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionModHex">extensionModHex()</a>, 
+			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionRequest">extensionRequest()</a>, 
+			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionTemplate">extensionTemplate()</a>
+		</code></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
 
 	<div id="footer">
 		Sphere API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>

@@ -66,12 +66,12 @@
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication.php">
 		<error severity="error" line="19" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageWelcome()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="33" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignInTeacher()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="46" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignInSystem()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="59" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignInStudent()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="71" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignInManagement()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="84" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignInSwitch()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="114" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignOut()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="32" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignInTeacher()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="45" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignInSystem()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="58" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignInStudent()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="70" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignInManagement()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="83" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignInSwitch()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="112" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\Authentication::stageSignOut()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Gatekeeper\Frontend\Authentication\SignIn.php">
 		<error severity="error" line="26" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\SignIn::stageTeacher()" source="ApiGen.Documentation.Documentation"/>
@@ -83,8 +83,9 @@
 		<error severity="error" line="16" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\SignOut::stageSignOut()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Gatekeeper\Frontend\MyAccount\MyAccount.php">
-		<error severity="error" line="33" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount\MyAccount::stageSummary()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="125" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount\MyAccount::stageChangePassword()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="36" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount\MyAccount::stageStatus()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="127" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount\MyAccount::stageChangePassword()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="156" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount\MyAccount::stageChangeConsumer()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Gatekeeper\Gatekeeper.php">
 		<error severity="error" line="28" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Gatekeeper::registerApplication()" source="ApiGen.Documentation.Documentation"/>
@@ -101,8 +102,9 @@
 		<error severity="error" line="219" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Gatekeeper::frontendAuthenticationSignOut()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="229" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Gatekeeper::frontendMyAccountSummary()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="239" message="Missing documentation of method KREDA\Sphere\Application\Gatekeeper\Gatekeeper::setupModuleMyAccount()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="249" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Gatekeeper::serviceAccess()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="258" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Gatekeeper::frontendMyAccountChangePassword()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="254" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Gatekeeper::serviceAccess()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="263" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Gatekeeper::frontendMyAccountChangePassword()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="276" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Gatekeeper::frontendMyAccountChangeConsumer()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Gatekeeper\Service\Access.php">
 		<error severity="error" line="26" message="Missing documentation of property KREDA\Sphere\Application\Gatekeeper\Service\Access::$AccessCache" source="ApiGen.Documentation.Documentation"/>
@@ -241,29 +243,29 @@
 		<error severity="error" line="29" message="Missing documentation of constant KREDA\Sphere\Application\Gatekeeper\Service\Account::API_SIGN_IN_SUCCESS" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="35" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::__construct()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="44" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="73" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeActionSignOut()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="85" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeActionSignInWithToken()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="134" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::checkIsValidCredential()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="176" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeActionSignIn()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="216" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeChangeConsumer()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="235" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeCreateRole()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="254" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeChangePassword()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="283" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeChangeToken()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="295" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeChangePerson()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="307" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeAddRoleAccess()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="321" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeRemoveRoleAccess()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="335" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::checkIsValidSession()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="353" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountBySession()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="364" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::getTableAccount()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="373" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountById()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="384" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountAllByToken()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="395" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountTypById()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="406" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountTypByName()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="417" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountRoleById()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="428" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountRoleByName()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="439" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountRoleAll()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="448" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountByUsername()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="459" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccessAllByAccountRole()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="61" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeActionSignOut()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="75" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeActionSignInWithToken()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="124" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::checkIsValidCredential()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="166" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeActionSignIn()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="206" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeChangeConsumer()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="231" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeCreateRole()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="250" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeChangePassword()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="279" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeChangeToken()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="291" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeChangePerson()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="303" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeAddRoleAccess()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="317" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::executeRemoveRoleAccess()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="331" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::checkIsValidSession()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="349" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountBySession()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="360" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::getTableAccount()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="369" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="380" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountAllByToken()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="391" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountTypById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="402" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountTypByName()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="413" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountRoleById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="424" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountRoleByName()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="435" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountRoleAll()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="444" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccountByUsername()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="455" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account::entityAccessAllByAccountRole()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount.php">
 		<error severity="error" line="18" message="Missing description of class KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount" source="ApiGen.Documentation.Documentation"/>
@@ -392,9 +394,9 @@
 		<error severity="error" line="366" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction::entityAccountBySession()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="390" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction::actionChangeToken()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="419" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction::actionChangeConsumer()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="444" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction::actionChangePerson()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="469" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction::actionAddRoleAccess()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="497" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction::actionRemoveRoleAccess()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="445" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction::actionChangePerson()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="470" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction::actionAddRoleAccess()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="498" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction::actionRemoveRoleAccess()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Gatekeeper\Service\Account\EntitySchema.php">
 		<error severity="error" line="18" message="Missing description of method KREDA\Sphere\Application\Gatekeeper\Service\Account\EntitySchema::setupDatabaseSchema()" source="ApiGen.Documentation.Documentation"/>
@@ -575,10 +577,10 @@
 		<error severity="error" line="98" message="Missing description of method KREDA\Sphere\Application\Graduation\Graduation::frontendGradeType()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Graduation\Service\Grade.php">
-		<error severity="error" line="19" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Grade::__construct()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="28" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Grade::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="35" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Grade::entityGradeTypeById()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="46" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Grade::entityGradeTypeByAcronym()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="20" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Grade::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="29" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Grade::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="36" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Grade::entityGradeTypeById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="47" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Grade::entityGradeTypeByAcronym()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Graduation\Service\Grade\Entity\TblGradeType.php">
 		<error severity="error" line="12" message="Missing description of class KREDA\Sphere\Application\Graduation\Service\Grade\Entity\TblGradeType" source="ApiGen.Documentation.Documentation"/>
@@ -609,11 +611,11 @@
 		<error severity="error" line="64" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Grade\EntitySchema::getTableGradeType()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Graduation\Service\Score.php">
-		<error severity="error" line="22" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Score::__construct()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="31" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Score::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="49" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Score::entityScoreRuleById()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="60" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Score::entityScoreGroupById()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="71" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Score::entityScoreConditionById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="23" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Score::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="32" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Score::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="50" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Score::entityScoreRuleById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="61" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Score::entityScoreGroupById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="72" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Score::entityScoreConditionById()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Graduation\Service\Score\Entity\TblScoreCondition.php">
 		<error severity="error" line="12" message="Missing description of class KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreCondition" source="ApiGen.Documentation.Documentation"/>
@@ -778,8 +780,8 @@
 		<error severity="error" line="247" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Score\EntitySchema::getTableScoreGroup()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Graduation\Service\Weight.php">
-		<error severity="error" line="18" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Weight::__construct()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="27" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Weight::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="19" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Weight::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="28" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Weight::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Graduation\Service\Weight\EntitySchema.php">
 		<error severity="error" line="17" message="Missing description of method KREDA\Sphere\Application\Graduation\Service\Weight\EntitySchema::setupDatabaseSchema()" source="ApiGen.Documentation.Documentation"/>
@@ -817,35 +819,35 @@
 		<error severity="error" line="15" message="Missing description of method KREDA\Sphere\Application\Management\Frontend\Subject\Subject::guiSubject()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Management\Management.php">
-		<error severity="error" line="33" message="Missing description of method KREDA\Sphere\Application\Management\Management::registerApplication()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="64" message="Missing documentation of method KREDA\Sphere\Application\Management\Management::registerApplicationEducation()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="85" message="Missing documentation of method KREDA\Sphere\Application\Management\Management::registerApplicationPerson()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="158" message="Missing description of method KREDA\Sphere\Application\Management\Management::serviceEducation()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="31" message="Missing description of method KREDA\Sphere\Application\Management\Management::registerApplication()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="62" message="Missing documentation of method KREDA\Sphere\Application\Management\Management::registerApplicationEducation()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="83" message="Missing documentation of method KREDA\Sphere\Application\Management\Management::registerApplicationPerson()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="156" message="Missing description of method KREDA\Sphere\Application\Management\Management::serviceEducation()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="167" message="Missing description of method KREDA\Sphere\Application\Management\Management::servicePerson()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="176" message="Missing description of method KREDA\Sphere\Application\Management\Management::serviceAddress()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="185" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendEducationSubject()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="195" message="Missing documentation of method KREDA\Sphere\Application\Management\Management::setupModuleNavigation()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="220" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendManagement()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="233" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPerson()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="244" message="Missing documentation of method KREDA\Sphere\Application\Management\Management::setupPersonNavigation()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="265" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonStudentDetail()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="282" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonStudentList()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="293" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonTeacherDetail()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="310" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonTeacherList()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="321" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonGuardianList()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="332" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonStaffList()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="343" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonOthersList()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="354" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonStudentCreate()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="365" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendCampus()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="376" message="Missing documentation of method KREDA\Sphere\Application\Management\Management::setupCampusNavigation()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="178" message="Missing description of method KREDA\Sphere\Application\Management\Management::serviceAddress()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="189" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendEducationSubject()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="199" message="Missing documentation of method KREDA\Sphere\Application\Management\Management::setupModuleNavigation()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="224" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendManagement()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="237" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPerson()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="248" message="Missing documentation of method KREDA\Sphere\Application\Management\Management::setupPersonNavigation()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="269" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonStudentDetail()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="286" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonStudentList()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="297" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonTeacherDetail()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="314" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonTeacherList()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="325" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonGuardianList()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="336" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonStaffList()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="347" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonOthersList()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="358" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendPersonStudentCreate()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="369" message="Missing description of method KREDA\Sphere\Application\Management\Management::frontendCampus()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="380" message="Missing documentation of method KREDA\Sphere\Application\Management\Management::setupCampusNavigation()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Management\Service\Address.php">
-		<error severity="error" line="22" message="Missing documentation of method KREDA\Sphere\Application\Management\Service\Address::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="22" message="Missing description of method KREDA\Sphere\Application\Management\Service\Address::__construct()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="31" message="Missing description of method KREDA\Sphere\Application\Management\Service\Address::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="78" message="Missing description of method KREDA\Sphere\Application\Management\Service\Address::entityAddressById()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="89" message="Missing description of method KREDA\Sphere\Application\Management\Service\Address::entityAddressCityById()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="100" message="Missing description of method KREDA\Sphere\Application\Management\Service\Address::entityAddressStateById()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="111" message="Missing description of method KREDA\Sphere\Application\Management\Service\Address::entityAddressState()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="55" message="Missing description of method KREDA\Sphere\Application\Management\Service\Address::entityAddressById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="66" message="Missing description of method KREDA\Sphere\Application\Management\Service\Address::entityAddressCityById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="77" message="Missing description of method KREDA\Sphere\Application\Management\Service\Address::entityAddressStateById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="88" message="Missing description of method KREDA\Sphere\Application\Management\Service\Address::entityAddressState()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Management\Service\Address\Entity\TblAddress.php">
 		<error severity="error" line="13" message="Missing description of class KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress" source="ApiGen.Documentation.Documentation"/>
@@ -929,9 +931,9 @@
 		<error severity="error" line="92" message="Missing description of method KREDA\Sphere\Application\Management\Service\Address\EntitySchema::setTableAddress()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Management\Service\Education.php">
-		<error severity="error" line="19" message="Missing documentation of method KREDA\Sphere\Application\Management\Service\Education::__construct()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="28" message="Missing description of method KREDA\Sphere\Application\Management\Service\Education::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="64" message="Missing description of method KREDA\Sphere\Application\Management\Service\Education::entityLevelById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="20" message="Missing description of method KREDA\Sphere\Application\Management\Service\Education::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="29" message="Missing description of method KREDA\Sphere\Application\Management\Service\Education::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="65" message="Missing description of method KREDA\Sphere\Application\Management\Service\Education::entityLevelById()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Management\Service\Education\Entity\TblGroup.php">
 		<error severity="error" line="14" message="Missing description of class KREDA\Sphere\Application\Management\Service\Education\Entity\TblGroup" source="ApiGen.Documentation.Documentation"/>
@@ -1013,11 +1015,11 @@
 		<error severity="error" line="138" message="Missing description of method KREDA\Sphere\Application\Management\Service\Education\EntitySchema::getTableGroup()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Management\Service\Person.php">
-		<error severity="error" line="21" message="Missing documentation of method KREDA\Sphere\Application\Management\Service\Person::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="21" message="Missing description of method KREDA\Sphere\Application\Management\Service\Person::__construct()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="30" message="Missing description of method KREDA\Sphere\Application\Management\Service\Person::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="42" message="Missing description of method KREDA\Sphere\Application\Management\Service\Person::entityPersonById()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="53" message="Missing description of method KREDA\Sphere\Application\Management\Service\Person::entityPersonAll()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="62" message="Missing description of method KREDA\Sphere\Application\Management\Service\Person::executeCreatePerson()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="37" message="Missing description of method KREDA\Sphere\Application\Management\Service\Person::entityPersonById()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="48" message="Missing description of method KREDA\Sphere\Application\Management\Service\Person::entityPersonAll()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="57" message="Missing description of method KREDA\Sphere\Application\Management\Service\Person::executeCreatePerson()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\Management\Service\Person\Entity\TblPerson.php">
 		<error severity="error" line="12" message="Missing description of class KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson" source="ApiGen.Documentation.Documentation"/>
@@ -1083,37 +1085,28 @@
 		<error severity="error" line="19" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Authorization\Summary\Summary::__construct()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="32" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Authorization\Summary\Summary::getContent()" source="ApiGen.Documentation.Documentation"/>
 	</file>
-	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Consumer\Consumer.php">
-		<error severity="error" line="29" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Consumer\Consumer::stageSummary()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="41" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Consumer\Consumer::stageConsumerCreate()" source="ApiGen.Documentation.Documentation"/>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Cache.php">
+		<error severity="error" line="28" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Cache::stageStatus()" source="ApiGen.Documentation.Documentation"/>
 	</file>
-	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Consumer\Setting\CreateConsumer.php">
-		<error severity="error" line="17" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Consumer\Setting\CreateConsumer::__construct()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="37" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Consumer\Setting\CreateConsumer::getContent()" source="ApiGen.Documentation.Documentation"/>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Consumer.php">
+		<error severity="error" line="25" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Consumer::stageStatus()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="37" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Consumer::stageCreate()" source="ApiGen.Documentation.Documentation"/>
 	</file>
-	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Installer\Installer.php">
-		<error severity="error" line="17" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Installer\Installer::guiSummary()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="29" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Installer\Installer::guiUpdateSimulation()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="43" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Installer\Installer::guiUpdatePerform()" source="ApiGen.Documentation.Documentation"/>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Database.php">
+		<error severity="error" line="30" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Database::stageStatus()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="43" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Database::stageConfig()" source="ApiGen.Documentation.Documentation"/>
 	</file>
-	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Protocol\Protocol.php">
-		<error severity="error" line="24" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Protocol\Protocol::stageLive()" source="ApiGen.Documentation.Documentation"/>
-	</file>
-	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Status\Database\Status.php">
-		<error severity="error" line="23" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Status\Database\Status::__construct()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="warning" line="23" message="Invalid documentation &quot;$Status&quot; of parameter KREDA\Sphere\Application\System\Frontend\Status\Database\Status::__construct($Status)" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="36" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Status\Database\Status::setRouteUpdate()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="48" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Status\Database\Status::getContent()" source="ApiGen.Documentation.Documentation"/>
-	</file>
-	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Status\Status.php">
-		<error severity="error" line="16" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Status\Status::stageDatabaseStatus()" source="ApiGen.Documentation.Documentation"/>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Protocol.php">
+		<error severity="error" line="24" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Protocol::stageStatus()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Token\Token.php">
 		<error severity="error" line="27" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Token\Token::stageWelcome()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="39" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Token\Token::stageCertification()" source="ApiGen.Documentation.Documentation"/>
 	</file>
-	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Service\Database.php">
-		<error severity="error" line="61" message="Missing description of method KREDA\Sphere\Application\System\Service\Database::extensionDatabaseStatus()" source="ApiGen.Documentation.Documentation"/>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Frontend\Update.php">
+		<error severity="error" line="16" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Update::stageStatus()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="28" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Update::stageSimulation()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="41" message="Missing description of method KREDA\Sphere\Application\System\Frontend\Update::stagePerform()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\Service\Protocol.php">
 		<error severity="error" line="17" message="Missing documentation of method KREDA\Sphere\Application\System\Service\Protocol::__construct()" source="ApiGen.Documentation.Documentation"/>
@@ -1204,31 +1197,28 @@
 		<error severity="error" line="18" message="Missing description of method KREDA\Sphere\Application\System\Service\Update::setupDatabaseSchema()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Application\System\System.php">
-		<error severity="error" line="37" message="Missing description of method KREDA\Sphere\Application\System\System::registerApplication()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="134" message="Missing description of method KREDA\Sphere\Application\System\System::serviceUpdate()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="143" message="Missing description of method KREDA\Sphere\Application\System\System::serviceProtocol()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="152" message="Missing description of method KREDA\Sphere\Application\System\System::serviceDatabase()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="161" message="Missing description of method KREDA\Sphere\Application\System\System::frontendSystem()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="198" message="Missing documentation of method KREDA\Sphere\Application\System\System::setupModuleNavigation()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="224" message="Missing description of method KREDA\Sphere\Application\System\System::frontendConsumer()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="235" message="Missing documentation of method KREDA\Sphere\Application\System\System::setupServiceConsumer()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="244" message="Missing description of method KREDA\Sphere\Application\System\System::frontendConsumerCreate()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="255" message="Missing description of method KREDA\Sphere\Application\System\System::frontendUpdate()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="266" message="Missing documentation of method KREDA\Sphere\Application\System\System::setupServiceUpdate()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="278" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorization()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="289" message="Missing documentation of method KREDA\Sphere\Application\System\System::setupFrontendAuthorization()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="315" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorizationRight()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="328" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorizationPrivilege()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="341" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorizationAccess()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="354" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorizationRole()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="367" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorizationRoleAccess()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="381" message="Missing description of method KREDA\Sphere\Application\System\System::frontendUpdateSimulation()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="392" message="Missing description of method KREDA\Sphere\Application\System\System::frontendUpdatePerform()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="403" message="Missing description of method KREDA\Sphere\Application\System\System::frontendDatabaseStatus()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="413" message="Missing description of method KREDA\Sphere\Application\System\System::frontendToken()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="424" message="Missing documentation of method KREDA\Sphere\Application\System\System::setupServiceToken()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="433" message="Missing description of method KREDA\Sphere\Application\System\System::frontendTokenCertification()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="447" message="Missing description of method KREDA\Sphere\Application\System\System::frontendProtocol()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="29" message="Missing description of method KREDA\Sphere\Application\System\System::registerApplication()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="124" message="Missing description of method KREDA\Sphere\Application\System\System::serviceUpdate()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="133" message="Missing description of method KREDA\Sphere\Application\System\System::serviceProtocol()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="142" message="Missing description of method KREDA\Sphere\Application\System\System::frontendSystem()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="179" message="Missing documentation of method KREDA\Sphere\Application\System\System::setupModuleNavigation()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="205" message="Missing description of method KREDA\Sphere\Application\System\System::frontendConsumerStatus()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="216" message="Missing documentation of method KREDA\Sphere\Application\System\System::setupApplicationNavigationConsumer()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="231" message="Missing description of method KREDA\Sphere\Application\System\System::frontendConsumerCreate()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="242" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorization()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="253" message="Missing documentation of method KREDA\Sphere\Application\System\System::setupApplicationNavigationAuthorization()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="279" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorizationRight()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="292" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorizationPrivilege()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="305" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorizationAccess()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="318" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorizationRole()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="331" message="Missing description of method KREDA\Sphere\Application\System\System::frontendAuthorizationRoleAccess()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="345" message="Missing description of method KREDA\Sphere\Application\System\System::frontendUpdateStatus()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="356" message="Missing documentation of method KREDA\Sphere\Application\System\System::setupApplicationNavigationUpdate()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="368" message="Missing description of method KREDA\Sphere\Application\System\System::frontendUpdateSimulation()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="379" message="Missing description of method KREDA\Sphere\Application\System\System::frontendUpdatePerform()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="390" message="Missing description of method KREDA\Sphere\Application\System\System::frontendDatabaseStatus()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="400" message="Missing description of method KREDA\Sphere\Application\System\System::frontendCacheStatus()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="410" message="Missing description of method KREDA\Sphere\Application\System\System::frontendProtocolStatus()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Client\Component\Element\Element.php">
 		<error severity="error" line="15" message="Missing description of method KREDA\Sphere\Client\Component\Element\Element::__toString()" source="ApiGen.Documentation.Documentation"/>
@@ -1514,13 +1504,13 @@
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\AbstractExtension.php">
 		<error severity="error" line="27" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionModHex()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="36" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionDebugger()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="45" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionDocumentPdf()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="warning" line="56" message="Invalid documentation &quot;$Location&quot; of parameter KREDA\Sphere\Common\AbstractExtension::extensionTemplate($Location)" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="56" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionTemplate()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="68" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionDatabase()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="89" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionRequest()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="101" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionMarkdownify()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="38" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionDebugger()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="47" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionDocumentPdf()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="warning" line="58" message="Invalid documentation &quot;$Location&quot; of parameter KREDA\Sphere\Common\AbstractExtension::extensionTemplate($Location)" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="58" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionTemplate()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="70" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionDatabase()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="91" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionRequest()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="103" message="Missing description of method KREDA\Sphere\Common\AbstractExtension::extensionMarkdownify()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\AbstractFrontend.php">
 		<error severity="error" line="20" message="Missing description of method KREDA\Sphere\Common\AbstractFrontend::getRedirect()" source="ApiGen.Documentation.Documentation"/>
@@ -1530,17 +1520,69 @@
 		<error severity="error" line="88" message="Missing description of method KREDA\Sphere\Common\AbstractFrontend::getContent()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\AbstractService.php">
-		<error severity="error" line="25" message="Missing description of method KREDA\Sphere\Common\AbstractService::getApi()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="37" message="Missing description of method KREDA\Sphere\Common\AbstractService::setDatabaseHandler()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="48" message="Missing description of method KREDA\Sphere\Common\AbstractService::setupDatabaseSchema()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="61" message="Missing description of method KREDA\Sphere\Common\AbstractService::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="71" message="Missing description of method KREDA\Sphere\Common\AbstractService::getConsumerSuffix()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="84" message="Missing description of method KREDA\Sphere\Common\AbstractService::getClientServiceRoute()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="95" message="Missing description of method KREDA\Sphere\Common\AbstractService::getEntityManager()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="104" message="Missing description of method KREDA\Sphere\Common\AbstractService::getDatabaseHandler()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="113" message="Missing description of method KREDA\Sphere\Common\AbstractService::schemaTableCreate()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="132" message="Missing description of method KREDA\Sphere\Common\AbstractService::schemaTableAddForeignKey()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="147" message="Missing description of method KREDA\Sphere\Common\AbstractService::schemaMigration()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="24" message="Missing description of method KREDA\Sphere\Common\AbstractService::getApi()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="35" message="Missing description of method KREDA\Sphere\Common\AbstractService::setDatabaseHandler()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="46" message="Missing description of method KREDA\Sphere\Common\AbstractService::setupDatabaseSchema()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="59" message="Missing description of method KREDA\Sphere\Common\AbstractService::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="69" message="Missing description of method KREDA\Sphere\Common\AbstractService::getConsumerSuffix()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="86" message="Missing description of method KREDA\Sphere\Common\AbstractService::getEntityManager()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="95" message="Missing description of method KREDA\Sphere\Common\AbstractService::getDatabaseHandler()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="104" message="Missing description of method KREDA\Sphere\Common\AbstractService::schemaTableCreate()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="123" message="Missing description of method KREDA\Sphere\Common\AbstractService::schemaTableAddForeignKey()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="138" message="Missing description of method KREDA\Sphere\Common\AbstractService::schemaMigration()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Cache\Frontend\Status.php">
+		<error severity="error" line="18" message="Missing description of method KREDA\Sphere\Common\Cache\Frontend\Status::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="37" message="Missing description of method KREDA\Sphere\Common\Cache\Frontend\Status::getContent()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Cache\ICacheInterface.php">
+		<error severity="error" line="12" message="Missing description of method KREDA\Sphere\Common\Cache\ICacheInterface::getCountHits()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="17" message="Missing description of method KREDA\Sphere\Common\Cache\ICacheInterface::getCountMisses()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="22" message="Missing description of method KREDA\Sphere\Common\Cache\ICacheInterface::getSizeAvailable()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="27" message="Missing description of method KREDA\Sphere\Common\Cache\ICacheInterface::getSizeUsed()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="32" message="Missing description of method KREDA\Sphere\Common\Cache\ICacheInterface::getSizeFree()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="37" message="Missing description of method KREDA\Sphere\Common\Cache\ICacheInterface::getSizeWasted()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="42" message="Missing description of method KREDA\Sphere\Common\Cache\ICacheInterface::clearCache()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Cache\Type\ApcSma.php">
+		<error severity="error" line="17" message="Missing documentation of method KREDA\Sphere\Common\Cache\Type\ApcSma::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="28" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcSma::getCountHits()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="37" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcSma::getCountMisses()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="46" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcSma::getSizeUsed()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="55" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcSma::getSizeAvailable()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="64" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcSma::getSizeFree()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="73" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcSma::clearCache()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="82" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcSma::getSizeWasted()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Cache\Type\ApcUser.php">
+		<error severity="error" line="17" message="Missing documentation of method KREDA\Sphere\Common\Cache\Type\ApcUser::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="28" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcUser::getCountHits()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="37" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcUser::getCountMisses()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="46" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcUser::getSizeUsed()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="55" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcUser::getSizeAvailable()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="64" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcUser::getSizeFree()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="73" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcUser::getSizeWasted()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="82" message="Missing description of method KREDA\Sphere\Common\Cache\Type\ApcUser::clearCache()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Cache\Type\OpCache.php">
+		<error severity="error" line="19" message="Missing documentation of method KREDA\Sphere\Common\Cache\Type\OpCache::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="33" message="Missing description of method KREDA\Sphere\Common\Cache\Type\OpCache::getCountHits()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="42" message="Missing description of method KREDA\Sphere\Common\Cache\Type\OpCache::getCountMisses()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="51" message="Missing description of method KREDA\Sphere\Common\Cache\Type\OpCache::getSizeUsed()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="60" message="Missing description of method KREDA\Sphere\Common\Cache\Type\OpCache::getSizeAvailable()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="69" message="Missing description of method KREDA\Sphere\Common\Cache\Type\OpCache::getSizeFree()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="78" message="Missing description of method KREDA\Sphere\Common\Cache\Type\OpCache::getSizeWasted()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="87" message="Missing description of method KREDA\Sphere\Common\Cache\Type\OpCache::clearCache()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Cache\Type\TwigCache.php">
+		<error severity="error" line="14" message="Missing documentation of property KREDA\Sphere\Common\Cache\Type\TwigCache::$TwigCache" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="16" message="Missing description of method KREDA\Sphere\Common\Cache\Type\TwigCache::clearCache()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="27" message="Missing description of method KREDA\Sphere\Common\Cache\Type\TwigCache::getCountHits()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="36" message="Missing description of method KREDA\Sphere\Common\Cache\Type\TwigCache::getCountMisses()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="45" message="Missing description of method KREDA\Sphere\Common\Cache\Type\TwigCache::getSizeWasted()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="54" message="Missing description of method KREDA\Sphere\Common\Cache\Type\TwigCache::getSizeAvailable()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="63" message="Missing description of method KREDA\Sphere\Common\Cache\Type\TwigCache::getSizeFree()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="72" message="Missing description of method KREDA\Sphere\Common\Cache\Type\TwigCache::getSizeUsed()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Database\Connection\Connector.php">
 		<error severity="error" line="16" message="Missing description of method KREDA\Sphere\Common\Database\Connection\Connector::addConnection()" source="ApiGen.Documentation.Documentation"/>
@@ -1564,6 +1606,9 @@
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Database\Driver\AbstractDriver.php">
 		<error severity="error" line="15" message="Missing description of method KREDA\Sphere\Common\Database\Driver\AbstractDriver::getIdentifier()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="24" message="Missing description of method KREDA\Sphere\Common\Database\Driver\AbstractDriver::setIdentifier()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Database\Driver\Platform\PdoMsSql.php">
+		<error severity="error" line="14" message="Missing documentation of method KREDA\Sphere\Common\Database\Driver\Platform\PdoMsSql::__construct()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Database\Driver\Platform\PdoMySql.php">
 		<error severity="error" line="14" message="Missing documentation of method KREDA\Sphere\Common\Database\Driver\Platform\PdoMySql::__construct()" source="ApiGen.Documentation.Documentation"/>
@@ -1661,6 +1706,9 @@
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Button\Element\ButtonResetWarning.php">
 		<error severity="error" line="16" message="Missing description of method KREDA\Sphere\Common\Frontend\Button\Element\ButtonResetWarning::__construct()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger.php">
+		<error severity="error" line="16" message="Missing description of method KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger::__construct()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary.php">
 		<error severity="error" line="16" message="Missing description of method KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary::__construct()" source="ApiGen.Documentation.Documentation"/>
@@ -1788,14 +1836,45 @@
 		<error severity="error" line="14" message="Missing description of method KREDA\Sphere\Common\Frontend\Table\Structure\TableDefault::__construct()" source="ApiGen.Documentation.Documentation"/>
 		<error severity="error" line="53" message="Missing description of method KREDA\Sphere\Common\Frontend\Table\Structure\TableDefault::getContent()" source="ApiGen.Documentation.Documentation"/>
 	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Text\AbstractBackground.php">
+		<error severity="error" line="15" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\AbstractBackground::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="24" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\AbstractBackground::getContent()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="33" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\AbstractBackground::getName()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Text\AbstractText.php">
+		<error severity="error" line="15" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\AbstractText::__construct()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="24" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\AbstractText::getContent()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="33" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\AbstractText::getName()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Text\Element\TextDanger.php">
+		<error severity="error" line="10" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\Element\TextDanger::__construct()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Text\Element\TextMuted.php">
+		<error severity="error" line="10" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\Element\TextMuted::__construct()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Text\Element\TextPrimary.php">
+		<error severity="error" line="10" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\Element\TextPrimary::__construct()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Text\Element\TextSuccess.php">
+		<error severity="error" line="10" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\Element\TextSuccess::__construct()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Text\Element\TextWarning.php">
+		<error severity="error" line="10" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\Element\TextWarning::__construct()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Text\Structure\BackgroundDanger.php">
+		<error severity="error" line="11" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\Structure\BackgroundDanger::__construct()" source="ApiGen.Documentation.Documentation"/>
+	</file>
+	<file name="D:\WebProject\KREDA-Sphere\Sphere\Common\Frontend\Text\Structure\BackgroundSuccess.php">
+		<error severity="error" line="11" message="Missing description of method KREDA\Sphere\Common\Frontend\Text\Structure\BackgroundSuccess::__construct()" source="ApiGen.Documentation.Documentation"/>
+	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\IApplicationInterface.php">
 		<error severity="error" line="14" message="Missing description of method KREDA\Sphere\IApplicationInterface::registerApplication()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 	<file name="D:\WebProject\KREDA-Sphere\Sphere\IServiceInterface.php">
-		<error severity="error" line="14" message="Missing description of method KREDA\Sphere\IServiceInterface::getApi()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="21" message="Missing description of method KREDA\Sphere\IServiceInterface::setupDatabaseSchema()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="28" message="Missing description of method KREDA\Sphere\IServiceInterface::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="33" message="Missing description of method KREDA\Sphere\IServiceInterface::getDatabaseHandler()" source="ApiGen.Documentation.Documentation"/>
-		<error severity="error" line="49" message="Missing description of method KREDA\Sphere\IServiceInterface::getConsumerSuffix()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="15" message="Missing description of method KREDA\Sphere\IServiceInterface::getApi()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="22" message="Missing description of method KREDA\Sphere\IServiceInterface::setupDatabaseSchema()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="29" message="Missing description of method KREDA\Sphere\IServiceInterface::setupDatabaseContent()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="34" message="Missing description of method KREDA\Sphere\IServiceInterface::getDatabaseHandler()" source="ApiGen.Documentation.Documentation"/>
+		<error severity="error" line="50" message="Missing description of method KREDA\Sphere\IServiceInterface::getConsumerSuffix()" source="ApiGen.Documentation.Documentation"/>
 	</file>
 </checkstyle>

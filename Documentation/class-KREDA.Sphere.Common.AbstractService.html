@@ -8,7 +8,7 @@
     <title>Class KREDA\Sphere\Common\AbstractService | Sphere</title>
 
     <script type="text/javascript" src="resources/combined.js?3624343741"></script>
-    <script type="text/javascript" src="elementlist.js?1068914502"></script>
+    <script type="text/javascript" src="elementlist.js?3508969609"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
 
@@ -181,20 +181,6 @@
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Authorization.Summary.html">Summary</a>
 						</li>
 							</ul></li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Consumer.html">Consumer<span></span></a>
-						<ul>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Consumer.Setting.html">Setting</a>
-						</li>
-							</ul></li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Installer.html">Installer</a>
-						</li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Protocol.html">Protocol</a>
-						</li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Status.html">Status<span></span></a>
-						<ul>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Status.Database.html">Database</a>
-						</li>
-							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Token.html">Token</a>
 						</li>
 							</ul></li>
@@ -246,6 +232,13 @@
 							</ul></li>
 				<li class="active main"><a href="namespace-KREDA.Sphere.Common.html">Common<span></span></a>
 						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Cache.html">Cache<span></span></a>
+						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Cache.Frontend.html">Frontend</a>
+						</li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Cache.Type.html">Type</a>
+						</li>
+							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Database.html">Database<span></span></a>
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Database.Connection.html">Connection</a>
@@ -289,6 +282,13 @@
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Table.html">Table<span></span></a>
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Table.Structure.html">Structure</a>
+						</li>
+							</ul></li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Text.html">Text<span></span></a>
+						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Text.Element.html">Element</a>
+						</li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Text.Structure.html">Structure</a>
 						</li>
 							</ul></li></ul></li></ul></li></ul></li></ul></li>
 				<li><a href="namespace-PHP.html">PHP</a>
@@ -390,7 +390,6 @@
 			<a href="class-KREDA.Sphere.Application.Assistance.Service.Youtrack.html">KREDA\Sphere\Application\Assistance\Service\Youtrack</a>, 
 			<a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Access.EntitySchema.html">KREDA\Sphere\Application\Gatekeeper\Service\Access\EntitySchema</a>, 
 			<a href="class-KREDA.Sphere.Application.Management.Service.Person.EntitySchema.html">KREDA\Sphere\Application\Management\Service\Person\EntitySchema</a>, 
-			<a href="class-KREDA.Sphere.Application.System.Service.Database.html">KREDA\Sphere\Application\System\Service\Database</a>, 
 			<a href="class-KREDA.Sphere.Application.System.Service.Protocol.EntitySchema.html">KREDA\Sphere\Application\System\Service\Protocol\EntitySchema</a>, 
 			<a href="class-KREDA.Sphere.Application.System.Service.Token.html">KREDA\Sphere\Application\System\Service\Token</a>, 
 			<a href="class-KREDA.Sphere.Application.System.Service.Update.html">KREDA\Sphere\Application\System\Service\Update</a>, 
@@ -440,7 +439,7 @@
 		<b>Namespace:</b> <a href="namespace-KREDA.html">KREDA</a>\<a href="namespace-KREDA.Sphere.html">Sphere</a>\<a href="namespace-KREDA.Sphere.Common.html">Common</a><br />
 		<b>Package:</b> KREDA\Sphere\Common<br />
 
-		<b>Located at</b> <a href="source-class-KREDA.Sphere.Common.AbstractService.html#12-166" title="Go to source code">Common/AbstractService.php</a><br />
+		<b>Located at</b> <a href="source-class-KREDA.Sphere.Common.AbstractService.html#13-157" title="Go to source code">Common/AbstractService.php</a><br />
 	</div>
 
 
@@ -458,7 +457,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getApi">#</a>
-		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#25-35" title="Go to source code">getApi</a>( <span>null|string <var>$BaseRoute</var> = <span class="php-keyword1">null</span> </span> )</code>
+		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#24-33" title="Go to source code">getApi</a>( <span><code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Consumer.Entity.TblConsumer.html">KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer</a></code> <var>$tblConsumer</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 		<div class="description short">
 			
@@ -470,8 +469,8 @@
 
 				<h4>Parameters</h4>
 				<div class="list"><dl>
-					<dt><var>$BaseRoute</var></dt>
-					<dd><code>null|string</code><br>$BaseRoute Client-Application Route</dd>
+					<dt><var>$tblConsumer</var></dt>
+					<dd><code>null|<code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Consumer.Entity.TblConsumer.html">KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer</a></code></code><br>$tblConsumer</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
@@ -498,7 +497,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setDatabaseHandler">#</a>
-		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#37-46" title="Go to source code">setDatabaseHandler</a>( <span>string <var>$Application</var></span>, <span>string <var>$Service</var> = <span class="php-quote">''</span></span>, <span>string <var>$Consumer</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#35-44" title="Go to source code">setDatabaseHandler</a>( <span>string <var>$Application</var></span>, <span>string <var>$Service</var> = <span class="php-quote">''</span></span>, <span>string <var>$Consumer</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			
@@ -538,7 +537,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setupDatabaseSchema">#</a>
-		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#48-59" title="Go to source code">setupDatabaseSchema</a>( <span>boolean <var>$Simulate</var> = <span class="php-keyword1">true</span> </span> )</code>
+		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#46-57" title="Go to source code">setupDatabaseSchema</a>( <span>boolean <var>$Simulate</var> = <span class="php-keyword1">true</span> </span> )</code>
 
 		<div class="description short">
 			
@@ -578,7 +577,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setupDatabaseContent">#</a>
-		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#61-69" title="Go to source code">setupDatabaseContent</a>( )</code>
+		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#59-67" title="Go to source code">setupDatabaseContent</a>( )</code>
 
 		<div class="description short">
 			
@@ -609,7 +608,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getConsumerSuffix">#</a>
-		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#71-82" title="Go to source code">getConsumerSuffix</a>( )</code>
+		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#69-84" title="Go to source code">getConsumerSuffix</a>( <span><code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Consumer.Entity.TblConsumer.html">KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer</a></code> <var>$tblConsumer</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 		<div class="description short">
 			
@@ -619,6 +618,11 @@
 			
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$tblConsumer</var></dt>
+					<dd><code><code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Consumer.Entity.TblConsumer.html">KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer</a></code></code><br>$tblConsumer</dd>
+				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
@@ -633,44 +637,6 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="getClientServiceRoute" id="_getClientServiceRoute">
-
-		<td class="attributes"><code>
-			final protected 
-			null|string
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_getClientServiceRoute">#</a>
-		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#84-93" title="Go to source code">getClientServiceRoute</a>( <span>string <var>$Route</var></span> )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$Route</var></dt>
-					<dd><code>string</code><br>$Route Service Route</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code>null|string</code><br>Client-Application Route<br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
 	<tr data-order="getEntityManager" id="_getEntityManager">
 
 		<td class="attributes"><code>
@@ -682,7 +648,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getEntityManager">#</a>
-		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#95-102" title="Go to source code">getEntityManager</a>( )</code>
+		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#86-93" title="Go to source code">getEntityManager</a>( )</code>
 
 		<div class="description short">
 			
@@ -715,7 +681,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getDatabaseHandler">#</a>
-		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#104-111" title="Go to source code">getDatabaseHandler</a>( )</code>
+		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#95-102" title="Go to source code">getDatabaseHandler</a>( )</code>
 
 		<div class="description short">
 			
@@ -750,7 +716,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_schemaTableCreate">#</a>
-		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#113-130" title="Go to source code">schemaTableCreate</a>( <span>Doctrine\DBAL\Schema\Schema <var>&amp; $Schema</var></span>, <span>string <var>$Name</var></span> )</code>
+		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#104-121" title="Go to source code">schemaTableCreate</a>( <span>Doctrine\DBAL\Schema\Schema <var>&amp; $Schema</var></span>, <span>string <var>$Name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -794,7 +760,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_schemaTableAddForeignKey">#</a>
-		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#132-145" title="Go to source code">schemaTableAddForeignKey</a>( <span>Doctrine\DBAL\Schema\Table <var>&amp; $KeyTarget</var></span>, <span>Doctrine\DBAL\Schema\Table <var>$KeySource</var></span> )</code>
+		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#123-136" title="Go to source code">schemaTableAddForeignKey</a>( <span>Doctrine\DBAL\Schema\Table <var>&amp; $KeyTarget</var></span>, <span>Doctrine\DBAL\Schema\Table <var>$KeySource</var></span> )</code>
 
 		<div class="description short">
 			
@@ -830,7 +796,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_schemaMigration">#</a>
-		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#147-165" title="Go to source code">schemaMigration</a>( <span>Doctrine\DBAL\Schema\Schema <var>&amp; $Schema</var></span>, <span>boolean <var>$Simulate</var> = <span class="php-keyword1">true</span> </span> )</code>
+		<code><a href="source-class-KREDA.Sphere.Common.AbstractService.html#138-156" title="Go to source code">schemaMigration</a>( <span>Doctrine\DBAL\Schema\Schema <var>&amp; $Schema</var></span>, <span>boolean <var>$Simulate</var> = <span class="php-keyword1">true</span> </span> )</code>
 
 		<div class="description short">
 			
@@ -884,33 +850,6 @@
 
 	<table class="summary" id="properties">
 	<caption>Properties summary</caption>
-	<tr data-order="BaseRoute" id="$BaseRoute">
-		<td class="attributes"><code>
-			protected static 
-			null|string
-		</code></td>
-
-		<td class="name">
-				<a href="source-class-KREDA.Sphere.Common.AbstractService.html#20-21" title="Go to source code"><var>$BaseRoute</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">null</span></code></td>
-		<td class="description"><div>
-			<a href="#$BaseRoute" class="anchor">#</a>
-
-			<div class="description short">
-				
-<p>$BaseRoute Client-Application Route</p>
-
-			</div>
-
-			<div class="description detailed hidden">
-				
-<p>$BaseRoute Client-Application Route</p>
-
-
-			</div>
-		</div></td>
-	</tr>
 	<tr data-order="DatabaseHandler" id="$DatabaseHandler">
 		<td class="attributes"><code>
 			protected static 
@@ -918,7 +857,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-KREDA.Sphere.Common.AbstractService.html#22-23" title="Go to source code"><var>$DatabaseHandler</var></a>
+				<a href="source-class-KREDA.Sphere.Common.AbstractService.html#21-22" title="Go to source code"><var>$DatabaseHandler</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">null</span></code></td>
 		<td class="description"><div>

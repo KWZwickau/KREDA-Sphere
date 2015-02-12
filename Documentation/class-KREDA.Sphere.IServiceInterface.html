@@ -8,7 +8,7 @@
     <title>Interface KREDA\Sphere\IServiceInterface | Sphere</title>
 
     <script type="text/javascript" src="resources/combined.js?3624343741"></script>
-    <script type="text/javascript" src="elementlist.js?1068914502"></script>
+    <script type="text/javascript" src="elementlist.js?3508969609"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
 
@@ -181,20 +181,6 @@
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Authorization.Summary.html">Summary</a>
 						</li>
 							</ul></li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Consumer.html">Consumer<span></span></a>
-						<ul>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Consumer.Setting.html">Setting</a>
-						</li>
-							</ul></li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Installer.html">Installer</a>
-						</li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Protocol.html">Protocol</a>
-						</li>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Status.html">Status<span></span></a>
-						<ul>
-				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Status.Database.html">Database</a>
-						</li>
-							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Token.html">Token</a>
 						</li>
 							</ul></li>
@@ -246,6 +232,13 @@
 							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.html">Common<span></span></a>
 						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Cache.html">Cache<span></span></a>
+						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Cache.Frontend.html">Frontend</a>
+						</li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Cache.Type.html">Type</a>
+						</li>
+							</ul></li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Database.html">Database<span></span></a>
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Database.Connection.html">Connection</a>
@@ -289,6 +282,13 @@
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Table.html">Table<span></span></a>
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Table.Structure.html">Structure</a>
+						</li>
+							</ul></li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Text.html">Text<span></span></a>
+						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Text.Element.html">Element</a>
+						</li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Text.Structure.html">Structure</a>
 						</li>
 							</ul></li></ul></li></ul></li></ul></li></ul></li>
 				<li><a href="namespace-PHP.html">PHP</a>
@@ -400,7 +400,6 @@
 			<a href="class-KREDA.Sphere.Application.Management.Service.Person.EntityAction.html">KREDA\Sphere\Application\Management\Service\Person\EntityAction</a>, 
 			<a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Access.EntitySchema.html">KREDA\Sphere\Application\Gatekeeper\Service\Access\EntitySchema</a>, 
 			<a href="class-KREDA.Sphere.Application.Management.Service.Person.EntitySchema.html">KREDA\Sphere\Application\Management\Service\Person\EntitySchema</a>, 
-			<a href="class-KREDA.Sphere.Application.System.Service.Database.html">KREDA\Sphere\Application\System\Service\Database</a>, 
 			<a href="class-KREDA.Sphere.Application.System.Service.Protocol.html">KREDA\Sphere\Application\System\Service\Protocol</a>, 
 			<a href="class-KREDA.Sphere.Application.System.Service.Protocol.EntityAction.html">KREDA\Sphere\Application\System\Service\Protocol\EntityAction</a>, 
 			<a href="class-KREDA.Sphere.Application.System.Service.Protocol.EntitySchema.html">KREDA\Sphere\Application\System\Service\Protocol\EntitySchema</a>, 
@@ -422,7 +421,7 @@
 		<b>Namespace:</b> <a href="namespace-KREDA.html">KREDA</a>\<a href="namespace-KREDA.Sphere.html">Sphere</a><br />
 		<b>Package:</b> KREDA\Sphere<br />
 
-		<b>Located at</b> <a href="source-class-KREDA.Sphere.IServiceInterface.html#6-53" title="Go to source code">IServiceInterface.php</a><br />
+		<b>Located at</b> <a href="source-class-KREDA.Sphere.IServiceInterface.html#7-54" title="Go to source code">IServiceInterface.php</a><br />
 	</div>
 
 
@@ -440,7 +439,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getApi">#</a>
-		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#14-19" title="Go to source code">getApi</a>( <span>string <var>$BaseRoute</var></span> )</code>
+		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#15-20" title="Go to source code">getApi</a>( <span><code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Consumer.Entity.TblConsumer.html">KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer</a></code> <var>$tblConsumer</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 		<div class="description short">
 			
@@ -452,8 +451,8 @@
 
 				<h4>Parameters</h4>
 				<div class="list"><dl>
-					<dt><var>$BaseRoute</var></dt>
-					<dd><code>string</code><br>$BaseRoute Client-Application Route</dd>
+					<dt><var>$tblConsumer</var></dt>
+					<dd><code>null|<code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Consumer.Entity.TblConsumer.html">KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer</a></code></code><br>$tblConsumer</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
@@ -478,7 +477,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setupDatabaseSchema">#</a>
-		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#21-26" title="Go to source code">setupDatabaseSchema</a>( <span>boolean <var>$Simulate</var> = <span class="php-keyword1">true</span> </span> )</code>
+		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#22-27" title="Go to source code">setupDatabaseSchema</a>( <span>boolean <var>$Simulate</var> = <span class="php-keyword1">true</span> </span> )</code>
 
 		<div class="description short">
 			
@@ -516,7 +515,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setupDatabaseContent">#</a>
-		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#28-31" title="Go to source code">setupDatabaseContent</a>( )</code>
+		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#29-32" title="Go to source code">setupDatabaseContent</a>( )</code>
 
 		<div class="description short">
 			
@@ -545,7 +544,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getDatabaseHandler">#</a>
-		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#33-36" title="Go to source code">getDatabaseHandler</a>( )</code>
+		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#34-37" title="Go to source code">getDatabaseHandler</a>( )</code>
 
 		<div class="description short">
 			
@@ -578,7 +577,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setDatabaseHandler">#</a>
-		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#38-47" title="Go to source code">setDatabaseHandler</a>( <span>string <var>$Application</var></span>, <span>string <var>$Service</var> = <span class="php-quote">''</span></span>, <span>string <var>$Consumer</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#39-48" title="Go to source code">setDatabaseHandler</a>( <span>string <var>$Application</var></span>, <span>string <var>$Service</var> = <span class="php-quote">''</span></span>, <span>string <var>$Consumer</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			
@@ -622,7 +621,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getConsumerSuffix">#</a>
-		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#49-52" title="Go to source code">getConsumerSuffix</a>( )</code>
+		<code><a href="source-class-KREDA.Sphere.IServiceInterface.html#50-53" title="Go to source code">getConsumerSuffix</a>( )</code>
 
 		<div class="description short">
 			
