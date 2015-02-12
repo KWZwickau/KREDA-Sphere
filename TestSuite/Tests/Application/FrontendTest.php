@@ -45,8 +45,12 @@ class FrontendTest extends \PHPUnit_Framework_TestCase
          */
         $Namespace = 'KREDA\Sphere\Application\System\Frontend';
         $this->checkFrontendMethodName( $Namespace.'\Authorization\Authorization' );
-        $this->checkFrontendMethodName( $Namespace.'\Consumer\Consumer' );
         $this->checkFrontendMethodName( $Namespace.'\Token\Token' );
+        $this->checkFrontendMethodName( $Namespace.'\Cache' );
+        $this->checkFrontendMethodName( $Namespace.'\Consumer' );
+        $this->checkFrontendMethodName( $Namespace.'\Database' );
+        $this->checkFrontendMethodName( $Namespace.'\Protocol' );
+        $this->checkFrontendMethodName( $Namespace.'\Update' );
 
     }
 

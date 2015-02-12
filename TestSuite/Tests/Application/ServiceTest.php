@@ -47,7 +47,6 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
          * System
          */
         $Namespace = 'KREDA\Sphere\Application\System\Service';
-        $this->checkServiceMethodName( $Namespace.'\Database' );
         $this->checkServiceMethodName( $Namespace.'\Protocol' );
 
     }
