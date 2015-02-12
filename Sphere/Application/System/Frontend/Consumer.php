@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\System\Frontend\Consumer;
+namespace KREDA\Sphere\Application\System\Frontend;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
@@ -25,11 +25,11 @@ class Consumer extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function stageSummary()
+    public static function stageStatus()
     {
 
         $View = new Stage();
-        $View->setTitle( 'Mandanten' );
+        $View->setTitle( 'KREDA Mandanten' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
     }
@@ -37,11 +37,11 @@ class Consumer extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function stageConsumerCreate()
+    public static function stageCreate()
     {
 
         $View = new Stage();
-        $View->setTitle( 'Mandanten' );
+        $View->setTitle( 'KREDA Mandanten' );
         $View->setDescription( 'Hinzufügen' );
 
         $ConsumerList = Gatekeeper::serviceConsumer()->entityConsumerAll();

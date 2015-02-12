@@ -1,10 +1,11 @@
 <?php
-namespace KREDA\Sphere\Application\System\Frontend\Database;
+namespace KREDA\Sphere\Application\System\Frontend;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Database\Connection\Identifier;
 use KREDA\Sphere\Common\Database\Handler;
+use KREDA\Sphere\Common\Frontend\Table\AbstractTable;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableBody;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableCol;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableHead;
@@ -19,34 +20,34 @@ use KREDA\Sphere\Common\Frontend\Text\Structure\BackgroundDanger;
 use KREDA\Sphere\Common\Frontend\Text\Structure\BackgroundSuccess;
 
 /**
- * Class Status
+ * Class Database
  *
- * @package KREDA\Sphere\Application\System\Frontend\Database
+ * @package KREDA\Sphere\Application\System\Frontend
  */
-class Status extends AbstractFrontend
+class Database extends AbstractFrontend
 {
 
     /**
      * @return Stage
      */
-    public static function stageDatabaseStatus()
+    public static function stageStatus()
     {
 
         $View = new Stage();
-        $View->setTitle( 'Datenbank-Cluster' );
+        $View->setTitle( 'Datenbank' );
         $View->setDescription( 'Status' );
-        $View->setMessage( 'Zeigt die aktuelle Konfiguration und den Verbindungsstatus' );
-        $View->setContent(
-            self::dataDatabaseConfig()
-        );
+        $View->setContent( self::stageConfig() );
         return $View;
     }
 
-    private static function dataDatabaseConfig()
+    /**
+     * @return AbstractTable
+     */
+    private static function stageConfig()
     {
 
         $Configuration = array();
-        if (false !== ( $Path = realpath( __DIR__.'/../../../../Common/Database/Config' ) )) {
+        if (false !== ( $Path = realpath( __DIR__.'/../../../Common/Database/Config' ) )) {
             $Iterator = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator( $Path, \RecursiveDirectoryIterator::SKIP_DOTS ),
                 \RecursiveIteratorIterator::CHILD_FIRST

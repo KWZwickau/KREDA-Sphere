@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\System\Frontend\Protocol;
+namespace KREDA\Sphere\Application\System\Frontend;
 
 use KREDA\Sphere\Application\System\Service\Protocol\Entity\TblProtocol;
 use KREDA\Sphere\Application\System\System;
@@ -24,13 +24,12 @@ class Protocol extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function stageLive()
+    public static function stageStatus()
     {
 
         $View = new Stage();
         $View->setTitle( 'Protokoll' );
-        $View->setDescription( 'Live' );
-        $View->setMessage( '' );
+        $View->setDescription( 'Status' );
 
         /** @var TblProtocol[] $tblProtocolList */
         $tblProtocolList = System::serviceProtocol()->entityProtocolAll();

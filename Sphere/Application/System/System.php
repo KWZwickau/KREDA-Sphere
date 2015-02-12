@@ -2,13 +2,6 @@
 namespace KREDA\Sphere\Application\System;
 
 use KREDA\Sphere\Application\System\Frontend\Authorization\Authorization;
-use KREDA\Sphere\Application\System\Frontend\Consumer\Consumer;
-use KREDA\Sphere\Application\System\Frontend\Database\Cache;
-use KREDA\Sphere\Application\System\Frontend\Database\Status;
-use KREDA\Sphere\Application\System\Frontend\Installer\Installer;
-use KREDA\Sphere\Application\System\Frontend\Token\Token;
-use KREDA\Sphere\Application\System\Service\Protocol;
-use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogIcon;
@@ -17,9 +10,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DatabaseIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EyeOpenIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FlashIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\HomeIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TaskIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
 
@@ -43,7 +34,6 @@ class System extends AbstractApplication
     {
 
         self::setupApplicationAccess( 'System' );
-
         self::$Configuration = $Configuration;
         /**
          * Navigation
@@ -58,19 +48,19 @@ class System extends AbstractApplication
          * Database
          */
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Database', __CLASS__.'::frontendDatabaseStatus'
-        );
-        self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Database/Status', __CLASS__.'::frontendDatabaseStatus'
         );
+        /**
+         * Cache
+         */
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Database/Cache', __CLASS__.'::frontendDatabaseCache'
+            '/Sphere/System/Cache/Status', __CLASS__.'::frontendCacheStatus'
         );
         /**
          * Update
          */
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Update', __CLASS__.'::frontendUpdate'
+            '/Sphere/System/Update', __CLASS__.'::frontendUpdateStatus'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Update/Simulation', __CLASS__.'::frontendUpdateSimulation'
@@ -79,16 +69,22 @@ class System extends AbstractApplication
             '/Sphere/System/Update/Perform', __CLASS__.'::frontendUpdatePerform'
         );
 
+        /**
+         * Consumer
+         */
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Consumer', __CLASS__.'::frontendConsumer'
+            '/Sphere/System/Consumer', __CLASS__.'::frontendConsumerStatus'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Consumer/Create', __CLASS__.'::frontendConsumerCreate'
         );
-
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Account', __CLASS__.'::apiAccount'
+            '/Sphere/System/Consumer/Account', __CLASS__.'::frontendConsumerAccount'
         );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Consumer/Token', __CLASS__.'::frontendConsumerToken'
+        );
+
         /**
          * Authorization
          */
@@ -118,17 +114,7 @@ class System extends AbstractApplication
         )->setParameterDefault( 'Privilege', null )->setParameterDefault( 'Right', null );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Token', __CLASS__.'::frontendToken'
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Token/Certification', __CLASS__.'::frontendTokenCertification'
-        )->setParameterDefault( 'CredentialKey', null );
-
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Protocol', __CLASS__.'::frontendProtocol'
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Protocol/Live', __CLASS__.'::apiProtocolLive'
+            '/Sphere/System/Protocol/Status', __CLASS__.'::frontendProtocolStatus'
         );
 
         return $Configuration;
@@ -140,7 +126,7 @@ class System extends AbstractApplication
     public static function serviceUpdate()
     {
 
-        return Update::getApi();
+        return Service\Update::getApi();
     }
 
     /**
@@ -149,7 +135,7 @@ class System extends AbstractApplication
     public static function serviceProtocol()
     {
 
-        return Protocol::getApi();
+        return Service\Protocol::getApi();
     }
 
     /**
@@ -193,44 +179,50 @@ class System extends AbstractApplication
     {
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Database/Status', 'Datenbanken', new DatabaseIcon()
+            '/Sphere/System/Database/Status', 'Datenbank', new DatabaseIcon()
         );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/System/Protocol/Status', 'Protokoll', new TaskIcon()
+        );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/System/Cache/Status', 'Cache', new DatabaseIcon()
+        );
+
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Update', 'Update', new FlashIcon()
         );
+
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Consumer', 'Mandanten', new HomeIcon()
         );
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Account', 'Benutzerkonten', new PersonIcon()
-        );
+
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Authorization', 'Berechtigungen', new EyeOpenIcon()
-        );
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Token', 'Hardware-Schlüssel', new YubiKeyIcon()
-        );
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Protocol', 'Protokoll', new TaskIcon()
         );
     }
 
     /**
      * @return Stage
      */
-    public function frontendConsumer()
+    public function frontendConsumerStatus()
     {
 
         $this->setupModuleNavigation();
         $this->setupApplicationNavigationConsumer();
-        return Consumer::stageSummary();
+        return Frontend\Consumer::stageStatus();
     }
 
     public function setupApplicationNavigationConsumer()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Consumer/Create', 'Mandant anlegen', new CogIcon()
+            '/Sphere/System/Consumer/Create', 'Mandanten', new CogIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Consumer/Token', 'Token', new CogIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Consumer/Account', 'Account', new CogIcon()
         );
 
     }
@@ -243,30 +235,7 @@ class System extends AbstractApplication
 
         $this->setupModuleNavigation();
         $this->setupApplicationNavigationConsumer();
-        return Consumer::stageConsumerCreate();
-    }
-
-    /**
-     * @return Stage
-     */
-    public function frontendUpdate()
-    {
-
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigationUpdate();
-        return Installer::guiSummary();
-    }
-
-    public function setupApplicationNavigationUpdate()
-    {
-
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Update/Simulation', 'Simulation durchführen', new CogIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Update/Perform', 'Update durchführen', new CogWheelsIcon()
-        );
-
+        return Frontend\Consumer::stageCreate();
     }
 
     /**
@@ -375,12 +344,35 @@ class System extends AbstractApplication
     /**
      * @return Stage
      */
+    public function frontendUpdateStatus()
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupApplicationNavigationUpdate();
+        return Frontend\Update::stageStatus();
+    }
+
+    public function setupApplicationNavigationUpdate()
+    {
+
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Update/Simulation', 'Simulation durchführen', new CogIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Update/Perform', 'Update durchführen', new CogWheelsIcon()
+        );
+
+    }
+
+    /**
+     * @return Stage
+     */
     public function frontendUpdateSimulation()
     {
 
         $this->setupModuleNavigation();
         $this->setupApplicationNavigationUpdate();
-        return Installer::guiUpdateSimulation();
+        return Frontend\Update::stageSimulation();
     }
 
     /**
@@ -391,7 +383,7 @@ class System extends AbstractApplication
 
         $this->setupModuleNavigation();
         $this->setupApplicationNavigationUpdate();
-        return Installer::guiUpdatePerform();
+        return Frontend\Update::stagePerform();
     }
 
     /**
@@ -401,74 +393,26 @@ class System extends AbstractApplication
     {
 
         $this->setupModuleNavigation();
-        $this->setupApplicationNavigationDatabase();
-        return Status::stageDatabaseStatus();
-    }
-
-    public function setupApplicationNavigationDatabase()
-    {
-
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Database/Status', 'Status', new CogIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Database/Cache', 'Cache', new CogIcon()
-        );
-
+        return Frontend\Database::stageStatus();
     }
 
     /**
      * @return Stage
      */
-    public function frontendDatabaseCache()
+    public function frontendCacheStatus()
     {
 
         $this->setupModuleNavigation();
-        $this->setupApplicationNavigationDatabase();
-        return Cache::stageDatabaseCache();
+        return Frontend\Cache::stageStatus();
     }
 
     /**
      * @return Stage
      */
-    public function frontendToken()
+    public function frontendProtocolStatus()
     {
 
         $this->setupModuleNavigation();
-        $this->setupApplicationNavigationToken();
-        return Token::stageWelcome();
-    }
-
-    public function setupApplicationNavigationToken()
-    {
-
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Token/Certification', 'Zertifizierung', new YubiKeyIcon()
-        );
-
-    }
-
-    /**
-     * @param null|string $CredentialKey
-     *
-     * @throws \Exception
-     * @return Stage
-     */
-    public function frontendTokenCertification( $CredentialKey )
-    {
-
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigationToken();
-        return Token::stageCertification( $CredentialKey );
-    }
-
-    /**
-     * @return Stage
-     */
-    public function frontendProtocol()
-    {
-
-        $this->setupModuleNavigation();
-        return Frontend\Protocol\Protocol::stageLive();
+        return Frontend\Protocol::stageStatus();
     }
 }

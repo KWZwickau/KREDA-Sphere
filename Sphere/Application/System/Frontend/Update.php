@@ -1,9 +1,8 @@
 <?php
-namespace KREDA\Sphere\Application\System\Frontend\Installer;
+namespace KREDA\Sphere\Application\System\Frontend;
 
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Common\AbstractFrontend;
 
 /**
@@ -11,16 +10,16 @@ use KREDA\Sphere\Common\AbstractFrontend;
  *
  * @package KREDA\Sphere\Application\System\Installer
  */
-class Installer extends AbstractFrontend
+class Update extends AbstractFrontend
 {
 
     /**
      * @return Stage
      */
-    public static function guiSummary()
+    public static function stageStatus()
     {
 
-        $View = new Landing();
+        $View = new Stage();
         $View->setTitle( 'KREDA Update' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
@@ -29,13 +28,12 @@ class Installer extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function guiUpdateSimulation()
+    public static function stageSimulation()
     {
 
         $View = new Stage();
         $View->setTitle( 'KREDA Update' );
         $View->setDescription( 'Simulation' );
-        $View->setMessage( '' );
         $View->setContent( System::serviceUpdate()->setupDatabaseSchema( true ) );
         return $View;
     }
@@ -43,13 +41,11 @@ class Installer extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function guiUpdatePerform()
+    public static function stagePerform()
     {
 
         $View = new Stage();
         $View->setTitle( 'KREDA Update' );
-        $View->setDescription( '' );
-        $View->setMessage( '' );
         $View->setContent( System::serviceUpdate()->setupDatabaseSchema( false ) );
         return $View;
     }

@@ -26,7 +26,6 @@ class Authentication extends AbstractFrontend
         $View->setTitle( 'Willkommen' );
         $View->setDescription( 'KREDA Professional' );
         $View->setMessage( date( 'd.m.Y - H:i:s' ) );
-        $View->setContent( '' );
         return $View;
     }
 
@@ -92,7 +91,6 @@ class Authentication extends AbstractFrontend
         $View->setDescription( '' );
         $View->setMessage( 'Bitte wählen Sie den Typ der Anmeldung' );
         $View->setContent(
-        //new SignInSwitch()
             new GroupDefault( array(
                 new ButtonPrimaryLink(
                     'Schüler', 'Gatekeeper/SignIn/Student', new LockIcon()

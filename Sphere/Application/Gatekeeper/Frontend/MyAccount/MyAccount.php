@@ -2,7 +2,9 @@
 namespace KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CertificateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RepeatIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
@@ -12,6 +14,7 @@ use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Complex\Structure\AddressDefault;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
@@ -33,7 +36,7 @@ class MyAccount extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function stageSummary()
+    public static function stageStatus()
     {
 
         $View = new Stage();
@@ -117,7 +120,6 @@ class MyAccount extends AbstractFrontend
                     ) )
                 ) )
             ) : new MessageWarning( 'Keine Mandantendaten verfügbar', new WarningIcon() ) )
-        //.new Account( Gatekeeper::serviceAccount()->entityAccountBySession() )
         );
         return $View;
     }
@@ -147,6 +149,45 @@ class MyAccount extends AbstractFrontend
                     ) )
                 ), new ButtonSubmitPrimary('Neues Passwort speichern' )
             ), $CredentialLock, $CredentialLockSafety
+        ) );
+        return $View;
+    }
+
+    /**
+     * @param int $serviceGatekeeper_Consumer
+     *
+     * @return Stage
+     */
+    public static function stageChangeConsumer( $serviceGatekeeper_Consumer )
+    {
+
+        $tblConsumerList = Gatekeeper::serviceConsumer()->entityConsumerAll();
+        $tblConsumerSelect = array();
+        /** @var TblConsumer $tblConsumer */
+        foreach ($tblConsumerList as $tblConsumer) {
+            $tblConsumerSelect[$tblConsumer->getId()] = $tblConsumer->getDatabaseSuffix().' # '.$tblConsumer->getName();
+        }
+        /**
+         * Form warm
+         */
+        if (null === $serviceGatekeeper_Consumer) {
+            $_REQUEST['serviceGatekeeper_Consumer'] = Gatekeeper::serviceConsumer()->entityConsumerBySession()->getId();
+        }
+
+        $View = new Stage();
+        $View->setTitle( 'Mein Account' );
+        $View->setDescription( 'Mandant ändern' );
+        $View->setContent( Gatekeeper::serviceAccount()->executeChangeConsumer(
+            new FormDefault(
+                new GridFormGroup(
+                    new GridFormRow( array(
+                        new GridFormCol(
+                            new InputSelect( 'serviceGatekeeper_Consumer', 'Mandant', $tblConsumerSelect,
+                                new CertificateIcon() )
+                        )
+                    ) )
+                ), new ButtonSubmitPrimary( 'Neuen Mandant speichern' )
+            ), $serviceGatekeeper_Consumer
         ) );
         return $View;
     }

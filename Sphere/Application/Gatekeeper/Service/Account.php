@@ -45,33 +45,21 @@ class Account extends EntityAction
     {
 
         /**
-         * Create SystemAdmin (System)
+         * Create System Login-Type (Admin)
          */
         $tblAccountRole = $this->actionCreateAccountRole( 'System' );
         $tblAccountTyp = $this->actionCreateAccountTyp( 'System' );
         $this->actionCreateAccount( 'System', 'System', $tblAccountTyp, $tblAccountRole, null, null, null );
         /**
-         * Create Student
+         * Create Primary Login-Type
          */
-        $tblAccountRole = $this->actionCreateAccountRole( 'Schüler' );
-        $tblAccountTyp = $this->actionCreateAccountTyp( 'Schüler' );
-        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'EGE' );
-        $this->actionCreateAccount( 'Bernd', 'Brot', $tblAccountTyp, $tblAccountRole, null, null, $tblConsumer );
-        /**
-         * Create Teacher
-         */
-        $tblAccountRole = $this->actionCreateAccountRole( 'Lehrkraft' );
-        $tblAccountTyp = $this->actionCreateAccountTyp( 'Lehrer' );
-        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'EGE' );
-        $this->actionCreateAccount( 'Schubert', 'Micha', $tblAccountTyp, $tblAccountRole, null, null, $tblConsumer );
-        /**
-         * Create Management
-         */
+        $this->actionCreateAccountTyp( 'Schüler' );
+        $this->actionCreateAccountTyp( 'Lehrer' );
         $this->actionCreateAccountTyp( 'Verwaltung' );
     }
 
     /**
-     * @return void
+     * @return Redirect
      */
     public function executeActionSignOut()
     {
@@ -80,6 +68,8 @@ class Account extends EntityAction
         if (!headers_sent()) {
             session_regenerate_id();
         }
+
+        return new Redirect( '/Sphere/Gatekeeper/SignIn', 1 );
     }
 
     /**
@@ -179,7 +169,7 @@ class Account extends EntityAction
      * @param string        $CredentialLock
      * @param TblAccountTyp $tblAccountTyp
      *
-     * @return AbstractForm
+     * @return AbstractForm|Redirect
      */
     public function executeActionSignIn(
         AbstractForm &$View,
@@ -217,17 +207,23 @@ class Account extends EntityAction
      * @param AbstractForm $View
      * @param integer      $tblConsumer
      *
-     * @return AbstractForm
+     * @return AbstractForm|Redirect
      */
     public function executeChangeConsumer( AbstractForm &$View, $tblConsumer )
     {
 
         if (null !== $tblConsumer && empty( $tblConsumer )) {
-
-        }
-        if (!empty( $tblConsumer ) && is_numeric( $tblConsumer )) {
-
-            return new Redirect( '/Sphere/Gatekeeper/MyAccount', 1 );
+            $View->setError( 'serviceGatekeeper_Consumer', 'Bitte wählen Sie einen gültigen Mandanten' );
+        } else {
+            if (!empty( $tblConsumer ) && is_numeric( $tblConsumer )) {
+                $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerById( $tblConsumer );
+                if (false !== $tblConsumer) {
+                    $this->actionChangeConsumer( $tblConsumer );
+                    return new Redirect( '/Sphere/Gatekeeper/MyAccount', 1 );
+                } else {
+                    $View->setError( 'serviceGatekeeper_Consumer', 'Bitte wählen Sie einen gültigen Mandanten' );
+                }
+            }
         }
         return $View;
     }
@@ -256,7 +252,7 @@ class Account extends EntityAction
      * @param string       $CredentialLock
      * @param string       $CredentialLockSafety
      *
-     * @return AbstractForm
+     * @return AbstractForm|Redirect
      */
     public function executeChangePassword( AbstractForm &$View, $CredentialLock, $CredentialLockSafety )
     {

@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
@@ -33,11 +32,6 @@ class Person extends EntityAction
      */
     public function setupDatabaseContent()
     {
-
-        Gatekeeper::serviceAccount()->executeChangePerson(
-            $this->actionCreatePerson( 'Herr', 'Bernd', 'DAS', 'Brot', 'Kastenförmig', 'NA' ),
-            Gatekeeper::serviceAccount()->entityAccountByUsername( 'Bernd' )
-        );
     }
 
     /**

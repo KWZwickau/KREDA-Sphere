@@ -92,8 +92,8 @@ class Gatekeeper extends AbstractApplication
             ->setParameterDefault( 'CredentialLock', null )
             ->setParameterDefault( 'CredentialLockSafety', null );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangeConsumer',
-            __CLASS__.'::frontendMyAccount_ChangeConsumer' )
-            ->setParameterDefault( 'tblConsumer', null );
+            __CLASS__.'::frontendMyAccountChangeConsumer' )
+            ->setParameterDefault( 'serviceGatekeeper_Consumer', null );
 
         return $Configuration;
     }
@@ -233,7 +233,7 @@ class Gatekeeper extends AbstractApplication
     {
 
         $this->setupModuleMyAccount();
-        return MyAccount::stageSummary();
+        return MyAccount::stageStatus();
     }
 
     public function setupModuleMyAccount()
@@ -271,5 +271,17 @@ class Gatekeeper extends AbstractApplication
 
         $this->setupModuleMyAccount();
         return MyAccount::stageChangePassword( $CredentialLock, $CredentialLockSafety );
+    }
+
+    /**
+     * @param int $serviceGatekeeper_Consumer
+     *
+     * @return Stage
+     */
+    public function frontendMyAccountChangeConsumer( $serviceGatekeeper_Consumer )
+    {
+
+        $this->setupModuleMyAccount();
+        return MyAccount::stageChangeConsumer( $serviceGatekeeper_Consumer );
     }
 }

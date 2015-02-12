@@ -431,10 +431,12 @@ abstract class EntityAction extends EntitySchema
         $Manager = $this->getEntityManager();
         /** @var TblAccount $Entity */
         $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
+        $Protocol = clone $Entity;
         if (null !== $Entity) {
             $Entity->setServiceGatekeeperConsumer( $tblConsumer );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
                 $Entity );
             return true;
         }

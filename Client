@@ -4,9 +4,7 @@ namespace KREDA\Client;
 use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use Doctrine\DBAL\Schema\SchemaException;
 use KREDA\Sphere\Application\Assistance\Assistance;
-use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
-use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Application\System\System;
@@ -48,11 +46,10 @@ ini_set( 'xdebug.var_display_max_children', -1 );
 ini_set( 'xdebug.var_display_max_depth', -1 );
 /**
  * Development
- * Clear Database Cache
+ * Clear Cache
  */
-if (function_exists( 'apc_clear_cache' )) {
-    //apc_clear_cache();
-}
+//Cache::stageStatus( true );
+
 /**
  * Init Debugger
  */
@@ -144,12 +141,12 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Management' )) {
                 Management::registerApplication( $Config );
             }
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Graduation' )) {
-                Graduation::registerApplication( $Config );
-            }
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Billing' )) {
-                Billing::registerApplication( $Config );
-            }
+//            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Graduation' )) {
+//                Graduation::registerApplication( $Config );
+//            }
+//            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Billing' )) {
+//                Billing::registerApplication( $Config );
+//            }
 //            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Statistic' )) {
 //                Statistic::registerApplication( $Config );
 //            }
