@@ -51,6 +51,12 @@
                 return 'undefined' != typeof jQuery.fn.stepper
             }
         );
+        Client.Source( 'jQuery.CheckBox', '{{ PathBase }}/Library/jQuery.iCheck/1.0.2/icheck.min.js',
+            function()
+            {
+                return 'undefined' != typeof jQuery.fn.iCheck
+            }
+        );
         Client.Source( 'jQuery.DataTable',
             '{{ PathBase }}/Library/jQuery.DataTables/1.10.4/media/js/jquery.dataTables.min.js',
             function()
@@ -98,6 +104,7 @@
         Client.Module( 'ModSelecter', ['jQuery.Selecter', 'jQuery'] );
         Client.Module( 'ModCompleter', ['Twitter.Typeahead', 'Bootstrap', 'jQuery'] );
         Client.Module( 'ModUpload', ['Bootstrap.FileInput', 'Bootstrap', 'jQuery'] );
+        Client.Module( 'ModCheckBox', ['jQuery.CheckBox', 'jQuery'] );
     </script>
 
 </head>

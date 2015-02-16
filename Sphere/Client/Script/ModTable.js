@@ -33,7 +33,7 @@
             "lengthChange": true,
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Alle"]],
             "pageLength": 10,
-            "dom": "<'row'<'col-sm-6'li><'col-sm-6'fp>>" +
+            "dom": "<'row'<'col-sm-6'li><'col-sm-6 hidden-xs'fp>>" +
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-6'i><'col-sm-6'p>>",
             stateSave: true
