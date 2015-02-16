@@ -129,7 +129,7 @@ class Account extends EntityAction
      *
      * @return int
      */
-    public function checkIsValidCredential( $Username, $Password, $TokenString, TblAccountTyp $tblAccountTyp )
+    private function checkIsValidCredential( $Username, $Password, $TokenString, TblAccountTyp $tblAccountTyp )
     {
 
         if (false === ( $tblAccount = $this->entityAccountByCredential( $Username, $Password, $tblAccountTyp ) )) {
@@ -179,8 +179,8 @@ class Account extends EntityAction
     ) {
 
         switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, false, $tblAccountTyp )) {
-            case Account::API_SIGN_IN_ERROR_CREDENTIAL:
-            case Account::API_SIGN_IN_ERROR: {
+            case self::API_SIGN_IN_ERROR_CREDENTIAL:
+            case self::API_SIGN_IN_ERROR: {
                 if (null !== $CredentialName && empty( $CredentialName )) {
                     $View->setError( 'CredentialName', 'Bitte geben Sie einen gültigen Benutzernamen ein' );
                 }
@@ -195,7 +195,7 @@ class Account extends EntityAction
                 }
                 break;
             }
-            case Account::API_SIGN_IN_SUCCESS: {
+            case self::API_SIGN_IN_SUCCESS: {
                 return new Redirect( '/Sphere', 1 );
                 break;
             }
@@ -243,6 +243,7 @@ class Account extends EntityAction
         if (!empty( $RoleName )) {
             $View->setSuccess( 'Access', 'Die Rolle wurde hinzugefügt' );
             $this->actionCreateAccountRole( $RoleName );
+            return new Redirect( '/Sphere/System/Authorization/Role', 0 );
         }
         return $View;
     }

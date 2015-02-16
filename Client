@@ -4,8 +4,10 @@ namespace KREDA\Client;
 use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use Doctrine\DBAL\Schema\SchemaException;
 use KREDA\Sphere\Application\Assistance\Assistance;
+use KREDA\Sphere\Application\Demo\Demo;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\System\Frontend\Cache;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Element;
@@ -37,8 +39,8 @@ AutoLoader::getNamespaceAutoLoader( 'Markdownify', __DIR__.'/Library/Markdownify
  * Init Php Header
  */
 header( 'Content-type: text/html; charset=utf-8' );
-error_reporting( E_ALL );
-ini_set( 'display_errors', 1 );
+//error_reporting( E_ALL );
+//ini_set( 'display_errors', 1 );
 set_time_limit( 240 );
 session_start();
 ini_set( 'xdebug.var_display_max_data', -1 );
@@ -48,7 +50,7 @@ ini_set( 'xdebug.var_display_max_depth', -1 );
  * Development
  * Clear Cache
  */
-//Cache::stageStatus( true );
+Cache::stageStatus( true );
 
 /**
  * Init Debugger
@@ -156,6 +158,7 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
          */
         Gatekeeper::registerApplication( $Config );
         Assistance::registerApplication( $Config );
+        Demo::registerApplication( $Config );
         /**
          * Execute Action (if available)
          */

@@ -106,21 +106,30 @@ class SignIn extends AbstractFrontend
         $View->setTitle( 'Anmeldung' );
         $View->setDescription( 'Schüler' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
-        $View->setContent( Gatekeeper::serviceAccount()->executeActionSignIn(
-            new FormDefault(
-                new GridFormGroup( array(
-                        new GridFormRow(
-                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
-                        ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+        $View->setContent(
+            Gatekeeper::serviceAccount()->executeActionSignIn(
+
+                new FormDefault(
+                    new GridFormGroup( array(
+                            new GridFormRow(
+                                new GridFormCol( new InputText( 'CredentialName', 'Benutzername', 'Benutzername',
+                                    new PersonIcon() ) )
+                            ),
+                            new GridFormRow(
+                                new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', 'Passwort',
+                                    new LockIcon() ) )
+                            )
                         )
-                    )
-                ), new ButtonSubmitPrimary( 'Anmelden' )
-            ),
-            $CredentialName, $CredentialLock,
-            Gatekeeper::serviceAccount()->entityAccountTypByName( 'Schüler' )
-        ) );
+                    ), new ButtonSubmitPrimary( 'Anmelden' )
+                ),
+
+                $CredentialName, $CredentialLock,
+
+                Gatekeeper::serviceAccount()->entityAccountTypByName( 'Schüler' )
+
+            )
+
+        );
         return $View;
     }
 

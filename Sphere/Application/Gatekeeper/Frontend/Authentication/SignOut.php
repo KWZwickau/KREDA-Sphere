@@ -21,7 +21,6 @@ class SignOut extends AbstractFrontend
 
         $View = new Stage();
         $View->setTitle( 'Abmelden' );
-        $View->setDescription( '' );
         $View->setMessage( 'Bitte warten...' );
         $View->setContent( Gatekeeper::serviceAccount()->executeActionSignOut() );
         return $View;

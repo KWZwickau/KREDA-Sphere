@@ -45,7 +45,7 @@
 	#Remove "index.php":
 #	RewriteCond %{REQUEST_FILENAME} !-f
 #    RewriteCond %{REQUEST_FILENAME} !-d
-#    RewriteRule ^(.*)$ /Client [L,QSA]
+#    RewriteRule ^(.*)$ /Client$1 [L,QSA]
 
 
 # Cache settings
