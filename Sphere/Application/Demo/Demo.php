@@ -8,6 +8,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TaskIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\Frontend\Complex\Element\MathJax;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputFile;
@@ -92,6 +93,13 @@ class Demo extends AbstractApplication
                 )
             , new ButtonSubmitPrimary( 'Speichern' ) )
             , $DemoCompleter )
+
+            .
+
+            new MathJax( '`a != 0`, `ax^2 + bx + c = 0`' )
+            .
+            new MathJax( '`x = (-b +- sqrt(b^2-4ac))/(2a)`' )
+
         );
         return $View;
     }
