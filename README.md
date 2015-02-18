@@ -7,6 +7,13 @@ Don't use them in production environments.
 
 Be also aware that current interfaces may change rapidly
 
+API Documentation
+=================
+
+
+@ <http://kwzwickau.github.io/KREDA-Sphere/>
+
+
 -----
 
 Development:
