@@ -125,9 +125,9 @@ class ApiGen extends Bridge implements IBridgeInterface
             // Save a check style report of poorly documented elements into a file
             'report'         => $this->Destination->getDirectory().DIRECTORY_SEPARATOR.'_improve.xml',
             // Wipe out the destination directory first
-            'wipeout'        => true,
+            'wipeout' => false,
             // Don't display scanning and generating messages
-            'quiet'          => true,
+            'quiet'   => false,
             // Display progressbar
             'progressbar'    => false,
             // Use colors

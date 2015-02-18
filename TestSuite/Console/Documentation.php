@@ -10,5 +10,5 @@ Documentation::getDocumentation(
     'KREDA',
     'Sphere',
     new DirectoryParameter( __DIR__.'/../../Sphere' ),
-    new DirectoryParameter( __DIR__.'/../../Documentation' )
+    new DirectoryParameter( __DIR__.'/../../../KREDA-Sphere-Api' )
 );
