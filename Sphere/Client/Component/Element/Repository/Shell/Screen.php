@@ -4,6 +4,8 @@ namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
 use KREDA\Sphere\Client\Component\IElementInterface;
+use KREDA\Sphere\Client\Script;
+use KREDA\Sphere\Client\Style;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 
@@ -30,21 +32,6 @@ class Screen extends AbstractShell implements IElementInterface
 
         $this->Template = $this->extensionTemplate( __DIR__.'/Screen.twig' );
         $this->Template->setVariable( 'PathBase', $PathBase = $this->extensionRequest()->getPathBase() );
-
-        $this->Template->setVariable( 'Style', array(
-            $PathBase.'/Library/Bootstrap/3.2.0/dist/css/bootstrap.min.css',
-            $PathBase.'/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_halflings/web/html_css/css/glyphicons-halflings.css',
-            $PathBase.'/Library/Bootstrap.Glyphicons/1.9.0/glyphicons/web/html_css/css/glyphicons.css',
-            $PathBase.'/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_filetypes/web/html_css/css/glyphicons-filetypes.css',
-            $PathBase.'/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_social/web/html_css/css/glyphicons-social.css',
-            $PathBase.'/Library/Bootstrap.FileInput/4.1.6/css/fileinput.min.css',
-            $PathBase.'/Library/Bootflat/2.0.4/bootflat/css/bootflat.min.css',
-            $PathBase.'/Library/Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs.css',
-            $PathBase.'/Library/Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min.css',
-            $PathBase.'/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.css',
-            $PathBase.'/Library/jQuery.DataTables/1.10.4/extensions/Responsive/css/dataTables.responsive.css',
-            $PathBase.'/Sphere/Client/Style/Style.css',
-        ) );
     }
 
     /**
@@ -128,6 +115,8 @@ class Screen extends AbstractShell implements IElementInterface
     public function getContent()
     {
 
+        $this->Template->setVariable( 'StyleManager', Style::getManager() );
+        $this->Template->setVariable( 'ScriptManager', Script::getManager() );
         $this->Template->setVariable( 'PositionNavigation', implode( '', $this->PositionNavigation ) );
         $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent ) );
         $Debug = $this->extensionDebugger();

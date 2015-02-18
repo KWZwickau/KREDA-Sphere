@@ -8,7 +8,7 @@ use MOC\V\Component\Template\Exception\TemplateTypeException;
 /**
  * Class AddressDefault
  *
- * @package KREDA\Sphere\Common\Frontend\Address\Structure
+ * @package KREDA\Sphere\Common\Frontend\Complex\Structure
  */
 class AddressDefault extends AbstractStructure
 {

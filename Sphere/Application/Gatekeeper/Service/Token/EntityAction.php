@@ -60,6 +60,7 @@ abstract class EntityAction extends EntitySchema
             ->findOneBy( array( TblToken::ATTR_IDENTIFIER => $Identifier ) );
         if (null === $Entity) {
             $Entity = new TblToken( $Identifier );
+            $Entity->setSerial( $this->extensionModHex( $Identifier )->getSerialNumber() );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );

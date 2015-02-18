@@ -7,9 +7,9 @@ use KREDA\Sphere\Common\Frontend\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 
 /**
- * Class AbstractAddress
+ * Class AbstractStructure
  *
- * @package KREDA\Sphere\Common\Frontend\Address
+ * @package KREDA\Sphere\Common\Frontend\Complex
  */
 abstract class AbstractStructure extends AbstractFrontend implements IElementInterface
 {
