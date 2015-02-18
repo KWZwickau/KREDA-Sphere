@@ -1,6 +1,6 @@
 (function( $ )
 {
-
+    'use strict';
     $.fn.ModCompleter = function( options )
     {
         // This is the easiest way to have default options.

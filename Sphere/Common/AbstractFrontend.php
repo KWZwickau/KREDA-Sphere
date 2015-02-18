@@ -31,25 +31,6 @@ abstract class AbstractFrontend extends AbstractShell
 
     /**
      * @param IBridgeInterface $Template
-     * @param string           $ElementName
-     * @param string           $ErrorMessage
-     */
-    final protected static function setFormError( IBridgeInterface &$Template, $ElementName, $ErrorMessage )
-    {
-
-        $Template->setVariable(
-            $ElementName.'Group', 'has-error has-feedback'
-        );
-        $Template->setVariable(
-            $ElementName.'FeedbackIcon', '<span class="glyphicon glyphicon-remove form-control-feedback"></span>'
-        );
-        $Template->setVariable(
-            $ElementName.'FeedbackMessage', '<span class="help-block text-left">'.$ErrorMessage.'</span>'
-        );
-    }
-
-    /**
-     * @param IBridgeInterface $Template
      * @param string           $RequestKey
      * @param string           $VariableName
      */
@@ -58,21 +39,6 @@ abstract class AbstractFrontend extends AbstractShell
 
         if (isset( $_REQUEST[$RequestKey] )) {
             $Template->setVariable( $VariableName, $_REQUEST[$RequestKey] );
-        }
-    }
-
-    /**
-     * {{ ${RequestKey}Value }}
-     *
-     * @param IBridgeInterface $Template
-     */
-    final protected static function setRequestValues( IBridgeInterface &$Template )
-    {
-
-        foreach ((array)$_REQUEST as $Key => $Value) {
-            if (is_string( $Value )) {
-                $Template->setVariable( $Key.'Value', $Value );
-            }
         }
     }
 

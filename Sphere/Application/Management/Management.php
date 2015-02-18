@@ -196,6 +196,9 @@ class Management extends AbstractApplication
         return Subject::guiSubject();
     }
 
+    /**
+     * @return void
+     */
     protected function setupModuleNavigation()
     {
 
@@ -245,6 +248,9 @@ class Management extends AbstractApplication
         return PersonalData::stagePerson();
     }
 
+    /**
+     * @return void
+     */
     protected function setupPersonNavigation()
     {
 
@@ -377,6 +383,9 @@ class Management extends AbstractApplication
         return Campus::stageCampus();
     }
 
+    /**
+     * @return void
+     */
     protected function setupCampusNavigation()
     {
 

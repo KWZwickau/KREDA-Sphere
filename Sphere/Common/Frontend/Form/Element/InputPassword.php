@@ -39,10 +39,6 @@ class InputPassword extends AbstractElement
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }
 
-        if (isset( $_REQUEST[$Name] ) && !empty( $_REQUEST[$Name] ) && is_string( $_REQUEST[$Name] )) {
-            $this->Template->setVariable( 'ElementValue', $_REQUEST[$Name] );
-        }
-
     }
 
 }

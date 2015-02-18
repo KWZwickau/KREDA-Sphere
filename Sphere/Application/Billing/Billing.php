@@ -53,6 +53,9 @@ class Billing extends AbstractApplication
         return Summary::stageSummary();
     }
 
+    /**
+     * @return void
+     */
     protected function setupModuleNavigation()
     {
 

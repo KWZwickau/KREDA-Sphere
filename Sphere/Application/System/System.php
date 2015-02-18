@@ -175,7 +175,10 @@ class System extends AbstractApplication
         return $View;
     }
 
-    public function setupModuleNavigation()
+    /**
+     * @return void
+     */
+    protected function setupModuleNavigation()
     {
 
         self::addModuleNavigationMain( self::$Configuration,
@@ -212,7 +215,10 @@ class System extends AbstractApplication
         return Frontend\Consumer::stageStatus();
     }
 
-    public function setupApplicationNavigationConsumer()
+    /**
+     * @return void
+     */
+    protected function setupApplicationNavigationConsumer()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -249,7 +255,10 @@ class System extends AbstractApplication
         return Authorization::stageAuthorization();
     }
 
-    public function setupApplicationNavigationAuthorization()
+    /**
+     * @return void
+     */
+    protected function setupApplicationNavigationAuthorization()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -352,7 +361,10 @@ class System extends AbstractApplication
         return Frontend\Update::stageStatus();
     }
 
-    public function setupApplicationNavigationUpdate()
+    /**
+     * @return void
+     */
+    protected function setupApplicationNavigationUpdate()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,

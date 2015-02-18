@@ -28,58 +28,58 @@ class Script extends AbstractExtension
 
         $this->Source(
             'jQuery', '/Library/jQuery/1.11.1/dist/jquery.min.js',
-            "'undefined' != typeof jQuery"
+            "'undefined' !== typeof jQuery"
         );
         $this->Source(
             'Moment.js', '/Library/Moment.Js/2.8.4/min/moment-with-locales.min.js',
-            "'undefined' != typeof moment"
+            "'undefined' !== typeof moment"
         );
         $this->Source(
             'Bootstrap', '/Library/Bootstrap/3.2.0/dist/js/bootstrap.min.js',
-            "'function' == typeof jQuery().emulateTransitionEnd"
+            "'function' === typeof jQuery().emulateTransitionEnd"
         );
         $this->Source(
             'jQuery.Selecter', '/Library/jQuery.Selecter/3.2.4/jquery.fs.selecter.min.js',
-            "'undefined' != typeof jQuery.fn.selecter"
+            "'undefined' !== typeof jQuery.fn.selecter"
         );
         $this->Source(
             'jQuery.Stepper', '/Library/jQuery.Stepper/3.0.8/jquery.fs.stepper.min.js',
-            "'undefined' != typeof jQuery.fn.stepper"
+            "'undefined' !== typeof jQuery.fn.stepper"
         );
         $this->Source(
             'jQuery.CheckBox', '/Library/jQuery.iCheck/1.0.2/icheck.min.js',
-            "'undefined' != typeof jQuery.fn.iCheck"
+            "'undefined' !== typeof jQuery.fn.iCheck"
         );
         $this->Source(
             'jQuery.DataTable', '/Library/jQuery.DataTables/1.10.4/media/js/jquery.dataTables.min.js',
-            "'undefined' != typeof jQuery.fn.DataTable"
+            "'undefined' !== typeof jQuery.fn.DataTable"
         );
         $this->Source(
             'jQuery.DataTable.Responsive',
             '/Library/jQuery.DataTables/1.10.4/extensions/Responsive/js/dataTables.responsive.min.js',
-            "'undefined' != typeof jQuery.fn.DataTable.Responsive"
+            "'undefined' !== typeof jQuery.fn.DataTable.Responsive"
         );
         $this->Source(
             'Bootstrap.DataTable',
             '/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.min.js',
-            "'undefined' != typeof jQuery.fn.DataTable.ext.renderer.pageButton.bootstrap"
+            "'undefined' !== typeof jQuery.fn.DataTable.ext.renderer.pageButton.bootstrap"
         );
         $this->Source(
             'Bootstrap.DatetimePicker',
             '/Library/Bootstrap.DateTimePicker/3.1.3/build/js/bootstrap-datetimepicker.min.js',
-            "'undefined' != typeof jQuery.fn.datetimepicker"
+            "'undefined' !== typeof jQuery.fn.datetimepicker"
         );
         $this->Source(
             'Bootstrap.FileInput', '/Library/Bootstrap.FileInput/4.1.6/js/fileinput.min.js',
-            "'undefined' != typeof jQuery.fn.fileinput"
+            "'undefined' !== typeof jQuery.fn.fileinput"
         );
         $this->Source(
             'Twitter.Typeahead', '/Library/Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min.js',
-            "'undefined' != typeof jQuery.fn.typeahead"
+            "'undefined' !== typeof jQuery.fn.typeahead"
         );
         $this->Source(
             'MathJax', '/Library/MathJax/2.5.0/MathJax.js?config=TeX-MML-AM_HTMLorMML-full',
-            "'undefined' != typeof MathJax"
+            "'undefined' !== typeof MathJax"
         );
 
         /**
@@ -109,7 +109,7 @@ class Script extends AbstractExtension
             'ModCheckBox', array( 'jQuery.CheckBox', 'jQuery' )
         );
         $this->Module(
-            'ModMathJax', array( 'MathJax' )
+            'ModMathJax', array( 'MathJax', 'jQuery' )
         );
     }
 

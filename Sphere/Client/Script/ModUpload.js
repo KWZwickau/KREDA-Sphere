@@ -1,6 +1,6 @@
 (function( $ )
 {
-
+    'use strict';
     $.fn.ModUpload = function( options )
     {
 

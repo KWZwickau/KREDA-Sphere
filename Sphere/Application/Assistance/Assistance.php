@@ -109,7 +109,10 @@ class Assistance extends AbstractApplication
         return $View;
     }
 
-    public function setupModuleNavigation()
+    /**
+     * @return void
+     */
+    protected function setupModuleNavigation()
     {
 
         self::addModuleNavigationMain( self::$Configuration,
@@ -136,7 +139,10 @@ class Assistance extends AbstractApplication
         return Account::stageWelcome();
     }
 
-    public function setupFrontendAccount()
+    /**
+     * @return void
+     */
+    protected function setupFrontendAccount()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -167,7 +173,10 @@ class Assistance extends AbstractApplication
         return Application::stageWelcome();
     }
 
-    public function setupFrontendApplication()
+    /**
+     * @return void
+     */
+    protected function setupFrontendApplication()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,

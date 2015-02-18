@@ -1,5 +1,6 @@
 var Client = (function()
 {
+    'use strict';
     var useDelay = 5;
     var useConfig = {};
     var setModule = function( Module, Depending )
@@ -14,15 +15,14 @@ var Client = (function()
              */
             Test: function()
             {
-                return 'undefined' != typeof jQuery.fn[Module];
+                return 'undefined' !== typeof jQuery.fn[Module];
             },
             isUsed: false,
             isLoaded: false,
             Retry: 0,
             isReady: function( Callback )
             {
-                var dependingModule;
-                var dependingSize = this.Depending.length - 1;
+                var dependingModule, dependingSize = this.Depending.length - 1;
                 for (dependingSize; 0 <= dependingSize; dependingSize--) {
                     dependingModule = this.Depending[dependingSize];
                     if (useConfig[dependingModule].Test()) {
@@ -38,12 +38,11 @@ var Client = (function()
                 if (this.Test()) {
                     this.isLoaded = true;
                     return true;
-                } else {
-                    if ('undefined' != typeof Callback) {
-                        loadModule( Module, Callback );
-                    }
-                    return false;
                 }
+                if ('undefined' !== typeof Callback) {
+                    loadModule( Module, Callback );
+                }
+                return false;
             }
         };
     };
@@ -80,7 +79,7 @@ var Client = (function()
                     this.isLoaded = true;
                     return true;
                 } else {
-                    if ('undefined' != typeof Callback) {
+                    if ('undefined' !== typeof Callback) {
                         loadModule( Module, Callback );
                     }
                     return false;
@@ -120,7 +119,7 @@ var Client = (function()
     };
     var setUse = function setUse( Module, Callback )
     {
-        if ('function' != typeof Callback) {
+        if ('function' !== typeof Callback) {
             //noinspection AssignmentToFunctionParameterJS
             Callback = function Callback()
             {
@@ -132,5 +131,5 @@ var Client = (function()
         Module: setModule,
         Source: setSource,
         Use: setUse
-    }
+    };
 })();

@@ -1,6 +1,6 @@
 (function( $ )
 {
-
+    'use strict';
     $.fn.ModTable = function( options )
     {
 

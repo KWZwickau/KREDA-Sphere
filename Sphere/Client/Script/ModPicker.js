@@ -1,6 +1,6 @@
 (function( $ )
 {
-
+    'use strict';
     $.fn.ModPicker = function( options )
     {
 

@@ -113,6 +113,9 @@ class Demo extends AbstractApplication
         return DemoService::getApi();
     }
 
+    /**
+     * @return void
+     */
     protected function setupModuleNavigation()
     {
 

@@ -15,7 +15,6 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class Cache
@@ -43,7 +42,7 @@ class Cache extends AbstractFrontend
             TwigCache::clearCache();
         }
         if (isset( $_REQUEST['Clear'] )) {
-            $View->setContent( new Redirect( '/Sphere/System/Cache/Status', 0 ) );
+            $View->setContent( self::getRedirect( '/Sphere/System/Cache/Status', 0 ) );
             return $View;
         }
 

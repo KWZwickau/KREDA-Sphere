@@ -136,9 +136,9 @@ class Gatekeeper extends AbstractApplication
     }
 
     /**
-     *
+     * @return void
      */
-    public function setupModuleNavigation()
+    protected function setupModuleNavigation()
     {
 
         self::addModuleNavigationMain( self::$Configuration,
@@ -236,7 +236,10 @@ class Gatekeeper extends AbstractApplication
         return MyAccount::stageStatus();
     }
 
-    public function setupModuleMyAccount()
+    /**
+     * @return void
+     */
+    protected function setupModuleMyAccount()
     {
 
         if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Gatekeeper/MyAccount/ChangePassword' )) {

@@ -213,5 +213,8 @@ abstract class AbstractApplication extends AbstractExtension implements IApplica
         Gatekeeper::serviceAccount()->executeAddRoleAccess( $tblRole, $tblAccess );
     }
 
+    /**
+     * @return void
+     */
     abstract protected function setupModuleNavigation();
 }

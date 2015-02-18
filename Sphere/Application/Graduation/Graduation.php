@@ -87,7 +87,10 @@ class Graduation extends AbstractApplication
         return $View;
     }
 
-    public function setupModuleNavigation()
+    /**
+     * @return void
+     */
+    protected function setupModuleNavigation()
     {
 
         self::addModuleNavigationMain( self::$Configuration,

@@ -49,7 +49,10 @@ class Statistic extends AbstractApplication
         return $View;
     }
 
-    public function setupModuleNavigation()
+    /**
+     * @return void
+     */
+    protected function setupModuleNavigation()
     {
 
     }
