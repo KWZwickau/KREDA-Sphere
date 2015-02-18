@@ -415,7 +415,7 @@
 </span><span id="43" class="l"><a class="l" href="#43">43: </a>            TwigCache::clearCache();
 </span><span id="44" class="l"><a class="l" href="#44">44: </a>        }
 </span><span id="45" class="l"><a class="l" href="#45">45: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword1">isset</span>( <span class="php-var">$_REQUEST</span>[<span class="php-quote">'Clear'</span>] )) {
-</span><span id="46" class="l"><a class="l" href="#46">46: </a>            <span class="php-var">$View</span>-&gt;setContent( <span class="php-keyword1">new</span> Redirect( <span class="php-quote">'/Sphere/System/Cache/Status'</span>, <span class="php-num">0</span> ) );
+</span><span id="46" class="l"><a class="l" href="#46">46: </a>            <span class="php-var">$View</span>-&gt;setContent( self::getRedirect( <span class="php-quote">'/Sphere/System/Cache/Status'</span>, <span class="php-num">0</span> ) );
 </span><span id="47" class="l"><a class="l" href="#47">47: </a>            <span class="php-keyword1">return</span> <span class="php-var">$View</span>;
 </span><span id="48" class="l"><a class="l" href="#48">48: </a>        }
 </span><span id="49" class="l"><a class="l" href="#49">49: </a>
