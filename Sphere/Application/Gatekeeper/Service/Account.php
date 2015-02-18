@@ -49,13 +49,21 @@ class Account extends EntityAction
          */
         $tblAccountRole = $this->actionCreateAccountRole( 'System' );
         $tblAccountTyp = $this->actionCreateAccountTyp( 'System' );
-        $this->actionCreateAccount( 'System', 'System', $tblAccountTyp, $tblAccountRole, null, null, null );
+        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'EGE' );
+        $this->actionCreateAccount( 'System', 'System', $tblAccountTyp, $tblAccountRole, null, null, $tblConsumer );
         /**
          * Create Primary Login-Type
          */
         $this->actionCreateAccountTyp( 'Schüler' );
         $this->actionCreateAccountTyp( 'Lehrer' );
         $this->actionCreateAccountTyp( 'Verwaltung' );
+
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'System:Administrator' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Management:Administrator' )
+        );
     }
 
     /**

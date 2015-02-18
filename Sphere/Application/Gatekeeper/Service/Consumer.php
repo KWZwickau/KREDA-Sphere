@@ -31,9 +31,7 @@ class Consumer extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $this->actionCreateConsumer( 'System', '', null, '' );
-        $this->actionCreateConsumer( 'Evangelische Schulgemeinschaft Erzgebirge', 'EGE', null, 'EGE' );
-        $this->actionCreateConsumer( 'Freie Evangelische Schulverein Chemnitz', 'ESZC', null, 'ESZC' );
+        $this->actionCreateConsumer( 'Evangelische Schulgemeinschaft Erzgebirge', 'EGE' );
     }
 
     /**

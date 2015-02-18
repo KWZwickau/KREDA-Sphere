@@ -233,6 +233,19 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param string $Name
+     *
+     * @return bool|TblAccess
+     */
+    protected function entityAccessByName( $Name )
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccess' )
+            ->findOneBy( array( TblAccess::ATTR_NAME => $Name ) );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblAccessPrivilege

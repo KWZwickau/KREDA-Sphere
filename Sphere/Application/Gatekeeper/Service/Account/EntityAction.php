@@ -348,16 +348,17 @@ abstract class EntityAction extends EntitySchema
         }
         $Manager = $this->getEntityManager();
         /**
-         * @var TblAccount $From
-         * @var TblAccount $To
+         * @var TblAccount $Protocol
+         * @var TblAccount $Entity
          */
-        $To = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
-        $From = clone $To;
-        if (null !== $To) {
-            $To->setPassword( hash( 'sha256', $Password ) );
-            $Manager->saveEntity( $To );
-            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(), $From,
-                $To );
+        $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setPassword( hash( 'sha256', $Password ) );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
             return true;
         }
         return false;
@@ -401,16 +402,17 @@ abstract class EntityAction extends EntitySchema
         }
         $Manager = $this->getEntityManager();
         /**
-         * @var TblAccount $From
-         * @var TblAccount $To
+         * @var TblAccount $Protocol
+         * @var TblAccount $Entity
          */
-        $To = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
-        $From = clone $To;
-        if (null !== $To) {
-            $To->setServiceGatekeeperToken( $tblToken );
-            $Manager->saveEntity( $To );
-            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(), $From,
-                $To );
+        $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity && $Protocol->getServiceGatekeeperToken() != $tblToken) {
+            $Entity->setServiceGatekeeperToken( $tblToken );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
             return true;
         }
         return false;

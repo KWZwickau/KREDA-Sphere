@@ -36,6 +36,18 @@ class Access extends EntityAction
 
     public function setupDatabaseContent()
     {
+
+        $Access = $this->actionCreateAccess( 'System:Administrator' );
+        $Privilege = $this->actionCreatePrivilege( 'System:Administrator' );
+        $Right = $this->actionCreateRight( 'Application:System' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $this->actionAddAccessPrivilege( $Access, $Privilege );
+
+        $Access = $this->actionCreateAccess( 'Management:Administrator' );
+        $Privilege = $this->actionCreatePrivilege( 'Management:Administrator' );
+        $Right = $this->actionCreateRight( 'Application:Management' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $this->actionAddAccessPrivilege( $Access, $Privilege );
     }
 
     /**
@@ -259,6 +271,17 @@ class Access extends EntityAction
     {
 
         return parent::entityAccessById( $Id );
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblAccess
+     */
+    public function entityAccessByName( $Name )
+    {
+
+        return parent::entityAccessByName( $Name );
     }
 
     /**
