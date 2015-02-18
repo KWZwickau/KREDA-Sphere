@@ -6,11 +6,11 @@ use KREDA\Sphere\Common\Frontend\Complex\AbstractStructure;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 
 /**
- * Class AddressDefault
+ * Class ComplexAddress
  *
  * @package KREDA\Sphere\Common\Frontend\Complex\Structure
  */
-class AddressDefault extends AbstractStructure
+class ComplexAddress extends AbstractStructure
 {
 
     /**
@@ -21,7 +21,7 @@ class AddressDefault extends AbstractStructure
     function __construct( TblAddress $tblAddress )
     {
 
-        $this->Template = $this->extensionTemplate( __DIR__.'/AddressDefault.twig' );
+        $this->Template = $this->extensionTemplate( __DIR__.'/ComplexAddress.twig' );
         $this->Template->setVariable( 'Address', $tblAddress );
     }
 

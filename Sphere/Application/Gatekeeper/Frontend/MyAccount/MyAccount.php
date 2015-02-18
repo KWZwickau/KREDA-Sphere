@@ -12,7 +12,7 @@ use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Complex\Structure\AddressDefault;
+use KREDA\Sphere\Common\Frontend\Complex\Structure\ComplexAddress;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
@@ -115,7 +115,7 @@ class MyAccount extends AbstractFrontend
                     ) ),
                     new GridTableRow( array(
                         new GridTableCol( 'Addresse' ),
-                        new GridTableCol( $tblAddress ? new AddressDefault( $tblAddress ) : new MessageWarning( 'Keine Adressdaten verfügbar',
+                        new GridTableCol( $tblAddress ? new ComplexAddress( $tblAddress ) : new MessageWarning( 'Keine Adressdaten verfügbar',
                             new WarningIcon() ) )
                     ) )
                 ) )

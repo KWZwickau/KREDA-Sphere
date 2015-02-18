@@ -5,11 +5,11 @@ use KREDA\Sphere\Common\Frontend\Complex\AbstractElement;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 
 /**
- * Class MathJax
+ * Class ComplexMathJax
  *
  * @package KREDA\Sphere\Common\Frontend\Complex\Element
  */
-class MathJax extends AbstractElement
+class ComplexMathJax extends AbstractElement
 {
 
 
@@ -21,7 +21,7 @@ class MathJax extends AbstractElement
     function __construct( $Formula )
     {
 
-        $this->Template = $this->extensionTemplate( __DIR__.'/MathJax.twig' );
+        $this->Template = $this->extensionTemplate( __DIR__.'/ComplexMathJax.twig' );
         $this->Template->setVariable( 'MathJax', $Formula );
     }
 }

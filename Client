@@ -30,13 +30,8 @@ use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
 use MOC\V\Core\AutoLoader\AutoLoader;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
-require_once( __DIR__.'/Library/MOC-V/Core/AutoLoader/AutoLoader.php' );
-AutoLoader::getNamespaceAutoLoader( 'MOC\V', __DIR__.'/Library/MOC-V' );
-AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere', __DIR__.'/', 'KREDA' );
-AutoLoader::getNamespaceAutoLoader( 'Markdownify', __DIR__.'/Library/Markdownify/2.1.6/src' );
-
 /**
- * Init Php Header
+ * Setup: Php
  */
 header( 'Content-type: text/html; charset=utf-8' );
 //error_reporting( E_ALL );
@@ -46,14 +41,22 @@ session_start();
 ini_set( 'xdebug.var_display_max_data', -1 );
 ini_set( 'xdebug.var_display_max_children', -1 );
 ini_set( 'xdebug.var_display_max_depth', -1 );
+
 /**
- * Development
- * Clear Cache
+ * Setup: Loader
+ */
+require_once( __DIR__.'/Library/MOC-V/Core/AutoLoader/AutoLoader.php' );
+AutoLoader::getNamespaceAutoLoader( 'MOC\V', __DIR__.'/Library/MOC-V' );
+AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere', __DIR__.'/', 'KREDA' );
+AutoLoader::getNamespaceAutoLoader( 'Markdownify', __DIR__.'/Library/Markdownify/2.1.6/src' );
+
+/**
+ * Development: Clear Cache
  */
 Cache::stageStatus( true );
 
 /**
- * Init Debugger
+ * Setup: Debugger
  */
 new Debugger();
 
@@ -63,6 +66,9 @@ new Debugger();
 $ShellScreen = new Screen();
 $Config = new Configuration( new UniversalRouter(), new LevelClient() );
 
+/**
+ * Setup: Error-Handler
+ */
 set_error_handler(
     function ( $N, $S, $F, $L ) {
 

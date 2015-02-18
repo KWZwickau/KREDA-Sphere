@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Demo\Service;
 use KREDA\Sphere\Application\Demo\Service\DemoService\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
+use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class DemoService
@@ -38,7 +39,7 @@ class DemoService extends EntityAction
         }
         if (!empty( $DemoCompleter )) {
             $this->actionCreateDemoCompleter( $DemoCompleter );
-            $abstractForm->setSuccess( 'DemoCompleter', 'Erfolg' );
+            $abstractForm->setSuccess( 'DemoCompleter', new Redirect( '/Sphere/Demo', 5 ) );
         }
         return $abstractForm;
     }
