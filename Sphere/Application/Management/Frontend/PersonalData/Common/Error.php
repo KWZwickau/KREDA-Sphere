@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Frontend\PersonalData\Common;
 
-use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractContent;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 
@@ -10,7 +10,7 @@ use MOC\V\Component\Template\Component\IBridgeInterface;
  *
  * @package KREDA\Sphere\Application\Management\PersonalData\Common
  */
-abstract class Error extends AbstractShell implements IElementInterface
+abstract class Error extends AbstractContent implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */

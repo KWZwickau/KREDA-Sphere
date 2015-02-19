@@ -5,11 +5,11 @@ use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\IElementInterface;
 
 /**
- * Class AbstractShell
+ * Class AbstractContent
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository
  */
-abstract class AbstractShell extends Element implements IElementInterface
+abstract class AbstractContent extends Element implements IElementInterface
 {
 
 }

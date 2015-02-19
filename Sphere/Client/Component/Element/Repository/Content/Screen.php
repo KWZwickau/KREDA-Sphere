@@ -1,8 +1,8 @@
 <?php
-namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
+namespace KREDA\Sphere\Client\Component\Element\Repository\Content;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
-use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractContent;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use KREDA\Sphere\Client\Script;
 use KREDA\Sphere\Client\Style;
@@ -14,7 +14,7 @@ use MOC\V\Component\Template\Exception\TemplateTypeException;
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Shell
  */
-class Screen extends AbstractShell implements IElementInterface
+class Screen extends AbstractContent implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */

@@ -1,16 +1,16 @@
 <?php
-namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
+namespace KREDA\Sphere\Client\Component\Element\Repository\Content;
 
-use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractContent;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 
 /**
  * Class Error
  *
- * @package KREDA\Sphere\Client\Component\Element\Repository\Shell
+ * @package KREDA\Sphere\Client\Component\Element\Repository\Content
  */
-class Error extends AbstractShell implements IElementInterface
+class Error extends AbstractContent implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */

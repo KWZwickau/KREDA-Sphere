@@ -1,16 +1,16 @@
 <?php
-namespace KREDA\Sphere\Client\Component\Element\Repository\Shell;
+namespace KREDA\Sphere\Client\Component\Element\Repository\Content;
 
 use KREDA\Sphere\Client\Component\Element\Element;
-use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractContent;
 use KREDA\Sphere\Client\Component\IElementInterface;
 
 /**
  * Class Container
  *
- * @package KREDA\Sphere\Client\Component\Element\Repository\Shell
+ * @package KREDA\Sphere\Client\Component\Element\Repository\Content
  */
-class Container extends AbstractShell implements IElementInterface
+class Container extends AbstractContent implements IElementInterface
 {
 
     /** @var Element $Element */
@@ -33,5 +33,4 @@ class Container extends AbstractShell implements IElementInterface
 
         return $this->Element->getContent();
     }
-
 }

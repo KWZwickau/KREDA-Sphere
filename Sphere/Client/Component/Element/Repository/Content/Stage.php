@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Client\Component\Element\Repository\Content;
 
-use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractContent;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
@@ -11,7 +11,7 @@ use MOC\V\Component\Template\Exception\TemplateTypeException;
  *
  * @package KREDA\Sphere\Client\Component\Element\Repository\Content
  */
-class Stage extends AbstractShell implements IElementInterface
+class Stage extends AbstractContent implements IElementInterface
 {
 
     /** @var IBridgeInterface $Template */

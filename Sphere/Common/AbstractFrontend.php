@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Common;
 
-use KREDA\Sphere\Client\Component\Element\Repository\AbstractShell;
+use KREDA\Sphere\Client\Component\Element\Repository\AbstractContent;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Redirect;
 use MOC\V\Component\Template\Component\IBridgeInterface;
@@ -14,7 +14,7 @@ use MOC\V\Component\Template\Component\IBridgeInterface;
  *
  * @package KREDA\Sphere\Common
  */
-abstract class AbstractFrontend extends AbstractShell
+abstract class AbstractFrontend extends AbstractContent
 {
 
     /**
