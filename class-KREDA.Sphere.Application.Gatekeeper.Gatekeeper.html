@@ -7,7 +7,7 @@
 
     <title>Class KREDA\Sphere\Application\Gatekeeper\Gatekeeper | Sphere</title>
 
-    <script type="text/javascript" src="resources/combined.js?3624343741"></script>
+    <script type="text/javascript" src="resources/combined.js?1599419153"></script>
     <script type="text/javascript" src="elementlist.js?1244847133"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
@@ -97,6 +97,9 @@
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.Gatekeeper.Frontend.MyAccount.html">MyAccount</a>
 						</li>
 							</ul></li>
+                            <li class="main"><a
+                                href="namespace-KREDA.Sphere.Application.Gatekeeper.Module.html">Module</a>
+                            </li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.Gatekeeper.Service.html">Service<span></span></a>
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.Gatekeeper.Service.Access.html">Access<span></span></a>
@@ -374,7 +377,7 @@
 
 	<div class="description">
 
-<p>Class Gatekeeper</p>
+    <p>Class Gatekeeper</p>
 
 	</div>
 
@@ -383,23 +386,34 @@
 			<a href="class-KREDA.Sphere.Common.AbstractExtension.html"><span>KREDA\Sphere\Common\AbstractExtension</span></a>
 
 
-
-		</dd>
+        </dd>
 		<dd style="padding-left:30px">
 			<img src="resources/inherit.png" alt="Extended by" />
 			<a href="class-KREDA.Sphere.Common.AbstractApplication.html"><span>KREDA\Sphere\Common\AbstractApplication</span></a>
 
-			 implements
+            implements
 				<a href="class-KREDA.Sphere.IApplicationInterface.html"><span>KREDA\Sphere\IApplicationInterface</span></a>
 
 
-		</dd>
+        </dd>
 		<dd style="padding-left:60px">
 			<img src="resources/inherit.png" alt="Extended by" />
-<b><span>KREDA\Sphere\Application\Gatekeeper\Gatekeeper</span></b>
+            <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.Authentication.html"><span>KREDA\Sphere\Application\Gatekeeper\Module\Authentication</span></a>
 
 
-		</dd>
+        </dd>
+        <dd style="padding-left:90px">
+            <img src="resources/inherit.png" alt="Extended by"/>
+            <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.MyAccount.html"><span>KREDA\Sphere\Application\Gatekeeper\Module\MyAccount</span></a>
+
+
+        </dd>
+        <dd style="padding-left:120px">
+            <img src="resources/inherit.png" alt="Extended by"/>
+            <b><span>KREDA\Sphere\Application\Gatekeeper\Gatekeeper</span></b>
+
+
+        </dd>
 	</dl>
 
 
@@ -412,10 +426,11 @@
 	<div class="info">
 
 
-		<b>Namespace:</b> <a href="namespace-KREDA.html">KREDA</a>\<a href="namespace-KREDA.Sphere.html">Sphere</a>\<a href="namespace-KREDA.Sphere.Application.html">Application</a>\<a href="namespace-KREDA.Sphere.Application.Gatekeeper.html">Gatekeeper</a><br />
+        <b>Namespace:</b> <a href="namespace-KREDA.html">KREDA</a>\<a href="namespace-KREDA.Sphere.html">Sphere</a>\<a href="namespace-KREDA.Sphere.Application.html">Application</a>\<a href="namespace-KREDA.Sphere.Application.Gatekeeper.html">Gatekeeper</a><br />
 		<b>Package:</b> KREDA\Sphere\Application\Gatekeeper<br />
 
-		<b>Located at</b> <a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#17-290" title="Go to source code">Application/Gatekeeper/Gatekeeper.php</a><br />
+        <b>Located at</b> <a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#12-86"
+                             title="Go to source code">Application/Gatekeeper/Gatekeeper.php</a><br/>
 	</div>
 
 
@@ -428,22 +443,24 @@
 			 public static
 			<code><a href="class-KREDA.Sphere.Client.Configuration.html">KREDA\Sphere\Client\Configuration</a></code>
 
-			</code>
+        </code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_registerApplication">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#28-99" title="Go to source code">registerApplication</a>( <span><code><a href="class-KREDA.Sphere.Client.Configuration.html">KREDA\Sphere\Client\Configuration</a></code> <var>$Configuration</var></span> )</code>
+            <code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#23-49"
+                     title="Go to source code">registerApplication</a>( <span><code><a
+                href="class-KREDA.Sphere.Client.Configuration.html">KREDA\Sphere\Client\Configuration</a></code> <var>$Configuration</var></span>
+                )</code>
 
 		<div class="description short">
 
-		</div>
+        </div>
 
 		<div class="description detailed hidden">
 
 
-
-				<h4>Parameters</h4>
+            <h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$Configuration</var></dt>
 					<dd><code><code><a href="class-KREDA.Sphere.Client.Configuration.html">KREDA\Sphere\Client\Configuration</a></code></code><br>$Configuration</dd>
@@ -455,7 +472,11 @@
 				</div>
 
 
+            <h4>Overrides</h4>
 
+            <div class="list"><code><a
+                href="class-KREDA.Sphere.Application.Gatekeeper.Module.MyAccount.html#_registerApplication">KREDA\Sphere\Application\Gatekeeper\Module\MyAccount::registerApplication()</a></code>
+            </div>
 
 		</div>
 		</div></td>
@@ -466,23 +487,22 @@
 			 public static
 			<code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Account.html">KREDA\Sphere\Application\Gatekeeper\Service\Account</a></code>
 
-			</code>
+        </code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_serviceAccount">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#101-108" title="Go to source code">serviceAccount</a>( )</code>
+            <code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#51-58"
+                     title="Go to source code">serviceAccount</a>( )</code>
 
 		<div class="description short">
 
-		</div>
+        </div>
 
 		<div class="description detailed hidden">
 
 
-
-
-				<h4>Returns</h4>
+        <h4>Returns</h4>
 				<div class="list">
 					<code><code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Account.html">KREDA\Sphere\Application\Gatekeeper\Service\Account</a></code></code><br />
 				</div>
@@ -499,23 +519,22 @@
 			 public static
 			<code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Token.html">KREDA\Sphere\Application\Gatekeeper\Service\Token</a></code>
 
-			</code>
+        </code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_serviceToken">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#110-117" title="Go to source code">serviceToken</a>( )</code>
+            <code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#60-67"
+                     title="Go to source code">serviceToken</a>( )</code>
 
 		<div class="description short">
 
-		</div>
+        </div>
 
 		<div class="description detailed hidden">
 
 
-
-
-				<h4>Returns</h4>
+        <h4>Returns</h4>
 				<div class="list">
 					<code><code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Token.html">KREDA\Sphere\Application\Gatekeeper\Service\Token</a></code></code><br />
 				</div>
@@ -532,382 +551,25 @@
 			 public static
 			<code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Consumer.html">KREDA\Sphere\Application\Gatekeeper\Service\Consumer</a></code>
 
-			</code>
+        </code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_serviceConsumer">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#119-126" title="Go to source code">serviceConsumer</a>( )</code>
+            <code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#69-76"
+                     title="Go to source code">serviceConsumer</a>( )</code>
 
 		<div class="description short">
 
-		</div>
+        </div>
 
 		<div class="description detailed hidden">
 
 
-
-
-				<h4>Returns</h4>
+        <h4>Returns</h4>
 				<div class="list">
 					<code><code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Consumer.html">KREDA\Sphere\Application\Gatekeeper\Service\Consumer</a></code></code><br />
 				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="frontendAuthenticationSignInSwitch" id="_frontendAuthenticationSignInSwitch">
-
-		<td class="attributes"><code>
-			 public
-			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_frontendAuthenticationSignInSwitch">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#128-136" title="Go to source code">frontendAuthenticationSignInSwitch</a>( )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="setupModuleNavigation" id="_setupModuleNavigation">
-
-		<td class="attributes"><code>
-			 protected
-
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_setupModuleNavigation">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#138-153" title="Go to source code">setupModuleNavigation</a>( )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="frontendAuthenticationWelcome" id="_frontendAuthenticationWelcome">
-
-		<td class="attributes"><code>
-			 public
-			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_frontendAuthenticationWelcome">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#155-162" title="Go to source code">frontendAuthenticationWelcome</a>( )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="frontendAuthenticationSignInTeacher" id="_frontendAuthenticationSignInTeacher">
-
-		<td class="attributes"><code>
-			 public
-			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_frontendAuthenticationSignInTeacher">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#164-176" title="Go to source code">frontendAuthenticationSignInTeacher</a>( <span>string <var>$CredentialName</var></span>, <span>string <var>$CredentialLock</var></span>, <span>string <var>$CredentialKey</var></span> )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$CredentialName</var></dt>
-					<dd><code>string</code><br>$CredentialName</dd>
-					<dt><var>$CredentialLock</var></dt>
-					<dd><code>string</code><br>$CredentialLock</dd>
-					<dt><var>$CredentialKey</var></dt>
-					<dd><code>string</code><br>$CredentialKey</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="frontendAuthenticationSignInSystem" id="_frontendAuthenticationSignInSystem">
-
-		<td class="attributes"><code>
-			 public
-			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_frontendAuthenticationSignInSystem">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#178-190" title="Go to source code">frontendAuthenticationSignInSystem</a>( <span>string <var>$CredentialName</var></span>, <span>string <var>$CredentialLock</var></span>, <span>string <var>$CredentialKey</var></span> )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$CredentialName</var></dt>
-					<dd><code>string</code><br>$CredentialName</dd>
-					<dt><var>$CredentialLock</var></dt>
-					<dd><code>string</code><br>$CredentialLock</dd>
-					<dt><var>$CredentialKey</var></dt>
-					<dd><code>string</code><br>$CredentialKey</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="frontendAuthenticationSignInManagement" id="_frontendAuthenticationSignInManagement">
-
-		<td class="attributes"><code>
-			 public
-			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_frontendAuthenticationSignInManagement">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#192-204" title="Go to source code">frontendAuthenticationSignInManagement</a>( <span>string <var>$CredentialName</var></span>, <span>string <var>$CredentialLock</var></span>, <span>string <var>$CredentialKey</var></span> )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$CredentialName</var></dt>
-					<dd><code>string</code><br>$CredentialName</dd>
-					<dt><var>$CredentialLock</var></dt>
-					<dd><code>string</code><br>$CredentialLock</dd>
-					<dt><var>$CredentialKey</var></dt>
-					<dd><code>string</code><br>$CredentialKey</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="frontendAuthenticationSignInStudent" id="_frontendAuthenticationSignInStudent">
-
-		<td class="attributes"><code>
-			 public
-			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_frontendAuthenticationSignInStudent">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#206-217" title="Go to source code">frontendAuthenticationSignInStudent</a>( <span>string <var>$CredentialName</var></span>, <span>string <var>$CredentialLock</var></span> )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$CredentialName</var></dt>
-					<dd><code>string</code><br>$CredentialName</dd>
-					<dt><var>$CredentialLock</var></dt>
-					<dd><code>string</code><br>$CredentialLock</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="frontendAuthenticationSignOut" id="_frontendAuthenticationSignOut">
-
-		<td class="attributes"><code>
-			 public
-			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_frontendAuthenticationSignOut">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#219-227" title="Go to source code">frontendAuthenticationSignOut</a>( )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="frontendMyAccountSummary" id="_frontendMyAccountSummary">
-
-		<td class="attributes"><code>
-			 public
-			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_frontendMyAccountSummary">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#229-237" title="Go to source code">frontendMyAccountSummary</a>( )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="setupModuleMyAccount" id="_setupModuleMyAccount">
-
-		<td class="attributes"><code>
-			 protected
-
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_setupModuleMyAccount">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#239-255" title="Go to source code">setupModuleMyAccount</a>( )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-
 
 
 
@@ -921,23 +583,22 @@
 			 public static
 			<code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Access.html">KREDA\Sphere\Application\Gatekeeper\Service\Access</a></code>
 
-			</code>
+        </code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_serviceAccess">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#257-264" title="Go to source code">serviceAccess</a>( )</code>
+            <code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#78-85"
+                     title="Go to source code">serviceAccess</a>( )</code>
 
 		<div class="description short">
 
-		</div>
+        </div>
 
 		<div class="description detailed hidden">
 
 
-
-
-				<h4>Returns</h4>
+        <h4>Returns</h4>
 				<div class="list">
 					<code><code><a href="class-KREDA.Sphere.Application.Gatekeeper.Service.Access.html">KREDA\Sphere\Application\Gatekeeper\Service\Access</a></code></code><br />
 				</div>
@@ -948,95 +609,46 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="frontendMyAccountChangePassword" id="_frontendMyAccountChangePassword">
+    </table>
 
-		<td class="attributes"><code>
-			 public
-			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_frontendMyAccountChangePassword">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#266-277" title="Go to source code">frontendMyAccountChangePassword</a>( <span>string <var>$CredentialLock</var></span>, <span>string <var>$CredentialLockSafety</var></span> )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$CredentialLock</var></dt>
-					<dd><code>string</code><br>$CredentialLock</dd>
-					<dt><var>$CredentialLockSafety</var></dt>
-					<dd><code>string</code><br>$CredentialLockSafety</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
+    <table class="summary inherited">
+        <caption>Methods inherited from <a
+            href="class-KREDA.Sphere.Application.Gatekeeper.Module.MyAccount.html#methods">KREDA\Sphere\Application\Gatekeeper\Module\MyAccount</a>
+        </caption>
+        <tr>
+            <td><code>
+                <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.MyAccount.html#_frontendMyAccountChangeConsumer">frontendMyAccountChangeConsumer()</a>,
+                <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.MyAccount.html#_frontendMyAccountChangePassword">frontendMyAccountChangePassword()</a>,
+                <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.MyAccount.html#_frontendMyAccountSummary">frontendMyAccountSummary()</a>,
+                <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.MyAccount.html#_setupModuleNavigation">setupModuleNavigation()</a>
+            </code></td>
 	</tr>
-	<tr data-order="frontendMyAccountChangeConsumer" id="_frontendMyAccountChangeConsumer">
-
-		<td class="attributes"><code>
-			 public
-			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
-
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_frontendMyAccountChangeConsumer">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#279-289" title="Go to source code">frontendMyAccountChangeConsumer</a>( <span>integer <var>$serviceGatekeeper_Consumer</var></span> )</code>
-
-		<div class="description short">
-
-		</div>
-
-		<div class="description detailed hidden">
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$serviceGatekeeper_Consumer</var></dt>
-					<dd><code>integer</code><br>$serviceGatekeeper_Consumer</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
+    </table>
+    <table class="summary inherited">
+        <caption>Methods inherited from <a
+            href="class-KREDA.Sphere.Application.Gatekeeper.Module.Authentication.html#methods">KREDA\Sphere\Application\Gatekeeper\Module\Authentication</a>
+        </caption>
+        <tr>
+            <td><code>
+                <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.Authentication.html#_frontendAuthenticationSignInManagement">frontendAuthenticationSignInManagement()</a>,
+                <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.Authentication.html#_frontendAuthenticationSignInStudent">frontendAuthenticationSignInStudent()</a>,
+                <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.Authentication.html#_frontendAuthenticationSignInSwitch">frontendAuthenticationSignInSwitch()</a>,
+                <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.Authentication.html#_frontendAuthenticationSignInSystem">frontendAuthenticationSignInSystem()</a>,
+                <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.Authentication.html#_frontendAuthenticationSignInTeacher">frontendAuthenticationSignInTeacher()</a>,
+                <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.Authentication.html#_frontendAuthenticationSignOut">frontendAuthenticationSignOut()</a>,
+                <a href="class-KREDA.Sphere.Application.Gatekeeper.Module.Authentication.html#_frontendAuthenticationStatus">frontendAuthenticationStatus()</a>
+            </code></td>
 	</tr>
 	</table>
-
 	<table class="summary inherited">
 	<caption>Methods inherited from <a href="class-KREDA.Sphere.Common.AbstractApplication.html#methods">KREDA\Sphere\Common\AbstractApplication</a></caption>
 	<tr>
 		<td><code>
-			<a href="class-KREDA.Sphere.Common.AbstractApplication.html#_addApplicationNavigationMain">addApplicationNavigationMain()</a>,
-			<a href="class-KREDA.Sphere.Common.AbstractApplication.html#_addClientNavigationMain">addClientNavigationMain()</a>,
-			<a href="class-KREDA.Sphere.Common.AbstractApplication.html#_addClientNavigationMeta">addClientNavigationMeta()</a>,
-			<a href="class-KREDA.Sphere.Common.AbstractApplication.html#_addModuleNavigationMain">addModuleNavigationMain()</a>,
-			<a href="class-KREDA.Sphere.Common.AbstractApplication.html#_registerClientRoute">registerClientRoute()</a>,
+            <a href="class-KREDA.Sphere.Common.AbstractApplication.html#_addApplicationNavigationMain">addApplicationNavigationMain()</a>,
+            <a href="class-KREDA.Sphere.Common.AbstractApplication.html#_addClientNavigationMain">addClientNavigationMain()</a>,
+            <a href="class-KREDA.Sphere.Common.AbstractApplication.html#_addClientNavigationMeta">addClientNavigationMeta()</a>,
+            <a href="class-KREDA.Sphere.Common.AbstractApplication.html#_addModuleNavigationMain">addModuleNavigationMain()</a>,
+            <a href="class-KREDA.Sphere.Common.AbstractApplication.html#_registerClientRoute">registerClientRoute()</a>,
 			<a href="class-KREDA.Sphere.Common.AbstractApplication.html#_setupApplicationAccess">setupApplicationAccess()</a>
 		</code></td>
 	</tr>
@@ -1045,12 +657,12 @@
 	<caption>Methods inherited from <a href="class-KREDA.Sphere.Common.AbstractExtension.html#methods">KREDA\Sphere\Common\AbstractExtension</a></caption>
 	<tr>
 		<td><code>
-			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionDatabase">extensionDatabase()</a>,
-			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionDebugger">extensionDebugger()</a>,
-			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionDocumentPdf">extensionDocumentPdf()</a>,
-			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionMarkdownify">extensionMarkdownify()</a>,
-			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionModHex">extensionModHex()</a>,
-			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionRequest">extensionRequest()</a>,
+            <a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionDatabase">extensionDatabase()</a>,
+            <a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionDebugger">extensionDebugger()</a>,
+            <a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionDocumentPdf">extensionDocumentPdf()</a>,
+            <a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionMarkdownify">extensionMarkdownify()</a>,
+            <a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionModHex">extensionModHex()</a>,
+            <a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionRequest">extensionRequest()</a>,
 			<a href="class-KREDA.Sphere.Common.AbstractExtension.html#_extensionTemplate">extensionTemplate()</a>
 		</code></td>
 	</tr>
@@ -1070,12 +682,13 @@
 	<caption>Properties summary</caption>
 	<tr data-order="Configuration" id="$Configuration">
 		<td class="attributes"><code>
-			private static
+            private static
 			<code><a href="class-KREDA.Sphere.Client.Configuration.html">KREDA\Sphere\Client\Configuration</a></code>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#25-26" title="Go to source code"><var>$Configuration</var></a>
+            <a href="source-class-KREDA.Sphere.Application.Gatekeeper.Gatekeeper.html#20-21"
+               title="Go to source code"><var>$Configuration</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">null</span></code></td>
 		<td class="description"><div>
@@ -1083,13 +696,13 @@
 
 			<div class="description short">
 
-<p>$Config</p>
+            <p>$Config</p>
 
 			</div>
 
 			<div class="description detailed hidden">
 
-<p>$Config</p>
+            <p>$Config</p>
 
 
 			</div>
