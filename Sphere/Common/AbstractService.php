@@ -79,7 +79,7 @@ abstract class AbstractService extends AbstractExtension implements IServiceInte
         } elseif (false !== ( $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession() )) {
             return $tblConsumer->getDatabaseSuffix();
         } else {
-            return 'EGE';
+            return 'DS';
         }
     }
 

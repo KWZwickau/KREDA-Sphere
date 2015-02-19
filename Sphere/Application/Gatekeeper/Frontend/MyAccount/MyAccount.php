@@ -142,12 +142,13 @@ class MyAccount extends AbstractFrontend
                     new GridFormRow( array(
                         new GridFormCol(
                             new InputPassword( 'CredentialLock', 'Neues Passwort', 'Neues Passwort', new LockIcon() )
-                        , 6 ),
+                            , 6 ),
                         new GridFormCol(
-                            new InputPassword( 'CredentialLockSafety', 'Passwort wiederholen', 'Passwort wiederholen', new RepeatIcon() )
-                        , 6 )
+                            new InputPassword( 'CredentialLockSafety', 'Passwort wiederholen', 'Passwort wiederholen',
+                                new RepeatIcon() )
+                            , 6 )
                     ) )
-                ), new ButtonSubmitPrimary('Neues Passwort speichern' )
+                ), new ButtonSubmitPrimary( 'Neues Passwort speichern' )
             ), $CredentialLock, $CredentialLockSafety
         ) );
         return $View;
@@ -167,11 +168,14 @@ class MyAccount extends AbstractFrontend
         foreach ($tblConsumerList as $tblConsumer) {
             $tblConsumerSelect[$tblConsumer->getId()] = $tblConsumer->getDatabaseSuffix().' # '.$tblConsumer->getName();
         }
+
         /**
          * Form warm
          */
+        $SelectConsumer = new InputSelect( 'serviceGatekeeperConsumer', 'Mandant', $tblConsumerSelect,
+            new CertificateIcon() );
         if (null === $serviceGatekeeperConsumer) {
-            $_POST['serviceGatekeeperConsumer'] = Gatekeeper::serviceConsumer()->entityConsumerBySession()->getId();
+            $SelectConsumer->setDefaultValue( Gatekeeper::serviceConsumer()->entityConsumerBySession()->getId() );
         }
 
         $View = new Stage();
@@ -181,10 +185,7 @@ class MyAccount extends AbstractFrontend
             new FormDefault(
                 new GridFormGroup(
                     new GridFormRow( array(
-                        new GridFormCol(
-                            new InputSelect( 'serviceGatekeeperConsumer', 'Mandant', $tblConsumerSelect,
-                                new CertificateIcon() )
-                        )
+                        new GridFormCol( $SelectConsumer )
                     ) )
                 ), new ButtonSubmitPrimary( 'Neuen Mandant speichern' )
             ), $serviceGatekeeperConsumer

@@ -277,3 +277,31 @@ span.twitter-typeahead .tt-dropdown-menu {
         color: #666;
     }
 }
+
+/* DATATABLES RESPONSIVE */
+
+table.dataTable.dtr-inline.collapsed > tbody td:first-child:before,
+table.dataTable.dtr-inline.collapsed > tbody th:first-child:before {
+    top: 2px;
+    left: 2px;
+    height: 21px;
+    width: 21px;
+    display: block;
+    position: absolute;
+    color: #434a54;
+    border: 1px solid #DDD;
+    border-radius: 0;
+    text-align: center;
+    line-height: 21px;
+    box-shadow: none;
+    box-sizing: content-box;
+    font-family: 'Glyphicons Regular';
+    content: '\e052';
+    background-color: transparent;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody tr.parent td:first-child:before,
+table.dataTable.dtr-inline.collapsed > tbody tr.parent th:first-child:before {
+    content: '\e053';
+    background-color: transparent;
+}

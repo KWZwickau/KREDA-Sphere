@@ -41,7 +41,15 @@ class InputSelect extends AbstractElement
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }
 
-        $this->setPostValue( $this->Template, $Name, 'ElementValue' );
     }
 
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+
+        $this->setPostValue( $this->Template, $this->getName(), 'ElementValue' );
+        return parent::getContent();
+    }
 }
