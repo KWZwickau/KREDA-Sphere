@@ -8,8 +8,8 @@
 
     <title>File Application/Gatekeeper/Frontend/MyAccount/MyAccount.php | Sphere</title>
 
-    <script type="text/javascript" src="resources/combined.js?1599419153"></script>
-    <script type="text/javascript" src="elementlist.js?1244847133"></script>
+    <script type="text/javascript" src="resources/combined.js?3624343741"></script>
+    <script type="text/javascript" src="elementlist.js?3491463538"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
 
@@ -201,6 +201,8 @@
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Frontend.Token.html">Token</a>
 						</li>
 							</ul></li>
+                            <li class="main"><a href="namespace-KREDA.Sphere.Application.System.Module.html">Module</a>
+                            </li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Service.html">Service<span></span></a>
 						<ul>
 				<li class="main"><a href="namespace-KREDA.Sphere.Application.System.Service.Protocol.html">Protocol<span></span></a>
@@ -529,11 +531,14 @@
 </span><span id="154" class="l"><a class="l" href="#154">154: </a>    }
 </span><span id="155" class="l"><a class="l" href="#155">155: </a>
 </span><span id="156" class="l"><a class="l" href="#156">156: </a>    <span class="php-comment">/**
-</span></span><span id="157" class="l"><a class="l" href="#157">157: </a><span class="php-comment">     * @param int $serviceGatekeeper_Consumer
+</span></span><span id="157" class="l"><a class="l" href="#157">157: </a><span class="php-comment">     * @param int $serviceGatekeeperConsumer
 </span></span><span id="158" class="l"><a class="l" href="#158">158: </a><span class="php-comment">     *
 </span></span><span id="159" class="l"><a class="l" href="#159">159: </a><span class="php-comment">     * @return Stage
 </span></span><span id="160" class="l"><a class="l" href="#160">160: </a><span class="php-comment">     */</span>
-</span><span id="161" class="l"><a class="l" href="#161">161: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_stageChangeConsumer" href="#_stageChangeConsumer">stageChangeConsumer</a>( <span class="php-var">$serviceGatekeeper_Consumer</span> )
+</span><span id="161" class="l"><a class="l" href="#161">161: </a>    <span class="php-keyword1">public</span> <span
+    class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_stageChangeConsumer"
+                                                                                     href="#_stageChangeConsumer">stageChangeConsumer</a>( <span
+    class="php-var">$serviceGatekeeperConsumer</span> )
 </span><span id="162" class="l"><a class="l" href="#162">162: </a>    {
 </span><span id="163" class="l"><a class="l" href="#163">163: </a>
 </span><span id="164" class="l"><a class="l" href="#164">164: </a>        <span class="php-var">$tblConsumerList</span> = Gatekeeper::serviceConsumer()-&gt;entityConsumerAll();
@@ -545,8 +550,10 @@
 </span><span id="170" class="l"><a class="l" href="#170">170: </a>        <span class="php-comment">/**
 </span></span><span id="171" class="l"><a class="l" href="#171">171: </a><span class="php-comment">         * Form warm
 </span></span><span id="172" class="l"><a class="l" href="#172">172: </a><span class="php-comment">         */</span>
-</span><span id="173" class="l"><a class="l" href="#173">173: </a>        <span class="php-keyword1">if</span> (<span class="php-keyword1">null</span> === <span class="php-var">$serviceGatekeeper_Consumer</span>) {
-</span><span id="174" class="l"><a class="l" href="#174">174: </a>            <span class="php-var">$_REQUEST</span>[<span class="php-quote">'serviceGatekeeper_Consumer'</span>] = Gatekeeper::serviceConsumer()-&gt;entityConsumerBySession()-&gt;getId();
+</span><span id="173" class="l"><a class="l" href="#173">173: </a>        <span class="php-keyword1">if</span> (<span
+    class="php-keyword1">null</span> === <span class="php-var">$serviceGatekeeperConsumer</span>) {
+</span><span id="174" class="l"><a class="l" href="#174">174: </a>            <span
+    class="php-var">$_REQUEST</span>[<span class="php-quote">'serviceGatekeeperConsumer'</span>] = Gatekeeper::serviceConsumer()-&gt;entityConsumerBySession()-&gt;getId();
 </span><span id="175" class="l"><a class="l" href="#175">175: </a>        }
 </span><span id="176" class="l"><a class="l" href="#176">176: </a>
 </span><span id="177" class="l"><a class="l" href="#177">177: </a>        <span class="php-var">$View</span> = <span class="php-keyword1">new</span> Stage();
@@ -557,12 +564,14 @@
 </span><span id="182" class="l"><a class="l" href="#182">182: </a>                <span class="php-keyword1">new</span> GridFormGroup(
 </span><span id="183" class="l"><a class="l" href="#183">183: </a>                    <span class="php-keyword1">new</span> GridFormRow( <span class="php-keyword1">array</span>(
 </span><span id="184" class="l"><a class="l" href="#184">184: </a>                        <span class="php-keyword1">new</span> GridFormCol(
-</span><span id="185" class="l"><a class="l" href="#185">185: </a>                            <span class="php-keyword1">new</span> InputSelect( <span class="php-quote">'serviceGatekeeper_Consumer'</span>, <span class="php-quote">'Mandant'</span>, <span class="php-var">$tblConsumerSelect</span>,
+</span><span id="185" class="l"><a class="l" href="#185">185: </a>                            <span
+    class="php-keyword1">new</span> InputSelect( <span class="php-quote">'serviceGatekeeperConsumer'</span>, <span
+    class="php-quote">'Mandant'</span>, <span class="php-var">$tblConsumerSelect</span>,
 </span><span id="186" class="l"><a class="l" href="#186">186: </a>                                <span class="php-keyword1">new</span> CertificateIcon() )
 </span><span id="187" class="l"><a class="l" href="#187">187: </a>                        )
 </span><span id="188" class="l"><a class="l" href="#188">188: </a>                    ) )
 </span><span id="189" class="l"><a class="l" href="#189">189: </a>                ), <span class="php-keyword1">new</span> ButtonSubmitPrimary( <span class="php-quote">'Neuen Mandant speichern'</span> )
-</span><span id="190" class="l"><a class="l" href="#190">190: </a>            ), <span class="php-var">$serviceGatekeeper_Consumer</span>
+</span><span id="190" class="l"><a class="l" href="#190">190: </a>            ), <span class="php-var">$serviceGatekeeperConsumer</span>
 </span><span id="191" class="l"><a class="l" href="#191">191: </a>        ) );
 </span><span id="192" class="l"><a class="l" href="#192">192: </a>        <span class="php-keyword1">return</span> <span class="php-var">$View</span>;
 </span><span id="193" class="l"><a class="l" href="#193">193: </a>    }

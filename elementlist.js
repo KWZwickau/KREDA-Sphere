@@ -419,6 +419,34 @@ ApiGen.elements = [
     ],
     [
         "c",
+        "KREDA\\Sphere\\Application\\System\\Module\\Authorization"
+    ],
+    [
+        "c",
+        "KREDA\\Sphere\\Application\\System\\Module\\Cache"
+    ],
+    [
+        "c",
+        "KREDA\\Sphere\\Application\\System\\Module\\Common"
+    ],
+    [
+        "c",
+        "KREDA\\Sphere\\Application\\System\\Module\\Consumer"
+    ],
+    [
+        "c",
+        "KREDA\\Sphere\\Application\\System\\Module\\Database"
+    ],
+    [
+        "c",
+        "KREDA\\Sphere\\Application\\System\\Module\\Protocol"
+    ],
+    [
+        "c",
+        "KREDA\\Sphere\\Application\\System\\Module\\Update"
+    ],
+    [
+        "c",
         "KREDA\\Sphere\\Application\\System\\Service\\Protocol"
     ],
     [
@@ -503,14 +531,6 @@ ApiGen.elements = [
     ],
     [
         "c",
-        "KREDA\\Sphere\\Client\\Component\\Element\\Repository\\Shell\\Information"
-    ],
-    [
-        "c",
-        "KREDA\\Sphere\\Client\\Component\\Element\\Repository\\Shell\\Landing"
-    ],
-    [
-        "c",
         "KREDA\\Sphere\\Client\\Component\\Element\\Repository\\Shell\\Screen"
     ],
     [
@@ -588,6 +608,10 @@ ApiGen.elements = [
     [
         "c",
         "KREDA\\Sphere\\Client\\Component\\Parameter\\Repository\\Icon\\GroupIcon"
+    ],
+    [
+        "c",
+        "KREDA\\Sphere\\Client\\Component\\Parameter\\Repository\\Icon\\HistoryIcon"
     ],
     [
         "c",
@@ -852,6 +876,10 @@ ApiGen.elements = [
     [
         "c",
         "KREDA\\Sphere\\Common\\Frontend\\Button\\Element\\ButtonSubmitPrimary"
+    ],
+    [
+        "c",
+        "KREDA\\Sphere\\Common\\Frontend\\Button\\Element\\ButtonSuccessLink"
     ],
     [
         "c",

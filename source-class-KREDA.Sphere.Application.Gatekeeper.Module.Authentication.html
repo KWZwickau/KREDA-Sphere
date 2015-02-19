@@ -8,8 +8,8 @@
 
     <title>File Application/Gatekeeper/Module/Authentication.php | Sphere</title>
 
-    <script type="text/javascript" src="resources/combined.js?1599419153"></script>
-    <script type="text/javascript" src="elementlist.js?1244847133"></script>
+    <script type="text/javascript" src="resources/combined.js?3624343741"></script>
+    <script type="text/javascript" src="elementlist.js?3491463538"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462"/>
 
 
@@ -296,6 +296,9 @@
                                                                     href="namespace-KREDA.Sphere.Application.System.Frontend.Token.html">Token</a>
                                                                 </li>
                                                             </ul>
+                                                        </li>
+                                                        <li class="main"><a
+                                                            href="namespace-KREDA.Sphere.Application.System.Module.html">Module</a>
                                                         </li>
                                                         <li class="main"><a
                                                             href="namespace-KREDA.Sphere.Application.System.Service.html">Service<span></span></a>
@@ -590,30 +593,30 @@
 </span><span id="35" class="l"><a class="l" href="#35"> 35: </a>        <span class="php-keyword1">if</span> (( <span
     class="php-var">$ValidSession</span> = Gatekeeper::serviceAccount()-&gt;checkIsValidSession() )) {
 </span><span id="36" class="l"><a class="l" href="#36"> 36: </a>            self::registerClientRoute( self::<span
-    class="php-var">$Configuration</span>, <span class="php-quote">'/'</span>, __CLASS__.<span class="php-quote">'::frontendAuthenticationStatus'</span> );
+    class="php-var">$Configuration</span>, <span class="php-quote">'/'</span>, __CLASS__.<span class="php-quote">'::frontendStatus'</span> );
 </span><span id="37" class="l"><a class="l" href="#37"> 37: </a>        } <span class="php-keyword1">else</span> {
 </span><span id="38" class="l"><a class="l" href="#38"> 38: </a>            self::registerClientRoute( self::<span
-    class="php-var">$Configuration</span>, <span class="php-quote">'/'</span>, __CLASS__.<span class="php-quote">'::frontendAuthenticationSignInSwitch'</span> );
+    class="php-var">$Configuration</span>, <span class="php-quote">'/'</span>, __CLASS__.<span class="php-quote">'::frontendSignInSwitch'</span> );
 </span><span id="39" class="l"><a class="l" href="#39"> 39: </a>        }
 </span><span id="40" class="l"><a class="l" href="#40"> 40: </a>        self::registerClientRoute( self::<span
     class="php-var">$Configuration</span>, <span class="php-quote">'/Sphere'</span>,
-</span><span id="41" class="l"><a class="l" href="#41"> 41: </a>            __CLASS__.<span class="php-quote">'::frontendAuthenticationStatus'</span> );
+</span><span id="41" class="l"><a class="l" href="#41"> 41: </a>            __CLASS__.<span class="php-quote">'::frontendStatus'</span> );
 </span><span id="42" class="l"><a class="l" href="#42"> 42: </a>        self::registerClientRoute( self::<span
     class="php-var">$Configuration</span>, <span class="php-quote">'/Sphere/Gatekeeper/SignIn'</span>,
-</span><span id="43" class="l"><a class="l" href="#43"> 43: </a>            __CLASS__.<span class="php-quote">'::frontendAuthenticationSignInSwitch'</span> );
+</span><span id="43" class="l"><a class="l" href="#43"> 43: </a>            __CLASS__.<span class="php-quote">'::frontendSignInSwitch'</span> );
 </span><span id="44" class="l"><a class="l" href="#44"> 44: </a>        self::registerClientRoute( self::<span
     class="php-var">$Configuration</span>, <span class="php-quote">'/Sphere/Gatekeeper/SignOut'</span>,
-</span><span id="45" class="l"><a class="l" href="#45"> 45: </a>            __CLASS__.<span class="php-quote">'::frontendAuthenticationSignOut'</span> );
+</span><span id="45" class="l"><a class="l" href="#45"> 45: </a>            __CLASS__.<span class="php-quote">'::frontendSignOut'</span> );
 </span><span id="46" class="l"><a class="l" href="#46"> 46: </a>        self::registerClientRoute( self::<span
     class="php-var">$Configuration</span>, <span class="php-quote">'/Sphere/Gatekeeper/SignIn/Student'</span>,
-</span><span id="47" class="l"><a class="l" href="#47"> 47: </a>            __CLASS__.<span class="php-quote">'::frontendAuthenticationSignInStudent'</span> )
+</span><span id="47" class="l"><a class="l" href="#47"> 47: </a>            __CLASS__.<span class="php-quote">'::frontendSignInStudent'</span> )
 </span><span id="48" class="l"><a class="l" href="#48"> 48: </a>            -&gt;setParameterDefault( <span
     class="php-quote">'CredentialName'</span>, <span class="php-keyword1">null</span> )
 </span><span id="49" class="l"><a class="l" href="#49"> 49: </a>            -&gt;setParameterDefault( <span
     class="php-quote">'CredentialLock'</span>, <span class="php-keyword1">null</span> );
 </span><span id="50" class="l"><a class="l" href="#50"> 50: </a>        self::registerClientRoute( self::<span
     class="php-var">$Configuration</span>, <span class="php-quote">'/Sphere/Gatekeeper/SignIn/Teacher'</span>,
-</span><span id="51" class="l"><a class="l" href="#51"> 51: </a>            __CLASS__.<span class="php-quote">'::frontendAuthenticationSignInTeacher'</span> )
+</span><span id="51" class="l"><a class="l" href="#51"> 51: </a>            __CLASS__.<span class="php-quote">'::frontendSignInTeacher'</span> )
 </span><span id="52" class="l"><a class="l" href="#52"> 52: </a>            -&gt;setParameterDefault( <span
     class="php-quote">'CredentialName'</span>, <span class="php-keyword1">null</span> )
 </span><span id="53" class="l"><a class="l" href="#53"> 53: </a>            -&gt;setParameterDefault( <span
@@ -622,7 +625,7 @@
     class="php-quote">'CredentialKey'</span>, <span class="php-keyword1">null</span> );
 </span><span id="55" class="l"><a class="l" href="#55"> 55: </a>        self::registerClientRoute( self::<span
     class="php-var">$Configuration</span>, <span class="php-quote">'/Sphere/Gatekeeper/SignIn/Management'</span>,
-</span><span id="56" class="l"><a class="l" href="#56"> 56: </a>            __CLASS__.<span class="php-quote">'::frontendAuthenticationSignInManagement'</span> )
+</span><span id="56" class="l"><a class="l" href="#56"> 56: </a>            __CLASS__.<span class="php-quote">'::frontendSignInManagement'</span> )
 </span><span id="57" class="l"><a class="l" href="#57"> 57: </a>            -&gt;setParameterDefault( <span
     class="php-quote">'CredentialName'</span>, <span class="php-keyword1">null</span> )
 </span><span id="58" class="l"><a class="l" href="#58"> 58: </a>            -&gt;setParameterDefault( <span
@@ -631,7 +634,7 @@
     class="php-quote">'CredentialKey'</span>, <span class="php-keyword1">null</span> );
 </span><span id="60" class="l"><a class="l" href="#60"> 60: </a>        self::registerClientRoute( self::<span
     class="php-var">$Configuration</span>, <span class="php-quote">'/Sphere/Gatekeeper/SignIn/System'</span>,
-</span><span id="61" class="l"><a class="l" href="#61"> 61: </a>            __CLASS__.<span class="php-quote">'::frontendAuthenticationSignInSystem'</span> )
+</span><span id="61" class="l"><a class="l" href="#61"> 61: </a>            __CLASS__.<span class="php-quote">'::frontendSignInSystem'</span> )
 </span><span id="62" class="l"><a class="l" href="#62"> 62: </a>            -&gt;setParameterDefault( <span
     class="php-quote">'CredentialName'</span>, <span class="php-keyword1">null</span> )
 </span><span id="63" class="l"><a class="l" href="#63"> 63: </a>            -&gt;setParameterDefault( <span
@@ -644,8 +647,7 @@
 </span></span><span id="68" class="l"><a class="l" href="#68"> 68: </a><span class="php-comment">     * @return Stage
 </span></span><span id="69" class="l"><a class="l" href="#69"> 69: </a><span class="php-comment">     */</span>
 </span><span id="70" class="l"><a class="l" href="#70"> 70: </a>    <span class="php-keyword1">public</span> <span
-    class="php-keyword1">function</span> <a id="_frontendAuthenticationSignInSwitch"
-                                            href="#_frontendAuthenticationSignInSwitch">frontendAuthenticationSignInSwitch</a>()
+    class="php-keyword1">function</span> <a id="_frontendSignInSwitch" href="#_frontendSignInSwitch">frontendSignInSwitch</a>()
 </span><span id="71" class="l"><a class="l" href="#71"> 71: </a>    {
 </span><span id="72" class="l"><a class="l" href="#72"> 72: </a>
 </span><span id="73" class="l"><a class="l" href="#73"> 73: </a>        <span class="php-var">$this</span>-&gt;setupModuleNavigation();
@@ -680,7 +682,7 @@
 </span></span><span id="95" class="l"><a class="l" href="#95"> 95: </a><span class="php-comment">     * @return Stage
 </span></span><span id="96" class="l"><a class="l" href="#96"> 96: </a><span class="php-comment">     */</span>
 </span><span id="97" class="l"><a class="l" href="#97"> 97: </a>    <span class="php-keyword1">public</span> <span
-    class="php-keyword1">function</span> <a id="_frontendAuthenticationStatus" href="#_frontendAuthenticationStatus">frontendAuthenticationStatus</a>()
+    class="php-keyword1">function</span> <a id="_frontendStatus" href="#_frontendStatus">frontendStatus</a>()
 </span><span id="98" class="l"><a class="l" href="#98"> 98: </a>    {
 </span><span id="99" class="l"><a class="l" href="#99"> 99: </a>
 </span><span id="100" class="l"><a class="l" href="#100">100: </a>        <span class="php-keyword1">return</span> Frontend::stageStatus();
@@ -694,8 +696,7 @@
 </span></span><span id="108" class="l"><a class="l" href="#108">108: </a><span class="php-comment">     * @return Stage
 </span></span><span id="109" class="l"><a class="l" href="#109">109: </a><span class="php-comment">     */</span>
 </span><span id="110" class="l"><a class="l" href="#110">110: </a>    <span class="php-keyword1">public</span> <span
-    class="php-keyword1">function</span> <a id="_frontendAuthenticationSignInTeacher"
-                                            href="#_frontendAuthenticationSignInTeacher">frontendAuthenticationSignInTeacher</a>( <span
+    class="php-keyword1">function</span> <a id="_frontendSignInTeacher" href="#_frontendSignInTeacher">frontendSignInTeacher</a>( <span
     class="php-var">$CredentialName</span>, <span class="php-var">$CredentialLock</span>, <span class="php-var">$CredentialKey</span> )
 </span><span id="111" class="l"><a class="l" href="#111">111: </a>    {
 </span><span id="112" class="l"><a class="l" href="#112">112: </a>
@@ -712,8 +713,7 @@
 </span></span><span id="122" class="l"><a class="l" href="#122">122: </a><span class="php-comment">     * @return Stage
 </span></span><span id="123" class="l"><a class="l" href="#123">123: </a><span class="php-comment">     */</span>
 </span><span id="124" class="l"><a class="l" href="#124">124: </a>    <span class="php-keyword1">public</span> <span
-    class="php-keyword1">function</span> <a id="_frontendAuthenticationSignInSystem"
-                                            href="#_frontendAuthenticationSignInSystem">frontendAuthenticationSignInSystem</a>( <span
+    class="php-keyword1">function</span> <a id="_frontendSignInSystem" href="#_frontendSignInSystem">frontendSignInSystem</a>( <span
     class="php-var">$CredentialName</span>, <span class="php-var">$CredentialLock</span>, <span class="php-var">$CredentialKey</span> )
 </span><span id="125" class="l"><a class="l" href="#125">125: </a>    {
 </span><span id="126" class="l"><a class="l" href="#126">126: </a>
@@ -730,8 +730,7 @@
 </span></span><span id="136" class="l"><a class="l" href="#136">136: </a><span class="php-comment">     * @return Stage
 </span></span><span id="137" class="l"><a class="l" href="#137">137: </a><span class="php-comment">     */</span>
 </span><span id="138" class="l"><a class="l" href="#138">138: </a>    <span class="php-keyword1">public</span> <span
-    class="php-keyword1">function</span> <a id="_frontendAuthenticationSignInManagement"
-                                            href="#_frontendAuthenticationSignInManagement">frontendAuthenticationSignInManagement</a>( <span
+    class="php-keyword1">function</span> <a id="_frontendSignInManagement" href="#_frontendSignInManagement">frontendSignInManagement</a>( <span
     class="php-var">$CredentialName</span>, <span class="php-var">$CredentialLock</span>, <span class="php-var">$CredentialKey</span> )
 </span><span id="139" class="l"><a class="l" href="#139">139: </a>    {
 </span><span id="140" class="l"><a class="l" href="#140">140: </a>
@@ -747,8 +746,7 @@
 </span></span><span id="149" class="l"><a class="l" href="#149">149: </a><span class="php-comment">     * @return Stage
 </span></span><span id="150" class="l"><a class="l" href="#150">150: </a><span class="php-comment">     */</span>
 </span><span id="151" class="l"><a class="l" href="#151">151: </a>    <span class="php-keyword1">public</span> <span
-    class="php-keyword1">function</span> <a id="_frontendAuthenticationSignInStudent"
-                                            href="#_frontendAuthenticationSignInStudent">frontendAuthenticationSignInStudent</a>( <span
+    class="php-keyword1">function</span> <a id="_frontendSignInStudent" href="#_frontendSignInStudent">frontendSignInStudent</a>( <span
     class="php-var">$CredentialName</span>, <span class="php-var">$CredentialLock</span> )
 </span><span id="152" class="l"><a class="l" href="#152">152: </a>    {
 </span><span id="153" class="l"><a class="l" href="#153">153: </a>
@@ -761,7 +759,7 @@
 </span></span><span id="159" class="l"><a class="l" href="#159">159: </a><span class="php-comment">     * @return Stage
 </span></span><span id="160" class="l"><a class="l" href="#160">160: </a><span class="php-comment">     */</span>
 </span><span id="161" class="l"><a class="l" href="#161">161: </a>    <span class="php-keyword1">public</span> <span
-    class="php-keyword1">function</span> <a id="_frontendAuthenticationSignOut" href="#_frontendAuthenticationSignOut">frontendAuthenticationSignOut</a>()
+    class="php-keyword1">function</span> <a id="_frontendSignOut" href="#_frontendSignOut">frontendSignOut</a>()
 </span><span id="162" class="l"><a class="l" href="#162">162: </a>    {
 </span><span id="163" class="l"><a class="l" href="#163">163: </a>
 </span><span id="164" class="l"><a class="l" href="#164">164: </a>        <span class="php-var">$this</span>-&gt;setupModuleNavigation();
