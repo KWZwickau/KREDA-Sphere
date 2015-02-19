@@ -29,7 +29,7 @@ class Update extends Database
         self::$Configuration = $Configuration;
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Update', __CLASS__.'::frontendStatus'
-        );
+        )->setParameterDefault( 'Clear', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Update/Simulation', __CLASS__.'::frontendSimulation'
         );
@@ -40,14 +40,16 @@ class Update extends Database
 
 
     /**
+     * @param bool $Clear
+     *
      * @return Stage
      */
-    public function frontendStatus()
+    public function frontendStatus( $Clear )
     {
 
         $this->setupModuleNavigation();
         $this->setupApplicationNavigation();
-        return Frontend::stageStatus();
+        return Frontend::stageStatus( $Clear );
     }
 
     /**

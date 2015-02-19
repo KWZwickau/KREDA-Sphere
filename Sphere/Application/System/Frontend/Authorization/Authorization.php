@@ -232,20 +232,21 @@ class Authorization extends AbstractFrontend
     }
 
     /**
-     * @param null|int $Role
+     * @param null|int $Id
      * @param null|int $Access
      *
      * @return Stage
      */
-    public static function stageRoleAccess( $Role, $Access )
+    public static function stageRoleAccess( $Id, $Access )
     {
+
+        $tblAccountRole = Gatekeeper::serviceAccount()->entityAccountRoleById( $Id );
 
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
-        $View->setDescription( 'Rollen' );
+        $View->setDescription( 'Rolle - Zugriffslevel' );
         $View->setContent(
-            new TableData( Gatekeeper::serviceAccount()->entityAccountRoleAll(),
-                new GridTableTitle( 'Bestehende Rollen', 'Zugriffslevelgruppen' ) )
+            new TableData( array( $tblAccountRole ), new GridTableTitle( 'Rolle' ), array(), false )
         );
         return $View;
     }

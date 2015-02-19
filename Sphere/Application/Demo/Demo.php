@@ -68,6 +68,8 @@ class Demo extends AbstractApplication
            $tblDemoCompleterListSelect[$tblDemoCompleter->getId()] = $tblDemoCompleter->getName();
         }
 
+        $DemoText = new InputText( 'DemoText', 'DemoText', 'DemoText' );
+        $DemoText->setDefaultValue( 'DefaultValue' );
         $View->setContent(
 
             new TableData( $tblDemoCompleterList )
@@ -85,7 +87,7 @@ class Demo extends AbstractApplication
                                 new InputFile( 'DemoFile', 'DemoFile', 'DemoFile' ),
                                 new InputPassword( 'DemoPassword', 'DemoPassword', 'DemoPassword' ),
                                 new InputSelect( 'DemoSelect', 'DemoSelect', $tblDemoCompleterListSelect ),
-                                new InputText( 'DemoText', 'DemoText', 'DemoText' ),
+                                $DemoText,
                                 new InputTextArea( 'DemoTextArea', 'DemoTextArea', 'DemoTextArea' )
                             )
                         )

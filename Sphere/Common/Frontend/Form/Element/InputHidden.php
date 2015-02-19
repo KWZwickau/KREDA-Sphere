@@ -39,7 +39,16 @@ class InputHidden extends AbstractElement
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }
 
-        $this->setRequestValue( $this->Template, $Name, 'ElementValue' );
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+
+        $this->setPostValue( $this->Template, $this->getName(), 'ElementValue' );
+        return parent::getContent();
     }
 
 }

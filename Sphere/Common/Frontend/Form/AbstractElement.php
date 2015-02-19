@@ -70,6 +70,17 @@ abstract class AbstractElement extends AbstractFrontend implements IElementInter
     }
 
     /**
+     * @param mixed $Value
+     */
+    public function setDefaultValue( $Value )
+    {
+
+        if (!isset( $_POST[$this->getName()] )) {
+            $_POST[$this->getName()] = $Value;
+        }
+    }
+
+    /**
      * @return string
      */
     public function getName()

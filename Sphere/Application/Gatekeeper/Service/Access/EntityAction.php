@@ -16,18 +16,18 @@ use KREDA\Sphere\Application\System\System;
 abstract class EntityAction extends EntitySchema
 {
 
-    /** @var TblAccessRight[] $EntityAccessByIdCache */
-    private static $EntityRouteByIdCache = array();
-    /** @var TblAccess[] $EntityAccessByIdCache */
-    private static $EntityAccessByIdCache = array();
-    /** @var TblAccessPrivilege[] $EntityPrivilegeByIdCache */
-    private static $EntityPrivilegeByIdCache = array();
-    /** @var TblAccessPrivilege[] $EntityPrivilegeByAccessCache */
-    private static $EntityPrivilegeByAccessCache = array();
-    /** @var TblAccessRight[] $EntityRightByIdCache */
-    private static $EntityRightByIdCache = array();
-    /** @var TblAccessRight[] $EntityRightByPrivilegeCache */
-    private static $EntityRightByPrivilegeCache = array();
+    /** @var TblAccessRight[] $CacheRightByRouteName */
+    private static $CacheRightByRouteName = array();
+    /** @var TblAccess[] $CacheAccessById */
+    private static $CacheAccessById = array();
+    /** @var TblAccessPrivilege[] $CachePrivilegeById */
+    private static $CachePrivilegeById = array();
+    /** @var TblAccessPrivilege[] $CachePrivilegeByAccess */
+    private static $CachePrivilegeByAccess = array();
+    /** @var TblAccessRight[] $CacheRightById */
+    private static $CacheRightById = array();
+    /** @var TblAccessRight[] $CacheRightByPrivilege */
+    private static $CacheRightByPrivilege = array();
 
     /**
      * @param string $Route
@@ -207,12 +207,12 @@ abstract class EntityAction extends EntitySchema
     protected function entityAccessRightByRouteName( $Name )
     {
 
-        if (isset( self::$EntityRouteByIdCache[$Name] )) {
-            return self::$EntityRouteByIdCache[$Name];
+        if (isset( self::$CacheRightByRouteName[$Name] )) {
+            return self::$CacheRightByRouteName[$Name];
         }
         $Entity = $this->getEntityManager()->getEntity( 'TblAccessRight' )
             ->findOneBy( array( TblAccessRight::ATTR_ROUTE => $Name ) );
-        self::$EntityRouteByIdCache[$Name] = $Entity;
+        self::$CacheRightByRouteName[$Name] = $Entity;
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -224,11 +224,11 @@ abstract class EntityAction extends EntitySchema
     protected function entityAccessById( $Id )
     {
 
-        if (isset( self::$EntityAccessByIdCache[$Id] )) {
-            return self::$EntityAccessByIdCache[$Id];
+        if (isset( self::$CacheAccessById[$Id] )) {
+            return self::$CacheAccessById[$Id];
         }
         $Entity = $this->getEntityManager()->getEntityById( 'TblAccess', $Id );
-        self::$EntityAccessByIdCache[$Id] = $Entity;
+        self::$CacheAccessById[$Id] = $Entity;
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -253,11 +253,11 @@ abstract class EntityAction extends EntitySchema
     protected function entityPrivilegeById( $Id )
     {
 
-        if (isset( self::$EntityPrivilegeByIdCache[$Id] )) {
-            return self::$EntityPrivilegeByIdCache[$Id];
+        if (isset( self::$CachePrivilegeById[$Id] )) {
+            return self::$CachePrivilegeById[$Id];
         }
         $Entity = $this->getEntityManager()->getEntityById( 'TblAccessPrivilege', $Id );
-        self::$EntityPrivilegeByIdCache[$Id] = $Entity;
+        self::$CachePrivilegeById[$Id] = $Entity;
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -270,8 +270,8 @@ abstract class EntityAction extends EntitySchema
     protected function entityPrivilegeAllByAccess( TblAccess $tblAccess )
     {
 
-        if (isset( self::$EntityPrivilegeByAccessCache[$tblAccess->getId()] )) {
-            return self::$EntityPrivilegeByAccessCache[$tblAccess->getId()];
+        if (isset( self::$CachePrivilegeByAccess[$tblAccess->getId()] )) {
+            return self::$CachePrivilegeByAccess[$tblAccess->getId()];
         }
         /** @var TblAccessPrivilegeList[] $EntityList */
         $EntityList = $this->getEntityManager()->getEntity( 'TblAccessPrivilegeList' )->findBy( array(
@@ -281,7 +281,7 @@ abstract class EntityAction extends EntitySchema
 
             $V = $V->getTblAccessPrivilege();
         } );
-        self::$EntityPrivilegeByAccessCache[$tblAccess->getId()] = $EntityList;
+        self::$CachePrivilegeByAccess[$tblAccess->getId()] = $EntityList;
         return ( null === $EntityList ? false : $EntityList );
     }
 
@@ -294,8 +294,8 @@ abstract class EntityAction extends EntitySchema
     protected function entityRightAllByPrivilege( TblAccessPrivilege $tblAccessPrivilege )
     {
 
-        if (isset( self::$EntityRightByPrivilegeCache[$tblAccessPrivilege->getId()] )) {
-            return self::$EntityRightByPrivilegeCache[$tblAccessPrivilege->getId()];
+        if (isset( self::$CacheRightByPrivilege[$tblAccessPrivilege->getId()] )) {
+            return self::$CacheRightByPrivilege[$tblAccessPrivilege->getId()];
         }
         /** @var TblAccessRightList[] $EntityList */
         $EntityList = $this->getEntityManager()->getEntity( 'TblAccessRightList' )->findBy( array(
@@ -305,7 +305,7 @@ abstract class EntityAction extends EntitySchema
 
             $V = $V->getTblAccessRight();
         } );
-        self::$EntityRightByPrivilegeCache[$tblAccessPrivilege->getId()] = $EntityList;
+        self::$CacheRightByPrivilege[$tblAccessPrivilege->getId()] = $EntityList;
         return ( null === $EntityList ? false : $EntityList );
     }
 
@@ -317,11 +317,11 @@ abstract class EntityAction extends EntitySchema
     protected function entityRightById( $Id )
     {
 
-        if (isset( self::$EntityRightByIdCache[$Id] )) {
-            return self::$EntityRightByIdCache[$Id];
+        if (isset( self::$CacheRightById[$Id] )) {
+            return self::$CacheRightById[$Id];
         }
         $Entity = $this->getEntityManager()->getEntityById( 'TblAccessRight', $Id );
-        self::$EntityRightByIdCache[$Id] = $Entity;
+        self::$CacheRightById[$Id] = $Entity;
         return ( null === $Entity ? false : $Entity );
     }
 

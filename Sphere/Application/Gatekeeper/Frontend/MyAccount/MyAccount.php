@@ -171,7 +171,7 @@ class MyAccount extends AbstractFrontend
          * Form warm
          */
         if (null === $serviceGatekeeperConsumer) {
-            $_REQUEST['serviceGatekeeperConsumer'] = Gatekeeper::serviceConsumer()->entityConsumerBySession()->getId();
+            $_POST['serviceGatekeeperConsumer'] = Gatekeeper::serviceConsumer()->entityConsumerBySession()->getId();
         }
 
         $View = new Stage();

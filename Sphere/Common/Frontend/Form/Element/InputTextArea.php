@@ -39,7 +39,7 @@ class InputTextArea extends AbstractElement
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }
 
-        $this->setRequestValue( $this->Template, $Name, 'ElementValue' );
+        $this->setPostValue( $this->Template, $Name, 'ElementValue' );
     }
 
 }

@@ -28,7 +28,7 @@ class Authorization extends Protocol
         self::$Configuration = $Configuration;
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization', __CLASS__.'::frontendStatus'
-        );
+        )->setParameterDefault( 'Clear', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization/Role', __CLASS__.'::frontendRole'
         )->setParameterDefault( 'RoleName', null );
@@ -43,24 +43,20 @@ class Authorization extends Protocol
         )->setParameterDefault( 'RightName', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization/Role/Access', __CLASS__.'::frontendRoleAccess'
-        )->setParameterDefault( 'Role', null )->setParameterDefault( 'Access', null );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Authorization/Access/Privilege', __CLASS__.'::frontendAccessPrivilege'
-        )->setParameterDefault( 'Access', null )->setParameterDefault( 'Privilege', null );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Authorization/Privilege/Right', __CLASS__.'::frontendPrivilegeRight'
-        )->setParameterDefault( 'Privilege', null )->setParameterDefault( 'Right', null );
+        )->setParameterDefault( 'Id', null )->setParameterDefault( 'Access', null );
     }
 
     /**
+     * @param bool $Clear
+     *
      * @return Stage
      */
-    public function frontendStatus()
+    public function frontendStatus( $Clear )
     {
 
         $this->setupModuleNavigation();
         $this->setupApplicationNavigation();
-        return Frontend::stageStatus();
+        return Frontend::stageStatus( $Clear );
     }
 
     /**
@@ -136,16 +132,16 @@ class Authorization extends Protocol
     }
 
     /**
-     * @param null|int $Role
+     * @param null|int $Id
      * @param null|int $Access
      *
      * @return Stage
      */
-    public function frontendRoleAccess( $Role, $Access )
+    public function frontendRoleAccess( $Id, $Access )
     {
 
         $this->setupModuleNavigation();
         $this->setupApplicationNavigation();
-        return Frontend::stageRoleAccess( $Role, $Access );
+        return Frontend::stageRoleAccess( $Id, $Access );
     }
 }

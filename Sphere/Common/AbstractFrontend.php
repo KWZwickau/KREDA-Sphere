@@ -34,11 +34,11 @@ abstract class AbstractFrontend extends AbstractContent
      * @param string           $RequestKey
      * @param string           $VariableName
      */
-    final protected static function setRequestValue( IBridgeInterface &$Template, $RequestKey, $VariableName )
+    final protected static function setPostValue( IBridgeInterface &$Template, $RequestKey, $VariableName )
     {
 
-        if (isset( $_REQUEST[$RequestKey] )) {
-            $Template->setVariable( $VariableName, $_REQUEST[$RequestKey] );
+        if (isset( $_POST[$RequestKey] )) {
+            $Template->setVariable( $VariableName, $_POST[$RequestKey] );
         }
     }
 

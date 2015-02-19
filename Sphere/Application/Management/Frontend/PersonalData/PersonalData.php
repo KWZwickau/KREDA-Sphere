@@ -91,7 +91,7 @@ class PersonalData extends AbstractFrontend
 
         array_walk( $PersonList, function ( TblPerson &$V, $I, $B ) {
 
-            $_REQUEST['Id'] = $V->getId();
+            $_POST['Id'] = $V->getId();
             $V->Option = new FormDefault(
                 new GridFormGroup(
                     new GridFormRow( new GridFormCol( array(
@@ -200,7 +200,7 @@ class PersonalData extends AbstractFrontend
         $PersonList = Management::servicePerson()->entityPersonAll();
         array_walk( $PersonList, function ( TblPerson &$V, $I, $B ) {
 
-            $_REQUEST['Id'] = $V->getId();
+            $_POST['Id'] = $V->getId();
             $V->Option = new FormDefault(
                 new GridFormGroup(
                     new GridFormRow( new GridFormCol( array(
@@ -230,7 +230,7 @@ class PersonalData extends AbstractFrontend
         $PersonList = Management::servicePerson()->entityPersonAll();
         array_walk( $PersonList, function ( TblPerson &$V, $I, $B ) {
 
-            $_REQUEST['Id'] = $V->getId();
+            $_POST['Id'] = $V->getId();
             $V->Option = new FormDefault(
                 new GridFormGroup(
                     new GridFormRow( new GridFormCol( array(
@@ -260,7 +260,7 @@ class PersonalData extends AbstractFrontend
         $PersonList = Management::servicePerson()->entityPersonAll();
         array_walk( $PersonList, function ( TblPerson &$V, $I, $B ) {
 
-            $_REQUEST['Id'] = $V->getId();
+            $_POST['Id'] = $V->getId();
             $V->Option = new FormDefault(
                 new GridFormGroup(
                     new GridFormRow( new GridFormCol( array(
@@ -290,7 +290,7 @@ class PersonalData extends AbstractFrontend
         $PersonList = Management::servicePerson()->entityPersonAll();
         array_walk( $PersonList, function ( TblPerson &$V, $I, $B ) {
 
-            $_REQUEST['Id'] = $V->getId();
+            $_POST['Id'] = $V->getId();
             $V->Option = new FormDefault(
                 new GridFormGroup(
                     new GridFormRow( new GridFormCol( array(

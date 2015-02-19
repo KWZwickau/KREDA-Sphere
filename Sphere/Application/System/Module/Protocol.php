@@ -27,16 +27,18 @@ class Protocol extends Update
         self::$Configuration = $Configuration;
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Protocol/Status', __CLASS__.'::frontendStatus'
-        );
+        )->setParameterDefault( 'Clear', null );
     }
 
     /**
+     * @param bool $Clear
+     *
      * @return Stage
      */
-    public function frontendStatus()
+    public function frontendStatus( $Clear )
     {
 
         $this->setupModuleNavigation();
-        return Frontend::stageStatus();
+        return Frontend::stageStatus( $Clear );
     }
 }

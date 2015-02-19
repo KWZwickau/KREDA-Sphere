@@ -10,6 +10,7 @@ use KREDA\Sphere\Common\Cache\Type\ApcUser;
 use KREDA\Sphere\Common\Cache\Type\OpCache;
 use KREDA\Sphere\Common\Cache\Type\TwigCache;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
@@ -29,22 +30,25 @@ class Cache extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function stageStatus( $Clear = false )
+    public static function stageStatus( $Clear )
     {
 
         $View = new Stage();
         $View->setTitle( 'KREDA Cache' );
         $View->setDescription( 'Status' );
-        if (isset( $_REQUEST['Clear'] ) || $Clear) {
+        if ($Clear) {
             ApcSma::clearCache();
             ApcUser::clearCache();
             OpCache::clearCache();
             TwigCache::clearCache();
         }
-        if (isset( $_REQUEST['Clear'] )) {
+        if ($Clear && 'Force' == $Clear) {
             $View->setContent( self::getRedirect( '/Sphere/System/Cache/Status', 0 ) );
             return $View;
         }
+
+        $Clear = new InputHidden( 'Clear' );
+        $Clear->setDefaultValue( 'Force' );
 
         $View->setContent(
             new FormDefault( array(
@@ -60,7 +64,10 @@ class Cache extends AbstractFrontend
                 new GridFormGroup( new GridFormRow(
                     new GridFormCol( new Status( new TwigCache() ) )
                 ), new GridFormTitle( 'Twig' ) ),
-            ), new ButtonSubmitDanger( 'Clear', new FlashIcon() ), '/Client/Sphere/System/Cache/Status?Clear' )
+                new GridFormGroup( new GridFormRow(
+                    new GridFormCol( $Clear )
+                ) )
+            ), new ButtonSubmitDanger( 'Clear', new FlashIcon() ) )
         );
         return $View;
     }
