@@ -34,14 +34,14 @@ class MyAccount extends Authentication
             );
         }
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount',
-            __CLASS__.'::frontendMyAccountSummary' );
+            __CLASS__.'::frontendStatus' );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangePassword',
-            __CLASS__.'::frontendMyAccountChangePassword' )
+            __CLASS__.'::frontendChangePassword' )
             ->setParameterDefault( 'CredentialLock', null )
             ->setParameterDefault( 'CredentialLockSafety', null );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangeConsumer',
-            __CLASS__.'::frontendMyAccountChangeConsumer' )
-            ->setParameterDefault( 'serviceGatekeeper_Consumer', null );
+            __CLASS__.'::frontendChangeConsumer' )
+            ->setParameterDefault( 'serviceGatekeeperConsumer', null );
 
     }
 
@@ -51,7 +51,7 @@ class MyAccount extends Authentication
      *
      * @return Stage
      */
-    public function frontendMyAccountChangePassword( $CredentialLock, $CredentialLockSafety )
+    public function frontendChangePassword( $CredentialLock, $CredentialLockSafety )
     {
 
         $this->setupModuleNavigation();
@@ -77,21 +77,21 @@ class MyAccount extends Authentication
     }
 
     /**
-     * @param int $serviceGatekeeper_Consumer
+     * @param int $serviceGatekeeperConsumer
      *
      * @return Stage
      */
-    public function frontendMyAccountChangeConsumer( $serviceGatekeeper_Consumer )
+    public function frontendChangeConsumer( $serviceGatekeeperConsumer )
     {
 
         $this->setupModuleNavigation();
-        return Frontend::stageChangeConsumer( $serviceGatekeeper_Consumer );
+        return Frontend::stageChangeConsumer( $serviceGatekeeperConsumer );
     }
 
     /**
      * @return Stage
      */
-    public function frontendMyAccountSummary()
+    public function frontendStatus()
     {
 
         $this->setupModuleNavigation();

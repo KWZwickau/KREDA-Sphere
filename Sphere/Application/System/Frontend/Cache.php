@@ -33,7 +33,7 @@ class Cache extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Cache' );
+        $View->setTitle( 'KREDA Cache' );
         $View->setDescription( 'Status' );
         if (isset( $_REQUEST['Clear'] ) || $Clear) {
             ApcSma::clearCache();

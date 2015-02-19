@@ -26,58 +26,58 @@ class Script extends AbstractExtension
          * Source (Library)
          */
 
-        $this->Source(
+        $this->setSource(
             'jQuery', '/Library/jQuery/1.11.1/dist/jquery.min.js',
             "'undefined' !== typeof jQuery"
         );
-        $this->Source(
+        $this->setSource(
             'Moment.js', '/Library/Moment.Js/2.8.4/min/moment-with-locales.min.js',
             "'undefined' !== typeof moment"
         );
-        $this->Source(
+        $this->setSource(
             'Bootstrap', '/Library/Bootstrap/3.2.0/dist/js/bootstrap.min.js',
             "'function' === typeof jQuery().emulateTransitionEnd"
         );
-        $this->Source(
+        $this->setSource(
             'jQuery.Selecter', '/Library/jQuery.Selecter/3.2.4/jquery.fs.selecter.min.js',
             "'undefined' !== typeof jQuery.fn.selecter"
         );
-        $this->Source(
+        $this->setSource(
             'jQuery.Stepper', '/Library/jQuery.Stepper/3.0.8/jquery.fs.stepper.min.js',
             "'undefined' !== typeof jQuery.fn.stepper"
         );
-        $this->Source(
+        $this->setSource(
             'jQuery.CheckBox', '/Library/jQuery.iCheck/1.0.2/icheck.min.js',
             "'undefined' !== typeof jQuery.fn.iCheck"
         );
-        $this->Source(
+        $this->setSource(
             'jQuery.DataTable', '/Library/jQuery.DataTables/1.10.4/media/js/jquery.dataTables.min.js',
             "'undefined' !== typeof jQuery.fn.DataTable"
         );
-        $this->Source(
+        $this->setSource(
             'jQuery.DataTable.Responsive',
             '/Library/jQuery.DataTables/1.10.4/extensions/Responsive/js/dataTables.responsive.min.js',
             "'undefined' !== typeof jQuery.fn.DataTable.Responsive"
         );
-        $this->Source(
+        $this->setSource(
             'Bootstrap.DataTable',
             '/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.min.js',
             "'undefined' !== typeof jQuery.fn.DataTable.ext.renderer.pageButton.bootstrap"
         );
-        $this->Source(
+        $this->setSource(
             'Bootstrap.DatetimePicker',
             '/Library/Bootstrap.DateTimePicker/3.1.3/build/js/bootstrap-datetimepicker.min.js',
             "'undefined' !== typeof jQuery.fn.datetimepicker"
         );
-        $this->Source(
+        $this->setSource(
             'Bootstrap.FileInput', '/Library/Bootstrap.FileInput/4.1.6/js/fileinput.min.js',
             "'undefined' !== typeof jQuery.fn.fileinput"
         );
-        $this->Source(
+        $this->setSource(
             'Twitter.Typeahead', '/Library/Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min.js',
             "'undefined' !== typeof jQuery.fn.typeahead"
         );
-        $this->Source(
+        $this->setSource(
             'MathJax', '/Library/MathJax/2.5.0/MathJax.js?config=TeX-MML-AM_HTMLorMML-full',
             "'undefined' !== typeof MathJax"
         );
@@ -86,29 +86,29 @@ class Script extends AbstractExtension
          * Module (jQuery plugin)
          */
 
-        $this->Module(
+        $this->setModule(
             'ModAlways', array( 'Bootstrap', 'jQuery' )
         );
-        $this->Module(
+        $this->setModule(
             'ModTable',
             array( 'Bootstrap.DataTable', 'jQuery.DataTable.Responsive', 'jQuery.DataTable', 'jQuery' )
         );
-        $this->Module(
+        $this->setModule(
             'ModPicker', array( 'Bootstrap.DatetimePicker', 'Moment.js', 'jQuery' )
         );
-        $this->Module(
+        $this->setModule(
             'ModSelecter', array( 'jQuery.Selecter', 'jQuery' )
         );
-        $this->Module(
+        $this->setModule(
             'ModCompleter', array( 'Twitter.Typeahead', 'Bootstrap', 'jQuery' )
         );
-        $this->Module(
+        $this->setModule(
             'ModUpload', array( 'Bootstrap.FileInput', 'Bootstrap', 'jQuery' )
         );
-        $this->Module(
+        $this->setModule(
             'ModCheckBox', array( 'jQuery.CheckBox', 'jQuery' )
         );
-        $this->Module(
+        $this->setModule(
             'ModMathJax', array( 'MathJax', 'jQuery' )
         );
     }
@@ -118,7 +118,7 @@ class Script extends AbstractExtension
      * @param string $Location
      * @param string $Test
      */
-    public function Source( $Alias, $Location, $Test )
+    public function setSource( $Alias, $Location, $Test )
     {
 
         $PathBase = $this->extensionRequest()->getPathBase();
@@ -131,7 +131,7 @@ class Script extends AbstractExtension
      * @param string $Alias
      * @param array  $Dependencies
      */
-    public function Module( $Alias, $Dependencies = array() )
+    public function setModule( $Alias, $Dependencies = array() )
     {
 
         if (!in_array( $Alias, self::$ModuleList )) {

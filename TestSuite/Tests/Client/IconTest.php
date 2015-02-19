@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\TestSuite\Tests\Client;
 
+use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BookIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BriefcaseIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BuildingIcon;
@@ -14,6 +15,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EducationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EyeOpenIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FlashIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\HistoryIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\HomeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MapMarkerIcon;
@@ -36,6 +38,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TileListIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TileSmallIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WheelChairIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WrenchIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 
@@ -61,263 +64,57 @@ class IconTest extends \PHPUnit_Framework_TestCase
     public function testIcon()
     {
 
-        $Icon = new BookIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
+        $this->checkAssertList( new BookIcon() );
+        $this->checkAssertList( new BriefcaseIcon() );
+        $this->checkAssertList( new BuildingIcon() );
+        $this->checkAssertList( new CertificateIcon() );
+        $this->checkAssertList( new ClusterIcon() );
+        $this->checkAssertList( new CogIcon() );
+        $this->checkAssertList( new CogWheelsIcon() );
+        $this->checkAssertList( new ConversationIcon() );
+        $this->checkAssertList( new DatabaseIcon() );
+        $this->checkAssertList( new EducationIcon() );
+        $this->checkAssertList( new EyeOpenIcon() );
+        $this->checkAssertList( new FlashIcon() );
+        $this->checkAssertList( new GroupIcon() );
+        $this->checkAssertList( new HistoryIcon() );
+        $this->checkAssertList( new HomeIcon() );
+        $this->checkAssertList( new LockIcon() );
+        $this->checkAssertList( new MapMarkerIcon() );
+        $this->checkAssertList( new MoneyIcon() );
+        $this->checkAssertList( new MoneyEuroIcon() );
+        $this->checkAssertList( new NameplateIcon() );
+        $this->checkAssertList( new OffIcon() );
+        $this->checkAssertList( new PersonIcon() );
+        $this->checkAssertList( new PersonKeyIcon() );
+        $this->checkAssertList( new QuestionIcon() );
+        $this->checkAssertList( new RepeatIcon() );
+        $this->checkAssertList( new ServerIcon() );
+        $this->checkAssertList( new ShareIcon() );
+        $this->checkAssertList( new StatisticIcon() );
+        $this->checkAssertList( new TagIcon() );
+        $this->checkAssertList( new TagListIcon() );
+        $this->checkAssertList( new TaskIcon() );
+        $this->checkAssertList( new TileBigIcon() );
+        $this->checkAssertList( new TileListIcon() );
+        $this->checkAssertList( new TileSmallIcon() );
+        $this->checkAssertList( new TimeIcon() );
+        $this->checkAssertList( new WarningIcon() );
+        $this->checkAssertList( new WheelChairIcon() );
+        $this->checkAssertList( new WrenchIcon() );
+        $this->checkAssertList( new YubiKeyIcon() );
+    }
 
-        $Icon = new BriefcaseIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
+    /**
+     * @param AbstractIcon $Icon
+     */
+    private function checkAssertList( AbstractIcon $Icon )
+    {
 
-        $Icon = new BuildingIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new CertificateIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new ClusterIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new CogIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new CogWheelsIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new ConversationIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new DatabaseIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new EducationIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new EyeOpenIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new FlashIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new GroupIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new HomeIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new LockIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new MapMarkerIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new MoneyIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new MoneyEuroIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new NameplateIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new OffIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new PersonIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new PersonKeyIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new QuestionIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new RepeatIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new ServerIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new ShareIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-
-        $Icon = new StatisticIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new TagIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new TagListIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new TaskIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new TileBigIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new TileListIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new TileSmallIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new TimeIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new WarningIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new WrenchIcon();
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
-        $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
-        $this->assertInternalType( 'string', $Icon->getValue() );
-        $this->assertInternalType( 'string', $Icon->__toString() );
-
-        $Icon = new YubiKeyIcon();
         $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon', $Icon );
         $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\Parameter\AbstractParameter', $Icon );
         $this->assertInstanceOf( 'KREDA\Sphere\Client\Component\IParameterInterface', $Icon );
         $this->assertInternalType( 'string', $Icon->getValue() );
         $this->assertInternalType( 'string', $Icon->__toString() );
     }
-
 }

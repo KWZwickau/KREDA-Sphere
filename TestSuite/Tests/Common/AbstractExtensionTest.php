@@ -23,19 +23,18 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
     public function testExtensionCodeStyle()
     {
 
-        $Namespace = 'KREDA\Sphere\Application\Assistance\Extension';
-        $this->checkExtensionMethodName( $Namespace.'\Account' );
+        $this->checkMethodName( '\AbstractExtension' );
     }
 
     /**
      * @param string $Extension
      */
-    private function checkExtensionMethodName( $Extension )
+    private function checkMethodName( $Extension )
     {
 
         $Name = '#';
         $Prefix = 'extension';
-        $this->checkMethodName( $Extension, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
+        $this->checkNamePattern( 'KREDA\Sphere\Common'.$Extension, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
             \ReflectionMethod::IS_PUBLIC );
     }
 
@@ -44,7 +43,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
      * @param string $Pattern
      * @param int    $Realm
      */
-    private function checkMethodName( $Class, $Pattern, $Realm = \ReflectionMethod::IS_PUBLIC )
+    private function checkNamePattern( $Class, $Pattern, $Realm = \ReflectionMethod::IS_PUBLIC )
     {
 
         $Class = new \ReflectionClass( $Class );

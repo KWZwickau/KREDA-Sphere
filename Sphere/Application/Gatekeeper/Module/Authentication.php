@@ -33,32 +33,32 @@ class Authentication extends AbstractApplication
          * Authentication
          */
         if (( $ValidSession = Gatekeeper::serviceAccount()->checkIsValidSession() )) {
-            self::registerClientRoute( self::$Configuration, '/', __CLASS__.'::frontendAuthenticationStatus' );
+            self::registerClientRoute( self::$Configuration, '/', __CLASS__.'::frontendStatus' );
         } else {
-            self::registerClientRoute( self::$Configuration, '/', __CLASS__.'::frontendAuthenticationSignInSwitch' );
+            self::registerClientRoute( self::$Configuration, '/', __CLASS__.'::frontendSignInSwitch' );
         }
         self::registerClientRoute( self::$Configuration, '/Sphere',
-            __CLASS__.'::frontendAuthenticationStatus' );
+            __CLASS__.'::frontendStatus' );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn',
-            __CLASS__.'::frontendAuthenticationSignInSwitch' );
+            __CLASS__.'::frontendSignInSwitch' );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignOut',
-            __CLASS__.'::frontendAuthenticationSignOut' );
+            __CLASS__.'::frontendSignOut' );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Student',
-            __CLASS__.'::frontendAuthenticationSignInStudent' )
+            __CLASS__.'::frontendSignInStudent' )
             ->setParameterDefault( 'CredentialName', null )
             ->setParameterDefault( 'CredentialLock', null );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Teacher',
-            __CLASS__.'::frontendAuthenticationSignInTeacher' )
+            __CLASS__.'::frontendSignInTeacher' )
             ->setParameterDefault( 'CredentialName', null )
             ->setParameterDefault( 'CredentialLock', null )
             ->setParameterDefault( 'CredentialKey', null );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/Management',
-            __CLASS__.'::frontendAuthenticationSignInManagement' )
+            __CLASS__.'::frontendSignInManagement' )
             ->setParameterDefault( 'CredentialName', null )
             ->setParameterDefault( 'CredentialLock', null )
             ->setParameterDefault( 'CredentialKey', null );
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/SignIn/System',
-            __CLASS__.'::frontendAuthenticationSignInSystem' )
+            __CLASS__.'::frontendSignInSystem' )
             ->setParameterDefault( 'CredentialName', null )
             ->setParameterDefault( 'CredentialLock', null )
             ->setParameterDefault( 'CredentialKey', null );
@@ -67,7 +67,7 @@ class Authentication extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendAuthenticationSignInSwitch()
+    public function frontendSignInSwitch()
     {
 
         $this->setupModuleNavigation();
@@ -94,7 +94,7 @@ class Authentication extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendAuthenticationStatus()
+    public function frontendStatus()
     {
 
         return Frontend::stageStatus();
@@ -107,7 +107,7 @@ class Authentication extends AbstractApplication
      *
      * @return Stage
      */
-    public function frontendAuthenticationSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey )
+    public function frontendSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
         $this->setupModuleNavigation();
@@ -121,7 +121,7 @@ class Authentication extends AbstractApplication
      *
      * @return Stage
      */
-    public function frontendAuthenticationSignInSystem( $CredentialName, $CredentialLock, $CredentialKey )
+    public function frontendSignInSystem( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
         $this->setupModuleNavigation();
@@ -135,7 +135,7 @@ class Authentication extends AbstractApplication
      *
      * @return Stage
      */
-    public function frontendAuthenticationSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
+    public function frontendSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
         $this->setupModuleNavigation();
@@ -148,7 +148,7 @@ class Authentication extends AbstractApplication
      *
      * @return Stage
      */
-    public function frontendAuthenticationSignInStudent( $CredentialName, $CredentialLock )
+    public function frontendSignInStudent( $CredentialName, $CredentialLock )
     {
 
         $this->setupModuleNavigation();
@@ -158,7 +158,7 @@ class Authentication extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendAuthenticationSignOut()
+    public function frontendSignOut()
     {
 
         $this->setupModuleNavigation();

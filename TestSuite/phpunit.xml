@@ -6,16 +6,19 @@
          processIsolation="false">
     <testsuites>
         <testsuite name="KREDA">
-            <directory suffix=".php">./Tests/Client</directory>
             <directory suffix=".php">./Tests/Application</directory>
+            <directory suffix=".php">./Tests/Client</directory>
+            <directory suffix=".php">./Tests/Common</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="false">
-            <directory suffix=".php">./Tests/Client</directory>
             <directory suffix=".php">./Tests/Application</directory>
-            <directory suffix=".php">./../Sphere/Client</directory>
+            <directory suffix=".php">./Tests/Client</directory>
+            <directory suffix=".php">./Tests/Common</directory>
             <directory suffix=".php">./../Sphere/Application</directory>
+            <directory suffix=".php">./../Sphere/Client</directory>
+            <directory suffix=".php">./../Sphere/Common</directory>
         </whitelist>
     </filter>
     <logging>

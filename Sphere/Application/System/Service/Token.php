@@ -7,7 +7,6 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
 use KREDA\Sphere\Application\System\Service\Token\Certification;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
 use KREDA\Sphere\Common\AbstractService;
 
 /**
@@ -22,7 +21,7 @@ class Token extends AbstractService
      * @param null $CredentialKey
      *
      * @throws \Exception
-     * @return Landing
+     * @return Stage
      */
     public function apiTokenCertification( $CredentialKey = null )
     {

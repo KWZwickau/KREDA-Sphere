@@ -4,7 +4,7 @@ namespace KREDA\Sphere\Application\Graduation;
 use KREDA\Sphere\Application\Graduation\Service\Grade;
 use KREDA\Sphere\Application\Graduation\Service\Score;
 use KREDA\Sphere\Application\Graduation\Service\Weight;
-use KREDA\Sphere\Client\Component\Element\Repository\Shell\Landing;
+use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EducationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagListIcon;
 use KREDA\Sphere\Client\Configuration;
@@ -75,13 +75,13 @@ class Graduation extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
     public function frontendGrade()
     {
 
         $this->setupModuleNavigation();
-        $View = new Landing();
+        $View = new Stage();
         $View->setTitle( 'Zensuren' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
@@ -99,13 +99,13 @@ class Graduation extends AbstractApplication
     }
 
     /**
-     * @return Landing
+     * @return Stage
      */
     public function frontendGradeType()
     {
 
         $this->setupModuleNavigation();
-        $View = new Landing();
+        $View = new Stage();
         $View->setTitle( 'Zensuren' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;

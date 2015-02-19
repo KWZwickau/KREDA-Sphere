@@ -28,7 +28,7 @@ class Protocol extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Protokoll' );
+        $View->setTitle( 'KREDA Protokoll' );
         $View->setDescription( 'Status' );
 
         /** @var TblProtocol[] $tblProtocolList */

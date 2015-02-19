@@ -154,11 +154,11 @@ class MyAccount extends AbstractFrontend
     }
 
     /**
-     * @param int $serviceGatekeeper_Consumer
+     * @param int $serviceGatekeeperConsumer
      *
      * @return Stage
      */
-    public static function stageChangeConsumer( $serviceGatekeeper_Consumer )
+    public static function stageChangeConsumer( $serviceGatekeeperConsumer )
     {
 
         $tblConsumerList = Gatekeeper::serviceConsumer()->entityConsumerAll();
@@ -170,8 +170,8 @@ class MyAccount extends AbstractFrontend
         /**
          * Form warm
          */
-        if (null === $serviceGatekeeper_Consumer) {
-            $_REQUEST['serviceGatekeeper_Consumer'] = Gatekeeper::serviceConsumer()->entityConsumerBySession()->getId();
+        if (null === $serviceGatekeeperConsumer) {
+            $_REQUEST['serviceGatekeeperConsumer'] = Gatekeeper::serviceConsumer()->entityConsumerBySession()->getId();
         }
 
         $View = new Stage();
@@ -182,12 +182,12 @@ class MyAccount extends AbstractFrontend
                 new GridFormGroup(
                     new GridFormRow( array(
                         new GridFormCol(
-                            new InputSelect( 'serviceGatekeeper_Consumer', 'Mandant', $tblConsumerSelect,
+                            new InputSelect( 'serviceGatekeeperConsumer', 'Mandant', $tblConsumerSelect,
                                 new CertificateIcon() )
                         )
                     ) )
                 ), new ButtonSubmitPrimary( 'Neuen Mandant speichern' )
-            ), $serviceGatekeeper_Consumer
+            ), $serviceGatekeeperConsumer
         ) );
         return $View;
     }

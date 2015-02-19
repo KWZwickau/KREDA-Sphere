@@ -29,7 +29,7 @@ class Authorization extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function stageAuthorization()
+    public static function stageStatus()
     {
 
         $View = new Stage();
@@ -73,9 +73,10 @@ class Authorization extends AbstractFrontend
 
         }
         $View->setContent(
-            new Summary( $TwigData )
-            .new TableData( Gatekeeper::serviceAccess()->entityRightAll(),
-                new GridTableTitle( 'Überwachte Rechte', 'Routen' ) )
+            new TableData( Gatekeeper::serviceAccess()->entityRightAll(),
+                new GridTableTitle( 'Überwachte Routen', 'Rechte' )
+            )
+            .new Summary( $TwigData )
         );
         return $View;
     }
@@ -85,7 +86,7 @@ class Authorization extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function stageAuthorizationRight( $Name )
+    public static function stageRight( $Name )
     {
 
         $View = new Stage();
@@ -104,9 +105,9 @@ class Authorization extends AbstractFrontend
                                 )
                             )
                         ), new GridFormTitle( 'Recht anlegen', 'Route' ) )
-                , new ButtonSubmitPrimary( 'Hinzufügen' )
+                    , new ButtonSubmitPrimary( 'Hinzufügen' )
                 )
-            ,$Name)
+                , $Name )
         );
         return $View;
     }
@@ -116,7 +117,7 @@ class Authorization extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function stageAuthorizationPrivilege( $Name )
+    public static function stagePrivilege( $Name )
     {
 
         $View = new Stage();
@@ -134,10 +135,10 @@ class Authorization extends AbstractFrontend
                                     'PrivilegeName', 'Name', 'Rechtegruppe'
                                 )
                             )
-                        ), new GridFormTitle( 'Privileg anlegen', 'Rechtegruppe'))
-                , new ButtonSubmitPrimary( 'Hinzufügen' )
+                        ), new GridFormTitle( 'Privileg anlegen', 'Rechtegruppe' ) )
+                    , new ButtonSubmitPrimary( 'Hinzufügen' )
                 )
-            , $Name)
+                , $Name )
         );
         return $View;
     }
@@ -147,7 +148,7 @@ class Authorization extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function stageAuthorizationAccess( $Name )
+    public static function stageAccess( $Name )
     {
 
         $View = new Stage();
@@ -165,10 +166,10 @@ class Authorization extends AbstractFrontend
                                     'AccessName', 'Name', 'Privilegiengruppe'
                                 )
                             )
-                        ), new GridFormTitle( 'Zugriffslevel anlegen', 'Privilegiengruppe'))
-                , new ButtonSubmitPrimary( 'Hinzufügen' )
+                        ), new GridFormTitle( 'Zugriffslevel anlegen', 'Privilegiengruppe' ) )
+                    , new ButtonSubmitPrimary( 'Hinzufügen' )
                 )
-            , $Name)
+                , $Name )
         );
         return $View;
     }
@@ -178,7 +179,7 @@ class Authorization extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function stageAuthorizationRole( $Name )
+    public static function stageRole( $Name )
     {
 
         $View = new Stage();
@@ -222,10 +223,10 @@ class Authorization extends AbstractFrontend
                                     'RoleName', 'Name', 'Zugriffslevelgruppe'
                                 )
                             )
-                        ), new GridFormTitle( 'Rolle anlegen', 'Zugriffslevelgruppe') )
-                , new ButtonSubmitPrimary( 'Hinzufügen' )
+                        ), new GridFormTitle( 'Rolle anlegen', 'Zugriffslevelgruppe' ) )
+                    , new ButtonSubmitPrimary( 'Hinzufügen' )
                 )
-            , $Name)
+                , $Name )
         );
         return $View;
     }
@@ -236,7 +237,7 @@ class Authorization extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function stageAuthorizationRoleAccess( $Role, $Access )
+    public static function stageRoleAccess( $Role, $Access )
     {
 
         $View = new Stage();

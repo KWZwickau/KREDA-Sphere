@@ -34,7 +34,7 @@ class Database extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Datenbank' );
+        $View->setTitle( 'KREDA Datenbank' );
         $View->setDescription( 'Status' );
         $View->setContent( self::stageConfig() );
         return $View;

@@ -88,7 +88,6 @@ class Authentication extends AbstractFrontend
 
         $View = new Stage();
         $View->setTitle( 'Anmeldung' );
-        $View->setDescription( '' );
         $View->setMessage( 'Bitte wählen Sie den Typ der Anmeldung' );
         $View->setContent(
             new GroupDefault( array(
