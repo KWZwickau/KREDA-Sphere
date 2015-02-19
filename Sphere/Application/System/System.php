@@ -73,16 +73,7 @@ class System extends AbstractApplication
          * Consumer
          */
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Consumer', __CLASS__.'::frontendConsumerStatus'
-        );
-        self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Consumer/Create', __CLASS__.'::frontendConsumerCreate'
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Consumer/Account', __CLASS__.'::frontendConsumerAccount'
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Consumer/Token', __CLASS__.'::frontendConsumerToken'
         );
 
         /**
@@ -92,27 +83,30 @@ class System extends AbstractApplication
             '/Sphere/System/Authorization', __CLASS__.'::frontendAuthorization'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Authorization/Right', __CLASS__.'::frontendAuthorizationRight'
-        )->setParameterDefault( 'RightName', null );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Authorization/Privilege', __CLASS__.'::frontendAuthorizationPrivilege'
-        )->setParameterDefault( 'PrivilegeName', null );
+            '/Sphere/System/Authorization/Role', __CLASS__.'::frontendAuthorizationRole'
+        )->setParameterDefault( 'RoleName', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization/Access', __CLASS__.'::frontendAuthorizationAccess'
         )->setParameterDefault( 'AccessName', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Authorization/Role', __CLASS__.'::frontendAuthorizationRole'
-        )->setParameterDefault( 'Access', null );
+            '/Sphere/System/Authorization/Privilege', __CLASS__.'::frontendAuthorizationPrivilege'
+        )->setParameterDefault( 'PrivilegeName', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Authorization/ListRoleAccess', __CLASS__.'::frontendAuthorizationRoleAccess'
+            '/Sphere/System/Authorization/Right', __CLASS__.'::frontendAuthorizationRight'
+        )->setParameterDefault( 'RightName', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Authorization/Role/Access', __CLASS__.'::frontendAuthorizationRoleAccess'
         )->setParameterDefault( 'Role', null )->setParameterDefault( 'Access', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Authorization/ListAccessPrivilege', __CLASS__.'::frontendAuthorizationAccessPrivilege'
+            '/Sphere/System/Authorization/Access/Privilege', __CLASS__.'::frontendAuthorizationAccessPrivilege'
         )->setParameterDefault( 'Access', null )->setParameterDefault( 'Privilege', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Authorization/ListPrivilegeRight', __CLASS__.'::frontendAuthorizationPrivilegeRight'
+            '/Sphere/System/Authorization/Privilege/Right', __CLASS__.'::frontendAuthorizationPrivilegeRight'
         )->setParameterDefault( 'Privilege', null )->setParameterDefault( 'Right', null );
 
+        /**
+         * Protocol
+         */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Protocol/Status', __CLASS__.'::frontendProtocolStatus'
         );
@@ -196,7 +190,7 @@ class System extends AbstractApplication
         );
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Consumer', 'Mandanten', new HomeIcon()
+            '/Sphere/System/Consumer/Create', 'Mandanten', new HomeIcon()
         );
 
         self::addModuleNavigationMain( self::$Configuration,
@@ -207,40 +201,10 @@ class System extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendConsumerStatus()
-    {
-
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigationConsumer();
-        return Frontend\Consumer::stageStatus();
-    }
-
-    /**
-     * @return void
-     */
-    protected function setupApplicationNavigationConsumer()
-    {
-
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Consumer/Create', 'Mandanten', new CogIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Consumer/Token', 'Token', new CogIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Consumer/Account', 'Account', new CogIcon()
-        );
-
-    }
-
-    /**
-     * @return Stage
-     */
     public function frontendConsumerCreate()
     {
 
         $this->setupModuleNavigation();
-        $this->setupApplicationNavigationConsumer();
         return Frontend\Consumer::stageCreate();
     }
 
@@ -265,19 +229,10 @@ class System extends AbstractApplication
             '/Sphere/System/Authorization/Role', 'Rollen', new CogIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Authorization/ListRoleAccess', 'Rollen - Zugriffslevel', new CogIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/System/Authorization/Access', 'Zugriffslevel', new CogIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Authorization/ListAccessPrivilege', 'Zugriffslevel - Privilegien', new CogIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/System/Authorization/Privilege', 'Privilegien', new CogIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Authorization/ListPrivilegeRight', 'Privilegien - Rechte', new CogIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/System/Authorization/Right', 'Rechte', new CogIcon()
@@ -324,16 +279,16 @@ class System extends AbstractApplication
     }
 
     /**
-     * @param null|string $Access
+     * @param null|string $RoleName
      *
      * @return Stage
      */
-    public function frontendAuthorizationRole( $Access )
+    public function frontendAuthorizationRole( $RoleName )
     {
 
         $this->setupModuleNavigation();
         $this->setupApplicationNavigationAuthorization();
-        return Authorization::stageAuthorizationRole( $Access );
+        return Authorization::stageAuthorizationRole( $RoleName );
     }
 
     /**

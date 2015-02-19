@@ -77,7 +77,7 @@ class Account extends EntityAction
             session_regenerate_id();
         }
 
-        return new Redirect( '/Sphere/Gatekeeper/SignIn', 1 );
+        return new Redirect( '/Sphere/Gatekeeper/SignIn', 0 );
     }
 
     /**
@@ -204,7 +204,7 @@ class Account extends EntityAction
                 break;
             }
             case self::API_SIGN_IN_SUCCESS: {
-                return new Redirect( '/Sphere', 1 );
+                return new Redirect( '/Sphere', 0 );
                 break;
             }
         }
@@ -227,7 +227,7 @@ class Account extends EntityAction
                 $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerById( $tblConsumer );
                 if (false !== $tblConsumer) {
                     $this->actionChangeConsumer( $tblConsumer );
-                    return new Redirect( '/Sphere/Gatekeeper/MyAccount', 1 );
+                    return new Redirect( '/Sphere/Gatekeeper/MyAccount', 0 );
                 } else {
                     $View->setError( 'serviceGatekeeper_Consumer', 'Bitte wählen Sie einen gültigen Mandanten' );
                 }
@@ -240,16 +240,16 @@ class Account extends EntityAction
      * @param AbstractForm $View
      * @param string       $RoleName
      *
-     * @return AbstractForm
+     * @return AbstractForm|Redirect
      */
     public function executeCreateRole( AbstractForm &$View, $RoleName )
     {
 
         if (null !== $RoleName && empty( $RoleName )) {
-            $View->setError( 'Access', 'Bitte geben Sie einen Namen ein' );
+            $View->setError( 'RoleName', 'Bitte geben Sie einen Namen ein' );
         }
         if (!empty( $RoleName )) {
-            $View->setSuccess( 'Access', 'Die Rolle wurde hinzugefügt' );
+            $View->setSuccess( 'RoleName', 'Die Rolle wurde hinzugefügt' );
             $this->actionCreateAccountRole( $RoleName );
             return new Redirect( '/Sphere/System/Authorization/Role', 0 );
         }

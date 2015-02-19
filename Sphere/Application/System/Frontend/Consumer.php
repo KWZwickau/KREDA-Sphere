@@ -25,18 +25,6 @@ class Consumer extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function stageStatus()
-    {
-
-        $View = new Stage();
-        $View->setTitle( 'KREDA Mandanten' );
-        $View->setMessage( 'Bitte wählen Sie ein Thema' );
-        return $View;
-    }
-
-    /**
-     * @return Stage
-     */
     public static function stageCreate()
     {
 

@@ -19,7 +19,7 @@ class Authentication extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function stageWelcome()
+    public static function stageStatus()
     {
 
         $View = new Stage();

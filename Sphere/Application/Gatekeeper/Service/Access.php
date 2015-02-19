@@ -11,6 +11,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRightList
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
+use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class Access
@@ -107,7 +108,7 @@ class Access extends EntityAction
      * @param AbstractForm $View
      * @param string       $AccessName
      *
-     * @return AbstractForm
+     * @return AbstractForm|Redirect
      */
     public function executeCreateAccess( AbstractForm &$View, $AccessName )
     {
@@ -118,6 +119,7 @@ class Access extends EntityAction
         if (!empty( $AccessName )) {
             $View->setSuccess( 'AccessName', 'Der Zugriffslevel wurde hinzugefügt' );
             $this->actionCreateAccess( $AccessName );
+            return new Redirect( '/Sphere/System/Authorization/Access', 0 );
         }
         return $View;
     }
@@ -126,7 +128,7 @@ class Access extends EntityAction
      * @param AbstractForm $View
      * @param string       $PrivilegeName
      *
-     * @return AbstractForm
+     * @return AbstractForm|Redirect
      */
     public function executeCreatePrivilege( AbstractForm &$View, $PrivilegeName )
     {
@@ -135,8 +137,9 @@ class Access extends EntityAction
             $View->setError( 'PrivilegeName', 'Bitte geben Sie einen Namen ein' );
         }
         if (!empty( $PrivilegeName )) {
-            $View->setSuccess( 'PrivilegeName', 'Der Zugriffslevel wurde hinzugefügt' );
+            $View->setSuccess( 'PrivilegeName', 'Das Privileg wurde hinzugefügt' );
             $this->actionCreatePrivilege( $PrivilegeName );
+            return new Redirect( '/Sphere/System/Authorization/Privilege', 0 );
         }
         return $View;
     }
@@ -145,7 +148,7 @@ class Access extends EntityAction
      * @param AbstractForm $View
      * @param string       $RightName
      *
-     * @return AbstractForm
+     * @return AbstractForm|Redirect
      */
     public function executeCreateRight( AbstractForm &$View, $RightName )
     {
@@ -156,6 +159,7 @@ class Access extends EntityAction
         if (!empty( $RightName )) {
             $View->setSuccess( 'RightName', 'Das Recht wurde hinzugefügt' );
             $this->actionCreateRight( $RightName );
+            return new Redirect( '/Sphere/System/Authorization/Right', 0 );
         }
         return $View;
     }

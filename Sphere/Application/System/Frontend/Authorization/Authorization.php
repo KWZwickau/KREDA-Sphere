@@ -219,7 +219,7 @@ class Authorization extends AbstractFrontend
                         new GridFormRow(
                             new GridFormCol(
                                 new InputText(
-                                    'Access', 'Name', 'Zugriffslevelgruppe'
+                                    'RoleName', 'Name', 'Zugriffslevelgruppe'
                                 )
                             )
                         ), new GridFormTitle( 'Rolle anlegen', 'Zugriffslevelgruppe') )

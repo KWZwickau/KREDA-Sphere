@@ -25,6 +25,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->checkApplicationMethodName( $Namespace.'\Assistance\Assistance' );
         $this->checkApplicationMethodName( $Namespace.'\Billing\Billing' );
         $this->checkApplicationMethodName( $Namespace.'\Gatekeeper\Gatekeeper' );
+        $this->checkApplicationMethodName( $Namespace.'\Gatekeeper\Module\Authentication' );
+        $this->checkApplicationMethodName( $Namespace.'\Gatekeeper\Module\MyAccount' );
         $this->checkApplicationMethodName( $Namespace.'\Graduation\Graduation' );
         $this->checkApplicationMethodName( $Namespace.'\Management\Management' );
         $this->checkApplicationMethodName( $Namespace.'\Statistic\Statistic' );
