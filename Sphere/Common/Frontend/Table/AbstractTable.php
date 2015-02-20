@@ -43,7 +43,28 @@ abstract class AbstractTable extends AbstractFrontend implements IElementInterfa
     {
 
         if (empty( $this->Hash )) {
-            $this->Hash = sha1( json_encode( $this->GridHeadList ).json_encode( $this->GridBodyList ).json_encode( $this->GridFootList ) );
+            $HeadList = $this->GridHeadList;
+            array_walk( $HeadList, function ( &$H ) {
+
+                if (is_object( $H )) {
+                    $H = spl_object_hash( $H );
+                }
+            } );
+            $BodyList = $this->GridBodyList;
+            array_walk( $BodyList, function ( &$H ) {
+
+                if (is_object( $H )) {
+                    $H = spl_object_hash( $H );
+                }
+            } );
+            $FootList = $this->GridFootList;
+            array_walk( $FootList, function ( &$H ) {
+
+                if (is_object( $H )) {
+                    $H = spl_object_hash( $H );
+                }
+            } );
+            $this->Hash = sha1( json_encode( $HeadList ).json_encode( $BodyList ).json_encode( $FootList ) );
         }
         return $this->Hash;
     }

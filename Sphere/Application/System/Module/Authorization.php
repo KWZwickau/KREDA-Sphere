@@ -44,6 +44,12 @@ class Authorization extends Protocol
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Authorization/Role/Access', __CLASS__.'::frontendRoleAccess'
         )->setParameterDefault( 'Id', null )->setParameterDefault( 'Access', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Authorization/Access/Privilege', __CLASS__.'::frontendAccessPrivilege'
+        )->setParameterDefault( 'Id', null )->setParameterDefault( 'Privilege', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Authorization/Privilege/Right', __CLASS__.'::frontendPrivilegeRight'
+        )->setParameterDefault( 'Id', null )->setParameterDefault( 'Right', null );
     }
 
     /**
@@ -143,5 +149,33 @@ class Authorization extends Protocol
         $this->setupModuleNavigation();
         $this->setupApplicationNavigation();
         return Frontend::stageRoleAccess( $Id, $Access );
+    }
+
+    /**
+     * @param null|int $Id
+     * @param null|int $Privilege
+     *
+     * @return Stage
+     */
+    public function frontendAccessPrivilege( $Id, $Privilege )
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupApplicationNavigation();
+        return Frontend::stageAccessPrivilege( $Id, $Privilege );
+    }
+
+    /**
+     * @param null|int $Id
+     * @param null|int $Right
+     *
+     * @return Stage
+     */
+    public function frontendPrivilegeRight( $Id, $Right )
+    {
+
+        $this->setupModuleNavigation();
+        $this->setupApplicationNavigation();
+        return Frontend::stagePrivilegeRight( $Id, $Right );
     }
 }

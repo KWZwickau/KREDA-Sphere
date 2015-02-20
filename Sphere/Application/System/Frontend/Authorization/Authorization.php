@@ -4,10 +4,13 @@ namespace KREDA\Sphere\Application\System\Frontend\Authorization;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege;
+use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\System\Frontend\Authorization\Summary\Summary;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
@@ -123,9 +126,35 @@ class Authorization extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Privilegien' );
+
+        $PrivilegeList = Gatekeeper::serviceAccess()->entityPrivilegeAll();
+        array_walk( $PrivilegeList, function ( TblAccessPrivilege &$V, $I, $B ) {
+
+            $V->Option =
+                '<div class="pull-right">'
+                .'<form action="'.$B.'/Sphere/System/Authorization/Privilege/Destroy" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-danger">Löschen</button>
+                        </div>
+                    </div>
+                </form>'
+                .'</div>'
+                .'<div class="pull-right">'
+                .'<form action="'.$B.'/Sphere/System/Authorization/Privilege/Right" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-primary">Rechte</button>
+                        </div>
+                    </div>&nbsp;
+                </form>'
+                .'</div>';
+        }, self::getUrlBase() );
+
         $View->setContent(
-            new TableData( Gatekeeper::serviceAccess()->entityPrivilegeAll(),
-                new GridTableTitle( 'Bestehende Privilegien', 'Rechtegruppen' ) )
+            new TableData( $PrivilegeList, new GridTableTitle( 'Bestehende Privilegien', 'Rechtegruppen' ) )
             .Gatekeeper::serviceAccess()->executeCreatePrivilege(
                 new FormDefault(
                     new GridFormGroup(
@@ -154,9 +183,35 @@ class Authorization extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Zugriffslevel' );
+
+        $AccessList = Gatekeeper::serviceAccess()->entityAccessAll();
+        array_walk( $AccessList, function ( TblAccess &$V, $I, $B ) {
+
+            $V->Option =
+                '<div class="pull-right">'
+                .'<form action="'.$B.'/Sphere/System/Authorization/Access/Destroy" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-danger">Löschen</button>
+                        </div>
+                    </div>
+                </form>'
+                .'</div>'
+                .'<div class="pull-right">'
+                .'<form action="'.$B.'/Sphere/System/Authorization/Access/Privilege" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-primary">Privilegien</button>
+                        </div>
+                    </div>&nbsp;
+                </form>'
+                .'</div>';
+        }, self::getUrlBase() );
+
         $View->setContent(
-            new TableData( Gatekeeper::serviceAccess()->entityAccessAll(),
-                new GridTableTitle( 'Bestehende Zugriffslevel', 'Privilegiengruppen' ) )
+            new TableData( $AccessList, new GridTableTitle( 'Bestehende Zugriffslevel', 'Privilegiengruppen' ) )
             .Gatekeeper::serviceAccess()->executeCreateAccess(
                 new FormDefault(
                     new GridFormGroup(
@@ -241,14 +296,111 @@ class Authorization extends AbstractFrontend
     {
 
         $tblAccountRole = Gatekeeper::serviceAccount()->entityAccountRoleById( $Id );
+        $tblAccessList = Gatekeeper::serviceAccount()->entityAccessAllByAccountRole( $tblAccountRole );
+        if (!$tblAccessList) {
+            $tblAccessList = array();
+        }
+
+        $tblAccessListAvailable = array_udiff( Gatekeeper::serviceAccess()->entityAccessAll(), $tblAccessList,
+            function ( TblAccess $ObjectA, TblAccess $ObjectB ) {
+
+                return $ObjectA->getId() - $ObjectB->getId();
+            }
+        );
 
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Rolle - Zugriffslevel' );
         $View->setContent(
             new TableData( array( $tblAccountRole ), new GridTableTitle( 'Rolle' ), array(), false )
+            .
+            ( empty( $tblAccessList )
+                ? new GridTableTitle( 'Rolle - Level' ).new MessageWarning( 'Keine Zugriffslevel vergeben' )
+                : new TableData( $tblAccessList, new GridTableTitle( 'Rolle - Level' ), array(), true )
+            )
+            .
+            ( empty( $tblAccessListAvailable )
+                ? new GridTableTitle( 'Level' ).new MessageInfo( 'Keine weiteren Zugriffslevel verfügbar' )
+                : new TableData( $tblAccessListAvailable, new GridTableTitle( 'Level' ), array(), true )
+            )
         );
         return $View;
     }
 
+    /**
+     * @param null|int $Id
+     * @param null|int $Privilege
+     *
+     * @return Stage
+     */
+    public static function stageAccessPrivilege( $Id, $Privilege )
+    {
+
+        $tblAccess = Gatekeeper::serviceAccess()->entityAccessById( $Id );
+        $tblPrivilegeList = Gatekeeper::serviceAccess()->entityPrivilegeAllByAccess( $tblAccess );
+        if (!$tblPrivilegeList) {
+            $tblPrivilegeList = array();
+        }
+
+        $tblPrivilegeListAvailable = array_udiff( Gatekeeper::serviceAccess()->entityPrivilegeAll(), $tblPrivilegeList,
+            function ( TblAccessPrivilege $ObjectA, TblAccessPrivilege $ObjectB ) {
+
+                return $ObjectA->getId() - $ObjectB->getId();
+            }
+        );
+
+        $View = new Stage();
+        $View->setTitle( 'Berechtigungen' );
+        $View->setDescription( 'Level - Privilegien' );
+        $View->setContent(
+            new TableData( array( $tblAccess ), new GridTableTitle( 'Level' ), array(), false )
+            .
+            ( empty( $tblPrivilegeList )
+                ? new GridTableTitle( 'Level - Privileg' ).new MessageWarning( 'Keine Privilegien vergeben' )
+                : new TableData( $tblPrivilegeList, new GridTableTitle( 'Level - Privileg' ), array(), true )
+            )
+            .
+            ( empty( $tblPrivilegeListAvailable )
+                ? new GridTableTitle( 'Privilegien' ).new MessageInfo( 'Keine weiteren Privilegien verfügbar' )
+                : new TableData( $tblPrivilegeListAvailable, new GridTableTitle( 'Privilegien' ), array(), true )
+            )
+        );
+        return $View;
+    }
+
+
+    /**
+     * @param null|int $Id
+     * @param null|int $Right
+     *
+     * @return Stage
+     */
+    public static function stagePrivilegeRight( $Id, $Right )
+    {
+
+        $tblPrivilege = Gatekeeper::serviceAccess()->entityPrivilegeById( $Id );
+        $tblRightList = Gatekeeper::serviceAccess()->entityRightAllByPrivilege( $tblPrivilege );
+
+        $tblRightListAvailable = array_udiff( Gatekeeper::serviceAccess()->entityRightAll(), $tblRightList,
+            function ( TblAccessRight $ObjectA, TblAccessRight $ObjectB ) {
+
+                return $ObjectA->getId() - $ObjectB->getId();
+            }
+        );
+
+        $View = new Stage();
+        $View->setTitle( 'Berechtigungen' );
+        $View->setDescription( 'Privileg - Recht' );
+        $View->setContent(
+            new TableData( array( $tblPrivilege ), new GridTableTitle( 'Privileg' ), array(), false )
+            .
+            new TableData( $tblRightList, new GridTableTitle( 'Privileg - Recht' ), array(), false )
+            .
+            ( empty( $tblRightListAvailable )
+                ? new GridTableTitle( 'Rechte' ).new MessageInfo( 'Keine weiteren Rechte verfügbar' )
+                : new TableData( $tblRightListAvailable, new GridTableTitle( 'Rechte' ), array(), false )
+            )
+        );
+        return $View;
+    }
 }
