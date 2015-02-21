@@ -140,42 +140,45 @@ class Authorization extends Protocol
     /**
      * @param null|int $Id
      * @param null|int $Access
+     * @param bool     $Remove
      *
      * @return Stage
      */
-    public function frontendRoleAccess( $Id, $Access )
+    public function frontendRoleAccess( $Id, $Access, $Remove = false )
     {
 
         $this->setupModuleNavigation();
         $this->setupApplicationNavigation();
-        return Frontend::stageRoleAccess( $Id, $Access );
+        return Frontend::stageRoleAccess( $Id, $Access, $Remove );
     }
 
     /**
      * @param null|int $Id
      * @param null|int $Privilege
+     * @param bool     $Remove
      *
      * @return Stage
      */
-    public function frontendAccessPrivilege( $Id, $Privilege )
+    public function frontendAccessPrivilege( $Id, $Privilege, $Remove = false )
     {
 
         $this->setupModuleNavigation();
         $this->setupApplicationNavigation();
-        return Frontend::stageAccessPrivilege( $Id, $Privilege );
+        return Frontend::stageAccessPrivilege( $Id, $Privilege, $Remove );
     }
 
     /**
      * @param null|int $Id
      * @param null|int $Right
+     * @param bool     $Remove
      *
      * @return Stage
      */
-    public function frontendPrivilegeRight( $Id, $Right )
+    public function frontendPrivilegeRight( $Id, $Right, $Remove = false )
     {
 
         $this->setupModuleNavigation();
         $this->setupApplicationNavigation();
-        return Frontend::stagePrivilegeRight( $Id, $Right );
+        return Frontend::stagePrivilegeRight( $Id, $Right, $Remove );
     }
 }

@@ -1,0 +1,16 @@
+{% for GridLayoutGroup in GridLayout %}
+    {% if( GridLayoutGroup.getTitle is not empty ) %}
+        {{ GridLayoutGroup.getTitle }}
+    {% endif %}
+    {% for GridLayoutRow in GridLayoutGroup.getLayoutRow %}
+        <div class="row">
+            {% for GridLayoutCol in GridLayoutRow.getLayoutCol %}
+                <div class="col-md-{{ GridLayoutCol.getSize }}">
+                    {% for GridAbstractFrontend in GridLayoutCol.getAbstractFrontend %}
+                        {{ GridAbstractFrontend }}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endfor %}

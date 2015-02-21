@@ -18,6 +18,11 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
@@ -289,14 +294,22 @@ class Authorization extends AbstractFrontend
     /**
      * @param null|int $Id
      * @param null|int $Access
+     * @param bool     $Remove
      *
      * @return Stage
      */
-    public static function stageRoleAccess( $Id, $Access )
+    public static function stageRoleAccess( $Id, $Access, $Remove = false )
     {
 
-        $tblAccountRole = Gatekeeper::serviceAccount()->entityAccountRoleById( $Id );
-        $tblAccessList = Gatekeeper::serviceAccount()->entityAccessAllByAccountRole( $tblAccountRole );
+        $tblRole = Gatekeeper::serviceAccount()->entityAccountRoleById( $Id );
+        if ($tblRole && null !== $Access && ( $tblAccess = Gatekeeper::serviceAccess()->entityAccessById( $Access ) )) {
+            if ($Remove) {
+                Gatekeeper::serviceAccount()->executeRemoveRoleAccess( $tblRole, $tblAccess );
+            } else {
+                Gatekeeper::serviceAccount()->executeAddRoleAccess( $tblRole, $tblAccess );
+            }
+        }
+        $tblAccessList = Gatekeeper::serviceAccount()->entityAccessAllByAccountRole( $tblRole );
         if (!$tblAccessList) {
             $tblAccessList = array();
         }
@@ -308,20 +321,64 @@ class Authorization extends AbstractFrontend
             }
         );
 
+        array_walk( $tblAccessListAvailable, function ( TblAccess &$V, $I, $B ) {
+
+            $V->Option =
+                '<div class="pull-right">'
+                .'<form action="'.$B[1].'/Sphere/System/Authorization/Role/Access" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
+                    <input type="hidden" class="form-control" name="Access" placeholder="" value="'.$V->getId().'"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-success">Hinzufügen</button>
+                        </div>
+                    </div>&nbsp;
+                </form>'
+                .'</div>';
+        }, array( $Id, self::getUrlBase() ) );
+
+        array_walk( $tblAccessList, function ( TblAccess &$V, $I, $B ) {
+
+            $V->Option =
+                '<div class="pull-right">'
+                .'<form action="'.$B[1].'/Sphere/System/Authorization/Role/Access" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
+                    <input type="hidden" class="form-control" name="Access" placeholder="" value="'.$V->getId().'"/>
+                    <input type="hidden" class="form-control" name="Remove" placeholder="" value="1"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-danger">Entfernen</button>
+                        </div>
+                    </div>&nbsp;
+                </form>'
+                .'</div>';
+        }, array( $Id, self::getUrlBase() ) );
+
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
         $View->setDescription( 'Rolle - Zugriffslevel' );
         $View->setContent(
-            new TableData( array( $tblAccountRole ), new GridTableTitle( 'Rolle' ), array(), false )
+            new TableData( array( $tblRole ), new GridTableTitle( 'Rolle' ), array(), false )
             .
-            ( empty( $tblAccessList )
-                ? new GridTableTitle( 'Rolle - Level' ).new MessageWarning( 'Keine Zugriffslevel vergeben' )
-                : new TableData( $tblAccessList, new GridTableTitle( 'Rolle - Level' ), array(), true )
-            )
-            .
-            ( empty( $tblAccessListAvailable )
-                ? new GridTableTitle( 'Level' ).new MessageInfo( 'Keine weiteren Zugriffslevel verfügbar' )
-                : new TableData( $tblAccessListAvailable, new GridTableTitle( 'Level' ), array(), true )
+            new GridLayout(
+                new GridLayoutGroup(
+                    new GridLayoutRow( array(
+                        new GridLayoutCol( array(
+                            new GridLayoutTitle( 'Zugriffslevel', 'Zugewiesen' ),
+                            ( empty( $tblAccessList )
+                                ? new MessageWarning( 'Keine Zugriffslevel vergeben' )
+                                : new TableData( $tblAccessList )
+                            )
+                        ), 6 ),
+                        new GridLayoutCol( array(
+                            new GridLayoutTitle( 'Zugriffslevel', 'Verfügbar' ),
+                            ( empty( $tblAccessListAvailable )
+                                ? new MessageInfo( 'Keine weiteren Zugriffslevel verfügbar' )
+                                : new TableData( $tblAccessListAvailable )
+                            )
+                        ), 6 )
+                    ) )
+                    , new GridLayoutTitle( 'Rollen', 'Zusammensetzung' ) )
             )
         );
         return $View;
@@ -330,13 +387,21 @@ class Authorization extends AbstractFrontend
     /**
      * @param null|int $Id
      * @param null|int $Privilege
+     * @param bool     $Remove
      *
      * @return Stage
      */
-    public static function stageAccessPrivilege( $Id, $Privilege )
+    public static function stageAccessPrivilege( $Id, $Privilege, $Remove = false )
     {
 
         $tblAccess = Gatekeeper::serviceAccess()->entityAccessById( $Id );
+        if ($tblAccess && null !== $Privilege && ( $tblPrivilege = Gatekeeper::serviceAccess()->entityPrivilegeById( $Privilege ) )) {
+            if ($Remove) {
+                Gatekeeper::serviceAccess()->executeRemoveAccessPrivilege( $tblAccess, $tblPrivilege );
+            } else {
+                Gatekeeper::serviceAccess()->executeAddAccessPrivilege( $tblAccess, $tblPrivilege );
+            }
+        }
         $tblPrivilegeList = Gatekeeper::serviceAccess()->entityPrivilegeAllByAccess( $tblAccess );
         if (!$tblPrivilegeList) {
             $tblPrivilegeList = array();
@@ -349,20 +414,64 @@ class Authorization extends AbstractFrontend
             }
         );
 
+        array_walk( $tblPrivilegeListAvailable, function ( TblAccessPrivilege &$V, $I, $B ) {
+
+            $V->Option =
+                '<div class="pull-right">'
+                .'<form action="'.$B[1].'/Sphere/System/Authorization/Access/Privilege" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
+                    <input type="hidden" class="form-control" name="Privilege" placeholder="" value="'.$V->getId().'"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-success">Hinzufügen</button>
+                        </div>
+                    </div>&nbsp;
+                </form>'
+                .'</div>';
+        }, array( $Id, self::getUrlBase() ) );
+
+        array_walk( $tblPrivilegeList, function ( TblAccessPrivilege &$V, $I, $B ) {
+
+            $V->Option =
+                '<div class="pull-right">'
+                .'<form action="'.$B[1].'/Sphere/System/Authorization/Access/Privilege" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
+                    <input type="hidden" class="form-control" name="Privilege" placeholder="" value="'.$V->getId().'"/>
+                    <input type="hidden" class="form-control" name="Remove" placeholder="" value="1"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-danger">Entfernen</button>
+                        </div>
+                    </div>&nbsp;
+                </form>'
+                .'</div>';
+        }, array( $Id, self::getUrlBase() ) );
+
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
-        $View->setDescription( 'Level - Privilegien' );
+        $View->setDescription( 'Zugriffslevel - Privilegien' );
         $View->setContent(
-            new TableData( array( $tblAccess ), new GridTableTitle( 'Level' ), array(), false )
+            new TableData( array( $tblAccess ), new GridTableTitle( 'Zugriffslevel' ), array(), false )
             .
-            ( empty( $tblPrivilegeList )
-                ? new GridTableTitle( 'Level - Privileg' ).new MessageWarning( 'Keine Privilegien vergeben' )
-                : new TableData( $tblPrivilegeList, new GridTableTitle( 'Level - Privileg' ), array(), true )
-            )
-            .
-            ( empty( $tblPrivilegeListAvailable )
-                ? new GridTableTitle( 'Privilegien' ).new MessageInfo( 'Keine weiteren Privilegien verfügbar' )
-                : new TableData( $tblPrivilegeListAvailable, new GridTableTitle( 'Privilegien' ), array(), true )
+            new GridLayout(
+                new GridLayoutGroup(
+                    new GridLayoutRow( array(
+                        new GridLayoutCol( array(
+                            new GridLayoutTitle( 'Privilegien', 'Zugewiesen' ),
+                            ( empty( $tblPrivilegeList )
+                                ? new MessageWarning( 'Keine Privilegien vergeben' )
+                                : new TableData( $tblPrivilegeList )
+                            )
+                        ), 6 ),
+                        new GridLayoutCol( array(
+                            new GridLayoutTitle( 'Privilegien', 'Verfügbar' ),
+                            ( empty( $tblPrivilegeListAvailable )
+                                ? new MessageInfo( 'Keine weiteren Privilegien verfügbar' )
+                                : new TableData( $tblPrivilegeListAvailable )
+                            )
+                        ), 6 )
+                    ) )
+                    , new GridLayoutTitle( 'Zugriffslevel', 'Zusammensetzung' ) )
             )
         );
         return $View;
@@ -372,13 +481,21 @@ class Authorization extends AbstractFrontend
     /**
      * @param null|int $Id
      * @param null|int $Right
+     * @param bool     $Remove
      *
      * @return Stage
      */
-    public static function stagePrivilegeRight( $Id, $Right )
+    public static function stagePrivilegeRight( $Id, $Right, $Remove = false )
     {
 
         $tblPrivilege = Gatekeeper::serviceAccess()->entityPrivilegeById( $Id );
+        if ($tblPrivilege && null !== $Right && ( $tblRight = Gatekeeper::serviceAccess()->entityRightById( $Right ) )) {
+            if ($Remove) {
+                Gatekeeper::serviceAccess()->executeRemovePrivilegeRight( $tblPrivilege, $tblRight );
+            } else {
+                Gatekeeper::serviceAccess()->executeAddPrivilegeRight( $tblPrivilege, $tblRight );
+            }
+        }
         $tblRightList = Gatekeeper::serviceAccess()->entityRightAllByPrivilege( $tblPrivilege );
 
         $tblRightListAvailable = array_udiff( Gatekeeper::serviceAccess()->entityRightAll(), $tblRightList,
@@ -388,17 +505,64 @@ class Authorization extends AbstractFrontend
             }
         );
 
+        array_walk( $tblRightListAvailable, function ( TblAccessRight &$V, $I, $B ) {
+
+            $V->Option =
+                '<div class="pull-right">'
+                .'<form action="'.$B[1].'/Sphere/System/Authorization/Privilege/Right" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
+                    <input type="hidden" class="form-control" name="Right" placeholder="" value="'.$V->getId().'"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-success">Hinzufügen</button>
+                        </div>
+                    </div>&nbsp;
+                </form>'
+                .'</div>';
+        }, array( $Id, self::getUrlBase() ) );
+
+        array_walk( $tblRightList, function ( TblAccessRight &$V, $I, $B ) {
+
+            $V->Option =
+                '<div class="pull-right">'
+                .'<form action="'.$B[1].'/Sphere/System/Authorization/Privilege/Right" method="post">
+                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
+                    <input type="hidden" class="form-control" name="Right" placeholder="" value="'.$V->getId().'"/>
+                    <input type="hidden" class="form-control" name="Remove" placeholder="" value="1"/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-danger">Entfernen</button>
+                        </div>
+                    </div>&nbsp;
+                </form>'
+                .'</div>';
+        }, array( $Id, self::getUrlBase() ) );
+
         $View = new Stage();
         $View->setTitle( 'Berechtigungen' );
-        $View->setDescription( 'Privileg - Recht' );
+        $View->setDescription( 'Privileg - Rechte' );
         $View->setContent(
             new TableData( array( $tblPrivilege ), new GridTableTitle( 'Privileg' ), array(), false )
             .
-            new TableData( $tblRightList, new GridTableTitle( 'Privileg - Recht' ), array(), false )
-            .
-            ( empty( $tblRightListAvailable )
-                ? new GridTableTitle( 'Rechte' ).new MessageInfo( 'Keine weiteren Rechte verfügbar' )
-                : new TableData( $tblRightListAvailable, new GridTableTitle( 'Rechte' ), array(), false )
+            new GridLayout(
+                new GridLayoutGroup(
+                    new GridLayoutRow( array(
+                        new GridLayoutCol( array(
+                            new GridLayoutTitle( 'Rechte', 'Zugewiesen' ),
+                            ( empty( $tblRightList )
+                                ? new MessageWarning( 'Keine Rechte vergeben' )
+                                : new TableData( $tblRightList )
+                            )
+                        ), 6 ),
+                        new GridLayoutCol( array(
+                            new GridLayoutTitle( 'Rechte', 'Verfügbar' ),
+                            ( empty( $tblRightListAvailable )
+                                ? new MessageInfo( 'Keine weiteren Rechte verfügbar' )
+                                : new TableData( $tblRightListAvailable )
+                            )
+                        ), 6 )
+                    ) )
+                    , new GridLayoutTitle( 'Privileg', 'Zusammensetzung' ) )
             )
         );
         return $View;

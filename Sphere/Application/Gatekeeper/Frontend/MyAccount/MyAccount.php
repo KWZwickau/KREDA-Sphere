@@ -61,15 +61,15 @@ class MyAccount extends AbstractFrontend
                     )
                 ), new GridTableBody( array(
                 new GridTableRow( array(
-                    new GridTableCol( 'Benutzername', 1, '20%' ),
+                    new GridTableCol( 'Benutzername (Account)', 1, '20%' ),
                     new GridTableCol( $tblAccount->getUsername() )
                 ) ),
                 new GridTableRow( array(
-                    new GridTableCol( 'Zugangstyp' ),
+                    new GridTableCol( 'Zugangstyp (Authentifizierung)' ),
                     new GridTableCol( $tblAccount->getTblAccountTyp()->getName() )
                 ) ),
                 new GridTableRow( array(
-                    new GridTableCol( 'Berechtigungsstufe' ),
+                    new GridTableCol( 'Berechtigungsstufe (Rolle)' ),
                     new GridTableCol( $tblAccount->getTblAccountRole()->getName() )
                 ) )
             ) ) )
