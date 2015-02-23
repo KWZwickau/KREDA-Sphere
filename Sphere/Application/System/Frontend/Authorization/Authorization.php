@@ -11,7 +11,10 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
@@ -301,12 +304,20 @@ class Authorization extends AbstractFrontend
     public static function stageRoleAccess( $Id, $Access, $Remove = false )
     {
 
+        $View = new Stage();
+        $View->setTitle( 'Berechtigungen' );
+        $View->setDescription( 'Rolle - Zugriffslevel' );
+
         $tblRole = Gatekeeper::serviceAccount()->entityAccountRoleById( $Id );
         if ($tblRole && null !== $Access && ( $tblAccess = Gatekeeper::serviceAccess()->entityAccessById( $Access ) )) {
             if ($Remove) {
                 Gatekeeper::serviceAccount()->executeRemoveRoleAccess( $tblRole, $tblAccess );
+                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Role/Access?Id='.$Id, 0 ) );
+                return $View;
             } else {
                 Gatekeeper::serviceAccount()->executeAddRoleAccess( $tblRole, $tblAccess );
+                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Role/Access?Id='.$Id, 0 ) );
+                return $View;
             }
         }
         $tblAccessList = Gatekeeper::serviceAccount()->entityAccessAllByAccountRole( $tblRole );
@@ -323,40 +334,45 @@ class Authorization extends AbstractFrontend
 
         array_walk( $tblAccessListAvailable, function ( TblAccess &$V, $I, $B ) {
 
+            $Id = new InputHidden( 'Id' );
+            $Id->setDefaultValue( $B[0], true );
+            $Access = new InputHidden( 'Access' );
+            $Access->setDefaultValue( $V->getId(), true );
+
             $V->Option =
                 '<div class="pull-right">'
-                .'<form action="'.$B[1].'/Sphere/System/Authorization/Role/Access" method="post">
-                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
-                    <input type="hidden" class="form-control" name="Access" placeholder="" value="'.$V->getId().'"/>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <button type="submit" class="btn btn-success">Hinzufügen</button>
-                        </div>
-                    </div>&nbsp;
-                </form>'
+                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+                    $Id,
+                    $Access,
+                    new ButtonSubmitSuccess( 'Hinzufügen' )
+                ) ) ) ),
+                    null, $B[1].'/Sphere/System/Authorization/Role/Access'
+                )
                 .'</div>';
         }, array( $Id, self::getUrlBase() ) );
 
         array_walk( $tblAccessList, function ( TblAccess &$V, $I, $B ) {
 
+            $Id = new InputHidden( 'Id' );
+            $Id->setDefaultValue( $B[0], true );
+            $Access = new InputHidden( 'Access' );
+            $Access->setDefaultValue( $V->getId(), true );
+            $Remove = new InputHidden( 'Remove' );
+            $Remove->setDefaultValue( 1, true );
+
             $V->Option =
                 '<div class="pull-right">'
-                .'<form action="'.$B[1].'/Sphere/System/Authorization/Role/Access" method="post">
-                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
-                    <input type="hidden" class="form-control" name="Access" placeholder="" value="'.$V->getId().'"/>
-                    <input type="hidden" class="form-control" name="Remove" placeholder="" value="1"/>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <button type="submit" class="btn btn-danger">Entfernen</button>
-                        </div>
-                    </div>&nbsp;
-                </form>'
+                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+                    $Id,
+                    $Access,
+                    $Remove,
+                    new ButtonSubmitDanger( 'Entfernen' )
+                ) ) ) ),
+                    null, $B[1].'/Sphere/System/Authorization/Role/Access'
+                )
                 .'</div>';
         }, array( $Id, self::getUrlBase() ) );
 
-        $View = new Stage();
-        $View->setTitle( 'Berechtigungen' );
-        $View->setDescription( 'Rolle - Zugriffslevel' );
         $View->setContent(
             new TableData( array( $tblRole ), new GridTableTitle( 'Rolle' ), array(), false )
             .
@@ -394,12 +410,20 @@ class Authorization extends AbstractFrontend
     public static function stageAccessPrivilege( $Id, $Privilege, $Remove = false )
     {
 
+        $View = new Stage();
+        $View->setTitle( 'Berechtigungen' );
+        $View->setDescription( 'Zugriffslevel - Privilegien' );
+
         $tblAccess = Gatekeeper::serviceAccess()->entityAccessById( $Id );
         if ($tblAccess && null !== $Privilege && ( $tblPrivilege = Gatekeeper::serviceAccess()->entityPrivilegeById( $Privilege ) )) {
             if ($Remove) {
                 Gatekeeper::serviceAccess()->executeRemoveAccessPrivilege( $tblAccess, $tblPrivilege );
+                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Access/Privilege?Id='.$Id, 0 ) );
+                return $View;
             } else {
                 Gatekeeper::serviceAccess()->executeAddAccessPrivilege( $tblAccess, $tblPrivilege );
+                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Access/Privilege?Id='.$Id, 0 ) );
+                return $View;
             }
         }
         $tblPrivilegeList = Gatekeeper::serviceAccess()->entityPrivilegeAllByAccess( $tblAccess );
@@ -416,40 +440,45 @@ class Authorization extends AbstractFrontend
 
         array_walk( $tblPrivilegeListAvailable, function ( TblAccessPrivilege &$V, $I, $B ) {
 
+            $Id = new InputHidden( 'Id' );
+            $Id->setDefaultValue( $B[0], true );
+            $Privilege = new InputHidden( 'Privilege' );
+            $Privilege->setDefaultValue( $V->getId(), true );
+
             $V->Option =
                 '<div class="pull-right">'
-                .'<form action="'.$B[1].'/Sphere/System/Authorization/Access/Privilege" method="post">
-                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
-                    <input type="hidden" class="form-control" name="Privilege" placeholder="" value="'.$V->getId().'"/>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <button type="submit" class="btn btn-success">Hinzufügen</button>
-                        </div>
-                    </div>&nbsp;
-                </form>'
+                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+                    $Id,
+                    $Privilege,
+                    new ButtonSubmitSuccess( 'Hinzufügen' )
+                ) ) ) ),
+                    null, $B[1].'/Sphere/System/Authorization/Access/Privilege'
+                )
                 .'</div>';
         }, array( $Id, self::getUrlBase() ) );
 
         array_walk( $tblPrivilegeList, function ( TblAccessPrivilege &$V, $I, $B ) {
 
+            $Id = new InputHidden( 'Id' );
+            $Id->setDefaultValue( $B[0], true );
+            $Privilege = new InputHidden( 'Privilege' );
+            $Privilege->setDefaultValue( $V->getId(), true );
+            $Remove = new InputHidden( 'Remove' );
+            $Remove->setDefaultValue( 1, true );
+
             $V->Option =
                 '<div class="pull-right">'
-                .'<form action="'.$B[1].'/Sphere/System/Authorization/Access/Privilege" method="post">
-                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
-                    <input type="hidden" class="form-control" name="Privilege" placeholder="" value="'.$V->getId().'"/>
-                    <input type="hidden" class="form-control" name="Remove" placeholder="" value="1"/>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <button type="submit" class="btn btn-danger">Entfernen</button>
-                        </div>
-                    </div>&nbsp;
-                </form>'
+                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+                    $Id,
+                    $Privilege,
+                    $Remove,
+                    new ButtonSubmitDanger( 'Entfernen' )
+                ) ) ) ),
+                    null, $B[1].'/Sphere/System/Authorization/Access/Privilege'
+                )
                 .'</div>';
         }, array( $Id, self::getUrlBase() ) );
 
-        $View = new Stage();
-        $View->setTitle( 'Berechtigungen' );
-        $View->setDescription( 'Zugriffslevel - Privilegien' );
         $View->setContent(
             new TableData( array( $tblAccess ), new GridTableTitle( 'Zugriffslevel' ), array(), false )
             .
@@ -488,12 +517,20 @@ class Authorization extends AbstractFrontend
     public static function stagePrivilegeRight( $Id, $Right, $Remove = false )
     {
 
+        $View = new Stage();
+        $View->setTitle( 'Berechtigungen' );
+        $View->setDescription( 'Privileg - Rechte' );
+
         $tblPrivilege = Gatekeeper::serviceAccess()->entityPrivilegeById( $Id );
         if ($tblPrivilege && null !== $Right && ( $tblRight = Gatekeeper::serviceAccess()->entityRightById( $Right ) )) {
             if ($Remove) {
                 Gatekeeper::serviceAccess()->executeRemovePrivilegeRight( $tblPrivilege, $tblRight );
+                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Privilege/Right?Id='.$Id, 0 ) );
+                return $View;
             } else {
                 Gatekeeper::serviceAccess()->executeAddPrivilegeRight( $tblPrivilege, $tblRight );
+                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Privilege/Right?Id='.$Id, 0 ) );
+                return $View;
             }
         }
         $tblRightList = Gatekeeper::serviceAccess()->entityRightAllByPrivilege( $tblPrivilege );
@@ -507,40 +544,45 @@ class Authorization extends AbstractFrontend
 
         array_walk( $tblRightListAvailable, function ( TblAccessRight &$V, $I, $B ) {
 
+            $Id = new InputHidden( 'Id' );
+            $Id->setDefaultValue( $B[0], true );
+            $Right = new InputHidden( 'Right' );
+            $Right->setDefaultValue( $V->getId(), true );
+
             $V->Option =
                 '<div class="pull-right">'
-                .'<form action="'.$B[1].'/Sphere/System/Authorization/Privilege/Right" method="post">
-                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
-                    <input type="hidden" class="form-control" name="Right" placeholder="" value="'.$V->getId().'"/>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <button type="submit" class="btn btn-success">Hinzufügen</button>
-                        </div>
-                    </div>&nbsp;
-                </form>'
+                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+                    $Id,
+                    $Right,
+                    new ButtonSubmitSuccess( 'Hinzufügen' )
+                ) ) ) ),
+                    null, $B[1].'/Sphere/System/Authorization/Privilege/Right'
+                )
                 .'</div>';
         }, array( $Id, self::getUrlBase() ) );
 
         array_walk( $tblRightList, function ( TblAccessRight &$V, $I, $B ) {
 
+            $Id = new InputHidden( 'Id' );
+            $Id->setDefaultValue( $B[0], true );
+            $Right = new InputHidden( 'Right' );
+            $Right->setDefaultValue( $V->getId(), true );
+            $Remove = new InputHidden( 'Remove' );
+            $Remove->setDefaultValue( 1, true );
+
             $V->Option =
                 '<div class="pull-right">'
-                .'<form action="'.$B[1].'/Sphere/System/Authorization/Privilege/Right" method="post">
-                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$B[0].'"/>
-                    <input type="hidden" class="form-control" name="Right" placeholder="" value="'.$V->getId().'"/>
-                    <input type="hidden" class="form-control" name="Remove" placeholder="" value="1"/>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <button type="submit" class="btn btn-danger">Entfernen</button>
-                        </div>
-                    </div>&nbsp;
-                </form>'
-                .'</div>';
+                .$F = new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+                        $Id,
+                        $Right,
+                        $Remove,
+                        new ButtonSubmitDanger( 'Entfernen' )
+                    ) ) ) ),
+                        null, $B[1].'/Sphere/System/Authorization/Privilege/Right'
+                    )
+                    .'</div>';
         }, array( $Id, self::getUrlBase() ) );
 
-        $View = new Stage();
-        $View->setTitle( 'Berechtigungen' );
-        $View->setDescription( 'Privileg - Rechte' );
         $View->setContent(
             new TableData( array( $tblPrivilege ), new GridTableTitle( 'Privileg' ), array(), false )
             .
