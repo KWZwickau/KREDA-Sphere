@@ -12,7 +12,7 @@ use KREDA\Sphere\Common\AbstractEntity;
  * @Entity
  * @Table(name="tblAccountTyp")
  */
-class TblAccountTyp extends AbstractEntity
+class TblAccountType extends AbstractEntity
 {
 
     const ATTR_NAME = 'Name';

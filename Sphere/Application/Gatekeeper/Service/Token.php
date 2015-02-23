@@ -3,9 +3,15 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\EntityAction;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
+use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
 use KREDA\Sphere\Common\Database\Handler;
+use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
+use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class Token
@@ -33,7 +39,9 @@ class Token extends EntityAction
         /**
          * Create SystemAdmin (Token)
          */
-        $tblToken = $this->actionCreateToken( 'ccccccdilkui' );
+        $tblToken = $this->actionCreateToken( 'ccccccdilkui',
+            Gatekeeper::serviceConsumer()->entityConsumerBySession()
+        );
         Gatekeeper::serviceAccount()->executeChangeToken( $tblToken,
             Gatekeeper::serviceAccount()->entityAccountByUsername( 'System' )
         );
@@ -60,6 +68,17 @@ class Token extends EntityAction
     }
 
     /**
+     * @param TblConsumer $tblConsumer
+     *
+     * @return bool|Token\Entity\TblToken[]
+     */
+    public function entityTokenAllByConsumer( TblConsumer $tblConsumer )
+    {
+
+        return parent::entityTokenAllByConsumer( $tblConsumer );
+    }
+
+    /**
      * @return Table
      */
     public function getTableToken()
@@ -69,17 +88,42 @@ class Token extends EntityAction
     }
 
     /**
-     * @param string $CredentialKey
+     * @param AbstractForm $View
+     * @param string       $CredentialKey
+     * @param TblConsumer  $tblConsumer
      *
      * @return bool|TblToken
      */
-    public function executeCreateToken( $CredentialKey )
+    public function executeCreateToken( AbstractForm $View, $CredentialKey, TblConsumer $tblConsumer = null )
     {
 
-        if ($this->checkIsValidToken( $CredentialKey )) {
-            return parent::actionCreateToken( substr( $CredentialKey, 0, 12 ) );
-        } else {
-            return false;
+        try {
+            if (null !== $CredentialKey && !empty( $CredentialKey )) {
+                $this->checkIsValidToken( $CredentialKey );
+                if (parent::actionCreateToken( substr( $CredentialKey, 0, 12 ), $tblConsumer )) {
+                    $View->setSuccess( 'CredentialKey',
+                        'Der YubiKey wurde hinzugefügt'.new Redirect( '/Sphere/Management/Token', 0 )
+                    );
+                }
+            } elseif (null !== $CredentialKey && empty( $CredentialKey )) {
+                $View->setError( 'CredentialKey', 'Bitte verwenden Sie Ihren YubiKey um dieses Feld zu befüllen' );
+            }
+            return $View;
+        } catch( BadOTPException $E ) {
+            $View->setError( 'CredentialKey',
+                'Der von Ihnen angegebene YubiKey ist nicht gültig. <br/>Bitte verwenden Sie einen YubiKey um dieses Feld zu befüllen'
+            );
+            return $View;
+        } catch( ReplayedOTPException $E ) {
+            $View->setError( 'CredentialKey',
+                'Der von Ihnen angegebene YubiKey wurde bereits verwendet.<br/>Bitte verwenden Sie einen YubiKey um dieses Feld neu zu befüllen'
+            );
+            return $View;
+        } catch( ComponentException $E ) {
+            $View->setError( 'CredentialKey',
+                'Der YubiKey konnte nicht überprüft werden.<br/>Bitte versuchen Sie es später noch einmal'
+            );
+            return $View;
         }
     }
 

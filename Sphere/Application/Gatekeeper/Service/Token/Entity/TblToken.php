@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
@@ -18,6 +20,7 @@ class TblToken extends AbstractEntity
 {
 
     const ATTR_IDENTIFIER = 'Identifier';
+    const ATTR_SERVICE_GATEKEEPER_CONSUMER = 'serviceGatekeeper_Consumer';
 
     /**
      * @Id
@@ -33,6 +36,10 @@ class TblToken extends AbstractEntity
      * @Column(type="string")
      */
     protected $Serial;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $serviceGatekeeper_Consumer;
 
     /**
      * @param string $Identifier
@@ -41,24 +48,6 @@ class TblToken extends AbstractEntity
     {
 
         $this->Identifier = $Identifier;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 
     /**
@@ -95,5 +84,45 @@ class TblToken extends AbstractEntity
     {
 
         $this->Serial = $Serial;
+    }
+
+    /**
+     * @return bool|TblConsumer
+     */
+    public function getServiceGatekeeperConsumer()
+    {
+
+        if (null === $this->serviceGatekeeper_Consumer) {
+            return false;
+        } else {
+            return Gatekeeper::serviceConsumer()->entityConsumerById( $this->serviceGatekeeper_Consumer );
+        }
+    }
+
+    /**
+     * @param null|TblConsumer $tblConsumer
+     */
+    public function setServiceGatekeeperConsumer( TblConsumer $tblConsumer = null )
+    {
+
+        $this->serviceGatekeeper_Consumer = ( null === $tblConsumer ? null : $tblConsumer->getId() );
+    }
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+
+        return $this->Id;
+    }
+
+    /**
+     * @param integer $Id
+     */
+    public function setId( $Id )
+    {
+
+        $this->Id = $Id;
     }
 }

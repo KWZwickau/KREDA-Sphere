@@ -7,8 +7,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountAccessList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
-use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountType;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Common\Database\Handler;
@@ -81,11 +82,11 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
-     * @param string        $CredentialName
-     * @param string        $CredentialLock
-     * @param string        $CredentialKey
-     * @param TblAccountTyp $tblAccountTyp
+     * @param AbstractForm   $View
+     * @param string         $CredentialName
+     * @param string         $CredentialLock
+     * @param string         $CredentialKey
+     * @param TblAccountType $tblAccountTyp
      *
      * @return AbstractForm|Redirect
      */
@@ -94,7 +95,7 @@ class Account extends EntityAction
         $CredentialName,
         $CredentialLock,
         $CredentialKey,
-        TblAccountTyp $tblAccountTyp
+        TblAccountType $tblAccountTyp
     ) {
 
         switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, $CredentialKey, $tblAccountTyp )) {
@@ -130,14 +131,14 @@ class Account extends EntityAction
     }
 
     /**
-     * @param string        $Username
-     * @param string        $Password
-     * @param bool          $TokenString
-     * @param TblAccountTyp $tblAccountTyp
+     * @param string         $Username
+     * @param string         $Password
+     * @param bool           $TokenString
+     * @param TblAccountType $tblAccountTyp
      *
      * @return int
      */
-    private function checkIsValidCredential( $Username, $Password, $TokenString, TblAccountTyp $tblAccountTyp )
+    private function checkIsValidCredential( $Username, $Password, $TokenString, TblAccountType $tblAccountTyp )
     {
 
         if (false === ( $tblAccount = $this->entityAccountByCredential( $Username, $Password, $tblAccountTyp ) )) {
@@ -172,10 +173,10 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
-     * @param string        $CredentialName
-     * @param string        $CredentialLock
-     * @param TblAccountTyp $tblAccountTyp
+     * @param AbstractForm   $View
+     * @param string         $CredentialName
+     * @param string         $CredentialLock
+     * @param TblAccountType $tblAccountTyp
      *
      * @return AbstractForm|Redirect
      */
@@ -183,7 +184,7 @@ class Account extends EntityAction
         AbstractForm &$View,
         $CredentialName,
         $CredentialLock,
-        TblAccountTyp $tblAccountTyp
+        TblAccountType $tblAccountTyp
     ) {
 
         switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, false, $tblAccountTyp )) {
@@ -398,20 +399,31 @@ class Account extends EntityAction
     }
 
     /**
-     * @param integer $Id
+     * @param TblConsumer $tblConsumer
      *
-     * @return bool|TblAccountTyp
+     * @return bool|Account\Entity\TblAccount[]
      */
-    public function entityAccountTypById( $Id )
+    public function entityAccountAllByConsumer( TblConsumer $tblConsumer )
     {
 
-        return parent::entityAccountTypById( $Id );
+        return parent::entityAccountAllByConsumer( $tblConsumer );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccountType
+     */
+    public function entityAccountTypeById( $Id )
+    {
+
+        return parent::entityAccountTypeById( $Id );
     }
 
     /**
      * @param string $Name
      *
-     * @return bool|TblAccountTyp
+     * @return bool|TblAccountType
      */
     public function entityAccountTypByName( $Name )
     {
@@ -470,5 +482,14 @@ class Account extends EntityAction
     {
 
         return parent::entityAccessAllByAccountRole( $tblAccountRole );
+    }
+
+    /**
+     * @return bool|TblAccountType[]
+     */
+    public function entityAccountTypeAll()
+    {
+
+        return parent::entityAccountTypeAll();
     }
 }

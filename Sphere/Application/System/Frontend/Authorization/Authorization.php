@@ -49,6 +49,11 @@ class Authorization extends AbstractFrontend
 
         $TwigData = array();
         $tblAccountRoleList = Gatekeeper::serviceAccount()->entityAccountRoleAll();
+
+        $Export = self::extensionDocumentExcel( '/Test.csv' );
+
+        $Export->saveFile();
+
         /** @var TblAccountRole $tblAccountRole */
         foreach ((array)$tblAccountRoleList as $tblAccountRole) {
             if (!$tblAccountRole) {
@@ -139,16 +144,7 @@ class Authorization extends AbstractFrontend
         array_walk( $PrivilegeList, function ( TblAccessPrivilege &$V, $I, $B ) {
 
             $V->Option =
-                '<div class="pull-right">'
-                .'<form action="'.$B.'/Sphere/System/Authorization/Privilege/Destroy" method="post">
-                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <button type="submit" class="btn btn-danger">Löschen</button>
-                        </div>
-                    </div>
-                </form>'
-                .'</div>'
+                '</div>'
                 .'<div class="pull-right">'
                 .'<form action="'.$B.'/Sphere/System/Authorization/Privilege/Right" method="post">
                     <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
@@ -197,16 +193,6 @@ class Authorization extends AbstractFrontend
 
             $V->Option =
                 '<div class="pull-right">'
-                .'<form action="'.$B.'/Sphere/System/Authorization/Access/Destroy" method="post">
-                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <button type="submit" class="btn btn-danger">Löschen</button>
-                        </div>
-                    </div>
-                </form>'
-                .'</div>'
-                .'<div class="pull-right">'
                 .'<form action="'.$B.'/Sphere/System/Authorization/Access/Privilege" method="post">
                     <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
                     <div class="form-group">
@@ -254,16 +240,6 @@ class Authorization extends AbstractFrontend
 
             $V->Option =
                 '<div class="pull-right">'
-                .'<form action="'.$B.'/Sphere/System/Authorization/Role/Destroy" method="post">
-                    <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <button type="submit" class="btn btn-danger">Löschen</button>
-                        </div>
-                    </div>
-                </form>'
-                .'</div>'
-                .'<div class="pull-right">'
                 .'<form action="'.$B.'/Sphere/System/Authorization/Role/Access" method="post">
                     <input type="hidden" class="form-control" name="Id" placeholder="" value="'.$V->getId().'"/>
                     <div class="form-group">

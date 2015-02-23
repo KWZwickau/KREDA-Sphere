@@ -7,6 +7,7 @@ use Markdownify\Converter;
 use MOC\V\Component\Database\Database;
 use MOC\V\Component\Database\Exception\DatabaseException;
 use MOC\V\Component\Document\Component\Bridge\Repository\DomPdf;
+use MOC\V\Component\Document\Component\Bridge\Repository\PhpExcel;
 use MOC\V\Component\Document\Document;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
@@ -53,6 +54,17 @@ abstract class AbstractExtension
     {
 
         return Document::getPdfDocument( $Location );
+    }
+
+    /**
+     * @param string $Location
+     *
+     * @return PhpExcel
+     */
+    final public static function extensionDocumentExcel( $Location )
+    {
+
+        return Document::getExcelDocument( $Location );
     }
 
     /**

@@ -6,7 +6,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountAccessList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountSession;
-use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountTyp;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountType;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
@@ -24,9 +24,9 @@ abstract class EntityAction extends EntitySchema
     private static $EntityAccountByUsernameCache = array();
     /** @var TblAccount[] $EntityAccountByIdCache */
     private static $EntityAccountByIdCache = array();
-    /** @var TblAccountTyp[] $EntityAccountTypByIdCache */
+    /** @var TblAccountType[] $EntityAccountTypByIdCache */
     private static $EntityAccountTypByIdCache = array();
-    /** @var TblAccountTyp[] $EntityAccountTypByNameCache */
+    /** @var TblAccountType[] $EntityAccountTypByNameCache */
     private static $EntityAccountTypByNameCache = array();
     /** @var TblAccountRole[] $EntityAccountRoleByIdCache */
     private static $EntityAccountRoleByIdCache = array();
@@ -38,7 +38,7 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param string           $Username
      * @param string           $Password
-     * @param TblAccountTyp    $tblAccountTyp
+     * @param TblAccountType   $tblAccountTyp
      * @param TblAccountRole   $tblAccountRole
      * @param null|TblToken    $tblToken
      * @param null|TblPerson   $tblPerson
@@ -122,25 +122,49 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblConsumer $tblConsumer
+     *
+     * @return bool|Entity\TblAccount[]
+     */
+    protected function entityAccountAllByConsumer( TblConsumer $tblConsumer )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblAccount' )->findBy( array(
+            TblAccount::ATTR_SERVICE_GATEKEEPER_CONSUMER => $tblConsumer->getId()
+        ) );
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
      * @param integer $Id
      *
-     * @return bool|TblAccountTyp
+     * @return bool|TblAccountType
      */
-    protected function entityAccountTypById( $Id )
+    protected function entityAccountTypeById( $Id )
     {
 
         if (isset( self::$EntityAccountTypByIdCache[$Id] )) {
             return self::$EntityAccountTypByIdCache[$Id];
         }
-        $Entity = $this->getEntityManager()->getEntityById( 'TblAccountTyp', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAccountType', $Id );
         self::$EntityAccountTypByIdCache[$Id] = $Entity;
         return ( null === $Entity ? false : $Entity );
     }
 
     /**
+     * @return bool|TblAccountType[]
+     */
+    protected function entityAccountTypeAll()
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblAccountType' )->findAll();
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
      * @param string $Name
      *
-     * @return bool|TblAccountTyp
+     * @return bool|TblAccountType
      */
     protected function entityAccountTypByName( $Name )
     {
@@ -148,9 +172,9 @@ abstract class EntityAction extends EntitySchema
         if (isset( self::$EntityAccountTypByNameCache[$Name] )) {
             return self::$EntityAccountTypByNameCache[$Name];
         }
-        $Entity = $this->getEntityManager()->getEntity( 'TblAccountTyp' )
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccountType' )
             ->findOneBy( array(
-                TblAccountTyp::ATTR_NAME => $Name
+                TblAccountType::ATTR_NAME => $Name
             ) );
         self::$EntityAccountTypByNameCache[$Name] = $Entity;
         return ( null === $Entity ? false : $Entity );
@@ -203,11 +227,11 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param string        $Username
      * @param string        $Password
-     * @param TblAccountTyp $tblAccountTyp
+     * @param TblAccountType $tblAccountTyp
      *
      * @return bool|TblAccount
      */
-    protected function entityAccountByCredential( $Username, $Password, TblAccountTyp $tblAccountTyp )
+    protected function entityAccountByCredential( $Username, $Password, TblAccountType $tblAccountTyp )
     {
 
         $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )
@@ -270,16 +294,16 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param string $Name
      *
-     * @return TblAccountTyp
+     * @return TblAccountType
      */
     protected function actionCreateAccountTyp( $Name )
     {
 
         $Manager = $this->getEntityManager();
-        $Entity = $Manager->getEntity( 'TblAccountTyp' )
-            ->findOneBy( array( TblAccountTyp::ATTR_NAME => $Name ) );
+        $Entity = $Manager->getEntity( 'TblAccountType' )
+            ->findOneBy( array( TblAccountType::ATTR_NAME => $Name ) );
         if (null === $Entity) {
-            $Entity = new TblAccountTyp();
+            $Entity = new TblAccountType();
             $Entity->setName( $Name );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),

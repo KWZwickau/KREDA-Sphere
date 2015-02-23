@@ -196,7 +196,7 @@ class TblAccount extends AbstractEntity
 
 
     /**
-     * @return bool|TblAccountTyp
+     * @return bool|TblAccountType
      */
     public function getTblAccountTyp()
     {
@@ -204,14 +204,14 @@ class TblAccount extends AbstractEntity
         if (null === $this->tblAccountTyp) {
             return false;
         } else {
-            return Gatekeeper::serviceAccount()->entityAccountTypById( $this->tblAccountTyp );
+            return Gatekeeper::serviceAccount()->entityAccountTypeById( $this->tblAccountTyp );
         }
     }
 
     /**
-     * @param null|TblAccountTyp $tblAccountTyp
+     * @param null|TblAccountType $tblAccountTyp
      */
-    public function setTblAccountTyp( TblAccountTyp $tblAccountTyp = null )
+    public function setTblAccountTyp( TblAccountType $tblAccountTyp = null )
     {
 
         $this->tblAccountTyp = ( null === $tblAccountTyp ? null : $tblAccountTyp->getId() );

@@ -6,23 +6,17 @@ use KREDA\Sphere\Application\Management\Frontend\Campus\Campus;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\PersonalData;
 use KREDA\Sphere\Application\Management\Frontend\Subject\Subject;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BriefcaseIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BuildingIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ClusterIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Common\AbstractApplication;
 
 /**
  * Class Management
  *
  * @package KREDA\Sphere\Application\Management
  */
-class Management extends AbstractApplication
+class Management extends Module\Account
 {
 
     /** @var Configuration $Config */
@@ -55,6 +49,10 @@ class Management extends AbstractApplication
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Campus', __CLASS__.'::frontendCampus'
         );
+
+        Module\Common::registerApplication( $Configuration );
+        Module\Token::registerApplication( $Configuration );
+        Module\Account::registerApplication( $Configuration );
 
         return $Configuration;
     }
@@ -194,34 +192,6 @@ class Management extends AbstractApplication
 
         $this->setupModuleNavigation();
         return Subject::guiSubject();
-    }
-
-    /**
-     * @return void
-     */
-    protected function setupModuleNavigation()
-    {
-
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Management/Campus', 'Immobilien', new BuildingIcon()
-        );
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Management/Person', 'Personen', new GroupIcon()
-        );
-
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Group', 'Klassen', new ClusterIcon()
-        );
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Subject', 'Fächer', new ShareIcon()
-        );
-
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Period', 'Zeiten', new TimeIcon()
-        );
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Mission', 'Aufträge', new BriefcaseIcon()
-        );
     }
 
     /**

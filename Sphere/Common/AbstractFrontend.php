@@ -39,6 +39,8 @@ abstract class AbstractFrontend extends AbstractContent
 
         if (isset( $_POST[$RequestKey] )) {
             $Template->setVariable( $VariableName, $_POST[$RequestKey] );
+        } elseif (isset( $_GET[$RequestKey] )) {
+            $Template->setVariable( $VariableName, $_GET[$RequestKey] );
         }
     }
 

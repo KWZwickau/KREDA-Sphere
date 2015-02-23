@@ -28,6 +28,7 @@ class DemoService extends EntityAction
 
     /**
      * @param AbstractForm $abstractForm
+     * @param string       $DemoCompleter
      *
      * @return AbstractForm
      */

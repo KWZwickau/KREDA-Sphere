@@ -57,6 +57,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblToken', 'Serial' )) {
             $Table->addColumn( 'Serial', 'string', array( 'notnull' => false ) );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblToken', 'serviceGatekeeper_Consumer' )) {
+            $Table->addColumn( 'serviceGatekeeper_Consumer', 'bigint', array( 'notnull' => false ) );
+        }
 
         return $Table;
     }

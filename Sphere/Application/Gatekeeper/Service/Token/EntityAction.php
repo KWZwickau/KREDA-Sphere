@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Service\Token;
 
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\System\System;
 
@@ -48,11 +49,26 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param string $Identifier
+     * @param TblConsumer $tblConsumer
+     *
+     * @return bool|Entity\TblToken[]
+     */
+    protected function entityTokenAllByConsumer( TblConsumer $tblConsumer )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblToken' )->findBy( array(
+            TblToken::ATTR_SERVICE_GATEKEEPER_CONSUMER => $tblConsumer->getId()
+        ) );
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @param string      $Identifier
+     * @param TblConsumer $tblConsumer
      *
      * @return TblToken
      */
-    protected function actionCreateToken( $Identifier )
+    protected function actionCreateToken( $Identifier, TblConsumer $tblConsumer )
     {
 
         $Manager = $this->getEntityManager();
@@ -61,6 +77,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblToken( $Identifier );
             $Entity->setSerial( $this->extensionModHex( $Identifier )->getSerialNumber() );
+            $Entity->setServiceGatekeeperConsumer( $tblConsumer );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );

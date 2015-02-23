@@ -82,6 +82,15 @@ class TblPerson extends AbstractEntity
     /**
      * @return string
      */
+    public function getFullName()
+    {
+
+        return $this->getFirstName().' '.$this->getMiddleName().' '.$this->getLastName();
+    }
+
+    /**
+     * @return string
+     */
     public function getFirstName()
     {
 

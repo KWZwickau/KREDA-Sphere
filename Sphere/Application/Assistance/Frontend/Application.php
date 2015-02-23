@@ -123,12 +123,12 @@ class Application extends AbstractFrontend
             )
             .'<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
             .new MessageInfo( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
-            .new MessageWarning( 'Sie haben im Browser manuell eine nicht vorhandene Addresse aufgerufen' )
+            .new MessageWarning( 'Sie haben im Browser manuell eine nicht vorhandene Adresse aufgerufen' )
             .new MessageDanger( 'Sie haben nicht die erforderliche Berechtigung um diese Resourcen verwenden zu können' )
             .new MessageDanger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Webservern kann gestört sein' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
             .new MessageInfo( 'Versuchen Sie die Aktion zu einem späteren Zeitpunkt erneut aufzuführen' )
-            .new MessageInfo( 'Vermeiden Sie es die Addresse im Browser manuell zu bearbeiten' )
+            .new MessageWarning( 'Vermeiden Sie es die Adresse im Browser manuell zu bearbeiten' )
             .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
         if (self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing') {
