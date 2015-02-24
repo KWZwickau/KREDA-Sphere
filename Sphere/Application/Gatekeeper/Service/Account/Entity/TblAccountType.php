@@ -10,7 +10,7 @@ use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
- * @Table(name="tblAccountTyp")
+ * @Table(name="tblAccountType")
  */
 class TblAccountType extends AbstractEntity
 {

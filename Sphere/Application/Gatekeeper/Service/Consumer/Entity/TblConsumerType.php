@@ -10,9 +10,9 @@ use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
- * @Table(name="tblConsumerTyp")
+ * @Table(name="tblConsumerType")
  */
-class TblConsumerTyp extends AbstractEntity
+class TblConsumerType extends AbstractEntity
 {
 
     const ATTR_NAME = 'Name';

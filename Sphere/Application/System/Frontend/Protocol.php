@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\System\Service\Protocol\Entity\TblProtocol;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableBody;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableCol;
@@ -63,11 +64,11 @@ class Protocol extends AbstractFrontend
                     ) )
                 ) )
             );
-            $DataOrigin = unserialize( $V->getEntityFrom() );
-            $DataCommit = unserialize( $V->getEntityTo() );
+            $DataOrigin = Protocol::fixObject( unserialize( $V->getEntityFrom() ) );
+            $DataCommit = Protocol::fixObject( unserialize( $V->getEntityTo() ) );
 
             if ($DataOrigin && $DataCommit) {
-                $Data = $DataOrigin->__toArray();
+                $Data = (array)$DataOrigin;
                 array_walk( $Data, function ( &$V, $I ) {
 
                     $V = new GridTableRow( array( new GridTableCol( $I ), new GridTableCol( $V ) ) );
@@ -77,7 +78,7 @@ class Protocol extends AbstractFrontend
                         new GridTableCol( str_replace( '\\', '\\&shy;', get_class( $DataOrigin ) ), 2 )
                     ) ), new GridTableBody( $Data )
                 );
-                $Data = $DataCommit->__toArray();
+                $Data = (array)$DataCommit;
                 array_walk( $Data, function ( &$V, $I ) {
 
                     $V = new GridTableRow( array( new GridTableCol( $I ), new GridTableCol( $V ) ) );
@@ -95,7 +96,7 @@ class Protocol extends AbstractFrontend
                     'Commit' => $TableCommit
                 );
             } elseif ($DataOrigin) {
-                $Data = $DataOrigin->__toArray();
+                $Data = (array)$DataOrigin;
                 array_walk( $Data, function ( &$V, $I ) {
 
                     $V = new GridTableRow( array( new GridTableCol( $I ), new GridTableCol( $V ) ) );
@@ -112,7 +113,7 @@ class Protocol extends AbstractFrontend
                     'Commit' => ''
                 );
             } elseif ($DataCommit) {
-                $Data = $DataCommit->__toArray();
+                $Data = (array)$DataCommit;
                 array_walk( $Data, function ( &$V, $I ) {
 
                     $V = new GridTableRow( array( new GridTableCol( $I ), new GridTableCol( $V ) ) );
@@ -129,15 +130,49 @@ class Protocol extends AbstractFrontend
                     'Commit' => $Table
                 );
             }
-
         } );
 
         if (empty( $tblProtocolList )) {
             $View->setContent( new MessageWarning( 'Keine Daten vorhanden' ) );
         } else {
-            $View->setContent( new TableData( $tblProtocolList ) );
+            $View->setContent( new TableData( $tblProtocolList, null, array(), array( 'responsive' => false ) ) );
         }
 
         return $View;
+    }
+
+    /**
+     * Takes an __PHP_Incomplete_Class and casts it to a stdClass object.
+     * All properties will be made public in this step.
+     *
+     * @since  1.1.0
+     *
+     * @param  object $object __PHP_Incomplete_Class
+     *
+     * @return object
+     */
+    private static function fixObject( $object )
+    {
+
+        if (!is_object( $object ) && gettype( $object ) == 'object') {
+            // preg_replace_callback handler. Needed to calculate new key-length.
+            $fix_key = create_function(
+                '$matches',
+                'return ":" . strlen( $matches[1] ) . ":\"" . $matches[1] . "\"";'
+            );
+            // 1. Serialize the object to a string.
+            $dump = serialize( $object );
+            // 2. Change class-type to 'stdClass'.
+            preg_match( '/^O:\d+:"[^"]++"/', $dump, $match );
+            $dump = preg_replace( '/^O:\d+:"[^"]++"/', 'O:8:"stdClass"', $dump );
+            // 3. Make private and protected properties public.
+            $dump = preg_replace_callback( '/:\d+:"\0.*?\0([^"]+)"/', $fix_key, $dump );
+            // 4. Unserialize the modified object again.
+            $dump = unserialize( $dump );
+            $dump->ERROR = new MessageDanger( "Structure mismatch!<br/>".$match[0]."<br/>Please delete this Item" );
+            return $dump;
+        } else {
+            return $object;
+        }
     }
 }

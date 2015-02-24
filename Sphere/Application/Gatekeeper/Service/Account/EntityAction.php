@@ -24,10 +24,10 @@ abstract class EntityAction extends EntitySchema
     private static $EntityAccountByUsernameCache = array();
     /** @var TblAccount[] $EntityAccountByIdCache */
     private static $EntityAccountByIdCache = array();
-    /** @var TblAccountType[] $EntityAccountTypByIdCache */
-    private static $EntityAccountTypByIdCache = array();
-    /** @var TblAccountType[] $EntityAccountTypByNameCache */
-    private static $EntityAccountTypByNameCache = array();
+    /** @var TblAccountType[] $EntityAccountTypeByIdCache */
+    private static $EntityAccountTypeByIdCache = array();
+    /** @var TblAccountType[] $EntityAccountTypeByNameCache */
+    private static $EntityAccountTypeByNameCache = array();
     /** @var TblAccountRole[] $EntityAccountRoleByIdCache */
     private static $EntityAccountRoleByIdCache = array();
     /** @var TblAccountRole[] $EntityAccountRoleByNameCache */
@@ -38,7 +38,7 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param string           $Username
      * @param string           $Password
-     * @param TblAccountType   $tblAccountTyp
+     * @param TblAccountType   $tblAccountType
      * @param TblAccountRole   $tblAccountRole
      * @param null|TblToken    $tblToken
      * @param null|TblPerson   $tblPerson
@@ -49,7 +49,7 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreateAccount(
         $Username,
         $Password,
-        $tblAccountTyp,
+        $tblAccountType,
         $tblAccountRole = null,
         $tblToken = null,
         $tblPerson = null,
@@ -62,7 +62,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblAccount( $Username );
             $Entity->setPassword( hash( 'sha256', $Password ) );
-            $Entity->setTblAccountTyp( $tblAccountTyp );
+            $Entity->setTblAccountType( $tblAccountType );
             $Entity->setTblAccountRole( $tblAccountRole );
             $Entity->setServiceGatekeeperToken( $tblToken );
             $Entity->setServiceManagementPerson( $tblPerson );
@@ -143,11 +143,11 @@ abstract class EntityAction extends EntitySchema
     protected function entityAccountTypeById( $Id )
     {
 
-        if (isset( self::$EntityAccountTypByIdCache[$Id] )) {
-            return self::$EntityAccountTypByIdCache[$Id];
+        if (isset( self::$EntityAccountTypeByIdCache[$Id] )) {
+            return self::$EntityAccountTypeByIdCache[$Id];
         }
         $Entity = $this->getEntityManager()->getEntityById( 'TblAccountType', $Id );
-        self::$EntityAccountTypByIdCache[$Id] = $Entity;
+        self::$EntityAccountTypeByIdCache[$Id] = $Entity;
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -166,17 +166,17 @@ abstract class EntityAction extends EntitySchema
      *
      * @return bool|TblAccountType
      */
-    protected function entityAccountTypByName( $Name )
+    protected function entityAccountTypeByName( $Name )
     {
 
-        if (isset( self::$EntityAccountTypByNameCache[$Name] )) {
-            return self::$EntityAccountTypByNameCache[$Name];
+        if (isset( self::$EntityAccountTypeByNameCache[$Name] )) {
+            return self::$EntityAccountTypeByNameCache[$Name];
         }
         $Entity = $this->getEntityManager()->getEntity( 'TblAccountType' )
             ->findOneBy( array(
                 TblAccountType::ATTR_NAME => $Name
             ) );
-        self::$EntityAccountTypByNameCache[$Name] = $Entity;
+        self::$EntityAccountTypeByNameCache[$Name] = $Entity;
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -227,18 +227,18 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param string        $Username
      * @param string        $Password
-     * @param TblAccountType $tblAccountTyp
+     * @param TblAccountType $tblAccountType
      *
      * @return bool|TblAccount
      */
-    protected function entityAccountByCredential( $Username, $Password, TblAccountType $tblAccountTyp )
+    protected function entityAccountByCredential( $Username, $Password, TblAccountType $tblAccountType )
     {
 
         $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )
             ->findOneBy( array(
                 TblAccount::ATTR_USERNAME        => $Username,
                 TblAccount::ATTR_PASSWORD        => hash( 'sha256', $Password ),
-                TblAccount::ATTR_TBL_ACCOUNT_TYP => $tblAccountTyp->getId()
+                TblAccount::ATTR_TBL_ACCOUNT_TYPE => $tblAccountType->getId()
             ) );
         return ( null === $Entity ? false : $Entity );
     }
@@ -296,7 +296,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return TblAccountType
      */
-    protected function actionCreateAccountTyp( $Name )
+    protected function actionCreateAccountType( $Name )
     {
 
         $Manager = $this->getEntityManager();

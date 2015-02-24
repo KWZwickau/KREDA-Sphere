@@ -53,7 +53,7 @@ class SignIn extends AbstractFrontend
                 ), new ButtonSubmitPrimary( 'Anmelden' )
             ),
             $CredentialName, $CredentialLock, $CredentialKey,
-            Gatekeeper::serviceAccount()->entityAccountTypByName( 'Lehrer' )
+            Gatekeeper::serviceAccount()->entityAccountTypeByName( 'Lehrer' )
         ) );
         return $View;
     }
@@ -88,7 +88,7 @@ class SignIn extends AbstractFrontend
                 ), new ButtonSubmitPrimary( 'Anmelden' )
             ),
             $CredentialName, $CredentialLock, $CredentialKey,
-            Gatekeeper::serviceAccount()->entityAccountTypByName( 'System' )
+            Gatekeeper::serviceAccount()->entityAccountTypeByName( 'System' )
         ) );
         return $View;
     }
@@ -125,7 +125,7 @@ class SignIn extends AbstractFrontend
 
                 $CredentialName, $CredentialLock,
 
-                Gatekeeper::serviceAccount()->entityAccountTypByName( 'Schüler' )
+                Gatekeeper::serviceAccount()->entityAccountTypeByName( 'Schüler' )
 
             )
 
@@ -163,7 +163,7 @@ class SignIn extends AbstractFrontend
                 ), new ButtonSubmitPrimary( 'Anmelden' )
             ),
             $CredentialName, $CredentialLock, $CredentialKey,
-            Gatekeeper::serviceAccount()->entityAccountTypByName( 'Verwaltung' )
+            Gatekeeper::serviceAccount()->entityAccountTypeByName( 'Verwaltung' )
         ) );
         return $View;
     }

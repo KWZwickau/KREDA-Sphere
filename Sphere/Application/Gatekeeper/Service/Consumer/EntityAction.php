@@ -3,8 +3,8 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Consumer;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTyp;
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTypList;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerType;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTypeList;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\System\System;
 
@@ -57,12 +57,12 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param integer $Id
      *
-     * @return bool|TblConsumerTyp
+     * @return bool|TblConsumerType
      */
-    protected function entityConsumerTypById( $Id )
+    protected function entityConsumerTypeById( $Id )
     {
 
-        $Entity = $this->getEntityManager()->getEntityById( 'TblConsumerTyp', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblConsumerType', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -101,14 +101,14 @@ abstract class EntityAction extends EntitySchema
      *
      * @return TblConsumer
      */
-    protected function actionCreateConsumerTyp( $Name )
+    protected function actionCreateConsumerType( $Name )
     {
 
         $Manager = $this->getEntityManager();
-        $Entity = $Manager->getEntity( 'TblConsumerTyp' )
-            ->findOneBy( array( TblConsumerTyp::ATTR_NAME => $Name ) );
+        $Entity = $Manager->getEntity( 'TblConsumerType' )
+            ->findOneBy( array( TblConsumerType::ATTR_NAME => $Name ) );
         if (null === $Entity) {
-            $Entity = new TblConsumerTyp( $Name );
+            $Entity = new TblConsumerType( $Name );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
@@ -118,19 +118,19 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblConsumer    $tblConsumer
-     * @param TblConsumerTyp $tblConsumerTyp
+     * @param TblConsumerType $tblConsumerType
      *
-     * @return TblConsumerTypList
+     * @return TblConsumerTypeList
      */
-    protected function actionCreateConsumerTypList( TblConsumer $tblConsumer, TblConsumerTyp $tblConsumerTyp )
+    protected function actionCreateConsumerTypeList( TblConsumer $tblConsumer, TblConsumerType $tblConsumerType )
     {
 
         $Manager = $this->getEntityManager();
-        $Entity = $this->entityConsumerTypList( $tblConsumer, $tblConsumerTyp );
+        $Entity = $this->entityConsumerTypeList( $tblConsumer, $tblConsumerType );
         if (!$Entity) {
-            $Entity = new TblConsumerTypList();
+            $Entity = new TblConsumerTypeList();
             $Entity->setTblConsumer( $tblConsumer );
-            $Entity->setTblConsumerTyp( $tblConsumerTyp );
+            $Entity->setTblConsumerType( $tblConsumerType );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
@@ -140,32 +140,32 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblConsumer    $tblConsumer
-     * @param TblConsumerTyp $tblConsumerTyp
+     * @param TblConsumerType $tblConsumerType
      *
      * @return bool|TblConsumer
      */
-    private function entityConsumerTypList( TblConsumer $tblConsumer, TblConsumerTyp $tblConsumerTyp )
+    private function entityConsumerTypeList( TblConsumer $tblConsumer, TblConsumerType $tblConsumerType )
     {
 
-        $Entity = $this->getEntityManager()->getEntity( 'TblConsumerTypList' )
+        $Entity = $this->getEntityManager()->getEntity( 'TblConsumerTypeList' )
             ->findOneBy( array(
-                TblConsumerTypList::ATTR_TBL_CONSUMER     => $tblConsumer->getId(),
-                TblConsumerTypList::ATTR_TBL_CONSUMER_TYP => $tblConsumerTyp->getId()
+                TblConsumerTypeList::ATTR_TBL_CONSUMER      => $tblConsumer->getId(),
+                TblConsumerTypeList::ATTR_TBL_CONSUMER_TYPE => $tblConsumerType->getId()
             ) );
         return ( null === $Entity ? false : $Entity );
     }
 
     /**
      * @param TblConsumer    $tblConsumer
-     * @param TblConsumerTyp $tblConsumerTyp
+     * @param TblConsumerType $tblConsumerType
      *
      * @return bool
      */
-    protected function actionDestroyConsumerTypList( TblConsumer $tblConsumer, TblConsumerTyp $tblConsumerTyp )
+    protected function actionDestroyConsumerTypeList( TblConsumer $tblConsumer, TblConsumerType $tblConsumerType )
     {
 
         $Manager = $this->getEntityManager();
-        $Entity = $this->entityConsumerTypList( $tblConsumer, $tblConsumerTyp );
+        $Entity = $this->entityConsumerTypeList( $tblConsumer, $tblConsumerType );
         if ($Entity) {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );

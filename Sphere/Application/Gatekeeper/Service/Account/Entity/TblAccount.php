@@ -24,7 +24,7 @@ class TblAccount extends AbstractEntity
 
     const ATTR_USERNAME = 'Username';
     const ATTR_PASSWORD = 'Password';
-    const ATTR_TBL_ACCOUNT_TYP = 'tblAccountTyp';
+    const ATTR_TBL_ACCOUNT_TYPE = 'tblAccountType';
     const ATTR_TBL_ACCOUNT_ROLE = 'tblAccountRole';
     const ATTR_SERVICE_GATEKEEPER_TOKEN = 'serviceGatekeeper_Token';
     const ATTR_SERVICE_GATEKEEPER_CONSUMER = 'serviceGatekeeper_Consumer';
@@ -47,7 +47,7 @@ class TblAccount extends AbstractEntity
     /**
      * @Column(type="bigint")
      */
-    protected $tblAccountTyp;
+    protected $tblAccountType;
     /**
      * @Column(type="bigint")
      */
@@ -198,23 +198,23 @@ class TblAccount extends AbstractEntity
     /**
      * @return bool|TblAccountType
      */
-    public function getTblAccountTyp()
+    public function getTblAccountType()
     {
 
-        if (null === $this->tblAccountTyp) {
+        if (null === $this->tblAccountType) {
             return false;
         } else {
-            return Gatekeeper::serviceAccount()->entityAccountTypeById( $this->tblAccountTyp );
+            return Gatekeeper::serviceAccount()->entityAccountTypeById( $this->tblAccountType );
         }
     }
 
     /**
-     * @param null|TblAccountType $tblAccountTyp
+     * @param null|TblAccountType $tblAccountType
      */
-    public function setTblAccountTyp( TblAccountType $tblAccountTyp = null )
+    public function setTblAccountType( TblAccountType $tblAccountType = null )
     {
 
-        $this->tblAccountTyp = ( null === $tblAccountTyp ? null : $tblAccountTyp->getId() );
+        $this->tblAccountType = ( null === $tblAccountType ? null : $tblAccountType->getId() );
     }
 
 

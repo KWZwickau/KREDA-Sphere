@@ -39,11 +39,12 @@ class Token extends EntityAction
         /**
          * Create SystemAdmin (Token)
          */
-        $tblToken = $this->actionCreateToken( 'ccccccdilkui',
-            Gatekeeper::serviceConsumer()->entityConsumerBySession()
-        );
+        $tblToken = $this->actionCreateToken( 'ccccccdilkui' );
         Gatekeeper::serviceAccount()->executeChangeToken( $tblToken,
             Gatekeeper::serviceAccount()->entityAccountByUsername( 'System' )
+        );
+        Gatekeeper::serviceAccount()->executeChangeToken( $tblToken,
+            Gatekeeper::serviceAccount()->entityAccountByUsername( 'Administrator' )
         );
     }
 

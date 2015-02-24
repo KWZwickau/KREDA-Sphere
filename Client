@@ -4,12 +4,9 @@ namespace KREDA\Client;
 use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use Doctrine\DBAL\Schema\SchemaException;
 use KREDA\Sphere\Application\Assistance\Assistance;
-use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Demo\Demo;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
-use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\Statistic\Statistic;
 use KREDA\Sphere\Application\System\Frontend\Cache;
 use KREDA\Sphere\Application\System\Service\Update;
 use KREDA\Sphere\Application\System\System;
@@ -37,8 +34,8 @@ use MOC\V\Core\HttpKernel\HttpKernel;
  * Setup: Php
  */
 header( 'Content-type: text/html; charset=utf-8' );
-//error_reporting( E_ALL );
-//ini_set( 'display_errors', 1 );
+error_reporting( E_ALL );
+ini_set( 'display_errors', 1 );
 set_time_limit( 240 );
 session_start();
 ini_set( 'xdebug.var_display_max_data', -1 );
@@ -152,15 +149,15 @@ if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistan
             if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Management' )) {
                 Management::registerApplication( $Config );
             }
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Graduation' )) {
-                Graduation::registerApplication( $Config );
-            }
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Billing' )) {
-                Billing::registerApplication( $Config );
-            }
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Statistic' )) {
-                Statistic::registerApplication( $Config );
-            }
+//            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Graduation' )) {
+//                Graduation::registerApplication( $Config );
+//            }
+//            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Billing' )) {
+//                Billing::registerApplication( $Config );
+//            }
+//            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Statistic' )) {
+//                Statistic::registerApplication( $Config );
+//            }
         }
         /**
          * Setup Public-Access

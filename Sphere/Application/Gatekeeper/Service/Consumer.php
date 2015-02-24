@@ -3,7 +3,7 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service;
 
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerTyp;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerType;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\EntityAction;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Common\Database\Handler;
@@ -32,7 +32,6 @@ class Consumer extends EntityAction
     {
 
         $this->actionCreateConsumer( 'Demo-Schule', 'DS' );
-        $this->actionCreateConsumer( 'Evangelische Schulgemeinschaft Erzgebirge', 'EGE' );
     }
 
     /**
@@ -58,12 +57,12 @@ class Consumer extends EntityAction
     /**
      * @param integer $Id
      *
-     * @return bool|TblConsumerTyp
+     * @return bool|TblConsumerType
      */
-    public function entityConsumerTypById( $Id )
+    public function entityConsumerTypeById( $Id )
     {
 
-        return parent::entityConsumerTypById( $Id );
+        return parent::entityConsumerTypeById( $Id );
     }
 
     /**

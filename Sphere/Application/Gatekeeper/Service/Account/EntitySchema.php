@@ -28,11 +28,11 @@ abstract class EntitySchema extends AbstractService
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
         $tblAccountRole = $this->setTableAccountRole( $Schema );
-        $tblAccountTyp = $this->setTableAccountTyp( $Schema );
+        $tblAccountType = $this->setTableAccountType( $Schema );
         $tblAccount = $this->setTableAccount( $Schema,
             Gatekeeper::serviceToken()->getTableToken(),
             Gatekeeper::serviceConsumer()->getTableConsumer(),
-            $tblAccountTyp,
+            $tblAccountType,
             $tblAccountRole
         );
         $this->setTableAccountSession( $Schema,
@@ -79,17 +79,17 @@ abstract class EntitySchema extends AbstractService
      * @return Table
      * @throws SchemaException
      */
-    private function setTableAccountTyp( Schema &$Schema )
+    private function setTableAccountType( Schema &$Schema )
     {
 
         /**
          * Install
          */
-        $Table = $this->schemaTableCreate( $Schema, 'tblAccountTyp' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblAccountType' );
         /**
          * Upgrade
          */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountTyp', 'Name' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
         return $Table;
@@ -99,7 +99,7 @@ abstract class EntitySchema extends AbstractService
      * @param Schema $Schema
      * @param Table  $tblToken
      * @param Table  $tblConsumer
-     * @param Table  $tblAccountTyp
+     * @param Table  $tblAccountType
      * @param Table  $tblAccountRole
      *
      * @throws SchemaException
@@ -109,7 +109,7 @@ abstract class EntitySchema extends AbstractService
         Schema &$Schema,
         Table $tblToken,
         Table $tblConsumer,
-        Table $tblAccountTyp,
+        Table $tblAccountType,
         Table $tblAccountRole
     ) {
 
@@ -126,7 +126,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Password' )) {
             $Table->addColumn( 'Password', 'string' );
         }
-        $this->schemaTableAddForeignKey( $Table, $tblAccountTyp );
+        $this->schemaTableAddForeignKey( $Table, $tblAccountType );
         $this->schemaTableAddForeignKey( $Table, $tblAccountRole );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'serviceGatekeeper_Token' )) {
             $Table->addColumn( 'serviceGatekeeper_Token', 'bigint', array( 'notnull' => false ) );
@@ -219,10 +219,10 @@ abstract class EntitySchema extends AbstractService
      * @return Table
      * @throws SchemaException
      */
-    protected function getTableAccountTyp()
+    protected function getTableAccountType()
     {
 
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountTyp' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountType' );
     }
 
     /**

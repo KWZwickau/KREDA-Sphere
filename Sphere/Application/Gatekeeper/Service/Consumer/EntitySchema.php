@@ -27,8 +27,8 @@ abstract class EntitySchema extends AbstractService
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
         $tblConsumer = $this->setTableConsumer( $Schema );
-        $tblConsumerTyp = $this->setTableConsumerTyp( $Schema );
-        $this->setTableConsumerTypList( $Schema, $tblConsumer, $tblConsumerTyp );
+        $tblConsumerType = $this->setTableConsumerType( $Schema );
+        $this->setTableConsumerTypeList( $Schema, $tblConsumer, $tblConsumerType );
         /**
          * Migration & Protocol
          */
@@ -75,17 +75,17 @@ abstract class EntitySchema extends AbstractService
      * @return Table
      * @throws SchemaException
      */
-    private function setTableConsumerTyp( Schema &$Schema )
+    private function setTableConsumerType( Schema &$Schema )
     {
 
         /**
          * Install
          */
-        $Table = $this->schemaTableCreate( $Schema, 'tblConsumerTyp' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblConsumerType' );
         /**
          * Upgrade
          */
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumerTyp', 'Name' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumerType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
         return $Table;
@@ -94,26 +94,26 @@ abstract class EntitySchema extends AbstractService
     /**
      * @param Schema $Schema
      * @param Table  $tblConsumer
-     * @param Table  $tblConsumerTyp
+     * @param Table  $tblConsumerType
      *
      * @throws SchemaException
      * @return Table
      */
-    private function setTableConsumerTypList(
+    private function setTableConsumerTypeList(
         Schema &$Schema,
         Table $tblConsumer,
-        Table $tblConsumerTyp
+        Table $tblConsumerType
     ) {
 
         /**
          * Install
          */
-        $Table = $this->schemaTableCreate( $Schema, 'tblConsumerTypList' );
+        $Table = $this->schemaTableCreate( $Schema, 'tblConsumerTypeList' );
         /**
          * Upgrade
          */
         $this->schemaTableAddForeignKey( $Table, $tblConsumer );
-        $this->schemaTableAddForeignKey( $Table, $tblConsumerTyp );
+        $this->schemaTableAddForeignKey( $Table, $tblConsumerType );
         return $Table;
     }
 
@@ -131,20 +131,20 @@ abstract class EntitySchema extends AbstractService
      * @return Table
      * @throws SchemaException
      */
-    protected function getTableConsumerTyp()
+    protected function getTableConsumerType()
     {
 
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblConsumerTyp' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblConsumerType' );
     }
 
     /**
      * @return Table
      * @throws SchemaException
      */
-    protected function getTableConsumerTypList()
+    protected function getTableConsumerTypeList()
     {
 
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblConsumerTypList' );
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblConsumerTypeList' );
     }
 
 }

@@ -66,7 +66,7 @@ class MyAccount extends AbstractFrontend
                 ) ),
                 new GridTableRow( array(
                     new GridTableCol( 'Zugangstyp (Authentifizierung)' ),
-                    new GridTableCol( $tblAccount->getTblAccountTyp()->getName() )
+                    new GridTableCol( $tblAccount->getTblAccountType()->getName() )
                 ) ),
                 new GridTableRow( array(
                     new GridTableCol( 'Berechtigungsstufe (Rolle)' ),

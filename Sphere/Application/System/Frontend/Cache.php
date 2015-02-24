@@ -7,6 +7,7 @@ use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Cache\Frontend\Status;
 use KREDA\Sphere\Common\Cache\Type\ApcSma;
 use KREDA\Sphere\Common\Cache\Type\ApcUser;
+use KREDA\Sphere\Common\Cache\Type\CssCache;
 use KREDA\Sphere\Common\Cache\Type\OpCache;
 use KREDA\Sphere\Common\Cache\Type\TwigCache;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;

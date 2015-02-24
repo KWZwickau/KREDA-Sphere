@@ -11,12 +11,12 @@ use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
- * @Table(name="tblConsumerTypList")
+ * @Table(name="tblConsumerTypeList")
  */
-class TblConsumerTypList extends AbstractEntity
+class TblConsumerTypeList extends AbstractEntity
 {
 
-    const ATTR_TBL_CONSUMER_TYP = 'tblConsumerTyp';
+    const ATTR_TBL_CONSUMER_TYPE = 'tblConsumerType';
     const ATTR_TBL_CONSUMER = 'tblConsumer';
 
     /**
@@ -28,32 +28,32 @@ class TblConsumerTypList extends AbstractEntity
     /**
      * @Column(type="bigint")
      */
-    protected $tblConsumerTyp;
+    protected $tblConsumerType;
     /**
      * @Column(type="bigint")
      */
     protected $tblConsumer;
 
     /**
-     * @return bool|TblConsumerTyp
+     * @return bool|TblConsumerType
      */
-    public function getTblConsumerTyp()
+    public function getTblConsumerType()
     {
 
-        if (null === $this->tblConsumerTyp) {
+        if (null === $this->tblConsumerType) {
             return false;
         } else {
-            return Gatekeeper::serviceConsumer()->entityConsumerTypById( $this->tblConsumerTyp );
+            return Gatekeeper::serviceConsumer()->entityConsumerTypeById( $this->tblConsumerType );
         }
     }
 
     /**
-     * @param null|TblConsumerTyp $tblConsumerTyp
+     * @param null|TblConsumerType $tblConsumerType
      */
-    public function setTblConsumerTyp( TblConsumerTyp $tblConsumerTyp = null )
+    public function setTblConsumerType( TblConsumerType $tblConsumerType = null )
     {
 
-        $this->tblConsumerTyp = ( null === $tblConsumerTyp ? null : $tblConsumerTyp->getId() );
+        $this->tblConsumerType = ( null === $tblConsumerType ? null : $tblConsumerType->getId() );
     }
 
     /**

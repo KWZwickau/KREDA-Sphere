@@ -68,7 +68,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return TblToken
      */
-    protected function actionCreateToken( $Identifier, TblConsumer $tblConsumer )
+    protected function actionCreateToken( $Identifier, TblConsumer $tblConsumer = null )
     {
 
         $Manager = $this->getEntityManager();

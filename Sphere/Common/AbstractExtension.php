@@ -96,7 +96,17 @@ abstract class AbstractExtension
         try {
             return Database::getDatabase( $Username, $Password, $Database, $Driver, $Host, $Port );
         } catch( \Exception $E ) {
-            throw new DatabaseException( $E->getMessage(), $E->getCode(), $E );
+            /**
+             * Try to create Database
+             */
+            try {
+                Database::getDatabase( $Username, $Password, null, $Driver, $Host, $Port )
+                    ->getSchemaManager()
+                    ->createDatabase( $Database );
+                return Database::getDatabase( $Username, $Password, $Database, $Driver, $Host, $Port );
+            } catch( \Exception $E ) {
+                throw new DatabaseException( $E->getMessage(), $E->getCode(), $E );
+            }
         }
     }
 

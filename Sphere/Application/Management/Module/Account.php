@@ -75,13 +75,13 @@ class Account extends Token
              * Filter: No "System"-Accounts !
              */
             if (
-                $A->getTblAccountTyp()->getId() == Gatekeeper::serviceAccount()->entityAccountTypByName( 'System' )->getId()
+                $A->getTblAccountType()->getId() == Gatekeeper::serviceAccount()->entityAccountTypeByName( 'System' )->getId()
             ) {
                 $A = false;
             } else {
 
-                $tblAccountTyp = $A->getTblAccountTyp();
-                $A->AccountTyp = $tblAccountTyp->getName();
+                $tblAccountType = $A->getTblAccountType();
+                $A->AccountType = $tblAccountType->getName();
                 $tblAccountRole = $A->getTblAccountRole();
                 $A->AccountRole = $tblAccountRole->getName();
                 $tblPerson = $A->getServiceManagementPerson();
@@ -101,7 +101,7 @@ class Account extends Token
              * Filter: No "System"-Accounts !
              */
             if (
-                $T->getId() == Gatekeeper::serviceAccount()->entityAccountTypByName( 'System' )->getId()
+                $T->getId() == Gatekeeper::serviceAccount()->entityAccountTypeByName( 'System' )->getId()
             ) {
                 $T = false;
             }
@@ -142,7 +142,7 @@ class Account extends Token
                 : new TableData( $tblAccountList, null, array(
                     'Id'          => 'Account-Id',
                     'Username'    => 'Anmeldename',
-                    'AccountTyp'  => 'Authentifizierungstyp',
+                    'AccountType' => 'Authentifizierungstyp',
                     'AccountRole' => 'Berechtigungsstufe',
                     'Person'      => 'Benutzer'
                 ) )
@@ -155,7 +155,7 @@ class Account extends Token
                             new InputText( 'AccountName', 'Benutzername', 'Benutzername', new PersonIcon() ), 4
                         ),
                         new GridFormCol(
-                            new InputSelect( 'AccountTyp', 'Authentifizierungstyp', $tblAccountTypeListSelect,
+                            new InputSelect( 'AccountType', 'Authentifizierungstyp', $tblAccountTypeListSelect,
                                 new PersonKeyIcon() ), 4
                         ),
                         new GridFormCol(

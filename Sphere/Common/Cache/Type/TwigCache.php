@@ -11,7 +11,7 @@ use KREDA\Sphere\Common\Cache\ICacheInterface;
 class TwigCache implements ICacheInterface
 {
 
-    private static $TwigCache = '/../../../../Library/MOC-V/Component/Template/Component/Bridge/Repository/TwigTemplate';
+    private static $Cache = '/../../../../Library/MOC-V/Component/Template/Component/Bridge/Repository/TwigTemplate';
 
     /**
      * @return void
@@ -19,7 +19,7 @@ class TwigCache implements ICacheInterface
     public static function clearCache()
     {
 
-        $E = new \Twig_Environment( null, array( 'cache' => realpath( __DIR__.self::$TwigCache ) ) );
+        $E = new \Twig_Environment( null, array( 'cache' => realpath( __DIR__.self::$Cache ) ) );
         $E->clearCacheFiles();
         $E->clearTemplateCache();
     }
@@ -75,15 +75,15 @@ class TwigCache implements ICacheInterface
     public function getSizeUsed()
     {
 
-        $bytestotal = 0;
-        $path = realpath( __DIR__.self::$TwigCache );
-        if ($path !== false) {
-            foreach (new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $path,
-                \FilesystemIterator::SKIP_DOTS ) ) as $object) {
-                $bytestotal += $object->getSize();
+        $Total = 0;
+        $Path = realpath( __DIR__.self::$Cache );
+        if ($Path !== false) {
+            foreach (new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $Path,
+                \FilesystemIterator::SKIP_DOTS ) ) as $Object) {
+                $Total += $Object->getSize();
             }
         }
-        return $bytestotal;
+        return $Total;
     }
 
 }

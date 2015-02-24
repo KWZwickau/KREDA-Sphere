@@ -46,25 +46,48 @@ class Account extends EntityAction
     {
 
         /**
-         * Create System Login-Type (Admin)
+         * Create System-Admin
          */
         $tblAccountRole = $this->actionCreateAccountRole( 'System' );
-        $tblAccountTyp = $this->actionCreateAccountTyp( 'System' );
-        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'EGE' );
-        $this->actionCreateAccount( 'System', 'System', $tblAccountTyp, $tblAccountRole, null, null, $tblConsumer );
-        /**
-         * Create Primary Login-Type
-         */
-        $this->actionCreateAccountTyp( 'Schüler' );
-        $this->actionCreateAccountTyp( 'Lehrer' );
-        $this->actionCreateAccountTyp( 'Verwaltung' );
+        $tblAccountType = $this->actionCreateAccountType( 'System' );
+        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'DS' );
+        $this->actionCreateAccount( 'System', 'System', $tblAccountType, $tblAccountRole, null, null, $tblConsumer );
 
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount:System' )
+        );
         $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'System:Administrator' )
         );
         $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'Management:Administrator' )
         );
+
+        /**
+         * Create Consumer-Admin
+         */
+        $tblAccountRole = $this->actionCreateAccountRole( 'Administrator' );
+        $tblAccountType = $this->actionCreateAccountType( 'System' );
+        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'DS' );
+        $this->actionCreateAccount( 'Administrator', 'Administrator', $tblAccountType, $tblAccountRole, null, null,
+            $tblConsumer );
+
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Management:Administrator' )
+        );
+
+        /**
+         * Create Primary Login-Type
+         */
+        $this->actionCreateAccountType( 'Schüler' );
+        $this->actionCreateAccountType( 'Lehrer' );
+        $this->actionCreateAccountType( 'Verwaltung' );
     }
 
     /**
@@ -86,7 +109,7 @@ class Account extends EntityAction
      * @param string         $CredentialName
      * @param string         $CredentialLock
      * @param string         $CredentialKey
-     * @param TblAccountType $tblAccountTyp
+     * @param TblAccountType $tblAccountType
      *
      * @return AbstractForm|Redirect
      */
@@ -95,10 +118,10 @@ class Account extends EntityAction
         $CredentialName,
         $CredentialLock,
         $CredentialKey,
-        TblAccountType $tblAccountTyp
+        TblAccountType $tblAccountType
     ) {
 
-        switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, $CredentialKey, $tblAccountTyp )) {
+        switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, $CredentialKey, $tblAccountType )) {
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
             case Account::API_SIGN_IN_ERROR: {
                 if (null !== $CredentialName && empty( $CredentialName )) {
@@ -134,14 +157,14 @@ class Account extends EntityAction
      * @param string         $Username
      * @param string         $Password
      * @param bool           $TokenString
-     * @param TblAccountType $tblAccountTyp
+     * @param TblAccountType $tblAccountType
      *
      * @return int
      */
-    private function checkIsValidCredential( $Username, $Password, $TokenString, TblAccountType $tblAccountTyp )
+    private function checkIsValidCredential( $Username, $Password, $TokenString, TblAccountType $tblAccountType )
     {
 
-        if (false === ( $tblAccount = $this->entityAccountByCredential( $Username, $Password, $tblAccountTyp ) )) {
+        if (false === ( $tblAccount = $this->entityAccountByCredential( $Username, $Password, $tblAccountType ) )) {
             return self::API_SIGN_IN_ERROR_CREDENTIAL;
         } else {
             if (false === $TokenString) {
@@ -176,7 +199,7 @@ class Account extends EntityAction
      * @param AbstractForm   $View
      * @param string         $CredentialName
      * @param string         $CredentialLock
-     * @param TblAccountType $tblAccountTyp
+     * @param TblAccountType $tblAccountType
      *
      * @return AbstractForm|Redirect
      */
@@ -184,10 +207,10 @@ class Account extends EntityAction
         AbstractForm &$View,
         $CredentialName,
         $CredentialLock,
-        TblAccountType $tblAccountTyp
+        TblAccountType $tblAccountType
     ) {
 
-        switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, false, $tblAccountTyp )) {
+        switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, false, $tblAccountType )) {
             case self::API_SIGN_IN_ERROR_CREDENTIAL:
             case self::API_SIGN_IN_ERROR: {
                 if (null !== $CredentialName && empty( $CredentialName )) {
@@ -425,10 +448,10 @@ class Account extends EntityAction
      *
      * @return bool|TblAccountType
      */
-    public function entityAccountTypByName( $Name )
+    public function entityAccountTypeByName( $Name )
     {
 
-        return parent::entityAccountTypByName( $Name );
+        return parent::entityAccountTypeByName( $Name );
     }
 
     /**
