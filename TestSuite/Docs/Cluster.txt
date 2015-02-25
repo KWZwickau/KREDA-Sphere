@@ -1,0 +1,160 @@
+--------------------
+
+A: Alle
+B: Balancer
+W: Worker
+D: Database
+
+--------------------
+
+I: Install (Apt)
+U: Update (Apt)
+G: upGrade (Apt)
+C: Config
+
+--------------------
+
+A: Install Ubuntu (Minimal, No Updates, No Software)
+
+A:U:apt
+A:G:apt
+A:I:ntp 
+A:I:xorg
+A:I:openbox
+(startx läd gui)
+A:I:thunar
+A:I:mousepad
+
+A:C: Setup IP (Static) /etc/network/interfaces
+
+auto lo
+iface lo inet loopback
+auto eth0
+iface eth0 inet static
+address <ip>
+netmask 255.255.255.0
+gateway <ip>
+dns-nameservers <ip>
+
+A:C: Setup Hosts /etc/hosts
+
+Ersetze 
+127.0.1.1 <Hostname> 
+mit
+<Ip> <Hostname>.<Domain> <Hostname>
+(Disable Ip6)
+
+--------------------
+
+B:I:apache2
+B:C:a2dismod mpm_event mpm_prefork
+B:C:a2enmod mpm_worker
+B:C:a2enmod proxy proxy_http rewrite deflate headers proxy_balancer ssl lbmethod_byrequests
+--------------------
+B:C:vHost-Balancer
+
+ProxyRequests Off
+ProxyVia Off
+ProxyPreserveHost On
+ProxyTimeout 1200
+ProxyReceiveBufferSize 4096
+
+ProxyPass /Status !
+
+<Proxy balancer://<Name>/>
+BalancerMember http://<Ip>:<Port> route=<Name>
+[...]
+ProxySet stickysession=PHPSESSID
+ProxySet lbmethod=byrequests
+ProxySet nofailover=Off
+</Proxy>
+
+<VirtualHost *:80>
+ServerName <Hostname>
+ServerAdmin <Email>
+
+LogLevel warn
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+ProxyStatus On
+
+<Location /Status>
+Order Deny,Allow
+Deny from All
+Allow from <Netz>
+SetHandler server-status
+</Location>
+
+RewriteEngine On
+RewriteCond %{ENV:REDIRECT_STATUS} !=503
+RewriteCond %{REQUEST_URI} !^/Status [NC]
+RewriteRule ^(.*)$ /$1 [R=503,L]
+
+<Directory />
+AllowOverride None
+Order Deny,Allow
+Deny from All
+</Directory>
+
+</VirtualHost>
+
+
+--------------------
+B:C:vHost-Worker
+
+
+<VirtualHost *:80>
+ServerName <Domainname>
+ServerAdmin <Email>
+
+LogLevel warn
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+ProxyPass / balancer://<Name>/
+</VirtualHost>
+
+====================
+W:I:apache2
+W:C:a2enmod rewrite headers
+W:I:php5
+W:I:php5-mysql
+W:I:php5-gmp
+W:I:php5-curl
+W:I:gadmin-proftpd
+
+--------------------
+W:C:vHost-Ant
+
+<VirtualHost *:80>
+ServerName <Domainname>
+ServerAdmin <Email>
+
+LogLevel warn
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+DocumentRoot /var/www
+
+<Directory /var/www>
+Options -Indexes -FolloSymLinks -MultiViews
+AllowOverride All
+Order Allow,Deny
+Allow from <Balancer-Ip>
+</Directory>
+
+</VirtualHost>
+
+====================
+D:I:mysql-server-5.6
+D:I:ssh
+D:C:/etc/mysql/my.cnf 
+
+bind-address=<Ip>
+
+D:C:mysql
+use mysql;
+update user set host='%' where host='localhost';
+
+D:C:lower_case_table_names = 0
