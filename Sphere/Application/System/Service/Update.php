@@ -40,7 +40,7 @@ class Update extends AbstractService
         /**
          * Payload
          */
-        $Protocol[] = Management::serviceEducation()->setupDatabaseSchema( $Simulate );
+        //$Protocol[] = Management::serviceEducation()->setupDatabaseSchema( $Simulate );
 
         if (!$Simulate) {
             /**
@@ -56,7 +56,7 @@ class Update extends AbstractService
             /**
              * Payload
              */
-            Management::serviceEducation()->setupDatabaseContent();
+            //Management::serviceEducation()->setupDatabaseContent();
         }
 
         return implode( $Protocol );

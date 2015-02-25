@@ -1,10 +1,14 @@
 <?php
 namespace KREDA\Sphere\Application\System\Frontend;
 
+use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Database\Connection\Identifier;
 use KREDA\Sphere\Common\Database\Handler;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Table\AbstractTable;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableBody;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableCol;
@@ -100,5 +104,27 @@ class Database extends AbstractFrontend
                 $Configuration
             ), null, true
         );
+    }
+
+    /**
+     * @param \Exception $E
+     *
+     * @return Stage
+     */
+    public static function stageRepair( \Exception $E = null )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'KREDA Systemprüfung' );
+        $View->setDescription( 'Datenbanken' );
+        $View->setMessage(
+            new MessageDanger( 'Die Anwendung hat festgestellt, dass manche Datenbanken nicht korrekt arbeiten.' )
+            .new MessageWarning( 'Sollte das Problem nach dem automatischen Reparaturversuch nicht behoben sein wenden Sie sich bitte an den Support' )
+            .( null === $E ? '' : new MessageInfo( $E->getMessage() ) )
+        );
+        $View->setContent(
+            System::serviceUpdate()->setupDatabaseSchema( false )
+        );
+        return $View;
     }
 }

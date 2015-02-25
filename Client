@@ -1,19 +1,16 @@
 <?php
 namespace KREDA\Client;
 
-use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
-use Doctrine\DBAL\Schema\SchemaException;
+use Doctrine\DBAL\DBALException;
 use KREDA\Sphere\Application\Assistance\Assistance;
 use KREDA\Sphere\Application\Demo\Demo;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\System\Frontend\Cache;
-use KREDA\Sphere\Application\System\Service\Update;
+use KREDA\Sphere\Application\System\Frontend\Database;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Container;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Screen;
-use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
@@ -21,10 +18,6 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\Extension\Debugger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Redirect;
 use MOC\V\Component\Database\Exception\DatabaseException;
 use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
 use MOC\V\Core\AutoLoader\AutoLoader;
@@ -35,12 +28,7 @@ use MOC\V\Core\HttpKernel\HttpKernel;
  */
 header( 'Content-type: text/html; charset=utf-8' );
 error_reporting( E_ALL );
-ini_set( 'display_errors', 1 );
-set_time_limit( 240 );
 session_start();
-ini_set( 'xdebug.var_display_max_data', -1 );
-ini_set( 'xdebug.var_display_max_children', -1 );
-ini_set( 'xdebug.var_display_max_depth', -1 );
 
 /**
  * Setup: Loader
@@ -53,7 +41,7 @@ AutoLoader::getNamespaceAutoLoader( 'Markdownify', __DIR__.'/Library/Markdownify
 /**
  * Development: Clear Cache
  */
-Cache::stageStatus( true );
+//Cache::stageStatus( true );
 
 /**
  * Setup: Debugger
@@ -104,180 +92,138 @@ register_shutdown_function(
     }, $ShellScreen, $Config
 );
 
-if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance/Support' )) {
+/**
+ * Main: Run
+ */
+try {
 
     /**
-     * Setup Public-Access
+     * Run:
      */
-    Assistance::registerApplication( $Config );
-    $Config->getClientNavigation()->addLinkToMeta(
-        new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
-    );
-    if (in_array( HttpKernel::getRequest()->getPathInfo(), $Config->getClientRouter()->getRouteList() )) {
-        /** @var Element $Route */
-        $Route = $Config->getClientRouter()->getRoute();
-        $ShellScreen->addToContent( new Container( $Route ) );
-    } else {
+    if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance' )) {
         /**
-         * Show Help
+         * Application: Register
+         */
+        Assistance::registerApplication( $Config );
+        $Config->getClientNavigation()->addLinkToMeta(
+            new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
+        );
+        /**
+         * Application: Execution
          */
         try {
             /** @var Element $Route */
-            $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
+            $Route = $Config->getClientRouter()->getRoute();
             $ShellScreen->addToContent( new Container( $Route ) );
-        } catch( \Exception $E ) {
-            /**
-             * Unexpected Exception
-             */
-            $ShellScreen->addException( $E, get_class( $E ) );
+        } catch( \ErrorException $E ) {
+            if (false !== strpos( $E->getMessage(), HttpKernel::getRequest()->getPathInfo() )) {
+                /** @var Element $Route */
+                $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
+                $ShellScreen->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
+                $ShellScreen->addToContent( new Container( $Route ) );
+            } else {
+                throw new \ErrorException(
+                    $E->getMessage(), $E->getCode(), $E->getSeverity(), $E->getFile(), $E->getLine(), $E
+                );
+            }
         }
-    }
-
-} else {
-
-    /**
-     * Setup Application
-     */
-    try {
+    } else {
         /**
-         * Setup Private-Access
+         * Application: Register
          */
-        if (( $IsValid = Gatekeeper::serviceAccount()->checkIsValidSession() )) {
+        if (Gatekeeper::serviceAccount()->checkIsValidSession()) {
+            /**
+             * Authenticated YES
+             */
             if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:System' )) {
                 System::registerApplication( $Config );
             }
             if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Management' )) {
                 Management::registerApplication( $Config );
             }
-//            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Graduation' )) {
-//                Graduation::registerApplication( $Config );
-//            }
-//            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Billing' )) {
-//                Billing::registerApplication( $Config );
-//            }
-//            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Statistic' )) {
-//                Statistic::registerApplication( $Config );
-//            }
+            Demo::registerApplication( $Config );
+        } else {
+            /**
+             * Authenticated NO
+             */
         }
         /**
-         * Setup Public-Access
+         * Authenticated EQUAL
          */
         Gatekeeper::registerApplication( $Config );
         Assistance::registerApplication( $Config );
-        Demo::registerApplication( $Config );
         /**
-         * Execute Action (if available)
+         * Application: Execution
          */
-        if (in_array( $CheckAccess = HttpKernel::getRequest()->getPathInfo(),
-            $Config->getClientRouter()->getRouteList() )) {
-            /** @var Element $Route */
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( $CheckAccess )) {
+        try {
+            if (Gatekeeper::serviceAccess()->checkIsValidAccess( HttpKernel::getRequest()->getPathInfo() )) {
+                /**
+                 * Execution: Allowed
+                 */
+                /** @var Element $Route */
                 $Route = $Config->getClientRouter()->getRoute();
             } else {
-                /** @var Element $Route */
-                $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
-            }
-            $ShellScreen->addToContent( new Container( $Route ) );
-        } else {
-            /**
-             * Show Help (if not available)
-             */
-            if ($IsValid) {
                 /**
-                 * Show Help
+                 * Execution: Forbidden
                  */
-                try {
+                if (Gatekeeper::serviceAccount()->checkIsValidSession()) {
                     /** @var Element $Route */
                     $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
-                    $ShellScreen->addToContent( new Container( $Route ) );
-                } catch( \Exception $E ) {
-                    /**
-                     * Unexpected Exception
-                     */
-                    $ShellScreen->addException( $E, get_class( $E ) );
-                }
-            } else {
-                /** @var Element $Route */
-                $Route = $Config->getClientRouter()->getRoute( '/Sphere/Gatekeeper/SignIn' );
-                $ShellScreen->addToContent( new Container( $Route ) );
-            }
-        }
-    } catch( \ErrorException $E ) {
-        /**
-         * Php Error
-         */
-        $ShellScreen->addError( $E );
-    } catch( DatabaseException $E ) {
-        try {
-            /**
-             * Setup Public-Access
-             */
-            Assistance::registerApplication( $Config );
-            /** @var Element $Route */
-            $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
-            $Route->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
-            $ShellScreen->addToContent( new Container( $Route ) );
-        } catch( \Exception $E ) {
-            /**
-             * Unexpected Exception
-             */
-            $ShellScreen->addException( $E, get_class( $E ) );
-        }
-    } catch( \Exception $E ) {
-        if (
-            $E instanceof DatabaseObjectNotFoundException
-            || $E instanceof SchemaException
-        ) {
-            /**
-             * Repair Database
-             */
-            $View = new Stage();
-            $View->setTitle( 'Systemprüfung' );
-            $View->setDescription( 'Datenbanken' );
-            $View->setMessage(
-                new MessageDanger( 'Die Anwendung hat festgestellt, dass manche Datenbanken nicht korrekt arbeiten.' )
-                .new MessageWarning( 'Sollte das Problem nach dem automatischen Reparaturversuch nicht behoben sein wenden Sie sich bitte an den Support' )
-                .new MessageInfo( $E->getMessage() )
-            );
-            $View->setContent(
-                Update::getApi()->setupDatabaseSchema( false )
-                .new Redirect( '/Sphere', 60 * 10 )
-            );
-            $ShellScreen->addToContent( new Container( $View ) );
-        } else {
-
-            if (false !== strpos( $E->getFile(), 'Sphere\Application\Service' )) {
-                /**
-                 * Show Help
-                 */
-                try {
-                    /**
-                     * Setup Public-Access
-                     */
-                    Assistance::registerApplication( $Config );
-                    $Config->getClientNavigation()->addLinkToMeta(
-                        new LevelClient\Link( new UrlParameter( '/Sphere' ),
-                            new NameParameter( 'Zurück zur Anwendung' ) )
-                    );
+                } else {
                     /** @var Element $Route */
-                    $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
-                    $Route->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
-                    $ShellScreen->addToContent( new Container( $Route ) );
-                } catch( \Exception $E ) {
-                    /**
-                     * Unexpected Exception
-                     */
-                    $ShellScreen->addException( $E, get_class( $E ) );
+                    $Route = $Config->getClientRouter()->getRoute( '/Sphere/Gatekeeper/SignIn' );
                 }
-            } else {
+            }
+            $ShellScreen->addToContent( new Container( $Route ) );
+        } catch( \ErrorException $E ) {
+            if (false !== strpos( $E->getMessage(), HttpKernel::getRequest()->getPathInfo() )) {
                 /**
-                 * Unexpected Exception
+                 * Execution: Forbidden
                  */
-                $ShellScreen->addException( $E, get_class( $E ) );
+                if (Gatekeeper::serviceAccount()->checkIsValidSession()) {
+                    /** @var Element $Route */
+                    $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
+                } else {
+                    /** @var Element $Route */
+                    $Route = $Config->getClientRouter()->getRoute( '/Sphere/Gatekeeper/SignIn' );
+                }
+                $ShellScreen->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
+                $ShellScreen->addToContent( new Container( $Route ) );
+            } else {
+                throw new \ErrorException(
+                    $E->getMessage(), $E->getCode(), $E->getSeverity(), $E->getFile(), $E->getLine(), $E
+                );
             }
         }
     }
+
+} catch( DBALException $E ) {
+    /**
+     * Repair Database
+     */
+    $ShellScreen->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
+    $ShellScreen->addToContent( new Container( Database::stageRepair( $E ) ) );
+} catch( DatabaseException $E ) {
+    /**
+     * Error
+     */
+    $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
+    $ShellScreen->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
+    $ShellScreen->addToContent( new Container( $Route ) );
+} catch( \ErrorException $E ) {
+    /**
+     * Error Exception
+     */
+    $ShellScreen->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
+    $ShellScreen->addError( $E );
+} catch( \Exception $E ) {
+    /**
+     * Unexpected Exception
+     */
+    $ShellScreen->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
+    $ShellScreen->addException( $E, get_class( $E ) );
 }
+
 /**
  * Define Navigation Client
  */
