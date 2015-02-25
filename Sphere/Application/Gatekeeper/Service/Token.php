@@ -89,6 +89,15 @@ class Token extends EntityAction
     }
 
     /**
+     * @param TblToken $tblToken
+     */
+    public function executeDestroyToken( TblToken $tblToken )
+    {
+
+        $this->actionDestroyToken( $tblToken );
+    }
+
+    /**
      * @param AbstractForm $View
      * @param string       $CredentialKey
      * @param TblConsumer  $tblConsumer
@@ -101,10 +110,14 @@ class Token extends EntityAction
         try {
             if (null !== $CredentialKey && !empty( $CredentialKey )) {
                 $this->checkIsValidToken( $CredentialKey );
-                if (parent::actionCreateToken( substr( $CredentialKey, 0, 12 ), $tblConsumer )) {
-                    $View->setSuccess( 'CredentialKey',
-                        'Der YubiKey wurde hinzugefügt'.new Redirect( '/Sphere/Management/Token', 0 )
-                    );
+                if (false === $this->entityTokenByIdentifier( substr( $CredentialKey, 0, 12 ) )) {
+                    if (parent::actionCreateToken( substr( $CredentialKey, 0, 12 ), $tblConsumer )) {
+                        $View->setSuccess( 'CredentialKey',
+                            'Der YubiKey wurde hinzugefügt'.new Redirect( '/Sphere/Management/Token', 5 )
+                        );
+                    }
+                } else {
+                    $View->setError( 'CredentialKey', 'Der von Ihnen angegebene YubiKey wurde bereits registriert' );
                 }
             } elseif (null !== $CredentialKey && empty( $CredentialKey )) {
                 $View->setError( 'CredentialKey', 'Bitte verwenden Sie Ihren YubiKey um dieses Feld zu befüllen' );
@@ -112,17 +125,17 @@ class Token extends EntityAction
             return $View;
         } catch( BadOTPException $E ) {
             $View->setError( 'CredentialKey',
-                'Der von Ihnen angegebene YubiKey ist nicht gültig. <br/>Bitte verwenden Sie einen YubiKey um dieses Feld zu befüllen'
+                'Der von Ihnen angegebene YubiKey ist nicht gültig<br/>Bitte verwenden Sie einen YubiKey um dieses Feld zu befüllen'
             );
             return $View;
         } catch( ReplayedOTPException $E ) {
             $View->setError( 'CredentialKey',
-                'Der von Ihnen angegebene YubiKey wurde bereits verwendet.<br/>Bitte verwenden Sie einen YubiKey um dieses Feld neu zu befüllen'
+                'Der von Ihnen angegebene YubiKey wurde bereits verwendet<br/>Bitte verwenden Sie einen YubiKey um dieses Feld neu zu befüllen'
             );
             return $View;
         } catch( ComponentException $E ) {
             $View->setError( 'CredentialKey',
-                'Der YubiKey konnte nicht überprüft werden.<br/>Bitte versuchen Sie es später noch einmal'
+                'Der YubiKey konnte nicht überprüft werden<br/>Bitte versuchen Sie es später noch einmal'
             );
             return $View;
         }

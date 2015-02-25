@@ -10,7 +10,6 @@ use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
@@ -44,16 +43,18 @@ class Token extends Common
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Token', __CLASS__.'::frontendToken'
-        );
+        )
+            ->setParameterDefault( 'CredentialKey', null )
+            ->setParameterDefault( 'Id', null );
     }
 
     /**
      * @param null|string $CredentialKey
+     * @param null|int    $Id
      *
-     * @throws \Exception
      * @return Stage
      */
-    public function frontendToken( $CredentialKey = null )
+    public function frontendToken( $CredentialKey, $Id )
     {
 
         $this->setupModuleNavigation();
@@ -61,9 +62,15 @@ class Token extends Common
         $View->setTitle( 'Hardware-Schlüssel' );
         $View->setDescription( 'YubiKey' );
 
-        $tblTokenList = Gatekeeper::serviceToken()->entityTokenAllByConsumer(
-            $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession()
-        );
+        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession();
+
+        if (null !== $Id) {
+            $tblToken = Gatekeeper::serviceToken()->entityTokenById( $Id );
+            if ($tblToken && false !== $tblToken->getServiceGatekeeperConsumer() && $tblToken->getServiceGatekeeperConsumer()->getId() == $tblConsumer->getId()) {
+                Gatekeeper::serviceToken()->executeDestroyToken( $tblToken );
+            }
+        }
+        $tblTokenList = Gatekeeper::serviceToken()->entityTokenAllByConsumer( $tblConsumer );
 
         if (!$tblTokenList) {
             $tblTokenList = array();
@@ -123,7 +130,6 @@ class Token extends Common
                                 new InputPassword( 'CredentialKey', 'YubiKey', 'YubiKey', new YubiKeyIcon() )
                             )
                         ), new GridFormTitle( 'Schlüssel hinzufügen', 'YubiKey' ) )
-                    , new ButtonSubmitPrimary( 'Hinzufügen' )
                 ), $CredentialKey, $tblConsumer
             )
         );

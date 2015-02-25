@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Assistance\Assistance;
 use KREDA\Sphere\Application\Demo\Demo;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\System\Frontend\Cache;
 use KREDA\Sphere\Application\System\Frontend\Database;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Element;
@@ -41,7 +42,7 @@ AutoLoader::getNamespaceAutoLoader( 'Markdownify', __DIR__.'/Library/Markdownify
 /**
  * Development: Clear Cache
  */
-//Cache::stageStatus( true );
+Cache::stageStatus( true );
 
 /**
  * Setup: Debugger

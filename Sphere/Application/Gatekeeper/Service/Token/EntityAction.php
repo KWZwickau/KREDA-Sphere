@@ -84,4 +84,19 @@ abstract class EntityAction extends EntitySchema
         }
         return $Entity;
     }
+
+    /**
+     * @param TblToken $tblToken
+     */
+    protected function actionDestroyToken( TblToken $tblToken )
+    {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntityById( 'TblToken', $tblToken->getId() );
+        if (null !== $Entity) {
+            $Manager->killEntity( $Entity );
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+    }
 }
