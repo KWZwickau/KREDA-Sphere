@@ -36,7 +36,9 @@ class OpCache implements ICacheInterface
     public static function clearCache()
     {
 
-        opcache_reset();
+        if (function_exists( 'opcache_reset' )) {
+            opcache_reset();
+        }
     }
 
     /**

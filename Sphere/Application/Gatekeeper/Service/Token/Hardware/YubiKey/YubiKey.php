@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Component
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
+use KREDA\Sphere\Common\Proxy\Type\HttpProxy;
 
 /**
  * Class YubiKey
@@ -85,12 +86,16 @@ class YubiKey
             $QueryList[] = 'http://'.$YubiApiEndpoint."?".$Query;
         }
 
-        $Result = CurlHandler::getRequest( $QueryList, array(
-            CURLOPT_PROXY        => '192.168.100.254',
-            CURLOPT_PROXYPORT    => 3128,
-            CURLOPT_PROXYUSERPWD => 'Kunze:Ny58N',
+        $Proxy = new HttpProxy();
+        $Option = array(
+            CURLOPT_PROXY        => $Proxy->getHost(),
+            CURLOPT_PROXYPORT    => $Proxy->getPort(),
+            CURLOPT_PROXYUSERPWD => $Proxy->getUsernamePasswort(),
             CURLOPT_TIMEOUT      => $this->YubiApiTimeout
-        ) );
+        );
+        $Option = array_filter( $Option );
+
+        $Result = CurlHandler::getRequest( $QueryList, $Option );
 
         $Decision = array();
         foreach ((array)$Result as $Response) {

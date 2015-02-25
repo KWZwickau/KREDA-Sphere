@@ -31,7 +31,9 @@ class ApcUser implements ICacheInterface
     public static function clearCache()
     {
 
-        apc_clear_cache();
+        if (function_exists( 'apc_clear_cache' )) {
+            apc_clear_cache();
+        }
     }
 
     /**
@@ -40,7 +42,11 @@ class ApcUser implements ICacheInterface
     public function getCountHits()
     {
 
-        return $this->Status['nhits'];
+        if (isset( $this->Status['nhits'] )) {
+            return $this->Status['nhits'];
+        } else {
+            return -1;
+        }
     }
 
     /**
@@ -49,7 +55,11 @@ class ApcUser implements ICacheInterface
     public function getCountMisses()
     {
 
-        return $this->Status['nmisses'];
+        if (isset( $this->Status['nmisses'] )) {
+            return $this->Status['nmisses'];
+        } else {
+            return -1;
+        }
     }
 
     /**
@@ -67,7 +77,11 @@ class ApcUser implements ICacheInterface
     public function getSizeAvailable()
     {
 
-        return $this->Status['mem_size'];
+        if (isset( $this->Status['mem_size'] )) {
+            return $this->Status['mem_size'];
+        } else {
+            return -1;
+        }
     }
 
     /**

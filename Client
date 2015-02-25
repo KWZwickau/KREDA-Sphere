@@ -29,6 +29,8 @@ use MOC\V\Core\HttpKernel\HttpKernel;
  */
 header( 'Content-type: text/html; charset=utf-8' );
 error_reporting( E_ALL );
+ini_set( 'display_errors', 1 );
+set_time_limit( 240 );
 session_start();
 
 /**
@@ -86,6 +88,10 @@ register_shutdown_function(
                 new Container( $C->getApplicationNavigation() )
             );
         }
+        Assistance::registerApplication( $C );
+        $C->getClientNavigation()->addLinkToMeta(
+            new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
+        );
         /** @var Element $R */
         $R = $C->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Fatal' );
         $S->addToContent( new Container( $R ) );
@@ -198,6 +204,12 @@ try {
         }
     }
 
+} catch( \PDOException $E ) {
+    /**
+     * PDO Exception
+     */
+    $ShellScreen->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
+    $ShellScreen->addError( $E );
 } catch( DBALException $E ) {
     /**
      * Repair Database
@@ -208,6 +220,10 @@ try {
     /**
      * Error
      */
+    Assistance::registerApplication( $Config );
+    $Config->getClientNavigation()->addLinkToMeta(
+        new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
+    );
     $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
     $ShellScreen->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
     $ShellScreen->addToContent( new Container( $Route ) );

@@ -31,7 +31,9 @@ class ApcSma implements ICacheInterface
     public static function clearCache()
     {
 
-        apc_clear_cache();
+        if (function_exists( 'apc_clear_cache' )) {
+            apc_clear_cache();
+        }
     }
 
     /**
@@ -67,7 +69,11 @@ class ApcSma implements ICacheInterface
     public function getSizeAvailable()
     {
 
-        return $this->Status['seg_size'];
+        if (isset( $this->Status['seg_size'] )) {
+            return $this->Status['seg_size'];
+        } else {
+            return -1;
+        }
     }
 
     /**
@@ -76,7 +82,11 @@ class ApcSma implements ICacheInterface
     public function getSizeFree()
     {
 
-        return $this->Status['avail_mem'];
+        if (isset( $this->Status['avail_mem'] )) {
+            return $this->Status['avail_mem'];
+        } else {
+            return -1;
+        }
     }
 
     /**
