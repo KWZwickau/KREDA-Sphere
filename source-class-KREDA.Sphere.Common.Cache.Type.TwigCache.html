@@ -9,7 +9,7 @@
     <title>File Common/Cache/Type/TwigCache.php | Sphere</title>
 
     <script type="text/javascript" src="resources/combined.js?3624343741"></script>
-    <script type="text/javascript" src="elementlist.js?2910048927"></script>
+    <script type="text/javascript" src="elementlist.js?3089211828"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
 
@@ -387,7 +387,7 @@
 </span><span id="11" class="l"><a class="l" href="#11">11: </a><span class="php-keyword1">class</span> <a id="TwigCache" href="#TwigCache">TwigCache</a> <span class="php-keyword1">implements</span> ICacheInterface
 </span><span id="12" class="l"><a class="l" href="#12">12: </a>{
 </span><span id="13" class="l"><a class="l" href="#13">13: </a>
-</span><span id="14" class="l"><a class="l" href="#14">14: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">static</span> <span class="php-var"><a id="$TwigCache" href="#$TwigCache">$TwigCache</a></span> = <span class="php-quote">'/../../../../Library/MOC-V/Component/Template/Component/Bridge/Repository/TwigTemplate'</span>;
+</span><span id="14" class="l"><a class="l" href="#14">14: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">static</span> <span class="php-var"><a id="$Cache" href="#$Cache">$Cache</a></span> = <span class="php-quote">'/../../../../Library/MOC-V/Component/Template/Component/Bridge/Repository/TwigTemplate'</span>;
 </span><span id="15" class="l"><a class="l" href="#15">15: </a>
 </span><span id="16" class="l"><a class="l" href="#16">16: </a>    <span class="php-comment">/**
 </span></span><span id="17" class="l"><a class="l" href="#17">17: </a><span class="php-comment">     * @return void
@@ -395,7 +395,7 @@
 </span><span id="19" class="l"><a class="l" href="#19">19: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_clearCache" href="#_clearCache">clearCache</a>()
 </span><span id="20" class="l"><a class="l" href="#20">20: </a>    {
 </span><span id="21" class="l"><a class="l" href="#21">21: </a>
-</span><span id="22" class="l"><a class="l" href="#22">22: </a>        <span class="php-var">$E</span> = <span class="php-keyword1">new</span> \Twig_Environment( <span class="php-keyword1">null</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'cache'</span> =&gt; <span class="php-keyword2">realpath</span>( __DIR__.self::<span class="php-var">$TwigCache</span> ) ) );
+</span><span id="22" class="l"><a class="l" href="#22">22: </a>        <span class="php-var">$E</span> = <span class="php-keyword1">new</span> \Twig_Environment( <span class="php-keyword1">null</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'cache'</span> =&gt; <span class="php-keyword2">realpath</span>( __DIR__.self::<span class="php-var">$Cache</span> ) ) );
 </span><span id="23" class="l"><a class="l" href="#23">23: </a>        <span class="php-var">$E</span>-&gt;clearCacheFiles();
 </span><span id="24" class="l"><a class="l" href="#24">24: </a>        <span class="php-var">$E</span>-&gt;clearTemplateCache();
 </span><span id="25" class="l"><a class="l" href="#25">25: </a>    }
@@ -451,15 +451,15 @@
 </span><span id="75" class="l"><a class="l" href="#75">75: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getSizeUsed" href="#_getSizeUsed">getSizeUsed</a>()
 </span><span id="76" class="l"><a class="l" href="#76">76: </a>    {
 </span><span id="77" class="l"><a class="l" href="#77">77: </a>
-</span><span id="78" class="l"><a class="l" href="#78">78: </a>        <span class="php-var">$bytestotal</span> = <span class="php-num">0</span>;
-</span><span id="79" class="l"><a class="l" href="#79">79: </a>        <span class="php-var">$path</span> = <span class="php-keyword2">realpath</span>( __DIR__.self::<span class="php-var">$TwigCache</span> );
-</span><span id="80" class="l"><a class="l" href="#80">80: </a>        <span class="php-keyword1">if</span> (<span class="php-var">$path</span> !== <span class="php-keyword1">false</span>) {
-</span><span id="81" class="l"><a class="l" href="#81">81: </a>            <span class="php-keyword1">foreach</span> (<span class="php-keyword1">new</span> \RecursiveIteratorIterator( <span class="php-keyword1">new</span> \RecursiveDirectoryIterator( <span class="php-var">$path</span>,
-</span><span id="82" class="l"><a class="l" href="#82">82: </a>                \FilesystemIterator::SKIP_DOTS ) ) <span class="php-keyword1">as</span> <span class="php-var">$object</span>) {
-</span><span id="83" class="l"><a class="l" href="#83">83: </a>                <span class="php-var">$bytestotal</span> += <span class="php-var">$object</span>-&gt;getSize();
+</span><span id="78" class="l"><a class="l" href="#78">78: </a>        <span class="php-var">$Total</span> = <span class="php-num">0</span>;
+</span><span id="79" class="l"><a class="l" href="#79">79: </a>        <span class="php-var">$Path</span> = <span class="php-keyword2">realpath</span>( __DIR__.self::<span class="php-var">$Cache</span> );
+</span><span id="80" class="l"><a class="l" href="#80">80: </a>        <span class="php-keyword1">if</span> (<span class="php-var">$Path</span> !== <span class="php-keyword1">false</span>) {
+</span><span id="81" class="l"><a class="l" href="#81">81: </a>            <span class="php-keyword1">foreach</span> (<span class="php-keyword1">new</span> \RecursiveIteratorIterator( <span class="php-keyword1">new</span> \RecursiveDirectoryIterator( <span class="php-var">$Path</span>,
+</span><span id="82" class="l"><a class="l" href="#82">82: </a>                \FilesystemIterator::SKIP_DOTS ) ) <span class="php-keyword1">as</span> <span class="php-var">$Object</span>) {
+</span><span id="83" class="l"><a class="l" href="#83">83: </a>                <span class="php-var">$Total</span> += <span class="php-var">$Object</span>-&gt;getSize();
 </span><span id="84" class="l"><a class="l" href="#84">84: </a>            }
 </span><span id="85" class="l"><a class="l" href="#85">85: </a>        }
-</span><span id="86" class="l"><a class="l" href="#86">86: </a>        <span class="php-keyword1">return</span> <span class="php-var">$bytestotal</span>;
+</span><span id="86" class="l"><a class="l" href="#86">86: </a>        <span class="php-keyword1">return</span> <span class="php-var">$Total</span>;
 </span><span id="87" class="l"><a class="l" href="#87">87: </a>    }
 </span><span id="88" class="l"><a class="l" href="#88">88: </a>
 </span><span id="89" class="l"><a class="l" href="#89">89: </a>}
