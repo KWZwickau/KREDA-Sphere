@@ -100,18 +100,18 @@ class Person extends Account
     /**
      * @return Stage
      */
-    public function frontendPerson()
+    public static function frontendPerson()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return PersonalData::stagePerson();
     }
 
     /**
      * @return void
      */
-    protected function setupApplicationNavigation()
+    protected static function setupApplicationNavigation()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -137,14 +137,14 @@ class Person extends Account
      *
      * @return Stage
      */
-    public function frontendPersonStudentDetail( $Id )
+    public static function frontendPersonStudentDetail( $Id )
     {
 
         if (null === $Id) {
-            return $this->frontendPersonStudentList();
+            return self::frontendPersonStudentList();
         } else {
-            $this->setupModuleNavigation();
-            $this->setupApplicationNavigation();
+            self::setupModuleNavigation();
+            self::setupApplicationNavigation();
             return PersonalData::stagePersonStudentDetail( $Id );
         }
     }
@@ -152,11 +152,11 @@ class Person extends Account
     /**
      * @return Stage
      */
-    public function frontendPersonStudentList()
+    public static function frontendPersonStudentList()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return PersonalData::stagePersonStudent();
     }
 
@@ -165,14 +165,14 @@ class Person extends Account
      *
      * @return Stage
      */
-    public function frontendPersonTeacherDetail( $Id )
+    public static function frontendPersonTeacherDetail( $Id )
     {
 
         if (null === $Id) {
-            return $this->frontendPersonTeacherList();
+            return self::frontendPersonTeacherList();
         } else {
-            $this->setupModuleNavigation();
-            $this->setupApplicationNavigation();
+            self::setupModuleNavigation();
+            self::setupApplicationNavigation();
             return PersonalData::stagePersonTeacherDetail( $Id );
         }
     }
@@ -180,55 +180,55 @@ class Person extends Account
     /**
      * @return Stage
      */
-    public function frontendPersonTeacherList()
+    public static function frontendPersonTeacherList()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return PersonalData::stagePersonTeacher();
     }
 
     /**
      * @return Stage
      */
-    public function frontendPersonGuardianList()
+    public static function frontendPersonGuardianList()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return PersonalData::stagePersonGuardian();
     }
 
     /**
      * @return Stage
      */
-    public function frontendPersonStaffList()
+    public static function frontendPersonStaffList()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return PersonalData::stagePersonStaff();
     }
 
     /**
      * @return Stage
      */
-    public function frontendPersonOthersList()
+    public static function frontendPersonOthersList()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return PersonalData::stagePersonOthers();
     }
 
     /**
      * @return Stage
      */
-    public function frontendPersonStudentCreate()
+    public static function frontendPersonStudentCreate()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return PersonalData::stagePersonStudentCreate();
     }
 

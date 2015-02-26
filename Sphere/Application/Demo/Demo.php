@@ -47,7 +47,7 @@ class Demo extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendDemo( $DemoCompleter )
+    public static function frontendDemo( $DemoCompleter )
     {
 
         $View = new Stage();
@@ -55,7 +55,7 @@ class Demo extends AbstractApplication
         $View->setDescription( 'Beispiel' );
         $View->setMessage( 'Test' );
 
-        $tblDemoCompleterList = $this->serviceDemoService()->entityDemoCompleterAll();
+        $tblDemoCompleterList = self::serviceDemoService()->entityDemoCompleterAll();
         if( empty($tblDemoCompleterList) ) {
             $tblDemoCompleterList = array();
         }
@@ -118,7 +118,7 @@ class Demo extends AbstractApplication
     /**
      * @return void
      */
-    protected function setupModuleNavigation()
+    protected static function setupModuleNavigation()
     {
 
     }

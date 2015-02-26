@@ -36,18 +36,18 @@ class Campus extends Person
     /**
      * @return Stage
      */
-    public function frontendCampus()
+    public static function frontendCampus()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stageCampus();
     }
 
     /**
      * @return void
      */
-    protected function setupApplicationNavigation()
+    protected static function setupApplicationNavigation()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,

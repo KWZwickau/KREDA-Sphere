@@ -33,7 +33,7 @@ class Common extends AbstractApplication
     /**
      * @return void
      */
-    protected function setupModuleNavigation()
+    protected static function setupModuleNavigation()
     {
 
 //        self::addModuleNavigationMain( self::$Configuration,

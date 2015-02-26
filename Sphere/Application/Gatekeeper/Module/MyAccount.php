@@ -51,17 +51,17 @@ class MyAccount extends Authentication
      *
      * @return Stage
      */
-    public function frontendChangePassword( $CredentialLock, $CredentialLockSafety )
+    public static function frontendChangePassword( $CredentialLock, $CredentialLockSafety )
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Frontend::stageChangePassword( $CredentialLock, $CredentialLockSafety );
     }
 
     /**
      * @return void
      */
-    protected function setupModuleNavigation()
+    protected static function setupModuleNavigation()
     {
 
         if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Gatekeeper/MyAccount/ChangePassword' )) {
@@ -81,20 +81,20 @@ class MyAccount extends Authentication
      *
      * @return Stage
      */
-    public function frontendChangeConsumer( $serviceGatekeeperConsumer )
+    public static function frontendChangeConsumer( $serviceGatekeeperConsumer )
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Frontend::stageChangeConsumer( $serviceGatekeeperConsumer );
     }
 
     /**
      * @return Stage
      */
-    public function frontendStatus()
+    public static function frontendStatus()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Frontend::stageStatus();
     }
 }

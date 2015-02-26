@@ -33,10 +33,10 @@ class Consumer extends Authorization
     /**
      * @return Stage
      */
-    public function frontendCreate()
+    public static function frontendCreate()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Frontend::stageCreate();
     }
 }

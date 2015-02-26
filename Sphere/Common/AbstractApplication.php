@@ -216,5 +216,7 @@ abstract class AbstractApplication extends AbstractExtension implements IApplica
     /**
      * @return void
      */
-    abstract protected function setupModuleNavigation();
+    protected static function setupModuleNavigation()
+    {
+    }
 }

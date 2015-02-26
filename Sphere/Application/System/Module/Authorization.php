@@ -57,18 +57,18 @@ class Authorization extends Protocol
      *
      * @return Stage
      */
-    public function frontendStatus( $Clear )
+    public static function frontendStatus( $Clear )
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stageStatus( $Clear );
     }
 
     /**
      * @return void
      */
-    protected function setupApplicationNavigation()
+    protected static function setupApplicationNavigation()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -90,11 +90,11 @@ class Authorization extends Protocol
      *
      * @return Stage
      */
-    public function frontendRight( $RightName )
+    public static function frontendRight( $RightName )
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stageRight( $RightName );
     }
 
@@ -103,11 +103,11 @@ class Authorization extends Protocol
      *
      * @return Stage
      */
-    public function frontendPrivilege( $PrivilegeName )
+    public static function frontendPrivilege( $PrivilegeName )
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stagePrivilege( $PrivilegeName );
     }
 
@@ -116,11 +116,11 @@ class Authorization extends Protocol
      *
      * @return Stage
      */
-    public function frontendAccess( $AccessName )
+    public static function frontendAccess( $AccessName )
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stageAccess( $AccessName );
     }
 
@@ -129,11 +129,11 @@ class Authorization extends Protocol
      *
      * @return Stage
      */
-    public function frontendRole( $RoleName )
+    public static function frontendRole( $RoleName )
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stageRole( $RoleName );
     }
 
@@ -144,11 +144,11 @@ class Authorization extends Protocol
      *
      * @return Stage
      */
-    public function frontendRoleAccess( $Id, $Access, $Remove = false )
+    public static function frontendRoleAccess( $Id, $Access, $Remove = false )
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stageRoleAccess( $Id, $Access, $Remove );
     }
 
@@ -159,11 +159,11 @@ class Authorization extends Protocol
      *
      * @return Stage
      */
-    public function frontendAccessPrivilege( $Id, $Privilege, $Remove = false )
+    public static function frontendAccessPrivilege( $Id, $Privilege, $Remove = false )
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stageAccessPrivilege( $Id, $Privilege, $Remove );
     }
 
@@ -174,11 +174,11 @@ class Authorization extends Protocol
      *
      * @return Stage
      */
-    public function frontendPrivilegeRight( $Id, $Right, $Remove = false )
+    public static function frontendPrivilegeRight( $Id, $Right, $Remove = false )
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stagePrivilegeRight( $Id, $Right, $Remove );
     }
 }

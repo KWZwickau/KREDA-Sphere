@@ -44,18 +44,18 @@ class Update extends Database
      *
      * @return Stage
      */
-    public function frontendStatus( $Clear )
+    public static function frontendStatus( $Clear )
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stageStatus( $Clear );
     }
 
     /**
      * @return void
      */
-    protected function setupApplicationNavigation()
+    protected static function setupApplicationNavigation()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -70,22 +70,22 @@ class Update extends Database
     /**
      * @return Stage
      */
-    public function frontendSimulation()
+    public static function frontendSimulation()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stageSimulation();
     }
 
     /**
      * @return Stage
      */
-    public function frontendInstall()
+    public static function frontendInstall()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupApplicationNavigation();
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
         return Frontend::stageInstall();
     }
 }

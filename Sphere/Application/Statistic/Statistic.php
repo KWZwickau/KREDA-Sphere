@@ -39,10 +39,10 @@ class Statistic extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendStatistic()
+    public static function frontendStatistic()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         $View = new Stage();
         $View->setTitle( 'Statistik' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
@@ -52,7 +52,7 @@ class Statistic extends AbstractApplication
     /**
      * @return void
      */
-    protected function setupModuleNavigation()
+    protected static function setupModuleNavigation()
     {
 
     }

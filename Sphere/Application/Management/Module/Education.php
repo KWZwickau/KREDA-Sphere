@@ -46,10 +46,10 @@ class Education extends Campus
     /**
      * @return Stage
      */
-    public function frontendSubject()
+    public static function frontendSubject()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Subject::guiSubject();
     }
 }

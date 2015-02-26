@@ -54,10 +54,10 @@ class Token extends Common
      *
      * @return Stage
      */
-    public function frontendToken( $CredentialKey, $Id )
+    public static function frontendToken( $CredentialKey, $Id )
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         $View = new Stage();
         $View->setTitle( 'Hardware-Schlüssel' );
         $View->setDescription( 'YubiKey' );

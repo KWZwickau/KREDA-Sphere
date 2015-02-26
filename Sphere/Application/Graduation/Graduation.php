@@ -77,10 +77,10 @@ class Graduation extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendGrade()
+    public static function frontendGrade()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         $View = new Stage();
         $View->setTitle( 'Zensuren' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
@@ -90,7 +90,7 @@ class Graduation extends AbstractApplication
     /**
      * @return void
      */
-    protected function setupModuleNavigation()
+    protected static function setupModuleNavigation()
     {
 
         self::addModuleNavigationMain( self::$Configuration,
@@ -101,10 +101,10 @@ class Graduation extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendGradeType()
+    public static function frontendGradeType()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         $View = new Stage();
         $View->setTitle( 'Zensuren' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );

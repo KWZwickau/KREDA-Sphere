@@ -9,7 +9,7 @@ namespace KREDA\Sphere\Common\Wire;
 class Observer
 {
 
-    /** @var Plug[] $Listener */
+    /** @var Plug[][] $Listener */
     private static $Listener = array();
     /** @var null|Plug $Plug */
     private $Plug = null;
@@ -54,20 +54,57 @@ class Observer
     public function plugWire( Plug $Plug )
     {
 
-        self::$Listener[$this->getWire()][] = $Plug;
+        if (!in_array( $Plug->getWire(), array_keys( self::$Listener[$this->getWire()] ) )) {
+            self::$Listener[$this->getWire()][$Plug->getWire()] = $Plug;
+        }
         return $this;
     }
 
-    public function sendWire( $Data )
+    /**
+     * @param Data $Data
+     *
+     * @return bool|string
+     */
+    public function sendWire( Data $Data )
     {
 
         $Switchboard = self::$Listener[$this->getWire()];
         $Return = array();
         /** @var Plug $Plug */
         foreach ((array)$Switchboard as $Plug) {
-            $Return[] = call_user_func_array( array( $Plug->getClass()->getName(), $Plug->getMethod()->getShortName() ),
-                $Data );
+            $Return[$Plug->getWire()] = call_user_func_array(
+                array( $Plug->getClass()->getName(), $Plug->getMethod()->getShortName() ),
+                array( $Data )
+            );
         }
-        return $Return;
+        if (empty( $Return )) {
+            return true;
+        } else {
+            if (in_array( false, $Return )) {
+                /**
+                 * Permission denied
+                 */
+                return false;
+            } else {
+                /**
+                 * All green?
+                 */
+                foreach ($Return as $Wire => $Listener) {
+                    if (true === $Listener) {
+                        unset( $Return[$Wire] );
+                    }
+                }
+                /**
+                 * All green!
+                 */
+                if (empty( $Return )) {
+                    return true;
+                }
+            }
+        }
+        /**
+         * It's red! :-/ .. return content for Stage
+         */
+        return implode( (array)$Return );
     }
 }

@@ -46,17 +46,17 @@ class Billing extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendBilling()
+    public static function frontendBilling()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Summary::stageSummary();
     }
 
     /**
      * @return void
      */
-    protected function setupModuleNavigation()
+    protected static function setupModuleNavigation()
     {
 
         self::addModuleNavigationMain( self::$Configuration, '/Sphere/Billing', 'Fakturierung', new MoneyIcon() );

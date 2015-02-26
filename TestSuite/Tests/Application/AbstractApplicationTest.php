@@ -50,7 +50,11 @@ abstract class AbstractApplicationTest extends \PHPUnit_Framework_TestCase
         /** @var \ReflectionMethod $Method */
         foreach ($MethodList as $Method) {
             $this->assertEquals( 1, preg_match( $Pattern, $Method->getShortName(), $Result ),
-                $Class->getName().'::'.$Method->getShortName()."\n".' -> '.$Pattern );
+                $Class->getName().'::'.$Method->getShortName()."\n".' -> '.$Pattern
+            );
+            $this->assertTrue( $Method->isStatic(),
+                $Class->getName().'::'.$Method->getShortName()."\n".' -> MUST BE static'
+            );
         }
     }
 }

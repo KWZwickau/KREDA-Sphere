@@ -101,10 +101,10 @@ class Management extends Module\Education
     /**
      * @return Stage
      */
-    public function frontendManagement()
+    public static function frontendManagement()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         $View = new Stage();
         $View->setTitle( 'Verwaltung' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );

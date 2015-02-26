@@ -108,6 +108,18 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccountSession
+     */
+    protected function entitySessionById( $Id )
+    {
+
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAccountSession', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param TblToken $tblToken
      *
      * @return bool|Entity\TblAccount[]

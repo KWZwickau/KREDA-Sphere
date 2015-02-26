@@ -99,10 +99,10 @@ class Assistance extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendAssistance()
+    public static function frontendAssistance()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         $View = new Stage();
         $View->setTitle( 'Hilfe' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
@@ -112,7 +112,7 @@ class Assistance extends AbstractApplication
     /**
      * @return void
      */
-    protected function setupModuleNavigation()
+    protected static function setupModuleNavigation()
     {
 
         self::addModuleNavigationMain( self::$Configuration,
@@ -131,18 +131,18 @@ class Assistance extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendAccount()
+    public static function frontendAccount()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupFrontendAccount();
+        self::setupModuleNavigation();
+        self::setupFrontendAccount();
         return Account::stageWelcome();
     }
 
     /**
      * @return void
      */
-    protected function setupFrontendAccount()
+    protected static function setupFrontendAccount()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -154,29 +154,29 @@ class Assistance extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendAccountForgottenPassword()
+    public static function frontendAccountForgottenPassword()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupFrontendAccount();
+        self::setupModuleNavigation();
+        self::setupFrontendAccount();
         return Account::stageForgottenPassword();
     }
 
     /**
      * @return Stage
      */
-    public function frontendApplication()
+    public static function frontendApplication()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupFrontendApplication();
+        self::setupModuleNavigation();
+        self::setupFrontendApplication();
         return Application::stageWelcome();
     }
 
     /**
      * @return void
      */
-    protected function setupFrontendApplication()
+    protected static function setupFrontendApplication()
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
@@ -195,10 +195,10 @@ class Assistance extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendSupport()
+    public static function frontendSupport()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Support::stageWelcome();
     }
 
@@ -208,43 +208,43 @@ class Assistance extends AbstractApplication
      *
      * @return Stage
      */
-    public function frontendSupportTicket( $TicketSubject = null, $TicketMessage = null )
+    public static function frontendSupportTicket( $TicketSubject = null, $TicketMessage = null )
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Support::stageTicket( $TicketSubject, $TicketMessage );
     }
 
     /**
      * @return Stage
      */
-    public function frontendApplicationLaunch()
+    public static function frontendApplicationLaunch()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupFrontendApplication();
+        self::setupModuleNavigation();
+        self::setupFrontendApplication();
         return Application::stageLaunch();
     }
 
     /**
      * @return Stage
      */
-    public function frontendApplicationMissing()
+    public static function frontendApplicationMissing()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupFrontendApplication();
+        self::setupModuleNavigation();
+        self::setupFrontendApplication();
         return Application::stageMissing();
     }
 
     /**
      * @return Stage
      */
-    public function frontendApplicationFatal()
+    public static function frontendApplicationFatal()
     {
 
-        $this->setupModuleNavigation();
-        $this->setupFrontendApplication();
+        self::setupModuleNavigation();
+        self::setupFrontendApplication();
         return Application::stageFatal();
     }
 }

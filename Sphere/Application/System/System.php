@@ -76,10 +76,10 @@ class System extends Module\Consumer
     /**
      * @return Element|Stage
      */
-    public function frontendSystem()
+    public static function frontendSystem()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         $View = new Stage();
         $View->setTitle( 'Systemeinstellungen' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );

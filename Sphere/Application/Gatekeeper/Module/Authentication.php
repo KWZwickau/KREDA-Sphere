@@ -67,17 +67,17 @@ class Authentication extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendSignInSwitch()
+    public static function frontendSignInSwitch()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Frontend::stageSignInSwitch();
     }
 
     /**
      * @return void
      */
-    protected function setupModuleNavigation()
+    protected static function setupModuleNavigation()
     {
 
         self::addModuleNavigationMain( self::$Configuration,
@@ -94,7 +94,7 @@ class Authentication extends AbstractApplication
     /**
      * @return Stage
      */
-    public function frontendStatus()
+    public static function frontendStatus()
     {
 
         return Frontend::stageStatus();
@@ -107,10 +107,10 @@ class Authentication extends AbstractApplication
      *
      * @return Stage
      */
-    public function frontendSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey )
+    public static function frontendSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Frontend::stageSignInTeacher( $CredentialName, $CredentialLock, $CredentialKey );
     }
 
@@ -121,10 +121,10 @@ class Authentication extends AbstractApplication
      *
      * @return Stage
      */
-    public function frontendSignInSystem( $CredentialName, $CredentialLock, $CredentialKey )
+    public static function frontendSignInSystem( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Frontend::stageSignInSystem( $CredentialName, $CredentialLock, $CredentialKey );
     }
 
@@ -135,10 +135,10 @@ class Authentication extends AbstractApplication
      *
      * @return Stage
      */
-    public function frontendSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
+    public static function frontendSignInManagement( $CredentialName, $CredentialLock, $CredentialKey )
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Frontend::stageSignInManagement( $CredentialName, $CredentialLock, $CredentialKey );
     }
 
@@ -148,20 +148,20 @@ class Authentication extends AbstractApplication
      *
      * @return Stage
      */
-    public function frontendSignInStudent( $CredentialName, $CredentialLock )
+    public static function frontendSignInStudent( $CredentialName, $CredentialLock )
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Frontend::stageSignInStudent( $CredentialName, $CredentialLock );
     }
 
     /**
      * @return Stage
      */
-    public function frontendSignOut()
+    public static function frontendSignOut()
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Frontend::stageSignOut();
     }
 }

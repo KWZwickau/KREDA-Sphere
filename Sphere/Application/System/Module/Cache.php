@@ -35,10 +35,10 @@ class Cache extends Common
      *
      * @return Stage
      */
-    public function frontendStatus( $Clear )
+    public static function frontendStatus( $Clear )
     {
 
-        $this->setupModuleNavigation();
+        self::setupModuleNavigation();
         return Frontend::stageStatus( $Clear );
     }
 }
