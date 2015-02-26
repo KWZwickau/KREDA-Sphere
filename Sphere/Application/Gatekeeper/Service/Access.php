@@ -49,6 +49,10 @@ class Access extends EntityAction
         $Right = $this->actionCreateRight( 'Application:Management' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $this->actionAddAccessPrivilege( $Access, $Privilege );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Token' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Account' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
 
         $Access = $this->actionCreateAccess( 'Gatekeeper:MyAccount' );
         $Privilege = $this->actionCreatePrivilege( 'Gatekeeper:MyAccount' );

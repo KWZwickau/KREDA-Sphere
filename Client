@@ -6,7 +6,6 @@ use KREDA\Sphere\Application\Assistance\Assistance;
 use KREDA\Sphere\Application\Demo\Demo;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\System\Frontend\Cache;
 use KREDA\Sphere\Application\System\Frontend\Database;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Element;
@@ -18,6 +17,7 @@ use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\Cache\Cache;
 use KREDA\Sphere\Common\Extension\Debugger;
 use MOC\V\Component\Database\Exception\DatabaseException;
 use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
@@ -40,11 +40,6 @@ require_once( __DIR__.'/Library/MOC-V/Core/AutoLoader/AutoLoader.php' );
 AutoLoader::getNamespaceAutoLoader( 'MOC\V', __DIR__.'/Library/MOC-V' );
 AutoLoader::getNamespaceAutoLoader( 'KREDA\Sphere', __DIR__.'/', 'KREDA' );
 AutoLoader::getNamespaceAutoLoader( 'Markdownify', __DIR__.'/Library/Markdownify/2.1.6/src' );
-
-/**
- * Development: Clear Cache
- */
-Cache::stageStatus( true );
 
 /**
  * Setup: Debugger
@@ -98,6 +93,11 @@ register_shutdown_function(
         print $S->getContent();
     }, $ShellScreen, $Config
 );
+
+/**
+ * Development: Clear Cache
+ */
+Cache::getApi();
 
 /**
  * Main: Run

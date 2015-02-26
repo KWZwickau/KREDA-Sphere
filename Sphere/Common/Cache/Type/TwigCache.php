@@ -57,7 +57,7 @@ class TwigCache implements ICacheInterface
     public function getSizeAvailable()
     {
 
-        return ( disk_total_space( __DIR__ ) / 1024 );
+        return ( disk_total_space( __DIR__ ) );
     }
 
     /**
@@ -66,7 +66,7 @@ class TwigCache implements ICacheInterface
     public function getSizeFree()
     {
 
-        return ( disk_free_space( __DIR__ ) / 1024 );
+        return ( disk_free_space( __DIR__ ) );
     }
 
     /**
@@ -80,7 +80,7 @@ class TwigCache implements ICacheInterface
         if ($Path !== false) {
             foreach (new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $Path,
                 \FilesystemIterator::SKIP_DOTS ) ) as $Object) {
-                $Total += $Object->getSize();
+                $Total += $Object->getSize() * 1024;
             }
         }
         return $Total;

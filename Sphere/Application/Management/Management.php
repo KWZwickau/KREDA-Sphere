@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Frontend\Campus\Campus;
 use KREDA\Sphere\Application\Management\Frontend\PersonalData\PersonalData;
@@ -51,8 +52,12 @@ class Management extends Module\Account
         );
 
         Module\Common::registerApplication( $Configuration );
-        Module\Token::registerApplication( $Configuration );
-        Module\Account::registerApplication( $Configuration );
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Token' )) {
+            Module\Token::registerApplication( $Configuration );
+        }
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Account' )) {
+            Module\Account::registerApplication( $Configuration );
+        }
 
         return $Configuration;
     }

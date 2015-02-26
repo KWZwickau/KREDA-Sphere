@@ -6,6 +6,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FlashIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Cache\Frontend\Status;
 use KREDA\Sphere\Common\Cache\Type\ApcSma;
+use KREDA\Sphere\Common\Cache\Type\Apcu;
 use KREDA\Sphere\Common\Cache\Type\ApcUser;
 use KREDA\Sphere\Common\Cache\Type\CssCache;
 use KREDA\Sphere\Common\Cache\Type\OpCache;
@@ -54,14 +55,11 @@ class Cache extends AbstractFrontend
         $View->setContent(
             new FormDefault( array(
                 new GridFormGroup( new GridFormRow(
-                    new GridFormCol( new Status( new ApcSma() ) )
-                ), new GridFormTitle( 'APC (SMA)' ) ),
-                new GridFormGroup( new GridFormRow(
-                    new GridFormCol( new Status( new ApcUser() ) )
-                ), new GridFormTitle( 'APC (Info-User)' ) ),
+                    new GridFormCol( new Status( new Apcu() ) )
+                ), new GridFormTitle( 'APCu' ) ),
                 new GridFormGroup( new GridFormRow(
                     new GridFormCol( new Status( new OpCache() ) )
-                ), new GridFormTitle( 'OPC' ) ),
+                ), new GridFormTitle( 'Zend OpCache' ) ),
                 new GridFormGroup( new GridFormRow(
                     new GridFormCol( new Status( new TwigCache() ) )
                 ), new GridFormTitle( 'Twig' ) ),

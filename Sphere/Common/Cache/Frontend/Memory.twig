@@ -2,7 +2,9 @@
     {% set Danger = SizeWasted/SizeAvailable*100 %}
     {% set Warning = SizeUsed/SizeAvailable*100 %}
     {% set Success = SizeFree/SizeAvailable*100 %}
-    <h5>Memory: {{ SizeUsed|number_format(0, '', '.') }} / {{ SizeAvailable|number_format(0, '', '.') }}</h5>
+    {% set SizeUsedPercent = 100/SizeAvailable*SizeUsed %}
+    <h5>Memory: {{ SizeUsed|number_format(0, '', '.') }} / {{ SizeAvailable|number_format(0, '', '.') }}
+        = {{ SizeUsedPercent|number_format(3, ',', '.') }}%</h5>
     <div class="progress progress-striped">
         <div class="progress-bar progress-bar-danger"
              style="width:{{ Danger }}%;">

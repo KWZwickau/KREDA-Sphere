@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Module;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonKeyIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
@@ -55,14 +56,16 @@ class Common extends AbstractApplication
 //        self::addModuleNavigationMain( self::$Configuration,
 //            '/Sphere/Management/Education/Mission', 'Aufträge', new BriefcaseIcon()
 //        );
-
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Management/Token', 'Hardware-Schlüssel', new YubiKeyIcon()
-        );
-
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Management/Account', 'Benutzerkonten', new PersonKeyIcon()
-        );
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Token' )) {
+            self::addModuleNavigationMain( self::$Configuration,
+                '/Sphere/Management/Token', 'Hardware-Schlüssel', new YubiKeyIcon()
+            );
+        }
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Account' )) {
+            self::addModuleNavigationMain( self::$Configuration,
+                '/Sphere/Management/Account', 'Benutzerkonten', new PersonKeyIcon()
+            );
+        }
     }
 
 }

@@ -10,9 +10,7 @@ Be also aware that current interfaces may change rapidly
 API Documentation
 =================
 
-
 @ <http://kwzwickau.github.io/KREDA-Sphere/>
-
 
 -----
 
@@ -29,73 +27,72 @@ Master:
 [![Coverage Status](https://coveralls.io/repos/KWZwickau/KREDA-Sphere/badge.svg?branch=master)](https://coveralls.io/r/KWZwickau/KREDA-Sphere?branch=master)
 [![Build Status](https://travis-ci.org/KWZwickau/KREDA-Sphere.svg?branch=master)](https://travis-ci.org/KWZwickau/KREDA-Sphere)
 
-Frontend
-========
+Requirements
+============
 
-Navigation:
+Web-Server
+----------
 
-- Redirect
+- apache2 (2.4 or later)
+  - rewrite 
+  - headers
+  
+- php5 (5.5 or later)
+  - php5-gmp
+  - php5-curl
+  - php5-apcu (optional)
+  - php5-mysql (depends)
 
-Form:
+Database-Server
+---------------
 
-- Structure
-  - Type
-    - Default
-  - Grid
-    - Group
-    - Row
-    - Col
-    - Title
-- Element
-  - Input
-    - Completer
-    - Date
-    - File
-    - Hidden
-    - Password
-    - Select
-    - Text
-    - TextArea
+- mysql-server (5.5 or later)
+  - *nix: lower_case_table_names = 0
 
-Table
+Configuration
+=============
 
-- Structure
-  - Type
-    - Default (Interactive)
-    - Data (Interactive)
-  - Grid
-    - Head
-    - Body
-    - Foot
-    - Row
-    - Col
-    - Title
+Database
+--------
 
-Alert
+File: 
 
-- Element
-  - Message
-    - Danger
-    - Info
-    - Success
-    - Warning
+- /Sphere/Common/Database/Config/{application}.ini
 
-Button:
+Option:
 
-- Structure
-  - Group
-- Element
-  - Link
-    - Primary
-    - Danger
-  - Button
-    - Reset
-    - Submit
+- [{service}:{consumer}]
+- Driver = {PdoMySql}
+- Host = {ip-address}
+- Port = {integer}
+- Username = {string}
+- Password = {string}
+- Database = {string}
 
-Complex:
+Cache
+-----
 
-- Structure
-  - Address
+File: 
+
+- /Sphere/Common/Cache/Config/Cache.ini
+
+Option:
+
+- Cache = {boolean} 
+
+Proxy
+-----
+
+File: 
+
+- /Sphere/Common/Proxy/Config/HttpProxy.ini
+
+Option:
+
+- Host = {ip-address}
+- Port = {integer}
+- Username = {string}
+- Password = {string}
 
 Library
 =======
@@ -108,9 +105,11 @@ Library
 - jQuery
 - jQuery.DataTable
 - jQuery.DataTable.Plugins
+- jQuery.iCheck
 - jQuery.Selecter
 - jQuery.Stepper
 - Markdownify
+- MathJax
 - Moment.Js
 - Twitter.Typeahead
 - Twitter.Typeahead.Bootstrap

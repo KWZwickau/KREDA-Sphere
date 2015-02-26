@@ -18,10 +18,10 @@ A: Install Ubuntu (Minimal, No Updates, No Software)
 
 A:U:apt
 A:G:apt
-A:I:ntp 
+A:I:ntp
 A:I:xorg
 A:I:openbox
-(startx läd gui)
+(startx gui)
 A:I:thunar
 A:I:mousepad
 
@@ -38,8 +38,8 @@ dns-nameservers <ip>
 
 A:C: Setup Hosts /etc/hosts
 
-Ersetze 
-127.0.1.1 <Hostname> 
+Ersetze
+127.0.1.1 <Hostname>
 mit
 <Ip> <Hostname>.<Domain> <Hostname>
 (Disable Ip6)
@@ -149,7 +149,7 @@ Allow from <Balancer-Ip>
 ====================
 D:I:mysql-server-5.6
 D:I:ssh
-D:C:/etc/mysql/my.cnf 
+D:C:/etc/mysql/my.cnf
 
 bind-address=<Ip>
 

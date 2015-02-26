@@ -6,11 +6,12 @@ php:
   - 5.4
   - 5.5
   - 5.6
-#  - hhvm
+  - hhvm
 matrix:
   allow_failures:
+    - php: 5.3
     - php: 5.6
-#    - php: hhvm
+    - php: hhvm
 
 before_script:
   - curl -s http://getcomposer.org/installer | php
@@ -25,6 +26,8 @@ after_script:
  - php vendor/bin/coveralls -v
  - CODECLIMATE_REPO_TOKEN="1a500cc99253603dbf5453e471a3de9b2b31300594d982f1ca798c6feeb79998" ./vendor/bin/test-reporter --stdout > codeclimate.json
  - "curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports"
+ # Bugfix TravisCI:
+ - set +e
 
 notifications:
   email: false
