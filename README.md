@@ -12,6 +12,11 @@ API Documentation
 
 @ <http://kwzwickau.github.io/KREDA-Sphere/>
 
+Wiki Documentation
+==================
+
+@ <https://github.com/KWZwickau/KREDA-Sphere/wiki>
+
 -----
 
 Development:
@@ -26,73 +31,6 @@ Master:
 
 [![Coverage Status](https://coveralls.io/repos/KWZwickau/KREDA-Sphere/badge.svg?branch=master)](https://coveralls.io/r/KWZwickau/KREDA-Sphere?branch=master)
 [![Build Status](https://travis-ci.org/KWZwickau/KREDA-Sphere.svg?branch=master)](https://travis-ci.org/KWZwickau/KREDA-Sphere)
-
-Requirements
-============
-
-Web-Server
-----------
-
-- apache2 (2.4 or later)
-  - rewrite 
-  - headers
-  
-- php5 (5.5 or later)
-  - php5-gmp
-  - php5-curl
-  - php5-apcu (optional)
-  - php5-mysql (depends)
-
-Database-Server
----------------
-
-- mysql-server (5.5 or later)
-  - *nix: lower_case_table_names = 0
-
-Configuration
-=============
-
-Database
---------
-
-File: 
-
-- /Sphere/Common/Database/Config/{application}.ini
-
-Option:
-
-- [{service}:{consumer}]
-- Driver = {PdoMySql}
-- Host = {ip-address}
-- Port = {integer}
-- Username = {string}
-- Password = {string}
-- Database = {string}
-
-Cache
------
-
-File: 
-
-- /Sphere/Common/Cache/Config/Cache.ini
-
-Option:
-
-- Cache = {boolean} 
-
-Proxy
------
-
-File: 
-
-- /Sphere/Common/Proxy/Config/HttpProxy.ini
-
-Option:
-
-- Host = {ip-address}
-- Port = {integer}
-- Username = {string}
-- Password = {string}
 
 Library
 =======
