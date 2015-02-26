@@ -22,7 +22,7 @@ class Youtrack extends AbstractService
 
     /** @var string $YoutrackDomain */
 //    private $YoutrackDomain = 'http://ticket.swe.haus-der-edv.de';
-    private $YoutrackDomain = 'http://192.168.33.150:8080';
+    private $YoutrackDomain = 'http://ticket.swe.haus-der-edv.de';
     /** @var string $YoutrackUser */
     private $YoutrackUser = 'KREDA-Support';
     /** @var string $YoutrackPassword */

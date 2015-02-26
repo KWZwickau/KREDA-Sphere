@@ -263,5 +263,3 @@ if ($Config->hasApplicationNavigation()) {
  * Create Client
  */
 echo $ShellScreen->getContent();
-
-var_dump( Management::observerDestroyPerson() );
