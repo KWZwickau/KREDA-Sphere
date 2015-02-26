@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountType;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Wire;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
@@ -71,8 +72,8 @@ class Account extends Token
         $View = new Stage();
         $View->setTitle( 'Benutzerkonten' );
 
-        $tblAccountTypeListSelect = self::getAccountTypeSelectData();
-        $tblAccountRoleListSelect = self::getAccountRoleSelectData();
+        $tblAccountTypeSelect = self::getAccountTypeSelectData();
+        $tblAccountRoleSelect = self::getAccountRoleSelectData();
 
         $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySession();
 
@@ -101,12 +102,12 @@ class Account extends Token
                 ) ),
                 new GridFormRow( array(
                     new GridFormCol(
-                        new InputSelect( 'Account[Type]', 'Authentifizierungstyp', $tblAccountTypeListSelect,
+                        new InputSelect( 'Account[Type]', 'Authentifizierungstyp', $tblAccountTypeSelect,
                             new PersonKeyIcon()
                         ), 6
                     ),
                     new GridFormCol(
-                        new InputSelect( 'Account[Role]', 'Berechtigungsstufe', $tblAccountRoleListSelect,
+                        new InputSelect( 'Account[Role]', 'Berechtigungsstufe', $tblAccountRoleSelect,
                             new PersonKeyIcon()
                         ), 6
                     )
@@ -136,6 +137,108 @@ class Account extends Token
                 }
             }
         }
+
+        $tblAccountList = self::getAccountList( $tblConsumer );
+        $View->setContent(
+            new GridLayoutTitle( 'Bestehende Benutzerkonten', 'Accounts' )
+            .
+            ( empty( $tblAccountList )
+                ? new MessageWarning( 'Keine Benutzer verfügbar' )
+                : new TableData( $tblAccountList, null, array(
+                    'Username' => 'Benutzername',
+                    'AccountType' => 'Authentifizierungstyp',
+                    'AccountRole' => 'Berechtigungsstufe',
+                    'Person'   => 'Person',
+                    'Token'    => 'Hardware-Schlüssel',
+                    'Option'   => 'Option'
+                ) )
+            )
+            .
+            $Form
+        );
+
+        return $View;
+    }
+
+    /**
+     * @return TblAccountType[]
+     */
+    private static function getAccountTypeSelectData()
+    {
+
+        $tblAccountTypeList = self::getAccountTypeList();
+        $tblAccountTypeSelect = array();
+        /** @var TblAccountType $tblAccountType */
+        foreach ((array)$tblAccountTypeList as $tblAccountType) {
+            $tblAccountTypeSelect[$tblAccountType->getId()] = $tblAccountType->getName();
+        }
+        return $tblAccountTypeSelect;
+    }
+
+    /**
+     * @return TblAccountType[]
+     */
+    private static function getAccountTypeList()
+    {
+
+        $tblAccountTypeList = Gatekeeper::serviceAccount()->entityAccountTypeAll();
+        array_walk( $tblAccountTypeList, function ( TblAccountType &$O ) {
+
+            /**
+             * Filter: No "System"-Accounts !
+             */
+            if (
+                $O->getId() == Gatekeeper::serviceAccount()->entityAccountTypeByName( 'System' )->getId()
+            ) {
+                $O = false;
+            }
+        } );
+        return array_filter( $tblAccountTypeList );
+    }
+
+    /**
+     * @return TblAccountRole[]
+     */
+    private static function getAccountRoleSelectData()
+    {
+
+        $tblAccountRoleList = self::getAccountRoleList();
+        $tblAccountRoleSelect = array();
+        /** @var TblAccountRole $tblAccountRole */
+        foreach ((array)$tblAccountRoleList as $tblAccountRole) {
+            $tblAccountRoleSelect[$tblAccountRole->getId()] = $tblAccountRole->getName();
+        }
+        return $tblAccountRoleSelect;
+    }
+
+    /**
+     * @return TblAccountRole[]
+     */
+    private static function getAccountRoleList()
+    {
+
+        $tblAccountRoleList = Gatekeeper::serviceAccount()->entityAccountRoleAll();
+        array_walk( $tblAccountRoleList, function ( TblAccountRole &$O ) {
+
+            /**
+             * Filter: No "System"-Accounts !
+             */
+            if (
+                $O->getId() == Gatekeeper::serviceAccount()->entityAccountRoleByName( 'System' )->getId()
+            ) {
+                $O = false;
+            }
+        } );
+        return array_filter( $tblAccountRoleList );
+    }
+
+    /**
+     * @param TblConsumer $tblConsumer
+     *
+     * @return TblAccount[]
+     */
+    private static function getAccountList( TblConsumer $tblConsumer )
+    {
 
         $tblAccountList = Gatekeeper::serviceAccount()->entityAccountAllByConsumer( $tblConsumer );
         if (!$tblAccountList) {
@@ -194,98 +297,6 @@ class Account extends Token
                 $A->Option = '<div class="pull-right">'.$FormDestroy.'</div>'.'<div class="pull-right">'.$FormEdit.'</div>';
             }
         } );
-        $tblAccountList = array_filter( $tblAccountList );
-
-        $View->setContent(
-            new GridLayoutTitle( 'Bestehende Benutzerkonten', 'Accounts' )
-            .
-            ( empty( $tblAccountList )
-                ? new MessageWarning( 'Keine Benutzer verfügbar' )
-                : new TableData( $tblAccountList, null, array(
-                    'Username' => 'Benutzername',
-                    'AccountType' => 'Authentifizierungstyp',
-                    'AccountRole' => 'Berechtigungsstufe',
-                    'Person'   => 'Person',
-                    'Token'    => 'Hardware-Schlüssel',
-                    'Option'   => 'Option'
-                ) )
-            )
-            .
-            $Form
-        );
-
-        return $View;
-    }
-
-    /**
-     * @return TblAccountType[]
-     */
-    private static function getAccountTypeSelectData()
-    {
-
-        $tblAccountTypeList = self::getAccountTypeList();
-        $tblAccountTypeListSelect = array();
-        /** @var TblAccountType $tblAccountType */
-        foreach ((array)$tblAccountTypeList as $tblAccountType) {
-            $tblAccountTypeListSelect[$tblAccountType->getId()] = $tblAccountType->getName();
-        }
-        return $tblAccountTypeListSelect;
-    }
-
-    /**
-     * @return TblAccountType[]
-     */
-    private static function getAccountTypeList()
-    {
-
-        $tblAccountTypeList = Gatekeeper::serviceAccount()->entityAccountTypeAll();
-        array_walk( $tblAccountTypeList, function ( TblAccountType &$O ) {
-
-            /**
-             * Filter: No "System"-Accounts !
-             */
-            if (
-                $O->getId() == Gatekeeper::serviceAccount()->entityAccountTypeByName( 'System' )->getId()
-            ) {
-                $O = false;
-            }
-        } );
-        return array_filter( $tblAccountTypeList );
-    }
-
-    /**
-     * @return TblAccountRole[]
-     */
-    private static function getAccountRoleSelectData()
-    {
-
-        $tblAccountRoleList = self::getAccountRoleList();
-        $tblAccountRoleListSelect = array();
-        /** @var TblAccountRole $tblAccountRole */
-        foreach ((array)$tblAccountRoleList as $tblAccountRole) {
-            $tblAccountRoleListSelect[$tblAccountRole->getId()] = $tblAccountRole->getName();
-        }
-        return $tblAccountRoleListSelect;
-    }
-
-    /**
-     * @return TblAccountRole[]
-     */
-    private static function getAccountRoleList()
-    {
-
-        $tblAccountRoleList = Gatekeeper::serviceAccount()->entityAccountRoleAll();
-        array_walk( $tblAccountRoleList, function ( TblAccountRole &$O ) {
-
-            /**
-             * Filter: No "System"-Accounts !
-             */
-            if (
-                $O->getId() == Gatekeeper::serviceAccount()->entityAccountRoleByName( 'System' )->getId()
-            ) {
-                $O = false;
-            }
-        } );
-        return array_filter( $tblAccountRoleList );
+        return array_filter( $tblAccountList );
     }
 }

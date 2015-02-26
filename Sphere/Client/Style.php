@@ -20,24 +20,24 @@ class Style extends AbstractExtension
     private function __construct()
     {
 
-        $this->Source( '/Library/Bootstrap/3.2.0/dist/css/bootstrap.min.css' );
-        $this->Source( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_halflings/web/html_css/css/glyphicons-halflings.css' );
-        $this->Source( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons/web/html_css/css/glyphicons.css' );
-        $this->Source( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_filetypes/web/html_css/css/glyphicons-filetypes.css' );
-        $this->Source( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_social/web/html_css/css/glyphicons-social.css' );
-        $this->Source( '/Library/Bootstrap.FileInput/4.1.6/css/fileinput.min.css' );
-        $this->Source( '/Library/Bootflat/2.0.4/bootflat/css/bootflat.min.css' );
-        $this->Source( '/Library/Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs.css' );
-        $this->Source( '/Library/Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min.css' );
-        $this->Source( '/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.css' );
-        $this->Source( '/Library/jQuery.DataTables/1.10.4/extensions/Responsive/css/dataTables.responsive.css' );
-        $this->Source( '/Sphere/Client/Style/Style.css' );
+        $this->setSource( '/Library/Bootstrap/3.2.0/dist/css/bootstrap.min.css' );
+        $this->setSource( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_halflings/web/html_css/css/glyphicons-halflings.css' );
+        $this->setSource( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons/web/html_css/css/glyphicons.css' );
+        $this->setSource( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_filetypes/web/html_css/css/glyphicons-filetypes.css' );
+        $this->setSource( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_social/web/html_css/css/glyphicons-social.css' );
+        $this->setSource( '/Library/Bootstrap.FileInput/4.1.6/css/fileinput.min.css' );
+        $this->setSource( '/Library/Bootflat/2.0.4/bootflat/css/bootflat.min.css' );
+        $this->setSource( '/Library/Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs.css' );
+        $this->setSource( '/Library/Bootstrap.DateTimePicker/3.1.3/build/css/bootstrap-datetimepicker.min.css' );
+        $this->setSource( '/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.css' );
+        $this->setSource( '/Library/jQuery.DataTables/1.10.4/extensions/Responsive/css/dataTables.responsive.css' );
+        $this->setSource( '/Sphere/Client/Style/Style.css' );
     }
 
     /**
      * @param string $Location
      */
-    public function Source( $Location )
+    public function setSource( $Location )
     {
 
         $PathBase = $this->extensionRequest()->getPathBase();

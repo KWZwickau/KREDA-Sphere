@@ -126,7 +126,6 @@ class Account extends EntityAction
 
         /**
          * Demo-Admin
-         * TODO: Remove
          */
         if ($CredentialName == 'DS-Admin' && $CredentialLock == '12345' && $CredentialKey == 'demo') {
             $tblAccount = $this->entityAccountByCredential( $CredentialName, $CredentialLock, $tblAccountType );

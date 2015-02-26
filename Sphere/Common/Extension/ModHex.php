@@ -12,7 +12,7 @@ class ModHex
 {
 
     /** @var string $Key */
-    private static $Key = "cbdefghijklnrtuv"; // translation key used to ModHex a string
+    private static $Key = "cbdefghijklnrtuv";
     /** @var string $String */
     private $String = '';
 
@@ -68,20 +68,20 @@ class ModHex
     final private function decodeString( $String )
     {
 
-        $StringLength = strlen( $String );
-        $StringDecoded = "";
-        if ($StringLength % 2 != 0) {
+        $Length = strlen( $String );
+        $Decoded = "";
+        if ($Length % 2 != 0) {
             return false;
         }
-        for ($Run = 0; $Run < $StringLength; $Run = $Run + 2) {
-            $High = strpos( ModHex::$Key, $String[$Run] );
-            $Low = strpos( ModHex::$Key, $String[$Run + 1] );
+        for ($Run = 0; $Run < $Length; $Run = $Run + 2) {
+            $High = strpos( self::$Key, $String[$Run] );
+            $Low = strpos( self::$Key, $String[$Run + 1] );
             if ($High === false || $Low === false) {
                 return false;
             }
-            $StringDecoded .= chr( ( $High << 4 ) | $Low );
+            $Decoded .= chr( ( $High << 4 ) | $Low );
         }
-        return $StringDecoded;
+        return $Decoded;
     }
 
     /**
@@ -95,7 +95,8 @@ class ModHex
         $Return = '';
         $Convert = base64_decode( $String );
         $CharList = str_split( $Convert );
-        for ($Run = 0; $Run < count( $CharList ); $Run++) {
+        $Length = count( $CharList );
+        for ($Run = 0; $Run < $Length; $Run++) {
             $Return .= sprintf( "%02x", ord( $CharList[$Run] ) );
         }
         return $Return;
