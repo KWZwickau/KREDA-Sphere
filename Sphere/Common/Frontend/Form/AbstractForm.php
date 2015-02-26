@@ -30,7 +30,14 @@ abstract class AbstractForm extends AbstractFrontend
     {
 
         if (empty( $this->Hash )) {
-            $this->Hash = sha1( json_encode( $this->GridGroupList ) );
+            $GroupList = $this->GridGroupList;
+            array_walk( $GroupList, function ( &$G ) {
+
+                if (is_object( $G )) {
+                    $G = serialize( $G );
+                }
+            } );
+            $this->Hash = sha1( json_encode( $GroupList ) );
         }
         return $this->Hash;
     }
@@ -92,6 +99,15 @@ abstract class AbstractForm extends AbstractFrontend
                 }
             }
         }
+    }
+
+    /**
+     * @param string $Message
+     */
+    public function setConfirm( $Message )
+    {
+
+        $this->Template->setVariable( 'FormConfirm', $Message );
     }
 
     /**

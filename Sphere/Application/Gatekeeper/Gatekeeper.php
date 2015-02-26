@@ -45,6 +45,10 @@ class Gatekeeper extends Module\MyAccount
         Module\Authentication::registerApplication( $Configuration );
         Module\MyAccount::registerApplication( $Configuration );
 
+        /**
+         * Observer
+         */
+
         return $Configuration;
     }
 

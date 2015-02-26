@@ -89,4 +89,13 @@ abstract class AbstractElement extends AbstractFrontend implements IElementInter
 
         return $this->Name;
     }
+
+    /**
+     * @param mixed $Value
+     */
+    public function setPrefixValue( $Value )
+    {
+
+        $this->Template->setVariable( 'ElementPrefix', $Value );
+    }
 }

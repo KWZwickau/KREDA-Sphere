@@ -44,7 +44,7 @@ class Token extends EntityAction
             Gatekeeper::serviceAccount()->entityAccountByUsername( 'System' )
         );
         Gatekeeper::serviceAccount()->executeChangeToken( $tblToken,
-            Gatekeeper::serviceAccount()->entityAccountByUsername( 'Administrator' )
+            Gatekeeper::serviceAccount()->entityAccountByUsername( 'DS-Admin' )
         );
     }
 

@@ -32,7 +32,7 @@ abstract class AbstractApplicationTest extends \PHPUnit_Framework_TestCase
     {
 
         $Name = 'registerApplication';
-        $Prefix = 'registerApplication|setup|frontend|service|extension';
+        $Prefix = 'registerApplication|setup|frontend|service|extension|observer(Destroy)|listener(Destroy)';
         $this->checkNamePattern( 'KREDA\Sphere\Application'.$Application, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
             \ReflectionMethod::IS_PUBLIC );
     }

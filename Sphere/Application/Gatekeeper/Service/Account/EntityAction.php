@@ -225,8 +225,8 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param string        $Username
-     * @param string        $Password
+     * @param string $Username
+     * @param string $Password
      * @param TblAccountType $tblAccountType
      *
      * @return bool|TblAccount
@@ -236,8 +236,8 @@ abstract class EntityAction extends EntitySchema
 
         $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )
             ->findOneBy( array(
-                TblAccount::ATTR_USERNAME        => $Username,
-                TblAccount::ATTR_PASSWORD        => hash( 'sha256', $Password ),
+                TblAccount::ATTR_USERNAME => $Username,
+                TblAccount::ATTR_PASSWORD => hash( 'sha256', $Password ),
                 TblAccount::ATTR_TBL_ACCOUNT_TYPE => $tblAccountType->getId()
             ) );
         return ( null === $Entity ? false : $Entity );
@@ -258,6 +258,20 @@ abstract class EntityAction extends EntitySchema
 
             $V = $V->getServiceGatekeeperAccess();
         } );
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @param TblAccount $tblAccount
+     *
+     * @return bool|TblAccountSession[]
+     */
+    protected function entitySessionAllByAccount( TblAccount $tblAccount )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblAccountSession' )->findBy( array(
+            TblAccountSession::ATTR_TBL_ACCOUNT => $tblAccount->getId()
+        ) );
         return ( empty( $EntityList ) ? false : $EntityList );
     }
 
@@ -349,6 +363,26 @@ abstract class EntityAction extends EntitySchema
         /** @var TblAccountSession $Entity */
         $Entity = $Manager->getEntity( 'TblAccountSession' )
             ->findOneBy( array( TblAccountSession::ATTR_SESSION => $Session ) );
+        if (null !== $Entity) {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblAccount $tblAccount
+     *
+     * @return bool
+     */
+    protected function actionDestroyAccount( TblAccount $tblAccount )
+    {
+
+        $Manager = $this->getEntityManager();
+        /** @var TblAccountSession $Entity */
+        $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
         if (null !== $Entity) {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );

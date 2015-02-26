@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\System;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
@@ -30,20 +31,26 @@ class System extends Module\Consumer
         /**
          * Navigation
          */
-        self::addClientNavigationMeta( self::$Configuration,
-            '/Sphere/System', 'System', new CogWheelsIcon()
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System', __CLASS__.'::frontendSystem'
-        );
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:System' )) {
 
-        Module\Common::registerApplication( $Configuration );
-        Module\Cache::registerApplication( $Configuration );
-        Module\Database::registerApplication( $Configuration );
-        Module\Update::registerApplication( $Configuration );
-        Module\Protocol::registerApplication( $Configuration );
-        Module\Authorization::registerApplication( $Configuration );
-        Module\Consumer::registerApplication( $Configuration );
+            self::addClientNavigationMeta( self::$Configuration,
+                '/Sphere/System', 'System', new CogWheelsIcon()
+            );
+            self::registerClientRoute( self::$Configuration,
+                '/Sphere/System', __CLASS__.'::frontendSystem'
+            );
+
+            Module\Common::registerApplication( $Configuration );
+            Module\Cache::registerApplication( $Configuration );
+            Module\Database::registerApplication( $Configuration );
+            Module\Update::registerApplication( $Configuration );
+            Module\Protocol::registerApplication( $Configuration );
+            Module\Authorization::registerApplication( $Configuration );
+            Module\Consumer::registerApplication( $Configuration );
+        }
+        /**
+         * Observer
+         */
 
         return $Configuration;
     }

@@ -37,10 +37,24 @@ abstract class AbstractFrontend extends AbstractContent
     final protected static function setPostValue( IBridgeInterface &$Template, $RequestKey, $VariableName )
     {
 
-        if (isset( $_POST[$RequestKey] )) {
-            $Template->setVariable( $VariableName, $_POST[$RequestKey] );
-        } elseif (isset( $_GET[$RequestKey] )) {
-            $Template->setVariable( $VariableName, $_GET[$RequestKey] );
+        if (preg_match( '!^(.*?)\[(.*?)\]$!is', $RequestKey, $Match )) {
+            if (false === strpos( $Match[2], '[' )) {
+                if (isset( $_POST[$Match[1]][$Match[2]] )) {
+                    $Template->setVariable( $VariableName, $_POST[$Match[1]][$Match[2]] );
+                } elseif (isset( $_GET[$Match[1]][$Match[2]] )) {
+                    $Template->setVariable( $VariableName, $_GET[$Match[1]][$Match[2]] );
+                }
+            } else {
+                /**
+                 * Next dimension
+                 */
+            }
+        } else {
+            if (isset( $_POST[$RequestKey] )) {
+                $Template->setVariable( $VariableName, $_POST[$RequestKey] );
+            } elseif (isset( $_GET[$RequestKey] )) {
+                $Template->setVariable( $VariableName, $_GET[$RequestKey] );
+            }
         }
     }
 

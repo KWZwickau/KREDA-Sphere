@@ -142,12 +142,8 @@ try {
             /**
              * Authenticated YES
              */
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:System' )) {
-                System::registerApplication( $Config );
-            }
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Management' )) {
-                Management::registerApplication( $Config );
-            }
+            System::registerApplication( $Config );
+            Management::registerApplication( $Config );
             Demo::registerApplication( $Config );
         } else {
             /**
@@ -267,3 +263,5 @@ if ($Config->hasApplicationNavigation()) {
  * Create Client
  */
 echo $ShellScreen->getContent();
+
+var_dump( Management::observerDestroyPerson() );

@@ -7,6 +7,11 @@
         <span class="input-group-addon">
             {{ ElementIcon }}
         </span>
+        {% if ElementPrefix is not empty %}
+            <span class="input-group-addon input-group-prefix">
+                {{ ElementPrefix }}
+            </span>
+        {% endif %}
         {% endif %}
         <input type="text" class="form-control" name="{{ ElementName }}" placeholder="{{ ElementPlaceholder }}"
                value="{{ ElementValue }}"/>
