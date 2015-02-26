@@ -7,8 +7,8 @@
 
     <title>Class KREDA\Sphere\Application\Management\Module\Token | Sphere</title>
 
-    <script type="text/javascript" src="resources/combined.js?3624343741"></script>
-    <script type="text/javascript" src="elementlist.js?3089211828"></script>
+    <script type="text/javascript" src="resources/combined.js?1983089383"></script>
+    <script type="text/javascript" src="elementlist.js?972660392"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
 
@@ -306,7 +306,17 @@
 						</li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Text.Structure.html">Structure</a>
 						</li>
-							</ul></li></ul></li></ul></li></ul></li></ul></li>
+							</ul></li></ul></li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Proxy.html">Proxy<span></span></a>
+						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Proxy.Type.html">Type</a>
+						</li>
+							</ul></li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Wire.html">Wire</a>
+						</li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Youtrack.html">Youtrack</a>
+						</li>
+							</ul></li></ul></li></ul></li>
 				<li><a href="namespace-PHP.html">PHP</a>
 						</li>
 			</ul>
@@ -319,7 +329,10 @@
 			<h3>Classes</h3>
 			<ul>
 				<li><a href="class-KREDA.Sphere.Application.Management.Module.Account.html">Account</a></li>
+				<li><a href="class-KREDA.Sphere.Application.Management.Module.Campus.html">Campus</a></li>
 				<li><a href="class-KREDA.Sphere.Application.Management.Module.Common.html">Common</a></li>
+				<li><a href="class-KREDA.Sphere.Application.Management.Module.Education.html">Education</a></li>
+				<li><a href="class-KREDA.Sphere.Application.Management.Module.Person.html">Person</a></li>
 				<li class="active"><a href="class-KREDA.Sphere.Application.Management.Module.Token.html">Token</a></li>
 			</ul>
 
@@ -420,7 +433,10 @@
 
 	<div>
 		<h4>Indirect known subclasses</h4>
-			<a href="class-KREDA.Sphere.Application.Management.Management.html">KREDA\Sphere\Application\Management\Management</a>
+			<a href="class-KREDA.Sphere.Application.Management.Management.html">KREDA\Sphere\Application\Management\Management</a>, 
+			<a href="class-KREDA.Sphere.Application.Management.Module.Campus.html">KREDA\Sphere\Application\Management\Module\Campus</a>, 
+			<a href="class-KREDA.Sphere.Application.Management.Module.Education.html">KREDA\Sphere\Application\Management\Module\Education</a>, 
+			<a href="class-KREDA.Sphere.Application.Management.Module.Person.html">KREDA\Sphere\Application\Management\Module\Person</a>
 	</div>
 
 
@@ -433,7 +449,7 @@
 		<b>Namespace:</b> <a href="namespace-KREDA.html">KREDA</a>\<a href="namespace-KREDA.Sphere.html">Sphere</a>\<a href="namespace-KREDA.Sphere.Application.html">Application</a>\<a href="namespace-KREDA.Sphere.Application.Management.html">Management</a>\<a href="namespace-KREDA.Sphere.Application.Management.Module.html">Module</a><br />
 		<b>Package:</b> KREDA\Sphere\Application\Management\Module<br />
 
-		<b>Located at</b> <a href="source-class-KREDA.Sphere.Application.Management.Module.Token.html#24-134" title="Go to source code">Application/Management/Module/Token.php</a><br />
+		<b>Located at</b> <a href="source-class-KREDA.Sphere.Application.Management.Module.Token.html#23-140" title="Go to source code">Application/Management/Module/Token.php</a><br />
 	</div>
 
 
@@ -451,7 +467,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_registerApplication">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Management.Module.Token.html#35-48" title="Go to source code">registerApplication</a>( <span><code><a href="class-KREDA.Sphere.Client.Configuration.html">KREDA\Sphere\Client\Configuration</a></code> <var>$Configuration</var></span> )</code>
+		<code><a href="source-class-KREDA.Sphere.Application.Management.Module.Token.html#34-49" title="Go to source code">registerApplication</a>( <span><code><a href="class-KREDA.Sphere.Client.Configuration.html">KREDA\Sphere\Client\Configuration</a></code> <var>$Configuration</var></span> )</code>
 
 		<div class="description short">
 			
@@ -483,7 +499,7 @@
 	<tr data-order="frontendToken" id="_frontendToken">
 
 		<td class="attributes"><code>
-			 public 
+			 public static
 			<code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code>
 			
 			</code>
@@ -491,7 +507,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_frontendToken">#</a>
-		<code><a href="source-class-KREDA.Sphere.Application.Management.Module.Token.html#50-132" title="Go to source code">frontendToken</a>( <span>null|string <var>$CredentialKey</var> = <span class="php-keyword1">null</span> </span> )</code>
+		<code><a href="source-class-KREDA.Sphere.Application.Management.Module.Token.html#51-138" title="Go to source code">frontendToken</a>( <span>null|string <var>$CredentialKey</var></span>, <span>null|integer <var>$Id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -505,6 +521,8 @@
 				<div class="list"><dl>
 					<dt><var>$CredentialKey</var></dt>
 					<dd><code>null|string</code><br>$CredentialKey</dd>
+					<dt><var>$Id</var></dt>
+					<dd><code>null|integer</code><br>$Id</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
@@ -512,10 +530,6 @@
 					<code><code><a href="class-KREDA.Sphere.Client.Component.Element.Repository.Content.Stage.html">KREDA\Sphere\Client\Component\Element\Repository\Content\Stage</a></code></code><br />
 				</div>
 
-				<h4>Throws</h4>
-				<div class="list">
-					<code><code><a href="class-Exception.html">Exception</a></code></code><br />
-				</div>
 
 
 
@@ -580,7 +594,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-KREDA.Sphere.Application.Management.Module.Token.html#32-33" title="Go to source code"><var>$Configuration</var></a>
+				<a href="source-class-KREDA.Sphere.Application.Management.Module.Token.html#31-32" title="Go to source code"><var>$Configuration</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">null</span></code></td>
 		<td class="description"><div>

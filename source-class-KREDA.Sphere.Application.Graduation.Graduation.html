@@ -8,8 +8,8 @@
 
     <title>File Application/Graduation/Graduation.php | Sphere</title>
 
-    <script type="text/javascript" src="resources/combined.js?3624343741"></script>
-    <script type="text/javascript" src="elementlist.js?3089211828"></script>
+    <script type="text/javascript" src="resources/combined.js?1983089383"></script>
+    <script type="text/javascript" src="elementlist.js?972660392"></script>
     <link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3639401462" />
 
 
@@ -307,7 +307,17 @@
 						</li>
 				<li class="main"><a href="namespace-KREDA.Sphere.Common.Frontend.Text.Structure.html">Structure</a>
 						</li>
-							</ul></li></ul></li></ul></li></ul></li></ul></li>
+							</ul></li></ul></li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Proxy.html">Proxy<span></span></a>
+						<ul>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Proxy.Type.html">Type</a>
+						</li>
+							</ul></li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Wire.html">Wire</a>
+						</li>
+				<li class="main"><a href="namespace-KREDA.Sphere.Common.Youtrack.html">Youtrack</a>
+						</li>
+							</ul></li></ul></li></ul></li>
 				<li><a href="namespace-PHP.html">PHP</a>
 						</li>
 			</ul>
@@ -450,10 +460,10 @@
 </span><span id="77" class="l"><a class="l" href="#77"> 77: </a>    <span class="php-comment">/**
 </span></span><span id="78" class="l"><a class="l" href="#78"> 78: </a><span class="php-comment">     * @return Stage
 </span></span><span id="79" class="l"><a class="l" href="#79"> 79: </a><span class="php-comment">     */</span>
-</span><span id="80" class="l"><a class="l" href="#80"> 80: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_frontendGrade" href="#_frontendGrade">frontendGrade</a>()
+</span><span id="80" class="l"><a class="l" href="#80"> 80: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_frontendGrade" href="#_frontendGrade">frontendGrade</a>()
 </span><span id="81" class="l"><a class="l" href="#81"> 81: </a>    {
 </span><span id="82" class="l"><a class="l" href="#82"> 82: </a>
-</span><span id="83" class="l"><a class="l" href="#83"> 83: </a>        <span class="php-var">$this</span>-&gt;setupModuleNavigation();
+</span><span id="83" class="l"><a class="l" href="#83"> 83: </a>        self::setupModuleNavigation();
 </span><span id="84" class="l"><a class="l" href="#84"> 84: </a>        <span class="php-var">$View</span> = <span class="php-keyword1">new</span> Stage();
 </span><span id="85" class="l"><a class="l" href="#85"> 85: </a>        <span class="php-var">$View</span>-&gt;setTitle( <span class="php-quote">'Zensuren'</span> );
 </span><span id="86" class="l"><a class="l" href="#86"> 86: </a>        <span class="php-var">$View</span>-&gt;setMessage( <span class="php-quote">'Bitte wählen Sie ein Thema'</span> );
@@ -463,7 +473,7 @@
 </span><span id="90" class="l"><a class="l" href="#90"> 90: </a>    <span class="php-comment">/**
 </span></span><span id="91" class="l"><a class="l" href="#91"> 91: </a><span class="php-comment">     * @return void
 </span></span><span id="92" class="l"><a class="l" href="#92"> 92: </a><span class="php-comment">     */</span>
-</span><span id="93" class="l"><a class="l" href="#93"> 93: </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_setupModuleNavigation" href="#_setupModuleNavigation">setupModuleNavigation</a>()
+</span><span id="93" class="l"><a class="l" href="#93"> 93: </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_setupModuleNavigation" href="#_setupModuleNavigation">setupModuleNavigation</a>()
 </span><span id="94" class="l"><a class="l" href="#94"> 94: </a>    {
 </span><span id="95" class="l"><a class="l" href="#95"> 95: </a>
 </span><span id="96" class="l"><a class="l" href="#96"> 96: </a>        self::addModuleNavigationMain( self::<span class="php-var">$Configuration</span>,
@@ -474,10 +484,10 @@
 </span><span id="101" class="l"><a class="l" href="#101">101: </a>    <span class="php-comment">/**
 </span></span><span id="102" class="l"><a class="l" href="#102">102: </a><span class="php-comment">     * @return Stage
 </span></span><span id="103" class="l"><a class="l" href="#103">103: </a><span class="php-comment">     */</span>
-</span><span id="104" class="l"><a class="l" href="#104">104: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_frontendGradeType" href="#_frontendGradeType">frontendGradeType</a>()
+</span><span id="104" class="l"><a class="l" href="#104">104: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> <a id="_frontendGradeType" href="#_frontendGradeType">frontendGradeType</a>()
 </span><span id="105" class="l"><a class="l" href="#105">105: </a>    {
 </span><span id="106" class="l"><a class="l" href="#106">106: </a>
-</span><span id="107" class="l"><a class="l" href="#107">107: </a>        <span class="php-var">$this</span>-&gt;setupModuleNavigation();
+</span><span id="107" class="l"><a class="l" href="#107">107: </a>        self::setupModuleNavigation();
 </span><span id="108" class="l"><a class="l" href="#108">108: </a>        <span class="php-var">$View</span> = <span class="php-keyword1">new</span> Stage();
 </span><span id="109" class="l"><a class="l" href="#109">109: </a>        <span class="php-var">$View</span>-&gt;setTitle( <span class="php-quote">'Zensuren'</span> );
 </span><span id="110" class="l"><a class="l" href="#110">110: </a>        <span class="php-var">$View</span>-&gt;setMessage( <span class="php-quote">'Bitte wählen Sie ein Thema'</span> );
