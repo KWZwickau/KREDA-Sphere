@@ -21,8 +21,6 @@ class Authentication extends AbstractApplication
 
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {

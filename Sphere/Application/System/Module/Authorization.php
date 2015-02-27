@@ -19,8 +19,6 @@ class Authorization extends Protocol
 
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {

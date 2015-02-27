@@ -22,8 +22,6 @@ class Management extends Module\Education
 
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
@@ -52,8 +50,6 @@ class Management extends Module\Education
         /**
          * Observer
          */
-
-        return $Configuration;
     }
 
     /**

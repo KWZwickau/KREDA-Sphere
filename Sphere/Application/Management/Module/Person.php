@@ -19,8 +19,6 @@ class Person extends Account
 
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {

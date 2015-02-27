@@ -21,8 +21,6 @@ class MyAccount extends Authentication
 
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
@@ -42,7 +40,6 @@ class MyAccount extends Authentication
         self::registerClientRoute( self::$Configuration, '/Sphere/Gatekeeper/MyAccount/ChangeConsumer',
             __CLASS__.'::frontendChangeConsumer' )
             ->setParameterDefault( 'serviceGatekeeperConsumer', null );
-
     }
 
     /**

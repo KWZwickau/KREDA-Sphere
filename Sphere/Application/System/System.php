@@ -20,8 +20,6 @@ class System extends Module\Consumer
 
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
@@ -51,8 +49,6 @@ class System extends Module\Consumer
         /**
          * Observer
          */
-
-        return $Configuration;
     }
 
     /**

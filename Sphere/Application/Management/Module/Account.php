@@ -45,8 +45,6 @@ class Account extends Token
 
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
@@ -56,7 +54,6 @@ class Account extends Token
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Account', __CLASS__.'::frontendAccount'
         )->setParameterDefault( 'Account', null )->setParameterDefault( 'Id', null );
-
     }
 
     /**

@@ -28,8 +28,6 @@ class Gatekeeper extends Module\MyAccount
 
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
@@ -56,8 +54,6 @@ class Gatekeeper extends Module\MyAccount
          */
         Gatekeeper::observerDestroyAccount()->plugWire( new Plug( __CLASS__, 'listenerDestroyAccount' ) );
         Management::observerDestroyPerson()->plugWire( new Plug( __CLASS__, 'listenerDestroyPerson' ) );
-
-        return $Configuration;
     }
 
     /**
@@ -114,7 +110,6 @@ class Gatekeeper extends Module\MyAccount
     {
 
         return false;
-
 
     }
 

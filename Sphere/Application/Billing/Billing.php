@@ -20,8 +20,6 @@ class Billing extends AbstractApplication
 
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
@@ -39,8 +37,6 @@ class Billing extends AbstractApplication
          *
          */
         self::registerClientRoute( self::$Configuration, '/Sphere/Billing', __CLASS__.'::frontendBilling' );
-
-        return $Configuration;
     }
 
     /**

@@ -30,18 +30,21 @@ use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 class Demo extends AbstractApplication
 {
 
+    /** @var Configuration $Config */
+    private static $Configuration = null;
+
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
 
-        self::addClientNavigationMain( $Configuration, '/Sphere/Demo', 'Demo-Modul', new TaskIcon() );
+        self::$Configuration = $Configuration;
 
-        self::registerClientRoute( $Configuration, '/Sphere/Demo', __CLASS__.'::frontendDemo' )
-        ->setParameterDefault( 'DemoCompleter', null );
+        self::addClientNavigationMain( self::$Configuration, '/Sphere/Demo', 'Demo-Modul', new TaskIcon() );
+
+        self::registerClientRoute( self::$Configuration, '/Sphere/Demo', __CLASS__.'::frontendDemo' )
+            ->setParameterDefault( 'DemoCompleter', null );
     }
 
     /**
@@ -56,16 +59,15 @@ class Demo extends AbstractApplication
         $View->setMessage( 'Test' );
 
         $tblDemoCompleterList = self::serviceDemoService()->entityDemoCompleterAll();
-        if( empty($tblDemoCompleterList) ) {
+        if (empty( $tblDemoCompleterList )) {
             $tblDemoCompleterList = array();
         }
-
 
         $tblDemoCompleterListSelect = array();
         /** @var DemoService\Entity\TblDemoCompleter $tblDemoCompleter */
 
         foreach ((array)$tblDemoCompleterList as $tblDemoCompleter) {
-           $tblDemoCompleterListSelect[$tblDemoCompleter->getId()] = $tblDemoCompleter->getName();
+            $tblDemoCompleterListSelect[$tblDemoCompleter->getId()] = $tblDemoCompleter->getName();
         }
 
         $DemoText = new InputText( 'DemoText', 'DemoText', 'DemoText' );
@@ -77,24 +79,24 @@ class Demo extends AbstractApplication
             .
 
             Demo::serviceDemoService()->executeCreateDemo(
-            new FormDefault(
-                new GridFormGroup(
-                    new GridFormRow( array(
-                        new GridFormCol( array(
-                                new InputCompleter( 'DemoCompleter', 'DemoCompleter', 'DemoCompleter',
-                                    $tblDemoCompleterListSelect, new BookIcon() ),
-                                new InputDate( 'DemoDate', 'DemoDate', 'DemoDate' ),
-                                new InputFile( 'DemoFile', 'DemoFile', 'DemoFile' ),
-                                new InputPassword( 'DemoPassword', 'DemoPassword', 'DemoPassword' ),
-                                new InputSelect( 'DemoSelect', 'DemoSelect', $tblDemoCompleterListSelect ),
-                                $DemoText,
-                                new InputTextArea( 'DemoTextArea', 'DemoTextArea', 'DemoTextArea' )
+                new FormDefault(
+                    new GridFormGroup(
+                        new GridFormRow( array(
+                            new GridFormCol( array(
+                                    new InputCompleter( 'DemoCompleter', 'DemoCompleter', 'DemoCompleter',
+                                        $tblDemoCompleterListSelect, new BookIcon() ),
+                                    new InputDate( 'DemoDate', 'DemoDate', 'DemoDate' ),
+                                    new InputFile( 'DemoFile', 'DemoFile', 'DemoFile' ),
+                                    new InputPassword( 'DemoPassword', 'DemoPassword', 'DemoPassword' ),
+                                    new InputSelect( 'DemoSelect', 'DemoSelect', $tblDemoCompleterListSelect ),
+                                    $DemoText,
+                                    new InputTextArea( 'DemoTextArea', 'DemoTextArea', 'DemoTextArea' )
+                                )
                             )
-                        )
-                    ) )
-                )
-            , new ButtonSubmitPrimary( 'Speichern' ) )
-            , $DemoCompleter )
+                        ) )
+                    )
+                    , new ButtonSubmitPrimary( 'Speichern' ) )
+                , $DemoCompleter )
 
             .
 

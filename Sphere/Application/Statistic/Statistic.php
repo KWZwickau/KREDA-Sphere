@@ -19,8 +19,6 @@ class Statistic extends AbstractApplication
 
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
@@ -33,7 +31,6 @@ class Statistic extends AbstractApplication
             '/Sphere/Statistic', 'Statistik', new StatisticIcon()
         );
         self::registerClientRoute( self::$Configuration, '/Sphere/Statistic', __CLASS__.'::frontendStatistic' );
-        return $Configuration;
     }
 
     /**

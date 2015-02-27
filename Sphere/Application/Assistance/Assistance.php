@@ -22,11 +22,8 @@ class Assistance extends AbstractApplication
     /** @var Configuration $Config */
     private static $Configuration = null;
 
-
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
@@ -84,7 +81,6 @@ class Assistance extends AbstractApplication
             '/Sphere/Assistance/Support/Application/Fatal',
             __CLASS__.'::frontendApplicationFatal'
         );
-        return $Configuration;
     }
 
     /**

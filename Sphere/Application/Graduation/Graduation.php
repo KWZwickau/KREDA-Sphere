@@ -23,8 +23,6 @@ class Graduation extends AbstractApplication
 
     /**
      * @param Configuration $Configuration
-     *
-     * @return Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
@@ -43,8 +41,6 @@ class Graduation extends AbstractApplication
             __CLASS__.'::frontendGradeType' );
         $Route->setParameterDefault( 'GradeName', null );
         $Route->setParameterDefault( 'GradeAcronym', null );
-
-        return $Configuration;
     }
 
     /**
