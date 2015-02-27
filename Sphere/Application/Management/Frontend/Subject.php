@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Management\Frontend\Subject;
+namespace KREDA\Sphere\Application\Management\Frontend;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -7,7 +7,7 @@ use KREDA\Sphere\Common\AbstractFrontend;
 /**
  * Class Subject
  *
- * @package KREDA\Sphere\Application\Management\Subject
+ * @package KREDA\Sphere\Application\Management\Frontend
  */
 class Subject extends AbstractFrontend
 {

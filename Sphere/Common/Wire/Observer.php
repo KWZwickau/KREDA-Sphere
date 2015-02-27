@@ -63,7 +63,7 @@ class Observer
     /**
      * @param Data $Data
      *
-     * @return bool|string
+     * @return bool|Effect
      */
     public function sendWire( Data $Data )
     {
@@ -105,6 +105,6 @@ class Observer
         /**
          * It's red! :-/ .. return content for Stage
          */
-        return implode( (array)$Return );
+        return new Effect( $Return );
     }
 }

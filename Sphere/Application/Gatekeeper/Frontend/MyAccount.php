@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount;
+namespace KREDA\Sphere\Application\Gatekeeper\Frontend;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
@@ -28,7 +28,7 @@ use KREDA\Sphere\Common\Frontend\Table\Structure\TableDefault;
 /**
  * Class MyAccount
  *
- * @package KREDA\Sphere\Application\Gatekeeper\MyAccount
+ * @package KREDA\Sphere\Application\Gatekeeper\Frontend
  */
 class MyAccount extends AbstractFrontend
 {

@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountSession;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token;
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
 use KREDA\Sphere\Client\Configuration;
@@ -54,6 +55,7 @@ class Gatekeeper extends Module\MyAccount
          * Observer
          */
         Gatekeeper::observerDestroyAccount()->plugWire( new Plug( __CLASS__, 'listenerDestroyAccount' ) );
+        Management::observerDestroyPerson()->plugWire( new Plug( __CLASS__, 'listenerDestroyPerson' ) );
 
         return $Configuration;
     }
@@ -101,6 +103,19 @@ class Gatekeeper extends Module\MyAccount
     {
 
         return Access::getApi();
+    }
+
+    /**
+     * @param Data $Data
+     *
+     * @return bool|string
+     */
+    public static function listenerDestroyPerson( Data $Data )
+    {
+
+        return false;
+
+
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Gatekeeper\Module;
 
-use KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount\MyAccount as Frontend;
+use KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount as Frontend;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;

@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Module;
 
-use KREDA\Sphere\Application\Management\Frontend\Subject\Subject;
+use KREDA\Sphere\Application\Management\Frontend\Subject;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Configuration;
 

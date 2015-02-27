@@ -1,6 +1,8 @@
 <?php
-namespace KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication;
+namespace KREDA\Sphere\Application\Gatekeeper\Frontend;
 
+use KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\SignIn;
+use KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\SignOut;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -11,7 +13,7 @@ use KREDA\Sphere\Common\Frontend\Button\Structure\GroupDefault;
 /**
  * Class Authentication
  *
- * @package KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication
+ * @package KREDA\Sphere\Application\Gatekeeper\Frontend
  */
 class Authentication extends AbstractFrontend
 {
