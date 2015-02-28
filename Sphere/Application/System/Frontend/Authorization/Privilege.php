@@ -152,7 +152,7 @@ class Privilege extends Right
 
             $V->Option =
                 '<div class="pull-right">'
-                .$F = new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                         $Id,
                         $Right,
                         $Remove,

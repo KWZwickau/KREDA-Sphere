@@ -31,7 +31,7 @@ class Screen extends AbstractContent implements IElementInterface
     {
 
         $this->Template = $this->extensionTemplate( __DIR__.'/Screen.twig' );
-        $this->Template->setVariable( 'PathBase', $PathBase = $this->extensionRequest()->getPathBase() );
+        $this->Template->setVariable( 'PathBase', $this->extensionRequest()->getPathBase() );
     }
 
     /**

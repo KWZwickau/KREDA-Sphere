@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1425142924">
-  <project timestamp="1425142924">
+<coverage generated="1425143611">
+  <project timestamp="1425143611">
     <package name="KREDA\Sphere\Application\Assistance">
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Assistance/Assistance.php">
         <class name="Assistance" namespace="KREDA\Sphere\Application\Assistance" fullPackage="KREDA" package="KREDA">
@@ -5277,7 +5277,7 @@
         <class name="Statistic" namespace="KREDA\Sphere\Application\Statistic" fullPackage="KREDA" package="KREDA">
           <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
         </class>
-        <line num="23" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="22" type="method" name="registerApplication" crap="2" count="0"/>
         <line num="28" type="stmt" count="0"/>
         <line num="29" type="stmt" count="0"/>
         <line num="33" type="stmt" count="0"/>
@@ -10647,12 +10647,12 @@
           <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="6" coveredelements="6"/>
         </class>
         <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
-        <line num="16" type="stmt" count="1"/>
         <line num="17" type="stmt" count="1"/>
         <line num="18" type="stmt" count="1"/>
         <line num="19" type="stmt" count="1"/>
         <line num="20" type="stmt" count="1"/>
-        <metrics loc="21" ncloc="16" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="6" coveredelements="6"/>
+        <line num="21" type="stmt" count="1"/>
+        <metrics loc="22" ncloc="17" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="6" coveredelements="6"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Management/SchemaTest.php">
         <class name="SchemaTest" namespace="KREDA\TestSuite\Tests\Application\Management" fullPackage="KREDA" package="KREDA">
@@ -10946,6 +10946,6 @@
         <metrics loc="63" ncloc="48" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="25" coveredstatements="25" elements="29" coveredelements="29"/>
       </file>
     </package>
-    <metrics files="320" loc="24209" ncloc="16971" classes="314" methods="1163" coveredmethods="121" conditionals="0" coveredconditionals="0" statements="8069" coveredstatements="495" elements="9232" coveredelements="616"/>
+    <metrics files="320" loc="24210" ncloc="16972" classes="314" methods="1163" coveredmethods="121" conditionals="0" coveredconditionals="0" statements="8069" coveredstatements="495" elements="9232" coveredelements="616"/>
   </project>
 </coverage>

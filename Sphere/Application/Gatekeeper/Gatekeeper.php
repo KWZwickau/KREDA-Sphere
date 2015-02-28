@@ -36,7 +36,7 @@ class Gatekeeper extends Module\MyAccount
         /**
          * Navigation
          */
-        if (( $ValidSession = self::serviceAccount()->checkIsValidSession() )) {
+        if (self::serviceAccount()->checkIsValidSession()) {
             self::addClientNavigationMeta( self::$Configuration,
                 '/Sphere/Gatekeeper/SignOut', 'Abmelden', new OffIcon()
             );

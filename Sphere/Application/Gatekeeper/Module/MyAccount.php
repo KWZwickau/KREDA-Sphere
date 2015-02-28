@@ -26,7 +26,7 @@ class MyAccount extends Authentication
     {
 
         self::$Configuration = $Configuration;
-        if (( $ValidSession = Gatekeeper::serviceAccount()->checkIsValidSession() )) {
+        if (Gatekeeper::serviceAccount()->checkIsValidSession()) {
             self::addClientNavigationMeta( self::$Configuration,
                 '/Sphere/Gatekeeper/MyAccount', 'Mein Account', new PersonIcon()
             );

@@ -64,8 +64,8 @@ class Protocol extends AbstractFrontend
                     ) )
                 ) )
             );
-            $DataOrigin = Protocol::fixObject( unserialize( $V->getEntityFrom() ) );
-            $DataCommit = Protocol::fixObject( unserialize( $V->getEntityTo() ) );
+            $DataOrigin = self::fixObject( unserialize( $V->getEntityFrom() ) );
+            $DataCommit = self::fixObject( unserialize( $V->getEntityTo() ) );
 
             if ($DataOrigin && $DataCommit) {
                 $Data = (array)$DataOrigin;

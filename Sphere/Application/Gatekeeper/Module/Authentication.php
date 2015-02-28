@@ -30,7 +30,7 @@ class Authentication extends AbstractApplication
         /**
          * Authentication
          */
-        if (( $ValidSession = Gatekeeper::serviceAccount()->checkIsValidSession() )) {
+        if (Gatekeeper::serviceAccount()->checkIsValidSession()) {
             self::registerClientRoute( self::$Configuration, '/', __CLASS__.'::frontendStatus' );
         } else {
             self::registerClientRoute( self::$Configuration, '/', __CLASS__.'::frontendSignInSwitch' );
