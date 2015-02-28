@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\TestSuite\Tests\Application\System;
+namespace KREDA\TestSuite\Tests\Application\Assistance;
 
 use KREDA\TestSuite\Tests\Application\AbstractServiceTest;
 
@@ -14,8 +14,7 @@ class ServiceTest extends AbstractServiceTest
     public function testCodeStyle()
     {
 
-        $Namespace = '\System\Service';
-        $this->checkMethodName( $Namespace.'\Protocol' );
-        $this->checkMethodName( $Namespace.'\Update' );
+        $Namespace = '\Assistance\Service';
+        $this->checkMethodName( $Namespace.'\Youtrack' );
     }
 }

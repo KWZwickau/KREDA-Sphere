@@ -6,15 +6,8 @@ namespace KREDA\TestSuite\Tests\Application;
  *
  * @package KREDA\TestSuite\Tests\Application
  */
-abstract class AbstractActionTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractActionTest extends \PHPUnit_Framework_TestCase implements IAbstractTest
 {
-
-    /**
-     * $this->checkMethodName( '\ApplicationDirectory\ClassFile' );
-     *
-     * @return void
-     */
-    abstract public function testCodeStyle();
 
     /**
      * @param string $Action

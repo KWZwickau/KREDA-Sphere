@@ -15,5 +15,11 @@ class ApplicationTest extends AbstractApplicationTest
     {
 
         $this->checkMethodName( '\Management\Management' );
+        $this->checkMethodName( '\Management\Module\Account' );
+        $this->checkMethodName( '\Management\Module\Campus' );
+        $this->checkMethodName( '\Management\Module\Common' );
+        $this->checkMethodName( '\Management\Module\Education' );
+        $this->checkMethodName( '\Management\Module\Person' );
+        $this->checkMethodName( '\Management\Module\Token' );
     }
 }

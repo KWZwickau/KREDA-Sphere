@@ -15,7 +15,7 @@ class Subject extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function guiSubject()
+    public static function stageSubject()
     {
 
         $View = new Stage();

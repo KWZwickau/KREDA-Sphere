@@ -15,9 +15,9 @@ class FrontendTest extends AbstractFrontendTest
     {
 
         $Namespace = '\Gatekeeper\Frontend';
-        $this->checkMethodName( $Namespace.'\Authentication\Authentication' );
+        $this->checkMethodName( $Namespace.'\Authentication' );
         $this->checkMethodName( $Namespace.'\Authentication\SignIn' );
         $this->checkMethodName( $Namespace.'\Authentication\SignOut' );
-        $this->checkMethodName( $Namespace.'\MyAccount\MyAccount' );
+        $this->checkMethodName( $Namespace.'\MyAccount' );
     }
 }

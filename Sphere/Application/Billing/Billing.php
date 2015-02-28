@@ -1,8 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Billing;
 
-use KREDA\Sphere\Application\Billing\Frontend\Summary\Summary;
-use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
@@ -33,20 +31,6 @@ class Billing extends AbstractApplication
          * Navigation
          */
         self::addClientNavigationMain( self::$Configuration, '/Sphere/Billing', 'Fakturierung', new MoneyIcon() );
-        /**
-         *
-         */
-        self::registerClientRoute( self::$Configuration, '/Sphere/Billing', __CLASS__.'::frontendBilling' );
-    }
-
-    /**
-     * @return Stage
-     */
-    public static function frontendBilling()
-    {
-
-        self::setupModuleNavigation();
-        return Summary::stageSummary();
     }
 
     /**
@@ -55,6 +39,5 @@ class Billing extends AbstractApplication
     protected static function setupModuleNavigation()
     {
 
-        self::addModuleNavigationMain( self::$Configuration, '/Sphere/Billing', 'Fakturierung', new MoneyIcon() );
     }
 }

@@ -15,7 +15,11 @@ class FrontendTest extends AbstractFrontendTest
     {
 
         $Namespace = '\System\Frontend';
+        $this->checkMethodName( $Namespace.'\Authorization\Access' );
         $this->checkMethodName( $Namespace.'\Authorization\Authorization' );
+        $this->checkMethodName( $Namespace.'\Authorization\Privilege' );
+        $this->checkMethodName( $Namespace.'\Authorization\Right' );
+        $this->checkMethodName( $Namespace.'\Authorization\Role' );
         $this->checkMethodName( $Namespace.'\Token\Token' );
         $this->checkMethodName( $Namespace.'\Cache' );
         $this->checkMethodName( $Namespace.'\Consumer' );

@@ -48,6 +48,6 @@ class Education extends Campus
     {
 
         self::setupModuleNavigation();
-        return Subject::guiSubject();
+        return Subject::stageSubject();
     }
 }

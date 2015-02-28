@@ -1,55 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1424984328">
-  <project timestamp="1424984328">
+<coverage generated="1425142924">
+  <project timestamp="1425142924">
     <package name="KREDA\Sphere\Application\Assistance">
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Assistance/Assistance.php">
         <class name="Assistance" namespace="KREDA\Sphere\Application\Assistance" fullPackage="KREDA" package="KREDA">
           <metrics methods="14" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="88" coveredstatements="0" elements="102" coveredelements="0"/>
         </class>
-        <line num="31" type="method" name="registerApplication" crap="6" count="0"/>
+        <line num="28" type="method" name="registerApplication" crap="6" count="0"/>
+        <line num="31" type="stmt" count="0"/>
+        <line num="33" type="stmt" count="0"/>
         <line num="34" type="stmt" count="0"/>
-        <line num="36" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="0"/>
         <line num="37" type="stmt" count="0"/>
         <line num="38" type="stmt" count="0"/>
         <line num="40" type="stmt" count="0"/>
         <line num="41" type="stmt" count="0"/>
+        <line num="42" type="stmt" count="0"/>
         <line num="43" type="stmt" count="0"/>
-        <line num="44" type="stmt" count="0"/>
         <line num="45" type="stmt" count="0"/>
-        <line num="46" type="stmt" count="0"/>
-        <line num="48" type="stmt" count="0"/>
+        <line num="49" type="stmt" count="0"/>
+        <line num="50" type="stmt" count="0"/>
         <line num="52" type="stmt" count="0"/>
         <line num="53" type="stmt" count="0"/>
-        <line num="55" type="stmt" count="0"/>
-        <line num="56" type="stmt" count="0"/>
+        <line num="57" type="stmt" count="0"/>
+        <line num="58" type="stmt" count="0"/>
         <line num="60" type="stmt" count="0"/>
         <line num="61" type="stmt" count="0"/>
-        <line num="63" type="stmt" count="0"/>
+        <line num="62" type="stmt" count="0"/>
         <line num="64" type="stmt" count="0"/>
-        <line num="65" type="stmt" count="0"/>
-        <line num="67" type="stmt" count="0"/>
+        <line num="68" type="stmt" count="0"/>
+        <line num="69" type="stmt" count="0"/>
         <line num="71" type="stmt" count="0"/>
         <line num="72" type="stmt" count="0"/>
-        <line num="74" type="stmt" count="0"/>
+        <line num="73" type="stmt" count="0"/>
         <line num="75" type="stmt" count="0"/>
         <line num="76" type="stmt" count="0"/>
-        <line num="78" type="stmt" count="0"/>
+        <line num="77" type="stmt" count="0"/>
         <line num="79" type="stmt" count="0"/>
         <line num="80" type="stmt" count="0"/>
-        <line num="82" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
         <line num="83" type="stmt" count="0"/>
         <line num="84" type="stmt" count="0"/>
-        <line num="86" type="stmt" count="0"/>
-        <line num="87" type="stmt" count="0"/>
-        <line num="93" type="method" name="serviceYoutrack" crap="2" count="0"/>
-        <line num="96" type="stmt" count="0"/>
-        <line num="102" type="method" name="frontendAssistance" crap="2" count="0"/>
+        <line num="89" type="method" name="serviceYoutrack" crap="2" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="98" type="method" name="frontendAssistance" crap="2" count="0"/>
+        <line num="101" type="stmt" count="0"/>
+        <line num="102" type="stmt" count="0"/>
+        <line num="103" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
         <line num="105" type="stmt" count="0"/>
-        <line num="106" type="stmt" count="0"/>
-        <line num="107" type="stmt" count="0"/>
-        <line num="108" type="stmt" count="0"/>
-        <line num="109" type="stmt" count="0"/>
-        <line num="115" type="method" name="setupModuleNavigation" crap="6" count="0"/>
+        <line num="111" type="method" name="setupModuleNavigation" crap="6" count="0"/>
+        <line num="114" type="stmt" count="0"/>
+        <line num="115" type="stmt" count="0"/>
+        <line num="116" type="stmt" count="0"/>
+        <line num="117" type="stmt" count="0"/>
         <line num="118" type="stmt" count="0"/>
         <line num="119" type="stmt" count="0"/>
         <line num="120" type="stmt" count="0"/>
@@ -58,58 +62,54 @@
         <line num="123" type="stmt" count="0"/>
         <line num="124" type="stmt" count="0"/>
         <line num="125" type="stmt" count="0"/>
-        <line num="126" type="stmt" count="0"/>
-        <line num="127" type="stmt" count="0"/>
-        <line num="128" type="stmt" count="0"/>
-        <line num="129" type="stmt" count="0"/>
-        <line num="134" type="method" name="frontendAccount" crap="2" count="0"/>
-        <line num="137" type="stmt" count="0"/>
-        <line num="138" type="stmt" count="0"/>
-        <line num="139" type="stmt" count="0"/>
-        <line num="145" type="method" name="setupFrontendAccount" crap="2" count="0"/>
+        <line num="130" type="method" name="frontendAccount" crap="2" count="0"/>
+        <line num="133" type="stmt" count="0"/>
+        <line num="134" type="stmt" count="0"/>
+        <line num="135" type="stmt" count="0"/>
+        <line num="141" type="method" name="setupFrontendAccount" crap="2" count="0"/>
+        <line num="144" type="stmt" count="0"/>
+        <line num="145" type="stmt" count="0"/>
+        <line num="146" type="stmt" count="0"/>
         <line num="148" type="stmt" count="0"/>
-        <line num="149" type="stmt" count="0"/>
-        <line num="150" type="stmt" count="0"/>
-        <line num="152" type="stmt" count="0"/>
-        <line num="157" type="method" name="frontendAccountForgottenPassword" crap="2" count="0"/>
-        <line num="160" type="stmt" count="0"/>
-        <line num="161" type="stmt" count="0"/>
-        <line num="162" type="stmt" count="0"/>
-        <line num="168" type="method" name="frontendApplication" crap="2" count="0"/>
-        <line num="171" type="stmt" count="0"/>
-        <line num="172" type="stmt" count="0"/>
-        <line num="173" type="stmt" count="0"/>
-        <line num="179" type="method" name="setupFrontendApplication" crap="2" count="0"/>
+        <line num="153" type="method" name="frontendAccountForgottenPassword" crap="2" count="0"/>
+        <line num="156" type="stmt" count="0"/>
+        <line num="157" type="stmt" count="0"/>
+        <line num="158" type="stmt" count="0"/>
+        <line num="164" type="method" name="frontendApplication" crap="2" count="0"/>
+        <line num="167" type="stmt" count="0"/>
+        <line num="168" type="stmt" count="0"/>
+        <line num="169" type="stmt" count="0"/>
+        <line num="175" type="method" name="setupFrontendApplication" crap="2" count="0"/>
+        <line num="178" type="stmt" count="0"/>
+        <line num="179" type="stmt" count="0"/>
+        <line num="180" type="stmt" count="0"/>
+        <line num="181" type="stmt" count="0"/>
         <line num="182" type="stmt" count="0"/>
         <line num="183" type="stmt" count="0"/>
         <line num="184" type="stmt" count="0"/>
         <line num="185" type="stmt" count="0"/>
         <line num="186" type="stmt" count="0"/>
-        <line num="187" type="stmt" count="0"/>
         <line num="188" type="stmt" count="0"/>
-        <line num="189" type="stmt" count="0"/>
-        <line num="190" type="stmt" count="0"/>
-        <line num="192" type="stmt" count="0"/>
-        <line num="198" type="method" name="frontendSupport" crap="2" count="0"/>
-        <line num="201" type="stmt" count="0"/>
-        <line num="202" type="stmt" count="0"/>
-        <line num="211" type="method" name="frontendSupportTicket" crap="2" count="0"/>
-        <line num="214" type="stmt" count="0"/>
-        <line num="215" type="stmt" count="0"/>
-        <line num="221" type="method" name="frontendApplicationLaunch" crap="2" count="0"/>
-        <line num="224" type="stmt" count="0"/>
-        <line num="225" type="stmt" count="0"/>
-        <line num="226" type="stmt" count="0"/>
-        <line num="232" type="method" name="frontendApplicationMissing" crap="2" count="0"/>
-        <line num="235" type="stmt" count="0"/>
-        <line num="236" type="stmt" count="0"/>
-        <line num="237" type="stmt" count="0"/>
-        <line num="243" type="method" name="frontendApplicationFatal" crap="2" count="0"/>
-        <line num="246" type="stmt" count="0"/>
-        <line num="247" type="stmt" count="0"/>
-        <line num="248" type="stmt" count="0"/>
-        <line num="251" type="stmt" count="1"/>
-        <metrics loc="250" ncloc="188" classes="1" methods="14" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="88" coveredstatements="0" elements="102" coveredelements="0"/>
+        <line num="194" type="method" name="frontendSupport" crap="2" count="0"/>
+        <line num="197" type="stmt" count="0"/>
+        <line num="198" type="stmt" count="0"/>
+        <line num="207" type="method" name="frontendSupportTicket" crap="2" count="0"/>
+        <line num="210" type="stmt" count="0"/>
+        <line num="211" type="stmt" count="0"/>
+        <line num="217" type="method" name="frontendApplicationLaunch" crap="2" count="0"/>
+        <line num="220" type="stmt" count="0"/>
+        <line num="221" type="stmt" count="0"/>
+        <line num="222" type="stmt" count="0"/>
+        <line num="228" type="method" name="frontendApplicationMissing" crap="2" count="0"/>
+        <line num="231" type="stmt" count="0"/>
+        <line num="232" type="stmt" count="0"/>
+        <line num="233" type="stmt" count="0"/>
+        <line num="239" type="method" name="frontendApplicationFatal" crap="2" count="0"/>
+        <line num="242" type="stmt" count="0"/>
+        <line num="243" type="stmt" count="0"/>
+        <line num="244" type="stmt" count="0"/>
+        <line num="247" type="stmt" count="1"/>
+        <metrics loc="246" ncloc="186" classes="1" methods="14" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="88" coveredstatements="0" elements="102" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\Assistance\Frontend">
@@ -295,10 +295,9 @@
     <package name="KREDA\Sphere\Application\Assistance\Service">
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Assistance/Service/Youtrack.php">
         <class name="Youtrack" namespace="KREDA\Sphere\Application\Assistance\Service" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="37" coveredstatements="0" elements="38" coveredelements="0"/>
+          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="0" elements="27" coveredelements="0"/>
         </class>
         <line num="25" type="method" name="executeCreateTicket" crap="110" count="0"/>
-        <line num="26" type="stmt" count="0"/>
         <line num="28" type="stmt" count="0"/>
         <line num="29" type="stmt" count="0"/>
         <line num="30" type="stmt" count="0"/>
@@ -307,7 +306,6 @@
         <line num="33" type="stmt" count="0"/>
         <line num="34" type="stmt" count="0"/>
         <line num="35" type="stmt" count="0"/>
-        <line num="36" type="stmt" count="0"/>
         <line num="37" type="stmt" count="0"/>
         <line num="38" type="stmt" count="0"/>
         <line num="39" type="stmt" count="0"/>
@@ -315,90 +313,65 @@
         <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
         <line num="43" type="stmt" count="0"/>
-        <line num="44" type="stmt" count="0"/>
         <line num="46" type="stmt" count="0"/>
-        <line num="50" type="stmt" count="0"/>
         <line num="51" type="stmt" count="0"/>
         <line num="52" type="stmt" count="0"/>
         <line num="53" type="stmt" count="0"/>
         <line num="54" type="stmt" count="0"/>
         <line num="55" type="stmt" count="0"/>
-        <line num="56" type="stmt" count="0"/>
-        <line num="57" type="stmt" count="0"/>
-        <line num="61" type="stmt" count="0"/>
         <line num="62" type="stmt" count="0"/>
         <line num="63" type="stmt" count="0"/>
         <line num="64" type="stmt" count="0"/>
         <line num="65" type="stmt" count="0"/>
         <line num="66" type="stmt" count="0"/>
-        <line num="67" type="stmt" count="0"/>
-        <line num="68" type="stmt" count="0"/>
-        <line num="69" type="stmt" count="0"/>
-        <metrics loc="71" ncloc="53" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="37" coveredstatements="0" elements="38" coveredelements="0"/>
+        <line num="72" type="stmt" count="1"/>
+        <metrics loc="71" ncloc="53" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="0" elements="27" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\Billing">
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Billing/Billing.php">
         <class name="Billing" namespace="KREDA\Sphere\Application\Billing" fullPackage="KREDA" package="KREDA">
-          <metrics methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="0" elements="12" coveredelements="0"/>
+          <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="7" coveredelements="0"/>
         </class>
-        <line num="26" type="method" name="registerApplication" crap="2" count="0"/>
-        <line num="32" type="stmt" count="0"/>
+        <line num="22" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="28" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
         <line num="33" type="stmt" count="0"/>
-        <line num="37" type="stmt" count="0"/>
-        <line num="41" type="stmt" count="0"/>
-        <line num="43" type="stmt" count="0"/>
-        <line num="49" type="method" name="frontendBilling" crap="2" count="0"/>
-        <line num="52" type="stmt" count="0"/>
-        <line num="53" type="stmt" count="0"/>
-        <line num="59" type="method" name="setupModuleNavigation" crap="2" count="0"/>
-        <line num="62" type="stmt" count="0"/>
-        <line num="63" type="stmt" count="0"/>
-        <line num="65" type="stmt" count="1"/>
-        <metrics loc="64" ncloc="38" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="0" elements="12" coveredelements="0"/>
-      </file>
-    </package>
-    <package name="KREDA\Sphere\Application\Billing\Frontend\Summary">
-      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Billing/Frontend/Summary/Summary.php">
-        <class name="Summary" namespace="KREDA\Sphere\Application\Billing\Frontend\Summary" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="3" coveredelements="0"/>
-        </class>
-        <line num="18" type="method" name="stageSummary" crap="2" count="0"/>
-        <line num="21" type="stmt" count="0"/>
-        <line num="22" type="stmt" count="0"/>
-        <line num="25" type="stmt" count="1"/>
-        <metrics loc="24" ncloc="16" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="3" coveredelements="0"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="39" type="method" name="setupModuleNavigation" crap="2" count="0"/>
+        <line num="42" type="stmt" count="0"/>
+        <line num="44" type="stmt" count="1"/>
+        <metrics loc="43" ncloc="25" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="7" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\Demo">
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Demo/Demo.php">
         <class name="Demo" namespace="KREDA\Sphere\Application\Demo" fullPackage="KREDA" package="KREDA">
-          <metrics methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="47" coveredstatements="0" elements="51" coveredelements="0"/>
+          <metrics methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="48" coveredstatements="0" elements="52" coveredelements="0"/>
         </class>
-        <line num="38" type="method" name="registerApplication" crap="2" count="0"/>
-        <line num="41" type="stmt" count="0"/>
-        <line num="43" type="stmt" count="0"/>
+        <line num="39" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="42" type="stmt" count="0"/>
         <line num="44" type="stmt" count="0"/>
-        <line num="45" type="stmt" count="0"/>
-        <line num="50" type="method" name="frontendDemo" crap="12" count="0"/>
-        <line num="53" type="stmt" count="0"/>
-        <line num="54" type="stmt" count="0"/>
-        <line num="55" type="stmt" count="0"/>
+        <line num="46" type="stmt" count="0"/>
+        <line num="47" type="stmt" count="0"/>
+        <line num="48" type="stmt" count="0"/>
+        <line num="53" type="method" name="frontendDemo" crap="12" count="0"/>
         <line num="56" type="stmt" count="0"/>
+        <line num="57" type="stmt" count="0"/>
         <line num="58" type="stmt" count="0"/>
         <line num="59" type="stmt" count="0"/>
-        <line num="60" type="stmt" count="0"/>
         <line num="61" type="stmt" count="0"/>
+        <line num="62" type="stmt" count="0"/>
+        <line num="63" type="stmt" count="0"/>
         <line num="64" type="stmt" count="0"/>
-        <line num="67" type="stmt" count="0"/>
-        <line num="68" type="stmt" count="0"/>
+        <line num="66" type="stmt" count="0"/>
         <line num="69" type="stmt" count="0"/>
+        <line num="70" type="stmt" count="0"/>
         <line num="71" type="stmt" count="0"/>
-        <line num="72" type="stmt" count="0"/>
         <line num="73" type="stmt" count="0"/>
+        <line num="74" type="stmt" count="0"/>
         <line num="75" type="stmt" count="0"/>
-        <line num="79" type="stmt" count="0"/>
-        <line num="80" type="stmt" count="0"/>
+        <line num="77" type="stmt" count="0"/>
         <line num="81" type="stmt" count="0"/>
         <line num="82" type="stmt" count="0"/>
         <line num="83" type="stmt" count="0"/>
@@ -416,18 +389,20 @@
         <line num="95" type="stmt" count="0"/>
         <line num="96" type="stmt" count="0"/>
         <line num="97" type="stmt" count="0"/>
+        <line num="98" type="stmt" count="0"/>
         <line num="99" type="stmt" count="0"/>
         <line num="101" type="stmt" count="0"/>
-        <line num="102" type="stmt" count="0"/>
         <line num="103" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
         <line num="105" type="stmt" count="0"/>
-        <line num="106" type="stmt" count="0"/>
-        <line num="112" type="method" name="serviceDemoService" crap="2" count="0"/>
-        <line num="115" type="stmt" count="0"/>
-        <line num="121" type="method" name="setupModuleNavigation" crap="2" count="0"/>
-        <line num="124" type="stmt" count="0"/>
-        <line num="126" type="stmt" count="1"/>
-        <metrics loc="125" ncloc="105" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="47" coveredstatements="0" elements="51" coveredelements="0"/>
+        <line num="107" type="stmt" count="0"/>
+        <line num="108" type="stmt" count="0"/>
+        <line num="114" type="method" name="serviceDemoService" crap="2" count="0"/>
+        <line num="117" type="stmt" count="0"/>
+        <line num="123" type="method" name="setupModuleNavigation" crap="2" count="0"/>
+        <line num="126" type="stmt" count="0"/>
+        <line num="128" type="stmt" count="1"/>
+        <metrics loc="127" ncloc="108" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="48" coveredstatements="0" elements="52" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\Demo\Service">
@@ -529,28 +504,26 @@
         <metrics loc="62" ncloc="34" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="19" coveredstatements="0" elements="21" coveredelements="0"/>
       </file>
     </package>
-    <package name="KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication">
-      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Frontend/Authentication/Authentication.php">
-        <class name="Authentication" namespace="KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication" fullPackage="KREDA" package="KREDA">
+    <package name="KREDA\Sphere\Application\Gatekeeper\Frontend">
+      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Frontend/Authentication.php">
+        <class name="Authentication" namespace="KREDA\Sphere\Application\Gatekeeper\Frontend" fullPackage="KREDA" package="KREDA">
           <metrics methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="0" elements="37" coveredelements="0"/>
         </class>
-        <line num="22" type="method" name="stageStatus" crap="2" count="0"/>
-        <line num="25" type="stmt" count="0"/>
-        <line num="26" type="stmt" count="0"/>
+        <line num="24" type="method" name="stageStatus" crap="2" count="0"/>
         <line num="27" type="stmt" count="0"/>
         <line num="28" type="stmt" count="0"/>
         <line num="29" type="stmt" count="0"/>
-        <line num="39" type="method" name="stageSignInTeacher" crap="2" count="0"/>
-        <line num="42" type="stmt" count="0"/>
-        <line num="52" type="method" name="stageSignInSystem" crap="2" count="0"/>
-        <line num="55" type="stmt" count="0"/>
-        <line num="64" type="method" name="stageSignInStudent" crap="2" count="0"/>
-        <line num="67" type="stmt" count="0"/>
-        <line num="77" type="method" name="stageSignInManagement" crap="2" count="0"/>
-        <line num="80" type="stmt" count="0"/>
-        <line num="86" type="method" name="stageSignInSwitch" crap="2" count="0"/>
-        <line num="89" type="stmt" count="0"/>
-        <line num="90" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <line num="31" type="stmt" count="0"/>
+        <line num="41" type="method" name="stageSignInTeacher" crap="2" count="0"/>
+        <line num="44" type="stmt" count="0"/>
+        <line num="54" type="method" name="stageSignInSystem" crap="2" count="0"/>
+        <line num="57" type="stmt" count="0"/>
+        <line num="66" type="method" name="stageSignInStudent" crap="2" count="0"/>
+        <line num="69" type="stmt" count="0"/>
+        <line num="79" type="method" name="stageSignInManagement" crap="2" count="0"/>
+        <line num="82" type="stmt" count="0"/>
+        <line num="88" type="method" name="stageSignInSwitch" crap="2" count="0"/>
         <line num="91" type="stmt" count="0"/>
         <line num="92" type="stmt" count="0"/>
         <line num="93" type="stmt" count="0"/>
@@ -569,132 +542,15 @@
         <line num="106" type="stmt" count="0"/>
         <line num="107" type="stmt" count="0"/>
         <line num="108" type="stmt" count="0"/>
-        <line num="114" type="method" name="stageSignOut" crap="2" count="0"/>
-        <line num="117" type="stmt" count="0"/>
-        <line num="120" type="stmt" count="1"/>
-        <metrics loc="119" ncloc="78" classes="1" methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="0" elements="37" coveredelements="0"/>
-      </file>
-      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Frontend/Authentication/SignIn.php">
-        <class name="SignIn" namespace="KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication" fullPackage="KREDA" package="KREDA">
-          <metrics methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="93" coveredstatements="0" elements="97" coveredelements="0"/>
-        </class>
-        <line num="33" type="method" name="stageTeacher" crap="2" count="0"/>
-        <line num="36" type="stmt" count="0"/>
-        <line num="37" type="stmt" count="0"/>
-        <line num="38" type="stmt" count="0"/>
-        <line num="39" type="stmt" count="0"/>
-        <line num="40" type="stmt" count="0"/>
-        <line num="41" type="stmt" count="0"/>
-        <line num="42" type="stmt" count="0"/>
-        <line num="43" type="stmt" count="0"/>
-        <line num="44" type="stmt" count="0"/>
-        <line num="45" type="stmt" count="0"/>
-        <line num="46" type="stmt" count="0"/>
-        <line num="47" type="stmt" count="0"/>
-        <line num="48" type="stmt" count="0"/>
-        <line num="49" type="stmt" count="0"/>
-        <line num="50" type="stmt" count="0"/>
-        <line num="51" type="stmt" count="0"/>
-        <line num="52" type="stmt" count="0"/>
-        <line num="53" type="stmt" count="0"/>
-        <line num="54" type="stmt" count="0"/>
-        <line num="55" type="stmt" count="0"/>
-        <line num="56" type="stmt" count="0"/>
-        <line num="57" type="stmt" count="0"/>
-        <line num="58" type="stmt" count="0"/>
-        <line num="68" type="method" name="stageSystem" crap="2" count="0"/>
-        <line num="71" type="stmt" count="0"/>
-        <line num="72" type="stmt" count="0"/>
-        <line num="73" type="stmt" count="0"/>
-        <line num="74" type="stmt" count="0"/>
-        <line num="75" type="stmt" count="0"/>
-        <line num="76" type="stmt" count="0"/>
-        <line num="77" type="stmt" count="0"/>
-        <line num="78" type="stmt" count="0"/>
-        <line num="79" type="stmt" count="0"/>
-        <line num="80" type="stmt" count="0"/>
-        <line num="81" type="stmt" count="0"/>
-        <line num="82" type="stmt" count="0"/>
-        <line num="83" type="stmt" count="0"/>
-        <line num="84" type="stmt" count="0"/>
-        <line num="85" type="stmt" count="0"/>
-        <line num="86" type="stmt" count="0"/>
-        <line num="87" type="stmt" count="0"/>
-        <line num="88" type="stmt" count="0"/>
-        <line num="89" type="stmt" count="0"/>
-        <line num="90" type="stmt" count="0"/>
-        <line num="91" type="stmt" count="0"/>
-        <line num="92" type="stmt" count="0"/>
-        <line num="93" type="stmt" count="0"/>
-        <line num="102" type="method" name="stageStudent" crap="2" count="0"/>
-        <line num="105" type="stmt" count="0"/>
-        <line num="106" type="stmt" count="0"/>
-        <line num="107" type="stmt" count="0"/>
-        <line num="108" type="stmt" count="0"/>
         <line num="109" type="stmt" count="0"/>
         <line num="110" type="stmt" count="0"/>
-        <line num="112" type="stmt" count="0"/>
-        <line num="113" type="stmt" count="0"/>
-        <line num="114" type="stmt" count="0"/>
-        <line num="115" type="stmt" count="0"/>
-        <line num="116" type="stmt" count="0"/>
-        <line num="117" type="stmt" count="0"/>
-        <line num="118" type="stmt" count="0"/>
+        <line num="116" type="method" name="stageSignOut" crap="2" count="0"/>
         <line num="119" type="stmt" count="0"/>
-        <line num="120" type="stmt" count="0"/>
-        <line num="121" type="stmt" count="0"/>
-        <line num="122" type="stmt" count="0"/>
-        <line num="123" type="stmt" count="0"/>
-        <line num="124" type="stmt" count="0"/>
-        <line num="126" type="stmt" count="0"/>
-        <line num="128" type="stmt" count="0"/>
-        <line num="130" type="stmt" count="0"/>
-        <line num="132" type="stmt" count="0"/>
-        <line num="133" type="stmt" count="0"/>
-        <line num="143" type="method" name="stageManagement" crap="2" count="0"/>
-        <line num="146" type="stmt" count="0"/>
-        <line num="147" type="stmt" count="0"/>
-        <line num="148" type="stmt" count="0"/>
-        <line num="149" type="stmt" count="0"/>
-        <line num="150" type="stmt" count="0"/>
-        <line num="151" type="stmt" count="0"/>
-        <line num="152" type="stmt" count="0"/>
-        <line num="153" type="stmt" count="0"/>
-        <line num="154" type="stmt" count="0"/>
-        <line num="155" type="stmt" count="0"/>
-        <line num="156" type="stmt" count="0"/>
-        <line num="157" type="stmt" count="0"/>
-        <line num="158" type="stmt" count="0"/>
-        <line num="159" type="stmt" count="0"/>
-        <line num="160" type="stmt" count="0"/>
-        <line num="161" type="stmt" count="0"/>
-        <line num="162" type="stmt" count="0"/>
-        <line num="163" type="stmt" count="0"/>
-        <line num="164" type="stmt" count="0"/>
-        <line num="165" type="stmt" count="0"/>
-        <line num="166" type="stmt" count="0"/>
-        <line num="167" type="stmt" count="0"/>
-        <line num="168" type="stmt" count="0"/>
-        <line num="171" type="stmt" count="1"/>
-        <metrics loc="170" ncloc="138" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="93" coveredstatements="0" elements="97" coveredelements="0"/>
+        <line num="122" type="stmt" count="1"/>
+        <metrics loc="121" ncloc="80" classes="1" methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="0" elements="37" coveredelements="0"/>
       </file>
-      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Frontend/Authentication/SignOut.php">
-        <class name="SignOut" namespace="KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
-        </class>
-        <line num="19" type="method" name="stageSignOut" crap="2" count="0"/>
-        <line num="22" type="stmt" count="0"/>
-        <line num="23" type="stmt" count="0"/>
-        <line num="24" type="stmt" count="0"/>
-        <line num="25" type="stmt" count="0"/>
-        <line num="26" type="stmt" count="0"/>
-        <line num="29" type="stmt" count="1"/>
-        <metrics loc="28" ncloc="20" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
-      </file>
-    </package>
-    <package name="KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount">
-      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Frontend/MyAccount/MyAccount.php">
-        <class name="MyAccount" namespace="KREDA\Sphere\Application\Gatekeeper\Frontend\MyAccount" fullPackage="KREDA" package="KREDA">
+      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Frontend/MyAccount.php">
+        <class name="MyAccount" namespace="KREDA\Sphere\Application\Gatekeeper\Frontend" fullPackage="KREDA" package="KREDA">
           <metrics methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="124" coveredstatements="0" elements="127" coveredelements="0"/>
         </class>
         <line num="39" type="method" name="stageStatus" crap="56" count="0"/>
@@ -828,13 +684,16 @@
         <metrics loc="195" ncloc="172" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="124" coveredstatements="0" elements="127" coveredelements="0"/>
       </file>
     </package>
-    <package name="KREDA\Sphere\Application\Gatekeeper">
-      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Gatekeeper.php">
-        <class name="Gatekeeper" namespace="KREDA\Sphere\Application\Gatekeeper" fullPackage="KREDA" package="KREDA">
-          <metrics methods="9" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="41" coveredstatements="0" elements="50" coveredelements="0"/>
+    <package name="KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication">
+      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Frontend/Authentication/SignIn.php">
+        <class name="SignIn" namespace="KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication" fullPackage="KREDA" package="KREDA">
+          <metrics methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="93" coveredstatements="0" elements="97" coveredelements="0"/>
         </class>
-        <line num="33" type="method" name="registerApplication" crap="6" count="0"/>
+        <line num="33" type="method" name="stageTeacher" crap="2" count="0"/>
         <line num="36" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="0"/>
+        <line num="38" type="stmt" count="0"/>
+        <line num="39" type="stmt" count="0"/>
         <line num="40" type="stmt" count="0"/>
         <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
@@ -843,41 +702,160 @@
         <line num="45" type="stmt" count="0"/>
         <line num="46" type="stmt" count="0"/>
         <line num="47" type="stmt" count="0"/>
+        <line num="48" type="stmt" count="0"/>
+        <line num="49" type="stmt" count="0"/>
         <line num="50" type="stmt" count="0"/>
         <line num="51" type="stmt" count="0"/>
+        <line num="52" type="stmt" count="0"/>
+        <line num="53" type="stmt" count="0"/>
+        <line num="54" type="stmt" count="0"/>
+        <line num="55" type="stmt" count="0"/>
         <line num="56" type="stmt" count="0"/>
+        <line num="57" type="stmt" count="0"/>
         <line num="58" type="stmt" count="0"/>
-        <line num="64" type="method" name="serviceAccount" crap="2" count="0"/>
-        <line num="67" type="stmt" count="0"/>
-        <line num="73" type="method" name="observerDestroyAccount" crap="2" count="0"/>
+        <line num="68" type="method" name="stageSystem" crap="2" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="72" type="stmt" count="0"/>
+        <line num="73" type="stmt" count="0"/>
+        <line num="74" type="stmt" count="0"/>
+        <line num="75" type="stmt" count="0"/>
         <line num="76" type="stmt" count="0"/>
-        <line num="82" type="method" name="serviceToken" crap="2" count="0"/>
+        <line num="77" type="stmt" count="0"/>
+        <line num="78" type="stmt" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="82" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
+        <line num="84" type="stmt" count="0"/>
         <line num="85" type="stmt" count="0"/>
-        <line num="91" type="method" name="serviceConsumer" crap="2" count="0"/>
-        <line num="94" type="stmt" count="0"/>
-        <line num="100" type="method" name="serviceAccess" crap="2" count="0"/>
-        <line num="103" type="stmt" count="0"/>
-        <line num="111" type="method" name="listenerDestroyAccount" crap="20" count="0"/>
+        <line num="86" type="stmt" count="0"/>
+        <line num="87" type="stmt" count="0"/>
+        <line num="88" type="stmt" count="0"/>
+        <line num="89" type="stmt" count="0"/>
+        <line num="90" type="stmt" count="0"/>
+        <line num="91" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="93" type="stmt" count="0"/>
+        <line num="102" type="method" name="stageStudent" crap="2" count="0"/>
+        <line num="105" type="stmt" count="0"/>
+        <line num="106" type="stmt" count="0"/>
+        <line num="107" type="stmt" count="0"/>
+        <line num="108" type="stmt" count="0"/>
+        <line num="109" type="stmt" count="0"/>
+        <line num="110" type="stmt" count="0"/>
+        <line num="112" type="stmt" count="0"/>
+        <line num="113" type="stmt" count="0"/>
+        <line num="114" type="stmt" count="0"/>
+        <line num="115" type="stmt" count="0"/>
+        <line num="116" type="stmt" count="0"/>
         <line num="117" type="stmt" count="0"/>
         <line num="118" type="stmt" count="0"/>
         <line num="119" type="stmt" count="0"/>
-        <line num="120" type="method" name="anonymous function" crap="6" count="0"/>
+        <line num="120" type="stmt" count="0"/>
+        <line num="121" type="stmt" count="0"/>
         <line num="122" type="stmt" count="0"/>
         <line num="123" type="stmt" count="0"/>
         <line num="124" type="stmt" count="0"/>
-        <line num="125" type="stmt" count="0"/>
+        <line num="126" type="stmt" count="0"/>
+        <line num="128" type="stmt" count="0"/>
+        <line num="130" type="stmt" count="0"/>
+        <line num="132" type="stmt" count="0"/>
+        <line num="133" type="stmt" count="0"/>
+        <line num="143" type="method" name="stageManagement" crap="2" count="0"/>
+        <line num="146" type="stmt" count="0"/>
+        <line num="147" type="stmt" count="0"/>
+        <line num="148" type="stmt" count="0"/>
+        <line num="149" type="stmt" count="0"/>
+        <line num="150" type="stmt" count="0"/>
+        <line num="151" type="stmt" count="0"/>
+        <line num="152" type="stmt" count="0"/>
+        <line num="153" type="stmt" count="0"/>
+        <line num="154" type="stmt" count="0"/>
+        <line num="155" type="stmt" count="0"/>
+        <line num="156" type="stmt" count="0"/>
+        <line num="157" type="stmt" count="0"/>
+        <line num="158" type="stmt" count="0"/>
+        <line num="159" type="stmt" count="0"/>
+        <line num="160" type="stmt" count="0"/>
+        <line num="161" type="stmt" count="0"/>
+        <line num="162" type="stmt" count="0"/>
+        <line num="163" type="stmt" count="0"/>
+        <line num="164" type="stmt" count="0"/>
+        <line num="165" type="stmt" count="0"/>
+        <line num="166" type="stmt" count="0"/>
+        <line num="167" type="stmt" count="0"/>
+        <line num="168" type="stmt" count="0"/>
+        <line num="171" type="stmt" count="1"/>
+        <metrics loc="170" ncloc="138" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="93" coveredstatements="0" elements="97" coveredelements="0"/>
+      </file>
+      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Frontend/Authentication/SignOut.php">
+        <class name="SignOut" namespace="KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication" fullPackage="KREDA" package="KREDA">
+          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
+        </class>
+        <line num="19" type="method" name="stageSignOut" crap="2" count="0"/>
+        <line num="22" type="stmt" count="0"/>
+        <line num="23" type="stmt" count="0"/>
+        <line num="24" type="stmt" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="1"/>
+        <metrics loc="28" ncloc="20" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
+      </file>
+    </package>
+    <package name="KREDA\Sphere\Application\Gatekeeper">
+      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Gatekeeper.php">
+        <class name="Gatekeeper" namespace="KREDA\Sphere\Application\Gatekeeper" fullPackage="KREDA" package="KREDA">
+          <metrics methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="43" coveredstatements="0" elements="53" coveredelements="0"/>
+        </class>
+        <line num="32" type="method" name="registerApplication" crap="6" count="0"/>
+        <line num="35" type="stmt" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="41" type="stmt" count="0"/>
+        <line num="42" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="44" type="stmt" count="0"/>
+        <line num="45" type="stmt" count="0"/>
+        <line num="46" type="stmt" count="0"/>
+        <line num="49" type="stmt" count="0"/>
+        <line num="50" type="stmt" count="0"/>
+        <line num="55" type="stmt" count="0"/>
+        <line num="56" type="stmt" count="0"/>
+        <line num="57" type="stmt" count="0"/>
+        <line num="62" type="method" name="serviceAccount" crap="2" count="0"/>
+        <line num="65" type="stmt" count="0"/>
+        <line num="71" type="method" name="observerDestroyAccount" crap="2" count="0"/>
+        <line num="74" type="stmt" count="0"/>
+        <line num="80" type="method" name="serviceToken" crap="2" count="0"/>
+        <line num="83" type="stmt" count="0"/>
+        <line num="89" type="method" name="serviceConsumer" crap="2" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="98" type="method" name="serviceAccess" crap="2" count="0"/>
+        <line num="101" type="stmt" count="0"/>
+        <line num="109" type="method" name="listenerDestroyPerson" crap="2" count="0"/>
+        <line num="112" type="stmt" count="0"/>
+        <line num="121" type="method" name="listenerDestroyAccount" crap="20" count="0"/>
         <line num="127" type="stmt" count="0"/>
         <line num="128" type="stmt" count="0"/>
         <line num="129" type="stmt" count="0"/>
+        <line num="130" type="method" name="anonymous function" crap="6" count="0"/>
+        <line num="132" type="stmt" count="0"/>
         <line num="133" type="stmt" count="0"/>
         <line num="134" type="stmt" count="0"/>
         <line num="135" type="stmt" count="0"/>
         <line num="137" type="stmt" count="0"/>
-        <line num="141" type="stmt" count="0"/>
-        <line num="147" type="method" name="observerDestroySession" crap="2" count="0"/>
-        <line num="150" type="stmt" count="0"/>
-        <line num="153" type="stmt" count="1"/>
-        <metrics loc="152" ncloc="103" classes="1" methods="9" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="35" coveredstatements="0" elements="44" coveredelements="0"/>
+        <line num="138" type="stmt" count="0"/>
+        <line num="139" type="stmt" count="0"/>
+        <line num="143" type="stmt" count="0"/>
+        <line num="144" type="stmt" count="0"/>
+        <line num="145" type="stmt" count="0"/>
+        <line num="147" type="stmt" count="0"/>
+        <line num="151" type="stmt" count="0"/>
+        <line num="157" type="method" name="observerDestroySession" crap="2" count="0"/>
+        <line num="160" type="stmt" count="0"/>
+        <line num="163" type="stmt" count="1"/>
+        <metrics loc="162" ncloc="110" classes="1" methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="37" coveredstatements="0" elements="47" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\Gatekeeper\Module">
@@ -885,12 +863,14 @@
         <class name="Authentication" namespace="KREDA\Sphere\Application\Gatekeeper\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="9" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="54" coveredstatements="0" elements="63" coveredelements="0"/>
         </class>
-        <line num="27" type="method" name="registerApplication" crap="6" count="0"/>
-        <line num="30" type="stmt" count="0"/>
+        <line num="25" type="method" name="registerApplication" crap="6" count="0"/>
+        <line num="28" type="stmt" count="0"/>
+        <line num="33" type="stmt" count="0"/>
+        <line num="34" type="stmt" count="0"/>
         <line num="35" type="stmt" count="0"/>
         <line num="36" type="stmt" count="0"/>
-        <line num="37" type="stmt" count="0"/>
         <line num="38" type="stmt" count="0"/>
+        <line num="39" type="stmt" count="0"/>
         <line num="40" type="stmt" count="0"/>
         <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
@@ -915,12 +895,12 @@
         <line num="61" type="stmt" count="0"/>
         <line num="62" type="stmt" count="0"/>
         <line num="63" type="stmt" count="0"/>
-        <line num="64" type="stmt" count="0"/>
-        <line num="65" type="stmt" count="0"/>
-        <line num="70" type="method" name="frontendSignInSwitch" crap="2" count="0"/>
-        <line num="73" type="stmt" count="0"/>
-        <line num="74" type="stmt" count="0"/>
-        <line num="80" type="method" name="setupModuleNavigation" crap="2" count="0"/>
+        <line num="68" type="method" name="frontendSignInSwitch" crap="2" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="72" type="stmt" count="0"/>
+        <line num="78" type="method" name="setupModuleNavigation" crap="2" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="82" type="stmt" count="0"/>
         <line num="83" type="stmt" count="0"/>
         <line num="84" type="stmt" count="0"/>
         <line num="85" type="stmt" count="0"/>
@@ -929,33 +909,33 @@
         <line num="88" type="stmt" count="0"/>
         <line num="89" type="stmt" count="0"/>
         <line num="90" type="stmt" count="0"/>
-        <line num="91" type="stmt" count="0"/>
-        <line num="92" type="stmt" count="0"/>
-        <line num="97" type="method" name="frontendStatus" crap="2" count="0"/>
-        <line num="100" type="stmt" count="0"/>
-        <line num="110" type="method" name="frontendSignInTeacher" crap="2" count="0"/>
-        <line num="113" type="stmt" count="0"/>
-        <line num="114" type="stmt" count="0"/>
-        <line num="124" type="method" name="frontendSignInSystem" crap="2" count="0"/>
-        <line num="127" type="stmt" count="0"/>
-        <line num="128" type="stmt" count="0"/>
-        <line num="138" type="method" name="frontendSignInManagement" crap="2" count="0"/>
-        <line num="141" type="stmt" count="0"/>
-        <line num="142" type="stmt" count="0"/>
-        <line num="151" type="method" name="frontendSignInStudent" crap="2" count="0"/>
-        <line num="154" type="stmt" count="0"/>
-        <line num="155" type="stmt" count="0"/>
-        <line num="161" type="method" name="frontendSignOut" crap="2" count="0"/>
-        <line num="164" type="stmt" count="0"/>
-        <line num="165" type="stmt" count="0"/>
-        <line num="168" type="stmt" count="1"/>
-        <metrics loc="167" ncloc="114" classes="1" methods="9" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="54" coveredstatements="0" elements="63" coveredelements="0"/>
+        <line num="95" type="method" name="frontendStatus" crap="2" count="0"/>
+        <line num="98" type="stmt" count="0"/>
+        <line num="108" type="method" name="frontendSignInTeacher" crap="2" count="0"/>
+        <line num="111" type="stmt" count="0"/>
+        <line num="112" type="stmt" count="0"/>
+        <line num="122" type="method" name="frontendSignInSystem" crap="2" count="0"/>
+        <line num="125" type="stmt" count="0"/>
+        <line num="126" type="stmt" count="0"/>
+        <line num="136" type="method" name="frontendSignInManagement" crap="2" count="0"/>
+        <line num="139" type="stmt" count="0"/>
+        <line num="140" type="stmt" count="0"/>
+        <line num="149" type="method" name="frontendSignInStudent" crap="2" count="0"/>
+        <line num="152" type="stmt" count="0"/>
+        <line num="153" type="stmt" count="0"/>
+        <line num="159" type="method" name="frontendSignOut" crap="2" count="0"/>
+        <line num="162" type="stmt" count="0"/>
+        <line num="163" type="stmt" count="0"/>
+        <line num="166" type="stmt" count="1"/>
+        <metrics loc="165" ncloc="114" classes="1" methods="9" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="54" coveredstatements="0" elements="63" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Module/MyAccount.php">
         <class name="MyAccount" namespace="KREDA\Sphere\Application\Gatekeeper\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="33" coveredstatements="0" elements="38" coveredelements="0"/>
         </class>
-        <line num="27" type="method" name="registerApplication" crap="6" count="0"/>
+        <line num="25" type="method" name="registerApplication" crap="6" count="0"/>
+        <line num="28" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
         <line num="30" type="stmt" count="0"/>
         <line num="31" type="stmt" count="0"/>
         <line num="32" type="stmt" count="0"/>
@@ -970,12 +950,13 @@
         <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
         <line num="43" type="stmt" count="0"/>
-        <line num="44" type="stmt" count="0"/>
-        <line num="46" type="stmt" count="0"/>
-        <line num="54" type="method" name="frontendChangePassword" crap="2" count="0"/>
-        <line num="57" type="stmt" count="0"/>
-        <line num="58" type="stmt" count="0"/>
-        <line num="64" type="method" name="setupModuleNavigation" crap="12" count="0"/>
+        <line num="51" type="method" name="frontendChangePassword" crap="2" count="0"/>
+        <line num="54" type="stmt" count="0"/>
+        <line num="55" type="stmt" count="0"/>
+        <line num="61" type="method" name="setupModuleNavigation" crap="12" count="0"/>
+        <line num="64" type="stmt" count="0"/>
+        <line num="65" type="stmt" count="0"/>
+        <line num="66" type="stmt" count="0"/>
         <line num="67" type="stmt" count="0"/>
         <line num="68" type="stmt" count="0"/>
         <line num="69" type="stmt" count="0"/>
@@ -984,17 +965,14 @@
         <line num="72" type="stmt" count="0"/>
         <line num="73" type="stmt" count="0"/>
         <line num="74" type="stmt" count="0"/>
-        <line num="75" type="stmt" count="0"/>
-        <line num="76" type="stmt" count="0"/>
-        <line num="77" type="stmt" count="0"/>
-        <line num="84" type="method" name="frontendChangeConsumer" crap="2" count="0"/>
-        <line num="87" type="stmt" count="0"/>
-        <line num="88" type="stmt" count="0"/>
-        <line num="94" type="method" name="frontendStatus" crap="2" count="0"/>
-        <line num="97" type="stmt" count="0"/>
-        <line num="98" type="stmt" count="0"/>
-        <line num="101" type="stmt" count="1"/>
-        <metrics loc="100" ncloc="72" classes="1" methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="33" coveredstatements="0" elements="38" coveredelements="0"/>
+        <line num="81" type="method" name="frontendChangeConsumer" crap="2" count="0"/>
+        <line num="84" type="stmt" count="0"/>
+        <line num="85" type="stmt" count="0"/>
+        <line num="91" type="method" name="frontendStatus" crap="2" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="95" type="stmt" count="0"/>
+        <line num="98" type="stmt" count="1"/>
+        <metrics loc="97" ncloc="71" classes="1" methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="33" coveredstatements="0" elements="38" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\Gatekeeper\Service">
@@ -1180,6 +1158,7 @@
         <line num="105" type="stmt" count="0"/>
         <line num="107" type="stmt" count="0"/>
         <line num="119" type="method" name="executeActionSignInWithToken" crap="650" count="0"/>
+        <line num="130" type="stmt" count="0"/>
         <line num="131" type="stmt" count="0"/>
         <line num="132" type="stmt" count="0"/>
         <line num="133" type="stmt" count="0"/>
@@ -1198,8 +1177,8 @@
         <line num="146" type="stmt" count="0"/>
         <line num="147" type="stmt" count="0"/>
         <line num="148" type="stmt" count="0"/>
-        <line num="149" type="stmt" count="0"/>
-        <line num="151" type="stmt" count="0"/>
+        <line num="150" type="stmt" count="0"/>
+        <line num="152" type="stmt" count="0"/>
         <line num="153" type="stmt" count="0"/>
         <line num="154" type="stmt" count="0"/>
         <line num="155" type="stmt" count="0"/>
@@ -1215,36 +1194,36 @@
         <line num="165" type="stmt" count="0"/>
         <line num="166" type="stmt" count="0"/>
         <line num="167" type="stmt" count="0"/>
-        <line num="168" type="stmt" count="0"/>
+        <line num="169" type="stmt" count="0"/>
         <line num="170" type="stmt" count="0"/>
         <line num="171" type="stmt" count="0"/>
         <line num="172" type="stmt" count="0"/>
         <line num="173" type="stmt" count="0"/>
         <line num="174" type="stmt" count="0"/>
-        <line num="175" type="stmt" count="0"/>
+        <line num="176" type="stmt" count="0"/>
         <line num="177" type="stmt" count="0"/>
-        <line num="178" type="stmt" count="0"/>
+        <line num="180" type="stmt" count="0"/>
         <line num="181" type="stmt" count="0"/>
-        <line num="182" type="stmt" count="0"/>
-        <line num="193" type="method" name="checkIsValidCredential" crap="56" count="0"/>
+        <line num="192" type="method" name="checkIsValidCredential" crap="56" count="0"/>
+        <line num="195" type="stmt" count="0"/>
         <line num="196" type="stmt" count="0"/>
-        <line num="197" type="stmt" count="0"/>
+        <line num="198" type="stmt" count="0"/>
         <line num="199" type="stmt" count="0"/>
         <line num="200" type="stmt" count="0"/>
         <line num="201" type="stmt" count="0"/>
-        <line num="202" type="stmt" count="0"/>
+        <line num="204" type="stmt" count="0"/>
         <line num="205" type="stmt" count="0"/>
         <line num="206" type="stmt" count="0"/>
-        <line num="207" type="stmt" count="0"/>
+        <line num="208" type="stmt" count="0"/>
         <line num="209" type="stmt" count="0"/>
         <line num="210" type="stmt" count="0"/>
         <line num="211" type="stmt" count="0"/>
-        <line num="212" type="stmt" count="0"/>
-        <line num="214" type="stmt" count="0"/>
-        <line num="218" type="stmt" count="0"/>
+        <line num="213" type="stmt" count="0"/>
+        <line num="217" type="stmt" count="0"/>
+        <line num="219" type="stmt" count="0"/>
         <line num="220" type="stmt" count="0"/>
-        <line num="221" type="stmt" count="0"/>
-        <line num="235" type="method" name="executeActionSignIn" crap="156" count="0"/>
+        <line num="234" type="method" name="executeActionSignIn" crap="156" count="0"/>
+        <line num="241" type="stmt" count="0"/>
         <line num="242" type="stmt" count="0"/>
         <line num="243" type="stmt" count="0"/>
         <line num="244" type="stmt" count="0"/>
@@ -1260,12 +1239,12 @@
         <line num="254" type="stmt" count="0"/>
         <line num="255" type="stmt" count="0"/>
         <line num="256" type="stmt" count="0"/>
-        <line num="257" type="stmt" count="0"/>
+        <line num="258" type="stmt" count="0"/>
         <line num="259" type="stmt" count="0"/>
-        <line num="260" type="stmt" count="0"/>
+        <line num="262" type="stmt" count="0"/>
         <line num="263" type="stmt" count="0"/>
-        <line num="264" type="stmt" count="0"/>
-        <line num="273" type="method" name="executeChangeConsumer" crap="42" count="0"/>
+        <line num="272" type="method" name="executeChangeConsumer" crap="42" count="0"/>
+        <line num="275" type="stmt" count="0"/>
         <line num="276" type="stmt" count="0"/>
         <line num="277" type="stmt" count="0"/>
         <line num="278" type="stmt" count="0"/>
@@ -1273,82 +1252,82 @@
         <line num="280" type="stmt" count="0"/>
         <line num="281" type="stmt" count="0"/>
         <line num="282" type="stmt" count="0"/>
-        <line num="283" type="stmt" count="0"/>
-        <line num="285" type="stmt" count="0"/>
-        <line num="287" type="stmt" count="0"/>
-        <line num="289" type="stmt" count="0"/>
-        <line num="298" type="method" name="executeCreateRole" crap="20" count="0"/>
+        <line num="284" type="stmt" count="0"/>
+        <line num="286" type="stmt" count="0"/>
+        <line num="288" type="stmt" count="0"/>
+        <line num="297" type="method" name="executeCreateRole" crap="20" count="0"/>
+        <line num="300" type="stmt" count="0"/>
         <line num="301" type="stmt" count="0"/>
         <line num="302" type="stmt" count="0"/>
         <line num="303" type="stmt" count="0"/>
         <line num="304" type="stmt" count="0"/>
         <line num="305" type="stmt" count="0"/>
         <line num="306" type="stmt" count="0"/>
-        <line num="307" type="stmt" count="0"/>
-        <line num="309" type="stmt" count="0"/>
-        <line num="319" type="method" name="executeChangePassword" crap="72" count="0"/>
+        <line num="308" type="stmt" count="0"/>
+        <line num="318" type="method" name="executeChangePassword" crap="72" count="0"/>
+        <line num="321" type="stmt" count="0"/>
         <line num="322" type="stmt" count="0"/>
         <line num="323" type="stmt" count="0"/>
         <line num="324" type="stmt" count="0"/>
         <line num="325" type="stmt" count="0"/>
         <line num="326" type="stmt" count="0"/>
         <line num="327" type="stmt" count="0"/>
-        <line num="328" type="stmt" count="0"/>
+        <line num="329" type="stmt" count="0"/>
         <line num="330" type="stmt" count="0"/>
         <line num="331" type="stmt" count="0"/>
-        <line num="332" type="stmt" count="0"/>
-        <line num="334" type="stmt" count="0"/>
-        <line num="336" type="stmt" count="0"/>
-        <line num="338" type="stmt" count="0"/>
-        <line num="347" type="method" name="executeChangeToken" crap="2" count="0"/>
-        <line num="350" type="stmt" count="0"/>
-        <line num="359" type="method" name="executeChangePerson" crap="2" count="0"/>
-        <line num="362" type="stmt" count="0"/>
-        <line num="371" type="method" name="executeAddRoleAccess" crap="2" count="0"/>
-        <line num="376" type="stmt" count="0"/>
-        <line num="385" type="method" name="executeRemoveRoleAccess" crap="2" count="0"/>
-        <line num="390" type="stmt" count="0"/>
-        <line num="396" type="method" name="checkIsValidSession" crap="12" count="0"/>
+        <line num="333" type="stmt" count="0"/>
+        <line num="335" type="stmt" count="0"/>
+        <line num="337" type="stmt" count="0"/>
+        <line num="346" type="method" name="executeChangeToken" crap="2" count="0"/>
+        <line num="349" type="stmt" count="0"/>
+        <line num="358" type="method" name="executeChangePerson" crap="2" count="0"/>
+        <line num="361" type="stmt" count="0"/>
+        <line num="370" type="method" name="executeAddRoleAccess" crap="2" count="0"/>
+        <line num="375" type="stmt" count="0"/>
+        <line num="384" type="method" name="executeRemoveRoleAccess" crap="2" count="0"/>
+        <line num="389" type="stmt" count="0"/>
+        <line num="395" type="method" name="checkIsValidSession" crap="12" count="0"/>
+        <line num="398" type="stmt" count="0"/>
         <line num="399" type="stmt" count="0"/>
-        <line num="400" type="stmt" count="0"/>
+        <line num="402" type="stmt" count="0"/>
         <line num="403" type="stmt" count="0"/>
         <line num="404" type="stmt" count="0"/>
         <line num="405" type="stmt" count="0"/>
-        <line num="406" type="stmt" count="0"/>
-        <line num="408" type="stmt" count="0"/>
-        <line num="416" type="method" name="entityAccountBySession" crap="2" count="0"/>
-        <line num="419" type="stmt" count="0"/>
-        <line num="427" type="method" name="entitySessionAllByAccount" crap="2" count="0"/>
-        <line num="430" type="stmt" count="0"/>
-        <line num="437" type="method" name="getTableAccount" crap="2" count="0"/>
-        <line num="440" type="stmt" count="0"/>
-        <line num="448" type="method" name="entityAccountById" crap="2" count="0"/>
-        <line num="451" type="stmt" count="0"/>
-        <line num="459" type="method" name="entitySessionById" crap="2" count="0"/>
-        <line num="462" type="stmt" count="0"/>
-        <line num="470" type="method" name="entityAccountAllByToken" crap="2" count="0"/>
-        <line num="473" type="stmt" count="0"/>
-        <line num="481" type="method" name="entityAccountAllByConsumer" crap="2" count="0"/>
-        <line num="484" type="stmt" count="0"/>
-        <line num="492" type="method" name="entityAccountTypeById" crap="2" count="0"/>
-        <line num="495" type="stmt" count="0"/>
-        <line num="503" type="method" name="entityAccountTypeByName" crap="2" count="0"/>
-        <line num="506" type="stmt" count="0"/>
-        <line num="514" type="method" name="entityAccountRoleById" crap="2" count="0"/>
-        <line num="517" type="stmt" count="0"/>
-        <line num="525" type="method" name="entityAccountRoleByName" crap="2" count="0"/>
-        <line num="528" type="stmt" count="0"/>
-        <line num="534" type="method" name="entityAccountRoleAll" crap="2" count="0"/>
-        <line num="537" type="stmt" count="0"/>
-        <line num="545" type="method" name="entityAccessAllByAccountRole" crap="2" count="0"/>
-        <line num="548" type="stmt" count="0"/>
-        <line num="554" type="method" name="entityAccountTypeAll" crap="2" count="0"/>
-        <line num="557" type="stmt" count="0"/>
-        <line num="571" type="method" name="executeCreateAccount" crap="132" count="0"/>
+        <line num="407" type="stmt" count="0"/>
+        <line num="415" type="method" name="entityAccountBySession" crap="2" count="0"/>
+        <line num="418" type="stmt" count="0"/>
+        <line num="426" type="method" name="entitySessionAllByAccount" crap="2" count="0"/>
+        <line num="429" type="stmt" count="0"/>
+        <line num="436" type="method" name="getTableAccount" crap="2" count="0"/>
+        <line num="439" type="stmt" count="0"/>
+        <line num="447" type="method" name="entityAccountById" crap="2" count="0"/>
+        <line num="450" type="stmt" count="0"/>
+        <line num="458" type="method" name="entitySessionById" crap="2" count="0"/>
+        <line num="461" type="stmt" count="0"/>
+        <line num="469" type="method" name="entityAccountAllByToken" crap="2" count="0"/>
+        <line num="472" type="stmt" count="0"/>
+        <line num="480" type="method" name="entityAccountAllByConsumer" crap="2" count="0"/>
+        <line num="483" type="stmt" count="0"/>
+        <line num="491" type="method" name="entityAccountTypeById" crap="2" count="0"/>
+        <line num="494" type="stmt" count="0"/>
+        <line num="502" type="method" name="entityAccountTypeByName" crap="2" count="0"/>
+        <line num="505" type="stmt" count="0"/>
+        <line num="513" type="method" name="entityAccountRoleById" crap="2" count="0"/>
+        <line num="516" type="stmt" count="0"/>
+        <line num="524" type="method" name="entityAccountRoleByName" crap="2" count="0"/>
+        <line num="527" type="stmt" count="0"/>
+        <line num="533" type="method" name="entityAccountRoleAll" crap="2" count="0"/>
+        <line num="536" type="stmt" count="0"/>
+        <line num="544" type="method" name="entityAccessAllByAccountRole" crap="2" count="0"/>
+        <line num="547" type="stmt" count="0"/>
+        <line num="553" type="method" name="entityAccountTypeAll" crap="2" count="0"/>
+        <line num="556" type="stmt" count="0"/>
+        <line num="570" type="method" name="executeCreateAccount" crap="132" count="0"/>
+        <line num="580" type="stmt" count="0"/>
         <line num="581" type="stmt" count="0"/>
         <line num="582" type="stmt" count="0"/>
-        <line num="583" type="stmt" count="0"/>
-        <line num="585" type="stmt" count="0"/>
+        <line num="584" type="stmt" count="0"/>
+        <line num="586" type="stmt" count="0"/>
         <line num="587" type="stmt" count="0"/>
         <line num="588" type="stmt" count="0"/>
         <line num="589" type="stmt" count="0"/>
@@ -1359,10 +1338,10 @@
         <line num="594" type="stmt" count="0"/>
         <line num="595" type="stmt" count="0"/>
         <line num="596" type="stmt" count="0"/>
-        <line num="597" type="stmt" count="0"/>
+        <line num="598" type="stmt" count="0"/>
         <line num="599" type="stmt" count="0"/>
         <line num="600" type="stmt" count="0"/>
-        <line num="601" type="stmt" count="0"/>
+        <line num="603" type="stmt" count="0"/>
         <line num="604" type="stmt" count="0"/>
         <line num="605" type="stmt" count="0"/>
         <line num="606" type="stmt" count="0"/>
@@ -1371,7 +1350,7 @@
         <line num="609" type="stmt" count="0"/>
         <line num="610" type="stmt" count="0"/>
         <line num="611" type="stmt" count="0"/>
-        <line num="612" type="stmt" count="0"/>
+        <line num="614" type="stmt" count="0"/>
         <line num="615" type="stmt" count="0"/>
         <line num="616" type="stmt" count="0"/>
         <line num="617" type="stmt" count="0"/>
@@ -1384,27 +1363,26 @@
         <line num="624" type="stmt" count="0"/>
         <line num="625" type="stmt" count="0"/>
         <line num="626" type="stmt" count="0"/>
-        <line num="627" type="stmt" count="0"/>
+        <line num="630" type="stmt" count="0"/>
         <line num="631" type="stmt" count="0"/>
         <line num="632" type="stmt" count="0"/>
         <line num="633" type="stmt" count="0"/>
         <line num="634" type="stmt" count="0"/>
-        <line num="635" type="stmt" count="0"/>
-        <line num="638" type="stmt" count="0"/>
-        <line num="646" type="method" name="entityAccountByUsername" crap="2" count="0"/>
-        <line num="649" type="stmt" count="0"/>
-        <line num="657" type="method" name="executeDestroyAccount" crap="6" count="0"/>
+        <line num="637" type="stmt" count="0"/>
+        <line num="645" type="method" name="entityAccountByUsername" crap="2" count="0"/>
+        <line num="648" type="stmt" count="0"/>
+        <line num="656" type="method" name="executeDestroyAccount" crap="6" count="0"/>
+        <line num="659" type="stmt" count="0"/>
         <line num="660" type="stmt" count="0"/>
         <line num="661" type="stmt" count="0"/>
-        <line num="662" type="stmt" count="0"/>
-        <line num="664" type="stmt" count="0"/>
-        <line num="673" type="method" name="executeDestroySession" crap="6" count="0"/>
+        <line num="663" type="stmt" count="0"/>
+        <line num="672" type="method" name="executeDestroySession" crap="6" count="0"/>
+        <line num="675" type="stmt" count="0"/>
         <line num="676" type="stmt" count="0"/>
         <line num="677" type="stmt" count="0"/>
-        <line num="678" type="stmt" count="0"/>
-        <line num="680" type="stmt" count="0"/>
-        <line num="684" type="stmt" count="1"/>
-        <metrics loc="683" ncloc="496" classes="1" methods="32" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="233" coveredstatements="0" elements="265" coveredelements="0"/>
+        <line num="679" type="stmt" count="0"/>
+        <line num="683" type="stmt" count="1"/>
+        <metrics loc="682" ncloc="496" classes="1" methods="32" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="233" coveredstatements="0" elements="265" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Gatekeeper/Service/Consumer.php">
         <class name="Consumer" namespace="KREDA\Sphere\Application\Gatekeeper\Service" fullPackage="KREDA" package="KREDA">
@@ -3098,44 +3076,44 @@
         <class name="Graduation" namespace="KREDA\Sphere\Application\Graduation" fullPackage="KREDA" package="KREDA">
           <metrics methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="0" elements="36" coveredelements="0"/>
         </class>
-        <line num="29" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="27" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="30" type="stmt" count="0"/>
         <line num="32" type="stmt" count="0"/>
         <line num="34" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="0"/>
         <line num="36" type="stmt" count="0"/>
-        <line num="37" type="stmt" count="0"/>
         <line num="38" type="stmt" count="0"/>
+        <line num="39" type="stmt" count="0"/>
         <line num="40" type="stmt" count="0"/>
         <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
         <line num="43" type="stmt" count="0"/>
         <line num="44" type="stmt" count="0"/>
-        <line num="45" type="stmt" count="0"/>
-        <line num="47" type="stmt" count="0"/>
-        <line num="53" type="method" name="serviceScore" crap="2" count="0"/>
-        <line num="56" type="stmt" count="0"/>
-        <line num="62" type="method" name="serviceGrade" crap="2" count="0"/>
-        <line num="65" type="stmt" count="0"/>
-        <line num="71" type="method" name="serviceWeight" crap="2" count="0"/>
-        <line num="74" type="stmt" count="0"/>
-        <line num="80" type="method" name="frontendGrade" crap="2" count="0"/>
+        <line num="49" type="method" name="serviceScore" crap="2" count="0"/>
+        <line num="52" type="stmt" count="0"/>
+        <line num="58" type="method" name="serviceGrade" crap="2" count="0"/>
+        <line num="61" type="stmt" count="0"/>
+        <line num="67" type="method" name="serviceWeight" crap="2" count="0"/>
+        <line num="70" type="stmt" count="0"/>
+        <line num="76" type="method" name="frontendGrade" crap="2" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="82" type="stmt" count="0"/>
         <line num="83" type="stmt" count="0"/>
-        <line num="84" type="stmt" count="0"/>
-        <line num="85" type="stmt" count="0"/>
-        <line num="86" type="stmt" count="0"/>
-        <line num="87" type="stmt" count="0"/>
-        <line num="93" type="method" name="setupModuleNavigation" crap="2" count="0"/>
-        <line num="96" type="stmt" count="0"/>
-        <line num="97" type="stmt" count="0"/>
-        <line num="98" type="stmt" count="0"/>
-        <line num="99" type="stmt" count="0"/>
-        <line num="104" type="method" name="frontendGradeType" crap="2" count="0"/>
+        <line num="89" type="method" name="setupModuleNavigation" crap="2" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="93" type="stmt" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="95" type="stmt" count="0"/>
+        <line num="100" type="method" name="frontendGradeType" crap="2" count="0"/>
+        <line num="103" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
+        <line num="105" type="stmt" count="0"/>
+        <line num="106" type="stmt" count="0"/>
         <line num="107" type="stmt" count="0"/>
-        <line num="108" type="stmt" count="0"/>
-        <line num="109" type="stmt" count="0"/>
-        <line num="110" type="stmt" count="0"/>
-        <line num="111" type="stmt" count="0"/>
-        <line num="115" type="stmt" count="1"/>
-        <metrics loc="114" ncloc="85" classes="1" methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="0" elements="36" coveredelements="0"/>
+        <line num="111" type="stmt" count="1"/>
+        <metrics loc="110" ncloc="83" classes="1" methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="0" elements="36" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\Graduation\Service">
@@ -3828,48 +3806,37 @@
         <metrics loc="70" ncloc="38" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="0" elements="14" coveredelements="0"/>
       </file>
     </package>
-    <package name="KREDA\Sphere\Application\Management\Frontend\AddressBook">
-      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Frontend/AddressBook/AddressBook.php">
-        <class name="AddressBook" namespace="KREDA\Sphere\Application\Management\Frontend\AddressBook" fullPackage="KREDA" package="KREDA">
-          <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="0" elements="25" coveredelements="0"/>
+    <package name="KREDA\Sphere\Application\Management\Frontend">
+      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Frontend/Campus.php">
+        <class name="Campus" namespace="KREDA\Sphere\Application\Management\Frontend" fullPackage="KREDA" package="KREDA">
+          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="3" coveredelements="0"/>
         </class>
-        <line num="20" type="method" name="stageAddressBook" crap="2" count="0"/>
+        <line num="18" type="method" name="stageCampus" crap="2" count="0"/>
         <line num="21" type="stmt" count="0"/>
+        <line num="22" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="1"/>
+        <metrics loc="25" ncloc="17" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="3" coveredelements="0"/>
+      </file>
+      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Frontend/Person.php">
+        <class name="Person" namespace="KREDA\Sphere\Application\Management\Frontend" fullPackage="KREDA" package="KREDA">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <line num="15" type="stmt" count="1"/>
+        <metrics loc="14" ncloc="9" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Frontend/Subject.php">
+        <class name="Subject" namespace="KREDA\Sphere\Application\Management\Frontend" fullPackage="KREDA" package="KREDA">
+          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="7" coveredelements="0"/>
+        </class>
+        <line num="18" type="method" name="stageSubject" crap="2" count="0"/>
+        <line num="21" type="stmt" count="0"/>
+        <line num="22" type="stmt" count="0"/>
         <line num="23" type="stmt" count="0"/>
         <line num="24" type="stmt" count="0"/>
         <line num="25" type="stmt" count="0"/>
         <line num="26" type="stmt" count="0"/>
-        <line num="27" type="stmt" count="0"/>
-        <line num="28" type="stmt" count="0"/>
-        <line num="29" type="stmt" count="0"/>
-        <line num="30" type="stmt" count="0"/>
-        <line num="31" type="stmt" count="0"/>
-        <line num="32" type="stmt" count="0"/>
-        <line num="37" type="method" name="stageAddressBookState" crap="2" count="0"/>
-        <line num="38" type="stmt" count="0"/>
-        <line num="40" type="stmt" count="0"/>
-        <line num="41" type="stmt" count="0"/>
-        <line num="42" type="stmt" count="0"/>
-        <line num="43" type="stmt" count="0"/>
-        <line num="44" type="stmt" count="0"/>
-        <line num="45" type="stmt" count="0"/>
-        <line num="46" type="stmt" count="0"/>
-        <line num="48" type="stmt" count="0"/>
-        <line num="49" type="stmt" count="0"/>
-        <metrics loc="50" ncloc="39" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="0" elements="25" coveredelements="0"/>
-      </file>
-    </package>
-    <package name="KREDA\Sphere\Application\Management\Frontend\Campus">
-      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Frontend/Campus/Campus.php">
-        <class name="Campus" namespace="KREDA\Sphere\Application\Management\Frontend\Campus" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
-        </class>
-        <line num="18" type="method" name="stageCampus" crap="2" count="0"/>
-        <line num="19" type="stmt" count="0"/>
-        <line num="21" type="stmt" count="0"/>
-        <line num="22" type="stmt" count="0"/>
-        <line num="23" type="stmt" count="0"/>
-        <metrics loc="25" ncloc="17" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
+        <line num="29" type="stmt" count="1"/>
+        <metrics loc="28" ncloc="20" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="7" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\Management\Frontend\PersonalData\Common">
@@ -4143,35 +4110,20 @@
         <metrics loc="28" ncloc="18" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
       </file>
     </package>
-    <package name="KREDA\Sphere\Application\Management\Frontend\Subject">
-      <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Frontend/Subject/Subject.php">
-        <class name="Subject" namespace="KREDA\Sphere\Application\Management\Frontend\Subject" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="0" elements="10" coveredelements="0"/>
-        </class>
-        <line num="18" type="method" name="guiSubject" crap="2" count="0"/>
-        <line num="19" type="stmt" count="0"/>
-        <line num="21" type="stmt" count="0"/>
-        <line num="22" type="stmt" count="0"/>
-        <line num="23" type="stmt" count="0"/>
-        <line num="24" type="stmt" count="0"/>
-        <line num="25" type="stmt" count="0"/>
-        <line num="26" type="stmt" count="0"/>
-        <line num="27" type="stmt" count="0"/>
-        <metrics loc="28" ncloc="20" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="0" elements="10" coveredelements="0"/>
-      </file>
-    </package>
     <package name="KREDA\Sphere\Application\Management">
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Management.php">
         <class name="Management" namespace="KREDA\Sphere\Application\Management" fullPackage="KREDA" package="KREDA">
           <metrics methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="0" elements="32" coveredelements="0"/>
         </class>
-        <line num="28" type="method" name="registerApplication" crap="20" count="0"/>
-        <line num="31" type="stmt" count="0"/>
-        <line num="32" type="stmt" count="0"/>
+        <line num="26" type="method" name="registerApplication" crap="20" count="0"/>
+        <line num="29" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <line num="34" type="stmt" count="0"/>
         <line num="36" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="0"/>
         <line num="38" type="stmt" count="0"/>
-        <line num="39" type="stmt" count="0"/>
         <line num="40" type="stmt" count="0"/>
+        <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
         <line num="43" type="stmt" count="0"/>
         <line num="44" type="stmt" count="0"/>
@@ -4180,45 +4132,45 @@
         <line num="47" type="stmt" count="0"/>
         <line num="48" type="stmt" count="0"/>
         <line num="49" type="stmt" count="0"/>
-        <line num="50" type="stmt" count="0"/>
-        <line num="51" type="stmt" count="0"/>
-        <line num="56" type="stmt" count="0"/>
-        <line num="64" type="method" name="serviceEducation" crap="2" count="0"/>
-        <line num="67" type="stmt" count="0"/>
-        <line num="75" type="method" name="servicePerson" crap="2" count="0"/>
-        <line num="78" type="stmt" count="0"/>
-        <line num="86" type="method" name="serviceAddress" crap="2" count="0"/>
-        <line num="89" type="stmt" count="0"/>
-        <line num="95" type="method" name="observerDestroyPerson" crap="2" count="0"/>
-        <line num="98" type="stmt" count="0"/>
-        <line num="104" type="method" name="frontendManagement" crap="2" count="0"/>
+        <line num="53" type="stmt" count="0"/>
+        <line num="60" type="method" name="serviceEducation" crap="2" count="0"/>
+        <line num="63" type="stmt" count="0"/>
+        <line num="71" type="method" name="servicePerson" crap="2" count="0"/>
+        <line num="74" type="stmt" count="0"/>
+        <line num="82" type="method" name="serviceAddress" crap="2" count="0"/>
+        <line num="85" type="stmt" count="0"/>
+        <line num="91" type="method" name="observerDestroyPerson" crap="2" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="100" type="method" name="frontendManagement" crap="2" count="0"/>
+        <line num="103" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
+        <line num="105" type="stmt" count="0"/>
+        <line num="106" type="stmt" count="0"/>
         <line num="107" type="stmt" count="0"/>
-        <line num="108" type="stmt" count="0"/>
-        <line num="109" type="stmt" count="0"/>
-        <line num="110" type="stmt" count="0"/>
-        <line num="111" type="stmt" count="0"/>
-        <line num="115" type="stmt" count="1"/>
-        <metrics loc="114" ncloc="76" classes="1" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="0" elements="32" coveredelements="0"/>
+        <line num="111" type="stmt" count="1"/>
+        <metrics loc="110" ncloc="74" classes="1" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="0" elements="32" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\Management\Module">
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Module/Account.php">
         <class name="Account" namespace="KREDA\Sphere\Application\Management\Module" fullPackage="KREDA" package="KREDA">
-          <metrics methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="155" coveredstatements="0" elements="162" coveredelements="0"/>
+          <metrics methods="8" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="191" coveredstatements="0" elements="199" coveredelements="0"/>
         </class>
-        <line num="50" type="method" name="registerApplication" crap="2" count="0"/>
-        <line num="53" type="stmt" count="0"/>
+        <line num="49" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="52" type="stmt" count="0"/>
+        <line num="54" type="stmt" count="0"/>
         <line num="55" type="stmt" count="0"/>
         <line num="56" type="stmt" count="0"/>
         <line num="57" type="stmt" count="0"/>
-        <line num="59" type="stmt" count="0"/>
-        <line num="67" type="method" name="frontendAccount" crap="182" count="0"/>
+        <line num="65" type="method" name="frontendAccount" crap="72" count="0"/>
+        <line num="68" type="stmt" count="0"/>
+        <line num="69" type="stmt" count="0"/>
         <line num="70" type="stmt" count="0"/>
-        <line num="71" type="stmt" count="0"/>
         <line num="72" type="stmt" count="0"/>
-        <line num="74" type="stmt" count="0"/>
+        <line num="73" type="stmt" count="0"/>
         <line num="75" type="stmt" count="0"/>
-        <line num="77" type="stmt" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
         <line num="82" type="stmt" count="0"/>
         <line num="83" type="stmt" count="0"/>
         <line num="84" type="stmt" count="0"/>
@@ -4252,151 +4204,153 @@
         <line num="112" type="stmt" count="0"/>
         <line num="113" type="stmt" count="0"/>
         <line num="114" type="stmt" count="0"/>
-        <line num="115" type="stmt" count="0"/>
-        <line num="116" type="stmt" count="0"/>
+        <line num="118" type="stmt" count="0"/>
+        <line num="119" type="stmt" count="0"/>
         <line num="120" type="stmt" count="0"/>
         <line num="121" type="stmt" count="0"/>
         <line num="122" type="stmt" count="0"/>
-        <line num="123" type="stmt" count="0"/>
         <line num="124" type="stmt" count="0"/>
-        <line num="126" type="stmt" count="0"/>
-        <line num="127" type="stmt" count="0"/>
+        <line num="125" type="stmt" count="0"/>
+        <line num="129" type="stmt" count="0"/>
+        <line num="130" type="stmt" count="0"/>
         <line num="131" type="stmt" count="0"/>
         <line num="132" type="stmt" count="0"/>
         <line num="133" type="stmt" count="0"/>
-        <line num="134" type="stmt" count="0"/>
         <line num="135" type="stmt" count="0"/>
-        <line num="137" type="stmt" count="0"/>
+        <line num="136" type="stmt" count="0"/>
         <line num="138" type="stmt" count="0"/>
+        <line num="139" type="stmt" count="0"/>
         <line num="140" type="stmt" count="0"/>
-        <line num="141" type="stmt" count="0"/>
         <line num="142" type="stmt" count="0"/>
         <line num="143" type="stmt" count="0"/>
         <line num="144" type="stmt" count="0"/>
-        <line num="150" type="stmt" count="0"/>
+        <line num="145" type="stmt" count="0"/>
+        <line num="146" type="stmt" count="0"/>
+        <line num="147" type="stmt" count="0"/>
+        <line num="148" type="stmt" count="0"/>
+        <line num="149" type="stmt" count="0"/>
         <line num="151" type="stmt" count="0"/>
         <line num="152" type="stmt" count="0"/>
         <line num="153" type="stmt" count="0"/>
         <line num="155" type="stmt" count="0"/>
-        <line num="156" type="stmt" count="0"/>
         <line num="157" type="stmt" count="0"/>
-        <line num="158" type="stmt" count="0"/>
-        <line num="159" type="stmt" count="0"/>
-        <line num="160" type="stmt" count="0"/>
-        <line num="161" type="stmt" count="0"/>
-        <line num="162" type="stmt" count="0"/>
-        <line num="163" type="stmt" count="0"/>
-        <line num="165" type="stmt" count="0"/>
+        <line num="163" type="method" name="getAccountTypeSelectData" crap="6" count="0"/>
         <line num="166" type="stmt" count="0"/>
         <line num="167" type="stmt" count="0"/>
-        <line num="168" type="stmt" count="0"/>
         <line num="169" type="stmt" count="0"/>
         <line num="170" type="stmt" count="0"/>
+        <line num="171" type="stmt" count="0"/>
         <line num="172" type="stmt" count="0"/>
-        <line num="173" type="stmt" count="0"/>
-        <line num="176" type="stmt" count="0"/>
-        <line num="177" type="stmt" count="0"/>
-        <line num="179" type="stmt" count="0"/>
-        <line num="180" type="stmt" count="0"/>
+        <line num="178" type="method" name="getAccountTypeList" crap="6" count="0"/>
         <line num="181" type="stmt" count="0"/>
         <line num="182" type="stmt" count="0"/>
-        <line num="183" type="stmt" count="0"/>
-        <line num="184" type="stmt" count="0"/>
-        <line num="185" type="stmt" count="0"/>
-        <line num="186" type="stmt" count="0"/>
-        <line num="187" type="stmt" count="0"/>
         <line num="188" type="stmt" count="0"/>
         <line num="189" type="stmt" count="0"/>
         <line num="190" type="stmt" count="0"/>
         <line num="191" type="stmt" count="0"/>
         <line num="192" type="stmt" count="0"/>
         <line num="193" type="stmt" count="0"/>
-        <line num="194" type="stmt" count="0"/>
-        <line num="196" type="stmt" count="0"/>
-        <line num="197" type="stmt" count="0"/>
-        <line num="199" type="stmt" count="0"/>
-        <line num="200" type="stmt" count="0"/>
+        <line num="199" type="method" name="getAccountRoleSelectData" crap="6" count="0"/>
         <line num="202" type="stmt" count="0"/>
         <line num="203" type="stmt" count="0"/>
-        <line num="204" type="stmt" count="0"/>
         <line num="205" type="stmt" count="0"/>
         <line num="206" type="stmt" count="0"/>
         <line num="207" type="stmt" count="0"/>
         <line num="208" type="stmt" count="0"/>
-        <line num="209" type="stmt" count="0"/>
-        <line num="211" type="stmt" count="0"/>
-        <line num="212" type="stmt" count="0"/>
-        <line num="213" type="stmt" count="0"/>
-        <line num="215" type="stmt" count="0"/>
+        <line num="214" type="method" name="getAccountRoleList" crap="6" count="0"/>
         <line num="217" type="stmt" count="0"/>
-        <line num="223" type="method" name="getAccountTypeSelectData" crap="6" count="0"/>
+        <line num="218" type="stmt" count="0"/>
+        <line num="224" type="stmt" count="0"/>
+        <line num="225" type="stmt" count="0"/>
         <line num="226" type="stmt" count="0"/>
         <line num="227" type="stmt" count="0"/>
+        <line num="228" type="stmt" count="0"/>
         <line num="229" type="stmt" count="0"/>
-        <line num="230" type="stmt" count="0"/>
-        <line num="231" type="stmt" count="0"/>
-        <line num="232" type="stmt" count="0"/>
-        <line num="238" type="method" name="getAccountTypeList" crap="6" count="0"/>
+        <line num="237" type="method" name="getAccountList" crap="42" count="0"/>
+        <line num="240" type="stmt" count="0"/>
         <line num="241" type="stmt" count="0"/>
         <line num="242" type="stmt" count="0"/>
-        <line num="248" type="stmt" count="0"/>
-        <line num="249" type="stmt" count="0"/>
+        <line num="243" type="stmt" count="0"/>
+        <line num="244" type="stmt" count="0"/>
         <line num="250" type="stmt" count="0"/>
         <line num="251" type="stmt" count="0"/>
         <line num="252" type="stmt" count="0"/>
         <line num="253" type="stmt" count="0"/>
-        <line num="259" type="method" name="getAccountRoleSelectData" crap="6" count="0"/>
+        <line num="255" type="stmt" count="0"/>
+        <line num="256" type="stmt" count="0"/>
+        <line num="257" type="stmt" count="0"/>
+        <line num="258" type="stmt" count="0"/>
+        <line num="259" type="stmt" count="0"/>
+        <line num="260" type="stmt" count="0"/>
+        <line num="261" type="stmt" count="0"/>
         <line num="262" type="stmt" count="0"/>
         <line num="263" type="stmt" count="0"/>
         <line num="265" type="stmt" count="0"/>
         <line num="266" type="stmt" count="0"/>
         <line num="267" type="stmt" count="0"/>
         <line num="268" type="stmt" count="0"/>
-        <line num="274" type="method" name="getAccountRoleList" crap="6" count="0"/>
+        <line num="269" type="stmt" count="0"/>
+        <line num="270" type="stmt" count="0"/>
+        <line num="272" type="stmt" count="0"/>
+        <line num="273" type="stmt" count="0"/>
+        <line num="276" type="stmt" count="0"/>
         <line num="277" type="stmt" count="0"/>
-        <line num="278" type="stmt" count="0"/>
+        <line num="279" type="stmt" count="0"/>
+        <line num="280" type="stmt" count="0"/>
+        <line num="281" type="stmt" count="0"/>
+        <line num="282" type="stmt" count="0"/>
+        <line num="283" type="stmt" count="0"/>
         <line num="284" type="stmt" count="0"/>
         <line num="285" type="stmt" count="0"/>
         <line num="286" type="stmt" count="0"/>
         <line num="287" type="stmt" count="0"/>
         <line num="288" type="stmt" count="0"/>
         <line num="289" type="stmt" count="0"/>
-        <line num="292" type="stmt" count="1"/>
-        <metrics loc="291" ncloc="242" classes="1" methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="149" coveredstatements="0" elements="156" coveredelements="0"/>
+        <line num="290" type="stmt" count="0"/>
+        <line num="291" type="stmt" count="0"/>
+        <line num="292" type="stmt" count="0"/>
+        <line num="293" type="stmt" count="0"/>
+        <line num="294" type="stmt" count="0"/>
+        <line num="296" type="stmt" count="0"/>
+        <line num="297" type="stmt" count="0"/>
+        <line num="300" type="stmt" count="1"/>
+        <metrics loc="299" ncloc="247" classes="1" methods="8" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="150" coveredstatements="0" elements="158" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Module/Campus.php">
         <class name="Campus" namespace="KREDA\Sphere\Application\Management\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="0" elements="15" coveredelements="0"/>
         </class>
-        <line num="25" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="23" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="26" type="stmt" count="0"/>
         <line num="28" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
         <line num="30" type="stmt" count="0"/>
         <line num="31" type="stmt" count="0"/>
-        <line num="32" type="stmt" count="0"/>
-        <line num="33" type="stmt" count="0"/>
-        <line num="39" type="method" name="frontendCampus" crap="2" count="0"/>
+        <line num="37" type="method" name="frontendCampus" crap="2" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
-        <line num="43" type="stmt" count="0"/>
-        <line num="44" type="stmt" count="0"/>
-        <line num="50" type="method" name="setupApplicationNavigation" crap="2" count="0"/>
+        <line num="48" type="method" name="setupApplicationNavigation" crap="2" count="0"/>
+        <line num="51" type="stmt" count="0"/>
+        <line num="52" type="stmt" count="0"/>
         <line num="53" type="stmt" count="0"/>
         <line num="54" type="stmt" count="0"/>
-        <line num="55" type="stmt" count="0"/>
-        <line num="56" type="stmt" count="0"/>
-        <line num="58" type="stmt" count="1"/>
-        <metrics loc="57" ncloc="40" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="0" elements="15" coveredelements="0"/>
+        <line num="56" type="stmt" count="1"/>
+        <metrics loc="55" ncloc="40" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="0" elements="15" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Module/Common.php">
         <class name="Common" namespace="KREDA\Sphere\Application\Management\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="0" elements="18" coveredelements="0"/>
         </class>
-        <line num="27" type="method" name="registerApplication" crap="2" count="0"/>
-        <line num="30" type="stmt" count="0"/>
-        <line num="31" type="stmt" count="0"/>
-        <line num="36" type="method" name="setupModuleNavigation" crap="12" count="0"/>
+        <line num="25" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="28" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
+        <line num="34" type="method" name="setupModuleNavigation" crap="12" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
-        <line num="43" type="stmt" count="0"/>
-        <line num="44" type="stmt" count="0"/>
+        <line num="57" type="stmt" count="0"/>
+        <line num="58" type="stmt" count="0"/>
         <line num="59" type="stmt" count="0"/>
         <line num="60" type="stmt" count="0"/>
         <line num="61" type="stmt" count="0"/>
@@ -4406,16 +4360,16 @@
         <line num="65" type="stmt" count="0"/>
         <line num="66" type="stmt" count="0"/>
         <line num="67" type="stmt" count="0"/>
-        <line num="68" type="stmt" count="0"/>
-        <line num="69" type="stmt" count="0"/>
-        <line num="72" type="stmt" count="1"/>
-        <metrics loc="71" ncloc="25" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="0" elements="18" coveredelements="0"/>
+        <line num="70" type="stmt" count="1"/>
+        <metrics loc="69" ncloc="25" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="0" elements="18" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Module/Education.php">
         <class name="Education" namespace="KREDA\Sphere\Application\Management\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="19" coveredstatements="0" elements="21" coveredelements="0"/>
         </class>
-        <line num="24" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="22" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
         <line num="27" type="stmt" count="0"/>
         <line num="28" type="stmt" count="0"/>
         <line num="29" type="stmt" count="0"/>
@@ -4424,27 +4378,27 @@
         <line num="32" type="stmt" count="0"/>
         <line num="33" type="stmt" count="0"/>
         <line num="34" type="stmt" count="0"/>
-        <line num="35" type="stmt" count="0"/>
         <line num="36" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="0"/>
         <line num="38" type="stmt" count="0"/>
         <line num="39" type="stmt" count="0"/>
         <line num="40" type="stmt" count="0"/>
         <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
-        <line num="43" type="stmt" count="0"/>
-        <line num="44" type="stmt" count="0"/>
-        <line num="49" type="method" name="frontendSubject" crap="2" count="0"/>
-        <line num="52" type="stmt" count="0"/>
-        <line num="53" type="stmt" count="0"/>
-        <line num="56" type="stmt" count="1"/>
-        <metrics loc="55" ncloc="41" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="19" coveredstatements="0" elements="21" coveredelements="0"/>
+        <line num="47" type="method" name="frontendSubject" crap="2" count="0"/>
+        <line num="50" type="stmt" count="0"/>
+        <line num="51" type="stmt" count="0"/>
+        <line num="54" type="stmt" count="1"/>
+        <metrics loc="53" ncloc="41" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="19" coveredstatements="0" elements="21" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Module/Person.php">
         <class name="Person" namespace="KREDA\Sphere\Application\Management\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="11" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="102" coveredstatements="0" elements="113" coveredelements="0"/>
         </class>
-        <line num="25" type="method" name="registerApplication" crap="2" count="0"/>
-        <line num="28" type="stmt" count="0"/>
+        <line num="23" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="26" type="stmt" count="0"/>
+        <line num="31" type="stmt" count="0"/>
+        <line num="32" type="stmt" count="0"/>
         <line num="33" type="stmt" count="0"/>
         <line num="34" type="stmt" count="0"/>
         <line num="35" type="stmt" count="0"/>
@@ -4456,8 +4410,8 @@
         <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
         <line num="43" type="stmt" count="0"/>
-        <line num="44" type="stmt" count="0"/>
-        <line num="45" type="stmt" count="0"/>
+        <line num="47" type="stmt" count="0"/>
+        <line num="48" type="stmt" count="0"/>
         <line num="49" type="stmt" count="0"/>
         <line num="50" type="stmt" count="0"/>
         <line num="51" type="stmt" count="0"/>
@@ -4466,8 +4420,8 @@
         <line num="54" type="stmt" count="0"/>
         <line num="55" type="stmt" count="0"/>
         <line num="56" type="stmt" count="0"/>
-        <line num="57" type="stmt" count="0"/>
-        <line num="58" type="stmt" count="0"/>
+        <line num="60" type="stmt" count="0"/>
+        <line num="61" type="stmt" count="0"/>
         <line num="62" type="stmt" count="0"/>
         <line num="63" type="stmt" count="0"/>
         <line num="64" type="stmt" count="0"/>
@@ -4476,8 +4430,8 @@
         <line num="67" type="stmt" count="0"/>
         <line num="68" type="stmt" count="0"/>
         <line num="69" type="stmt" count="0"/>
-        <line num="70" type="stmt" count="0"/>
-        <line num="71" type="stmt" count="0"/>
+        <line num="73" type="stmt" count="0"/>
+        <line num="74" type="stmt" count="0"/>
         <line num="75" type="stmt" count="0"/>
         <line num="76" type="stmt" count="0"/>
         <line num="77" type="stmt" count="0"/>
@@ -4486,8 +4440,8 @@
         <line num="80" type="stmt" count="0"/>
         <line num="81" type="stmt" count="0"/>
         <line num="82" type="stmt" count="0"/>
-        <line num="83" type="stmt" count="0"/>
-        <line num="84" type="stmt" count="0"/>
+        <line num="86" type="stmt" count="0"/>
+        <line num="87" type="stmt" count="0"/>
         <line num="88" type="stmt" count="0"/>
         <line num="89" type="stmt" count="0"/>
         <line num="90" type="stmt" count="0"/>
@@ -4497,13 +4451,13 @@
         <line num="94" type="stmt" count="0"/>
         <line num="95" type="stmt" count="0"/>
         <line num="96" type="stmt" count="0"/>
-        <line num="97" type="stmt" count="0"/>
-        <line num="98" type="stmt" count="0"/>
-        <line num="103" type="method" name="frontendPerson" crap="2" count="0"/>
+        <line num="101" type="method" name="frontendPerson" crap="2" count="0"/>
+        <line num="104" type="stmt" count="0"/>
+        <line num="105" type="stmt" count="0"/>
         <line num="106" type="stmt" count="0"/>
-        <line num="107" type="stmt" count="0"/>
-        <line num="108" type="stmt" count="0"/>
-        <line num="114" type="method" name="setupApplicationNavigation" crap="2" count="0"/>
+        <line num="112" type="method" name="setupApplicationNavigation" crap="2" count="0"/>
+        <line num="115" type="stmt" count="0"/>
+        <line num="116" type="stmt" count="0"/>
         <line num="117" type="stmt" count="0"/>
         <line num="118" type="stmt" count="0"/>
         <line num="119" type="stmt" count="0"/>
@@ -4517,79 +4471,79 @@
         <line num="127" type="stmt" count="0"/>
         <line num="128" type="stmt" count="0"/>
         <line num="129" type="stmt" count="0"/>
-        <line num="130" type="stmt" count="0"/>
         <line num="131" type="stmt" count="0"/>
-        <line num="133" type="stmt" count="0"/>
-        <line num="140" type="method" name="frontendPersonStudentDetail" crap="6" count="0"/>
-        <line num="143" type="stmt" count="0"/>
+        <line num="138" type="method" name="frontendPersonStudentDetail" crap="6" count="0"/>
+        <line num="141" type="stmt" count="0"/>
+        <line num="142" type="stmt" count="0"/>
         <line num="144" type="stmt" count="0"/>
+        <line num="145" type="stmt" count="0"/>
         <line num="146" type="stmt" count="0"/>
-        <line num="147" type="stmt" count="0"/>
-        <line num="148" type="stmt" count="0"/>
-        <line num="155" type="method" name="frontendPersonStudentList" crap="2" count="0"/>
+        <line num="153" type="method" name="frontendPersonStudentList" crap="2" count="0"/>
+        <line num="156" type="stmt" count="0"/>
+        <line num="157" type="stmt" count="0"/>
         <line num="158" type="stmt" count="0"/>
-        <line num="159" type="stmt" count="0"/>
-        <line num="160" type="stmt" count="0"/>
-        <line num="168" type="method" name="frontendPersonTeacherDetail" crap="6" count="0"/>
-        <line num="171" type="stmt" count="0"/>
+        <line num="166" type="method" name="frontendPersonTeacherDetail" crap="6" count="0"/>
+        <line num="169" type="stmt" count="0"/>
+        <line num="170" type="stmt" count="0"/>
         <line num="172" type="stmt" count="0"/>
+        <line num="173" type="stmt" count="0"/>
         <line num="174" type="stmt" count="0"/>
-        <line num="175" type="stmt" count="0"/>
-        <line num="176" type="stmt" count="0"/>
-        <line num="183" type="method" name="frontendPersonTeacherList" crap="2" count="0"/>
+        <line num="181" type="method" name="frontendPersonTeacherList" crap="2" count="0"/>
+        <line num="184" type="stmt" count="0"/>
+        <line num="185" type="stmt" count="0"/>
         <line num="186" type="stmt" count="0"/>
-        <line num="187" type="stmt" count="0"/>
-        <line num="188" type="stmt" count="0"/>
-        <line num="194" type="method" name="frontendPersonGuardianList" crap="2" count="0"/>
+        <line num="192" type="method" name="frontendPersonGuardianList" crap="2" count="0"/>
+        <line num="195" type="stmt" count="0"/>
+        <line num="196" type="stmt" count="0"/>
         <line num="197" type="stmt" count="0"/>
-        <line num="198" type="stmt" count="0"/>
-        <line num="199" type="stmt" count="0"/>
-        <line num="205" type="method" name="frontendPersonStaffList" crap="2" count="0"/>
+        <line num="203" type="method" name="frontendPersonStaffList" crap="2" count="0"/>
+        <line num="206" type="stmt" count="0"/>
+        <line num="207" type="stmt" count="0"/>
         <line num="208" type="stmt" count="0"/>
-        <line num="209" type="stmt" count="0"/>
-        <line num="210" type="stmt" count="0"/>
-        <line num="216" type="method" name="frontendPersonOthersList" crap="2" count="0"/>
+        <line num="214" type="method" name="frontendPersonOthersList" crap="2" count="0"/>
+        <line num="217" type="stmt" count="0"/>
+        <line num="218" type="stmt" count="0"/>
         <line num="219" type="stmt" count="0"/>
-        <line num="220" type="stmt" count="0"/>
-        <line num="221" type="stmt" count="0"/>
-        <line num="227" type="method" name="frontendPersonStudentCreate" crap="2" count="0"/>
+        <line num="225" type="method" name="frontendPersonStudentCreate" crap="2" count="0"/>
+        <line num="228" type="stmt" count="0"/>
+        <line num="229" type="stmt" count="0"/>
         <line num="230" type="stmt" count="0"/>
-        <line num="231" type="stmt" count="0"/>
-        <line num="232" type="stmt" count="0"/>
-        <line num="236" type="stmt" count="1"/>
-        <metrics loc="235" ncloc="175" classes="1" methods="11" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="102" coveredstatements="0" elements="113" coveredelements="0"/>
+        <line num="234" type="stmt" count="1"/>
+        <metrics loc="233" ncloc="175" classes="1" methods="11" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="102" coveredstatements="0" elements="113" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Management/Module/Token.php">
         <class name="Token" namespace="KREDA\Sphere\Application\Management\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="51" coveredstatements="0" elements="54" coveredelements="0"/>
         </class>
-        <line num="39" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="37" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="40" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="0"/>
         <line num="44" type="stmt" count="0"/>
         <line num="45" type="stmt" count="0"/>
         <line num="46" type="stmt" count="0"/>
         <line num="47" type="stmt" count="0"/>
-        <line num="48" type="stmt" count="0"/>
-        <line num="49" type="stmt" count="0"/>
-        <line num="57" type="method" name="frontendToken" crap="90" count="0"/>
+        <line num="55" type="method" name="frontendToken" crap="90" count="0"/>
+        <line num="58" type="stmt" count="0"/>
+        <line num="59" type="stmt" count="0"/>
         <line num="60" type="stmt" count="0"/>
         <line num="61" type="stmt" count="0"/>
-        <line num="62" type="stmt" count="0"/>
         <line num="63" type="stmt" count="0"/>
         <line num="65" type="stmt" count="0"/>
+        <line num="66" type="stmt" count="0"/>
         <line num="67" type="stmt" count="0"/>
         <line num="68" type="stmt" count="0"/>
         <line num="69" type="stmt" count="0"/>
         <line num="70" type="stmt" count="0"/>
         <line num="71" type="stmt" count="0"/>
-        <line num="72" type="stmt" count="0"/>
         <line num="73" type="stmt" count="0"/>
+        <line num="74" type="stmt" count="0"/>
         <line num="75" type="stmt" count="0"/>
-        <line num="76" type="stmt" count="0"/>
         <line num="77" type="stmt" count="0"/>
         <line num="79" type="stmt" count="0"/>
-        <line num="81" type="stmt" count="0"/>
+        <line num="80" type="stmt" count="0"/>
         <line num="82" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
         <line num="84" type="stmt" count="0"/>
         <line num="85" type="stmt" count="0"/>
         <line num="86" type="stmt" count="0"/>
@@ -4602,16 +4556,14 @@
         <line num="93" type="stmt" count="0"/>
         <line num="94" type="stmt" count="0"/>
         <line num="95" type="stmt" count="0"/>
-        <line num="96" type="stmt" count="0"/>
-        <line num="97" type="stmt" count="0"/>
-        <line num="98" type="method" name="anonymous function" crap="6" count="0"/>
-        <line num="100" type="stmt" count="0"/>
+        <line num="96" type="method" name="anonymous function" crap="6" count="0"/>
+        <line num="98" type="stmt" count="0"/>
+        <line num="101" type="stmt" count="0"/>
         <line num="103" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
         <line num="105" type="stmt" count="0"/>
-        <line num="106" type="stmt" count="0"/>
-        <line num="107" type="stmt" count="0"/>
-        <line num="141" type="stmt" count="1"/>
-        <metrics loc="140" ncloc="123" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="45" coveredstatements="0" elements="48" coveredelements="0"/>
+        <line num="139" type="stmt" count="1"/>
+        <metrics loc="138" ncloc="123" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="45" coveredstatements="0" elements="48" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\Management\Service">
@@ -5323,26 +5275,19 @@
     <package name="KREDA\Sphere\Application\Statistic">
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/Statistic/Statistic.php">
         <class name="Statistic" namespace="KREDA\Sphere\Application\Statistic" fullPackage="KREDA" package="KREDA">
-          <metrics methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="0" elements="16" coveredelements="0"/>
+          <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
         </class>
-        <line num="25" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="23" type="method" name="registerApplication" crap="2" count="0"/>
         <line num="28" type="stmt" count="0"/>
-        <line num="30" type="stmt" count="0"/>
-        <line num="32" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
         <line num="33" type="stmt" count="0"/>
         <line num="34" type="stmt" count="0"/>
         <line num="35" type="stmt" count="0"/>
         <line num="36" type="stmt" count="0"/>
-        <line num="42" type="method" name="frontendStatistic" crap="2" count="0"/>
-        <line num="45" type="stmt" count="0"/>
-        <line num="46" type="stmt" count="0"/>
-        <line num="47" type="stmt" count="0"/>
-        <line num="48" type="stmt" count="0"/>
-        <line num="49" type="stmt" count="0"/>
-        <line num="55" type="method" name="setupModuleNavigation" crap="2" count="0"/>
-        <line num="58" type="stmt" count="0"/>
-        <line num="60" type="stmt" count="1"/>
-        <metrics loc="59" ncloc="42" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="0" elements="16" coveredelements="0"/>
+        <line num="41" type="method" name="setupModuleNavigation" crap="2" count="0"/>
+        <line num="44" type="stmt" count="0"/>
+        <line num="46" type="stmt" count="1"/>
+        <metrics loc="45" ncloc="27" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\System\Frontend\Authorization">
@@ -5812,7 +5757,8 @@
         <class name="Cache" namespace="KREDA\Sphere\Application\System\Frontend" fullPackage="KREDA" package="KREDA">
           <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="0" elements="32" coveredelements="0"/>
         </class>
-        <line num="35" type="method" name="stageStatus" crap="20" count="0"/>
+        <line num="34" type="method" name="stageStatus" crap="20" count="0"/>
+        <line num="37" type="stmt" count="0"/>
         <line num="38" type="stmt" count="0"/>
         <line num="39" type="stmt" count="0"/>
         <line num="40" type="stmt" count="0"/>
@@ -5824,9 +5770,9 @@
         <line num="46" type="stmt" count="0"/>
         <line num="47" type="stmt" count="0"/>
         <line num="48" type="stmt" count="0"/>
-        <line num="49" type="stmt" count="0"/>
+        <line num="51" type="stmt" count="0"/>
         <line num="52" type="stmt" count="0"/>
-        <line num="53" type="stmt" count="0"/>
+        <line num="54" type="stmt" count="0"/>
         <line num="55" type="stmt" count="0"/>
         <line num="56" type="stmt" count="0"/>
         <line num="57" type="stmt" count="0"/>
@@ -5843,9 +5789,8 @@
         <line num="68" type="stmt" count="0"/>
         <line num="69" type="stmt" count="0"/>
         <line num="70" type="stmt" count="0"/>
-        <line num="71" type="stmt" count="0"/>
-        <line num="74" type="stmt" count="1"/>
-        <metrics loc="73" ncloc="63" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="0" elements="32" coveredelements="0"/>
+        <line num="73" type="stmt" count="1"/>
+        <metrics loc="72" ncloc="62" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="0" elements="32" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/System/Frontend/Consumer.php">
         <class name="Consumer" namespace="KREDA\Sphere\Application\System\Frontend" fullPackage="KREDA" package="KREDA">
@@ -6142,7 +6087,9 @@
         <class name="Authorization" namespace="KREDA\Sphere\Application\System\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="63" coveredstatements="0" elements="73" coveredelements="0"/>
         </class>
-        <line num="25" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="23" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="26" type="stmt" count="0"/>
+        <line num="27" type="stmt" count="0"/>
         <line num="28" type="stmt" count="0"/>
         <line num="29" type="stmt" count="0"/>
         <line num="30" type="stmt" count="0"/>
@@ -6167,13 +6114,13 @@
         <line num="49" type="stmt" count="0"/>
         <line num="50" type="stmt" count="0"/>
         <line num="51" type="stmt" count="0"/>
-        <line num="52" type="stmt" count="0"/>
-        <line num="53" type="stmt" count="0"/>
-        <line num="60" type="method" name="frontendStatus" crap="2" count="0"/>
+        <line num="58" type="method" name="frontendStatus" crap="2" count="0"/>
+        <line num="61" type="stmt" count="0"/>
+        <line num="62" type="stmt" count="0"/>
         <line num="63" type="stmt" count="0"/>
-        <line num="64" type="stmt" count="0"/>
-        <line num="65" type="stmt" count="0"/>
-        <line num="71" type="method" name="setupApplicationNavigation" crap="2" count="0"/>
+        <line num="69" type="method" name="setupApplicationNavigation" crap="2" count="0"/>
+        <line num="72" type="stmt" count="0"/>
+        <line num="73" type="stmt" count="0"/>
         <line num="74" type="stmt" count="0"/>
         <line num="75" type="stmt" count="0"/>
         <line num="76" type="stmt" count="0"/>
@@ -6185,63 +6132,63 @@
         <line num="82" type="stmt" count="0"/>
         <line num="83" type="stmt" count="0"/>
         <line num="84" type="stmt" count="0"/>
-        <line num="85" type="stmt" count="0"/>
-        <line num="86" type="stmt" count="0"/>
-        <line num="93" type="method" name="frontendRight" crap="2" count="0"/>
+        <line num="91" type="method" name="frontendRight" crap="2" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="95" type="stmt" count="0"/>
         <line num="96" type="stmt" count="0"/>
-        <line num="97" type="stmt" count="0"/>
-        <line num="98" type="stmt" count="0"/>
-        <line num="106" type="method" name="frontendPrivilege" crap="2" count="0"/>
+        <line num="104" type="method" name="frontendPrivilege" crap="2" count="0"/>
+        <line num="107" type="stmt" count="0"/>
+        <line num="108" type="stmt" count="0"/>
         <line num="109" type="stmt" count="0"/>
-        <line num="110" type="stmt" count="0"/>
-        <line num="111" type="stmt" count="0"/>
-        <line num="119" type="method" name="frontendAccess" crap="2" count="0"/>
+        <line num="117" type="method" name="frontendAccess" crap="2" count="0"/>
+        <line num="120" type="stmt" count="0"/>
+        <line num="121" type="stmt" count="0"/>
         <line num="122" type="stmt" count="0"/>
-        <line num="123" type="stmt" count="0"/>
-        <line num="124" type="stmt" count="0"/>
-        <line num="132" type="method" name="frontendRole" crap="2" count="0"/>
+        <line num="130" type="method" name="frontendRole" crap="2" count="0"/>
+        <line num="133" type="stmt" count="0"/>
+        <line num="134" type="stmt" count="0"/>
         <line num="135" type="stmt" count="0"/>
-        <line num="136" type="stmt" count="0"/>
-        <line num="137" type="stmt" count="0"/>
-        <line num="147" type="method" name="frontendRoleAccess" crap="2" count="0"/>
+        <line num="145" type="method" name="frontendRoleAccess" crap="2" count="0"/>
+        <line num="148" type="stmt" count="0"/>
+        <line num="149" type="stmt" count="0"/>
         <line num="150" type="stmt" count="0"/>
-        <line num="151" type="stmt" count="0"/>
-        <line num="152" type="stmt" count="0"/>
-        <line num="162" type="method" name="frontendAccessPrivilege" crap="2" count="0"/>
+        <line num="160" type="method" name="frontendAccessPrivilege" crap="2" count="0"/>
+        <line num="163" type="stmt" count="0"/>
+        <line num="164" type="stmt" count="0"/>
         <line num="165" type="stmt" count="0"/>
-        <line num="166" type="stmt" count="0"/>
-        <line num="167" type="stmt" count="0"/>
-        <line num="177" type="method" name="frontendPrivilegeRight" crap="2" count="0"/>
+        <line num="175" type="method" name="frontendPrivilegeRight" crap="2" count="0"/>
+        <line num="178" type="stmt" count="0"/>
+        <line num="179" type="stmt" count="0"/>
         <line num="180" type="stmt" count="0"/>
-        <line num="181" type="stmt" count="0"/>
-        <line num="182" type="stmt" count="0"/>
-        <line num="185" type="stmt" count="1"/>
-        <metrics loc="184" ncloc="124" classes="1" methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="63" coveredstatements="0" elements="73" coveredelements="0"/>
+        <line num="183" type="stmt" count="1"/>
+        <metrics loc="182" ncloc="124" classes="1" methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="63" coveredstatements="0" elements="73" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/System/Module/Cache.php">
         <class name="Cache" namespace="KREDA\Sphere\Application\System\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
         </class>
-        <line num="24" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="22" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
         <line num="27" type="stmt" count="0"/>
         <line num="28" type="stmt" count="0"/>
         <line num="29" type="stmt" count="0"/>
-        <line num="30" type="stmt" count="0"/>
-        <line num="31" type="stmt" count="0"/>
-        <line num="38" type="method" name="frontendStatus" crap="2" count="0"/>
-        <line num="41" type="stmt" count="0"/>
-        <line num="42" type="stmt" count="0"/>
-        <line num="45" type="stmt" count="1"/>
-        <metrics loc="44" ncloc="28" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
+        <line num="36" type="method" name="frontendStatus" crap="2" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="1"/>
+        <metrics loc="42" ncloc="28" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/System/Module/Common.php">
         <class name="Common" namespace="KREDA\Sphere\Application\System\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="0" elements="23" coveredelements="0"/>
         </class>
-        <line num="29" type="method" name="registerApplication" crap="2" count="0"/>
-        <line num="32" type="stmt" count="0"/>
-        <line num="33" type="stmt" count="0"/>
-        <line num="38" type="method" name="setupModuleNavigation" crap="2" count="0"/>
+        <line num="27" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <line num="31" type="stmt" count="0"/>
+        <line num="36" type="method" name="setupModuleNavigation" crap="2" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <line num="40" type="stmt" count="0"/>
         <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
         <line num="43" type="stmt" count="0"/>
@@ -6259,64 +6206,64 @@
         <line num="55" type="stmt" count="0"/>
         <line num="56" type="stmt" count="0"/>
         <line num="57" type="stmt" count="0"/>
-        <line num="58" type="stmt" count="0"/>
-        <line num="59" type="stmt" count="0"/>
-        <line num="62" type="stmt" count="1"/>
-        <metrics loc="61" ncloc="47" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="0" elements="23" coveredelements="0"/>
+        <line num="60" type="stmt" count="1"/>
+        <metrics loc="59" ncloc="47" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="0" elements="23" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/System/Module/Consumer.php">
         <class name="Consumer" namespace="KREDA\Sphere\Application\System\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
         </class>
-        <line num="24" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="22" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
         <line num="27" type="stmt" count="0"/>
         <line num="28" type="stmt" count="0"/>
         <line num="29" type="stmt" count="0"/>
-        <line num="30" type="stmt" count="0"/>
-        <line num="31" type="stmt" count="0"/>
-        <line num="36" type="method" name="frontendCreate" crap="2" count="0"/>
-        <line num="39" type="stmt" count="0"/>
-        <line num="40" type="stmt" count="0"/>
-        <line num="43" type="stmt" count="1"/>
-        <metrics loc="42" ncloc="28" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
+        <line num="34" type="method" name="frontendCreate" crap="2" count="0"/>
+        <line num="37" type="stmt" count="0"/>
+        <line num="38" type="stmt" count="0"/>
+        <line num="41" type="stmt" count="1"/>
+        <metrics loc="40" ncloc="28" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/System/Module/Database.php">
         <class name="Database" namespace="KREDA\Sphere\Application\System\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
         </class>
-        <line num="24" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="22" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
         <line num="27" type="stmt" count="0"/>
         <line num="28" type="stmt" count="0"/>
         <line num="29" type="stmt" count="0"/>
-        <line num="30" type="stmt" count="0"/>
-        <line num="31" type="stmt" count="0"/>
-        <line num="39" type="method" name="frontendStatus" crap="2" count="0"/>
-        <line num="42" type="stmt" count="0"/>
-        <line num="43" type="stmt" count="0"/>
-        <line num="46" type="stmt" count="1"/>
-        <metrics loc="45" ncloc="29" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
+        <line num="37" type="method" name="frontendStatus" crap="2" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="41" type="stmt" count="0"/>
+        <line num="44" type="stmt" count="1"/>
+        <metrics loc="43" ncloc="29" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/System/Module/Protocol.php">
         <class name="Protocol" namespace="KREDA\Sphere\Application\System\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
         </class>
-        <line num="24" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="22" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
         <line num="27" type="stmt" count="0"/>
         <line num="28" type="stmt" count="0"/>
         <line num="29" type="stmt" count="0"/>
-        <line num="30" type="stmt" count="0"/>
-        <line num="31" type="stmt" count="0"/>
-        <line num="38" type="method" name="frontendStatus" crap="2" count="0"/>
-        <line num="41" type="stmt" count="0"/>
-        <line num="42" type="stmt" count="0"/>
-        <line num="45" type="stmt" count="1"/>
-        <metrics loc="44" ncloc="28" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
+        <line num="36" type="method" name="frontendStatus" crap="2" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="1"/>
+        <metrics loc="42" ncloc="28" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/System/Module/Update.php">
         <class name="Update" namespace="KREDA\Sphere\Application\System\Module" fullPackage="KREDA" package="KREDA">
           <metrics methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="27" coveredstatements="0" elements="32" coveredelements="0"/>
         </class>
-        <line num="26" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="24" type="method" name="registerApplication" crap="2" count="0"/>
+        <line num="27" type="stmt" count="0"/>
+        <line num="28" type="stmt" count="0"/>
         <line num="29" type="stmt" count="0"/>
         <line num="30" type="stmt" count="0"/>
         <line num="31" type="stmt" count="0"/>
@@ -6326,30 +6273,28 @@
         <line num="35" type="stmt" count="0"/>
         <line num="36" type="stmt" count="0"/>
         <line num="37" type="stmt" count="0"/>
-        <line num="38" type="stmt" count="0"/>
-        <line num="39" type="stmt" count="0"/>
-        <line num="47" type="method" name="frontendStatus" crap="2" count="0"/>
+        <line num="45" type="method" name="frontendStatus" crap="2" count="0"/>
+        <line num="48" type="stmt" count="0"/>
+        <line num="49" type="stmt" count="0"/>
         <line num="50" type="stmt" count="0"/>
-        <line num="51" type="stmt" count="0"/>
-        <line num="52" type="stmt" count="0"/>
-        <line num="58" type="method" name="setupApplicationNavigation" crap="2" count="0"/>
+        <line num="56" type="method" name="setupApplicationNavigation" crap="2" count="0"/>
+        <line num="59" type="stmt" count="0"/>
+        <line num="60" type="stmt" count="0"/>
         <line num="61" type="stmt" count="0"/>
         <line num="62" type="stmt" count="0"/>
         <line num="63" type="stmt" count="0"/>
         <line num="64" type="stmt" count="0"/>
-        <line num="65" type="stmt" count="0"/>
         <line num="66" type="stmt" count="0"/>
-        <line num="68" type="stmt" count="0"/>
-        <line num="73" type="method" name="frontendSimulation" crap="2" count="0"/>
+        <line num="71" type="method" name="frontendSimulation" crap="2" count="0"/>
+        <line num="74" type="stmt" count="0"/>
+        <line num="75" type="stmt" count="0"/>
         <line num="76" type="stmt" count="0"/>
-        <line num="77" type="stmt" count="0"/>
-        <line num="78" type="stmt" count="0"/>
-        <line num="84" type="method" name="frontendInstall" crap="2" count="0"/>
+        <line num="82" type="method" name="frontendInstall" crap="2" count="0"/>
+        <line num="85" type="stmt" count="0"/>
+        <line num="86" type="stmt" count="0"/>
         <line num="87" type="stmt" count="0"/>
-        <line num="88" type="stmt" count="0"/>
-        <line num="89" type="stmt" count="0"/>
-        <line num="92" type="stmt" count="1"/>
-        <metrics loc="91" ncloc="66" classes="1" methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="27" coveredstatements="0" elements="32" coveredelements="0"/>
+        <line num="90" type="stmt" count="1"/>
+        <metrics loc="89" ncloc="66" classes="1" methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="27" coveredstatements="0" elements="32" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\System\Service">
@@ -6417,10 +6362,9 @@
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Application/System/Service/Update.php">
         <class name="Update" namespace="KREDA\Sphere\Application\System\Service" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="0" elements="22" coveredelements="0"/>
+          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="18" coveredstatements="0" elements="19" coveredelements="0"/>
         </class>
         <line num="23" type="method" name="setupDatabaseSchema" crap="6" count="0"/>
-        <line num="24" type="stmt" count="0"/>
         <line num="29" type="stmt" count="0"/>
         <line num="30" type="stmt" count="0"/>
         <line num="31" type="stmt" count="0"/>
@@ -6429,18 +6373,18 @@
         <line num="34" type="stmt" count="0"/>
         <line num="35" type="stmt" count="0"/>
         <line num="39" type="stmt" count="0"/>
-        <line num="45" type="stmt" count="0"/>
+        <line num="44" type="stmt" count="0"/>
+        <line num="48" type="stmt" count="0"/>
         <line num="49" type="stmt" count="0"/>
         <line num="50" type="stmt" count="0"/>
         <line num="51" type="stmt" count="0"/>
         <line num="52" type="stmt" count="0"/>
         <line num="53" type="stmt" count="0"/>
         <line num="54" type="stmt" count="0"/>
-        <line num="55" type="stmt" count="0"/>
+        <line num="58" type="stmt" count="0"/>
         <line num="60" type="stmt" count="0"/>
-        <line num="62" type="stmt" count="0"/>
-        <line num="63" type="stmt" count="0"/>
-        <metrics loc="65" ncloc="36" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="0" elements="22" coveredelements="0"/>
+        <line num="64" type="stmt" count="1"/>
+        <metrics loc="63" ncloc="38" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="18" coveredstatements="0" elements="19" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Application\System\Service\Protocol\Entity">
@@ -6649,38 +6593,42 @@
         <class name="System" namespace="KREDA\Sphere\Application\System" fullPackage="KREDA" package="KREDA">
           <metrics methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="46" coveredstatements="0" elements="50" coveredelements="0"/>
         </class>
-        <line num="26" type="method" name="registerApplication" crap="6" count="0"/>
-        <line num="29" type="stmt" count="0"/>
-        <line num="30" type="stmt" count="0"/>
+        <line num="24" type="method" name="registerApplication" crap="6" count="0"/>
+        <line num="27" type="stmt" count="0"/>
+        <line num="28" type="stmt" count="0"/>
+        <line num="32" type="stmt" count="0"/>
         <line num="34" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="0"/>
         <line num="36" type="stmt" count="0"/>
         <line num="37" type="stmt" count="0"/>
         <line num="38" type="stmt" count="0"/>
         <line num="39" type="stmt" count="0"/>
-        <line num="40" type="stmt" count="0"/>
         <line num="41" type="stmt" count="0"/>
+        <line num="42" type="stmt" count="0"/>
         <line num="43" type="stmt" count="0"/>
         <line num="44" type="stmt" count="0"/>
         <line num="45" type="stmt" count="0"/>
         <line num="46" type="stmt" count="0"/>
         <line num="47" type="stmt" count="0"/>
         <line num="48" type="stmt" count="0"/>
-        <line num="49" type="stmt" count="0"/>
-        <line num="50" type="stmt" count="0"/>
-        <line num="55" type="stmt" count="0"/>
-        <line num="61" type="method" name="serviceUpdate" crap="2" count="0"/>
-        <line num="64" type="stmt" count="0"/>
-        <line num="70" type="method" name="serviceProtocol" crap="2" count="0"/>
-        <line num="73" type="stmt" count="0"/>
-        <line num="79" type="method" name="frontendSystem" crap="2" count="0"/>
-        <line num="82" type="stmt" count="0"/>
+        <line num="52" type="stmt" count="0"/>
+        <line num="57" type="method" name="serviceUpdate" crap="2" count="0"/>
+        <line num="60" type="stmt" count="0"/>
+        <line num="66" type="method" name="serviceProtocol" crap="2" count="0"/>
+        <line num="69" type="stmt" count="0"/>
+        <line num="75" type="method" name="frontendSystem" crap="2" count="0"/>
+        <line num="78" type="stmt" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
         <line num="83" type="stmt" count="0"/>
         <line num="84" type="stmt" count="0"/>
         <line num="85" type="stmt" count="0"/>
         <line num="87" type="stmt" count="0"/>
-        <line num="88" type="stmt" count="0"/>
         <line num="89" type="stmt" count="0"/>
+        <line num="90" type="stmt" count="0"/>
         <line num="91" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
         <line num="93" type="stmt" count="0"/>
         <line num="94" type="stmt" count="0"/>
         <line num="95" type="stmt" count="0"/>
@@ -6695,12 +6643,8 @@
         <line num="104" type="stmt" count="0"/>
         <line num="105" type="stmt" count="0"/>
         <line num="106" type="stmt" count="0"/>
-        <line num="107" type="stmt" count="0"/>
-        <line num="108" type="stmt" count="0"/>
-        <line num="109" type="stmt" count="0"/>
-        <line num="110" type="stmt" count="0"/>
-        <line num="113" type="stmt" count="1"/>
-        <metrics loc="112" ncloc="86" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="46" coveredstatements="0" elements="50" coveredelements="0"/>
+        <line num="109" type="stmt" count="1"/>
+        <metrics loc="108" ncloc="84" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="46" coveredstatements="0" elements="50" coveredelements="0"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Client\Component\Element">
@@ -7722,7 +7666,7 @@
         <line num="33" type="stmt" count="0"/>
         <line num="34" type="stmt" count="0"/>
         <line num="35" type="stmt" count="0"/>
-        <line num="40" type="method" name="Source" crap="6" count="0"/>
+        <line num="40" type="method" name="setSource" crap="6" count="0"/>
         <line num="41" type="stmt" count="0"/>
         <line num="43" type="stmt" count="0"/>
         <line num="44" type="stmt" count="0"/>
@@ -8714,7 +8658,7 @@
       </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Common/Extension/ModHex.php">
         <class name="ModHex" namespace="KREDA\Sphere\Common\Extension" fullPackage="KREDA" package="KREDA">
-          <metrics methods="6" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="28" coveredstatements="3" elements="34" coveredelements="5"/>
+          <metrics methods="6" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="3" elements="35" coveredelements="5"/>
         </class>
         <line num="24" type="method" name="__construct" crap="1" count="1"/>
         <line num="27" type="stmt" count="1"/>
@@ -8750,8 +8694,9 @@
         <line num="99" type="stmt" count="0"/>
         <line num="100" type="stmt" count="0"/>
         <line num="101" type="stmt" count="0"/>
-        <line num="105" type="stmt" count="1"/>
-        <metrics loc="104" ncloc="67" classes="1" methods="6" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="28" coveredstatements="3" elements="34" coveredelements="5"/>
+        <line num="102" type="stmt" count="0"/>
+        <line num="106" type="stmt" count="1"/>
+        <metrics loc="105" ncloc="70" classes="1" methods="6" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="3" elements="35" coveredelements="5"/>
       </file>
     </package>
     <package name="KREDA\Sphere\Common\Frontend\Alert">
@@ -10101,6 +10046,20 @@
         <line num="31" type="stmt" count="0"/>
         <metrics loc="33" ncloc="21" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="0" elements="10" coveredelements="0"/>
       </file>
+      <file name="W:\WebProject\KREDA-Sphere/Sphere/Common/Wire/Effect.php">
+        <class name="Effect" namespace="KREDA\Sphere\Common\Wire" fullPackage="KREDA" package="KREDA">
+          <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="0" elements="10" coveredelements="0"/>
+        </class>
+        <line num="17" type="method" name="__construct" crap="2" count="0"/>
+        <line num="18" type="stmt" count="0"/>
+        <line num="20" type="stmt" count="0"/>
+        <line num="21" type="stmt" count="0"/>
+        <line num="26" type="method" name="__toString" crap="2" count="0"/>
+        <line num="27" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <metrics loc="31" ncloc="20" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="0" elements="10" coveredelements="0"/>
+      </file>
       <file name="W:\WebProject\KREDA-Sphere/Sphere/Common/Wire/Observer.php">
         <class name="Observer" namespace="KREDA\Sphere\Common\Wire" fullPackage="KREDA" package="KREDA">
           <metrics methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="50" coveredstatements="0" elements="55" coveredelements="0"/>
@@ -10360,29 +10319,28 @@
     <package name="KREDA\TestSuite\Tests\Application">
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/AbstractActionTest.php">
         <class name="AbstractActionTest" namespace="KREDA\TestSuite\Tests\Application" fullPackage="KREDA" package="KREDA">
-          <metrics methods="3" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="15" coveredelements="14"/>
+          <metrics methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="14" coveredelements="14"/>
         </class>
-        <line num="0" type="stmt" count="2"/>
-        <line num="17" type="method" name="testCodeStyle" crap="1" count="0"/>
-        <line num="22" type="method" name="checkMethodName" crap="1" count="2"/>
-        <line num="25" type="stmt" count="2"/>
-        <line num="26" type="stmt" count="2"/>
-        <line num="27" type="stmt" count="2"/>
-        <line num="28" type="stmt" count="2"/>
-        <line num="29" type="stmt" count="2"/>
-        <line num="36" type="method" name="checkNamePattern" crap="2" count="2"/>
-        <line num="39" type="stmt" count="2"/>
-        <line num="40" type="stmt" count="2"/>
-        <line num="42" type="stmt" count="2"/>
-        <line num="43" type="stmt" count="2"/>
-        <line num="44" type="stmt" count="2"/>
-        <line num="45" type="stmt" count="2"/>
-        <line num="46" type="stmt" count="2"/>
-        <metrics loc="47" ncloc="28" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="14" coveredelements="14"/>
+        <line num="0" type="stmt" count="4"/>
+        <line num="15" type="method" name="checkMethodName" crap="1" count="4"/>
+        <line num="18" type="stmt" count="4"/>
+        <line num="19" type="stmt" count="4"/>
+        <line num="20" type="stmt" count="4"/>
+        <line num="21" type="stmt" count="4"/>
+        <line num="22" type="stmt" count="4"/>
+        <line num="29" type="method" name="checkNamePattern" crap="2" count="4"/>
+        <line num="32" type="stmt" count="4"/>
+        <line num="33" type="stmt" count="4"/>
+        <line num="35" type="stmt" count="4"/>
+        <line num="36" type="stmt" count="4"/>
+        <line num="37" type="stmt" count="4"/>
+        <line num="38" type="stmt" count="4"/>
+        <line num="39" type="stmt" count="4"/>
+        <metrics loc="40" ncloc="26" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="14" coveredelements="14"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/AbstractApplicationTest.php">
         <class name="AbstractApplicationTest" namespace="KREDA\TestSuite\Tests\Application" fullPackage="KREDA" package="KREDA">
-          <metrics methods="4" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="24" coveredelements="23"/>
+          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="23" coveredelements="23"/>
         </class>
         <line num="0" type="stmt" count="9"/>
         <line num="12" type="method" name="testAbstractApplication" crap="1" count="8"/>
@@ -10390,105 +10348,100 @@
         <line num="17" type="stmt" count="8"/>
         <line num="18" type="stmt" count="8"/>
         <line num="19" type="stmt" count="8"/>
-        <line num="26" type="method" name="testCodeStyle" crap="1" count="0"/>
-        <line num="31" type="method" name="checkMethodName" crap="1" count="8"/>
-        <line num="34" type="stmt" count="8"/>
-        <line num="35" type="stmt" count="8"/>
-        <line num="36" type="stmt" count="8"/>
-        <line num="37" type="stmt" count="8"/>
-        <line num="38" type="stmt" count="8"/>
-        <line num="45" type="method" name="checkNamePattern" crap="2" count="8"/>
+        <line num="24" type="method" name="checkMethodName" crap="1" count="8"/>
+        <line num="27" type="stmt" count="8"/>
+        <line num="28" type="stmt" count="8"/>
+        <line num="29" type="stmt" count="8"/>
+        <line num="30" type="stmt" count="8"/>
+        <line num="31" type="stmt" count="8"/>
+        <line num="38" type="method" name="checkNamePattern" crap="2" count="8"/>
+        <line num="41" type="stmt" count="8"/>
+        <line num="42" type="stmt" count="8"/>
+        <line num="44" type="stmt" count="8"/>
+        <line num="45" type="stmt" count="8"/>
+        <line num="46" type="stmt" count="8"/>
+        <line num="47" type="stmt" count="8"/>
         <line num="48" type="stmt" count="8"/>
         <line num="49" type="stmt" count="8"/>
+        <line num="50" type="stmt" count="8"/>
         <line num="51" type="stmt" count="8"/>
         <line num="52" type="stmt" count="8"/>
-        <line num="53" type="stmt" count="8"/>
-        <line num="54" type="stmt" count="8"/>
-        <line num="55" type="stmt" count="8"/>
-        <line num="56" type="stmt" count="8"/>
-        <line num="57" type="stmt" count="8"/>
-        <line num="58" type="stmt" count="8"/>
-        <line num="59" type="stmt" count="8"/>
         <line num="471" type="stmt" count="1"/>
         <line num="1169" type="stmt" count="1"/>
         <line num="1389" type="stmt" count="1"/>
-        <metrics loc="60" ncloc="40" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="23" coveredelements="23"/>
+        <metrics loc="53" ncloc="38" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="23" coveredelements="23"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/AbstractFrontendTest.php">
         <class name="AbstractFrontendTest" namespace="KREDA\TestSuite\Tests\Application" fullPackage="KREDA" package="KREDA">
-          <metrics methods="4" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="16" elements="20" coveredelements="19"/>
+          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="16" elements="19" coveredelements="19"/>
         </class>
         <line num="0" type="stmt" count="4"/>
-        <line num="12" type="method" name="testAbstractFrontend" crap="1" count="8"/>
-        <line num="16" type="stmt" count="8"/>
-        <line num="17" type="stmt" count="8"/>
-        <line num="18" type="stmt" count="8"/>
-        <line num="25" type="method" name="testCodeStyle" crap="1" count="0"/>
-        <line num="30" type="method" name="checkMethodName" crap="1" count="4"/>
-        <line num="33" type="stmt" count="4"/>
-        <line num="34" type="stmt" count="4"/>
-        <line num="35" type="stmt" count="4"/>
-        <line num="36" type="stmt" count="4"/>
-        <line num="37" type="stmt" count="4"/>
-        <line num="44" type="method" name="checkNamePattern" crap="2" count="4"/>
-        <line num="47" type="stmt" count="4"/>
-        <line num="48" type="stmt" count="4"/>
-        <line num="50" type="stmt" count="4"/>
-        <line num="51" type="stmt" count="4"/>
-        <line num="52" type="stmt" count="4"/>
-        <line num="53" type="stmt" count="4"/>
-        <line num="54" type="stmt" count="4"/>
-        <line num="55" type="stmt" count="4"/>
-        <metrics loc="56" ncloc="36" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="16" elements="19" coveredelements="19"/>
-      </file>
-      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/AbstractSchemaTest.php">
-        <class name="AbstractSchemaTest" namespace="KREDA\TestSuite\Tests\Application" fullPackage="KREDA" package="KREDA">
-          <metrics methods="3" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="15" coveredelements="14"/>
-        </class>
-        <line num="0" type="stmt" count="1"/>
-        <line num="17" type="method" name="testCodeStyle" crap="1" count="0"/>
-        <line num="22" type="method" name="checkMethodName" crap="1" count="3"/>
-        <line num="25" type="stmt" count="3"/>
-        <line num="26" type="stmt" count="3"/>
-        <line num="27" type="stmt" count="3"/>
-        <line num="28" type="stmt" count="3"/>
-        <line num="29" type="stmt" count="3"/>
-        <line num="36" type="method" name="checkNamePattern" crap="2" count="3"/>
-        <line num="39" type="stmt" count="3"/>
-        <line num="40" type="stmt" count="3"/>
-        <line num="42" type="stmt" count="3"/>
-        <line num="43" type="stmt" count="3"/>
-        <line num="44" type="stmt" count="3"/>
-        <line num="45" type="stmt" count="3"/>
-        <line num="46" type="stmt" count="3"/>
-        <metrics loc="47" ncloc="28" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="14" coveredelements="14"/>
-      </file>
-      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/AbstractServiceTest.php">
-        <class name="AbstractServiceTest" namespace="KREDA\TestSuite\Tests\Application" fullPackage="KREDA" package="KREDA">
-          <metrics methods="4" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="16" elements="20" coveredelements="19"/>
-        </class>
-        <line num="0" type="stmt" count="4"/>
-        <line num="12" type="method" name="testAbstractService" crap="1" count="4"/>
+        <line num="12" type="method" name="testAbstractFrontend" crap="1" count="4"/>
         <line num="16" type="stmt" count="4"/>
         <line num="17" type="stmt" count="4"/>
         <line num="18" type="stmt" count="4"/>
+        <line num="23" type="method" name="checkMethodName" crap="1" count="4"/>
+        <line num="26" type="stmt" count="4"/>
+        <line num="27" type="stmt" count="4"/>
+        <line num="28" type="stmt" count="4"/>
+        <line num="29" type="stmt" count="4"/>
+        <line num="30" type="stmt" count="4"/>
+        <line num="37" type="method" name="checkNamePattern" crap="2" count="4"/>
+        <line num="40" type="stmt" count="4"/>
+        <line num="41" type="stmt" count="4"/>
+        <line num="43" type="stmt" count="4"/>
+        <line num="44" type="stmt" count="4"/>
+        <line num="45" type="stmt" count="4"/>
+        <line num="46" type="stmt" count="4"/>
+        <line num="47" type="stmt" count="4"/>
+        <line num="48" type="stmt" count="4"/>
+        <metrics loc="49" ncloc="34" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="16" elements="19" coveredelements="19"/>
+      </file>
+      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/AbstractSchemaTest.php">
+        <class name="AbstractSchemaTest" namespace="KREDA\TestSuite\Tests\Application" fullPackage="KREDA" package="KREDA">
+          <metrics methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="14" coveredelements="14"/>
+        </class>
+        <line num="15" type="method" name="checkMethodName" crap="1" count="4"/>
+        <line num="18" type="stmt" count="4"/>
         <line num="19" type="stmt" count="4"/>
-        <line num="26" type="method" name="testCodeStyle" crap="1" count="0"/>
-        <line num="31" type="method" name="checkMethodName" crap="1" count="4"/>
-        <line num="34" type="stmt" count="4"/>
+        <line num="20" type="stmt" count="4"/>
+        <line num="21" type="stmt" count="4"/>
+        <line num="22" type="stmt" count="4"/>
+        <line num="29" type="method" name="checkNamePattern" crap="2" count="4"/>
+        <line num="32" type="stmt" count="4"/>
+        <line num="33" type="stmt" count="4"/>
         <line num="35" type="stmt" count="4"/>
         <line num="36" type="stmt" count="4"/>
         <line num="37" type="stmt" count="4"/>
         <line num="38" type="stmt" count="4"/>
-        <line num="45" type="method" name="checkNamePattern" crap="2" count="4"/>
-        <line num="48" type="stmt" count="4"/>
-        <line num="49" type="stmt" count="4"/>
-        <line num="51" type="stmt" count="4"/>
-        <line num="52" type="stmt" count="4"/>
-        <line num="53" type="stmt" count="4"/>
-        <line num="54" type="stmt" count="4"/>
-        <line num="55" type="stmt" count="4"/>
-        <metrics loc="56" ncloc="36" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="16" elements="19" coveredelements="19"/>
+        <line num="39" type="stmt" count="4"/>
+        <metrics loc="40" ncloc="26" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="14" coveredelements="14"/>
+      </file>
+      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/AbstractServiceTest.php">
+        <class name="AbstractServiceTest" namespace="KREDA\TestSuite\Tests\Application" fullPackage="KREDA" package="KREDA">
+          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="16" elements="19" coveredelements="19"/>
+        </class>
+        <line num="0" type="stmt" count="5"/>
+        <line num="12" type="method" name="testAbstractService" crap="1" count="5"/>
+        <line num="16" type="stmt" count="5"/>
+        <line num="17" type="stmt" count="5"/>
+        <line num="18" type="stmt" count="5"/>
+        <line num="19" type="stmt" count="5"/>
+        <line num="24" type="method" name="checkMethodName" crap="1" count="5"/>
+        <line num="27" type="stmt" count="5"/>
+        <line num="28" type="stmt" count="5"/>
+        <line num="29" type="stmt" count="5"/>
+        <line num="30" type="stmt" count="5"/>
+        <line num="31" type="stmt" count="5"/>
+        <line num="38" type="method" name="checkNamePattern" crap="2" count="5"/>
+        <line num="41" type="stmt" count="5"/>
+        <line num="42" type="stmt" count="5"/>
+        <line num="44" type="stmt" count="5"/>
+        <line num="45" type="stmt" count="5"/>
+        <line num="46" type="stmt" count="5"/>
+        <line num="47" type="stmt" count="5"/>
+        <line num="48" type="stmt" count="5"/>
+        <metrics loc="49" ncloc="34" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="16" elements="19" coveredelements="19"/>
       </file>
     </package>
     <package name="KREDA\TestSuite\Tests\Application\Assistance">
@@ -10513,6 +10466,16 @@
         <line num="21" type="stmt" count="1"/>
         <metrics loc="22" ncloc="17" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="6" coveredelements="6"/>
       </file>
+      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Assistance/ServiceTest.php">
+        <class name="ServiceTest" namespace="KREDA\TestSuite\Tests\Application\Assistance" fullPackage="KREDA" package="KREDA">
+          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
+        <line num="17" type="stmt" count="1"/>
+        <line num="18" type="stmt" count="1"/>
+        <line num="19" type="stmt" count="1"/>
+        <metrics loc="20" ncloc="15" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
     </package>
     <package name="KREDA\TestSuite\Tests\Application\Billing">
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Billing/ApplicationTest.php">
@@ -10524,16 +10487,6 @@
         <line num="18" type="stmt" count="1"/>
         <metrics loc="19" ncloc="14" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
       </file>
-      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Billing/FrontendTest.php">
-        <class name="FrontendTest" namespace="KREDA\TestSuite\Tests\Application\Billing" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
-        </class>
-        <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
-        <line num="17" type="stmt" count="1"/>
-        <line num="18" type="stmt" count="1"/>
-        <line num="19" type="stmt" count="1"/>
-        <metrics loc="20" ncloc="15" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
-      </file>
     </package>
     <package name="KREDA\TestSuite\Tests\Application\Demo">
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Demo/ApplicationTest.php">
@@ -10544,14 +10497,6 @@
         <line num="17" type="stmt" count="1"/>
         <line num="18" type="stmt" count="1"/>
         <metrics loc="19" ncloc="14" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
-      </file>
-      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Demo/FrontendTest.php">
-        <class name="FrontendTest" namespace="KREDA\TestSuite\Tests\Application\Demo" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
-        </class>
-        <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
-        <line num="17" type="stmt" count="1"/>
-        <metrics loc="18" ncloc="13" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
       </file>
     </package>
     <package name="KREDA\TestSuite\Tests\Application\Gatekeeper">
@@ -10620,6 +10565,18 @@
       </file>
     </package>
     <package name="KREDA\TestSuite\Tests\Application\Graduation">
+      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Graduation/ActionTest.php">
+        <class name="ActionTest" namespace="KREDA\TestSuite\Tests\Application\Graduation" fullPackage="KREDA" package="KREDA">
+          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="6" coveredelements="6"/>
+        </class>
+        <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
+        <line num="17" type="stmt" count="1"/>
+        <line num="18" type="stmt" count="1"/>
+        <line num="19" type="stmt" count="1"/>
+        <line num="20" type="stmt" count="1"/>
+        <line num="21" type="stmt" count="1"/>
+        <metrics loc="22" ncloc="17" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="6" coveredelements="6"/>
+      </file>
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Graduation/ApplicationTest.php">
         <class name="ApplicationTest" namespace="KREDA\TestSuite\Tests\Application\Graduation" fullPackage="KREDA" package="KREDA">
           <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
@@ -10628,14 +10585,6 @@
         <line num="17" type="stmt" count="1"/>
         <line num="18" type="stmt" count="1"/>
         <metrics loc="19" ncloc="14" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
-      </file>
-      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Graduation/FrontendTest.php">
-        <class name="FrontendTest" namespace="KREDA\TestSuite\Tests\Application\Graduation" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
-        </class>
-        <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
-        <line num="17" type="stmt" count="1"/>
-        <metrics loc="18" ncloc="13" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Graduation/SchemaTest.php">
         <class name="SchemaTest" namespace="KREDA\TestSuite\Tests\Application\Graduation" fullPackage="KREDA" package="KREDA">
@@ -10662,6 +10611,9 @@
         <metrics loc="22" ncloc="17" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="6" coveredelements="6"/>
       </file>
     </package>
+    <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/IAbstractTest.php">
+      <metrics loc="18" ncloc="8" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
     <package name="KREDA\TestSuite\Tests\Application\Management">
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Management/ActionTest.php">
         <class name="ActionTest" namespace="KREDA\TestSuite\Tests\Application\Management" fullPackage="KREDA" package="KREDA">
@@ -10677,20 +10629,30 @@
       </file>
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Management/ApplicationTest.php">
         <class name="ApplicationTest" namespace="KREDA\TestSuite\Tests\Application\Management" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="9" coveredelements="9"/>
         </class>
         <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
         <line num="17" type="stmt" count="1"/>
         <line num="18" type="stmt" count="1"/>
-        <metrics loc="19" ncloc="14" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+        <line num="19" type="stmt" count="1"/>
+        <line num="20" type="stmt" count="1"/>
+        <line num="21" type="stmt" count="1"/>
+        <line num="22" type="stmt" count="1"/>
+        <line num="23" type="stmt" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <metrics loc="25" ncloc="20" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="9" coveredelements="9"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Management/FrontendTest.php">
         <class name="FrontendTest" namespace="KREDA\TestSuite\Tests\Application\Management" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
+          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="6" coveredelements="6"/>
         </class>
         <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
+        <line num="16" type="stmt" count="1"/>
         <line num="17" type="stmt" count="1"/>
-        <metrics loc="18" ncloc="13" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
+        <line num="18" type="stmt" count="1"/>
+        <line num="19" type="stmt" count="1"/>
+        <line num="20" type="stmt" count="1"/>
+        <metrics loc="21" ncloc="16" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="6" coveredelements="6"/>
       </file>
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Management/SchemaTest.php">
         <class name="SchemaTest" namespace="KREDA\TestSuite\Tests\Application\Management" fullPackage="KREDA" package="KREDA">
@@ -10727,16 +10689,18 @@
         <line num="18" type="stmt" count="1"/>
         <metrics loc="19" ncloc="14" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
       </file>
-      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/Statistic/FrontendTest.php">
-        <class name="FrontendTest" namespace="KREDA\TestSuite\Tests\Application\Statistic" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
+    </package>
+    <package name="KREDA\TestSuite\Tests\Application\System">
+      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/System/ActionTest.php">
+        <class name="ActionTest" namespace="KREDA\TestSuite\Tests\Application\System" fullPackage="KREDA" package="KREDA">
+          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
         </class>
         <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
         <line num="17" type="stmt" count="1"/>
-        <metrics loc="18" ncloc="13" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
+        <line num="18" type="stmt" count="1"/>
+        <line num="19" type="stmt" count="1"/>
+        <metrics loc="20" ncloc="15" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
       </file>
-    </package>
-    <package name="KREDA\TestSuite\Tests\Application\System">
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/System/ApplicationTest.php">
         <class name="ApplicationTest" namespace="KREDA\TestSuite\Tests\Application\System" fullPackage="KREDA" package="KREDA">
           <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="10" coveredelements="10"/>
@@ -10755,7 +10719,7 @@
       </file>
       <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/System/FrontendTest.php">
         <class name="FrontendTest" namespace="KREDA\TestSuite\Tests\Application\System" fullPackage="KREDA" package="KREDA">
-          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="10" coveredelements="10"/>
+          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="13" elements="14" coveredelements="14"/>
         </class>
         <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
         <line num="17" type="stmt" count="1"/>
@@ -10767,10 +10731,14 @@
         <line num="23" type="stmt" count="1"/>
         <line num="24" type="stmt" count="1"/>
         <line num="25" type="stmt" count="1"/>
-        <metrics loc="26" ncloc="21" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="10" coveredelements="10"/>
+        <line num="26" type="stmt" count="1"/>
+        <line num="27" type="stmt" count="1"/>
+        <line num="28" type="stmt" count="1"/>
+        <line num="29" type="stmt" count="1"/>
+        <metrics loc="30" ncloc="25" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="13" elements="14" coveredelements="14"/>
       </file>
-      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/System/ServiceTest.php">
-        <class name="ServiceTest" namespace="KREDA\TestSuite\Tests\Application\System" fullPackage="KREDA" package="KREDA">
+      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/System/SchemaTest.php">
+        <class name="SchemaTest" namespace="KREDA\TestSuite\Tests\Application\System" fullPackage="KREDA" package="KREDA">
           <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
         </class>
         <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
@@ -10778,6 +10746,17 @@
         <line num="18" type="stmt" count="1"/>
         <line num="19" type="stmt" count="1"/>
         <metrics loc="20" ncloc="15" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+      <file name="W:\WebProject\KREDA-Sphere/TestSuite/Tests/Application/System/ServiceTest.php">
+        <class name="ServiceTest" namespace="KREDA\TestSuite\Tests\Application\System" fullPackage="KREDA" package="KREDA">
+          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
+        </class>
+        <line num="14" type="method" name="testCodeStyle" crap="1" count="1"/>
+        <line num="17" type="stmt" count="1"/>
+        <line num="18" type="stmt" count="1"/>
+        <line num="19" type="stmt" count="1"/>
+        <line num="20" type="stmt" count="1"/>
+        <metrics loc="21" ncloc="16" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
       </file>
     </package>
     <package name="KREDA\TestSuite\Tests\Client">
@@ -10967,6 +10946,6 @@
         <metrics loc="63" ncloc="48" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="25" coveredstatements="25" elements="29" coveredelements="29"/>
       </file>
     </package>
-    <metrics files="319" loc="24294" ncloc="16993" classes="314" methods="1164" coveredmethods="121" conditionals="0" coveredconditionals="0" statements="8088" coveredstatements="472" elements="9252" coveredelements="593"/>
+    <metrics files="320" loc="24209" ncloc="16971" classes="314" methods="1163" coveredmethods="121" conditionals="0" coveredconditionals="0" statements="8069" coveredstatements="495" elements="9232" coveredelements="616"/>
   </project>
 </coverage>

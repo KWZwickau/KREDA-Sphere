@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Statistic;
 
-use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\StatisticIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
@@ -23,27 +22,17 @@ class Statistic extends AbstractApplication
     public static function registerApplication( Configuration $Configuration )
     {
 
+        /**
+         * Configuration
+         */
         self::setupApplicationAccess( 'Statistic' );
-
         self::$Configuration = $Configuration;
-
+        /**
+         * Navigation
+         */
         self::addClientNavigationMain( self::$Configuration,
             '/Sphere/Statistic', 'Statistik', new StatisticIcon()
         );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Statistic', __CLASS__.'::frontendStatistic' );
-    }
-
-    /**
-     * @return Stage
-     */
-    public static function frontendStatistic()
-    {
-
-        self::setupModuleNavigation();
-        $View = new Stage();
-        $View->setTitle( 'Statistik' );
-        $View->setMessage( 'Bitte wählen Sie ein Thema' );
-        return $View;
     }
 
     /**

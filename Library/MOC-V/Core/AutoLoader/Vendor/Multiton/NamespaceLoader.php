@@ -20,6 +20,11 @@ class NamespaceLoader
     /** @var string $Prefix */
     private $Prefix = 'MOC\V';
 
+    /**
+     * @param string      $Namespace
+     * @param string      $Path
+     * @param string|null $Prefix
+     */
     function __construct( $Namespace, $Path, $Prefix = null )
     {
 

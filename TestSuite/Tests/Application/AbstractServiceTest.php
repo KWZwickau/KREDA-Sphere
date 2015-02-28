@@ -6,7 +6,7 @@ namespace KREDA\TestSuite\Tests\Application;
  *
  * @package KREDA\TestSuite\Tests\Application
  */
-abstract class AbstractServiceTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractServiceTest extends \PHPUnit_Framework_TestCase implements IAbstractTest
 {
 
     public function testAbstractService()
@@ -17,13 +17,6 @@ abstract class AbstractServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf( 'KREDA\Sphere\Common\AbstractExtension', $MockService );
         $this->assertInstanceOf( 'KREDA\Sphere\IServiceInterface', $MockService );
     }
-
-    /**
-     * $this->checkMethodName( '\ApplicationDirectory\ClassFile' );
-     *
-     * @return void
-     */
-    abstract public function testCodeStyle();
 
     /**
      * @param string $Service
