@@ -5,7 +5,7 @@ machine:
     Europe/Berlin # Set the timezone
 
   php:
-    version: 5.5
+    version: 5.5.9
 
 ## Customize dependencies
 dependencies:
