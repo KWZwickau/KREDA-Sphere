@@ -43,6 +43,15 @@ abstract class AbstractApplication extends AbstractExtension implements IApplica
     }
 
     /**
+     * @return string
+     */
+    final protected static function getUrlBase()
+    {
+
+        return self::extensionRequest()->getUrlBase();
+    }
+
+    /**
      * @param Configuration $Configuration
      * @param string        $Url
      * @param string        $Name

@@ -54,15 +54,35 @@ class Account extends Token
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Account', __CLASS__.'::frontendAccount'
         )->setParameterDefault( 'Account', null )->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Account/Edit', __CLASS__.'::frontendAccountEdit'
+        )->setParameterDefault( 'Id', null );
+    }
+
+    /**
+     * @param int $Id
+     *
+     * @return Stage
+     */
+    public static function frontendAccountEdit( $Id )
+    {
+
+        self::setupModuleNavigation();
+        $View = new Stage();
+        $View->setTitle( 'Benutzerkonten' );
+        $View->setDescription( 'Bearbeiten' );
+
+        return $View;
     }
 
     /**
      * @param null|array $Account
      * @param null|int   $Id
+     * @param bool       $Remove
      *
      * @return Stage
      */
-    public static function frontendAccount( $Account, $Id = null )
+    public static function frontendAccount( $Account, $Id = null, $Remove = false )
     {
 
         self::setupModuleNavigation();
@@ -126,7 +146,7 @@ class Account extends Token
         /**
          * Action Destroy
          */
-        if (null !== $Id) {
+        if (null !== $Id && $Remove) {
             $tblAccount = Gatekeeper::serviceAccount()->entityAccountById( $Id );
             if ($tblAccount && $tblAccount->getServiceGatekeeperConsumer() && $tblAccount->getServiceGatekeeperConsumer()->getId() == $tblConsumer->getId()) {
                 if (true !== ( $Wire = Gatekeeper::serviceAccount()->executeDestroyAccount( $tblAccount ) )) {
@@ -275,11 +295,13 @@ class Account extends Token
 
                 $Id = new InputHidden( 'Id' );
                 $Id->setDefaultValue( $A->getId(), true );
+                $Remove = new InputHidden( 'Remove' );
+                $Remove->setDefaultValue( 1, true );
 
                 $FormDestroy = new FormDefault(
                     new GridFormGroup(
                         new GridFormRow(
-                            new GridFormCol( array( $Id, new ButtonSubmitDanger( 'Löschen' ) ) )
+                            new GridFormCol( array( $Id, $Remove, new ButtonSubmitDanger( 'Löschen' ) ) )
                         )
                     )
                 );
@@ -288,7 +310,7 @@ class Account extends Token
                         new GridFormRow(
                             new GridFormCol( array( $Id, new ButtonSubmitPrimary( 'Bearbeiten' ) ) )
                         )
-                    )
+                    ), null, self::getUrlBase().'/Sphere/Management/Account/Edit'
                 );
                 $FormDestroy->setConfirm( 'Wollen Sie den Benutzer '.$A->getUsername().' wirklich löschen?' );
                 $A->Option = '<div class="pull-right">'.$FormDestroy.'</div>'.'<div class="pull-right">'.$FormEdit.'</div>';

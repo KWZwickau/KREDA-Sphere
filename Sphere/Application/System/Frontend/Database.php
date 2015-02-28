@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\System\Frontend;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -8,6 +9,7 @@ use KREDA\Sphere\Common\Database\Connection\Identifier;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Table\AbstractTable;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableBody;
@@ -18,10 +20,7 @@ use KREDA\Sphere\Common\Frontend\Table\Structure\TableDefault;
 use KREDA\Sphere\Common\Frontend\Text\Element\TextDanger;
 use KREDA\Sphere\Common\Frontend\Text\Element\TextMuted;
 use KREDA\Sphere\Common\Frontend\Text\Element\TextPrimary;
-use KREDA\Sphere\Common\Frontend\Text\Element\TextSuccess;
 use KREDA\Sphere\Common\Frontend\Text\Element\TextWarning;
-use KREDA\Sphere\Common\Frontend\Text\Structure\BackgroundDanger;
-use KREDA\Sphere\Common\Frontend\Text\Structure\BackgroundSuccess;
 
 /**
  * Class Database
@@ -66,17 +65,25 @@ class Database extends AbstractFrontend
 
                         try {
                             new Handler( new Identifier( $Application, $Service[0], $Service[1] ) );
-                            $Status = new BackgroundSuccess( new TextSuccess( 'Verbunden' ) );
+                            $Status = new MessageSuccess( 'Verbunden' );
 
                         } catch( \Exception $E ) {
-                            $Status = new BackgroundDanger( new TextDanger( 'Fehler' ) );
+                            $Status = new MessageDanger( 'Fehler' );
+                        }
+
+                        if ($Service[1]) {
+                            $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( $Service[1] );
                         }
 
                         $Configuration[$Application.$Service[0].$Service[1]] = new GridTableRow( array(
                             new GridTableCol( $Status ),
                             new GridTableCol( new TextWarning( $Application ) ),
                             new GridTableCol( new TextDanger( $Service[0] ) ),
-                            new GridTableCol( new TextDanger( $Service[1] ) ),
+                            new GridTableCol( new TextDanger(
+                                $Service[1]
+                                    ? new MessageInfo( 'Mandant: '.$tblConsumer->getName().' ('.$tblConsumer->getDatabaseSuffix().')' )
+                                    : new MessageWarning( 'Systemübergreifend' )
+                            ) ),
                             new GridTableCol( new TextWarning( $Parameter['Driver'] ) ),
                             new GridTableCol( new TextDanger( $Parameter['Host'] ) ),
                             new GridTableCol( new TextMuted( ( $Parameter['Port'] ? $Parameter['Port'] : 'Default' ) ) ),
