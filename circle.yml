@@ -11,7 +11,7 @@ machine:
 dependencies:
   pre:
     - curl -s http://getcomposer.org/installer | php
-    - php composer.phar install --dev --no-interaction
+    - php composer.phar install --no-interaction
 
 ## Customize test commands
 test:

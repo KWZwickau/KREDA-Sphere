@@ -26,11 +26,13 @@ Development:
 [![Code Climate](https://codeclimate.com/github/KWZwickau/KREDA-Sphere/badges/gpa.svg)](https://codeclimate.com/github/KWZwickau/KREDA-Sphere)
 [![Coverage Status](https://coveralls.io/repos/KWZwickau/KREDA-Sphere/badge.svg?branch=development)](https://coveralls.io/r/KWZwickau/KREDA-Sphere?branch=development)
 [![Build Status](https://travis-ci.org/KWZwickau/KREDA-Sphere.svg?branch=development)](https://travis-ci.org/KWZwickau/KREDA-Sphere)
+[![Circle CI](https://circleci.com/gh/KWZwickau/KREDA-Sphere/tree/development.svg?style=shield)](https://circleci.com/gh/KWZwickau/KREDA-Sphere/tree/development)
 
 Master:
 
 [![Coverage Status](https://coveralls.io/repos/KWZwickau/KREDA-Sphere/badge.svg?branch=master)](https://coveralls.io/r/KWZwickau/KREDA-Sphere?branch=master)
 [![Build Status](https://travis-ci.org/KWZwickau/KREDA-Sphere.svg?branch=master)](https://travis-ci.org/KWZwickau/KREDA-Sphere)
+[![Circle CI](https://circleci.com/gh/KWZwickau/KREDA-Sphere/tree/master.svg?style=shield)](https://circleci.com/gh/KWZwickau/KREDA-Sphere/tree/master)
 
 Library
 =======
