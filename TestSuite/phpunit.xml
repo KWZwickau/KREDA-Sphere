@@ -19,6 +19,9 @@
             <directory suffix=".php">./../Sphere/Application</directory>
             <directory suffix=".php">./../Sphere/Client</directory>
             <directory suffix=".php">./../Sphere/Common</directory>
+            <exclude>
+                <directory suffix=".php">./../Sphere/Common/Extension/GitHub</directory>
+            </exclude>
         </whitelist>
     </filter>
     <logging>

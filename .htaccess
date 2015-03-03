@@ -29,7 +29,7 @@
 		Order Deny,Allow
 		Deny from All
 	</Files>
-	<FilesMatch "^Client$">
+	<FilesMatch "^(Client|index.php)$">
 		Allow from All
 	</FilesMatch>
 

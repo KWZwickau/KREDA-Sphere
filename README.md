@@ -7,6 +7,8 @@ Don't use them in production environments.
 
 Be also aware that current interfaces may change rapidly
 
+PHP >= 5.4.3
+
 API Documentation
 =================
 

@@ -14,10 +14,36 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
 
         /** @var \KREDA\Sphere\Common\AbstractExtension $MockExtension */
         $MockExtension = $this->getMockForAbstractClass( 'KREDA\Sphere\Common\AbstractExtension' );
-        $this->assertInstanceOf( 'KREDA\Sphere\Common\AbstractExtension', $MockExtension );
+        $this->assertInstanceOf(
+            'KREDA\Sphere\Common\AbstractExtension',
+            $MockExtension
+        );
 
-        $this->assertInstanceOf( 'KREDA\Sphere\Common\Extension\Debugger', $MockExtension->extensionDebugger() );
-        $this->assertInstanceOf( 'KREDA\Sphere\Common\Extension\ModHex', $MockExtension->extensionModHex( 'Dummy' ) );
+        $this->assertInstanceOf(
+            'KREDA\Sphere\Common\Extension\Debugger',
+            $MockExtension->extensionDebugger()
+        );
+
+        $this->assertInstanceOf(
+            'Markdownify\Converter',
+            $MockExtension->extensionMarkdownify()
+        );
+
+        $this->assertInstanceOf(
+            'KREDA\Sphere\Common\Extension\ModHex',
+            $Extension = $MockExtension->extensionModHex( 'ccccccdilkui' )
+        );
+        $this->assertEquals( 'ccccccdilkui', $Extension->getIdentifier() );
+        $this->assertEquals( '2599399', $Extension->getSerialNumber() );
+
+        $this->assertInstanceOf(
+            'KREDA\Sphere\Common\Extension\ModHex',
+            $Extension = $MockExtension->extensionModHex( 'Error' )
+        );
+        $this->assertEquals( 'Error', $Extension->getIdentifier() );
+        $this->assertEquals( '0', $Extension->getSerialNumber() );
+
+        $this->assertInstanceOf( 'Github\Client', $MockExtension->extensionGitHub() );
     }
 
     public function testExtensionCodeStyle()

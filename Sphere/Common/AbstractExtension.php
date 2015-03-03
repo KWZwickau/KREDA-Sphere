@@ -1,6 +1,8 @@
 <?php
 namespace KREDA\Sphere\Common;
 
+use Github\Client;
+use Github\HttpClient\CachedHttpClient;
 use KREDA\Sphere\Common\Extension\Debugger;
 use KREDA\Sphere\Common\Extension\ModHex;
 use Markdownify\Converter;
@@ -11,6 +13,7 @@ use MOC\V\Component\Document\Component\Bridge\Repository\PhpExcel;
 use MOC\V\Component\Document\Document;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 use MOC\V\Component\Template\Template;
+use MOC\V\Core\AutoLoader\AutoLoader;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
@@ -43,6 +46,33 @@ abstract class AbstractExtension
     {
 
         return new Debugger();
+    }
+
+    /**
+     * @return Client
+     */
+    final public static function extensionGitHub()
+    {
+
+        AutoLoader::getNamespaceAutoLoader( 'Github', __DIR__.'/Extension/GitHub', 'Github' );
+        AutoLoader::getNamespaceAutoLoader( 'Guzzle',
+            __DIR__.'/Extension/GitHub/Vendor/Guzzle/src/Guzzle',
+            'Guzzle'
+        );
+        AutoLoader::getNamespaceAutoLoader( 'Symfony\Component\EventDispatcher',
+            __DIR__.'/Extension/GitHub/Vendor/Symfony/event-dispatcher/Symfony/Component/EventDispatcher',
+            'Symfony\Component\EventDispatcher'
+        );
+        return new Client(
+            new CachedHttpClient( array(
+                'base_url'    => 'https://api.github.com/',
+                'user_agent'  => 'KREDA-Sphere (http://github.com/KWZwickau/KREDA-Sphere)',
+                'timeout'     => 10,
+                'api_limit'   => 60,
+                'api_version' => 'beta',
+                'cache_dir'   => '/tmp/github-api-cache'
+            ) )
+        );
     }
 
     /**

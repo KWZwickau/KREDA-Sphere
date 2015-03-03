@@ -3,12 +3,9 @@ namespace KREDA\Sphere\Application\System\Frontend;
 
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonDangerLink;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSuccessLink;
-use KREDA\Sphere\Common\Frontend\Button\Structure\GroupDefault;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 
 /**
  * Class Update
@@ -27,16 +24,27 @@ class Update extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'KREDA Update' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
+
+        /** @var \Github\Api\Repo $Api */
+        $Api = self::extensionGitHub()->api( 'repo' );
+        $CommitMaster = current( $Api->commits()->all( 'KWZwickau', 'KREDA-Sphere', array( 'sha' => 'master' ) ) );
+        $CommitDevelopment = current( $Api->commits()->all( 'KWZwickau', 'KREDA-Sphere',
+            array( 'sha' => 'development' ) ) );
+
         $View->setContent(
-            new GroupDefault( array(
-                new ButtonSuccessLink(
-                    'Simulation', 'System/Update/Simulation', new CogIcon()
-                ),
-                new ButtonDangerLink(
-                    'Installation', 'System/Update/Install', new CogWheelsIcon()
-                )
-            ) )
+            new MessageInfo(
+                'Master: '.$CommitMaster['commit']['message']
+                .'<br/>'.$CommitMaster['commit']['committer']['date']
+            )
+            .new MessageWarning(
+                'Development: '.$CommitDevelopment['commit']['message']
+                .'<br/>'.$CommitDevelopment['commit']['committer']['date']
+            )
         );
+
+        $View->addButton( 'Sphere/System/Update/Simulation', 'Simulation' );
+        $View->addButton( 'Sphere/System/Update/Install', 'Installation' );
+
         return $View;
     }
 
