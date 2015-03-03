@@ -9,7 +9,7 @@ use MOC\V\Core\AutoLoader\AutoLoader;
 header( 'Content-type: text/html; charset=utf-8' );
 error_reporting( E_ALL );
 ini_set( 'display_errors', 1 );
-set_time_limit( 240 );
+set_time_limit( 60 * 5 );
 session_start();
 date_default_timezone_set( 'Europe/Berlin' );
 /**
@@ -45,4 +45,6 @@ var_dump( 'Next '.$NextVersion );
 $LatestVersion = $Updater->getLatestVersion();
 var_dump( 'Latest '.$LatestVersion );
 
-var_dump( $Updater->downloadVersion( $NextVersion ) );
+var_dump( $Cache = $Updater->downloadVersion( $NextVersion ) );
+
+var_dump( $Updater->extractArchive( $Cache ) );

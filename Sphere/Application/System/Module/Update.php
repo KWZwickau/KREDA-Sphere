@@ -34,6 +34,9 @@ class Update extends Database
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Update/Install', __CLASS__.'::frontendInstall'
         );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Update/Download', __CLASS__.'::frontendDownload'
+        );
     }
 
 
@@ -74,6 +77,17 @@ class Update extends Database
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::stageSimulation();
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendDownload()
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageDownload();
     }
 
     /**

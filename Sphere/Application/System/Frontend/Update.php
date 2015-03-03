@@ -3,9 +3,15 @@ namespace KREDA\Sphere\Application\System\Frontend;
 
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BookIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ClusterIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
+use KREDA\Sphere\Common\Updater\Type\GitHub;
 
 /**
  * Class Update
@@ -74,4 +80,38 @@ class Update extends AbstractFrontend
         return $View;
     }
 
+    /**
+     * @return Stage
+     */
+    public static function stageDownload()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'KREDA Update' );
+        $View->setDescription( 'Download' );
+
+        $Updater = new GitHub();
+
+        $Current = $Updater->getCurrentVersion();
+        $Next = $Updater->getNextVersion();
+        $List = $Updater->getAvailableVersions();
+        array_walk( $List, function ( &$V ) {
+
+            $V = new MessageDanger( implode( '<br/>', $V ), new BookIcon() );
+        }, $Updater );
+        krsort( $List );
+
+        $Latest = $Updater->getLatestVersion();
+
+        $View->setContent(
+            new MessageInfo( 'Aktuelle Version: '.$Current, new ClusterIcon() )
+            .new MessageWarning(
+                'Nächste Version: '.$Next
+
+                , new ShareIcon() )
+            .implode( $List )
+            .new MessageSuccess( 'Neueste Version: '.$Latest, new ClusterIcon() )
+        );
+        return $View;
+    }
 }
