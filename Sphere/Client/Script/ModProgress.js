@@ -11,6 +11,13 @@
             'Time': 0
         }, options );
 
+        if (0 >= settings.Total && 0 < settings.Size) {
+            this.find( '.progress-bar' ).removeClass( 'progress-bar-warning' );
+            this.find( '.progress-bar' ).addClass( 'progress-bar-info' );
+            settings.Total = 100;
+            settings.Size = 99.9;
+        }
+
         if (1 > settings.Total) {
             settings.Total = 1;
         }
@@ -26,6 +33,7 @@
         if (0 < settings.Total && settings.Total == settings.Size) {
             this.removeClass( 'active' );
             this.removeClass( 'progress-striped' );
+            this.find( '.progress-bar' ).removeClass( 'progress-bar-info' );
             this.find( '.progress-bar' ).removeClass( 'progress-bar-warning' );
             this.find( '.progress-bar' ).addClass( 'progress-bar-success' )
         }
