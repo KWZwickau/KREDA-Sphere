@@ -95,6 +95,40 @@ register_shutdown_function(
 );
 
 /**
+ * UPDATE: Restrict Access
+ */
+
+if (file_exists( __DIR__.'/MAINTENANCE' )) {
+    $Restricted = true;
+    if (( $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession() )) {
+        if ($tblAccount->getTblAccountRole()->getName() == 'System') {
+            $Restricted = false;
+        }
+    }
+    if ($Restricted) {
+        $ShellScreen->addToNavigation(
+            new Container( $Config->getClientNavigation() )
+        );
+        if ($Config->hasModuleNavigation()) {
+            $ShellScreen->addToNavigation(
+                new Container( $Config->getModuleNavigation() )
+            );
+        }
+        if ($Config->hasApplicationNavigation()) {
+            $ShellScreen->addToNavigation(
+                new Container( $Config->getApplicationNavigation() )
+            );
+        }
+        Assistance::registerApplication( $Config );
+        /** @var Element $Route */
+        $Route = $Config->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Update' );
+        $ShellScreen->addToContent( new Container( $Route ) );
+        print $ShellScreen;
+        exit( 0 );
+    }
+}
+
+/**
  * Development: Clear Cache
  */
 Cache::getApi();

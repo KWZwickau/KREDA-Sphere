@@ -6,8 +6,7 @@
         var settings, pWidth;
 
         settings = $.extend( {
-            'Total': 0,
-            'Size': 0,
+            'Total': 0, 'Size': 0,
             'Speed': 0,
             'Time': 0
         }, options );

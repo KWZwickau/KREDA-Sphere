@@ -81,6 +81,10 @@ class Assistance extends AbstractApplication
             '/Sphere/Assistance/Support/Application/Fatal',
             __CLASS__.'::frontendApplicationFatal'
         );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Assistance/Support/Application/Update',
+            __CLASS__.'::frontendApplicationUpdate'
+        );
     }
 
     /**
@@ -242,5 +246,14 @@ class Assistance extends AbstractApplication
         self::setupModuleNavigation();
         self::setupFrontendApplication();
         return Application::stageFatal();
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendApplicationUpdate()
+    {
+
+        return Application::stageUpdate();
     }
 }

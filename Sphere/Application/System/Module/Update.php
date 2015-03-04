@@ -72,6 +72,8 @@ class Update extends Database
     public static function frontendRun( $Version )
     {
 
+        file_put_contents( __DIR__.'/../../../../MAINTENANCE', date( 'd.m.Y H:i:s' ) );
+
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
         return $Updater->downloadVersion( $Version );
     }
@@ -87,8 +89,17 @@ class Update extends Database
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
         $Log = $Updater->getDownload( $Version ).'.log';
         if (file_exists( $Log )) {
-            $Log = file( $Log );
-            return json_encode( unserialize( end( $Log ) ) );
+            $Log = file_get_contents( $Log );
+            if (empty( $Log ) || false === ( $Log = unserialize( $Log ) )) {
+                return json_encode( array(
+                    'SizeTotal'     => -1,
+                    'SizeCurrent'   => 0,
+                    'DownloadSpeed' => -1,
+                    'DownloadTime'  => -1
+                ) );
+            } else {
+                return json_encode( $Log );
+            }
         }
         return json_encode( array(
             'SizeTotal'     => -1,
@@ -106,6 +117,7 @@ class Update extends Database
     public static function frontendExtract( $Archive )
     {
 
+        set_time_limit( 60 * 60 );
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
         return $Updater->extractArchive( $Archive );
     }
@@ -118,7 +130,18 @@ class Update extends Database
     public static function frontendWrite( $Location )
     {
 
+        set_time_limit( 60 * 60 );
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
-        return $Updater->moveFilesRecursive( $Updater->getCache().'/'.$Location, __DIR__.'/../../../../' );
+        $Source = realpath( $Updater->getCache().'/'.$Location );
+        $Target = realpath( __DIR__.'/../../../../' );
+        if ($Source && $Target) {
+            $Return = $Updater->moveFilesRecursive( $Source, $Target );
+            if ($Return) {
+                unlink( __DIR__.'/../../../../MAINTENANCE' );
+            }
+            return $Return;
+        } else {
+            return null;
+        }
     }
 }

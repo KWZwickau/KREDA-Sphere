@@ -10,7 +10,7 @@ use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
@@ -40,7 +40,7 @@ class Update extends AbstractFrontend
         $Current = $Updater->getCurrentVersion();
         $Next = $Updater->getLatestVersion();
 
-        $Version = new InputText( 'Version' );
+        $Version = new InputHidden( 'Version' );
         $Version->setDefaultValue( $Next, true );
 
         $View->setContent(

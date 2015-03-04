@@ -127,7 +127,7 @@ class Application extends AbstractFrontend
             .new MessageDanger( 'Sie haben nicht die erforderliche Berechtigung um diese Resourcen verwenden zu können' )
             .new MessageDanger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Webservern kann gestört sein' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
-            .new MessageInfo( 'Versuchen Sie die Aktion zu einem späteren Zeitpunkt erneut aufzuführen' )
+            .new MessageInfo( 'Versuchen Sie die Aktion zu einem späteren Zeitpunkt erneut auszuführen' )
             .new MessageWarning( 'Vermeiden Sie es die Adresse im Browser manuell zu bearbeiten' )
             .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
@@ -139,6 +139,25 @@ class Application extends AbstractFrontend
                 ),
                 'Support-Ticket' );
         }
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stageUpdate()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Wartungsmodus' );
+        $View->setDescription( 'Offline' );
+        $View->setMessage( '<strong>Problem:</strong> Die Anwendung kann im Moment nicht verwendet werden' );
+        $View->setContent(
+            '<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
+            .new MessageInfo( 'Die Anwendung wird gerade auf den neuesten Stand gebracht' )
+            .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
+            .new MessageSuccess( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
+        );
         return $View;
     }
 }
