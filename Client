@@ -32,7 +32,7 @@ error_reporting( E_ALL );
 ini_set( 'display_errors', 1 );
 set_time_limit( 240 );
 session_start();
-
+session_write_close();
 /**
  * Setup: Loader
  */
@@ -100,7 +100,33 @@ register_shutdown_function(
 Cache::getApi();
 
 /**
+ * REST-API: Run
+ * ---------------------------------------------------------------------------------------------------------------------
+ */
+if (array_key_exists( 'REST', HttpKernel::getRequest()->getParameterArray() )) {
+    if (Gatekeeper::serviceAccount()->checkIsValidSession()) {
+        /**
+         * Application: Register
+         */
+        System::registerApplication( $Config );
+        /**
+         * Application: Execution
+         */
+        try {
+            /** @var Element $Route */
+            print $Config->getClientRouter()->getRoute();
+        } catch( \Exception $E ) {
+            print '500 '.$E->getMessage();
+        }
+    } else {
+        print '403';
+    }
+    exit( 0 );
+}
+
+/**
  * Main: Run
+ * ---------------------------------------------------------------------------------------------------------------------
  */
 try {
 

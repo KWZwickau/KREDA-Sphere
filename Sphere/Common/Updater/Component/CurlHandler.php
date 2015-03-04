@@ -11,59 +11,55 @@ use KREDA\Sphere\Common\Proxy\Type\HttpProxy;
 class CurlHandler extends GitApi
 {
 
-    private static $DownloadSizeTotal = 0;
-    private static $DownloadSizeCurrent = 0;
-    private static $DownloadSpeed = 0;
-    private static $DownloadTime = 0;
-
     /** @var string $Cache */
     private $Cache = '';
+    /** @var string $Download */
+    private $Download = '';
 
     /**
+     * @param null|string $CacheLocation
+     *
      * @throws \Exception
      */
-    function __construct()
+    function __construct( $CacheLocation = null )
     {
 
         parent::__construct();
-        $this->Cache = realpath( __DIR__.'/../../../../Update' );
+        if (null === $CacheLocation) {
+            $this->Cache = realpath( __DIR__.'/../../../../Update' );
+        } else {
+            $this->Cache = realpath( $CacheLocation );
+        }
     }
 
     /**
-     * @return string
-     */
-    public function getCache()
-    {
-
-        return $this->Cache;
-    }
-
-    /**
-     * @param $Version
+     * @param string $Version Number
      *
-     * @return string
+     * @return string Archive location
      */
     public function downloadVersion( $Version )
     {
 
         $Url = $this->getZipArchiveUrl( $Version );
-        $Filename = $this->Cache.'/'.hash( 'sha256', $Version ).'.zip';
 
-        if (file_exists( $Filename ) && 0 != filesize( $Filename )) {
-            return realpath( $Filename );
-        } else {
-            $Proxy = new HttpProxy();
-            $Option = array(
-                CURLOPT_PROXY        => $Proxy->getHost(),
-                CURLOPT_PROXYPORT    => $Proxy->getPort(),
-                CURLOPT_PROXYUSERPWD => $Proxy->getUsernamePasswort(),
-                CURLOPT_FILE         => fopen( $Filename, 'wb' )
-            );
-            $Option = array_filter( $Option );
-
-            self::getRequest( $Url, $Option );
-            return realpath( $Filename );
+        if (file_exists( $this->getDownload( $Version ).'.log' )) {
+            $Log = unserialize( file_get_contents( $this->getDownload( $Version ).'.log' ) );
+            if ($Log['SizeTotal'] == $Log['SizeCurrent'] && filesize( $this->getDownload( $Version ) ) == $Log['SizeTotal']) {
+                return realpath( $this->getDownload( $Version ) );
+            }
         }
+
+        $Proxy = new HttpProxy();
+        $Option = array(
+            CURLOPT_PROXY        => $Proxy->getHost(),
+            CURLOPT_PROXYPORT    => $Proxy->getPort(),
+            CURLOPT_PROXYUSERPWD => $Proxy->getUsernamePasswort(),
+            CURLOPT_FILE         => fopen( $this->getDownload( $Version ), 'wb' )
+        );
+        $Option = array_filter( $Option );
+
+        $this->getRequest( $Url, $Option );
+        return realpath( $this->getDownload( $Version ) );
     }
 
     /**
@@ -87,13 +83,31 @@ class CurlHandler extends GitApi
         return $Tags['zipball_url'];
     }
 
+    public function getDownload( $Version )
+    {
+
+        if (empty( $this->Download )) {
+            $this->Download = $this->getCache().'/'.hash( 'sha256', $Version ).'.zip';
+        }
+        return $this->Download;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCache()
+    {
+
+        return $this->Cache;
+    }
+
     /**
      * @param string $UrlRequestList
      * @param array  $CurlOptionList
      *
      * @return array
      */
-    private static function getRequest( $UrlRequestList, $CurlOptionList = array() )
+    private function getRequest( $UrlRequestList, $CurlOptionList = array() )
     {
 
         $CurlHandleList = array();
@@ -115,31 +129,25 @@ class CurlHandler extends GitApi
         }
         $IsRunning = null;
         do {
+            set_time_limit( 30 );
             curl_multi_exec( $CurlHandler, $IsRunning );
-            foreach ((array)$CurlHandleList as $CurlHandle) {
-                $Info = curl_getinfo( $CurlHandle );
-
-                if (self::$DownloadSizeTotal != $Info['download_content_length']) {
-                    self::$DownloadSizeTotal = $Info['download_content_length'];
-                }
-                if (self::$DownloadSizeCurrent != $Info['size_download']) {
-                    self::$DownloadSizeCurrent = $Info['size_download'];
-                }
-                if (self::$DownloadSpeed != $Info['speed_download']) {
-                    self::$DownloadSpeed = $Info['speed_download'];
-                }
-                if (self::$DownloadTime != $Info['total_time']) {
-                    self::$DownloadTime = $Info['total_time'];
+            if (isset( $CurlOptionList[CURLOPT_FILE] )) {
+                foreach ((array)$CurlHandleList as $CurlHandle) {
+                    $Info = curl_getinfo( $CurlHandle );
+                    file_put_contents( $this->Download.'.log', serialize( array(
+                        'SizeTotal'     => $Info['download_content_length'],
+                        'SizeCurrent'   => $Info['size_download'],
+                        'DownloadSpeed' => $Info['speed_download'],
+                        'DownloadTime'  => $Info['total_time']
+                    ) ) );
                 }
             }
-            sleep( 2 );
         } while ($IsRunning > 0);
         foreach ($CurlHandleList as $Identifier => $CurlHandle) {
             $ResultData[$Identifier] = curl_multi_getcontent( $CurlHandle );
             curl_multi_remove_handle( $CurlHandler, $CurlHandle );
         }
         curl_multi_close( $CurlHandler );
-
         return $ResultData;
     }
 }

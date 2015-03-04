@@ -67,22 +67,6 @@ class GitApi extends AbstractExtension
     }
 
     /**
-     * @return array
-     */
-    public function fetchDescription( $Version )
-    {
-
-        /** @var Repo $Api */
-        $Api = $this->extensionGitHub()->api( 'repo' );
-        $Tags = $Api->tags( $this->User, $this->Repository );
-        foreach ((array)$Tags as $Tag) {
-            if ($Version == $Tag['name']) {
-
-            }
-        }
-    }
-
-    /**
      * @param string $Identifier
      *
      * @return string

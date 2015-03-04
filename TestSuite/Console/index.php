@@ -26,7 +26,7 @@ new Debugger();
 
 print '<pre>';
 
-$Updater = new GitHub();
+$Updater = new GitHub( __DIR__.'/../../Update' );
 ////var_dump( $Updater );
 //$Tags = $Updater->fetchTags();
 ////var_dump( $Tags );
@@ -44,7 +44,7 @@ $NextVersion = $Updater->getNextVersion();
 var_dump( 'Next '.$NextVersion );
 $LatestVersion = $Updater->getLatestVersion();
 var_dump( 'Latest '.$LatestVersion );
-
+var_dump( 'Download..' );
 var_dump( $Cache = $Updater->downloadVersion( $NextVersion ) );
-
+var_dump( 'Extract..' );
 var_dump( $Updater->extractArchive( $Cache ) );

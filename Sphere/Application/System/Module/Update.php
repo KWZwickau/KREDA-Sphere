@@ -3,9 +3,8 @@ namespace KREDA\Sphere\Application\System\Module;
 
 use KREDA\Sphere\Application\System\Frontend\Update as Frontend;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\Updater\Type\GitHub;
 
 /**
  * Class Update
@@ -15,89 +14,111 @@ use KREDA\Sphere\Client\Configuration;
 class Update extends Database
 {
 
-    /** @var Configuration $Config */
-    private static $Configuration = null;
-
     /**
      * @param Configuration $Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
 
-        self::$Configuration = $Configuration;
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Update', __CLASS__.'::frontendStatus'
-        )->setParameterDefault( 'Clear', null );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Update/Simulation', __CLASS__.'::frontendSimulation'
-        );
-        self::registerClientRoute( self::$Configuration,
+        self::registerClientRoute( $Configuration,
+            '/Sphere/System/Update', __CLASS__.'::frontendSearch'
+        )->setParameterDefault( 'Version', null );
+        self::registerClientRoute( $Configuration,
             '/Sphere/System/Update/Install', __CLASS__.'::frontendInstall'
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Update/Download', __CLASS__.'::frontendDownload'
-        );
+        )->setParameterDefault( 'Version', null );
+        self::registerClientRoute( $Configuration,
+            '/Sphere/System/Update/Run', __CLASS__.'::frontendRun'
+        )->setParameterDefault( 'Version', null );
+        self::registerClientRoute( $Configuration,
+            '/Sphere/System/Update/Log', __CLASS__.'::frontendLog'
+        )->setParameterDefault( 'Version', null );
+        self::registerClientRoute( $Configuration,
+            '/Sphere/System/Update/Extract', __CLASS__.'::frontendExtract'
+        )->setParameterDefault( 'Archive', null );
+        self::registerClientRoute( $Configuration,
+            '/Sphere/System/Update/Write', __CLASS__.'::frontendWrite'
+        )->setParameterDefault( 'Location', null );
     }
 
-
     /**
-     * @param bool $Clear
+     * @param null|string $Version
      *
      * @return Stage
      */
-    public static function frontendStatus( $Clear )
+    public static function frontendSearch( $Version )
     {
 
         self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::stageStatus( $Clear );
+        return Frontend::stageSearch( $Version );
     }
 
     /**
-     * @return void
-     */
-    protected static function setupApplicationNavigation()
-    {
-
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Update/Simulation', 'Simulation', new CogIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/System/Update/Install', 'Installation', new CogWheelsIcon()
-        );
-
-    }
-
-    /**
+     * @param null|string $Version
+     *
      * @return Stage
      */
-    public static function frontendSimulation()
+    public static function frontendInstall( $Version )
     {
 
         self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::stageSimulation();
+        return Frontend::stageInstall( $Version );
     }
 
     /**
-     * @return Stage
+     * @param string $Version
+     *
+     * @return string
      */
-    public static function frontendDownload()
+    public static function frontendRun( $Version )
     {
 
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::stageDownload();
+        $Updater = new GitHub( __DIR__.'/../../../../Update' );
+        return $Updater->downloadVersion( $Version );
     }
 
     /**
-     * @return Stage
+     * @param string $Version
+     *
+     * @return string
      */
-    public static function frontendInstall()
+    public static function frontendLog( $Version )
     {
 
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::stageInstall();
+        $Updater = new GitHub( __DIR__.'/../../../../Update' );
+        $Log = $Updater->getDownload( $Version ).'.log';
+        if (file_exists( $Log )) {
+            $Log = file( $Log );
+            return json_encode( unserialize( end( $Log ) ) );
+        }
+        return json_encode( array(
+            'SizeTotal'     => -1,
+            'SizeCurrent'   => 0,
+            'DownloadSpeed' => -1,
+            'DownloadTime'  => -1
+        ) );
+    }
+
+    /**
+     * @param string $Archive
+     *
+     * @return string
+     */
+    public static function frontendExtract( $Archive )
+    {
+
+        $Updater = new GitHub( __DIR__.'/../../../../Update' );
+        return $Updater->extractArchive( $Archive );
+    }
+
+    /**
+     * @param string $Location
+     *
+     * @return string
+     */
+    public static function frontendWrite( $Location )
+    {
+
+        $Updater = new GitHub( __DIR__.'/../../../../Update' );
+        return $Updater->moveFilesRecursive( $Updater->getCache().'/'.$Location, __DIR__.'/../../../../' );
     }
 }

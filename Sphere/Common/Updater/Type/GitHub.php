@@ -14,12 +14,14 @@ class GitHub extends CurlHandler implements IUpdaterInterface
 {
 
     /**
+     * @param null|string $CacheLocation
+     *
      * @throws \Exception
      */
-    function __construct()
+    function __construct( $CacheLocation = null )
     {
 
-        parent::__construct();
+        parent::__construct( $CacheLocation );
     }
 
     /**
@@ -33,6 +35,52 @@ class GitHub extends CurlHandler implements IUpdaterInterface
 
         $Archive = new ZipArchive( $Location );
         return $Archive->extractTo( $this->getCache() );
+    }
+
+    /**
+     * @param $source
+     * @param $destination
+     *
+     * @return bool
+     */
+    public function moveFilesRecursive( $source, $destination )
+    {
+
+        $result = true;
+
+        if (file_exists( $source ) && is_dir( $source )) {
+            if (!file_exists( $destination )) {
+                mkdir( $destination );
+            }
+
+            $files = scandir( $source );
+            foreach ($files as $file) {
+                if (in_array( $file, array( ".", ".." ) )) {
+                    continue;
+                }
+
+                if (is_dir( $source.DIRECTORY_SEPARATOR.$file )) {
+                    $result = $this->moveFilesRecursive(
+                        $source.DIRECTORY_SEPARATOR.$file,
+                        $destination.DIRECTORY_SEPARATOR.$file
+                    );
+                } else {
+                    $result = copy(
+                        $source.DIRECTORY_SEPARATOR.$file,
+                        $destination.DIRECTORY_SEPARATOR.$file
+                    );
+                    unlink( $source.DIRECTORY_SEPARATOR.$file );
+                }
+
+                if (!$result) {
+                    break;
+                }
+            }
+        }
+
+        rmdir( $source );
+
+        return $result;
     }
 
     /**

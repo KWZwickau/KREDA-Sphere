@@ -111,6 +111,9 @@ class Script extends AbstractExtension
         $this->setModule(
             'ModMathJax', array( 'MathJax', 'jQuery' )
         );
+        $this->setModule(
+            'ModProgress', array( 'jQuery' )
+        );
     }
 
     /**
