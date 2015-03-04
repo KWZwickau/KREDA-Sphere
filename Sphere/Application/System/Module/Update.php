@@ -137,6 +137,12 @@ class Update extends Database
         if ($Source && $Target) {
             $Return = $Updater->moveFilesRecursive( $Source, $Target );
             if ($Return) {
+                $Ini = __DIR__.'/../../../Common/Updater/Config/GitHub.ini';
+                file_put_contents(
+                    $Ini, str_replace(
+                        $Updater->getCurrentVersion(), $Updater->getLatestVersion(), file_get_contents( $Ini )
+                    )
+                );
                 unlink( __DIR__.'/../../../../MAINTENANCE' );
             }
             return $Return;
