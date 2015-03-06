@@ -2,8 +2,8 @@
 namespace KREDA\Sphere\Application\Management\Module;
 
 use KREDA\Sphere\Application\Management\Frontend\Person as Frontend;
-use KREDA\Sphere\Application\Management\Frontend\PersonalData\PersonalData;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Configuration;
 
@@ -39,6 +39,10 @@ class Person extends Account
             ->setParameterDefault( 'BirthDetail', null )
             ->setParameterDefault( 'PersonInformation', null );
 
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/List/Student', __CLASS__.'::frontendListStudent'
+        );
+
     }
 
     /**
@@ -49,7 +53,7 @@ class Person extends Account
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return PersonalData::stagePerson();
+        return Frontend::stageStatus();
     }
 
     /**
@@ -60,6 +64,13 @@ class Person extends Account
 
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/Person/Create', 'Person anlegen', new PersonIcon()
+        );
+
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Person/List/Interest', 'Interessend', new GroupIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Person/List/Student', 'Schüler', new GroupIcon()
         );
 
     }
@@ -79,4 +90,14 @@ class Person extends Account
         return Frontend::stageCreate( $PersonName, $PersonInformation, $BirthDetail );
     }
 
+    /**
+     * @return Stage
+     */
+    public static function frontendListStudent()
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageListStudent();
+    }
 }

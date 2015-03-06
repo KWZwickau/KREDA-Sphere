@@ -6,24 +6,15 @@ use KREDA\Sphere\Application\Management\Frontend\PersonalData\Summary\Summary;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WheelChairIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
@@ -33,27 +24,6 @@ use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
  */
 class PersonalData extends AbstractFrontend
 {
-
-    /**
-     * @return Stage
-     */
-    public static function stagePerson()
-    {
-
-        $View = new Stage();
-        $View->setTitle( 'Personen' );
-        $View->setDescription( 'Übersicht' );
-        $View->setMessage( 'Zeigt die Anzahl an Personen in den jeweiligen Personengruppen' );
-        $View->setContent( new Summary( array(
-            new GroupIcon().'&nbsp;&nbsp;Alle'              => count( Management::servicePerson()->entityPersonAll() ),
-            new PersonIcon().'&nbsp;&nbsp;Schüler'          => count( Management::servicePerson()->entityPersonAll() ),
-            new PersonIcon().'&nbsp;&nbsp;Sorgeberechtigte' => count( Management::servicePerson()->entityPersonAll() ),
-            new PersonIcon().'&nbsp;&nbsp;Lehrer'           => count( Management::servicePerson()->entityPersonAll() ),
-            new PersonIcon().'&nbsp;&nbsp;Verwaltung'       => count( Management::servicePerson()->entityPersonAll() ),
-            new PersonIcon().'&nbsp;&nbsp;Sonstige'         => count( Management::servicePerson()->entityPersonAll() )
-        ) ) );
-        return $View;
-    }
 
     /**
      * @param int $Id
@@ -118,73 +88,6 @@ class PersonalData extends AbstractFrontend
         ) ) );
         $View->addButton( '/Sphere/Management/Person/Student/Create', 'Schüler hinzufügen' );
         $View->addButton( '/Sphere/Management/Person/Student/Import', 'Schüler importieren' );
-        return $View;
-    }
-
-    /**
-     * @return Stage
-     */
-    public static function stagePersonStudentCreate()
-    {
-
-        $View = new Stage();
-        $View->setTitle( 'Personen' );
-        $View->setDescription( 'Schüler hinzufügen' );
-        $View->setMessage( '' );
-        $View->setContent(
-            new FormDefault(
-                new GridFormGroup( array(
-                    new GridFormRow( array(
-                        new GridFormCol(
-                            new InputText( 'PersonTitle', 'Anrede', 'Anrede', new ConversationIcon() )
-                        , 4 )
-                    ) ),
-                    new GridFormRow( array(
-                        new GridFormCol(
-                            new InputText( 'PersonFirstName', 'Vorname', 'Vorname', new NameplateIcon() )
-                        , 4 ),
-                        new GridFormCol(
-                            new InputText( 'PersonMiddleName', 'Zweitname', 'Zweitname', new NameplateIcon() )
-                        , 4 ),
-                        new GridFormCol(
-                            new InputText( 'PersonLastName', 'Nachname', 'Nachname', new NameplateIcon() )
-                        , 4 )
-                    ) ),
-                    new GridFormRow( array(
-                        new GridFormCol(
-                            new InputSelect( 'PersonGender', 'Geschlecht', array(
-                                'Männlich',
-                                'Weiblich'
-                            ), new PersonIcon()
-                        ), 4 ),
-                        new GridFormCol(
-                            new InputDate( 'PersonBirthday', 'Geburtstag', 'Geburtstag', new PersonIcon() )
-                        , 4 ),
-                        new GridFormCol(
-                            new InputCompleter( 'PersonCity', 'Geburtsort', 'Geburtsort', array(
-                                'Alabama',
-                                'Alaska',
-                                'Arizona'
-                            ), new PersonIcon()
-                        ), 4 ),
-                    ) ),
-                    new GridFormRow( array(
-                        new GridFormCol(
-                            new InputCompleter( 'PersonNationality', 'Staatsangehörigkeit', 'Staatsangehörigkeit', array(
-                                'Deutsch'
-                            ), new PersonIcon()
-                        ), 6 ),
-                        new GridFormCol(
-                            new InputCompleter( 'PersonState', 'Bundesland', 'Bundesland', array(
-                                'Sachsen'
-                            ), new PersonIcon()
-                        ), 6 )
-                    ) )
-                ), new GridFormTitle( 'Grunddaten' ) ), array(
-                    new ButtonSubmitPrimary( 'Anlegen' )
-                )
-            )
-        );
         return $View;
     }
 

@@ -2,8 +2,8 @@
 namespace KREDA\Sphere\Common\Frontend;
 
 use KREDA\Sphere\Client\Component\Element\Element;
+use KREDA\Sphere\Common\Signature\Type\GetSignature;
 use MOC\V\Component\Template\Component\IBridgeInterface;
-use MOC\V\Component\Template\Exception\TemplateTypeException;
 
 /**
  * Class Redirect
@@ -19,14 +19,20 @@ class Redirect extends Element
     /**
      * @param string $Route
      * @param int    $Timeout
-     *
-     * @throws TemplateTypeException
+     * @param array  $Data
      */
-    function __construct( $Route, $Timeout = 15 )
+    function __construct( $Route, $Timeout = 15, $Data = array() )
     {
 
+        if (!empty( $Data )) {
+            $Signature = new GetSignature();
+            $Data = '?'.http_build_query( $Signature->createSignature( $Data, $Route ) );
+        } else {
+            $Data = '';
+        }
+
         $this->Template = $this->extensionTemplate( __DIR__.'/Redirect.twig' );
-        $this->Template->setVariable( 'Route', '/'.trim( $Route, '/' ) );
+        $this->Template->setVariable( 'Route', '/'.trim( $Route, '/' ).$Data );
         $this->Template->setVariable( 'Timeout', $Timeout );
         $this->Template->setVariable( 'UrlBase', $this->extensionRequest()->getUrlBase() );
 

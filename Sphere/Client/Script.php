@@ -157,8 +157,10 @@ class Script extends AbstractExtension
     function __toString()
     {
 
-        return '<script type="text/javascript">'.implode( "\n", self::$SourceList )."\n".implode( "\n",
-            self::$ModuleList ).'</script>';
+        return '<script type="text/javascript">'
+        .implode( "\n", self::$SourceList )."\n"
+        .implode( "\n", self::$ModuleList )."\n"
+        .'</script>';
     }
 
 }

@@ -39,6 +39,16 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return bool|TblAddressCity[]
+     */
+    protected function entityAddressCityAll()
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblAddressCity' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblAddressState
@@ -53,7 +63,7 @@ abstract class EntityAction extends EntitySchema
     /**
      * @return bool|TblAddressState[]
      */
-    protected function entityAddressState()
+    protected function entityAddressStateAll()
     {
 
         $Entity = $this->getEntityManager()->getEntity( 'TblAddressState' )->findAll();

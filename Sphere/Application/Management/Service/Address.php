@@ -75,6 +75,15 @@ class Address extends EntityAction
     }
 
     /**
+     * @return bool|TblAddressCity[]
+     */
+    public function entityAddressCityAll()
+    {
+
+        return parent::entityAddressCityAll();
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblAddressState
@@ -88,9 +97,9 @@ class Address extends EntityAction
     /**
      * @return bool|TblAddressState[]
      */
-    public function entityAddressState()
+    public function entityAddressStateAll()
     {
 
-        return parent::entityAddressState();
+        return parent::entityAddressStateAll();
     }
 }

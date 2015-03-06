@@ -39,7 +39,21 @@ class InputCompleter extends AbstractElement
         $this->Template->setVariable( 'ElementName', $Name );
         $this->Template->setVariable( 'ElementLabel', $Label );
         $this->Template->setVariable( 'ElementPlaceholder', $Placeholder );
-        $this->Template->setVariable( 'ElementData', $Data );
+
+        if (count( $Data ) == 1 && !is_numeric( key( $Data ) )) {
+            $Attribute = key( $Data );
+            $Convert = array();
+            /** @var AbstractEntity $Entity */
+            foreach ((array)$Data[$Attribute] as $Entity) {
+                $Convert[$Entity->getId()] = $Entity->{'get'.$Attribute}();
+            }
+            asort( $Convert );
+            $this->Template->setVariable( 'ElementData', $Convert );
+        } else {
+            asort( $Data );
+            $this->Template->setVariable( 'ElementData', $Data );
+        }
+
         if (null !== $Icon) {
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }
