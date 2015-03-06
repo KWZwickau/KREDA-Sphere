@@ -13,6 +13,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
@@ -23,7 +24,6 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
-use KREDA\Sphere\Common\Signature\Type\GetSignature;
 
 /**
  * Class Person
@@ -39,11 +39,6 @@ class Person extends AbstractFrontend
     public static function stageStatus()
     {
 
-        $Request = ( new GetSignature() )->createSignature( array( 'Id' => '123' ) );
-        $_GET = $Request;
-
-        $_GET['Id'] = 456;
-
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Übersicht' );
@@ -52,47 +47,26 @@ class Person extends AbstractFrontend
             array(
                 'Personen' => new GroupIcon().'&nbsp;&nbsp;Alle',
                 'Anzahl'   => count( Management::servicePerson()->entityPersonAll() )
-            ),
-            array(
-                'Personen' => new PersonIcon().'&nbsp;&nbsp;Schüler',
-                'Anzahl'   => count( Management::servicePerson()->entityPersonAll() )
-            ),
-            array(
-                'Personen' => new PersonIcon().'&nbsp;&nbsp;Sorgeberechtigte',
-                'Anzahl'   => count( Management::servicePerson()->entityPersonAll() )
-            ),
-            array(
-                'Personen' => new PersonIcon().'&nbsp;&nbsp;Lehrer',
-                'Anzahl'   => count( Management::servicePerson()->entityPersonAll() )
-            ),
-            array(
-                'Personen' => new PersonIcon().'&nbsp;&nbsp;Verwaltung',
-                'Anzahl'   => count( Management::servicePerson()->entityPersonAll() )
-            ),
-            array(
-                'Personen' => new PersonIcon().'&nbsp;&nbsp;Sonstige',
-                'Anzahl'   => count( Management::servicePerson()->entityPersonAll() )
             )
         ), null, array(), false ) );
         return $View;
-
     }
 
     /**
-     * @param array $PersonName
-     * @param array $PersonInformation
-     * @param array $BirthDetail
+     * @param null|array $PersonName
+     * @param null|array $PersonInformation
+     * @param null|array $BirthDetail
+     * @param null|array $Button
      *
      * @return Stage
      */
-    public static function stageCreate( $PersonName, $PersonInformation, $BirthDetail )
+    public static function stageCreate( $PersonName, $PersonInformation, $BirthDetail, $Button )
     {
 
         $View = new Stage();
         $View->setTitle( 'Person' );
         $View->setDescription( 'Hinzufügen' );
 
-        $tblAddressStateAll = Management::serviceAddress()->entityAddressStateAll();
         $tblAddressCityAll = Management::serviceAddress()->entityAddressCityAll();
 
         $View->setContent( Management::servicePerson()->executeCreatePerson(
@@ -142,11 +116,6 @@ class Person extends AbstractFrontend
                                 ), new PersonIcon()
                             ), 4 ),
                         new GridFormCol(
-                            new InputCompleter( 'PersonInformation[State]', 'Bundesland', 'Bundesland', array(
-                                'Name' => $tblAddressStateAll
-                            ), new PersonIcon()
-                            ), 4 ),
-                        new GridFormCol(
                             new InputSelect( 'PersonInformation[Type]', 'Art der Person', array(
                                 1 => 'Interresent',
                                 2 => 'Schüler',
@@ -157,10 +126,30 @@ class Person extends AbstractFrontend
                             ), 4 )
                     ) )
                 ), new GridFormTitle( 'Grunddaten' ) ), array(
-                    new ButtonSubmitPrimary( 'Anlegen' )
+                    new ButtonSubmitSuccess( 'Anlegen' )
+                ,
+                    new ButtonSubmitPrimary( 'Anlegen & Weiter' )
                 )
-            ), $PersonName, $BirthDetail, $PersonInformation )
+            ), $PersonName, $BirthDetail, $PersonInformation, $Button )
         );
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stageListInterest()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Personen' );
+        $View->setDescription( 'Interessenten' );
+        $tblPersonList = Management::servicePerson()->entityPersonAll();
+        if (empty( $tblPersonList )) {
+            $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
+        } else {
+            $View->setContent( new TableData( $tblPersonList ) );
+        }
         return $View;
     }
 
@@ -173,18 +162,37 @@ class Person extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Schüler' );
-        $PersonList = Management::servicePerson()->entityPersonAll();
-        if (empty( $PersonList )) {
+        $tblPersonList = Management::servicePerson()->entityPersonAll();
+        if (empty( $tblPersonList )) {
             $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
         } else {
-            $View->setContent( new TableData( $PersonList ) );
+            $View->setContent( new TableData( $tblPersonList ) );
         }
         return $View;
     }
 
-    public static function stageEdit()
+    /**
+     * @param integer $Id
+     *
+     * @return Stage
+     */
+    public static function stageEditStudent( $Id )
     {
 
+        $View = new Stage();
+        $View->setTitle( 'Personen' );
+        $View->setDescription( 'Schüler' );
+        $View->setMessage( 'Deteildaten' );
+        if (empty( $Id )) {
+            $View->setContent( new MessageWarning( 'Die Daten konnten nicht abgerufen werden' ) );
+        } else {
+            $tblPerson = Management::servicePerson()->entityPersonById( $Id );
+            if (empty( $tblPerson )) {
+                $View->setContent( new MessageWarning( 'Die Person konnten nicht abgerufen werden' ) );
+            } else {
 
+            }
+        }
+        return $View;
     }
 }

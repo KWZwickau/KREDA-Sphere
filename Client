@@ -47,7 +47,8 @@ AutoLoader::getNamespaceAutoLoader( 'Markdownify', __DIR__.'/Library/Markdownify
 /**
  * Setup: Debugger
  */
-new Debugger();
+$Debugger = new Debugger();
+$Debugger->screenDump( $_GET, $_POST );
 
 /**
  * Run KREDA

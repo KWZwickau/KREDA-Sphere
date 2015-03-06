@@ -136,7 +136,7 @@ class GitHub extends CurlHandler implements IUpdaterInterface
     }
 
     /**
-     * @return string
+     * @return string|array
      */
     public function getAvailableVersions()
     {

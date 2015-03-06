@@ -26,7 +26,8 @@ abstract class EntitySchema extends AbstractService
          * Table
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
-        $this->setTablePerson( $Schema );
+        $tblPersonType = $this->setTablePersonType( $Schema );
+        $this->setTablePerson( $Schema, $tblPersonType );
         /**
          * Migration & Protocol
          */
@@ -41,7 +42,29 @@ abstract class EntitySchema extends AbstractService
      * @return Table
      * @throws SchemaException
      */
-    private function setTablePerson( Schema &$Schema )
+    private function setTablePersonType( Schema &$Schema )
+    {
+
+        /**
+         * Install
+         */
+        $Table = $this->schemaTableCreate( $Schema, 'tblPersonType' );
+        /**
+         * Upgrade
+         */
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblPersonType', 'Name' )) {
+            $Table->addColumn( 'Name', 'string' );
+        }
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table  $tblPersonType
+     *
+     * @throws SchemaException
+     * @return Table
+     */
+    private function setTablePerson( Schema &$Schema, Table $tblPersonType )
     {
 
         /**
@@ -69,6 +92,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'Birthday' )) {
             $Table->addColumn( 'Birthday', 'string' );
         }
+        $this->schemaTableAddForeignKey( $Table, $tblPersonType );
 
         return $Table;
     }

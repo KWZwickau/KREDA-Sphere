@@ -12,14 +12,14 @@ use KREDA\Sphere\Common\Frontend\Layout\AbstractLayout;
 class GridLayoutCol extends AbstractLayout
 {
 
-    /** @var AbstractFrontend|AbstractFrontend[] $AbstractFrontend */
+    /** @var string|AbstractFrontend|AbstractFrontend[] $AbstractFrontend */
     private $AbstractFrontend = array();
     /** @var string $GridTitle */
     private $GridLayoutSize = 12;
 
     /**
-     * @param AbstractFrontend|AbstractFrontend[] $AbstractFrontend
-     * @param int                                 $GridLayoutSize
+     * @param string|AbstractFrontend|AbstractFrontend[] $AbstractFrontend
+     * @param int                                        $GridLayoutSize
      */
     function __construct( $AbstractFrontend, $GridLayoutSize = 12 )
     {

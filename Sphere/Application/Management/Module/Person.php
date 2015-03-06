@@ -37,10 +37,14 @@ class Person extends Account
         )
             ->setParameterDefault( 'PersonName', null )
             ->setParameterDefault( 'BirthDetail', null )
-            ->setParameterDefault( 'PersonInformation', null );
+            ->setParameterDefault( 'PersonInformation', null )
+            ->setParameterDefault( 'Button', null );
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/List/Student', __CLASS__.'::frontendListStudent'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/List/Interest', __CLASS__.'::frontendListInterest'
         );
 
     }
@@ -67,27 +71,33 @@ class Person extends Account
         );
 
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Management/Person/List/Interest', 'Interessend', new GroupIcon()
+            '/Sphere/Management/Person/List/Interest', 'Interessenten', new GroupIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/Person/List/Student', 'Schüler', new GroupIcon()
         );
-
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Person/List/Guardian', 'Sorgeberechtigte', new GroupIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Person/List/Staff', 'Personal', new GroupIcon()
+        );
     }
 
     /**
      * @param null|array $PersonName
      * @param null|array $PersonInformation
      * @param null|array $BirthDetail
+     * @param null|array $Button
      *
      * @return Stage
      */
-    public static function frontendCreate( $PersonName, $PersonInformation, $BirthDetail )
+    public static function frontendCreate( $PersonName, $PersonInformation, $BirthDetail, $Button )
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageCreate( $PersonName, $PersonInformation, $BirthDetail );
+        return Frontend::stageCreate( $PersonName, $PersonInformation, $BirthDetail, $Button );
     }
 
     /**
@@ -99,5 +109,16 @@ class Person extends Account
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::stageListStudent();
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendListInterest()
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageListInterest();
     }
 }

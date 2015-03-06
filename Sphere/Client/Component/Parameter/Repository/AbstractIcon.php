@@ -58,6 +58,7 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
     const ICON_NAMEPLATE = 'glyphicons glyphicons-nameplate';
     const ICON_REPEAT = 'glyphicons glyphicons-repeat';
     const ICON_WARNING = 'glyphicons glyphicons-warning-sign';
+    const ICON_OK = 'glyphicons glyphicons-ok';
 
     /** @var string $Value */
     private $Value = '';
