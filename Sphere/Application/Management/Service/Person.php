@@ -57,49 +57,69 @@ class Person extends EntityAction
     /**
      * @param AbstractForm $View
      *
-     * @param null|string  $Salutation
-     * @param null|string  $FirstName
-     * @param null|string  $MiddleName
-     * @param null|string  $LastName
-     * @param null|string  $Gender
-     * @param null|string  $Birthday
+     * @param  array $PersonName
+     * @param  array $BirthDetail
+     * @param  array $PersonInformation
      *
      * @return AbstractForm
      */
     public function executeCreatePerson(
         AbstractForm &$View = null,
-        $Salutation,
-        $FirstName,
-        $MiddleName,
-        $LastName,
-        $Gender,
-        $Birthday
+        $PersonName,
+        $BirthDetail,
+        $PersonInformation
     ) {
+
+        /**
+         * Skip to Frontend
+         */
+        if (null === $PersonName
+            && null === $BirthDetail
+            && null === $PersonInformation
+        ) {
+            return $View;
+        }
 
         $Error = false;
 
-        if (null !== $Salutation && empty( $Salutation )) {
-            $View->setError( 'Salutation', 'Bitte geben Sie eine gültige Route ein' );
+        if (isset( $PersonName['Salutation'] ) && empty( $PersonName['Salutation'] )) {
+            $View->setError( 'PersonName[Salutation]', 'Bitte geben Sie eine Anrede an' );
+            $Error = true;
         }
-        if (null !== $FirstName && empty( $FirstName )) {
-            $View->setError( 'FirstName', 'Bitte geben Sie eine gültige Route ein' );
+        if (isset( $PersonName['First'] ) && empty( $PersonName['First'] )) {
+            $View->setError( 'PersonName[First]', 'Bitte geben Sie einen Vornamen an' );
+            $Error = true;
         }
-        if (null !== $MiddleName && empty( $MiddleName )) {
-            $View->setError( 'MiddleName', 'Bitte geben Sie eine gültige Route ein' );
+        if (isset( $PersonName['Last'] ) && empty( $PersonName['Last'] )) {
+            $View->setError( 'PersonName[Last]', 'Bitte geben Sie einen Nachnamen an' );
+            $Error = true;
         }
-        if (null !== $LastName && empty( $LastName )) {
-            $View->setError( 'LastName', 'Bitte geben Sie eine gültige Route ein' );
+
+        if (isset( $BirthDetail['Date'] ) && empty( $BirthDetail['Date'] )) {
+            $View->setError( 'BirthDetail[Date]', 'Bitte geben Sie eine gültige Route ein' );
+            $Error = true;
         }
-        if (null !== $Gender && empty( $Gender )) {
-            $View->setError( 'Gender', 'Bitte geben Sie eine gültige Route ein' );
+        if (isset( $BirthDetail['City'] ) && empty( $BirthDetail['City'] )) {
+            $View->setError( 'BirthDetail[City]', 'Bitte geben Sie eine gültige Route ein' );
+            $Error = true;
         }
-        if (null !== $Birthday && empty( $Birthday )) {
-            $View->setError( 'Birthday', 'Bitte geben Sie eine gültige Route ein' );
+
+        if (isset( $PersonInformation['Nationality'] ) && empty( $PersonInformation['Nationality'] )) {
+            $View->setError( 'PersonInformation[Nationality]', 'Bitte geben Sie eine gültige Route ein' );
+            $Error = true;
         }
+        if (isset( $PersonInformation['State'] ) && empty( $PersonInformation['State'] )) {
+            $View->setError( 'PersonInformation[State]', 'Bitte geben Sie eine gültige Route ein' );
+            $Error = true;
+        }
+
 
         if (!$Error) {
 
             $View->setSuccess( 'Salutation', 'Route wurde angelegt' );
+        } else {
+
+            self::extensionDebugger()->screenDump( $PersonName, $BirthDetail, $PersonInformation );
         }
         return $View;
     }

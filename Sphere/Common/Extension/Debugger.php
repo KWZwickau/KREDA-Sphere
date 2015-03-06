@@ -118,4 +118,20 @@ class Debugger
         krsort( self::$Protocol );
         return implode( '', self::$Protocol );
     }
+
+    /**
+     * screenDump( Content, Content, .. )
+     *
+     * @param mixed $Content
+     */
+    final public static function screenDump( $Content )
+    {
+
+        print '<pre>';
+        $Content = func_get_args();
+        foreach ((array)$Content as $Dump) {
+            var_dump( $Dump );
+        }
+        print '</pre>';
+    }
 }
