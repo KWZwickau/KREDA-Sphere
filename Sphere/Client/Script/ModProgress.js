@@ -8,7 +8,8 @@
         settings = $.extend( {
             'Total': 0, 'Size': 0,
             'Speed': 0,
-            'Time': 0
+            'Time': 0,
+            'Class': null
         }, options );
 
         if (0 >= settings.Total && 0 < settings.Size) {
@@ -28,14 +29,19 @@
             pWidth = 100;
         }
 
+        if (null !== settings.Class) {
+            this.find( '.progress-bar' ).removeClass( 'progress-bar-info' );
+            this.find( '.progress-bar' ).addClass( settings.Class );
+        }
+
         this.find( '.progress-bar' ).css( {"width": pWidth + '%'} );
 
-        if (0 < settings.Total && settings.Total == settings.Size) {
+        if (0 < settings.Total && settings.Total === settings.Size) {
             this.removeClass( 'active' );
             this.removeClass( 'progress-striped' );
             this.find( '.progress-bar' ).removeClass( 'progress-bar-info' );
             this.find( '.progress-bar' ).removeClass( 'progress-bar-warning' );
-            this.find( '.progress-bar' ).addClass( 'progress-bar-success' )
+            this.find( '.progress-bar' ).addClass( 'progress-bar-success' );
         }
 
         return this;

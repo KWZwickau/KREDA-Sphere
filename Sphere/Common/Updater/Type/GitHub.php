@@ -41,7 +41,7 @@ class GitHub extends CurlHandler implements IUpdaterInterface
      * @param $source
      * @param $destination
      *
-     * @return bool
+     * @return integer
      */
     public function moveFilesRecursive( $source, $destination )
     {
@@ -65,10 +65,20 @@ class GitHub extends CurlHandler implements IUpdaterInterface
                         $destination.DIRECTORY_SEPARATOR.$file
                     );
                 } else {
-                    $result = copy(
-                        $source.DIRECTORY_SEPARATOR.$file,
-                        $destination.DIRECTORY_SEPARATOR.$file
-                    );
+                    if (pathinfo( $destination.DIRECTORY_SEPARATOR.$file, PATHINFO_EXTENSION ) == 'ini'
+                        && file_exists( $destination.DIRECTORY_SEPARATOR.$file )
+                    ) {
+                        $New = parse_ini_file( $source.DIRECTORY_SEPARATOR.$file, true );
+                        $Current = parse_ini_file( $destination.DIRECTORY_SEPARATOR.$file, true );
+                        $Ini = $this->mergeIni( $Current, $New );
+                        $Ini = $this->joinIni( $Ini );
+                        $result = ( file_put_contents( $destination.DIRECTORY_SEPARATOR.$file, $Ini ) ? 1 : 0 );
+                    } else {
+                        $result = copy(
+                            $source.DIRECTORY_SEPARATOR.$file,
+                            $destination.DIRECTORY_SEPARATOR.$file
+                        );
+                    }
                     unlink( $source.DIRECTORY_SEPARATOR.$file );
                 }
 
@@ -78,9 +88,74 @@ class GitHub extends CurlHandler implements IUpdaterInterface
             }
         }
 
-        rmdir( $source );
+        $this->removeDir( $source );
 
-        return $result;
+        return ( $result ? 1 : 0 );
+    }
+
+    /**
+     * @param array $Current
+     * @param array $New
+     *
+     * @return array
+     */
+    private function mergeIni( $Current, $New )
+    {
+
+        foreach ($New AS $Key => $Value) {
+            if (is_array( $Value )) {
+                $Current[$Key] = $this->mergeIni( $Current[$Key], $New[$Key] );
+            } else {
+                if (!isset( $Current[$Key] )) {
+                    $Current[$Key] = $Value;
+                }
+            }
+        }
+        return $Current;
+    }
+
+    /**
+     * @param array $Ini
+     * @param array $Parent
+     *
+     * @return string
+     */
+    private function joinIni( $Ini, $Parent = array() )
+    {
+
+        $Result = '';
+        foreach ($Ini as $Key => $Value) {
+            if (is_array( $Value )) {
+                $Section = array_merge( (array)$Parent, (array)$Key );
+                $Result .= '['.join( '.', $Section ).']'.PHP_EOL;
+                $Result .= $this->joinIni( $Value, $Section );
+            } else {
+                $Result .= "$Key=\"$Value\"".PHP_EOL;
+            }
+        }
+        return $Result;
+    }
+
+    /**
+     * @param $Dir
+     */
+    private function removeDir( $Dir )
+    {
+
+        if (is_dir( $Dir )) {
+            $ObjectList = scandir( $Dir );
+            foreach ($ObjectList as $Object) {
+                if ($Object != "." && $Object != "..") {
+                    if (filetype( $Dir."/".$Object ) == "dir") {
+                        $this->removeDir( $Dir."/".$Object );
+                    } else {
+                        unlink( $Dir."/".$Object );
+                    }
+                }
+            }
+            reset( $ObjectList );
+            rmdir( $Dir );
+        }
     }
 
     /**

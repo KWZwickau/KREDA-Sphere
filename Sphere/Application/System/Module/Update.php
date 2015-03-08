@@ -39,6 +39,9 @@ class Update extends Database
         self::registerClientRoute( $Configuration,
             '/Sphere/System/Update/Write', __CLASS__.'::frontendAjaxWrite'
         )->setParameterDefault( 'Location', null );
+        self::registerClientRoute( $Configuration,
+            '/Sphere/System/Update/Update', __CLASS__.'::frontendAjaxUpdate'
+        );
     }
 
     /**
@@ -99,6 +102,9 @@ class Update extends Database
                     'DownloadTime'  => -1
                 ) );
             } else {
+                if ($Log['SizeTotal'] == 0 && $Log['SizeCurrent'] > 1) {
+                    $Log['SizeTotal'] = $Log['SizeCurrent'] - 1;
+                }
                 return json_encode( $Log );
             }
         }
@@ -144,7 +150,6 @@ class Update extends Database
                         $Updater->getCurrentVersion(), $Updater->getLatestVersion(), file_get_contents( $Ini )
                     )
                 );
-                unlink( __DIR__.'/../../../../MAINTENANCE' );
             }
             return $Return;
         } else {
@@ -158,6 +163,7 @@ class Update extends Database
     public static function frontendAjaxUpdate()
     {
 
+        unlink( __DIR__.'/../../../../MAINTENANCE' );
         return System::serviceUpdate()->setupDatabaseSchema( false );
     }
 }

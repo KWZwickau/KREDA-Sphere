@@ -46,8 +46,8 @@ class Update extends AbstractFrontend
         $Current = $Updater->getCurrentVersion();
         $Next = $Updater->getLatestVersion();
         $Available = $Updater->getAvailableVersions();
-        if (!is_array( $Available )) {
-            $UpdateList = new MessageSuccess( 'Keine vorherigen Updates verfügbar' );
+        if (!is_array( $Available ) || count( $Available ) == 1) {
+            $UpdateList = new MessageSuccess( '&nbsp;Keine vorherigen Updates verfügbar', new OkIcon() );
         } else {
             krsort( $Available );
             array_pop( $Available );
@@ -96,7 +96,7 @@ class Update extends AbstractFrontend
                     new GridLayout( new GridLayoutGroup(
                         new GridLayoutRow( array(
                             new GridLayoutCol(
-                                'Update verfügbar: '.$Next.'<hr/>'.$Updater->fetchMessage( $Next )
+                                'Version: '.$Next.'<hr/>'.$Updater->fetchMessage( $Next )
                             ),
                             new GridLayoutCol(
                                 '<div class="pull-right">'.new FormDefault(
@@ -134,16 +134,17 @@ class Update extends AbstractFrontend
 
         $View->setContent(
             new MessageInfo( 'Update von Version '.$Updater->getCurrentVersion().' auf '.$Version, new ShareIcon() )
-            .new GridLayoutTitle( 'Download', 'Das Update wird heruntergeladen' )
+            .new GridLayoutTitle( '', 'Das Update wird heruntergeladen' )
             .new Progress( 'StatusDownload' )
-            .new GridLayoutTitle( 'Extrahieren', 'Update wird überprüft' )
+            .new GridLayoutTitle( '', 'Das Update wird überprüft' )
             .new Progress( 'StatusExtract' )
-            .new GridLayoutTitle( 'Installieren', 'Dateien werden aktualisiert' )
+            .new GridLayoutTitle( '', 'Dateien werden aktualisiert' )
             .new Progress( 'StatusInstall' )
-            .new GridLayoutTitle( 'Update', 'Datenbanken werden aktualisiert' )
+            .new GridLayoutTitle( '', 'Datenbanken werden aktualisiert' )
             .new Progress( 'StatusUpdate' )
             .'<script>Client.Use("ModProgress",function(){
-                function Update( Run ) {
+                var Run = true;
+                function Update() {
                     jQuery("div#StatusUpdate").ModProgress({
                         "Total": 100,
                         "Size": 99.99,
@@ -152,7 +153,7 @@ class Update extends AbstractFrontend
                     });
                     jQuery.ajax({
                         url: "'.self::getUrlBase().'/Sphere/System/Update/Update",
-                        data: { "REST":true, "Location": Location, "_": jQuery.now() },
+                        data: { "REST":true, "_": jQuery.now() },
                         success: function( Response ) {
                             jQuery("div#StatusUpdate").ModProgress({
                                 "Total": 100,
@@ -160,6 +161,7 @@ class Update extends AbstractFrontend
                                 "Speed": 0,
                                 "Time": 0
                             });
+                            console.log( Response );
                             jQuery("div#StatusUpdate").html( Response );
                         },
                         async: true
@@ -176,13 +178,24 @@ class Update extends AbstractFrontend
                         url: "'.self::getUrlBase().'/Sphere/System/Update/Write",
                         data: { "REST":true, "Location": Location, "_": jQuery.now() },
                         success: function( Response ) {
-                            jQuery("div#StatusInstall").ModProgress({
-                                "Total": 100,
-                                "Size": 100,
-                                "Speed": 0,
-                                "Time": 0
-                            });
-                            Update( Response );
+                            if( Response != 1 ) {
+                                jQuery("div#StatusInstall").ModProgress({
+                                    "Total": 1,
+                                    "Size": 1,
+                                    "Speed": 0,
+                                    "Time": 0,
+                                    "Class": "progress-bar-danger"
+                                });
+                            } else {
+                                jQuery("div#StatusInstall").ModProgress({
+                                    "Total": 100,
+                                    "Size": 100,
+                                    "Speed": 0,
+                                    "Time": 0
+                                });
+                                Update( Response );
+                            }
+                            console.log( Response );
                         },
                         async: true
                     });
@@ -214,14 +227,16 @@ class Update extends AbstractFrontend
                         url: "'.self::getUrlBase().'/Sphere/System/Update/Log",
                         data: { "REST":true, "Version":"'.$Version.'", "_": jQuery.now() },
                         success: function( Response ) {
-                            if( Response ) {
-                                Response = JSON.parse( Response );
-                                jQuery("div#StatusDownload").ModProgress({
-                                    "Total": Response.SizeTotal,
-                                    "Size": Response.SizeCurrent,
-                                    "Speed": Response.DownloadSpeed,
-                                    "Time": Response.DownloadTime
-                                });
+                            if( Run ) {
+                                if( Response ) {
+                                    Response = JSON.parse( Response );
+                                    jQuery("div#StatusDownload").ModProgress({
+                                        "Total": Response.SizeTotal,
+                                        "Size": Response.SizeCurrent,
+                                        "Speed": Response.DownloadSpeed,
+                                        "Time": Response.DownloadTime
+                                    });
+                                }
                             }
                         },
                         async: true
@@ -229,21 +244,43 @@ class Update extends AbstractFrontend
                         if( Response ) {
                             Response = JSON.parse( Response );
                             if( Response.SizeCurrent <= 0 || Response.SizeCurrent != Response.SizeTotal ) {
-                                window.setTimeout( function(){ Download(); }, 1000 );
+                                if( Run ) {
+                                    window.setTimeout( function(){ Download(); }, 1000 );
+                                }
                             } else {
                                 /* Download Complete */
                             }
                         } else {
-                            window.setTimeout( function(){ Download(); }, 5000 );
+                            if( Run ) {
+                                window.setTimeout( function(){ Download(); }, 5000 );
+                            }
                         }
-                    })
+                    });
                 };
                 Download();
                 jQuery.ajax({
                     url: "'.self::getUrlBase().'/Sphere/System/Update/Run",
                     data: { "REST":true, "Version":"'.$Version.'", "_": jQuery.now() },
                     success: function( Response ) {
-                        Extract( Response );
+                        if( Response == 0 ) {
+                            Run = false;
+                            jQuery("div#StatusDownload").ModProgress({
+                                "Total": 1,
+                                "Size": 1,
+                                "Speed": 0,
+                                "Time": 0,
+                                "Class": "progress-bar-danger"
+                            });
+                        } else {
+                            Run = false;
+                            jQuery("div#StatusDownload").ModProgress({
+                                "Total": 100,
+                                "Size": 100,
+                                "Speed": 0,
+                                "Time": 0
+                            });
+                            Extract( Response );
+                        }
                     },
                     async: true
                 });

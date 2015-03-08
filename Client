@@ -47,8 +47,7 @@ AutoLoader::getNamespaceAutoLoader( 'Markdownify', __DIR__.'/Library/Markdownify
 /**
  * Setup: Debugger
  */
-$Debugger = new Debugger();
-$Debugger->screenDump( $_GET, $_POST );
+new Debugger();
 
 /**
  * Run KREDA
@@ -59,18 +58,20 @@ $Config = new Configuration( new UniversalRouter(), new LevelClient() );
 /**
  * Setup: $_GET Signature
  */
-$Signature = new GetSignature();
-if (!$Signature->validateSignature()) {
-    $Stage = new Stage();
-    $Stage->setTitle( 'KREDA Security' );
-    $Stage->setDescription( 'Parameter' );
-    $Stage->setContent(
-        new MessageDanger( 'Das System hat fehlerhafte oder mutwillig veränderte Eingabedaten erkannt<hr>',
-            new WarningIcon() )
-    );
-    $ShellScreen->addToContent( new Container( $Stage ) );
+if (!array_key_exists( 'REST', HttpKernel::getRequest()->getParameterArray() )) {
+    $Signature = new GetSignature();
+    if (!$Signature->validateSignature()) {
+        $Stage = new Stage();
+        $Stage->setTitle( 'KREDA Security' );
+        $Stage->setDescription( 'Parameter' );
+        $Stage->setContent(
+            new MessageDanger( 'Das System hat fehlerhafte oder mutwillig veränderte Eingabedaten erkannt<hr>',
+                new WarningIcon() )
+        );
+        $ShellScreen->addToContent( new Container( $Stage ) );
+        exit( 0 );
+    }
 }
-
 /**
  * Setup: Error-Handler
  */
