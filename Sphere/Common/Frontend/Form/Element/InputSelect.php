@@ -43,7 +43,9 @@ class InputSelect extends AbstractElement
             $Convert = array();
             /** @var AbstractEntity $Entity */
             foreach ((array)$Data[$Attribute] as $Entity) {
-                $Convert[$Entity->getId()] = $Entity->{'get'.$Attribute}();
+                if (is_object( $Entity )) {
+                    $Convert[$Entity->getId()] = $Entity->{'get'.$Attribute}();
+                }
             }
             asort( $Convert );
             $this->Template->setVariable( 'ElementData', $Convert );

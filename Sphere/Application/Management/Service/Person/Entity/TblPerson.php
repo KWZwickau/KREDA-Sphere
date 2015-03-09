@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
@@ -17,25 +18,21 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblPerson extends AbstractEntity
 {
 
-    const ATTR_PERSON_TYPE = 'tblPersonType';
+    const ATTR_TBL_PERSON_TYPE = 'tblPersonType';
+    const ATTR_TBL_PERSON_GENDER = 'tblPersonGender';
+    const ATTR_TBL_PERSON_SALUTATION = 'tblPersonSalutation';
 
-    const ATTR_SALUTATION = 'Salutation';
     const ATTR_FIRST_NAME = 'FirstName';
     const ATTR_MIDDLE_NAME = 'MiddleName';
     const ATTR_LAST_NAME = 'LastName';
-    const ATTR_GENDER = 'Gender';
     const ATTR_BIRTHDAY = 'Birthday';
-
+    const ATTR_BIRTHPLACE = 'Birthplace';
     /**
      * @Id
      * @GeneratedValue
      * @Column(type="bigint")
      */
     protected $Id;
-    /**
-     * @Column(type="string")
-     */
-    protected $Salutation;
     /**
      * @Column(type="string")
      */
@@ -49,34 +46,130 @@ class TblPerson extends AbstractEntity
      */
     protected $LastName;
     /**
-     * @Column(type="string")
+     * @Column(type="date")
      */
-    protected $Gender;
+    protected $Birthday;
     /**
      * @Column(type="string")
      */
-    protected $Birthday;
-//    /**
-//     * @Column(type="bigint")
-//     */
-//    protected $tblPersonType;
+    protected $Birthplace;
+    /**
+     * @Column(type="string")
+     */
+    protected $Nationality;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $tblPersonType;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $tblPersonSalutation;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $tblPersonGender;
 
     /**
      * @return string
      */
-    public function getSalutation()
+    public function getBirthplace()
     {
 
-        return $this->Salutation;
+        return $this->Birthplace;
     }
 
     /**
-     * @param string $Salutation
+     * @param string $Birthplace
      */
-    public function setSalutation( $Salutation )
+    public function setBirthplace( $Birthplace )
     {
 
-        $this->Salutation = $Salutation;
+        $this->Birthplace = $Birthplace;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNationality()
+    {
+
+        return $this->Nationality;
+    }
+
+    /**
+     * @param string $Nationality
+     */
+    public function setNationality( $Nationality )
+    {
+
+        $this->Nationality = $Nationality;
+    }
+
+    /**
+     * @return bool|TblPersonType
+     */
+    public function getTblPersonType()
+    {
+
+        if (null === $this->tblPersonType) {
+            return false;
+        } else {
+            return Management::servicePerson()->entityPersonTypeById( $this->tblPersonType );
+        }
+    }
+
+    /**
+     * @param null|TblPersonType $tblPersonType
+     */
+    public function setTblPersonType( TblPersonType $tblPersonType = null )
+    {
+
+        $this->tblPersonType = ( null === $tblPersonType ? null : $tblPersonType->getId() );
+    }
+
+    /**
+     * @return bool|TblPersonSalutation
+     */
+    public function getTblPersonSalutation()
+    {
+
+        if (null === $this->tblPersonSalutation) {
+            return false;
+        } else {
+            return Management::servicePerson()->entityPersonSalutationById( $this->tblPersonSalutation );
+        }
+    }
+
+    /**
+     * @param null|TblPersonSalutation $tblPersonSalutation
+     */
+    public function setTblPersonSalutation( TblPersonSalutation $tblPersonSalutation = null )
+    {
+
+        $this->tblPersonSalutation = ( null === $tblPersonSalutation ? null : $tblPersonSalutation->getId() );
+    }
+
+    /**
+     * @return bool|TblPersonGender
+     */
+    public function getTblPersonGender()
+    {
+
+        if (null === $this->tblPersonGender) {
+            return false;
+        } else {
+            return Management::servicePerson()->entityPersonGenderById( $this->tblPersonGender );
+        }
+    }
+
+    /**
+     * @param null|TblPersonGender $tblPersonGender
+     */
+    public function setTblPersonGender( TblPersonGender $tblPersonGender = null )
+    {
+
+        $this->tblPersonGender = ( null === $tblPersonGender ? null : $tblPersonGender->getId() );
     }
 
     /**
@@ -85,7 +178,7 @@ class TblPerson extends AbstractEntity
     public function getFullName()
     {
 
-        return $this->getFirstName().' '.$this->getMiddleName().' '.$this->getLastName();
+        return $this->getFirstName().( $this->getMiddleName() ? ' '.$this->getMiddleName() : '' ).' '.$this->getLastName();
     }
 
     /**
@@ -145,34 +238,18 @@ class TblPerson extends AbstractEntity
     /**
      * @return string
      */
-    public function getGender()
-    {
-
-        return $this->Gender;
-    }
-
-    /**
-     * @param string $Gender
-     */
-    public function setGender( $Gender )
-    {
-
-        $this->Gender = $Gender;
-    }
-
-    /**
-     * @return string
-     */
     public function getBirthday()
     {
 
-        return $this->Birthday;
+        /** @var \DateTime $Birthday */
+        $Birthday = $this->Birthday;
+        return $Birthday->format( 'd.m.Y' );
     }
 
     /**
-     * @param string $Birthday
+     * @param \DateTime $Birthday
      */
-    public function setBirthday( $Birthday )
+    public function setBirthday( \DateTime $Birthday )
     {
 
         $this->Birthday = $Birthday;

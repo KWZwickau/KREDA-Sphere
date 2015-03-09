@@ -72,7 +72,7 @@ class GetSignature
         if (null === $Location) {
             $Location = HttpKernel::getRequest()->getPathInfo();
         }
-        $Nonce = date( 'dmYH' );
+        $Nonce = date( 'Ymd' );
         array_push( $Data, $Location );
         $Ordered = $this->sortData( (array)$Data );
         $Signature = serialize( $Ordered );

@@ -41,10 +41,17 @@ class Person extends Account
             ->setParameterDefault( 'Button', null );
 
         self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/Edit', __CLASS__.'::frontendEdit'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/List/Student', __CLASS__.'::frontendListStudent'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/List/Interest', __CLASS__.'::frontendListInterest'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/List/Guardian', __CLASS__.'::frontendListGuardian'
         );
 
     }
@@ -79,9 +86,6 @@ class Person extends Account
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/Person/List/Guardian', 'Sorgeberechtigte', new GroupIcon()
         );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Management/Person/List/Staff', 'Personal', new GroupIcon()
-        );
     }
 
     /**
@@ -98,6 +102,19 @@ class Person extends Account
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::stageCreate( $PersonName, $PersonInformation, $BirthDetail, $Button );
+    }
+
+    /**
+     * @param null|integer $Id
+     *
+     * @return Stage
+     */
+    public static function frontendEdit( $Id )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageEdit( $Id );
     }
 
     /**
@@ -120,5 +137,16 @@ class Person extends Account
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::stageListInterest();
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendListGuardian()
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageListGuardian();
     }
 }

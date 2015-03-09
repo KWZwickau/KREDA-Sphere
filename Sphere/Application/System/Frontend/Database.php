@@ -114,6 +114,23 @@ class Database extends AbstractFrontend
     }
 
     /**
+     * @param bool $Simulation
+     *
+     * @return Stage
+     */
+    public static function stageCheck( $Simulation = true )
+    {
+
+        $View = new Stage();
+        $View->setTitle( ( $Simulation ? 'KREDA Systemprüfung' : 'KREDA Systemreparatur' ) );
+        $View->setDescription( 'Datenbanken' );
+        $View->setContent(
+            System::serviceUpdate()->setupDatabaseSchema( $Simulation )
+        );
+        return $View;
+    }
+
+    /**
      * @param \Exception $E
      *
      * @return Stage
@@ -122,7 +139,7 @@ class Database extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'KREDA Systemprüfung' );
+        $View->setTitle( 'KREDA Systemreparatur' );
         $View->setDescription( 'Datenbanken' );
         $View->setMessage(
             new MessageDanger( 'Die Anwendung hat festgestellt, dass manche Datenbanken nicht korrekt arbeiten.' )

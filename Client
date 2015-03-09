@@ -68,7 +68,22 @@ if (!array_key_exists( 'REST', HttpKernel::getRequest()->getParameterArray() )) 
             new MessageDanger( 'Das System hat fehlerhafte oder mutwillig veränderte Eingabedaten erkannt<hr>',
                 new WarningIcon() )
         );
+        Assistance::registerApplication( $Config );
+        $ShellScreen->addToNavigation(
+            new Container( $Config->getClientNavigation() )
+        );
+        if ($Config->hasModuleNavigation()) {
+            $ShellScreen->addToNavigation(
+                new Container( $Config->getModuleNavigation() )
+            );
+        }
+        if ($Config->hasApplicationNavigation()) {
+            $ShellScreen->addToNavigation(
+                new Container( $Config->getApplicationNavigation() )
+            );
+        }
         $ShellScreen->addToContent( new Container( $Stage ) );
+        print $ShellScreen->getContent();
         exit( 0 );
     }
 }

@@ -48,7 +48,7 @@ class Role extends Access
         $View->setDescription( 'Rollen' );
 
         $RoleList = Gatekeeper::serviceAccount()->entityAccountRoleAll();
-        array_walk( $RoleList, function ( TblAccountRole &$V, $I, $B ) {
+        array_walk( $RoleList, function ( TblAccountRole &$V ) {
 
             $LinkList = Gatekeeper::serviceAccount()->entityAccessAllByAccountRole( $V );
             if (empty( $LinkList )) {
@@ -59,7 +59,7 @@ class Role extends Access
 
             $V->Option = new ButtonLinkPrimary( 'Zugriffslevel bearbeiten', '/Sphere/System/Authorization/Role/Access',
                 null, array( 'Id' => $V->getId() ) );
-        }, self::getUrlBase() );
+        } );
 
         $View->setContent(
             new TableData( $RoleList, new GridTableTitle( 'Bestehende Rollen', 'Zugriffslevelgruppen' ),
