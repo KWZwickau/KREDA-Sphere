@@ -43,7 +43,11 @@ class Person extends Account
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Edit', __CLASS__.'::frontendEdit'
         )
-            ->setParameterDefault( 'Id', null );
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'PersonName', null )
+            ->setParameterDefault( 'BirthDetail', null )
+            ->setParameterDefault( 'PersonInformation', null );
+
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/List/Student', __CLASS__.'::frontendListStudent'
         );
@@ -106,15 +110,19 @@ class Person extends Account
 
     /**
      * @param null|integer $Id
+     * @param null|array   $PersonName
+     * @param null|array   $PersonInformation
+     * @param null|array   $BirthDetail
+     *
      *
      * @return Stage
      */
-    public static function frontendEdit( $Id )
+    public static function frontendEdit( $Id, $PersonName, $PersonInformation, $BirthDetail )
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageEdit( $Id );
+        return Frontend::stageEdit( $Id, $PersonName, $PersonInformation, $BirthDetail );
     }
 
     /**

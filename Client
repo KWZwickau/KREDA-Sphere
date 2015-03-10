@@ -22,6 +22,7 @@ use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\Extension\Debugger;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Signature\Type\GetSignature;
+use KREDA\Sphere\Common\Signature\Type\PostSignature;
 use MOC\V\Component\Database\Exception\DatabaseException;
 use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
 use MOC\V\Core\AutoLoader\AutoLoader;
@@ -59,8 +60,9 @@ $Config = new Configuration( new UniversalRouter(), new LevelClient() );
  * Setup: $_GET Signature
  */
 if (!array_key_exists( 'REST', HttpKernel::getRequest()->getParameterArray() )) {
-    $Signature = new GetSignature();
-    if (!$Signature->validateSignature()) {
+    $GetSignature = new GetSignature();
+    $PostSignature = new PostSignature();
+    if (!( $GetSignature->validateSignature() && $PostSignature->validateSignature() )) {
         $Stage = new Stage();
         $Stage->setTitle( 'KREDA Security' );
         $Stage->setDescription( 'Parameter' );

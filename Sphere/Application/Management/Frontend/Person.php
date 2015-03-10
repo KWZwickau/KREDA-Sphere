@@ -25,14 +25,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableCol;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableVertical;
 
 /**
  * Class Person
@@ -55,7 +48,7 @@ class Person extends AbstractFrontend
         $View->setContent( new TableData( array(
             array(
                 'Personen' => new GroupIcon().'&nbsp;&nbsp;Alle',
-                'Anzahl' => count( ( $tblPersonList = Management::servicePerson()->entityPersonAll()
+                'Anzahl'   => count( ( $tblPersonList = Management::servicePerson()->entityPersonAll()
                 ) ? $tblPersonList : array() )
             ),
             array(
@@ -96,63 +89,91 @@ class Person extends AbstractFrontend
         $View->setTitle( 'Person' );
         $View->setDescription( 'Hinzufügen' );
 
-        $tblAddressCityAll = Management::serviceAddress()->entityAddressCityAll();
+        $Form = self::formPersonBasic();
+        $Form->appendFormButton( new ButtonSubmitSuccess( 'Anlegen' ) );
+        $Form->appendFormButton( new ButtonSubmitPrimary( 'Anlegen & Weiter' ) );
+
+        $View->setContent( Management::servicePerson()->executeCreatePerson(
+            $Form, $PersonName, $PersonInformation, $BirthDetail, $Button )
+        );
+        return $View;
+    }
+
+    /**
+     * @return FormDefault
+     */
+    private static function formPersonBasic()
+    {
+
         $tblPersonSalutationAll = Management::servicePerson()->entityPersonSalutationAll();
         $tblPersonGenderAll = Management::servicePerson()->entityPersonGenderAll();
         $tblPersonTypeAll = Management::servicePerson()->entityPersonTypeAll();
+        $PersonNationality = Management::servicePerson()->entityPersonAll();
+        $PersonBirthPlace = Management::servicePerson()->entityPersonAll();
+        if (!empty( $PersonNationality )) {
+            array_walk( $PersonNationality, function ( TblPerson &$P ) {
 
-        $View->setContent( Management::servicePerson()->executeCreatePerson(
-            new FormDefault(
-                new GridFormGroup( array(
-                    new GridFormRow( array(
-                        new GridFormCol(
-                            new InputSelect( 'PersonName[Salutation]', 'Anrede',
-                                array( 'Name' => $tblPersonSalutationAll ), new ConversationIcon()
-                            ), 4 )
-                    ) ),
-                    new GridFormRow( array(
-                        new GridFormCol(
-                            new InputText( 'PersonName[First]', 'Vorname', 'Vorname', new NameplateIcon() )
-                            , 4 ),
-                        new GridFormCol(
-                            new InputText( 'PersonName[Middle]', 'Zweitname', 'Zweitname', new NameplateIcon() )
-                            , 4 ),
-                        new GridFormCol(
-                            new InputText( 'PersonName[Last]', 'Nachname', 'Nachname', new NameplateIcon() )
-                            , 4 )
-                    ) ),
-                    new GridFormRow( array(
-                        new GridFormCol(
-                            new InputSelect( 'BirthDetail[Gender]', 'Geschlecht',
-                                array( 'Name' => $tblPersonGenderAll ), new ChildIcon()
-                            ), 4 ),
-                        new GridFormCol(
-                            new InputDate( 'BirthDetail[Date]', 'Geburtstag', 'Geburtstag', new TimeIcon() )
-                            , 4 ),
-                        new GridFormCol(
-                            new InputCompleter( 'BirthDetail[Place]', 'Geburtsort', 'Geburtsort',
-                                array( 'Name' => $tblAddressCityAll ), new MapMarkerIcon()
-                            ), 4 ),
-                    ) ),
-                    new GridFormRow( array(
-                        new GridFormCol(
-                            new InputCompleter( 'PersonInformation[Nationality]', 'Staatsangehörigkeit',
-                                'Staatsangehörigkeit',
-                                array( 'Deutsch' ), new PersonIcon()
-                            ), 4 ),
-                        new GridFormCol(
-                            new InputSelect( 'PersonInformation[Type]', 'Art der Person',
-                                array( 'Name' => $tblPersonTypeAll ), new GroupIcon()
-                            ), 4 )
-                    ) )
-                ), new GridFormTitle( 'Grunddaten' ) ), array(
-                    new ButtonSubmitSuccess( 'Anlegen' )
-                ,
-                    new ButtonSubmitPrimary( 'Anlegen & Weiter' )
-                )
-            ), $PersonName, $PersonInformation, $BirthDetail, $Button )
+                $P = $P->getNationality();
+            } );
+        } else {
+            $PersonNationality = array();
+        }
+        $PersonNationality = array_unique( $PersonNationality );
+
+        if (!empty( $PersonBirthPlace )) {
+            array_walk( $PersonBirthPlace, function ( TblPerson &$P ) {
+
+                $P = $P->getBirthplace();
+            } );
+        } else {
+            $PersonBirthPlace = array();
+        }
+        $PersonBirthPlace = array_unique( $PersonBirthPlace );
+
+        return new FormDefault(
+            new GridFormGroup( array(
+                new GridFormRow( array(
+                    new GridFormCol(
+                        new InputSelect( 'PersonName[Salutation]', 'Anrede',
+                            array( 'Name' => $tblPersonSalutationAll ), new ConversationIcon()
+                        ), 4 )
+                ) ),
+                new GridFormRow( array(
+                    new GridFormCol(
+                        new InputText( 'PersonName[First]', 'Vorname', 'Vorname', new NameplateIcon() )
+                        , 4 ),
+                    new GridFormCol(
+                        new InputText( 'PersonName[Middle]', 'Zweitname', 'Zweitname', new NameplateIcon() )
+                        , 4 ),
+                    new GridFormCol(
+                        new InputText( 'PersonName[Last]', 'Nachname', 'Nachname', new NameplateIcon() )
+                        , 4 )
+                ) ),
+                new GridFormRow( array(
+                    new GridFormCol(
+                        new InputSelect( 'BirthDetail[Gender]', 'Geschlecht',
+                            array( 'Name' => $tblPersonGenderAll ), new ChildIcon()
+                        ), 4 ),
+                    new GridFormCol(
+                        new InputDate( 'BirthDetail[Date]', 'Geburtstag', 'Geburtstag', new TimeIcon() )
+                        , 4 ),
+                    new GridFormCol(
+                        new InputCompleter( 'BirthDetail[Place]', 'Geburtsort', 'Geburtsort',
+                            $PersonBirthPlace, new MapMarkerIcon()
+                        ), 4 ),
+                ) ),
+                new GridFormRow( array(
+                    new GridFormCol(
+                        new InputCompleter( 'PersonInformation[Nationality]', 'Staatsangehörigkeit',
+                            'Staatsangehörigkeit', $PersonNationality, new PersonIcon()
+                        ), 4 ),
+                    new GridFormCol(
+                        new InputSelect( 'PersonInformation[Type]', 'Art der Person',
+                            array( 'Name' => $tblPersonTypeAll ), new GroupIcon()
+                        ), 4 )
+                ) )
+            ), new GridFormTitle( 'Grunddaten' ) )
         );
-        return $View;
     }
 
     /**
@@ -172,9 +193,9 @@ class Person extends AbstractFrontend
         } else {
             array_walk( $tblPersonList, function ( TblPerson &$P ) {
 
-                $P->Option = new ButtonLinkPrimary( 'Bearbeiten',
-                    '/Sphere/Management/Person/Edit',
-                    null, array( 'Id' => $P->getId() ) );
+                $P->Option = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
+                    array( 'Id' => $P->getId() )
+                );
             } );
             $View->setContent( new TableData( $tblPersonList ) );
         }
@@ -196,6 +217,12 @@ class Person extends AbstractFrontend
         if (empty( $tblPersonList )) {
             $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
         } else {
+            array_walk( $tblPersonList, function ( TblPerson &$P ) {
+
+                $P->Option = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
+                    array( 'Id' => $P->getId() )
+                );
+            } );
             $View->setContent( new TableData( $tblPersonList ) );
         }
         return $View;
@@ -216,17 +243,26 @@ class Person extends AbstractFrontend
         if (empty( $tblPersonList )) {
             $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
         } else {
+            array_walk( $tblPersonList, function ( TblPerson &$P ) {
+
+                $P->Option = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
+                    array( 'Id' => $P->getId() )
+                );
+            } );
             $View->setContent( new TableData( $tblPersonList ) );
         }
         return $View;
     }
 
     /**
-     * @param integer $Id
+     * @param integer    $Id
+     * @param null|array $PersonName
+     * @param null|array $PersonInformation
+     * @param null|array $BirthDetail
      *
      * @return Stage
      */
-    public static function stageEdit( $Id )
+    public static function stageEdit( $Id, $PersonName, $PersonInformation, $BirthDetail )
     {
 
         $View = new Stage();
@@ -240,47 +276,47 @@ class Person extends AbstractFrontend
                 $View->setContent( new MessageWarning( 'Die Person konnte nicht abgerufen werden' ) );
             } else {
 
-                $View->setContent(
-                    new GridLayout(
-                        new GridLayoutGroup( array(
-                            new GridLayoutRow( array(
-                                new GridLayoutCol( array(
-                                        new GridLayoutTitle( 'Grunddaten' ),
-                                        new TableVertical( array(
-                                            array( 'Name', new GridTableCol( $tblPerson->getFullName(), 2 ) ),
-                                            array(
-                                                'Geschlecht',
-                                                new GridTableCol( $tblPerson->getTblPersonGender()->getName(), 2 )
-                                            ),
-                                            array(
-                                                'Geburtsdatum&nbsp;/&nbsp;Ort',
-                                                new GridTableCol( $tblPerson->getBirthday() ),
-                                                new GridTableCol( $tblPerson->getBirthplace() )
-                                            ),
-                                        ) )
-                                    )
-                                    , 6 ),
-                                new GridLayoutCol( array(
-                                        new GridLayoutTitle( 'Beziehungen' ),
-                                    )
-                                    , 6 )
-                            ) ),
-                            new GridLayoutRow( array(
-                                new GridLayoutCol( array(
-                                        new GridLayoutTitle( 'Telefonnummern' ),
-                                    )
-                                    , 6 ),
-                                new GridLayoutCol( array(
-                                        new GridLayoutTitle( 'E-Mail Adressen' ),
-                                    )
-                                    , 6 )
-                            ) )
-                        ) )
-                    )
-                );
+                $View->setMessage( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() );
+                $_POST['PersonName']['Salutation'] = $tblPerson->getTblPersonSalutation()->getId();
+                $_POST['PersonName']['First'] = $tblPerson->getFirstName();
+                $_POST['PersonName']['Middle'] = $tblPerson->getMiddleName();
+                $_POST['PersonName']['Last'] = $tblPerson->getLastName();
+                $_POST['BirthDetail']['Gender'] = $tblPerson->getTblPersonGender()->getId();
+                $_POST['BirthDetail']['Date'] = $tblPerson->getBirthday();
+                $_POST['BirthDetail']['Place'] = $tblPerson->getBirthplace();
+                $_POST['PersonInformation']['Nationality'] = $tblPerson->getNationality();
+                $_POST['PersonInformation']['Type'] = $tblPerson->getTblPersonType()->getId();
+                $FormPersonBasic = self::formPersonBasic();
+                $FormPersonBasic->appendFormButton( new ButtonSubmitSuccess( 'Änderungen speichern' ) );
 
+                $FormPersonGuardian = self::formPersonRelationshipGuardian();
+                $FormPersonGuardian->appendFormButton( new ButtonSubmitPrimary( 'Hinzufügen' ) );
+
+                $View->setContent(
+                    Management::servicePerson()->executeChangePerson(
+                        $FormPersonBasic, $tblPerson, $PersonName, $PersonInformation, $BirthDetail
+                    )
+                    .$FormPersonGuardian
+                );
             }
         }
         return $View;
+    }
+
+    /**
+     * @return FormDefault
+     */
+    private static function formPersonRelationshipGuardian()
+    {
+
+        return new FormDefault(
+            new GridFormGroup( array(
+                new GridFormRow( array(
+                    new GridFormCol(
+                        array()
+                        , 4 )
+                ) ),
+            ), new GridFormTitle( 'Sorgeberechtigte' ) )
+        );
     }
 }

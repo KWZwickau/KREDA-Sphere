@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Common\Frontend\Form\Element;
 
 use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
+use KREDA\Sphere\Common\AbstractEntity;
 use KREDA\Sphere\Common\Frontend\Form\AbstractElement;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 

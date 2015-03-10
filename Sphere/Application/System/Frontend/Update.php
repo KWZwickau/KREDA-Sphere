@@ -164,7 +164,17 @@ class Update extends AbstractFrontend
                             console.log( Response );
                             jQuery("div#StatusUpdate").html( Response );
                         },
-                        async: true
+                        async: true,
+                        error: function(){
+                            Run = false;
+                            jQuery("div#StatusUpdate").ModProgress({
+                                "Total": 1,
+                                "Size": 1,
+                                "Speed": 0,
+                                "Time": 0,
+                                "Class": "progress-bar-danger"
+                            });
+                        }
                     });
                 }
                 function Install( Location ) {
@@ -197,7 +207,17 @@ class Update extends AbstractFrontend
                             }
                             console.log( Response );
                         },
-                        async: true
+                        async: true,
+                        error: function(){
+                            Run = false;
+                            jQuery("div#StatusInstall").ModProgress({
+                                "Total": 1,
+                                "Size": 1,
+                                "Speed": 0,
+                                "Time": 0,
+                                "Class": "progress-bar-danger"
+                            });
+                        }
                     });
                 }
                 function Extract( Archive ) {
@@ -219,7 +239,17 @@ class Update extends AbstractFrontend
                             });
                             Install( Response )
                         },
-                        async: true
+                        async: true,
+                        error: function(){
+                            Run = false;
+                            jQuery("div#StatusExtract").ModProgress({
+                                "Total": 1,
+                                "Size": 1,
+                                "Speed": 0,
+                                "Time": 0,
+                                "Class": "progress-bar-danger"
+                            });
+                        }
                     });
                 }
                 function Download() {
@@ -234,7 +264,8 @@ class Update extends AbstractFrontend
                                         "Total": Response.SizeTotal,
                                         "Size": Response.SizeCurrent,
                                         "Speed": Response.DownloadSpeed,
-                                        "Time": Response.DownloadTime
+                                        "Time": Response.DownloadTime,
+                                        "Message": Number(Response.SizeCurrent / 1024 / 1024 ).toFixed(2) +"/"+ Number(Response.SizeTotal / 1024 / 1024 ).toFixed(2) + "MB @ " + Number(Response.DownloadSpeed / 1024).toFixed(2) + "KB/s"
                                     });
                                 }
                             }
@@ -282,7 +313,17 @@ class Update extends AbstractFrontend
                             Extract( Response );
                         }
                     },
-                    async: true
+                    async: true,
+                    error: function(){
+                        Run = false;
+                        jQuery("div#StatusDownload").ModProgress({
+                            "Total": 1,
+                            "Size": 1,
+                            "Speed": 0,
+                            "Time": 0,
+                            "Class": "progress-bar-danger"
+                        });
+                    }
                 });
              })</script>'
         );

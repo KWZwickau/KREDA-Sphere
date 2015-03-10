@@ -9,6 +9,7 @@ use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonSalutatio
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 use KREDA\Sphere\Common\Frontend\Redirect;
@@ -111,10 +112,146 @@ class Person extends EntityAction
     /**
      * @param AbstractForm $View
      *
-     * @param  array $PersonName
-     * @param  array $BirthDetail
-     * @param  array $PersonInformation
-     * @param  array $Button
+     * @param TblPerson $tblPerson
+     * @param array     $PersonName
+     * @param array     $PersonInformation
+     * @param array     $BirthDetail
+     *
+     * @return AbstractForm
+     */
+    public function executeChangePerson(
+        AbstractForm &$View = null,
+        TblPerson $tblPerson,
+        $PersonName,
+        $PersonInformation,
+        $BirthDetail
+    ) {
+
+        /**
+         * Skip to Frontend
+         */
+        if (null === $PersonName
+            && null === $BirthDetail
+            && null === $PersonInformation
+        ) {
+            return $View;
+        }
+
+        $Error = false;
+
+        if (isset( $PersonName['Salutation'] ) && !empty( $PersonName['Salutation'] )) {
+            $tblPersonSalutation = Management::servicePerson()->entityPersonSalutationById( $PersonName['Salutation'] );
+            if (!$tblPersonSalutation) {
+                $View->setError( 'PersonName[Salutation]', 'Bitte wählen Sie eine gültige Anrede' );
+                $Error = true;
+            }
+        } else {
+            $View->setError( 'PersonName[Salutation]', 'Bitte wählen Sie eine gültige Anrede' );
+            $Error = true;
+        }
+
+        if (isset( $PersonName['First'] ) && empty( $PersonName['First'] )) {
+            $View->setError( 'PersonName[First]', 'Bitte geben Sie einen Vornamen an' );
+            $Error = true;
+        }
+        if (isset( $PersonName['Last'] ) && empty( $PersonName['Last'] )) {
+            $View->setError( 'PersonName[Last]', 'Bitte geben Sie einen Nachnamen an' );
+            $Error = true;
+        }
+
+        if (isset( $BirthDetail['Gender'] ) && !empty( $BirthDetail['Gender'] )) {
+            $tblPersonGender = Management::servicePerson()->entityPersonGenderById( $BirthDetail['Gender'] );
+            if (!$tblPersonGender) {
+                $View->setError( 'BirthDetail[Gender]', 'Bitte wählen Sie ein gültiges Geschlecht' );
+                $Error = true;
+            }
+        } else {
+            $View->setError( 'BirthDetail[Gender]', 'Bitte wählen Sie ein gültiges Geschlecht' );
+            $Error = true;
+        }
+
+        if (isset( $BirthDetail['Date'] ) && empty( $BirthDetail['Date'] )) {
+            $View->setError( 'BirthDetail[Date]', 'Bitte geben Sie ein Gebursdatum ein' );
+            $Error = true;
+        }
+
+        if (isset( $PersonInformation['Nationality'] ) && empty( $PersonInformation['Nationality'] )) {
+            $View->setError( 'PersonInformation[Nationality]', 'Bitte geben Sie eine Staatsangehörigkeit ein' );
+            $Error = true;
+        }
+
+        if (isset( $PersonInformation['Type'] ) && !empty( $PersonInformation['Type'] )) {
+            $tblPersonType = Management::servicePerson()->entityPersonTypeById( $PersonInformation['Type'] );
+            if (!$tblPersonType) {
+                $View->setError( 'PersonInformation[Type]', 'Bitte wählen Sie einen gültigen Typ' );
+                $Error = true;
+            }
+        } else {
+            $View->setError( 'PersonInformation[Type]', 'Bitte wählen Sie einen gültigen Typ' );
+            $Error = true;
+        }
+
+        if (!$Error) {
+            if ($this->actionChangePerson(
+                $tblPerson,
+                $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
+                $BirthDetail['Date'], $BirthDetail['Place'],
+                $PersonInformation['Nationality'],
+                $tblPersonSalutation,
+                $tblPersonGender,
+                $tblPersonType
+            )
+            ) {
+                $View .= new MessageSuccess( 'Änderungen gespeichert, die Daten werden neu geladen...' )
+                    .new Redirect( '/Sphere/Management/Person/Edit', 3, array( 'Id' => $tblPerson->getId() ) );
+            } else {
+                $View .= new MessageDanger( 'Änderungen konnten nicht gespeichert werden' );
+            };
+        }
+        return $View;
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblPersonSalutation
+     */
+    public function entityPersonSalutationById( $Id )
+    {
+
+        return parent::entityPersonSalutationById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblPersonGender
+     */
+    public function entityPersonGenderById( $Id )
+    {
+
+        return parent::entityPersonGenderById( $Id );
+    }
+
+    /**
+     *
+     * @param integer $Id
+     *
+     * @return bool|TblPersonType
+     */
+    public function entityPersonTypeById( $Id )
+    {
+
+        return parent::entityPersonTypeById( $Id );
+    }
+
+    /**
+     * @param AbstractForm $View
+     *
+     * @param array        $PersonName
+     * @param array        $BirthDetail
+     * @param array        $PersonInformation
+     * @param array        $Button
      *
      * @return AbstractForm
      */
@@ -211,40 +348,6 @@ class Person extends EntityAction
 
         }
         return $View;
-    }
-
-    /**
-     * @param integer $Id
-     *
-     * @return bool|TblPersonSalutation
-     */
-    public function entityPersonSalutationById( $Id )
-    {
-
-        return parent::entityPersonSalutationById( $Id );
-    }
-
-    /**
-     * @param integer $Id
-     *
-     * @return bool|TblPersonGender
-     */
-    public function entityPersonGenderById( $Id )
-    {
-
-        return parent::entityPersonGenderById( $Id );
-    }
-
-    /**
-     *
-     * @param integer $Id
-     *
-     * @return bool|TblPersonType
-     */
-    public function entityPersonTypeById( $Id )
-    {
-
-        return parent::entityPersonTypeById( $Id );
     }
 
     /**

@@ -38,6 +38,8 @@ class GetSignature extends AbstractExtension
     public function validateSignature()
     {
 
+        array_walk_recursive( $_GET, array( $this, 'preventXSS' ) );
+
         if (!empty( $_GET ) && !isset( $_GET['_Sign'] )) {
             $_GET = array();
             return false;
@@ -99,5 +101,14 @@ class GetSignature extends AbstractExtension
         } );
         krsort( $Data );
         return $Data;
+    }
+
+    /**
+     * @param $Value
+     */
+    private function preventXSS( &$Value )
+    {
+
+        $Value = strip_tags( $Value );
     }
 }

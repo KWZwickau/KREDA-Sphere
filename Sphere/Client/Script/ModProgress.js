@@ -9,8 +9,15 @@
             'Total': 0, 'Size': 0,
             'Speed': 0,
             'Time': 0,
-            'Class': null
+            'Class': null,
+            'Message': null
         }, options );
+
+        if (null !== settings.Message) {
+            this.find( '.progress-bar' ).html( settings.Message );
+        } else {
+            this.find( '.progress-bar' ).html( '' );
+        }
 
         if (0 >= settings.Total && 0 < settings.Size) {
             this.find( '.progress-bar' ).removeClass( 'progress-bar-warning' );

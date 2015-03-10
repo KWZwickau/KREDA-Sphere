@@ -236,6 +236,59 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblPerson $tblPerson
+     * @param string              $FirstName
+     * @param string              $MiddleName
+     * @param string              $LastName
+     *
+     * @param string              $Birthday
+     * @param string              $Birthplace
+     *
+     * @param string              $Nationality
+     *
+     * @param TblPersonSalutation $tblPersonSalutation
+     * @param TblPersonGender     $tblPersonGender
+     * @param TblPersonType       $tblPersonType
+     *
+     * @return bool
+     */
+    protected function actionChangePerson(
+        TblPerson $tblPerson,
+        $FirstName,
+        $MiddleName,
+        $LastName,
+        $Birthday,
+        $Birthplace,
+        $Nationality,
+        $tblPersonSalutation,
+        $tblPersonGender,
+        $tblPersonType
+    ) {
+
+        $Manager = $this->getEntityManager();
+        /** @var TblPerson $Entity */
+        $Entity = $Manager->getEntityById( 'TblPerson', $tblPerson->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setTblPersonSalutation( $tblPersonSalutation );
+            $Entity->setFirstName( $FirstName );
+            $Entity->setMiddleName( $MiddleName );
+            $Entity->setLastName( $LastName );
+            $Entity->setTblPersonGender( $tblPersonGender );
+            $Entity->setBirthday( new \DateTime( $Birthday ) );
+            $Entity->setBirthplace( $Birthplace );
+            $Entity->setNationality( $Nationality );
+            $Entity->setTblPersonType( $tblPersonType );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @param string              $FirstName
      * @param string              $MiddleName
      * @param string              $LastName
@@ -262,6 +315,7 @@ abstract class EntityAction extends EntitySchema
         $tblPersonGender,
         $tblPersonType
     ) {
+
         $Manager = $this->getEntityManager();
         $Entity = $Manager->getEntity( 'TblPerson' )
             ->findOneBy( array(
