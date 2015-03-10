@@ -202,7 +202,7 @@ class Person extends EntityAction
             );
             if ($Button['Submit'] == 'Anlegen') {
                 return new MessageSuccess( 'Die Person wurde erfolgreich angelegt' )
-                .new Redirect( '/Sphere/Management/Person/Create', 5, array( 'Id' => $Entity->getId() ) );
+                .new Redirect( '/Sphere/Management/Person/Create', 0 );
             } else {
                 return new MessageSuccess( 'Der Person wurde erfolgreich angelegt' )
                 .new Redirect( '/Sphere/Management/Person/Edit', 5, array( 'Id' => $Entity->getId() ) );

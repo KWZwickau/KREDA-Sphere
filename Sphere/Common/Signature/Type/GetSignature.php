@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Common\Signature\Type;
 
+use KREDA\Sphere\Common\AbstractExtension;
 use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
@@ -8,7 +9,7 @@ use MOC\V\Core\HttpKernel\HttpKernel;
  *
  * @package KREDA\Sphere\Common\Signature\Type
  */
-class GetSignature
+class GetSignature extends AbstractExtension
 {
 
     /** @var string $Secret */
@@ -90,6 +91,12 @@ class GetSignature
     private function sortData( $Data )
     {
 
+        array_walk( $Data, function ( &$V ) {
+
+            if (!is_string( $V ) && !is_array( $V )) {
+                $V = (string)$V;
+            }
+        } );
         krsort( $Data );
         return $Data;
     }

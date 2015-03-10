@@ -56,7 +56,7 @@ class Person extends AbstractFrontend
             array(
                 'Personen' => new GroupIcon().'&nbsp;&nbsp;Alle',
                 'Anzahl' => count( ( $tblPersonList = Management::servicePerson()->entityPersonAll()
-                ) ) ? $tblPersonList : array()
+                ) ? $tblPersonList : array() )
             ),
             array(
                 'Personen' => new GroupIcon().'&nbsp;&nbsp;Interessenten',
@@ -78,7 +78,6 @@ class Person extends AbstractFrontend
             )
         ), null, array(), false ) );
 
-        var_dump( $tblPersonList );
         return $View;
     }
 

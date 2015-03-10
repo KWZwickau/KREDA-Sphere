@@ -32,11 +32,14 @@ class DemoService extends EntityAction
      *
      * @return AbstractForm
      */
-    public function executeCreateDemo( AbstractForm $abstractForm, $DemoCompleter )
+    public function executeCreateDemo( AbstractForm $abstractForm, $DemoCompleter, $DemoTextArea )
     {
 
         if (null !== $DemoCompleter && empty( $DemoCompleter )) {
             $abstractForm->setError( 'DemoCompleter', 'Gib was ein' );
+        }
+        if (null !== $DemoTextArea && empty( $DemoTextArea )) {
+            $abstractForm->setError( 'DemoTextArea', 'Gib was ein' );
         }
         if (!empty( $DemoCompleter )) {
             $this->actionCreateDemoCompleter( $DemoCompleter );
