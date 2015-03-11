@@ -22,6 +22,8 @@
 
 # Restrict Server PHP-File Access
 
+	php_value max_execution_time 1200
+
 	<Files 'Client'>
 		ForceType application/x-httpd-php
 	</Files>

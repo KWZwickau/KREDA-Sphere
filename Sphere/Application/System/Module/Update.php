@@ -124,9 +124,6 @@ class Update extends Database
     public static function frontendAjaxExtract( $Archive )
     {
 
-        ob_end_clean();
-        set_time_limit( 60 * 60 );
-        ini_set( "memory_limit", "512M" );
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
         return $Updater->extractArchive( $Archive );
     }
@@ -139,7 +136,6 @@ class Update extends Database
     public static function frontendAjaxWrite( $Location )
     {
 
-        set_time_limit( 60 * 60 );
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
         $Source = realpath( $Updater->getCache().'/'.$Location );
         $Target = realpath( __DIR__.'/../../../../' );
