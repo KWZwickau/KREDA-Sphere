@@ -15,13 +15,15 @@ class GridTableHead extends AbstractTable
     private $GridRowList = array();
 
     /**
-     * @param GridTableRow|GridTableRow[] $GridRowList
+     * @param null|GridTableRow|GridTableRow[] $GridRowList
      */
-    function __construct( $GridRowList )
+    function __construct( $GridRowList = null )
     {
 
-        if (!is_array( $GridRowList )) {
+        if (null !== $GridRowList && !is_array( $GridRowList )) {
             $GridRowList = array( $GridRowList );
+        } elseif (null === $GridRowList) {
+            $GridRowList = array();
         }
         $this->GridRowList = $GridRowList;
     }

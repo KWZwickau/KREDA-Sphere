@@ -28,16 +28,14 @@ class FormDefault extends AbstractForm
         }
         $this->GridGroupList = $GridGroupList;
 
-        if (null !== $FormButtonList) {
-            if (!is_array( $FormButtonList )) {
-                $FormButtonList = array( $FormButtonList );
-            }
+        if (!is_array( $FormButtonList )) {
+            $FormButtonList = array( $FormButtonList );
         }
+        $this->GridButtonList = $FormButtonList;
 
         $this->Template = $this->extensionTemplate( __DIR__.'/FormDefault.twig' );
         $this->Template->setVariable( 'UrlBase', $this->extensionRequest()->getUrlBase() );
         $this->Template->setVariable( 'FormAction', $FormAction );
-        $this->Template->setVariable( 'FormButtonList', $FormButtonList );
     }
 
     /**
@@ -46,6 +44,7 @@ class FormDefault extends AbstractForm
     public function getContent()
     {
 
+        $this->Template->setVariable( 'FormButtonList', $this->GridButtonList );
         $this->Template->setVariable( 'GridGroupList', $this->GridGroupList );
         $this->Template->setVariable( 'Hash', $this->getHash() );
         return $this->Template->getContent();

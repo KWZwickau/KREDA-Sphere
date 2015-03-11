@@ -11,14 +11,18 @@ use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Container;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Screen;
+use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Common\Cache\Cache;
 use KREDA\Sphere\Common\Extension\Debugger;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Common\Signature\Type\GetSignature;
+use KREDA\Sphere\Common\Signature\Type\PostSignature;
 use MOC\V\Component\Database\Exception\DatabaseException;
 use MOC\V\Component\Router\Component\Bridge\Repository\UniversalRouter;
 use MOC\V\Core\AutoLoader\AutoLoader;
@@ -52,6 +56,39 @@ new Debugger();
 $ShellScreen = new Screen();
 $Config = new Configuration( new UniversalRouter(), new LevelClient() );
 
+/**
+ * Setup: $_GET Signature
+ */
+if (!array_key_exists( 'REST', HttpKernel::getRequest()->getParameterArray() )) {
+    $GetSignature = new GetSignature();
+    $PostSignature = new PostSignature();
+    if (!( $GetSignature->validateSignature() && $PostSignature->validateSignature() )) {
+        $Stage = new Stage();
+        $Stage->setTitle( 'KREDA Security' );
+        $Stage->setDescription( 'Parameter' );
+        $Stage->setContent(
+            new MessageDanger( 'Das System hat fehlerhafte oder mutwillig veränderte Eingabedaten erkannt<hr>',
+                new WarningIcon() )
+        );
+        Assistance::registerApplication( $Config );
+        $ShellScreen->addToNavigation(
+            new Container( $Config->getClientNavigation() )
+        );
+        if ($Config->hasModuleNavigation()) {
+            $ShellScreen->addToNavigation(
+                new Container( $Config->getModuleNavigation() )
+            );
+        }
+        if ($Config->hasApplicationNavigation()) {
+            $ShellScreen->addToNavigation(
+                new Container( $Config->getApplicationNavigation() )
+            );
+        }
+        $ShellScreen->addToContent( new Container( $Stage ) );
+        print $ShellScreen->getContent();
+        exit( 0 );
+    }
+}
 /**
  * Setup: Error-Handler
  */
@@ -97,7 +134,6 @@ register_shutdown_function(
 /**
  * UPDATE: Restrict Access
  */
-
 if (file_exists( __DIR__.'/MAINTENANCE' )) {
     $Restricted = true;
     if (( $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession() )) {
@@ -127,11 +163,6 @@ if (file_exists( __DIR__.'/MAINTENANCE' )) {
         exit( 0 );
     }
 }
-
-/**
- * Development: Clear Cache
- */
-Cache::getApi();
 
 /**
  * REST-API: Run

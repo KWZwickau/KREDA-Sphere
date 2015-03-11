@@ -13,7 +13,7 @@ class GroupDefault extends AbstractGroup
 {
 
     /**
-     * @param \KREDA\Sphere\Common\Frontend\Button\Element\ButtonPrimaryLink[]|\KREDA\Sphere\Common\Frontend\Button\Element\ButtonDangerLink[] $ButtonList
+     * @param \KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary[]|\KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkDanger[] $ButtonList
      *
      * @throws TemplateTypeException
      */

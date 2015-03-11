@@ -44,13 +44,14 @@ class Demo extends AbstractApplication
         self::addClientNavigationMain( self::$Configuration, '/Sphere/Demo', 'Demo-Modul', new TaskIcon() );
 
         self::registerClientRoute( self::$Configuration, '/Sphere/Demo', __CLASS__.'::frontendDemo' )
-            ->setParameterDefault( 'DemoCompleter', null );
+            ->setParameterDefault( 'DemoCompleter', null )
+            ->setParameterDefault( 'DemoTextArea', null );
     }
 
     /**
      * @return Stage
      */
-    public static function frontendDemo( $DemoCompleter )
+    public static function frontendDemo( $DemoCompleter, $DemoTextArea )
     {
 
         $View = new Stage();
@@ -96,7 +97,7 @@ class Demo extends AbstractApplication
                         ) )
                     )
                     , new ButtonSubmitPrimary( 'Speichern' ) )
-                , $DemoCompleter )
+                , $DemoCompleter, $DemoTextArea )
 
             .
 

@@ -22,6 +22,7 @@ use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
+use KREDA\Sphere\Common\Frontend\Redirect;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
@@ -105,11 +106,13 @@ class Access extends Privilege
         if ($tblAccess && null !== $Privilege && ( $tblPrivilege = Gatekeeper::serviceAccess()->entityPrivilegeById( $Privilege ) )) {
             if ($Remove) {
                 Gatekeeper::serviceAccess()->executeRemoveAccessPrivilege( $tblAccess, $tblPrivilege );
-                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Access/Privilege?Id='.$Id, 0 ) );
+                $View->setContent( new Redirect( '/Sphere/System/Authorization/Access/Privilege', 0,
+                    array( 'Id' => $Id ) ) );
                 return $View;
             } else {
                 Gatekeeper::serviceAccess()->executeAddAccessPrivilege( $tblAccess, $tblPrivilege );
-                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Access/Privilege?Id='.$Id, 0 ) );
+                $View->setContent( new Redirect( '/Sphere/System/Authorization/Access/Privilege', 0,
+                    array( 'Id' => $Id ) ) );
                 return $View;
             }
         }

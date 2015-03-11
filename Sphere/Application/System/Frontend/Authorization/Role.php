@@ -7,6 +7,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
@@ -22,6 +23,7 @@ use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
+use KREDA\Sphere\Common\Frontend\Redirect;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
@@ -46,10 +48,7 @@ class Role extends Access
         $View->setDescription( 'Rollen' );
 
         $RoleList = Gatekeeper::serviceAccount()->entityAccountRoleAll();
-        array_walk( $RoleList, function ( TblAccountRole &$V, $I, $B ) {
-
-            $Id = new InputHidden( 'Id' );
-            $Id->setDefaultValue( $V->getId(), true );
+        array_walk( $RoleList, function ( TblAccountRole &$V ) {
 
             $LinkList = Gatekeeper::serviceAccount()->entityAccessAllByAccountRole( $V );
             if (empty( $LinkList )) {
@@ -58,13 +57,9 @@ class Role extends Access
                 $V->Available = new TableData( $LinkList, null, array( 'Name' => 'Zugriffslevel' ), false );
             }
 
-            $V->Option = ''
-                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
-                    $Id,
-                    new ButtonSubmitPrimary( 'Zugriffslevel bearbeiten' )
-                ) ) ) ), null, $B.'/Sphere/System/Authorization/Role/Access' );
-
-        }, self::getUrlBase() );
+            $V->Option = new ButtonLinkPrimary( 'Zugriffslevel bearbeiten', '/Sphere/System/Authorization/Role/Access',
+                null, array( 'Id' => $V->getId() ) );
+        } );
 
         $View->setContent(
             new TableData( $RoleList, new GridTableTitle( 'Bestehende Rollen', 'Zugriffslevelgruppen' ),
@@ -105,11 +100,13 @@ class Role extends Access
         if ($tblRole && null !== $Access && ( $tblAccess = Gatekeeper::serviceAccess()->entityAccessById( $Access ) )) {
             if ($Remove) {
                 Gatekeeper::serviceAccount()->executeRemoveRoleAccess( $tblRole, $tblAccess );
-                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Role/Access?Id='.$Id, 0 ) );
+                $View->setContent( new Redirect( '/Sphere/System/Authorization/Role/Access', 0,
+                    array( 'Id' => $Id ) ) );
                 return $View;
             } else {
                 Gatekeeper::serviceAccount()->executeAddRoleAccess( $tblRole, $tblAccess );
-                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Role/Access?Id='.$Id, 0 ) );
+                $View->setContent( new Redirect( '/Sphere/System/Authorization/Role/Access', 0,
+                    array( 'Id' => $Id ) ) );
                 return $View;
             }
         }

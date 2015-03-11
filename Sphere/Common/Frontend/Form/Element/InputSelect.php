@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Common\Frontend\Form\Element;
 
 use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
+use KREDA\Sphere\Common\AbstractEntity;
 use KREDA\Sphere\Common\Frontend\Form\AbstractElement;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 
@@ -36,7 +37,23 @@ class InputSelect extends AbstractElement
 
         $this->Template->setVariable( 'ElementName', $Name );
         $this->Template->setVariable( 'ElementLabel', $Label );
-        $this->Template->setVariable( 'ElementData', $Data );
+
+        if (count( $Data ) == 1 && !is_numeric( key( $Data ) )) {
+            $Attribute = key( $Data );
+            $Convert = array();
+            /** @var AbstractEntity $Entity */
+            foreach ((array)$Data[$Attribute] as $Entity) {
+                if (is_object( $Entity )) {
+                    $Convert[$Entity->getId()] = $Entity->{'get'.$Attribute}();
+                }
+            }
+            asort( $Convert );
+            $this->Template->setVariable( 'ElementData', $Convert );
+        } else {
+            asort( $Data );
+            $this->Template->setVariable( 'ElementData', $Data );
+        }
+
         if (null !== $Icon) {
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }

@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\System\Module;
 
 use KREDA\Sphere\Application\System\Frontend\Update as Frontend;
+use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\Updater\Type\GitHub;
@@ -27,17 +28,20 @@ class Update extends Database
             '/Sphere/System/Update/Install', __CLASS__.'::frontendInstall'
         )->setParameterDefault( 'Version', null );
         self::registerClientRoute( $Configuration,
-            '/Sphere/System/Update/Run', __CLASS__.'::frontendRun'
+            '/Sphere/System/Update/Run', __CLASS__.'::frontendAjaxRun'
         )->setParameterDefault( 'Version', null );
         self::registerClientRoute( $Configuration,
-            '/Sphere/System/Update/Log', __CLASS__.'::frontendLog'
+            '/Sphere/System/Update/Log', __CLASS__.'::frontendAjaxLog'
         )->setParameterDefault( 'Version', null );
         self::registerClientRoute( $Configuration,
-            '/Sphere/System/Update/Extract', __CLASS__.'::frontendExtract'
+            '/Sphere/System/Update/Extract', __CLASS__.'::frontendAjaxExtract'
         )->setParameterDefault( 'Archive', null );
         self::registerClientRoute( $Configuration,
-            '/Sphere/System/Update/Write', __CLASS__.'::frontendWrite'
+            '/Sphere/System/Update/Write', __CLASS__.'::frontendAjaxWrite'
         )->setParameterDefault( 'Location', null );
+        self::registerClientRoute( $Configuration,
+            '/Sphere/System/Update/Update', __CLASS__.'::frontendAjaxUpdate'
+        );
     }
 
     /**
@@ -69,7 +73,7 @@ class Update extends Database
      *
      * @return string
      */
-    public static function frontendRun( $Version )
+    public static function frontendAjaxRun( $Version )
     {
 
         file_put_contents( __DIR__.'/../../../../MAINTENANCE', date( 'd.m.Y H:i:s' ) );
@@ -83,7 +87,7 @@ class Update extends Database
      *
      * @return string
      */
-    public static function frontendLog( $Version )
+    public static function frontendAjaxLog( $Version )
     {
 
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
@@ -98,6 +102,9 @@ class Update extends Database
                     'DownloadTime'  => -1
                 ) );
             } else {
+                if ($Log['SizeTotal'] == 0 && $Log['SizeCurrent'] > 1) {
+                    $Log['SizeTotal'] = $Log['SizeCurrent'] - 1;
+                }
                 return json_encode( $Log );
             }
         }
@@ -114,7 +121,7 @@ class Update extends Database
      *
      * @return string
      */
-    public static function frontendExtract( $Archive )
+    public static function frontendAjaxExtract( $Archive )
     {
 
         set_time_limit( 60 * 60 );
@@ -127,7 +134,7 @@ class Update extends Database
      *
      * @return string
      */
-    public static function frontendWrite( $Location )
+    public static function frontendAjaxWrite( $Location )
     {
 
         set_time_limit( 60 * 60 );
@@ -143,11 +150,20 @@ class Update extends Database
                         $Updater->getCurrentVersion(), $Updater->getLatestVersion(), file_get_contents( $Ini )
                     )
                 );
-                unlink( __DIR__.'/../../../../MAINTENANCE' );
             }
             return $Return;
         } else {
             return null;
         }
+    }
+
+    /**
+     * @return string
+     */
+    public static function frontendAjaxUpdate()
+    {
+
+        unlink( __DIR__.'/../../../../MAINTENANCE' );
+        return System::serviceUpdate()->setupDatabaseSchema( false );
     }
 }

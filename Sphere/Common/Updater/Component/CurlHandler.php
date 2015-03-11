@@ -49,6 +49,10 @@ class CurlHandler extends GitApi
             }
         }
 
+        if (!is_writable( dirname( $this->getDownload( $Version ) ) )) {
+            return 0;
+        }
+
         $Proxy = new HttpProxy();
         $Option = array(
             CURLOPT_PROXY        => $Proxy->getHost(),

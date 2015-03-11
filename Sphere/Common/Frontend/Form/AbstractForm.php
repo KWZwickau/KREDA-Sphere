@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Common\Frontend\Form;
 
 use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
+use KREDA\Sphere\Common\Frontend\Button\AbstractElement as AbstractButton;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
@@ -18,6 +19,8 @@ abstract class AbstractForm extends AbstractFrontend
 
     /** @var GridFormGroup[] $GridGroupList */
     protected $GridGroupList = array();
+    /** @var AbstractElement[] $GridButtonList */
+    protected $GridButtonList = array();
     /** @var IBridgeInterface $Template */
     protected $Template = null;
     /** @var string $Hash */
@@ -108,6 +111,24 @@ abstract class AbstractForm extends AbstractFrontend
     {
 
         $this->Template->setVariable( 'FormConfirm', $Message );
+    }
+
+    /**
+     * @param AbstractButton $Button
+     */
+    public function appendFormButton( AbstractButton $Button )
+    {
+
+        array_push( $this->GridButtonList, $Button );
+    }
+
+    /**
+     * @param AbstractButton $Button
+     */
+    public function prependFormButton( AbstractButton $Button )
+    {
+
+        array_unshift( $this->GridButtonList, $Button );
     }
 
     /**

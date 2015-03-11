@@ -22,6 +22,7 @@ use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
+use KREDA\Sphere\Common\Frontend\Redirect;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
@@ -105,11 +106,13 @@ class Privilege extends Right
         if ($tblPrivilege && null !== $Right && ( $tblRight = Gatekeeper::serviceAccess()->entityRightById( $Right ) )) {
             if ($Remove) {
                 Gatekeeper::serviceAccess()->executeRemovePrivilegeRight( $tblPrivilege, $tblRight );
-                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Privilege/Right?Id='.$Id, 0 ) );
+                $View->setContent( new Redirect( '/Sphere/System/Authorization/Privilege/Right', 0,
+                    array( 'Id' => $Id ) ) );
                 return $View;
             } else {
                 Gatekeeper::serviceAccess()->executeAddPrivilegeRight( $tblPrivilege, $tblRight );
-                $View->setContent( self::getRedirect( '/Sphere/System/Authorization/Privilege/Right?Id='.$Id, 0 ) );
+                $View->setContent( new Redirect( '/Sphere/System/Authorization/Privilege/Right', 0,
+                    array( 'Id' => $Id ) ) );
                 return $View;
             }
         }

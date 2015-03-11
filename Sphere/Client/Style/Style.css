@@ -24,15 +24,19 @@ h3,
 
 hr {
     border-top: 1px solid rgb(153, 153, 153);
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 h3 {
     border-bottom: 1px solid silver;
+    padding-top: 3px;
     padding-bottom: 3px;
 }
 
 h4 {
     border-bottom: 1px solid #dadada;
+    padding-top: 3px;
     padding-bottom: 2px;
 }
 

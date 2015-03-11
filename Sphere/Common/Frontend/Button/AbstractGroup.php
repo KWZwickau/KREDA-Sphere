@@ -2,7 +2,7 @@
 namespace KREDA\Sphere\Common\Frontend\Button;
 
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonPrimaryLink;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 
 /**
@@ -13,7 +13,7 @@ use MOC\V\Component\Template\Component\IBridgeInterface;
 abstract class AbstractGroup extends AbstractFrontend
 {
 
-    /** @var ButtonPrimaryLink[] $ButtonList */
+    /** @var ButtonLinkPrimary[] $ButtonList */
     protected $ButtonList = array();
     /** @var IBridgeInterface $Template */
     protected $Template = null;

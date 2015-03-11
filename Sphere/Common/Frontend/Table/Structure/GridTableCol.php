@@ -26,13 +26,15 @@ class GridTableCol extends AbstractTable
     function __construct( $Content, $GridSize = 1, $GridWidth = 'auto' )
     {
 
+        if (is_object( $Content ) && $Content instanceof \DateTime) {
+            $Content = $Content->format( 'd.m.Y H:i:s' );
+        }
         /**
          * Remove "small" from child tables
          */
         $Content = preg_replace(
             '!<table(.*?)class="(.*?)\ssmall"(.*?)>!is',
             '<table${1}class="${2}"${3}>', $Content );
-
         $this->Content = $Content;
         $this->GridSize = $GridSize;
         $this->GridWidth = $GridWidth;
