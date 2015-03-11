@@ -1,5 +1,6 @@
 <?php
 namespace Console;
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Common\Extension\Debugger;
 use KREDA\Sphere\Common\Updater\Type\GitHub;
 use MOC\V\Core\AutoLoader\AutoLoader;
@@ -9,8 +10,9 @@ use MOC\V\Core\AutoLoader\AutoLoader;
 header( 'Content-type: text/html; charset=utf-8' );
 error_reporting( E_ALL );
 ini_set( 'display_errors', 1 );
-set_time_limit( 60 * 5 );
+set_time_limit( 60 * 10 );
 session_start();
+session_write_close();
 date_default_timezone_set( 'Europe/Berlin' );
 /**
  * Setup: Loader
@@ -26,25 +28,33 @@ new Debugger();
 
 print '<pre>';
 
-$Updater = new GitHub( __DIR__.'/../../Update' );
-////var_dump( $Updater );
-//$Tags = $Updater->fetchTags();
-////var_dump( $Tags );
-//array_unshift( $Tags, array( 'name' => '0.0.0-Install' ) );
-//shuffle( $Tags );
-//foreach( $Tags as $Last ) {
-//    foreach( $Tags as $Tag ) {
-//        $Mark = (int)$Updater->compareVersion( $Tag["name"], $Last["name"] );
-//        print '<div style="padding: 1px; color:'.($Mark?'green':'darkred').';">'.$Last["name"].' > '.$Tag["name"].' = '.$Mark.'</div>';
-//    }
-//}
-$CurrentVersion = $Updater->getCurrentVersion();
-var_dump( 'Current '.$CurrentVersion );
-$NextVersion = $Updater->getNextVersion();
-var_dump( 'Next '.$NextVersion );
-$LatestVersion = $Updater->getLatestVersion();
-var_dump( 'Latest '.$LatestVersion );
-var_dump( 'Download..' );
-var_dump( $Cache = $Updater->downloadVersion( $NextVersion ) );
-var_dump( 'Extract..' );
-var_dump( $Updater->extractArchive( $Cache ) );
+$View = null;
+/**
+ * Fake PersonList
+ */
+for( $R = 10000; $R > 0; $R-- ) {
+    Management::servicePerson()->executeCreatePerson(
+        $View,
+        array(
+            'Salutation' => rand( 1, 2 ),
+            'First'      => Management::extensionFaker()->getFirstName(),
+            'Middle'     => 'FAKER',
+            'Last'       => Management::extensionFaker()->getLastName()
+        ),
+        array(
+            'Nationality' => 'FAKER',
+            'Type'        => rand( 1, 3 )
+        ),
+        array(
+            'Gender' => rand( 1, 2 ),
+            'Date'   => Management::extensionFaker()->getDate(),
+            'Place'  => Management::extensionFaker()->getCityName()
+        ),
+        array(
+            'Submit' => array()
+        )
+    );
+    print '.';
+}
+
+print 'OK';

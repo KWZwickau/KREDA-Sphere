@@ -17,7 +17,24 @@ abstract class Bridge implements IBridgeInterface
     public function registerLoader()
     {
 
-        spl_autoload_register( array( $this, 'loadSourceFile' ), true, false );
+        $Loader = spl_autoload_functions();
+        if (is_array( $Loader )) {
+            array_walk( $Loader, function ( &$L ) {
+
+                $Stack = $L[0];
+                if ($Stack instanceof Bridge) {
+                    if ($Stack->getLoaderHash() == $this->getLoaderHash()) {
+                        $L = false;
+                    }
+                }
+            }, $this );
+            $Loader = in_array( false, $Loader );
+        } else {
+            $Loader = false;
+        }
+        if (!$Loader) {
+            spl_autoload_register( array( $this, 'loadSourceFile' ), true, false );
+        }
         return $this;
     }
 

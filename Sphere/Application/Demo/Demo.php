@@ -20,6 +20,10 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
@@ -100,10 +104,32 @@ class Demo extends AbstractApplication
                 , $DemoCompleter, $DemoTextArea )
 
             .
-
-            new ComplexMathJax( '`a != 0`, `ax^2 + bx + c = 0`' )
-            .
-            new ComplexMathJax( '`x = (-b +- sqrt(b^2-4ac))/(2a)`' )
+            new GridLayout(
+                new GridLayoutGroup( array(
+                    new GridLayoutRow( array(
+                        new GridLayoutCol(
+                            new ComplexMathJax( '`a != 0,`' )
+                            , 2 ),
+                        new GridLayoutCol(
+                            new ComplexMathJax( '`ax^2 + bx + c = 0`' )
+                            , 3 ),
+                        new GridLayoutCol(
+                            new ComplexMathJax( '`a != 0,`' )
+                            , 2 ),
+                        new GridLayoutCol(
+                            new ComplexMathJax( '`ax^2 + bx + c = 0`' )
+                            , 3 )
+                    ) ),
+                    new GridLayoutRow(
+                        new GridLayoutCol( '&nbsp;' )
+                    ),
+                    new GridLayoutRow(
+                        new GridLayoutCol(
+                            new ComplexMathJax( '`x = (-b +- sqrt(b^2-4ac))/(2a)`' )
+                            , 6 )
+                    )
+                ) )
+            )
 
         );
         return $View;

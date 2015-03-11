@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Common;
 use Github\Client;
 use Github\HttpClient\CachedHttpClient;
 use KREDA\Sphere\Common\Extension\Debugger;
+use KREDA\Sphere\Common\Extension\Faker;
 use KREDA\Sphere\Common\Extension\ModHex;
 use Markdownify\Converter;
 use MOC\V\Component\Database\Database;
@@ -159,5 +160,16 @@ abstract class AbstractExtension
     {
 
         return new Converter();
+    }
+
+    /**
+     * @param string $Locale de_DE
+     *
+     * @return Faker
+     */
+    final public static function extensionFaker( $Locale = 'de_DE' )
+    {
+
+        return new Faker( $Locale );
     }
 }
