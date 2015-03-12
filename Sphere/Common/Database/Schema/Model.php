@@ -56,10 +56,15 @@ class Model
         if (function_exists( 'apc_fetch' )) {
             $Config->setQueryCacheImpl( new ApcCache() );
             $Config->setMetadataCacheImpl( new ApcCache() );
+            $Config->setHydrationCacheImpl( new ApcCache() );
+            $Config->setResultCacheImpl( new ApcCache() );
         } else {
             $Config->setQueryCacheImpl( new ArrayCache() );
             $Config->setMetadataCacheImpl( new ArrayCache() );
+            $Config->setHydrationCacheImpl( new ArrayCache() );
+            $Config->setResultCacheImpl( new ArrayCache() );
         }
+        $Config->setDefaultRepositoryClassName( '\KREDA\Sphere\Common\Database\Schema\EntityRepository' );
         return EntityManager::create( $this->Connection->getConnection(), $Config );
     }
 

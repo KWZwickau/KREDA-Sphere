@@ -372,4 +372,13 @@ class Person extends EntityAction
         return parent::entityPersonTypeByName( $Name );
     }
 
+    /**
+     * @return int
+     */
+    public function countPersonAll()
+    {
+
+        return parent::countPersonAll();
+    }
+
 }

@@ -39,6 +39,15 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return int
+     */
+    protected function countPersonAll()
+    {
+
+        return (int)$this->getEntityManager()->getEntity( 'TblPerson' )->count();
+    }
+
+    /**
      * @param TblPersonType $tblPersonType
      *
      * @return bool|TblPerson[]

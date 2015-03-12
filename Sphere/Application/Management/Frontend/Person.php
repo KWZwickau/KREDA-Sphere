@@ -48,8 +48,7 @@ class Person extends AbstractFrontend
         $View->setContent( new TableData( array(
             array(
                 'Personen' => new GroupIcon().'&nbsp;&nbsp;Alle',
-                'Anzahl'   => count( ( $tblPersonList = Management::servicePerson()->entityPersonAll()
-                ) ? $tblPersonList : array() )
+                'Anzahl' => Management::servicePerson()->countPersonAll()
             ),
             array(
                 'Personen' => new GroupIcon().'&nbsp;&nbsp;Interessenten',
