@@ -69,6 +69,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountRole', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 
@@ -92,6 +93,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 
@@ -123,9 +125,11 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Username' )) {
             $Table->addColumn( 'Username', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Username' ) );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Password' )) {
             $Table->addColumn( 'Password', 'string' );
         }
+        $Table->addIndex( array( 'Username', 'Password' ) );
         $this->schemaTableAddForeignKey( $Table, $tblAccountType );
         $this->schemaTableAddForeignKey( $Table, $tblAccountRole );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'serviceGatekeeper_Token' )) {
@@ -166,6 +170,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountSession', 'Session' )) {
             $Table->addColumn( 'Session', 'string' );
         }
+        $Table->addIndex( array( 'Session' ) );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountSession', 'Timeout' )) {
             $Table->addColumn( 'Timeout', 'integer' );
         }
@@ -214,44 +219,4 @@ abstract class EntitySchema extends AbstractService
         return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccount' );
     }
 
-
-    /**
-     * @return Table
-     * @throws SchemaException
-     */
-    protected function getTableAccountType()
-    {
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountType' );
-    }
-
-    /**
-     * @return Table
-     * @throws SchemaException
-     */
-    protected function getTableAccountRole()
-    {
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountRole' );
-    }
-
-    /**
-     * @return Table
-     * @throws SchemaException
-     */
-    protected function getTableAccountSession()
-    {
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountSession' );
-    }
-
-    /**
-     * @return Table
-     * @throws SchemaException
-     */
-    protected function getTableAccountAccessList()
-    {
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccountAccessList' );
-    }
 }

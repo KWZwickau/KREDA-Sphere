@@ -58,6 +58,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessRight', 'Route' )) {
             $Table->addColumn( 'Route', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Route' ) );
         return $Table;
     }
 
@@ -80,6 +81,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessPrivilege', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 
@@ -102,6 +104,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccess', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 
@@ -161,49 +164,10 @@ abstract class EntitySchema extends AbstractService
      * @return Table
      * @throws SchemaException
      */
-    protected function getTableAccessRight()
-    {
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccessRight' );
-    }
-
-    /**
-     * @return Table
-     * @throws SchemaException
-     */
-    protected function getTableAccessPrivilege()
-    {
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccessPrivilege' );
-    }
-
-    /**
-     * @return Table
-     * @throws SchemaException
-     */
     protected function getTableAccess()
     {
 
         return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccess' );
     }
 
-    /**
-     * @return Table
-     * @throws SchemaException
-     */
-    protected function getTableAccessRightList()
-    {
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccessRightList' );
-    }
-
-    /**
-     * @return Table
-     * @throws SchemaException
-     */
-    protected function getTableAccessPrivilegeList()
-    {
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblAccessPrivilegeList' );
-    }
 }

@@ -39,6 +39,36 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return array|bool
+     */
+    protected function listPersonNationality()
+    {
+
+        $Query = $this->getEntityManager()->getEntity( 'TblPerson' )
+            ->createQueryBuilder( 'p' )
+            ->select( 'p.Nationality' )
+            ->distinct( true )
+            ->getQuery();
+        $EntityList = $Query->getArrayResult();
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @return array|bool
+     */
+    protected function listPersonBirthplace()
+    {
+
+        $Query = $this->getEntityManager()->getEntity( 'TblPerson' )
+            ->createQueryBuilder( 'p' )
+            ->select( 'p.Birthplace' )
+            ->distinct( true )
+            ->getQuery();
+        $EntityList = $Query->getArrayResult();
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
      * @return int
      */
     protected function countPersonAll()
@@ -50,14 +80,35 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param TblPersonType $tblPersonType
      *
-     * @return bool|TblPerson[]
+     * @return int
      */
-    protected function entityPersonAllByType( TblPersonType $tblPersonType )
+    protected function countPersonAllByType( TblPersonType $tblPersonType )
     {
+
+        return (int)$this->getEntityManager()->getEntity( 'TblPerson' )->countBy( array(
+            TblPerson::ATTR_TBL_PERSON_TYPE => $tblPersonType->getId()
+        ) );
+    }
+
+    /**
+     * @param TblPersonType $tblPersonType
+     *
+     * @param array|null    $OrderBy
+     * @param int|null      $Limit
+     * @param int|null      $Offset
+     *
+     * @return bool|Entity\TblPerson[]
+     */
+    protected function entityPersonAllByType(
+        TblPersonType $tblPersonType,
+        $OrderBy = null,
+        $Limit = null,
+        $Offset = null
+    ) {
 
         $EntityList = $this->getEntityManager()->getEntity( 'TblPerson' )->findBy( array(
             TblPerson::ATTR_TBL_PERSON_TYPE => $tblPersonType->getId()
-        ) );
+        ), $OrderBy, $Limit, $Offset );
         return ( empty( $EntityList ) ? false : $EntityList );
     }
 

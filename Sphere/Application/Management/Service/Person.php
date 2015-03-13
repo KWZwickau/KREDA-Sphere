@@ -74,6 +74,24 @@ class Person extends EntityAction
     }
 
     /**
+     * @return array|bool
+     */
+    public function  listPersonNationality()
+    {
+
+        return parent::listPersonNationality();
+    }
+
+    /**
+     * @return array|bool
+     */
+    public function  listPersonBirthplace()
+    {
+
+        return parent::listPersonBirthplace();
+    }
+
+    /**
      * @return bool|TblPerson[]
      */
     public function entityPersonAll()
@@ -353,12 +371,20 @@ class Person extends EntityAction
     /**
      * @param TblPersonType $tblPersonType
      *
-     * @return bool|TblPerson[]
+     * @param array|null $OrderBy
+     * @param int|null   $Limit
+     * @param int|null   $Offset
+     *
+     * @return bool|Person\Entity\TblPerson[]
      */
-    public function entityPersonAllByType( TblPersonType $tblPersonType )
-    {
+    public function entityPersonAllByType(
+        TblPersonType $tblPersonType,
+        $OrderBy = null,
+        $Limit = null,
+        $Offset = null
+    ) {
 
-        return parent::entityPersonAllByType( $tblPersonType );
+        return parent::entityPersonAllByType( $tblPersonType, $OrderBy, $Limit, $Offset );
     }
 
     /**
@@ -381,4 +407,14 @@ class Person extends EntityAction
         return parent::countPersonAll();
     }
 
+    /**
+     * @param TblPersonType $tblPersonType
+     *
+     * @return int
+     */
+    public function countPersonAllByType( TblPersonType $tblPersonType )
+    {
+
+        return parent::countPersonAllByType( $tblPersonType );
+    }
 }

@@ -52,20 +52,22 @@ class Model
     final public function getEntityManager( $EntityPath )
     {
 
-        $Config = Setup::createAnnotationMetadataConfiguration( array( $EntityPath ) );
+        $MetadataConfiguration = Setup::createAnnotationMetadataConfiguration( array( $EntityPath ) );
+        $MetadataConfiguration->setDefaultRepositoryClassName( '\KREDA\Sphere\Common\Database\Schema\EntityRepository' );
+        $ConnectionConfig = $this->Connection->getConnection()->getConfiguration();
         if (function_exists( 'apc_fetch' )) {
-            $Config->setQueryCacheImpl( new ApcCache() );
-            $Config->setMetadataCacheImpl( new ApcCache() );
-            $Config->setHydrationCacheImpl( new ApcCache() );
-            $Config->setResultCacheImpl( new ApcCache() );
+            $MetadataConfiguration->setQueryCacheImpl( new ApcCache() );
+            $MetadataConfiguration->setMetadataCacheImpl( new ApcCache() );
+            $MetadataConfiguration->setHydrationCacheImpl( new ApcCache() );
+            $ConnectionConfig->setResultCacheImpl( new ApcCache() );
         } else {
-            $Config->setQueryCacheImpl( new ArrayCache() );
-            $Config->setMetadataCacheImpl( new ArrayCache() );
-            $Config->setHydrationCacheImpl( new ArrayCache() );
-            $Config->setResultCacheImpl( new ArrayCache() );
+            $MetadataConfiguration->setQueryCacheImpl( new ArrayCache() );
+            $MetadataConfiguration->setMetadataCacheImpl( new ArrayCache() );
+            $MetadataConfiguration->setHydrationCacheImpl( new ArrayCache() );
+            $ConnectionConfig->setResultCacheImpl( new ArrayCache() );
         }
-        $Config->setDefaultRepositoryClassName( '\KREDA\Sphere\Common\Database\Schema\EntityRepository' );
-        return EntityManager::create( $this->Connection->getConnection(), $Config );
+        //$ConnectionConfig->setSQLLogger( new Logger() );
+        return EntityManager::create( $this->Connection->getConnection(), $MetadataConfiguration );
     }
 
     /**

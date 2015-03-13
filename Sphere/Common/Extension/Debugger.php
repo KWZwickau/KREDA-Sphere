@@ -115,6 +115,9 @@ class Debugger
     final public static function getProtocol()
     {
 
+        if (!empty( self::$Protocol )) {
+            self::addProtocol( 'Done #'.count( self::$Protocol ) );
+        }
         krsort( self::$Protocol );
         return implode( '', self::$Protocol );
     }
@@ -133,5 +136,21 @@ class Debugger
             var_dump( $Dump );
         }
         print '</pre>';
+    }
+
+    /**
+     * protocolDump( Content, Content, .. )
+     *
+     * @param mixed $Content
+     */
+    final public static function protocolDump( $Content )
+    {
+
+        $Content = func_get_args();
+        foreach ((array)$Content as $Dump) {
+            ob_start();
+            var_dump( $Dump );
+            self::addProtocol( ob_get_clean() );
+        }
     }
 }

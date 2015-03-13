@@ -53,6 +53,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPersonType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 
@@ -69,6 +70,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPersonGender', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 
@@ -85,6 +87,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPersonSalutation', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 
@@ -142,6 +145,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPersonRelationshipType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 

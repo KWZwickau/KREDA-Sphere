@@ -59,9 +59,11 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'TableSuffix' )) {
             $Table->addColumn( 'TableSuffix', 'string', array( 'notnull' => false ) );
         }
+        $Table->addUniqueIndex( array( 'TableSuffix' ) );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'DatabaseSuffix' )) {
             $Table->addColumn( 'DatabaseSuffix', 'string', array( 'notnull' => false ) );
         }
+        $Table->addUniqueIndex( array( 'DatabaseSuffix' ) );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'serviceManagement_Address' )) {
             $Table->addColumn( 'serviceManagement_Address', 'bigint', array( 'notnull' => false ) );
         }
@@ -88,6 +90,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumerType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 
@@ -125,26 +128,6 @@ abstract class EntitySchema extends AbstractService
     {
 
         return $this->getDatabaseHandler()->getSchema()->getTable( 'tblConsumer' );
-    }
-
-    /**
-     * @return Table
-     * @throws SchemaException
-     */
-    protected function getTableConsumerType()
-    {
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblConsumerType' );
-    }
-
-    /**
-     * @return Table
-     * @throws SchemaException
-     */
-    protected function getTableConsumerTypeList()
-    {
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblConsumerTypeList' );
     }
 
 }

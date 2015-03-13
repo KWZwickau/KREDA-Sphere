@@ -2,7 +2,6 @@
 namespace KREDA\Sphere\Application\Management\Frontend;
 
 use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChildIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
@@ -13,7 +12,6 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
@@ -26,6 +24,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
+use Symfony\Component\Console\Helper\Table;
 
 /**
  * Class Person
@@ -46,29 +45,30 @@ class Person extends AbstractFrontend
         $View->setDescription( 'Übersicht' );
         $View->setMessage( 'Zeigt die Anzahl an Personen in den jeweiligen Personengruppen' );
         $View->setContent( new TableData( array(
-            array(
-                'Personen' => new GroupIcon().'&nbsp;&nbsp;Alle',
-                'Anzahl' => Management::servicePerson()->countPersonAll()
-            ),
-            array(
-                'Personen' => new GroupIcon().'&nbsp;&nbsp;Interessenten',
-                'Anzahl'   => count( ( $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-                    Management::servicePerson()->entityPersonTypeByName( 'Interessent' )
-                ) ) ? $tblPersonList : array() )
-            ),
-            array(
-                'Personen' => new GroupIcon().'&nbsp;&nbsp;Schüler',
-                'Anzahl'   => count( ( $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-                    Management::servicePerson()->entityPersonTypeByName( 'Schüler' )
-                ) ) ? $tblPersonList : array() )
-            ),
-            array(
-                'Personen' => new GroupIcon().'&nbsp;&nbsp;Sorgeberechtigte',
-                'Anzahl'   => count( ( $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-                    Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )
-                ) ) ? $tblPersonList : array() )
-            )
-        ), null, array(), false ) );
+                array(
+                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Alle',
+                    'Anzahl'   => Management::servicePerson()->countPersonAll()
+                ),
+                array(
+                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Interessenten',
+                    'Anzahl'   => Management::servicePerson()->countPersonAllByType(
+                        Management::servicePerson()->entityPersonTypeByName( 'Interessent' )
+                    )
+                ),
+                array(
+                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Schüler',
+                    'Anzahl'   => Management::servicePerson()->countPersonAllByType(
+                        Management::servicePerson()->entityPersonTypeByName( 'Schüler' )
+                    )
+                ),
+                array(
+                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Sorgeberechtigte',
+                    'Anzahl'   => Management::servicePerson()->countPersonAllByType(
+                        Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )
+                    )
+                )
+            ), null, array(), false )
+        );
 
         return $View;
     }
@@ -107,12 +107,13 @@ class Person extends AbstractFrontend
         $tblPersonSalutationAll = Management::servicePerson()->entityPersonSalutationAll();
         $tblPersonGenderAll = Management::servicePerson()->entityPersonGenderAll();
         $tblPersonTypeAll = Management::servicePerson()->entityPersonTypeAll();
-        $PersonNationality = Management::servicePerson()->entityPersonAll();
-        $PersonBirthPlace = Management::servicePerson()->entityPersonAll();
-        if (!empty( $PersonNationality )) {
-            array_walk( $PersonNationality, function ( TblPerson &$P ) {
+        $PersonNationality = Management::servicePerson()->listPersonNationality();
+        $PersonBirthPlace = Management::servicePerson()->listPersonBirthplace();
 
-                $P = $P->getNationality();
+        if (!empty( $PersonNationality )) {
+            array_walk( $PersonNationality, function ( &$P ) {
+
+                $P = $P['Nationality'];
             } );
         } else {
             $PersonNationality = array();
@@ -120,9 +121,9 @@ class Person extends AbstractFrontend
         $PersonNationality = array_unique( $PersonNationality );
 
         if (!empty( $PersonBirthPlace )) {
-            array_walk( $PersonBirthPlace, function ( TblPerson &$P ) {
+            array_walk( $PersonBirthPlace, function ( &$P ) {
 
-                $P = $P->getBirthplace();
+                $P = $P['Birthplace'];
             } );
         } else {
             $PersonBirthPlace = array();
@@ -184,20 +185,25 @@ class Person extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Interessenten' );
-        $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-            Management::servicePerson()->entityPersonTypeByName( 'Interessent' )
+        $View->setContent(
+            new TableData( '/Sphere/Management/REST/PersonListInterest', null,
+                array( 'Id' => '#', 'FirstName' => 'Vorname' ) )
         );
-        if (empty( $tblPersonList )) {
-            $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
-        } else {
-            array_walk( $tblPersonList, function ( TblPerson &$P ) {
 
-                $P->Option = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
-                    array( 'Id' => $P->getId() )
-                );
-            } );
-            $View->setContent( new TableData( $tblPersonList ) );
-        }
+//        $tblPersonList = Management::servicePerson()->entityPersonAllByType(
+//            Management::servicePerson()->entityPersonTypeByName( 'Interessent' )
+//        );
+//        if (empty( $tblPersonList )) {
+//            $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
+//        } else {
+//            array_walk( $tblPersonList, function ( TblPerson &$P ) {
+//
+//                $P->Option = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
+//                    array( 'Id' => $P->getId() )
+//                );
+//            } );
+//            $View->setContent( new TableData( $tblPersonList ) );
+//        }
         return $View;
     }
 
@@ -210,20 +216,10 @@ class Person extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Schüler' );
-        $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-            Management::servicePerson()->entityPersonTypeByName( 'Schüler' )
+        $View->setContent(
+            new TableData( '/Sphere/Management/REST/PersonListStudent', null,
+                array( 'Id' => '#', 'FirstName' => 'Vorname' ) )
         );
-        if (empty( $tblPersonList )) {
-            $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
-        } else {
-            array_walk( $tblPersonList, function ( TblPerson &$P ) {
-
-                $P->Option = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
-                    array( 'Id' => $P->getId() )
-                );
-            } );
-            $View->setContent( new TableData( $tblPersonList ) );
-        }
         return $View;
     }
 
@@ -236,20 +232,10 @@ class Person extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Sorgeberechtigte' );
-        $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-            Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )
+        $View->setContent(
+            new TableData( '/Sphere/Management/REST/PersonListGuardian', null,
+                array( 'Id' => '#', 'FirstName' => 'Vorname' ) )
         );
-        if (empty( $tblPersonList )) {
-            $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
-        } else {
-            array_walk( $tblPersonList, function ( TblPerson &$P ) {
-
-                $P->Option = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
-                    array( 'Id' => $P->getId() )
-                );
-            } );
-            $View->setContent( new TableData( $tblPersonList ) );
-        }
         return $View;
     }
 
