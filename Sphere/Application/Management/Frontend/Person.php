@@ -187,7 +187,14 @@ class Person extends AbstractFrontend
         $View->setDescription( 'Interessenten' );
         $View->setContent(
             new TableData( '/Sphere/Management/REST/PersonListInterest', null,
-                array( 'Id' => '#', 'FirstName' => 'Vorname' ) )
+                array(
+                    'Id'         => '#',
+                    'FirstName'  => 'Vorname',
+                    'MiddleName' => 'Zweitname',
+                    'LastName'   => 'Nachname',
+                    'Option'     => 'Option'
+                )
+            )
         );
 
 //        $tblPersonList = Management::servicePerson()->entityPersonAllByType(

@@ -7,6 +7,7 @@ use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 use KREDA\Sphere\Common\Wire\Observer;
 use KREDA\Sphere\Common\Wire\Plug;
 
@@ -151,6 +152,10 @@ class Management extends Module\Education
 //        _:1426261763420
 
         array_walk( $tblPerson, function ( TblPerson &$P ) {
+
+            $P->Option = ( new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
+                array( 'Id' => $P->getId() )
+            ) )->__toString();
 
             $P = $P->__toArray();
         } );
