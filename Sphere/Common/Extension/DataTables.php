@@ -55,16 +55,18 @@ class DataTables extends AbstractExtension
     private function setFilter( $Filter )
     {
 
-        $Restrict = $this->QueryBuilder->expr()->andX();
-        foreach ((array)$Filter as $Column => $Value) {
-            $Restrict->add(
-                $this->QueryBuilder->expr()->eq(
-                    self::QUERY_BUILDER_ALIAS.'.'.$Column,
-                    $this->QueryBuilder->expr()->literal( $Value )
-                )
-            );
+        if (!empty( $Filter )) {
+            $Restrict = $this->QueryBuilder->expr()->andX();
+            foreach ((array)$Filter as $Column => $Value) {
+                $Restrict->add(
+                    $this->QueryBuilder->expr()->eq(
+                        self::QUERY_BUILDER_ALIAS.'.'.$Column,
+                        $this->QueryBuilder->expr()->literal( $Value )
+                    )
+                );
+            }
+            $this->QueryBuilder->andWhere( $Restrict );
         }
-        $this->QueryBuilder->andWhere( $Restrict );
         $this->TotalCount = ( new Paginator( $this->QueryBuilder->getQuery() ) )->count();
     }
 
@@ -159,7 +161,9 @@ class DataTables extends AbstractExtension
                     array( $Entity )
                 );
             }
-            $Entity = $Entity->__toArray();
+            if (is_object( $Entity )) {
+                $Entity = $Entity->__toArray();
+            }
         } );
 
         return json_encode( array(

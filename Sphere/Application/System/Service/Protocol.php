@@ -125,4 +125,14 @@ class Protocol extends EntityAction
 
         return parent::entityProtocolAll();
     }
+
+    /**
+     * @return string
+     */
+    public function tableProtocolAll()
+    {
+
+        return parent::tableProtocolAll();
+    }
+
 }
