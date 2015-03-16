@@ -3,6 +3,8 @@ namespace KREDA\Sphere\Common;
 
 use Github\Client;
 use Github\HttpClient\CachedHttpClient;
+use KREDA\Sphere\Common\Database\Schema\EntityRepository;
+use KREDA\Sphere\Common\Extension\DataTables;
 use KREDA\Sphere\Common\Extension\Debugger;
 use KREDA\Sphere\Common\Extension\Faker;
 use KREDA\Sphere\Common\Extension\ModHex;
@@ -151,6 +153,18 @@ abstract class AbstractExtension
             self::$extensionRequestCache = HttpKernel::getRequest();
         }
         return self::$extensionRequestCache;
+    }
+
+    /**
+     * @param EntityRepository $EntityRepository
+     * @param array            $Filter array( 'ColumnName' => 'Value', ... )
+     *
+     * @return DataTables
+     */
+    final public static function extensionDataTables( EntityRepository $EntityRepository, $Filter = array() )
+    {
+
+        return new DataTables( $EntityRepository, $Filter );
     }
 
     /**

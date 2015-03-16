@@ -6,7 +6,7 @@ namespace KREDA\Sphere\Common;
  *
  * @package KREDA\Sphere\Common
  */
-abstract class AbstractEntity
+abstract class AbstractEntity extends AbstractExtension
 {
 
     /**
@@ -15,6 +15,16 @@ abstract class AbstractEntity
     final public function __toArray()
     {
 
-        return get_object_vars( $this );
+        $Array = get_object_vars( $this );
+        array_walk( $Array, function ( &$V ) {
+
+            if (is_object( $V )) {
+                if ($V instanceof \DateTime) {
+                    $V = $V->format( 'd.m.Y H:i:s' );
+                }
+            }
+        } );
+
+        return $Array;
     }
 }

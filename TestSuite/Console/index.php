@@ -7,10 +7,10 @@ use MOC\V\Core\AutoLoader\AutoLoader;
 /**
  * Setup: Php
  */
+ob_end_clean();
 header( 'Content-type: text/html; charset=utf-8' );
 error_reporting( E_ALL );
 ini_set( 'display_errors', 1 );
-set_time_limit( 60 * 10 );
 session_start();
 session_write_close();
 date_default_timezone_set( 'Europe/Berlin' );
@@ -33,13 +33,14 @@ $View = null;
  * Fake PersonList
  */
 for( $R = 10000; $R > 0; $R-- ) {
+    $Faker = Management::extensionFaker();
     Management::servicePerson()->executeCreatePerson(
         $View,
         array(
             'Salutation' => rand( 1, 2 ),
-            'First'      => Management::extensionFaker()->getFirstName(),
-            'Middle'     => 'FAKER',
-            'Last'       => Management::extensionFaker()->getLastName()
+            'First'      => $Faker->getFirstName(),
+            'Middle'     => (!rand( 0, 3 )?$Faker->getFirstName():''),
+            'Last'       => $Faker->getLastName()
         ),
         array(
             'Nationality' => 'FAKER',
@@ -47,8 +48,8 @@ for( $R = 10000; $R > 0; $R-- ) {
         ),
         array(
             'Gender' => rand( 1, 2 ),
-            'Date'   => Management::extensionFaker()->getDate(),
-            'Place'  => Management::extensionFaker()->getCityName()
+            'Date'   => $Faker->getDate(),
+            'Place'  => $Faker->getCityName()
         ),
         array(
             'Submit' => array()

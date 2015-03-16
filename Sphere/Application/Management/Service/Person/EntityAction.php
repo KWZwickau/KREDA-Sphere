@@ -1,12 +1,14 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service\Person;
 
+use Doctrine\ORM\Query\Expr;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonGender;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipType;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonSalutation;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Application\System\System;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 
 /**
  * Class EntityAction
@@ -93,23 +95,40 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param TblPersonType $tblPersonType
      *
-     * @param array|null    $OrderBy
-     * @param int|null      $Limit
-     * @param int|null      $Offset
-     *
      * @return bool|Entity\TblPerson[]
      */
     protected function entityPersonAllByType(
-        TblPersonType $tblPersonType,
-        $OrderBy = null,
-        $Limit = null,
-        $Offset = null
+        TblPersonType $tblPersonType
     ) {
 
         $EntityList = $this->getEntityManager()->getEntity( 'TblPerson' )->findBy( array(
             TblPerson::ATTR_TBL_PERSON_TYPE => $tblPersonType->getId()
-        ), $OrderBy, $Limit, $Offset );
+        ) );
         return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @param TblPersonType $tblPersonType
+     *
+     * @return string
+     */
+    protected function tablePersonAllByType( TblPersonType $tblPersonType )
+    {
+
+        return self::extensionDataTables(
+            $this->getEntityManager()->getEntity( 'TblPerson' ), array(
+                'tblPersonType' => $tblPersonType->getId()
+            )
+        )
+            ->setCallback( function ( TblPerson $V ) {
+
+                /** @noinspection PhpUndefinedFieldInspection */
+                $V->Option = ( new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
+                    array( 'Id' => $V->getId() )
+                ) )->__toString();
+                return $V;
+            } )
+            ->getResult();
     }
 
     /**

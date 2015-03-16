@@ -192,25 +192,12 @@ class Person extends AbstractFrontend
                     'FirstName'  => 'Vorname',
                     'MiddleName' => 'Zweitname',
                     'LastName'   => 'Nachname',
+                    'Birthday'   => 'Geburtstag',
+                    'Birthplace' => 'Geburtsort',
                     'Option'     => 'Option'
                 )
             )
         );
-
-//        $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-//            Management::servicePerson()->entityPersonTypeByName( 'Interessent' )
-//        );
-//        if (empty( $tblPersonList )) {
-//            $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
-//        } else {
-//            array_walk( $tblPersonList, function ( TblPerson &$P ) {
-//
-//                $P->Option = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
-//                    array( 'Id' => $P->getId() )
-//                );
-//            } );
-//            $View->setContent( new TableData( $tblPersonList ) );
-//        }
         return $View;
     }
 
@@ -225,7 +212,16 @@ class Person extends AbstractFrontend
         $View->setDescription( 'Schüler' );
         $View->setContent(
             new TableData( '/Sphere/Management/REST/PersonListStudent', null,
-                array( 'Id' => '#', 'FirstName' => 'Vorname' ) )
+                array(
+                    'Id'         => '#',
+                    'FirstName'  => 'Vorname',
+                    'MiddleName' => 'Zweitname',
+                    'LastName'   => 'Nachname',
+                    'Birthday'   => 'Geburtstag',
+                    'Birthplace' => 'Geburtsort',
+                    'Option'     => 'Option'
+                )
+            )
         );
         return $View;
     }
@@ -241,7 +237,16 @@ class Person extends AbstractFrontend
         $View->setDescription( 'Sorgeberechtigte' );
         $View->setContent(
             new TableData( '/Sphere/Management/REST/PersonListGuardian', null,
-                array( 'Id' => '#', 'FirstName' => 'Vorname' ) )
+                array(
+                    'Id'         => '#',
+                    'FirstName'  => 'Vorname',
+                    'MiddleName' => 'Zweitname',
+                    'LastName'   => 'Nachname',
+                    'Birthday'   => 'Geburtstag',
+                    'Birthplace' => 'Geburtsort',
+                    'Option'     => 'Option'
+                )
+            )
         );
         return $View;
     }

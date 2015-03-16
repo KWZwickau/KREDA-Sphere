@@ -66,7 +66,7 @@ class Model
             $MetadataConfiguration->setHydrationCacheImpl( new ArrayCache() );
             $ConnectionConfig->setResultCacheImpl( new ArrayCache() );
         }
-        //$ConnectionConfig->setSQLLogger( new Logger() );
+//        $ConnectionConfig->setSQLLogger( new Logger() );
         return EntityManager::create( $this->Connection->getConnection(), $MetadataConfiguration );
     }
 

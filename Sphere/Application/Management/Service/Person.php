@@ -371,21 +371,25 @@ class Person extends EntityAction
     /**
      * @param TblPersonType $tblPersonType
      *
-     * @param array|null $OrderBy
-     * @param int|null   $Limit
-     * @param int|null   $Offset
-     *
      * @return bool|Person\Entity\TblPerson[]
      */
-    public function entityPersonAllByType(
-        TblPersonType $tblPersonType,
-        $OrderBy = null,
-        $Limit = null,
-        $Offset = null
-    ) {
+    public function entityPersonAllByType( TblPersonType $tblPersonType )
+    {
 
-        return parent::entityPersonAllByType( $tblPersonType, $OrderBy, $Limit, $Offset );
+        return parent::entityPersonAllByType( $tblPersonType );
     }
+
+    /**
+     * @param TblPersonType $tblPersonType
+     *
+     * @return string
+     */
+    public function tablePersonAllByType( TblPersonType $tblPersonType )
+    {
+
+        return parent::tablePersonAllByType( $tblPersonType );
+    }
+
 
     /**
      * @param string $Name
