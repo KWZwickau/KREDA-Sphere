@@ -23,6 +23,7 @@ class TblPerson extends AbstractEntity
     const ATTR_TBL_PERSON_GENDER = 'tblPersonGender';
     const ATTR_TBL_PERSON_SALUTATION = 'tblPersonSalutation';
 
+    const ATTR_TITLE = 'Title';
     const ATTR_FIRST_NAME = 'FirstName';
     const ATTR_MIDDLE_NAME = 'MiddleName';
     const ATTR_LAST_NAME = 'LastName';
@@ -34,6 +35,10 @@ class TblPerson extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $Id;
+    /**
+     * @Column(type="string")
+     */
+    protected $Title;
     /**
      * @Column(type="string")
      */
@@ -275,5 +280,23 @@ class TblPerson extends AbstractEntity
     {
 
         $this->Id = $Id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+
+        return $this->Title;
+    }
+
+    /**
+     * @param string $Title
+     */
+    public function setTitle( $Title )
+    {
+
+        $this->Title = $Title;
     }
 }

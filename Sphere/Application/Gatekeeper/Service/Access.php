@@ -242,9 +242,14 @@ class Access extends EntityAction
                 return false;
             }
         } else {
-            // Resource is not protected -> Access granted
-            self::$AccessCache[] = $Route;
-            return true;
+            if (!array_key_exists( 'REST', self::extensionRequest()->getParameterArray() )) {
+                // Resource is not protected -> Access granted
+                self::$AccessCache[] = $Route;
+                return true;
+            } else {
+                // REST MUST BE protected -> Access denied
+                return false;
+            }
         }
     }
 

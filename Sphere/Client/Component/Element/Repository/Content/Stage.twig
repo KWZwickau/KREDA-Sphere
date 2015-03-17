@@ -15,8 +15,8 @@
                 <div class="col-lg-4 col-md-5 col-sm-6 visible-sm visible-md visible-lg text-right">
                     {% if StageMenu is not empty %}
                         <div class="btn-group">
-                            {% for Route, Title in StageMenu %}
-                                <a href="{{ Route }}" class="btn btn-primary">{{ Title }}</a>
+                            {% for Button in StageMenu %}
+                                {{ Button }}
                             {% endfor %}
                         </div>
                     {% endif %}

@@ -54,8 +54,9 @@ class Logger extends AbstractExtension implements SQLLogger
     public function stopQuery()
     {
 
-        self::extensionDebugger()->addProtocol( number_format( ( self::extensionDebugger()->getTimeGap() - $this->Data[3] ) * 1000,
-            3, ',', '' ) );
+        self::extensionDebugger()->addProtocol(
+            number_format( ( self::extensionDebugger()->getTimeGap() - $this->Data[3] ) * 1000, 3, ',', '' )
+        );
     }
 
 }

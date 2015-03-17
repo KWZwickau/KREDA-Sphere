@@ -13,26 +13,24 @@ class EntityRepository extends \Doctrine\ORM\EntityRepository implements ObjectR
 {
 
     /**
-     * returns the number of entity's rows
-     *
      * @return int
      */
     public function count()
     {
 
-        $query = $this->createQueryBuilder( 'e' )->select( 'count(e)' )->getQuery();
-        return $query->getSingleScalarResult();
+        $Query = $this->createQueryBuilder( 'e' )->select( 'count(e)' )->getQuery();
+        return $Query->getSingleScalarResult();
     }
 
     /**
-     * @param $criteria
+     * @param $Criteria
      *
      * @return int
      */
-    public function countBy( $criteria = array() )
+    public function countBy( $Criteria = array() )
     {
 
-        $Persister = $this->_em->getUnitOfWork()->getEntityPersister( $this->_entityName );
-        return $Persister->count( $criteria );
+        $EntityPersister = $this->_em->getUnitOfWork()->getEntityPersister( $this->_entityName );
+        return $EntityPersister->count( $Criteria );
     }
 }

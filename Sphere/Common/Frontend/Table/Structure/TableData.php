@@ -23,7 +23,7 @@ class TableData extends TableDefault
         /**
          * Server-Side-Processing
          */
-        if (is_string( $DataList ) && $Interactive) {
+        if (is_string( $DataList ) && ( $Interactive || is_array( $Interactive ) )) {
 
             $DataColumns = array_keys( $ColumnDefinition );
             array_walk( $DataColumns, function ( &$V ) {
@@ -31,17 +31,19 @@ class TableData extends TableDefault
                 $V = array( 'data' => $V );
             } );
             if (is_array( $Interactive )) {
-                $Interactive = $Interactive + array(
-                        "processing" => true,
-                        "serverSide" => true,
-                        "ajax"       => self::getUrlBase().$DataList.'?REST=true',
-                        "columns"    => $DataColumns
-                    );
+                $Interactive = array_merge_recursive( $Interactive, array(
+                    "processing" => true,
+                    "serverSide" => true,
+                    "ajax"       => ( false === strpos( self::getUrlBase().$DataList,
+                        '?' ) ? self::getUrlBase().$DataList.'?REST=true' : self::getUrlBase().$DataList.'&REST=true' ),
+                    "columns"    => $DataColumns
+                ) );
             } else {
                 $Interactive = array(
                     "processing" => true,
                     "serverSide" => true,
-                    "ajax"       => self::getUrlBase().$DataList.'?REST=true',
+                    "ajax" => ( false === strpos( self::getUrlBase().$DataList,
+                        '?' ) ? self::getUrlBase().$DataList.'?REST=true' : self::getUrlBase().$DataList.'&REST=true' ),
                     "columns"    => $DataColumns
                 );
             }

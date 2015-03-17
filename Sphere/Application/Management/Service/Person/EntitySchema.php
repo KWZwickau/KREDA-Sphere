@@ -107,15 +107,21 @@ abstract class EntitySchema extends AbstractService
     ) {
 
         $Table = $this->schemaTableCreate( $Schema, 'tblPerson' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'Title' )) {
+            $Table->addColumn( 'Title', 'string' );
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'FirstName' )) {
             $Table->addColumn( 'FirstName', 'string' );
         }
+        $Table->addIndex( array( 'FirstName' ) );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'MiddleName' )) {
             $Table->addColumn( 'MiddleName', 'string' );
         }
+        $Table->addIndex( array( 'MiddleName' ) );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'LastName' )) {
             $Table->addColumn( 'LastName', 'string' );
         }
+        $Table->addIndex( array( 'LastName' ) );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'Birthday' )) {
             $Table->addColumn( 'Birthday', 'date' );
         }

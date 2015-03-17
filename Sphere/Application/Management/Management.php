@@ -45,10 +45,15 @@ class Management extends Module\Education
                 Module\Account::registerApplication( $Configuration );
             }
             Module\Person::registerApplication( $Configuration );
+            Module\Relationship::registerApplication( $Configuration );
             Module\Education::registerApplication( $Configuration );
         }
         /**
          * Observer
+         */
+
+        /**
+         * REST Service
          */
         self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListInterest',
             __CLASS__.'::restPersonListByType' )

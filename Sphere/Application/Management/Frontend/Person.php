@@ -2,16 +2,19 @@
 namespace KREDA\Sphere\Application\Management\Frontend;
 
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChildIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MapMarkerIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
@@ -23,6 +26,11 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 use Symfony\Component\Console\Helper\Table;
 
@@ -136,6 +144,9 @@ class Person extends AbstractFrontend
                     new GridFormCol(
                         new InputSelect( 'PersonName[Salutation]', 'Anrede',
                             array( 'Name' => $tblPersonSalutationAll ), new ConversationIcon()
+                        ), 4 ),
+                    new GridFormCol(
+                        new InputText( 'PersonName[Title]', 'Titel', 'Titel', new ConversationIcon()
                         ), 4 )
                 ) ),
                 new GridFormRow( array(
@@ -275,6 +286,7 @@ class Person extends AbstractFrontend
 
                 $View->setMessage( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() );
                 $_POST['PersonName']['Salutation'] = $tblPerson->getTblPersonSalutation()->getId();
+                $_POST['PersonName']['Title'] = $tblPerson->getTitle();
                 $_POST['PersonName']['First'] = $tblPerson->getFirstName();
                 $_POST['PersonName']['Middle'] = $tblPerson->getMiddleName();
                 $_POST['PersonName']['Last'] = $tblPerson->getLastName();
@@ -286,14 +298,13 @@ class Person extends AbstractFrontend
                 $FormPersonBasic = self::formPersonBasic();
                 $FormPersonBasic->appendFormButton( new ButtonSubmitSuccess( 'Änderungen speichern' ) );
 
-                $FormPersonGuardian = self::formPersonRelationshipGuardian();
-                $FormPersonGuardian->appendFormButton( new ButtonSubmitPrimary( 'Hinzufügen' ) );
+                $FormPersonRelationship = self::formPersonRelationship( $tblPerson );
 
                 $View->setContent(
                     Management::servicePerson()->executeChangePerson(
                         $FormPersonBasic, $tblPerson, $PersonName, $PersonInformation, $BirthDetail
                     )
-                    .$FormPersonGuardian
+                    .$FormPersonRelationship
                 );
             }
         }
@@ -301,19 +312,24 @@ class Person extends AbstractFrontend
     }
 
     /**
+     * @param TblPerson $tblPerson
+     *
      * @return FormDefault
      */
-    private static function formPersonRelationshipGuardian()
+    private static function formPersonRelationship( TblPerson $tblPerson )
     {
 
-        return new FormDefault(
-            new GridFormGroup( array(
-                new GridFormRow( array(
-                    new GridFormCol(
-                        array()
+        return new GridLayout(
+            new GridLayoutGroup( array(
+                new GridLayoutRow( array(
+                    new GridLayoutCol(
+                        new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Relationship', new PencilIcon(),
+                            array(
+                                'tblPerson' => $tblPerson->getId()
+                            ) )
                         , 4 )
                 ) ),
-            ), new GridFormTitle( 'Sorgeberechtigte' ) )
+            ), new GridLayoutTitle( 'Beziehungen' ) )
         );
     }
 }

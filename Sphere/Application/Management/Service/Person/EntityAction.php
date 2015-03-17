@@ -8,6 +8,9 @@ use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelations
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonSalutation;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Application\System\System;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkDanger;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 
 /**
@@ -108,6 +111,32 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param int $tblPerson
+     *
+     * @return string
+     */
+    protected function tablePersonRelationship( $tblPerson )
+    {
+
+        return self::extensionDataTables(
+            $this->getEntityManager()->getEntity( 'TblPerson' )
+        )
+            ->setCallbackFunction( function ( TblPerson $V, $P ) {
+
+                /** @noinspection PhpUndefinedFieldInspection */
+                $V->Option =
+                    ( new ButtonLinkPrimary( 'Auswählen', '/Sphere/Management/Person/Relationship', new PencilIcon(),
+                        array(
+                            'tblPerson'       => $P,
+                            'tblRelationship' => $V->getId()
+                        )
+                    ) )->__toString();
+                return $V;
+            }, $tblPerson )
+            ->getResult();
+    }
+
+    /**
      * @param TblPersonType $tblPersonType
      *
      * @return string
@@ -120,12 +149,16 @@ abstract class EntityAction extends EntitySchema
                 'tblPersonType' => $tblPersonType->getId()
             )
         )
-            ->setCallback( function ( TblPerson $V ) {
+            ->setCallbackFunction( function ( TblPerson $V ) {
 
                 /** @noinspection PhpUndefinedFieldInspection */
-                $V->Option = ( new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
-                    array( 'Id' => $V->getId() )
-                ) )->__toString();
+                $V->Option =
+                    ( new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', new PencilIcon(),
+                        array( 'Id' => $V->getId() )
+                    ) )->__toString()
+                    .( new ButtonLinkDanger( 'Löschen', '/Sphere/Management/Person/Destroy', new RemoveIcon(),
+                        array( 'Id' => $V->getId() )
+                    ) )->__toString();
                 return $V;
             } )
             ->getResult();
@@ -316,6 +349,7 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblPerson $tblPerson
+     * @param string    $Title
      * @param string              $FirstName
      * @param string              $MiddleName
      * @param string              $LastName
@@ -333,6 +367,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function actionChangePerson(
         TblPerson $tblPerson,
+        $Title,
         $FirstName,
         $MiddleName,
         $LastName,
@@ -350,6 +385,7 @@ abstract class EntityAction extends EntitySchema
         $Protocol = clone $Entity;
         if (null !== $Entity) {
             $Entity->setTblPersonSalutation( $tblPersonSalutation );
+            $Entity->setTitle( $Title );
             $Entity->setFirstName( $FirstName );
             $Entity->setMiddleName( $MiddleName );
             $Entity->setLastName( $LastName );
@@ -368,6 +404,7 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param                     $Title
      * @param string              $FirstName
      * @param string              $MiddleName
      * @param string              $LastName
@@ -384,6 +421,7 @@ abstract class EntityAction extends EntitySchema
      * @return TblPerson
      */
     protected function actionCreatePerson(
+        $Title,
         $FirstName,
         $MiddleName,
         $LastName,
@@ -407,6 +445,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblPerson();
             $Entity->setTblPersonSalutation( $tblPersonSalutation );
+            $Entity->setTitle( $Title );
             $Entity->setFirstName( $FirstName );
             $Entity->setMiddleName( $MiddleName );
             $Entity->setLastName( $LastName );

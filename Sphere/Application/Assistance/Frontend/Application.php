@@ -7,6 +7,7 @@ use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 
 /**
  * Class Application
@@ -56,12 +57,15 @@ class Application extends AbstractFrontend
             .new MessageInfo( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
             .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
-        $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Starten der Anwendung'
-            .( self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Start'
-                ? ': '.self::extensionRequest()->getPathInfo()
-                : ''
-            ),
-            'Support-Ticket'
+        $View->addButton( new ButtonLinkPrimary( 'Support-Ticket', '/Sphere/Assistance/Support/Ticket', null,
+                array(
+                    'TicketSubject' => 'Starten der Anwendung'
+                        .( self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Start'
+                            ? ': '.self::extensionRequest()->getPathInfo()
+                            : ''
+                        ),
+                )
+            )
         );
         return $View;
     }
@@ -95,11 +99,12 @@ class Application extends AbstractFrontend
         );
         if (self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal') {
             $View->addButton(
-                trim( '/Sphere/Assistance/Support/Ticket'
-                    .'?TicketSubject='.urlencode( 'Fehler in der Anwendung' )
-                    .'&TicketMessage='.urlencode( self::extensionRequest()->getPathInfo().': '.$Error['message'].'<br/>'.$Error['file'].':'.$Error['line'] ),
-                    '/' )
-                , 'Fehlerbericht senden'
+                new ButtonLinkPrimary( 'Fehlerbericht senden', '/Sphere/Assistance/Support/Ticket', null,
+                    array(
+                        'TicketSubject' => urlencode( 'Fehler in der Anwendung' ),
+                        'TicketMessage' => urlencode( self::extensionRequest()->getPathInfo().': '.$Error['message'].'<br/>'.$Error['file'].':'.$Error['line'] )
+                    )
+                )
             );
 
         }
@@ -132,12 +137,17 @@ class Application extends AbstractFrontend
             .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
         if (self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing') {
-            $View->addButton( '/Sphere/Assistance/Support/Ticket?TicketSubject=Nicht gefundene Resource'
-                .( self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing'
-                    ? ': '.self::extensionRequest()->getPathInfo()
-                    : ''
-                ),
-                'Support-Ticket' );
+            $View->addButton(
+                new ButtonLinkPrimary( 'Support-Ticket', '/Sphere/Assistance/Support/Ticket', null,
+                    array(
+                        'TicketSubject' => 'Nicht gefundene Resource'
+                            .( self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing'
+                                ? ': '.self::extensionRequest()->getPathInfo()
+                                : ''
+                            )
+                    )
+                )
+            );
         }
         return $View;
     }

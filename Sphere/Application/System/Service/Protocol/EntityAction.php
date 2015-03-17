@@ -86,7 +86,7 @@ abstract class EntityAction extends EntitySchema
         return self::extensionDataTables(
             $this->getEntityManager()->getEntity( 'TblProtocol' )
         )
-            ->setCallback( function ( TblProtocol &$V ) {
+            ->setCallbackFunction( function ( TblProtocol &$V ) {
 
                 $Editor = new TableDefault(
                     new GridTableHead( new GridTableRow(

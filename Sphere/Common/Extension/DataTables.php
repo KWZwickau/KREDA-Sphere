@@ -28,8 +28,10 @@ class DataTables extends AbstractExtension
     private $ColumnNames = array();
     /** @var array $Request */
     private $Request = array();
-    /** @var null $Callback */
-    private $Callback = null;
+    /** @var null $CallbackFunction */
+    private $CallbackFunction = null;
+    /** @var null|mixed $CallbackParameter */
+    private $CallbackParameter = null;
 
     /**
      * @param EntityRepository $EntityRepository
@@ -155,11 +157,18 @@ class DataTables extends AbstractExtension
         $Result = $this->getTableQuery()->getResult();
         array_walk( $Result, function ( AbstractEntity &$Entity ) {
 
-            if (isset( $this->Callback ) && is_callable( $this->Callback )) {
-                $Entity = call_user_func_array(
-                    $this->Callback,
-                    array( $Entity )
-                );
+            if (isset( $this->CallbackFunction ) && is_callable( $this->CallbackFunction )) {
+                if (null === $this->CallbackParameter) {
+                    $Entity = call_user_func_array(
+                        $this->CallbackFunction,
+                        array( $Entity )
+                    );
+                } else {
+                    $Entity = call_user_func_array(
+                        $this->CallbackFunction,
+                        array( $Entity, $this->CallbackParameter )
+                    );
+                }
             }
             if (is_object( $Entity )) {
                 $Entity = $Entity->__toArray();
@@ -222,15 +231,17 @@ class DataTables extends AbstractExtension
     }
 
     /**
-     * @param $Function
+     * @param            $Function
+     * @param null|mixed $Parameter
      *
      * @return DataTables
      */
-    public function setCallback( $Function )
+    public function setCallbackFunction( $Function, $Parameter = null )
     {
 
         if (is_callable( $Function )) {
-            $this->Callback = $Function;
+            $this->CallbackFunction = $Function;
+            $this->CallbackParameter = $Parameter;
         }
         return $this;
     }

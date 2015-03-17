@@ -95,7 +95,9 @@ if (!array_key_exists( 'REST', HttpKernel::getRequest()->getParameterArray() )) 
 set_error_handler(
     function ( $N, $S, $F, $L ) {
 
-        throw new \ErrorException( $S, 0, $N, $F, $L );
+        if (!preg_match( '!apc_store.*?was.*?on.*?gc-list.*?for!is', $S )) {
+            throw new \ErrorException( $S, 0, $N, $F, $L );
+        }
     }, E_ALL
 );
 register_shutdown_function(
@@ -179,13 +181,20 @@ if (array_key_exists( 'REST', HttpKernel::getRequest()->getParameterArray() )) {
          * Application: Execution
          */
         try {
-            /** @var Element $Route */
-            print $Config->getClientRouter()->getRoute();
+            if (Gatekeeper::serviceAccess()->checkIsValidAccess( HttpKernel::getRequest()->getPathInfo() )) {
+                /**
+                 * Execution: Allowed
+                 */
+                /** @var Element $Route */
+                print $Config->getClientRouter()->getRoute();
+            } else {
+                print '403 Forbidden';
+            }
         } catch( \Exception $E ) {
-            print '500 '.$E->getMessage();
+            print '500 Internal Server Error -> '.$E->getMessage();
         }
     } else {
-        print '403';
+        print '401 Unauthorized';
     }
     exit( 0 );
 }

@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonGender;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipType;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonSalutation;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
@@ -130,10 +131,10 @@ class Person extends EntityAction
     /**
      * @param AbstractForm $View
      *
-     * @param TblPerson $tblPerson
-     * @param array     $PersonName
-     * @param array     $PersonInformation
-     * @param array     $BirthDetail
+     * @param TblPerson    $tblPerson
+     * @param array        $PersonName
+     * @param array        $PersonInformation
+     * @param array        $BirthDetail
      *
      * @return AbstractForm
      */
@@ -211,12 +212,9 @@ class Person extends EntityAction
 
         if (!$Error) {
             if ($this->actionChangePerson(
-                $tblPerson,
-                $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
-                $BirthDetail['Date'], $BirthDetail['Place'],
-                $PersonInformation['Nationality'],
-                $tblPersonSalutation,
-                $tblPersonGender,
+                $tblPerson, $PersonName['Title'], $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
+                $BirthDetail['Date'],
+                $BirthDetail['Place'], $PersonInformation['Nationality'], $tblPersonSalutation, $tblPersonGender,
                 $tblPersonType
             )
             ) {
@@ -348,11 +346,9 @@ class Person extends EntityAction
 
         if (!$Error) {
             $Entity = $this->actionCreatePerson(
-                $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
-                $BirthDetail['Date'], $BirthDetail['Place'],
-                $PersonInformation['Nationality'],
-                $tblPersonSalutation,
-                $tblPersonGender,
+                $PersonName['Title'], $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
+                $BirthDetail['Date'],
+                $BirthDetail['Place'], $PersonInformation['Nationality'], $tblPersonSalutation, $tblPersonGender,
                 $tblPersonType
             );
             if ($Button['Submit'] == 'Anlegen') {
@@ -360,7 +356,7 @@ class Person extends EntityAction
                 .new Redirect( '/Sphere/Management/Person/Create', 0 );
             } else {
                 return new MessageSuccess( 'Der Person wurde erfolgreich angelegt' )
-                .new Redirect( '/Sphere/Management/Person/Edit', 5, array( 'Id' => $Entity->getId() ) );
+                .new Redirect( '/Sphere/Management/Person/Edit', 0, array( 'Id' => $Entity->getId() ) );
             }
         } else {
 
@@ -389,7 +385,6 @@ class Person extends EntityAction
 
         return parent::tablePersonAllByType( $tblPersonType );
     }
-
 
     /**
      * @param string $Name
@@ -421,4 +416,25 @@ class Person extends EntityAction
 
         return parent::countPersonAllByType( $tblPersonType );
     }
+
+    /**
+     * @param int $tblPerson
+     *
+     * @return string
+     */
+    public function tablePersonRelationship( $tblPerson )
+    {
+
+        return parent::tablePersonRelationship( $tblPerson );
+    }
+
+    /**
+     * @return bool|TblPersonRelationshipType[]
+     */
+    public function entityPersonRelationshipTypeAll()
+    {
+
+        return parent::entityPersonRelationshipTypeAll();
+    }
+
 }

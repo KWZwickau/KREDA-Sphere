@@ -30,6 +30,16 @@ class Protocol extends AbstractFrontend
                     'Editor' => 'Editor',
                     'Origin' => 'Origin',
                     'Commit' => 'Commit'
+                ),
+                array(
+                    "order"      => array(
+                        array( 0, 'desc' )
+                    ),
+                    "columnDefs" => array(
+                        array( "orderable" => false, "targets" => 1 ),
+                        array( "orderable" => false, "targets" => 2 ),
+                        array( "orderable" => false, "targets" => 3 )
+                    )
                 )
             )
         );
