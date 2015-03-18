@@ -44,6 +44,8 @@ mit
 <Ip> <Hostname>.<Domain> <Hostname>
 (Disable Ip6)
 
+A:I:open-vm-tools (VMWare)
+
 --------------------
 
 B:I:apache2
@@ -62,57 +64,53 @@ ProxyReceiveBufferSize 4096
 ProxyPass /Status !
 
 <Proxy balancer://<Name>/>
-BalancerMember http://<Ip>:<Port> route=<Name>
-[...]
-ProxySet stickysession=PHPSESSID
-ProxySet lbmethod=byrequests
-ProxySet nofailover=Off
+	BalancerMember http://<Ip>:<Port> route=<Name>
+	[...]
+	ProxySet stickysession=PHPSESSID
+	ProxySet lbmethod=byrequests
+	ProxySet nofailover=Off
 </Proxy>
 
 <VirtualHost *:80>
-ServerName <Hostname>
-ServerAdmin <Email>
+	ServerName <Hostname>
+	ServerAdmin <Email>
 
-LogLevel warn
-ErrorLog ${APACHE_LOG_DIR}/error.log
-CustomLog ${APACHE_LOG_DIR}/access.log combined
+	LogLevel warn
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-ProxyStatus On
+	ProxyStatus On
+	<Location /Status>
+		Order Deny,Allow
+		Deny from All
+		Allow from <Netz>
+		SetHandler server-status
+	</Location>
 
-<Location /Status>
-Order Deny,Allow
-Deny from All
-Allow from <Netz>
-SetHandler server-status
-</Location>
-
-RewriteEngine On
-RewriteCond %{ENV:REDIRECT_STATUS} !=503
-RewriteCond %{REQUEST_URI} !^/Status [NC]
-RewriteRule ^(.*)$ /$1 [R=503,L]
-
-<Directory />
-AllowOverride None
-Order Deny,Allow
-Deny from All
-</Directory>
-
+	RewriteEngine On
+	RewriteCond %{ENV:REDIRECT_STATUS} !=503
+	RewriteCond %{REQUEST_URI} !^/Status [NC]
+	RewriteRule ^(.*)$ /$1 [R=503,L]
+	<Directory />
+		AllowOverride None
+		Order Deny,Allow
+		Deny from All
+	</Directory>
 </VirtualHost>
 
 
 --------------------
-B:C:vHost-Worker
-
+B:C:vHost-Cloud
 
 <VirtualHost *:80>
-ServerName <Domainname>
-ServerAdmin <Email>
+	ServerName <Domainname>
+	ServerAdmin <Email>
 
-LogLevel warn
-ErrorLog ${APACHE_LOG_DIR}/error.log
-CustomLog ${APACHE_LOG_DIR}/access.log combined
+	LogLevel warn
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-ProxyPass / balancer://<Name>/
+	ProxyPass / balancer://<Name>/
 </VirtualHost>
 
 ====================
@@ -122,27 +120,31 @@ W:I:php5
 W:I:php5-mysql
 W:I:php5-gmp
 W:I:php5-curl
+
 W:I:gadmin-proftpd
+W:C: Setup FTP
+Umask 002
 
 --------------------
-W:C:vHost-Ant
+W:C:vHost-Worker
 
 <VirtualHost *:80>
-ServerName <Domainname>
-ServerAdmin <Email>
 
-LogLevel warn
-ErrorLog ${APACHE_LOG_DIR}/error.log
-CustomLog ${APACHE_LOG_DIR}/access.log combined
+	ServerName <Domainname>
+	ServerAdmin <Email>
 
-DocumentRoot /var/www
+	LogLevel warn
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-<Directory /var/www>
-Options -Indexes -FolloSymLinks -MultiViews
-AllowOverride All
-Order Allow,Deny
-Allow from <Balancer-Ip>
-</Directory>
+	DocumentRoot /var/www
+
+	<Directory /var/www>
+		Options -Indexes -FolloSymLinks -MultiViews
+		AllowOverride All
+		Order Allow,Deny
+		Allow from <Balancer-Ip>
+	</Directory>
 
 </VirtualHost>
 
