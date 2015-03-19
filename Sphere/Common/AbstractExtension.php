@@ -137,8 +137,6 @@ abstract class AbstractExtension
                     ->getSchemaManager()
                     ->createDatabase( $Database );
                 return Database::getDatabase( $Username, $Password, $Database, $Driver, $Host, $Port );
-            } catch( \PDOException $E ) {
-                throw new DatabaseException( $E->getMessage(), $E->getCode(), $E );
             } catch( \Exception $E ) {
                 throw new DatabaseException( $E->getMessage(), $E->getCode(), $E );
             }

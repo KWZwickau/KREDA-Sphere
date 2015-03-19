@@ -1,4 +1,4 @@
-{% if( SizeAvailable >= 0 ) and ( SizeUsed >= 0 ) and ( SizeFree >= 0 ) %}
+{% if( SizeAvailable > 0 ) and ( SizeUsed >= 0 ) and ( SizeFree >= 0 ) %}
     {% set Danger = SizeWasted/SizeAvailable*100 %}
     {% set Warning = SizeUsed/SizeAvailable*100 %}
     {% set Success = SizeFree/SizeAvailable*100 %}

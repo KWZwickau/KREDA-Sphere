@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Common\Database\Schema;
 
 use Doctrine\Common\Cache\ApcCache;
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\MemcachedCache;
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Schema;
@@ -10,6 +11,7 @@ use Doctrine\DBAL\Schema\View;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
+use KREDA\Sphere\Common\Cache\Type\Memcached;
 use KREDA\Sphere\Common\Database\Connection\Connector;
 use KREDA\Sphere\Common\Database\Connection\Identifier;
 use MOC\V\Component\Database\Component\IBridgeInterface;
@@ -55,16 +57,25 @@ class Model
         $MetadataConfiguration = Setup::createAnnotationMetadataConfiguration( array( $EntityPath ) );
         $MetadataConfiguration->setDefaultRepositoryClassName( '\KREDA\Sphere\Common\Database\Schema\EntityRepository' );
         $ConnectionConfig = $this->Connection->getConnection()->getConfiguration();
-        if (function_exists( 'apc_fetch' )) {
-            $MetadataConfiguration->setQueryCacheImpl( new ApcCache() );
-            $MetadataConfiguration->setMetadataCacheImpl( new ApcCache() );
-            $MetadataConfiguration->setHydrationCacheImpl( new ApcCache() );
-            $ConnectionConfig->setResultCacheImpl( new ApcCache() );
+        if (class_exists( '\Memcached', false )) {
+            $Cache = new MemcachedCache();
+            $Cache->setMemcached( ( new Memcached() )->getServer() );
+            $MetadataConfiguration->setQueryCacheImpl( $Cache );
+            $MetadataConfiguration->setMetadataCacheImpl( $Cache );
+            $MetadataConfiguration->setHydrationCacheImpl( $Cache );
+            $ConnectionConfig->setResultCacheImpl( $Cache );
         } else {
-            $MetadataConfiguration->setQueryCacheImpl( new ArrayCache() );
-            $MetadataConfiguration->setMetadataCacheImpl( new ArrayCache() );
-            $MetadataConfiguration->setHydrationCacheImpl( new ArrayCache() );
-            $ConnectionConfig->setResultCacheImpl( new ArrayCache() );
+            if (function_exists( 'apc_fetch' )) {
+                $MetadataConfiguration->setQueryCacheImpl( new ApcCache() );
+                $MetadataConfiguration->setMetadataCacheImpl( new ApcCache() );
+                $MetadataConfiguration->setHydrationCacheImpl( new ApcCache() );
+                $ConnectionConfig->setResultCacheImpl( new ApcCache() );
+            } else {
+                $MetadataConfiguration->setQueryCacheImpl( new ArrayCache() );
+                $MetadataConfiguration->setMetadataCacheImpl( new ArrayCache() );
+                $MetadataConfiguration->setHydrationCacheImpl( new ArrayCache() );
+                $ConnectionConfig->setResultCacheImpl( new ArrayCache() );
+            }
         }
 //        $ConnectionConfig->setSQLLogger( new Logger() );
         return EntityManager::create( $this->Connection->getConnection(), $MetadataConfiguration );

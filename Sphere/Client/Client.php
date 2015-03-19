@@ -144,7 +144,7 @@ class Client
                 if (!$Error) {
                     return;
                 }
-                $S->addToNavigation(
+                $S->setNavigation(
                     new Container( $C->getClientNavigation() )
                 );
                 if ($C->hasModuleNavigation()) {
@@ -163,7 +163,7 @@ class Client
                 );
                 /** @var Element $R */
                 $R = $C->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Fatal' );
-                $S->addToContent( new Container( $R ) );
+                $S->setContent( new Container( $R ) );
                 print $S->getContent();
                 exit( 0 );
             }, $this->Display, $this->Configuration

@@ -22,19 +22,16 @@
 
 # Restrict Server PHP-File Access
 
-	php_value max_execution_time 1200
-	php_value memory_limit 1024M
-
 	<Files 'Client'>
 		ForceType application/x-httpd-php
 	</Files>
-#	<Files *.php>
-#		Order Deny,Allow
-#		Deny from All
-#	</Files>
-#	<FilesMatch "^(Client|index.php)$">
-#		Allow from All
-#	</FilesMatch>
+	<Files *.php>
+		Order Deny,Allow
+		Deny from All
+	</Files>
+	<FilesMatch "^(Client|index.php)$">
+		Allow from All
+	</FilesMatch>
 
 	RewriteEngine On
 	#Force WWW:

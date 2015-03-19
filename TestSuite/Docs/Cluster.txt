@@ -120,6 +120,8 @@ W:I:php5
 W:I:php5-mysql
 W:I:php5-gmp
 W:I:php5-curl
+W:I:php5-apcu (optional)
+W:I:php5-memcached (optional)
 
 W:I:gadmin-proftpd
 W:C: Setup FTP
@@ -139,8 +141,8 @@ W:C:vHost-Worker
 
 	DocumentRoot /var/www
 
-	<Directory /var/www>
-		Options -Indexes -FolloSymLinks -MultiViews
+	<Directory />
+		Options -Indexes -FollowSymLinks -MultiViews
 		AllowOverride All
 		Order Allow,Deny
 		Allow from <Balancer-Ip>
@@ -148,9 +150,21 @@ W:C:vHost-Worker
 
 </VirtualHost>
 
+W:C:apache.conf
+
+<Directory /var/www>
+	AllowOverride All
+</Directory>
+
+W:C:php.ini
+
+[Session]
+; Handler used to store/retrieve data.
+session.save_handler = memcached
+session.save_path = "<server>:11211"
+
 ====================
 D:I:mysql-server-5.6
-D:I:ssh
 D:C:/etc/mysql/my.cnf
 
 bind-address=<Ip>
@@ -160,3 +174,10 @@ use mysql;
 update user set host='%' where host='localhost';
 
 D:C:lower_case_table_names = 0
+
+====================
+M:I:memcached
+
+M:C:memcached.conf
+
+#-l 127.0.0.1
