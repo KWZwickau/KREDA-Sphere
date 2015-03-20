@@ -60,10 +60,15 @@ class Model
         if (class_exists( '\Memcached', false )) {
             $Cache = new MemcachedCache();
             $Cache->setMemcached( ( new Memcached() )->getServer() );
-            $MetadataConfiguration->setQueryCacheImpl( $Cache );
-            $MetadataConfiguration->setMetadataCacheImpl( $Cache );
-            $MetadataConfiguration->setHydrationCacheImpl( $Cache );
+            $Cache->setNamespace( $EntityPath );
             $ConnectionConfig->setResultCacheImpl( $Cache );
+            $MetadataConfiguration->setQueryCacheImpl( $Cache );
+            $MetadataConfiguration->setHydrationCacheImpl( $Cache );
+            if (function_exists( 'apc_fetch' )) {
+                $MetadataConfiguration->setMetadataCacheImpl( new ApcCache() );
+            } else {
+                $MetadataConfiguration->setMetadataCacheImpl( new ArrayCache() );
+            }
         } else {
             if (function_exists( 'apc_fetch' )) {
                 $MetadataConfiguration->setQueryCacheImpl( new ApcCache() );
@@ -77,7 +82,7 @@ class Model
                 $ConnectionConfig->setResultCacheImpl( new ArrayCache() );
             }
         }
-//        $ConnectionConfig->setSQLLogger( new Logger() );
+        //$ConnectionConfig->setSQLLogger( new Logger() );
         return EntityManager::create( $this->Connection->getConnection(), $MetadataConfiguration );
     }
 

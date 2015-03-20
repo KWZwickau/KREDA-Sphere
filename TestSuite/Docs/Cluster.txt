@@ -121,6 +121,17 @@ W:I:php5-mysql
 W:I:php5-gmp
 W:I:php5-curl
 W:I:php5-apcu (optional)
+
+W:C:/etc/php5/mods-available/apcu.conf
+apc.shm_segments=1
+apc.shm_size=256M
+apc.optimization=0
+apc.num_files_hint=2048
+apc.ttl=3600
+apc.user_ttl=3600
+apc.enable_cli=1
+apc.max_file_size=1M
+
 W:I:php5-memcached (optional)
 
 W:I:gadmin-proftpd

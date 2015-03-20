@@ -3,7 +3,7 @@ namespace KREDA\Sphere\Common\Frontend\Form\Structure;
 
 use KREDA\Sphere\Common\Frontend\Button\AbstractElement;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use MOC\V\Component\Template\Exception\TemplateTypeException;
+use KREDA\Sphere\Common\Signature\Type\GetSignature;
 
 /**
  * Class FormDefault
@@ -17,10 +17,9 @@ class FormDefault extends AbstractForm
      * @param GridFormGroup|GridFormGroup[]          $GridGroupList
      * @param null|AbstractElement|AbstractElement[] $FormButtonList
      * @param string                                 $FormAction
-     *
-     * @throws TemplateTypeException
+     * @param array                                  $FormData
      */
-    function __construct( $GridGroupList, $FormButtonList = null, $FormAction = '' )
+    function __construct( $GridGroupList, $FormButtonList = null, $FormAction = '', $FormData = array() )
     {
 
         if (!is_array( $GridGroupList )) {
@@ -37,7 +36,20 @@ class FormDefault extends AbstractForm
 
         $this->Template = $this->extensionTemplate( __DIR__.'/FormDefault.twig' );
         $this->Template->setVariable( 'UrlBase', $this->extensionRequest()->getUrlBase() );
-        $this->Template->setVariable( 'FormAction', $FormAction );
+        if (!empty( $FormData )) {
+            $this->Template->setVariable( 'FormAction', $this->extensionRequest()->getUrlBase().$FormAction );
+            $this->Template->setVariable( 'FormData', '?'.http_build_query(
+                    ( new GetSignature() )->createSignature(
+                        $FormData, $FormAction
+                    )
+                ) );
+        } else {
+            if (empty( $FormAction )) {
+                $this->Template->setVariable( 'FormAction', $FormAction );
+            } else {
+                $this->Template->setVariable( 'FormAction', $this->extensionRequest()->getUrlBase().$FormAction );
+            }
+        }
     }
 
     /**

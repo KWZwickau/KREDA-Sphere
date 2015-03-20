@@ -2,16 +2,25 @@
 namespace KREDA\Sphere\Application\Management\Service\Person;
 
 use Doctrine\ORM\Query\Expr;
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonGender;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipList;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipType;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonSalutation;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkDanger;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
+use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 
 /**
  * Class EntityAction
@@ -53,7 +62,8 @@ abstract class EntityAction extends EntitySchema
             ->createQueryBuilder( 'p' )
             ->select( 'p.Nationality' )
             ->distinct( true )
-            ->getQuery();
+            ->getQuery()
+            ->useQueryCache( true );
         $EntityList = $Query->getArrayResult();
         return ( empty( $EntityList ) ? false : $EntityList );
     }
@@ -68,7 +78,8 @@ abstract class EntityAction extends EntitySchema
             ->createQueryBuilder( 'p' )
             ->select( 'p.Birthplace' )
             ->distinct( true )
-            ->getQuery();
+            ->getQuery()
+            ->useQueryCache( true );
         $EntityList = $Query->getArrayResult();
         return ( empty( $EntityList ) ? false : $EntityList );
     }
@@ -118,21 +129,45 @@ abstract class EntityAction extends EntitySchema
     protected function tablePersonRelationship( $tblPerson )
     {
 
+        $tblPersonRelationshipType = Management::servicePerson()->entityPersonRelationshipTypeAll();
+
         return self::extensionDataTables(
             $this->getEntityManager()->getEntity( 'TblPerson' )
         )
             ->setCallbackFunction( function ( TblPerson $V, $P ) {
 
                 /** @noinspection PhpUndefinedFieldInspection */
-                $V->Option =
-                    ( new ButtonLinkPrimary( 'Auswählen', '/Sphere/Management/Person/Relationship', new PencilIcon(),
-                        array(
-                            'tblPerson'       => $P,
-                            'tblRelationship' => $V->getId()
-                        )
-                    ) )->__toString();
+                $V->Name = $V->getFullName();
+
+                /** @noinspection PhpUndefinedFieldInspection */
+                $V->Option = ( new FormDefault(
+                    new GridFormGroup(
+                        new GridFormRow( array(
+                            new GridFormCol(
+                                new InputSelect( 'tblRelationshipType', '',
+                                    array( 'Name' => $P[1] )
+                                )
+                                , 7 ),
+                            new GridFormCol(
+                                new ButtonSubmitPrimary( 'Hinzufügen', new ShareIcon() )
+                                , 5 )
+                        ) )
+                    ), null,
+                    '/Sphere/Management/Person/Relationship', array(
+                        'tblPerson'       => $P[0],
+                        'tblRelationship' => $V->getId()
+                    )
+                ) )->__toString();
+
+//                $V->Option =
+//                    ( new ButtonLinkPrimary( 'Auswählen', '/Sphere/Management/Person/Relationship', new PencilIcon(),
+//                        array(
+//                            'tblPerson'       => $P,
+//                            'tblRelationship' => $V->getId()
+//                        )
+//                    ) )->__toString();
                 return $V;
-            }, $tblPerson )
+            }, array( $tblPerson, $tblPersonRelationshipType ) )
             ->getResult();
     }
 
@@ -176,6 +211,36 @@ abstract class EntityAction extends EntitySchema
             TblPersonType::ATTR_NAME => $Name
         ) );
         return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblPerson $tblPerson
+     *
+     * @return bool|Entity\TblPersonRelationshipList[]
+     */
+    protected function entityPersonRelationshipAllByPerson( TblPerson $tblPerson )
+    {
+
+        $EntityListA = $this->getEntityManager()->getEntity( 'TblPersonRelationshipList' )->findBy( array(
+            TblPersonRelationshipList::ATTR_TBL_PERSON_A => $tblPerson->getId()
+        ) );
+        $EntityListB = $this->getEntityManager()->getEntity( 'TblPersonRelationshipList' )->findBy( array(
+            TblPersonRelationshipList::ATTR_TBL_PERSON_B => $tblPerson->getId()
+        ) );
+        if (is_array( $EntityListA ) && is_array( $EntityListB )) {
+            $EntityList = $EntityListA + $EntityListB;
+        } else {
+            if (is_array( $EntityListA )) {
+                $EntityList = $EntityListA;
+            } else {
+                if (is_array( $EntityListB )) {
+                    $EntityList = $EntityListB;
+                } else {
+                    $EntityList = null;
+                }
+            }
+        }
+        return ( empty( $EntityList ) ? false : $EntityList );
     }
 
     /**
@@ -461,4 +526,65 @@ abstract class EntityAction extends EntitySchema
         return $Entity;
     }
 
+    /**
+     * @param TblPerson                 $tblPersonA
+     * @param TblPerson                 $tblPersonB
+     * @param TblPersonRelationshipType $tblPersonRelationshipType
+     *
+     * @return TblPersonRelationshipList
+     */
+    protected function actionAddRelationship(
+        TblPerson $tblPersonA,
+        TblPerson $tblPersonB,
+        TblPersonRelationshipType $tblPersonRelationshipType
+    ) {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblPersonRelationshipList' )
+            ->findOneBy( array(
+                TblPersonRelationshipList::ATTR_TBL_PERSON_A                 => $tblPersonA->getId(),
+                TblPersonRelationshipList::ATTR_TBL_PERSON_B                 => $tblPersonB->getId(),
+                TblPersonRelationshipList::ATTR_TBL_PERSON_RELATIONSHIP_TYPE => $tblPersonRelationshipType->getId()
+            ) );
+        if (null === $Entity) {
+            $Entity = new TblPersonRelationshipList();
+            $Entity->setTblPersonA( $tblPersonA );
+            $Entity->setTblPersonB( $tblPersonB );
+            $Entity->setTblPersonRelationshipType( $tblPersonRelationshipType );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
+     * @param TblPerson                 $tblPersonA
+     * @param TblPerson                 $tblPersonB
+     * @param TblPersonRelationshipType $tblPersonRelationshipType
+     *
+     * @return bool
+     */
+    protected function actionRemoveRelationship(
+        TblPerson $tblPersonA,
+        TblPerson $tblPersonB,
+        TblPersonRelationshipType $tblPersonRelationshipType
+    ) {
+
+        $Manager = $this->getEntityManager();
+        /** @var TblPersonRelationshipList $Entity */
+        $Entity = $Manager->getEntity( 'TblPersonRelationshipList' )
+            ->findOneBy( array(
+                TblPersonRelationshipList::ATTR_TBL_PERSON_A                 => $tblPersonA->getId(),
+                TblPersonRelationshipList::ATTR_TBL_PERSON_B                 => $tblPersonB->getId(),
+                TblPersonRelationshipList::ATTR_TBL_PERSON_RELATIONSHIP_TYPE => $tblPersonRelationshipType->getId()
+            ) );
+        if (null !== $Entity) {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
 }

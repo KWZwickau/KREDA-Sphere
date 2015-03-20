@@ -15,7 +15,7 @@
 
 # Set Default Encoding to UTF-8
 
-	<FilesMatch "\.(html|css|js|php|map|woff2)$">
+	<FilesMatch "\.(html|css|js|php|map|woff|woff2)$">
 		AddDefaultCharset UTF-8
 		DefaultLanguage en-US
 	</FilesMatch>
@@ -25,13 +25,13 @@
 	<Files 'Client'>
 		ForceType application/x-httpd-php
 	</Files>
-	<Files *.php>
-		Order Deny,Allow
-		Deny from All
-	</Files>
-	<FilesMatch "^(Client|index.php)$">
-		Allow from All
-	</FilesMatch>
+#	<Files *.php>
+#		Order Deny,Allow
+#		Deny from All
+#	</Files>
+#	<FilesMatch "^(Client|index.php)$">
+#		Allow from All
+#	</FilesMatch>
 
 	RewriteEngine On
 	#Force WWW:
@@ -43,12 +43,12 @@
 	#RewriteRule ^(.*)$ https://www.kreda-professional.de/$1 [R=301,L]
 
 # Platform Root
-	RewriteCond %{REQUEST_URI} !^/Client
-	RewriteCond %{REQUEST_URI} !^/Library
-	RewriteCond %{REQUEST_URI} !^/Sphere/Client/Style
-	RewriteCond %{REQUEST_URI} !^/Sphere/Client/Script
-	RewriteCond %{REQUEST_URI} !^/TestSuite/Console
-	RewriteRule ^(.*)$ /Client/$1 [L,R=302]
+#	RewriteCond %{REQUEST_URI} !^/Client
+#	RewriteCond %{REQUEST_URI} !^/Library
+#	RewriteCond %{REQUEST_URI} !^/Sphere/Client/Style
+#	RewriteCond %{REQUEST_URI} !^/Sphere/Client/Script
+#	RewriteCond %{REQUEST_URI} !^/TestSuite/Console
+#	RewriteRule ^(.*)$ /Client/$1 [L,R=302]
 
 
 # Cache settings

@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonGender;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipList;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipType;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonSalutation;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
@@ -61,17 +62,6 @@ class Person extends EntityAction
          * Relationship Type
          */
         $this->actionCreateRelationshipType( 'Sorgeberechtigt' );
-    }
-
-    /**
-     * @param integer $Id
-     *
-     * @return bool|TblPerson
-     */
-    public function entityPersonById( $Id )
-    {
-
-        return parent::entityPersonById( $Id );
     }
 
     /**
@@ -435,6 +425,58 @@ class Person extends EntityAction
     {
 
         return parent::entityPersonRelationshipTypeAll();
+    }
+
+    /**
+     * @param int $tblPersonA
+     * @param int $tblPersonB
+     * @param int $tblPersonRelationshipType
+     *
+     * @return TblPersonRelationshipList
+     */
+    public function executeAddRelationship(
+        $tblPersonA,
+        $tblPersonB,
+        $tblPersonRelationshipType
+    ) {
+
+        $tblPersonA = $this->entityPersonById( $tblPersonA );
+        $tblPersonB = $this->entityPersonById( $tblPersonB );
+        $tblPersonRelationshipType = $this->entityPersonRelationshipTypeById( $tblPersonRelationshipType );
+        return parent::actionAddRelationship( $tblPersonA, $tblPersonB, $tblPersonRelationshipType );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblPerson
+     */
+    public function entityPersonById( $Id )
+    {
+
+        return parent::entityPersonById( $Id );
+    }
+
+    /**
+     * @param int $Id
+     *
+     * @return bool|TblPersonRelationshipType
+     */
+    public function entityPersonRelationshipTypeById( $Id )
+    {
+
+        return parent::entityPersonRelationshipTypeById( $Id );
+    }
+
+    /**
+     * @param TblPerson $tblPerson
+     *
+     * @return bool|TblPersonRelationshipList[]
+     */
+    public function entityPersonRelationshipAllByPerson( TblPerson $tblPerson )
+    {
+
+        return parent::entityPersonRelationshipAllByPerson( $tblPerson );
     }
 
 }

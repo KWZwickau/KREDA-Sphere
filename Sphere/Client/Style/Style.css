@@ -130,6 +130,10 @@ h5 {
     right: 1px;
 }
 
+.form-inline .form-group {
+    display: block !important;
+}
+
 .bootstrap-datetimepicker-widget.dropdown-menu {
     background: inherit;
     border: 1px solid rgb(204, 204, 204);

@@ -25,7 +25,9 @@ class Relationship extends Person
         )
             ->setParameterDefault( 'tblRelationship', null )
             ->setParameterDefault( 'tblRelationshipType', null );
-
+        /**
+         * REST Service
+         */
         self::registerClientRoute( $Configuration,
             '/Sphere/Management/REST/PersonListRelationship', __CLASS__.'::restPersonListRelationship'
         );

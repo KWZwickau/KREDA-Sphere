@@ -14,7 +14,7 @@ class Memcached implements ICacheInterface
     /** @var \Memcached $Status */
     private static $Server = null;
     /** @var string $Host */
-    private static $Host = 'localhost';
+    private static $Host = '';
     /** @var string $Port */
     private static $Port = '11211';
     /** @var array $Status */
@@ -38,11 +38,12 @@ class Memcached implements ICacheInterface
         } else {
             throw new \Exception( 'Missing Cache-Configuration for '.get_class( $this ) );
         }
-
-        if (class_exists( '\Memcached', false )) {
-            self::$Server = new \Memcached();
-            self::$Server->addServer( self::$Host, self::$Port );
-            $this->Status = self::$Server->getStats();
+        if (self::$Host && self::$Port) {
+            if (class_exists( '\Memcached', false ) && null === self::$Server) {
+                self::$Server = new \Memcached();
+                self::$Server->addServer( self::$Host, self::$Port );
+                self::$Server->setOption( \Memcached::OPT_TCP_NODELAY, true );
+            }
         }
     }
 
@@ -72,10 +73,19 @@ class Memcached implements ICacheInterface
     public function getCountHits()
     {
 
+        $this->fetchStatus();
         if (!empty( $this->Status )) {
             return $this->Status[self::getConnection()]['get_hits'];
         }
         return -1;
+    }
+
+    private function fetchStatus()
+    {
+
+        if (null !== self::$Server && empty( $this->Status )) {
+            $this->Status = self::$Server->getStats();
+        }
     }
 
     /**
@@ -93,6 +103,7 @@ class Memcached implements ICacheInterface
     public function getCountMisses()
     {
 
+        $this->fetchStatus();
         if (!empty( $this->Status )) {
             return $this->Status[self::getConnection()]['get_misses'];
         }
@@ -114,6 +125,7 @@ class Memcached implements ICacheInterface
     public function getSizeAvailable()
     {
 
+        $this->fetchStatus();
         if (!empty( $this->Status )) {
             return $this->Status[self::getConnection()]['limit_maxbytes'];
         }
@@ -126,6 +138,7 @@ class Memcached implements ICacheInterface
     public function getSizeUsed()
     {
 
+        $this->fetchStatus();
         if (!empty( $this->Status )) {
             return $this->Status[self::getConnection()]['bytes'];
         }

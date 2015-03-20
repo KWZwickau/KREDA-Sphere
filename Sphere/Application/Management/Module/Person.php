@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Management\Module;
 
 use KREDA\Sphere\Application\Management\Frontend\Person as Frontend;
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
@@ -26,9 +27,6 @@ class Person extends Account
 
         self::$Configuration = $Configuration;
 
-        /**
-         * Person
-         */
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person', __CLASS__.'::frontendStatus'
         );
@@ -58,6 +56,31 @@ class Person extends Account
             '/Sphere/Management/Person/List/Guardian', __CLASS__.'::frontendListGuardian'
         );
 
+        /**
+         * REST Service
+         */
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListInterest',
+            __CLASS__.'::restPersonListByType' )
+            ->setParameterDefault( 'tblPersonType',
+                Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId() );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListStudent',
+            __CLASS__.'::restPersonListByType' )
+            ->setParameterDefault( 'tblPersonType',
+                Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId() );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListGuardian',
+            __CLASS__.'::restPersonListByType' )
+            ->setParameterDefault( 'tblPersonType',
+                Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId() );
+    }
+
+    /**
+     * @param int $tblPersonType
+     */
+    public static function restPersonListByType( $tblPersonType )
+    {
+
+        $tblPersonType = Management::servicePerson()->entityPersonTypeById( $tblPersonType );
+        print Management::servicePerson()->tablePersonAllByType( $tblPersonType );
     }
 
     /**

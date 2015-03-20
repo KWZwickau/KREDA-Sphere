@@ -36,19 +36,6 @@ class NamespaceLoader
     }
 
     /**
-     * @return string
-     */
-    public function getLoaderHash()
-    {
-
-        return sha1(
-            serialize(
-                get_object_vars( $this )
-            )
-        );
-    }
-
-    /**
      * @param string $ClassName
      *
      * @return bool
@@ -59,14 +46,26 @@ class NamespaceLoader
         if ($this->checkExists( $ClassName )) {
             return true;
         }
-        if (!$this->checkCanLoadClass( $ClassName )) {
-            return false;
+
+        if (function_exists( 'apc_fetch' )) {
+            $Hash = sha1( $this->Namespace.$this->Path.$this->Separator.$this->Extension.$this->Prefix );
+            if (false === ( $Result = apc_fetch( $Hash.'#'.$ClassName ) )) {
+                $Result = $this->checkCanLoadClass( $ClassName );
+                apc_store( $Hash.'#'.$ClassName, ( $Result ? 1 : 0 ) );
+            }
+            if (!$Result) {
+                return false;
+            }
+        } else {
+            if (!$this->checkCanLoadClass( $ClassName )) {
+                return false;
+            }
         }
 
         /** @noinspection PhpIncludeInspection */
         require( $this->Path.DIRECTORY_SEPARATOR
-            .str_replace( array( $this->Prefix.$this->Separator, $this->Separator ), array( '', DIRECTORY_SEPARATOR ),
-                $ClassName )
+            .trim( str_replace( array( $this->Prefix.$this->Separator, $this->Separator ),
+                array( '', DIRECTORY_SEPARATOR ), $ClassName ), DIRECTORY_SEPARATOR )
             .$this->Extension
         );
         return $this->checkExists( $ClassName );
@@ -106,9 +105,19 @@ class NamespaceLoader
             return is_file( $this->Path.DIRECTORY_SEPARATOR.$File );
         }
         return false;
-        // @codeCoverageIgnoreStart
-        //return ( false !== stream_resolve_include_path( $File ) );
-        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * @return string
+     */
+    public function getLoaderHash()
+    {
+
+        return sha1(
+            serialize(
+                get_object_vars( $this )
+            )
+        );
     }
 }
 

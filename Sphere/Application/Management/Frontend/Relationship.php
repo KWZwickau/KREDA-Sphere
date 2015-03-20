@@ -7,12 +7,6 @@ use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
@@ -42,69 +36,50 @@ class Relationship extends AbstractFrontend
         $View->setTitle( 'Beziehungen' );
         $View->setDescription( 'Bearbeiten' );
 
+        if (!empty( $tblPerson ) && !empty( $tblRelationship ) && !empty( $tblRelationshipType )) {
+            Management::servicePerson()->executeAddRelationship( $tblPerson, $tblRelationship, $tblRelationshipType );
+        }
+
         if (empty( $tblPerson )) {
             $View->setContent( new MessageWarning( 'Die Daten konnten nicht abgerufen werden' ) );
         } else {
             $tblPerson = Management::servicePerson()->entityPersonById( $tblPerson );
-            $tblPersonRelationshipType = Management::servicePerson()->entityPersonRelationshipTypeAll();
-            if ($tblRelationship) {
-                $tblRelationship = Management::servicePerson()->entityPersonById( $tblRelationship );
-            }
             if (empty( $tblPerson )) {
                 $View->setContent( new MessageWarning( 'Die Person konnte nicht abgerufen werden' ) );
             } else {
-                $View->setMessage( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() );
+                $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson( $tblPerson );
 
                 $View->setContent(
                     new GridLayout(
                         new GridLayoutGroup( array(
                             new GridLayoutRow( array(
                                 new GridLayoutCol( array(
-                                    new GridLayoutTitle( 'Personen', 'Zugewiesen' )
+                                    new MessageSuccess(
+                                        $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName()
+                                    )
+                                ) )
+                            ) ),
+                            new GridLayoutRow( array(
+                                new GridLayoutCol( array(
+                                    new GridLayoutTitle( 'Personen', 'Zugewiesen' ),
+                                    new TableData( $tblPersonRelationshipList, null, array(), false )
                                 ), 5 ),
                                 new GridLayoutCol( array(
-
-                                    ( $tblRelationship ?
-                                        new GridLayoutTitle( '', 'Ausgewählte Person' ).
-                                        new FormDefault(
-                                            new GridFormGroup( array(
-                                                    new GridFormRow( array(
-                                                        new GridFormCol( array(
-                                                            new MessageWarning( $tblRelationship->getTblPersonSalutation()->getName().' '.$tblRelationship->getFullName() ),
-                                                        ) )
-                                                    ) ),
-                                                    new GridFormRow( array(
-                                                        new GridFormCol( array(
-                                                            new InputSelect( 'tblRelationshipType', 'Beziehungsart',
-                                                                array( 'Name' => $tblPersonRelationshipType )
-                                                            ),
-                                                        ) )
-                                                    ) ),
-                                                    new GridFormRow( array(
-                                                        new GridFormCol( array(
-                                                            new MessageSuccess( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() ),
-                                                        ) )
-                                                    ) ),
-                                                )
-                                            ), new ButtonSubmitPrimary( 'Beziehung hinzufügen' )
-                                        )
-                                        : '' ),
                                     new GridLayoutTitle( 'Personen', 'Suchen' ),
                                     new TableData(
                                         '/Sphere/Management/REST/PersonListRelationship?tblPerson='.$tblPerson->getId()
                                         , null,
                                         array(
-                                            'Id'         => '#',
-                                            'LastName'   => 'Nachname',
-                                            'FirstName'  => 'Vorname',
-                                            'MiddleName' => 'Zweitname',
-                                            'Option'     => 'Option'
+                                            'Id' => '#',
+                                            'Name'   => 'Name',
+                                            'Option' => 'Option'
                                         ),
                                         array(
                                             "lengthChange" => true,
                                             "lengthMenu"   => [ [ 5, 10 ], [ 5, 10 ] ],
                                             "pageLength"   => 5,
                                             "columnDefs"   => array(
+                                                array( "orderable" => false, "targets" => 0 ),
                                                 array( "orderable" => false, "targets" => -1 )
                                             )
                                         )

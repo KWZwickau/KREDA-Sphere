@@ -57,10 +57,16 @@
                     </dd>
                 </dl>
             </div>
-            <div class="footer-copyright text-center">
-                © 2014 - {{ "now"|date("Y") }} | Mandant: {{ PositionConsumer }} | Erstellt in {{ PositionRuntime }}
+            <div class="footer-copyright text-center small">
+                Mandant: {{ PositionConsumer }}
+                <br/>
+                <br/>
+                Erstellt in {{ PositionRuntime }}
+                <br/>
+                {{ PositionHost }}
+                <br/>
+                © 2014 - {{ "now"|date("Y") }}
                 <div class="text-left">
-                    <br/>
                     {{ PositionDebugger }}
                 </div>
             </div>

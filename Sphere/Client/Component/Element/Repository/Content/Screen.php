@@ -145,6 +145,7 @@ class Screen extends AbstractContent implements IElementInterface
         $this->Template->setVariable( 'PositionContent', implode( '', $this->PositionContent ) );
         $Debug = $this->extensionDebugger();
         $this->Template->setVariable( 'PositionDebugger', $Debug->getProtocol() );
+        $this->Template->setVariable( 'PositionHost', gethostname() );
         $this->Template->setVariable( 'PositionRuntime', $Debug->getRuntime() );
         $Consumer = Gatekeeper::serviceConsumer()->entityConsumerBySession();
         $this->Template->setVariable( 'PositionConsumer',

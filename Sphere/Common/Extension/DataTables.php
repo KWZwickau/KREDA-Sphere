@@ -134,13 +134,15 @@ class DataTables extends AbstractExtension
         if (isset( $this->Request['order'] )) {
             $OrderBy = array();
             foreach ((array)$this->Request['order'] as $Column) {
-                array_push(
-                    $OrderBy,
-                    new OrderBy(
-                        self::QUERY_BUILDER_ALIAS.'.'.$this->Request['columns'][$Column['column']]['data'],
-                        strtoupper( $Column['dir'] )
-                    )
-                );
+                if ($this->Request['columns'][$Column['column']]['orderable'] != 'false') {
+                    array_push(
+                        $OrderBy,
+                        new OrderBy(
+                            self::QUERY_BUILDER_ALIAS.'.'.$this->Request['columns'][$Column['column']]['data'],
+                            strtoupper( $Column['dir'] )
+                        )
+                    );
+                }
             }
             return $OrderBy;
         } else {

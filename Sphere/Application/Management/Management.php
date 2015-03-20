@@ -51,22 +51,6 @@ class Management extends Module\Education
         /**
          * Observer
          */
-
-        /**
-         * REST Service
-         */
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListInterest',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId() );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListStudent',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId() );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListGuardian',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId() );
     }
 
     /**
@@ -122,15 +106,5 @@ class Management extends Module\Education
         $View->setTitle( 'Verwaltung' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
-    }
-
-    /**
-     * @param int $tblPersonType
-     */
-    public static function restPersonListByType( $tblPersonType )
-    {
-
-        $tblPersonType = Management::servicePerson()->entityPersonTypeById( $tblPersonType );
-        print Management::servicePerson()->tablePersonAllByType( $tblPersonType );
     }
 }
