@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
@@ -21,7 +22,9 @@ class TblConsumer extends AbstractEntity
 
     const ATTR_NAME = 'Name';
     const ATTR_SUFFIX = 'DatabaseSuffix';
+
     /**
+     * @OneToOne(fetch="EXTRA_LAZY")
      * @Column(type="bigint")
      */
     public $serviceManagement_Address;

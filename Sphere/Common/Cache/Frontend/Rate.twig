@@ -1,4 +1,4 @@
-{% if( CountHits >= 0 ) and ( CountMisses >= 0 ) %}
+{% if( CountHits > 0 ) and ( CountMisses > 0 ) %}
     {% if(CountHits+CountMisses > 0) %}
         {% set Success = 100/(CountHits+CountMisses)*CountHits %}
     {% else %}

@@ -12,14 +12,47 @@ class TableData extends TableDefault
 {
 
     /**
-     * @param AbstractEntity[] $DataList
-     * @param GridTableTitle   $Title
-     * @param array            $ColumnDefinition
-     * @param bool|array       $Interactive
+     * @param string|AbstractEntity[] $DataList
+     * @param GridTableTitle          $Title
+     * @param array                   $ColumnDefinition
+     * @param bool|array              $Interactive
      */
     function __construct( $DataList, GridTableTitle $Title = null, $ColumnDefinition = array(), $Interactive = true )
     {
 
+        /**
+         * Server-Side-Processing
+         */
+        if (is_string( $DataList ) && ( $Interactive || is_array( $Interactive ) )) {
+
+            $DataColumns = array_keys( $ColumnDefinition );
+            array_walk( $DataColumns, function ( &$V ) {
+
+                $V = array( 'data' => $V );
+            } );
+            if (is_array( $Interactive )) {
+                $Interactive = array_merge_recursive( $Interactive, array(
+                    "processing" => true,
+                    "serverSide" => true,
+                    "ajax"       => ( false === strpos( self::getUrlBase().$DataList,
+                        '?' ) ? self::getUrlBase().$DataList.'?REST=true' : self::getUrlBase().$DataList.'&REST=true' ),
+                    "columns"    => $DataColumns
+                ) );
+            } else {
+                $Interactive = array(
+                    "processing" => true,
+                    "serverSide" => true,
+                    "ajax" => ( false === strpos( self::getUrlBase().$DataList,
+                        '?' ) ? self::getUrlBase().$DataList.'?REST=true' : self::getUrlBase().$DataList.'&REST=true' ),
+                    "columns"    => $DataColumns
+                );
+            }
+            $DataList = array();
+        }
+
+        /**
+         *
+         */
         if (!is_array( $DataList )) {
             $DataList = array( $DataList );
         }
@@ -69,7 +102,7 @@ class TableData extends TableDefault
             $R = new GridTableRow( $R );
         }, $ColumnDefinition );
 
-        if (count( $DataList ) > 0) {
+        if (count( $DataList ) > 0 || $Interactive) {
             parent::__construct(
                 new GridTableHead( new GridTableRow( $GridHead ) ), new GridTableBody( $DataList ), $Title,
                 $Interactive, null

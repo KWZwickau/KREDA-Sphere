@@ -8,6 +8,7 @@ use KREDA\Sphere\Common\Cache\Frontend\Status;
 use KREDA\Sphere\Common\Cache\Type\ApcSma;
 use KREDA\Sphere\Common\Cache\Type\Apcu;
 use KREDA\Sphere\Common\Cache\Type\ApcUser;
+use KREDA\Sphere\Common\Cache\Type\Memcached;
 use KREDA\Sphere\Common\Cache\Type\OpCache;
 use KREDA\Sphere\Common\Cache\Type\TwigCache;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
@@ -54,6 +55,9 @@ class Cache extends AbstractFrontend
 
         $View->setContent(
             new FormDefault( array(
+                new GridFormGroup( new GridFormRow(
+                    new GridFormCol( new Status( new Memcached() ) )
+                ), new GridFormTitle( 'Memcached' ) ),
                 new GridFormGroup( new GridFormRow(
                     new GridFormCol( new Status( new Apcu() ) )
                 ), new GridFormTitle( 'APCu' ) ),

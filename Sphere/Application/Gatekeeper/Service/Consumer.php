@@ -18,6 +18,10 @@ class Consumer extends EntityAction
 
     /** @var null|Handler $DatabaseHandler */
     protected static $DatabaseHandler = null;
+    /** @var array $ConsumerByIdCache */
+    private static $ConsumerByIdCache = array();
+    /** @var array $ConsumerByIdSuffix */
+    private static $ConsumerBySuffixCache = array();
 
     /**
      * @throws \Exception
@@ -51,7 +55,11 @@ class Consumer extends EntityAction
     public function entityConsumerById( $Id )
     {
 
-        return parent::entityConsumerById( $Id );
+        if (array_key_exists( $Id, self::$ConsumerByIdCache )) {
+            return self::$ConsumerByIdCache[$Id];
+        }
+        self::$ConsumerByIdCache[$Id] = parent::entityConsumerById( $Id );
+        return self::$ConsumerByIdCache[$Id];
     }
 
     /**
@@ -104,7 +112,11 @@ class Consumer extends EntityAction
     public function entityConsumerBySuffix( $Suffix )
     {
 
-        return parent::entityConsumerBySuffix( $Suffix );
+        if (array_key_exists( $Suffix, self::$ConsumerBySuffixCache )) {
+            return self::$ConsumerBySuffixCache[$Suffix];
+        }
+        self::$ConsumerBySuffixCache[$Suffix] = parent::entityConsumerBySuffix( $Suffix );
+        return self::$ConsumerBySuffixCache[$Suffix];
     }
 
     /**

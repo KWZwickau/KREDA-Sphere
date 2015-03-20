@@ -40,11 +40,15 @@ class ZipArchive implements ICompressionInterface
         if (true === $Handler->open( $this->Location )) {
             $Detail = $Handler->statIndex( 0 );
             $Target = substr( $Detail['name'], 0, strlen( $Detail['name'] ) - 1 );
-            $Handler->extractTo( $Location );
-            $Handler->close();
+            if ($Handler->extractTo( $Location )) {
+                $Handler->close();
+            } else {
+                unlink( $this->Location );
+                return 0;
+            }
         } else {
             unlink( $this->Location );
-            throw new ExtractException();
+            return 0;
         }
         return $Target;
     }

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Common\AbstractEntity;
@@ -13,7 +14,7 @@ use KREDA\Sphere\Common\AbstractEntity;
 /**
  * @Entity
  * @Table(name="tblPerson")
- * @Cache(usage="READ_ONLY")
+ * @Cache(usage="NONSTRICT_READ_WRITE")
  */
 class TblPerson extends AbstractEntity
 {
@@ -22,6 +23,7 @@ class TblPerson extends AbstractEntity
     const ATTR_TBL_PERSON_GENDER = 'tblPersonGender';
     const ATTR_TBL_PERSON_SALUTATION = 'tblPersonSalutation';
 
+    const ATTR_TITLE = 'Title';
     const ATTR_FIRST_NAME = 'FirstName';
     const ATTR_MIDDLE_NAME = 'MiddleName';
     const ATTR_LAST_NAME = 'LastName';
@@ -33,6 +35,10 @@ class TblPerson extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $Id;
+    /**
+     * @Column(type="string")
+     */
+    protected $Title;
     /**
      * @Column(type="string")
      */
@@ -58,14 +64,17 @@ class TblPerson extends AbstractEntity
      */
     protected $Nationality;
     /**
+     * @OneToOne(targetEntity="TblPersonType",fetch="EXTRA_LAZY")
      * @Column(type="bigint")
      */
     protected $tblPersonType;
     /**
+     * @OneToOne(targetEntity="TblPersonSalutation",fetch="EXTRA_LAZY")
      * @Column(type="bigint")
      */
     protected $tblPersonSalutation;
     /**
+     * @OneToOne(targetEntity="TblPersonGender",fetch="EXTRA_LAZY")
      * @Column(type="bigint")
      */
     protected $tblPersonGender;
@@ -271,5 +280,23 @@ class TblPerson extends AbstractEntity
     {
 
         $this->Id = $Id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+
+        return $this->Title;
+    }
+
+    /**
+     * @param string $Title
+     */
+    public function setTitle( $Title )
+    {
+
+        $this->Title = $Title;
     }
 }

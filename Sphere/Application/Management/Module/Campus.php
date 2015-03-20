@@ -11,7 +11,7 @@ use KREDA\Sphere\Client\Configuration;
  *
  * @package KREDA\Sphere\Application\Management\Module
  */
-class Campus extends Person
+class Campus extends Relationship
 {
 
     /** @var Configuration $Config */

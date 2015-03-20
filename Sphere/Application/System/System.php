@@ -49,6 +49,8 @@ class System extends Module\Consumer
         /**
          * Observer
          */
+        self::registerClientRoute( self::$Configuration, '/Sphere/System/REST/ProtocolList',
+            __CLASS__.'::restProtocolAll' );
     }
 
     /**
@@ -58,15 +60,6 @@ class System extends Module\Consumer
     {
 
         return Service\Update::getApi();
-    }
-
-    /**
-     * @return Service\Protocol
-     */
-    public static function serviceProtocol()
-    {
-
-        return Service\Protocol::getApi();
     }
 
     /**
@@ -104,5 +97,23 @@ class System extends Module\Consumer
             .'</div>'
         );
         return $View;
+    }
+
+    /**
+     *
+     */
+    public static function restProtocolAll()
+    {
+
+        print System::serviceProtocol()->tableProtocolAll();
+    }
+
+    /**
+     * @return Service\Protocol
+     */
+    public static function serviceProtocol()
+    {
+
+        return Service\Protocol::getApi();
     }
 }

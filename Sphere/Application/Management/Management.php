@@ -45,22 +45,28 @@ class Management extends Module\Education
                 Module\Account::registerApplication( $Configuration );
             }
             Module\Person::registerApplication( $Configuration );
+            Module\Relationship::registerApplication( $Configuration );
             Module\Education::registerApplication( $Configuration );
         }
         /**
          * Observer
          */
-    }
 
-    /**
-     * @param TblConsumer $tblConsumer
-     *
-     * @return Service\Education
-     */
-    public static function serviceEducation( TblConsumer $tblConsumer = null )
-    {
-
-        return Service\Education::getApi( $tblConsumer );
+        /**
+         * REST Service
+         */
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListInterest',
+            __CLASS__.'::restPersonListByType' )
+            ->setParameterDefault( 'tblPersonType',
+                Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId() );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListStudent',
+            __CLASS__.'::restPersonListByType' )
+            ->setParameterDefault( 'tblPersonType',
+                Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId() );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListGuardian',
+            __CLASS__.'::restPersonListByType' )
+            ->setParameterDefault( 'tblPersonType',
+                Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId() );
     }
 
     /**
@@ -72,6 +78,17 @@ class Management extends Module\Education
     {
 
         return Service\Person::getApi( $tblConsumer );
+    }
+
+    /**
+     * @param TblConsumer $tblConsumer
+     *
+     * @return Service\Education
+     */
+    public static function serviceEducation( TblConsumer $tblConsumer = null )
+    {
+
+        return Service\Education::getApi( $tblConsumer );
     }
 
     /**
@@ -107,4 +124,13 @@ class Management extends Module\Education
         return $View;
     }
 
+    /**
+     * @param int $tblPersonType
+     */
+    public static function restPersonListByType( $tblPersonType )
+    {
+
+        $tblPersonType = Management::servicePerson()->entityPersonTypeById( $tblPersonType );
+        print Management::servicePerson()->tablePersonAllByType( $tblPersonType );
+    }
 }

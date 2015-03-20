@@ -53,6 +53,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPersonType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 
@@ -69,6 +70,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPersonGender', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 
@@ -85,6 +87,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPersonSalutation', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 
@@ -104,24 +107,32 @@ abstract class EntitySchema extends AbstractService
     ) {
 
         $Table = $this->schemaTableCreate( $Schema, 'tblPerson' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'Title' )) {
+            $Table->addColumn( 'Title', 'string' );
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'FirstName' )) {
             $Table->addColumn( 'FirstName', 'string' );
         }
+        $Table->addIndex( array( 'FirstName' ) );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'MiddleName' )) {
             $Table->addColumn( 'MiddleName', 'string' );
         }
+        $Table->addIndex( array( 'MiddleName' ) );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'LastName' )) {
             $Table->addColumn( 'LastName', 'string' );
         }
+        $Table->addIndex( array( 'LastName' ) );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'Birthday' )) {
             $Table->addColumn( 'Birthday', 'date' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'Birthplace' )) {
             $Table->addColumn( 'Birthplace', 'string' );
         }
+        $Table->addIndex( array( 'Birthplace' ) );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'Nationality' )) {
             $Table->addColumn( 'Nationality', 'string' );
         }
+        $Table->addIndex( array( 'Nationality' ) );
         $this->schemaTableAddForeignKey( $Table, $tblPersonType );
         $this->schemaTableAddForeignKey( $Table, $tblPersonGender );
         $this->schemaTableAddForeignKey( $Table, $tblPersonSalutation );
@@ -142,6 +153,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPersonRelationshipType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        $Table->addUniqueIndex( array( 'Name' ) );
         return $Table;
     }
 

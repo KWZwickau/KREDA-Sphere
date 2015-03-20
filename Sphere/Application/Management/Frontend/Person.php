@@ -9,6 +9,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MapMarkerIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -25,7 +26,13 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
+use Symfony\Component\Console\Helper\Table;
 
 /**
  * Class Person
@@ -46,30 +53,30 @@ class Person extends AbstractFrontend
         $View->setDescription( 'Übersicht' );
         $View->setMessage( 'Zeigt die Anzahl an Personen in den jeweiligen Personengruppen' );
         $View->setContent( new TableData( array(
-            array(
-                'Personen' => new GroupIcon().'&nbsp;&nbsp;Alle',
-                'Anzahl'   => count( ( $tblPersonList = Management::servicePerson()->entityPersonAll()
-                ) ? $tblPersonList : array() )
-            ),
-            array(
-                'Personen' => new GroupIcon().'&nbsp;&nbsp;Interessenten',
-                'Anzahl'   => count( ( $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-                    Management::servicePerson()->entityPersonTypeByName( 'Interessent' )
-                ) ) ? $tblPersonList : array() )
-            ),
-            array(
-                'Personen' => new GroupIcon().'&nbsp;&nbsp;Schüler',
-                'Anzahl'   => count( ( $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-                    Management::servicePerson()->entityPersonTypeByName( 'Schüler' )
-                ) ) ? $tblPersonList : array() )
-            ),
-            array(
-                'Personen' => new GroupIcon().'&nbsp;&nbsp;Sorgeberechtigte',
-                'Anzahl'   => count( ( $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-                    Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )
-                ) ) ? $tblPersonList : array() )
-            )
-        ), null, array(), false ) );
+                array(
+                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Alle',
+                    'Anzahl'   => Management::servicePerson()->countPersonAll()
+                ),
+                array(
+                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Interessenten',
+                    'Anzahl'   => Management::servicePerson()->countPersonAllByType(
+                        Management::servicePerson()->entityPersonTypeByName( 'Interessent' )
+                    )
+                ),
+                array(
+                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Schüler',
+                    'Anzahl'   => Management::servicePerson()->countPersonAllByType(
+                        Management::servicePerson()->entityPersonTypeByName( 'Schüler' )
+                    )
+                ),
+                array(
+                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Sorgeberechtigte',
+                    'Anzahl'   => Management::servicePerson()->countPersonAllByType(
+                        Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )
+                    )
+                )
+            ), null, array(), false )
+        );
 
         return $View;
     }
@@ -108,12 +115,13 @@ class Person extends AbstractFrontend
         $tblPersonSalutationAll = Management::servicePerson()->entityPersonSalutationAll();
         $tblPersonGenderAll = Management::servicePerson()->entityPersonGenderAll();
         $tblPersonTypeAll = Management::servicePerson()->entityPersonTypeAll();
-        $PersonNationality = Management::servicePerson()->entityPersonAll();
-        $PersonBirthPlace = Management::servicePerson()->entityPersonAll();
-        if (!empty( $PersonNationality )) {
-            array_walk( $PersonNationality, function ( TblPerson &$P ) {
+        $PersonNationality = Management::servicePerson()->listPersonNationality();
+        $PersonBirthPlace = Management::servicePerson()->listPersonBirthplace();
 
-                $P = $P->getNationality();
+        if (!empty( $PersonNationality )) {
+            array_walk( $PersonNationality, function ( &$P ) {
+
+                $P = $P['Nationality'];
             } );
         } else {
             $PersonNationality = array();
@@ -121,9 +129,9 @@ class Person extends AbstractFrontend
         $PersonNationality = array_unique( $PersonNationality );
 
         if (!empty( $PersonBirthPlace )) {
-            array_walk( $PersonBirthPlace, function ( TblPerson &$P ) {
+            array_walk( $PersonBirthPlace, function ( &$P ) {
 
-                $P = $P->getBirthplace();
+                $P = $P['Birthplace'];
             } );
         } else {
             $PersonBirthPlace = array();
@@ -136,6 +144,9 @@ class Person extends AbstractFrontend
                     new GridFormCol(
                         new InputSelect( 'PersonName[Salutation]', 'Anrede',
                             array( 'Name' => $tblPersonSalutationAll ), new ConversationIcon()
+                        ), 4 ),
+                    new GridFormCol(
+                        new InputText( 'PersonName[Title]', 'Titel', 'Titel', new ConversationIcon()
                         ), 4 )
                 ) ),
                 new GridFormRow( array(
@@ -185,20 +196,19 @@ class Person extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Interessenten' );
-        $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-            Management::servicePerson()->entityPersonTypeByName( 'Interessent' )
+        $View->setContent(
+            new TableData( '/Sphere/Management/REST/PersonListInterest', null,
+                array(
+                    'Id'         => '#',
+                    'FirstName'  => 'Vorname',
+                    'MiddleName' => 'Zweitname',
+                    'LastName'   => 'Nachname',
+                    'Birthday'   => 'Geburtstag',
+                    'Birthplace' => 'Geburtsort',
+                    'Option'     => 'Option'
+                )
+            )
         );
-        if (empty( $tblPersonList )) {
-            $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
-        } else {
-            array_walk( $tblPersonList, function ( TblPerson &$P ) {
-
-                $P->Option = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
-                    array( 'Id' => $P->getId() )
-                );
-            } );
-            $View->setContent( new TableData( $tblPersonList ) );
-        }
         return $View;
     }
 
@@ -211,20 +221,19 @@ class Person extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Schüler' );
-        $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-            Management::servicePerson()->entityPersonTypeByName( 'Schüler' )
+        $View->setContent(
+            new TableData( '/Sphere/Management/REST/PersonListStudent', null,
+                array(
+                    'Id'         => '#',
+                    'FirstName'  => 'Vorname',
+                    'MiddleName' => 'Zweitname',
+                    'LastName'   => 'Nachname',
+                    'Birthday'   => 'Geburtstag',
+                    'Birthplace' => 'Geburtsort',
+                    'Option'     => 'Option'
+                )
+            )
         );
-        if (empty( $tblPersonList )) {
-            $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
-        } else {
-            array_walk( $tblPersonList, function ( TblPerson &$P ) {
-
-                $P->Option = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
-                    array( 'Id' => $P->getId() )
-                );
-            } );
-            $View->setContent( new TableData( $tblPersonList ) );
-        }
         return $View;
     }
 
@@ -237,20 +246,19 @@ class Person extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Sorgeberechtigte' );
-        $tblPersonList = Management::servicePerson()->entityPersonAllByType(
-            Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )
+        $View->setContent(
+            new TableData( '/Sphere/Management/REST/PersonListGuardian', null,
+                array(
+                    'Id'         => '#',
+                    'FirstName'  => 'Vorname',
+                    'MiddleName' => 'Zweitname',
+                    'LastName'   => 'Nachname',
+                    'Birthday'   => 'Geburtstag',
+                    'Birthplace' => 'Geburtsort',
+                    'Option'     => 'Option'
+                )
+            )
         );
-        if (empty( $tblPersonList )) {
-            $View->setContent( new MessageWarning( 'Keine Daten verfügbar' ) );
-        } else {
-            array_walk( $tblPersonList, function ( TblPerson &$P ) {
-
-                $P->Option = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', null,
-                    array( 'Id' => $P->getId() )
-                );
-            } );
-            $View->setContent( new TableData( $tblPersonList ) );
-        }
         return $View;
     }
 
@@ -278,6 +286,7 @@ class Person extends AbstractFrontend
 
                 $View->setMessage( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() );
                 $_POST['PersonName']['Salutation'] = $tblPerson->getTblPersonSalutation()->getId();
+                $_POST['PersonName']['Title'] = $tblPerson->getTitle();
                 $_POST['PersonName']['First'] = $tblPerson->getFirstName();
                 $_POST['PersonName']['Middle'] = $tblPerson->getMiddleName();
                 $_POST['PersonName']['Last'] = $tblPerson->getLastName();
@@ -289,14 +298,13 @@ class Person extends AbstractFrontend
                 $FormPersonBasic = self::formPersonBasic();
                 $FormPersonBasic->appendFormButton( new ButtonSubmitSuccess( 'Änderungen speichern' ) );
 
-                $FormPersonGuardian = self::formPersonRelationshipGuardian();
-                $FormPersonGuardian->appendFormButton( new ButtonSubmitPrimary( 'Hinzufügen' ) );
+                $FormPersonRelationship = self::formPersonRelationship( $tblPerson );
 
                 $View->setContent(
                     Management::servicePerson()->executeChangePerson(
                         $FormPersonBasic, $tblPerson, $PersonName, $PersonInformation, $BirthDetail
                     )
-                    .$FormPersonGuardian
+                    .$FormPersonRelationship
                 );
             }
         }
@@ -304,19 +312,24 @@ class Person extends AbstractFrontend
     }
 
     /**
+     * @param TblPerson $tblPerson
+     *
      * @return FormDefault
      */
-    private static function formPersonRelationshipGuardian()
+    private static function formPersonRelationship( TblPerson $tblPerson )
     {
 
-        return new FormDefault(
-            new GridFormGroup( array(
-                new GridFormRow( array(
-                    new GridFormCol(
-                        array()
+        return new GridLayout(
+            new GridLayoutGroup( array(
+                new GridLayoutRow( array(
+                    new GridLayoutCol(
+                        new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Relationship', new PencilIcon(),
+                            array(
+                                'tblPerson' => $tblPerson->getId()
+                            ) )
                         , 4 )
                 ) ),
-            ), new GridFormTitle( 'Sorgeberechtigte' ) )
+            ), new GridLayoutTitle( 'Beziehungen' ) )
         );
     }
 }

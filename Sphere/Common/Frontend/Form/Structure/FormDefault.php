@@ -28,8 +28,10 @@ class FormDefault extends AbstractForm
         }
         $this->GridGroupList = $GridGroupList;
 
-        if (!is_array( $FormButtonList )) {
+        if (!is_array( $FormButtonList ) && null !== $FormButtonList) {
             $FormButtonList = array( $FormButtonList );
+        } elseif (empty( $FormButtonList )) {
+            $FormButtonList = array();
         }
         $this->GridButtonList = $FormButtonList;
 

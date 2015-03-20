@@ -3,7 +3,10 @@ namespace KREDA\Sphere\Common;
 
 use Github\Client;
 use Github\HttpClient\CachedHttpClient;
+use KREDA\Sphere\Common\Database\Schema\EntityRepository;
+use KREDA\Sphere\Common\Extension\DataTables;
 use KREDA\Sphere\Common\Extension\Debugger;
+use KREDA\Sphere\Common\Extension\Faker;
 use KREDA\Sphere\Common\Extension\ModHex;
 use Markdownify\Converter;
 use MOC\V\Component\Database\Database;
@@ -153,11 +156,34 @@ abstract class AbstractExtension
     }
 
     /**
+     * @param EntityRepository $EntityRepository
+     * @param array            $Filter array( 'ColumnName' => 'Value', ... )
+     *
+     * @return DataTables
+     */
+    final public static function extensionDataTables( EntityRepository $EntityRepository, $Filter = array() )
+    {
+
+        return new DataTables( $EntityRepository, $Filter );
+    }
+
+    /**
      * @return Converter
      */
     final public static function extensionMarkdownify()
     {
 
         return new Converter();
+    }
+
+    /**
+     * @param string $Locale de_DE
+     *
+     * @return Faker
+     */
+    final public static function extensionFaker( $Locale = 'de_DE' )
+    {
+
+        return new Faker( $Locale );
     }
 }

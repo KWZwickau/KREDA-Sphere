@@ -33,8 +33,8 @@ class Account extends EntityAction
     const API_SIGN_IN_SUCCESS = 11;
     /** @var null|Handler $DatabaseHandler */
     protected static $DatabaseHandler = null;
-    /** @var bool $ValidSessionCache */
-    private static $ValidSessionCache = false;
+    /** @var null|bool $ValidSessionCache */
+    private static $ValidSessionCache = null;
 
     /**
      * @throws \Exception
@@ -395,14 +395,12 @@ class Account extends EntityAction
     public function checkIsValidSession()
     {
 
-        if (self::$ValidSessionCache) {
-            return true;
-        }
-
-        if (false === $this->entityAccountBySession()) {
-            self::$ValidSessionCache = false;
-        } else {
-            self::$ValidSessionCache = true;
+        if (null === self::$ValidSessionCache) {
+            if (false === $this->entityAccountBySession()) {
+                self::$ValidSessionCache = false;
+            } else {
+                self::$ValidSessionCache = true;
+            }
         }
         return self::$ValidSessionCache;
     }

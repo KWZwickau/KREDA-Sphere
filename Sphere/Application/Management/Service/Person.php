@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonGender;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipType;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonSalutation;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
@@ -74,6 +75,24 @@ class Person extends EntityAction
     }
 
     /**
+     * @return array|bool
+     */
+    public function  listPersonNationality()
+    {
+
+        return parent::listPersonNationality();
+    }
+
+    /**
+     * @return array|bool
+     */
+    public function  listPersonBirthplace()
+    {
+
+        return parent::listPersonBirthplace();
+    }
+
+    /**
      * @return bool|TblPerson[]
      */
     public function entityPersonAll()
@@ -112,10 +131,10 @@ class Person extends EntityAction
     /**
      * @param AbstractForm $View
      *
-     * @param TblPerson $tblPerson
-     * @param array     $PersonName
-     * @param array     $PersonInformation
-     * @param array     $BirthDetail
+     * @param TblPerson    $tblPerson
+     * @param array        $PersonName
+     * @param array        $PersonInformation
+     * @param array        $BirthDetail
      *
      * @return AbstractForm
      */
@@ -193,12 +212,9 @@ class Person extends EntityAction
 
         if (!$Error) {
             if ($this->actionChangePerson(
-                $tblPerson,
-                $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
-                $BirthDetail['Date'], $BirthDetail['Place'],
-                $PersonInformation['Nationality'],
-                $tblPersonSalutation,
-                $tblPersonGender,
+                $tblPerson, $PersonName['Title'], $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
+                $BirthDetail['Date'],
+                $BirthDetail['Place'], $PersonInformation['Nationality'], $tblPersonSalutation, $tblPersonGender,
                 $tblPersonType
             )
             ) {
@@ -330,11 +346,9 @@ class Person extends EntityAction
 
         if (!$Error) {
             $Entity = $this->actionCreatePerson(
-                $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
-                $BirthDetail['Date'], $BirthDetail['Place'],
-                $PersonInformation['Nationality'],
-                $tblPersonSalutation,
-                $tblPersonGender,
+                $PersonName['Title'], $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
+                $BirthDetail['Date'],
+                $BirthDetail['Place'], $PersonInformation['Nationality'], $tblPersonSalutation, $tblPersonGender,
                 $tblPersonType
             );
             if ($Button['Submit'] == 'Anlegen') {
@@ -342,7 +356,7 @@ class Person extends EntityAction
                 .new Redirect( '/Sphere/Management/Person/Create', 0 );
             } else {
                 return new MessageSuccess( 'Der Person wurde erfolgreich angelegt' )
-                .new Redirect( '/Sphere/Management/Person/Edit', 5, array( 'Id' => $Entity->getId() ) );
+                .new Redirect( '/Sphere/Management/Person/Edit', 0, array( 'Id' => $Entity->getId() ) );
             }
         } else {
 
@@ -353,12 +367,23 @@ class Person extends EntityAction
     /**
      * @param TblPersonType $tblPersonType
      *
-     * @return bool|TblPerson[]
+     * @return bool|Person\Entity\TblPerson[]
      */
     public function entityPersonAllByType( TblPersonType $tblPersonType )
     {
 
         return parent::entityPersonAllByType( $tblPersonType );
+    }
+
+    /**
+     * @param TblPersonType $tblPersonType
+     *
+     * @return string
+     */
+    public function tablePersonAllByType( TblPersonType $tblPersonType )
+    {
+
+        return parent::tablePersonAllByType( $tblPersonType );
     }
 
     /**
@@ -370,6 +395,46 @@ class Person extends EntityAction
     {
 
         return parent::entityPersonTypeByName( $Name );
+    }
+
+    /**
+     * @return int
+     */
+    public function countPersonAll()
+    {
+
+        return parent::countPersonAll();
+    }
+
+    /**
+     * @param TblPersonType $tblPersonType
+     *
+     * @return int
+     */
+    public function countPersonAllByType( TblPersonType $tblPersonType )
+    {
+
+        return parent::countPersonAllByType( $tblPersonType );
+    }
+
+    /**
+     * @param int $tblPerson
+     *
+     * @return string
+     */
+    public function tablePersonRelationship( $tblPerson )
+    {
+
+        return parent::tablePersonRelationship( $tblPerson );
+    }
+
+    /**
+     * @return bool|TblPersonRelationshipType[]
+     */
+    public function entityPersonRelationshipTypeAll()
+    {
+
+        return parent::entityPersonRelationshipTypeAll();
     }
 
 }

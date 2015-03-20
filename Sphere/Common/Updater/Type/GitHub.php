@@ -28,7 +28,6 @@ class GitHub extends CurlHandler implements IUpdaterInterface
      * @param $Location
      *
      * @return string
-     * @throws \KREDA\Sphere\Common\Updater\Exception\ExtractException
      */
     public function extractArchive( $Location )
     {

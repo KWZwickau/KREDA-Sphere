@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Common\Database\Schema;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -90,6 +89,34 @@ class EntityManager
 
         $this->EntityManager->persist( $Entity );
         $this->flushCache();
+        return $this;
+    }
+
+    /**
+     * MUST use flushCache to commit bulk
+     *
+     * @param $Entity
+     *
+     * @return EntityManager
+     */
+    final public function bulkSaveEntity( $Entity )
+    {
+
+        $this->EntityManager->persist( $Entity );
+        return $this;
+    }
+
+    /**
+     * MUST use flushCache to commit bulk
+     *
+     * @param $Entity
+     *
+     * @return EntityManager
+     */
+    final public function bulkKillEntity( $Entity )
+    {
+
+        $this->EntityManager->remove( $Entity );
         return $this;
     }
 }

@@ -47,6 +47,18 @@ class Screen extends AbstractContent implements IElementInterface
     }
 
     /**
+     * @param Container $Container
+     *
+     * @return Screen
+     */
+    public function setNavigation( Container $Container )
+    {
+
+        $this->PositionNavigation = array( $Container->getContent() );
+        return $this;
+    }
+
+    /**
      * @param \Exception $E
      *
      * @return Screen
@@ -93,6 +105,18 @@ class Screen extends AbstractContent implements IElementInterface
     {
 
         array_push( $this->PositionContent, $Container->getContent() );
+        return $this;
+    }
+
+    /**
+     * @param Container $Container
+     *
+     * @return Screen
+     */
+    public function setContent( Container $Container )
+    {
+
+        $this->PositionContent = array( $Container->getContent() );
         return $this;
     }
 

@@ -110,7 +110,6 @@ class Gatekeeper extends Module\MyAccount
     {
 
         return false;
-
     }
 
     /**

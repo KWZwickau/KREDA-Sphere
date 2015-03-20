@@ -161,10 +161,10 @@ class Update extends AbstractFrontend
                                 "Speed": 0,
                                 "Time": 0
                             });
-                            console.log( Response );
-                            jQuery("div#StatusUpdate").html( Response );
+                            jQuery("div#StatusUpdate").replaceWith( Response );
                         },
                         async: true,
+                        timeout: 0,
                         error: function(){
                             Run = false;
                             jQuery("div#StatusUpdate").ModProgress({
@@ -208,6 +208,7 @@ class Update extends AbstractFrontend
                             console.log( Response );
                         },
                         async: true,
+                        timeout: 0,
                         error: function(){
                             Run = false;
                             jQuery("div#StatusInstall").ModProgress({
@@ -240,6 +241,7 @@ class Update extends AbstractFrontend
                             Install( Response )
                         },
                         async: true,
+                        timeout: 0,
                         error: function(){
                             Run = false;
                             jQuery("div#StatusExtract").ModProgress({
@@ -270,7 +272,8 @@ class Update extends AbstractFrontend
                                 }
                             }
                         },
-                        async: true
+                        async: true,
+                        timeout: 0
                     }).done(function( Response ) {
                         if( Response ) {
                             Response = JSON.parse( Response );
@@ -314,6 +317,7 @@ class Update extends AbstractFrontend
                         }
                     },
                     async: true,
+                    timeout: 0,
                     error: function(){
                         Run = false;
                         jQuery("div#StatusDownload").ModProgress({

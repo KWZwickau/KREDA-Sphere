@@ -1,12 +1,17 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service\Person;
 
+use Doctrine\ORM\Query\Expr;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonGender;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipType;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonSalutation;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Application\System\System;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkDanger;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 
 /**
  * Class EntityAction
@@ -39,17 +44,124 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return array|bool
+     */
+    protected function listPersonNationality()
+    {
+
+        $Query = $this->getEntityManager()->getEntity( 'TblPerson' )
+            ->createQueryBuilder( 'p' )
+            ->select( 'p.Nationality' )
+            ->distinct( true )
+            ->getQuery();
+        $EntityList = $Query->getArrayResult();
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @return array|bool
+     */
+    protected function listPersonBirthplace()
+    {
+
+        $Query = $this->getEntityManager()->getEntity( 'TblPerson' )
+            ->createQueryBuilder( 'p' )
+            ->select( 'p.Birthplace' )
+            ->distinct( true )
+            ->getQuery();
+        $EntityList = $Query->getArrayResult();
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @return int
+     */
+    protected function countPersonAll()
+    {
+
+        return (int)$this->getEntityManager()->getEntity( 'TblPerson' )->count();
+    }
+
+    /**
      * @param TblPersonType $tblPersonType
      *
-     * @return bool|TblPerson[]
+     * @return int
      */
-    protected function entityPersonAllByType( TblPersonType $tblPersonType )
+    protected function countPersonAllByType( TblPersonType $tblPersonType )
     {
+
+        return (int)$this->getEntityManager()->getEntity( 'TblPerson' )->countBy( array(
+            TblPerson::ATTR_TBL_PERSON_TYPE => $tblPersonType->getId()
+        ) );
+    }
+
+    /**
+     * @param TblPersonType $tblPersonType
+     *
+     * @return bool|Entity\TblPerson[]
+     */
+    protected function entityPersonAllByType(
+        TblPersonType $tblPersonType
+    ) {
 
         $EntityList = $this->getEntityManager()->getEntity( 'TblPerson' )->findBy( array(
             TblPerson::ATTR_TBL_PERSON_TYPE => $tblPersonType->getId()
         ) );
         return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @param int $tblPerson
+     *
+     * @return string
+     */
+    protected function tablePersonRelationship( $tblPerson )
+    {
+
+        return self::extensionDataTables(
+            $this->getEntityManager()->getEntity( 'TblPerson' )
+        )
+            ->setCallbackFunction( function ( TblPerson $V, $P ) {
+
+                /** @noinspection PhpUndefinedFieldInspection */
+                $V->Option =
+                    ( new ButtonLinkPrimary( 'Auswählen', '/Sphere/Management/Person/Relationship', new PencilIcon(),
+                        array(
+                            'tblPerson'       => $P,
+                            'tblRelationship' => $V->getId()
+                        )
+                    ) )->__toString();
+                return $V;
+            }, $tblPerson )
+            ->getResult();
+    }
+
+    /**
+     * @param TblPersonType $tblPersonType
+     *
+     * @return string
+     */
+    protected function tablePersonAllByType( TblPersonType $tblPersonType )
+    {
+
+        return self::extensionDataTables(
+            $this->getEntityManager()->getEntity( 'TblPerson' ), array(
+                'tblPersonType' => $tblPersonType->getId()
+            )
+        )
+            ->setCallbackFunction( function ( TblPerson $V ) {
+
+                /** @noinspection PhpUndefinedFieldInspection */
+                $V->Option =
+                    ( new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', new PencilIcon(),
+                        array( 'Id' => $V->getId() )
+                    ) )->__toString()
+                    .( new ButtonLinkDanger( 'Löschen', '/Sphere/Management/Person/Destroy', new RemoveIcon(),
+                        array( 'Id' => $V->getId() )
+                    ) )->__toString();
+                return $V;
+            } )
+            ->getResult();
     }
 
     /**
@@ -237,6 +349,7 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblPerson $tblPerson
+     * @param string    $Title
      * @param string              $FirstName
      * @param string              $MiddleName
      * @param string              $LastName
@@ -254,6 +367,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function actionChangePerson(
         TblPerson $tblPerson,
+        $Title,
         $FirstName,
         $MiddleName,
         $LastName,
@@ -271,6 +385,7 @@ abstract class EntityAction extends EntitySchema
         $Protocol = clone $Entity;
         if (null !== $Entity) {
             $Entity->setTblPersonSalutation( $tblPersonSalutation );
+            $Entity->setTitle( $Title );
             $Entity->setFirstName( $FirstName );
             $Entity->setMiddleName( $MiddleName );
             $Entity->setLastName( $LastName );
@@ -289,6 +404,7 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param                     $Title
      * @param string              $FirstName
      * @param string              $MiddleName
      * @param string              $LastName
@@ -305,6 +421,7 @@ abstract class EntityAction extends EntitySchema
      * @return TblPerson
      */
     protected function actionCreatePerson(
+        $Title,
         $FirstName,
         $MiddleName,
         $LastName,
@@ -328,6 +445,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblPerson();
             $Entity->setTblPersonSalutation( $tblPersonSalutation );
+            $Entity->setTitle( $Title );
             $Entity->setFirstName( $FirstName );
             $Entity->setMiddleName( $MiddleName );
             $Entity->setLastName( $LastName );
