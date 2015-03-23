@@ -13,11 +13,11 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
-use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 use KREDA\Sphere\Common\Frontend\Redirect;
 use KREDA\Sphere\Common\Wire\Data;
+use KREDA\Sphere\Common\Wire\Effect;
 
 /**
  * Class Account
@@ -649,32 +649,43 @@ class Account extends EntityAction
     /**
      * @param TblAccount $tblAccount
      *
-     * @return bool|Stage
+     * @return bool|Effect
      */
     public function executeDestroyAccount( TblAccount $tblAccount )
     {
 
-        $Wire = Gatekeeper::observerDestroyAccount()->sendWire( new Data( $tblAccount->getId() ) );
-        if (true === $Wire) {
+        $Effect = Gatekeeper::observerDestroyAccount()->sendWire( new Data( $tblAccount->getId() ) );
+        if (true === $Effect) {
             return $this->actionDestroyAccount( $tblAccount );
         } else {
-            return $Wire;
+            return $Effect;
         }
     }
 
     /**
      * @param TblAccountSession $tblAccountSession
      *
-     * @return bool|Stage
+     * @return bool|Effect
      */
     public function executeDestroySession( TblAccountSession $tblAccountSession )
     {
 
-        $Wire = Gatekeeper::observerDestroySession()->sendWire( new Data( $tblAccountSession->getId() ) );
-        if (true === $Wire) {
+        $Effect = Gatekeeper::observerDestroySession()->sendWire( new Data( $tblAccountSession->getId() ) );
+        if (true === $Effect) {
             return $this->actionDestroySession( $tblAccountSession->getSession() );
         } else {
-            return $Wire;
+            return $Effect;
         }
+    }
+
+    /**
+     * @param TblPerson $tblPerson
+     *
+     * @return bool|TblAccount[]
+     */
+    public function entityAccountAllByPerson( TblPerson $tblPerson )
+    {
+
+        return parent::entityAccountAllByPerson( $tblPerson );
     }
 }

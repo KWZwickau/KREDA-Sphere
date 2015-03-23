@@ -15,6 +15,8 @@ use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 use KREDA\Sphere\Common\Frontend\Redirect;
+use KREDA\Sphere\Common\Wire\Data;
+use KREDA\Sphere\Common\Wire\Effect;
 
 /**
  * Class Person
@@ -343,10 +345,10 @@ class Person extends EntityAction
             );
             if ($Button['Submit'] == 'Anlegen') {
                 return new MessageSuccess( 'Die Person wurde erfolgreich angelegt' )
-                .new Redirect( '/Sphere/Management/Person/Create', 0 );
+                .new Redirect( '/Sphere/Management/Person/Create', 2 );
             } else {
                 return new MessageSuccess( 'Der Person wurde erfolgreich angelegt' )
-                .new Redirect( '/Sphere/Management/Person/Edit', 0, array( 'Id' => $Entity->getId() ) );
+                .new Redirect( '/Sphere/Management/Person/Edit', 2, array( 'Id' => $Entity->getId() ) );
             }
         } else {
 
@@ -469,6 +471,37 @@ class Person extends EntityAction
     }
 
     /**
+     * @param int $tblPersonA
+     * @param int $tblPersonB
+     * @param int $tblPersonRelationshipType
+     *
+     * @return TblPersonRelationshipList
+     */
+    public function executeRemoveRelationship(
+        $tblPersonA,
+        $tblPersonB,
+        $tblPersonRelationshipType
+    ) {
+
+        $tblPersonA = $this->entityPersonById( $tblPersonA );
+        $tblPersonB = $this->entityPersonById( $tblPersonB );
+        $tblPersonRelationshipType = $this->entityPersonRelationshipTypeById( $tblPersonRelationshipType );
+        return parent::actionRemoveRelationship( $tblPersonA, $tblPersonB, $tblPersonRelationshipType );
+    }
+
+    /**
+     * @param int $Id
+     *
+     * @return bool|TblPersonRelationshipList
+     */
+    public function entityPersonRelationshipById( $Id )
+    {
+
+        return parent::entityPersonRelationshipById( $Id );
+    }
+
+
+    /**
      * @param TblPerson $tblPerson
      *
      * @return bool|TblPersonRelationshipList[]
@@ -479,4 +512,39 @@ class Person extends EntityAction
         return parent::entityPersonRelationshipAllByPerson( $tblPerson );
     }
 
+    /**
+     * @param TblPerson $tblPerson
+     *
+     * @return bool|Effect
+     */
+    public function executeDestroyPerson( TblPerson $tblPerson )
+    {
+
+        $Effect = Management::observerDestroyPerson()->sendWire( new Data( $tblPerson->getId() ) );
+        if (true === $Effect) {
+            return $this->actionDestroyPerson( $tblPerson );
+        } else {
+            return $Effect;
+        }
+    }
+
+    /**
+     * @param TblPersonRelationshipList $tblPersonRelationshipList
+     *
+     * @return bool|Effect
+     */
+    public function executeDestroyRelationship( TblPersonRelationshipList $tblPersonRelationshipList )
+    {
+
+        $Effect = Management::observerDestroyRelationship()->sendWire( new Data( $tblPersonRelationshipList->getId() ) );
+        if (true === $Effect) {
+            return $this->actionRemoveRelationship(
+                $tblPersonRelationshipList->getTblPersonA(),
+                $tblPersonRelationshipList->getTblPersonB(),
+                $tblPersonRelationshipList->getTblPersonRelationshipType()
+            );
+        } else {
+            return $Effect;
+        }
+    }
 }

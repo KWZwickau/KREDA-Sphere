@@ -21,6 +21,13 @@ class TableData extends TableDefault
     {
 
         /**
+         *
+         */
+        if (is_bool( $DataList )) {
+            $DataList = array();
+        }
+
+        /**
          * Server-Side-Processing
          */
         if (is_string( $DataList ) && ( $Interactive || is_array( $Interactive ) )) {

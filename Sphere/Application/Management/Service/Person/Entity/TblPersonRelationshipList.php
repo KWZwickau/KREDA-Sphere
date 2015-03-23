@@ -41,7 +41,7 @@ class TblPersonRelationshipList extends AbstractEntity
     protected $tblPersonB;
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -50,7 +50,7 @@ class TblPersonRelationshipList extends AbstractEntity
     }
 
     /**
-     * @param mixed $Id
+     * @param int $Id
      */
     public function setId( $Id )
     {
@@ -72,7 +72,7 @@ class TblPersonRelationshipList extends AbstractEntity
     }
 
     /**
-     * @param TblPerson $tblPerson
+     * @param null|TblPerson $tblPerson
      */
     public function setTblPersonA( TblPerson $tblPerson )
     {
@@ -95,7 +95,7 @@ class TblPersonRelationshipList extends AbstractEntity
     }
 
     /**
-     * @param TblPerson $tblPerson
+     * @param null|TblPerson $tblPerson
      */
     public function setTblPersonB( TblPerson $tblPerson )
     {
@@ -104,7 +104,7 @@ class TblPersonRelationshipList extends AbstractEntity
     }
 
     /**
-     * @return mixed
+     * @return bool|TblPersonRelationshipType
      */
     public function getTblPersonRelationshipType()
     {

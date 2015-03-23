@@ -47,6 +47,11 @@ class Person extends Account
             ->setParameterDefault( 'PersonInformation', null );
 
         self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/Destroy', __CLASS__.'::frontendDestroy'
+        )
+            ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/List/Student', __CLASS__.'::frontendListStudent'
         );
         self::registerClientRoute( self::$Configuration,
@@ -146,6 +151,19 @@ class Person extends Account
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::stageEdit( $Id, $PersonName, $PersonInformation, $BirthDetail );
+    }
+
+    /**
+     * @param null|integer $Id
+     *
+     * @return Stage
+     */
+    public static function frontendDestroy( $Id )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageDestroy( $Id );
     }
 
     /**

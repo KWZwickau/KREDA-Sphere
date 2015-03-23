@@ -15,7 +15,6 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
@@ -32,7 +31,6 @@ use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
-use Symfony\Component\Console\Helper\Table;
 
 /**
  * Class Person
@@ -98,7 +96,7 @@ class Person extends AbstractFrontend
 
         $Form = self::formPersonBasic();
         $Form->appendFormButton( new ButtonSubmitSuccess( 'Anlegen' ) );
-        $Form->appendFormButton( new ButtonSubmitPrimary( 'Anlegen & Weiter' ) );
+        $Form->appendFormButton( new ButtonSubmitSuccess( 'Anlegen & Bearbeiten' ) );
 
         $View->setContent( Management::servicePerson()->executeCreatePerson(
             $Form, $PersonName, $PersonInformation, $BirthDetail, $Button )
@@ -259,6 +257,34 @@ class Person extends AbstractFrontend
                 )
             )
         );
+        return $View;
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return Stage
+     */
+    public static function stageDestroy( $Id )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Person' );
+        $View->setDescription( 'Löschen' );
+        if (empty( $Id )) {
+            $View->setContent( new MessageWarning( 'Die Daten konnten nicht abgerufen werden' ) );
+        } else {
+            $tblPerson = Management::servicePerson()->entityPersonById( $Id );
+            if (empty( $tblPerson )) {
+                $View->setContent( new MessageWarning( 'Die Person konnte nicht abgerufen werden' ) );
+            } else {
+                if (true !== ( $Effect = Management::servicePerson()->executeDestroyPerson( $tblPerson ) )) {
+                    $View->setContent( $Effect );
+                } else {
+                    $View->setContent( self::getRedirect( '/Sphere/Management/Person', 2 ) );
+                }
+            }
+        }
         return $View;
     }
 

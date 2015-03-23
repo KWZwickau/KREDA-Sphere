@@ -42,6 +42,8 @@ class Cache extends AbstractFrontend
         if ($Clear) {
             ApcSma::clearCache();
             ApcUser::clearCache();
+            Apcu::clearCache();
+            Memcached::clearCache();
             OpCache::clearCache();
             TwigCache::clearCache();
         }

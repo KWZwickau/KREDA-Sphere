@@ -53,6 +53,7 @@ class Gatekeeper extends Module\MyAccount
          * Observer
          */
         Gatekeeper::observerDestroyAccount()->plugWire( new Plug( __CLASS__, 'listenerDestroyAccount' ) );
+        Gatekeeper::observerDestroyToken()->plugWire( new Plug( __CLASS__, 'listenerDestroyToken' ) );
         Management::observerDestroyPerson()->plugWire( new Plug( __CLASS__, 'listenerDestroyPerson' ) );
     }
 
@@ -75,12 +76,12 @@ class Gatekeeper extends Module\MyAccount
     }
 
     /**
-     * @return Service\Token
+     * @return Observer
      */
-    public static function serviceToken()
+    public static function observerDestroyToken()
     {
 
-        return Token::getApi();
+        return Observer::initWire( new Plug( __CLASS__, __FUNCTION__ ) );
     }
 
     /**
@@ -106,10 +107,58 @@ class Gatekeeper extends Module\MyAccount
      *
      * @return bool|string
      */
+    public static function listenerDestroyToken( Data $Data )
+    {
+
+        $tblToken = Gatekeeper::serviceToken()->entityTokenById( $Data->getId() );
+        $tblAccountList = Gatekeeper::serviceAccount()->entityAccountAllByToken( $tblToken );
+        $Result = array();
+        if (!empty( $tblAccountList )) {
+            foreach ((array)$tblAccountList as $tblAccount) {
+                if (true !== ( $Effect = Gatekeeper::serviceAccount()->executeDestroyAccount( $tblAccount ) )) {
+                    $Result[] = $Effect;
+                };
+            }
+        }
+        if (empty( $Result )) {
+            return true;
+        } else {
+            return implode( $Result );
+        }
+    }
+
+    /**
+     * @return Service\Token
+     */
+    public static function serviceToken()
+    {
+
+        return Token::getApi();
+    }
+
+    /**
+     * @param Data $Data
+     *
+     * @return bool|string
+     */
     public static function listenerDestroyPerson( Data $Data )
     {
 
-        return false;
+        $tblPerson = Management::servicePerson()->entityPersonById( $Data->getId() );
+        $tblAccountList = Gatekeeper::serviceAccount()->entityAccountAllByPerson( $tblPerson );
+        $Result = array();
+        if (!empty( $tblAccountList )) {
+            foreach ((array)$tblAccountList as $tblAccount) {
+                if (true !== ( $Effect = Gatekeeper::serviceAccount()->executeDestroyAccount( $tblAccount ) )) {
+                    $Result[] = $Effect;
+                };
+            }
+        }
+        if (empty( $Result )) {
+            return true;
+        } else {
+            return implode( $Result );
+        }
     }
 
     /**
@@ -128,8 +177,8 @@ class Gatekeeper extends Module\MyAccount
         if (!empty( $tblSessionList )) {
             array_walk( $tblSessionList, function ( TblAccountSession &$S ) {
 
-                if (true !== ( $Wire = Gatekeeper::serviceAccount()->executeDestroySession( $S ) )) {
-                    $S = $Wire;
+                if (true !== ( $Effect = Gatekeeper::serviceAccount()->executeDestroySession( $S ) )) {
+                    $S = $Effect;
                 } else {
                     $S = false;
                 }
@@ -154,6 +203,15 @@ class Gatekeeper extends Module\MyAccount
      * @return Observer
      */
     public static function observerDestroySession()
+    {
+
+        return Observer::initWire( new Plug( __CLASS__, __FUNCTION__ ) );
+    }
+
+    /**
+     * @return Observer
+     */
+    public static function observerDestroyConsumer()
     {
 
         return Observer::initWire( new Plug( __CLASS__, __FUNCTION__ ) );

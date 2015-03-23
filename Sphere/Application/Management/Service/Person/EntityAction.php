@@ -228,7 +228,7 @@ abstract class EntityAction extends EntitySchema
             TblPersonRelationshipList::ATTR_TBL_PERSON_B => $tblPerson->getId()
         ) );
         if (is_array( $EntityListA ) && is_array( $EntityListB )) {
-            $EntityList = $EntityListA + $EntityListB;
+            $EntityList = array_merge( $EntityListA, $EntityListB );
         } else {
             if (is_array( $EntityListA )) {
                 $EntityList = $EntityListA;
@@ -318,6 +318,18 @@ abstract class EntityAction extends EntitySchema
     {
 
         $Entity = $this->getEntityManager()->getEntityById( 'TblPersonRelationshipType', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblPersonRelationshipList
+     */
+    protected function entityPersonRelationshipById( $Id )
+    {
+
+        $Entity = $this->getEntityManager()->getEntityById( 'TblPersonRelationshipList', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -499,30 +511,21 @@ abstract class EntityAction extends EntitySchema
     ) {
 
         $Manager = $this->getEntityManager();
-        $Entity = $Manager->getEntity( 'TblPerson' )
-            ->findOneBy( array(
-                TblPerson::ATTR_TBL_PERSON_SALUTATION => $tblPersonSalutation->getId(),
-                TblPerson::ATTR_TBL_PERSON_GENDER     => $tblPersonGender->getId(),
-                TblPerson::ATTR_FIRST_NAME            => $FirstName,
-                TblPerson::ATTR_LAST_NAME             => $LastName,
-                TblPerson::ATTR_BIRTHDAY              => new \DateTime( $Birthday )
-            ) );
-        if (null === $Entity) {
-            $Entity = new TblPerson();
-            $Entity->setTblPersonSalutation( $tblPersonSalutation );
-            $Entity->setTitle( $Title );
-            $Entity->setFirstName( $FirstName );
-            $Entity->setMiddleName( $MiddleName );
-            $Entity->setLastName( $LastName );
-            $Entity->setTblPersonGender( $tblPersonGender );
-            $Entity->setBirthday( new \DateTime( $Birthday ) );
-            $Entity->setBirthplace( $Birthplace );
-            $Entity->setNationality( $Nationality );
-            $Entity->setTblPersonType( $tblPersonType );
-            $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
-                $Entity );
-        }
+
+        $Entity = new TblPerson();
+        $Entity->setTblPersonSalutation( $tblPersonSalutation );
+        $Entity->setTitle( $Title );
+        $Entity->setFirstName( $FirstName );
+        $Entity->setMiddleName( $MiddleName );
+        $Entity->setLastName( $LastName );
+        $Entity->setTblPersonGender( $tblPersonGender );
+        $Entity->setBirthday( new \DateTime( $Birthday ) );
+        $Entity->setBirthplace( $Birthplace );
+        $Entity->setNationality( $Nationality );
+        $Entity->setTblPersonType( $tblPersonType );
+        $Manager->saveEntity( $Entity );
+        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+
         return $Entity;
     }
 
@@ -571,6 +574,14 @@ abstract class EntityAction extends EntitySchema
         TblPersonRelationshipType $tblPersonRelationshipType
     ) {
 
+        var_dump(
+            array(
+                TblPersonRelationshipList::ATTR_TBL_PERSON_A                 => $tblPersonA->getId(),
+                TblPersonRelationshipList::ATTR_TBL_PERSON_B                 => $tblPersonB->getId(),
+                TblPersonRelationshipList::ATTR_TBL_PERSON_RELATIONSHIP_TYPE => $tblPersonRelationshipType->getId()
+            )
+
+        );
         $Manager = $this->getEntityManager();
         /** @var TblPersonRelationshipList $Entity */
         $Entity = $Manager->getEntity( 'TblPersonRelationshipList' )
@@ -579,6 +590,26 @@ abstract class EntityAction extends EntitySchema
                 TblPersonRelationshipList::ATTR_TBL_PERSON_B                 => $tblPersonB->getId(),
                 TblPersonRelationshipList::ATTR_TBL_PERSON_RELATIONSHIP_TYPE => $tblPersonRelationshipType->getId()
             ) );
+        if (null !== $Entity) {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblPerson $tblPerson
+     *
+     * @return bool
+     */
+    protected function actionDestroyPerson( TblPerson $tblPerson )
+    {
+
+        $Manager = $this->getEntityManager();
+        /** @var TblPerson $Entity */
+        $Entity = $Manager->getEntityById( 'TblPerson', $tblPerson->getId() );
         if (null !== $Entity) {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );

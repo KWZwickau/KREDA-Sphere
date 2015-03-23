@@ -68,8 +68,7 @@ class Update extends AbstractFrontend
                                             $Version,
                                             new ButtonSubmitPrimary( 'Installieren' )
                                         ) ) ) ),
-                                        null, self::getUrlBase().'/Sphere/System/Update/Install',
-                                        new ShareIcon()
+                                        null, self::getUrlBase().'/Sphere/System/Update/Install'
                                     ).'</div>'
                                 )
                             ) )
@@ -104,8 +103,7 @@ class Update extends AbstractFrontend
                                         $Version,
                                         new ButtonSubmitSuccess( 'Installieren' )
                                     ) ) ) ),
-                                    null, self::getUrlBase().'/Sphere/System/Update/Install',
-                                    new ShareIcon()
+                                    null, self::getUrlBase().'/Sphere/System/Update/Install'
                                 ).'</div>'
                             )
                         ) )

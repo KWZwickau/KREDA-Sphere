@@ -134,6 +134,20 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblPerson $tblPerson
+     *
+     * @return bool|Entity\TblAccount[]
+     */
+    protected function entityAccountAllByPerson( TblPerson $tblPerson )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblAccount' )->findBy( array(
+            TblAccount::ATTR_SERVICE_MANAGEMENT_PERSON => $tblPerson->getId()
+        ) );
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
      * @param TblConsumer $tblConsumer
      *
      * @return bool|Entity\TblAccount[]
@@ -393,7 +407,7 @@ abstract class EntityAction extends EntitySchema
     {
 
         $Manager = $this->getEntityManager();
-        /** @var TblAccountSession $Entity */
+        /** @var TblAccount $Entity */
         $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
         if (null !== $Entity) {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),

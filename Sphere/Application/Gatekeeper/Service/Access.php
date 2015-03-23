@@ -217,13 +217,22 @@ class Access extends EntityAction
                             $tblPrivilegeList = $this->entityPrivilegeAllByAccess( $tblAccess );
                             foreach ((array)$tblPrivilegeList as $tblPrivilege) {
                                 $tblRightList = $this->entityRightAllByPrivilege( $tblPrivilege );
-                                /** @var TblAccessRight $tblRight */
-                                foreach ((array)$tblRightList as $tblRight) {
-                                    if ($tblRight->getId() == $Right->getId()) {
-                                        // Access valid -> Access granted
-                                        self::$AccessCache[] = $Route;
-                                        return true;
-                                    }
+                                /** @noinspection PhpUnusedParameterInspection */
+                                array_walk( $tblRightList,
+                                    function ( TblAccessRight &$tblRight, $I, TblAccessRight $Right ) {
+
+                                        if ($tblRight->getId() == $Right->getId()) {
+                                            // Access valid -> Access granted
+                                            $tblRight = true;
+                                        } else {
+                                            // Right not valid -> Access denied
+                                            $tblRight = false;
+                                        }
+                                    }, $Right );
+                                $tblRightList = array_filter( $tblRightList );
+                                if (!empty( $tblRightList )) {
+                                    self::$AccessCache[] = $Route;
+                                    return true;
                                 }
                             }
                         }
