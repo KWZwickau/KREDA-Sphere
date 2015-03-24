@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service\Person;
 
-use Doctrine\ORM\Query\Expr;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonGender;
@@ -158,14 +157,6 @@ abstract class EntityAction extends EntitySchema
                         'tblRelationship' => $V->getId()
                     )
                 ) )->__toString();
-
-//                $V->Option =
-//                    ( new ButtonLinkPrimary( 'Auswählen', '/Sphere/Management/Person/Relationship', new PencilIcon(),
-//                        array(
-//                            'tblPerson'       => $P,
-//                            'tblRelationship' => $V->getId()
-//                        )
-//                    ) )->__toString();
                 return $V;
             }, array( $tblPerson, $tblPersonRelationshipType ) )
             ->getResult();
@@ -574,14 +565,6 @@ abstract class EntityAction extends EntitySchema
         TblPersonRelationshipType $tblPersonRelationshipType
     ) {
 
-        var_dump(
-            array(
-                TblPersonRelationshipList::ATTR_TBL_PERSON_A                 => $tblPersonA->getId(),
-                TblPersonRelationshipList::ATTR_TBL_PERSON_B                 => $tblPersonB->getId(),
-                TblPersonRelationshipList::ATTR_TBL_PERSON_RELATIONSHIP_TYPE => $tblPersonRelationshipType->getId()
-            )
-
-        );
         $Manager = $this->getEntityManager();
         /** @var TblPersonRelationshipList $Entity */
         $Entity = $Manager->getEntity( 'TblPersonRelationshipList' )
