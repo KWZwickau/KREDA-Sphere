@@ -128,7 +128,11 @@ class TblAddress extends AbstractEntity
     public function getTblAddressCity()
     {
 
-        return Management::serviceAddress()->entityAddressCityById( $this->tblAddressCity );
+        if (null === $this->tblAddressCity) {
+            return false;
+        } else {
+            return Management::serviceAddress()->entityAddressCityById( $this->tblAddressCity );
+        }
     }
 
     /**
@@ -146,7 +150,11 @@ class TblAddress extends AbstractEntity
     public function getTblAddressState()
     {
 
-        return Management::serviceAddress()->entityAddressStateById( $this->tblAddressState );
+        if (null === $this->tblAddressState) {
+            return false;
+        } else {
+            return Management::serviceAddress()->entityAddressStateById( $this->tblAddressState );
+        }
     }
 
     /**

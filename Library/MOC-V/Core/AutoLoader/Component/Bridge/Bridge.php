@@ -21,7 +21,11 @@ abstract class Bridge implements IBridgeInterface
         if (is_array( $Loader )) {
             array_walk( $Loader, function ( &$L ) {
 
-                $Stack = $L[0];
+                if (is_array( $L )) {
+                    $Stack = $L[0];
+                } else {
+                    $Stack = $L;
+                }
                 if ($Stack instanceof Bridge) {
                     if ($Stack->getLoaderHash() == $this->getLoaderHash()) {
                         $L = false;

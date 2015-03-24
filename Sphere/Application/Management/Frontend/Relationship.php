@@ -120,7 +120,7 @@ class Relationship extends AbstractFrontend
                                         array(
                                             "lengthChange" => true,
                                             "lengthMenu"   => [ [ 5, 10 ], [ 5, 10 ] ],
-                                            "pageLength"   => 5,
+                                            "pageLength" => 10,
                                             "columnDefs"   => array(
                                                 array( "orderable" => false, "targets" => 0 ),
                                                 array( "orderable" => false, "targets" => -1 )

@@ -17,6 +17,7 @@ class FrontendTest extends AbstractFrontendTest
         $Namespace = '\Management\Frontend';
         $this->checkMethodName( $Namespace.'\Campus' );
         $this->checkMethodName( $Namespace.'\Person' );
+        $this->checkMethodName( $Namespace.'\Relationship' );
         $this->checkMethodName( $Namespace.'\Subject' );
     }
 }

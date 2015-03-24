@@ -25,7 +25,7 @@ abstract class AbstractServiceTest extends \PHPUnit_Framework_TestCase implement
     {
 
         $Name = '__construct|get(Api|ConsumerSuffix|DatabaseHandler)|setDatabaseHandler|setupDatabase(Schema|Content)';
-        $Prefix = 'entity|checkIs|getTable|execute(Create|Destroy|Add|Remove|Change|Action)|extension';
+        $Prefix = 'entity|checkIs|getTable|execute(Create|Destroy|Add|Remove|Change|Action)|extension|list|table|count';
         $this->checkNamePattern( 'KREDA\Sphere\Application'.$Service, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
             \ReflectionMethod::IS_PUBLIC );
     }

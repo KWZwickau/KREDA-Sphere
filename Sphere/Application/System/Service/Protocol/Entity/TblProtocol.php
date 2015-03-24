@@ -7,6 +7,11 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
+use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
@@ -109,21 +114,25 @@ class TblProtocol extends AbstractEntity
     }
 
     /**
-     * @return integer
+     * @return bool|TblAccount
      */
     public function getServiceGatekeeperAccount()
     {
 
-        return $this->serviceGatekeeper_Account;
+        if (null === $this->serviceGatekeeper_Account) {
+            return false;
+        } else {
+            return Gatekeeper::serviceAccount()->entityAccountById( $this->serviceGatekeeper_Account );
+        }
     }
 
     /**
-     * @param integer $serviceGatekeeper_Account
+     * @param null|TblAccount $tblAccount
      */
-    public function setServiceGatekeeperAccount( $serviceGatekeeper_Account )
+    public function setServiceGatekeeperAccount( TblAccount $tblAccount = null )
     {
 
-        $this->serviceGatekeeper_Account = $serviceGatekeeper_Account;
+        $this->serviceGatekeeper_Account = ( null === $tblAccount ? null : $tblAccount->getId() );
     }
 
     /**
@@ -145,21 +154,25 @@ class TblProtocol extends AbstractEntity
     }
 
     /**
-     * @return integer
+     * @return bool|TblPerson
      */
     public function getServiceManagementPerson()
     {
 
-        return $this->serviceManagement_Person;
+        if (null === $this->serviceManagement_Person) {
+            return false;
+        } else {
+            return Management::servicePerson()->entityPersonById( $this->serviceManagement_Person );
+        }
     }
 
     /**
-     * @param integer $serviceManagement_Person
+     * @param null|TblPerson $tblPerson
      */
-    public function setServiceManagementPerson( $serviceManagement_Person )
+    public function setServiceManagementPerson( TblPerson $tblPerson = null )
     {
 
-        $this->serviceManagement_Person = $serviceManagement_Person;
+        $this->serviceManagement_Person = ( null === $tblPerson ? null : $tblPerson->getId() );
     }
 
     /**
@@ -199,21 +212,25 @@ class TblProtocol extends AbstractEntity
     }
 
     /**
-     * @return integer
+     * @return bool|TblConsumer
      */
     public function getServiceGatekeeperConsumer()
     {
 
-        return $this->serviceGatekeeper_Consumer;
+        if (null === $this->serviceGatekeeper_Consumer) {
+            return false;
+        } else {
+            return Gatekeeper::serviceConsumer()->entityConsumerById( $this->serviceGatekeeper_Consumer );
+        }
     }
 
     /**
-     * @param integer $serviceGatekeeper_Consumer
+     * @param null|TblConsumer $tblConsumer
      */
-    public function setServiceGatekeeperConsumer( $serviceGatekeeper_Consumer )
+    public function setServiceGatekeeperConsumer( TblConsumer $tblConsumer = null )
     {
 
-        $this->serviceGatekeeper_Consumer = $serviceGatekeeper_Consumer;
+        $this->serviceGatekeeper_Consumer = ( null === $tblConsumer ? null : $tblConsumer->getId() );
     }
 
     /**

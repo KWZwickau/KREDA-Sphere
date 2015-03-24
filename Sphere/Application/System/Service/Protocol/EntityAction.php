@@ -46,16 +46,16 @@ abstract class EntityAction extends EntitySchema
         $Entity->setProtocolDatabase( $DatabaseName );
         $Entity->setProtocolTimestamp( time() );
         if ($tblAccount) {
-            $Entity->setServiceGatekeeperAccount( $tblAccount->getId() );
+            $Entity->setServiceGatekeeperAccount( $tblAccount );
             $Entity->setAccountUsername( $tblAccount->getUsername() );
         }
         if ($tblPerson) {
-            $Entity->setServiceManagementPerson( $tblPerson->getId() );
+            $Entity->setServiceManagementPerson( $tblPerson );
             $Entity->setPersonFirstName( $tblPerson->getFirstName() );
             $Entity->setPersonLastName( $tblPerson->getLastName() );
         }
         if ($tblConsumer) {
-            $Entity->setServiceGatekeeperConsumer( $tblConsumer->getId() );
+            $Entity->setServiceGatekeeperConsumer( $tblConsumer );
             $Entity->setConsumerName( $tblConsumer->getName() );
             $Entity->setConsumerSuffix( $tblConsumer->getDatabaseSuffix() );
         }

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Common\AbstractEntity;
@@ -28,14 +29,17 @@ class TblPersonRelationshipList extends AbstractEntity
      */
     protected $Id;
     /**
+     * @OneToOne(targetEntity="TblPersonRelationshipType",fetch="EXTRA_LAZY")
      * @Column(type="bigint")
      */
     protected $tblPersonRelationshipType;
     /**
+     * @OneToOne(targetEntity="TblPerson",fetch="EXTRA_LAZY")
      * @Column(type="bigint")
      */
     protected $tblPersonA;
     /**
+     * @OneToOne(targetEntity="TblPerson",fetch="EXTRA_LAZY")
      * @Column(type="bigint")
      */
     protected $tblPersonB;

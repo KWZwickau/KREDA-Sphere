@@ -187,7 +187,7 @@ class TblPerson extends AbstractEntity
     public function getFullName()
     {
 
-        return $this->getFirstName().( $this->getMiddleName() ? ' '.$this->getMiddleName() : '' ).' '.$this->getLastName();
+        return trim( $this->getFirstName().( $this->getMiddleName() ? ' '.$this->getMiddleName() : '' ).' '.$this->getLastName() );
     }
 
     /**
@@ -250,6 +250,9 @@ class TblPerson extends AbstractEntity
     public function getBirthday()
     {
 
+        if (null === $this->Birthday) {
+            return false;
+        }
         /** @var \DateTime $Birthday */
         $Birthday = $this->Birthday;
         return $Birthday->format( 'd.m.Y' );
