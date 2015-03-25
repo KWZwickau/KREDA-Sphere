@@ -5,6 +5,7 @@ use Doctrine\DBAL\DBALException;
 use KREDA\Sphere\Application\Assistance\Assistance;
 use KREDA\Sphere\Application\Demo\Demo;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\System\Frontend\Database;
 use KREDA\Sphere\Application\System\System;
@@ -124,6 +125,9 @@ class Client
         echo $this->Display->getContent();
     }
 
+    /**
+     *
+     */
     private function prepareErrorHandler()
     {
 
@@ -227,6 +231,9 @@ class Client
         return true;
     }
 
+    /**
+     *
+     */
     private function runRestApi()
     {
 
@@ -308,6 +315,7 @@ class Client
             System::registerApplication( $this->Configuration );
             Management::registerApplication( $this->Configuration );
             Demo::registerApplication( $this->Configuration );
+            Graduation::registerApplication( $this->Configuration );
         } else {
             /**
              * Authenticated NO

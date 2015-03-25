@@ -57,6 +57,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblGradeType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblGradeType', 'Active' )) {
+            $Table->addColumn( 'Active', 'boolean' );
+        }
 
         return $Table;
     }

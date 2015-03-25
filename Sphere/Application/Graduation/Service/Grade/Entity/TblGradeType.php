@@ -19,6 +19,7 @@ class TblGradeType extends AbstractEntity
 
     const ATTR_ACRONYM = 'Acronym';
     const ATTR_NAME = 'Name';
+    const ATTR_ACTIVE = 'Active';
 
     /**
      * @Id
@@ -34,6 +35,10 @@ class TblGradeType extends AbstractEntity
      * @Column(type="string")
      */
     protected $Name;
+    /**
+     * @Column(type="boolean")
+     */
+    protected $Active;
 
     /**
      * @param string $Acronym
@@ -42,6 +47,7 @@ class TblGradeType extends AbstractEntity
     {
 
         $this->Acronym = $Acronym;
+        $this->Active = true;
     }
 
     /**
@@ -96,5 +102,23 @@ class TblGradeType extends AbstractEntity
     {
 
         $this->Name = $Name;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getActiveState()
+    {
+
+        return $this->Active;
+    }
+
+    /**
+     * @param boolean $Active
+     */
+    public function setActiveState( $Active )
+    {
+
+        $this->Active = $Active;
     }
 }

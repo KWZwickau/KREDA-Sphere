@@ -25,16 +25,19 @@ Development:
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/708fc862-a692-4279-903d-792f62333644/big.png)](https://insight.sensiolabs.com/projects/708fc862-a692-4279-903d-792f62333644)
 
+[![Codacy Badge](https://www.codacy.com/project/badge/4b770670f4294c28a9e64e76235d0f72)](https://www.codacy.com/app/gerdchristian-kunze/KREDA-Sphere)
 [![Code Climate](https://codeclimate.com/github/KWZwickau/KREDA-Sphere/badges/gpa.svg)](https://codeclimate.com/github/KWZwickau/KREDA-Sphere)
 [![Coverage Status](https://coveralls.io/repos/KWZwickau/KREDA-Sphere/badge.svg?branch=development)](https://coveralls.io/r/KWZwickau/KREDA-Sphere?branch=development)
 [![Build Status](https://travis-ci.org/KWZwickau/KREDA-Sphere.svg?branch=development)](https://travis-ci.org/KWZwickau/KREDA-Sphere)
 [![Circle CI](https://circleci.com/gh/KWZwickau/KREDA-Sphere/tree/development.svg?style=shield)](https://circleci.com/gh/KWZwickau/KREDA-Sphere/tree/development)
+[![PullReview stats](https://www.pullreview.com/github/KWZwickau/KREDA-Sphere/badges/development.svg?)](https://www.pullreview.com/github/KWZwickau/KREDA-Sphere/reviews/development)
 
 Master:
 
 [![Coverage Status](https://coveralls.io/repos/KWZwickau/KREDA-Sphere/badge.svg?branch=master)](https://coveralls.io/r/KWZwickau/KREDA-Sphere?branch=master)
 [![Build Status](https://travis-ci.org/KWZwickau/KREDA-Sphere.svg?branch=master)](https://travis-ci.org/KWZwickau/KREDA-Sphere)
 [![Circle CI](https://circleci.com/gh/KWZwickau/KREDA-Sphere/tree/master.svg?style=shield)](https://circleci.com/gh/KWZwickau/KREDA-Sphere/tree/master)
+[![PullReview stats](https://www.pullreview.com/github/KWZwickau/KREDA-Sphere/badges/master.svg?)](https://www.pullreview.com/github/KWZwickau/KREDA-Sphere/reviews/master)
 
 Library
 =======

@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\System\Service;
 
 use KREDA\Sphere\Application\Demo\Demo;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Common\AbstractService;
@@ -40,6 +41,9 @@ class Update extends AbstractService
         /**
          * Payload
          */
+        $Protocol[] = Graduation::serviceGrade()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Graduation::serviceScore()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Graduation::serviceWeight()->setupDatabaseSchema( $Simulate );
 
         if (!$Simulate) {
             /**
@@ -55,6 +59,9 @@ class Update extends AbstractService
             /**
              * Payload
              */
+            Graduation::serviceGrade()->setupDatabaseContent();
+            Graduation::serviceScore()->setupDatabaseContent();
+            Graduation::serviceWeight()->setupDatabaseContent();
         }
 
         return implode( $Protocol );

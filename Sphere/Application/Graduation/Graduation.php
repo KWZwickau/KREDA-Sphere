@@ -2,13 +2,29 @@
 namespace KREDA\Sphere\Application\Graduation;
 
 use KREDA\Sphere\Application\Graduation\Service\Grade;
+use KREDA\Sphere\Application\Graduation\Service\Grade\Entity\TblGradeType;
 use KREDA\Sphere\Application\Graduation\Service\Score;
 use KREDA\Sphere\Application\Graduation\Service\Weight;
+use KREDA\Sphere\Client\Component\Element\Repository\Content;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EducationIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagListIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
+use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
+use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
+use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class Graduation
@@ -23,6 +39,8 @@ class Graduation extends AbstractApplication
 
     /**
      * @param Configuration $Configuration
+     *
+     * @return Configuration $Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
@@ -37,10 +55,16 @@ class Graduation extends AbstractApplication
 
         self::registerClientRoute( self::$Configuration, '/Sphere/Graduation',
             __CLASS__.'::frontendGrade' );
-        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type',
+        self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type',
             __CLASS__.'::frontendGradeType' );
-        $Route->setParameterDefault( 'GradeName', null );
-        $Route->setParameterDefault( 'GradeAcronym', null );
+        //self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type/ChangeActiveState',
+        //    __CLASS__.'::frontendGradeTypeActiveState' );
+        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type/Create',
+            __CLASS__.'::frontendGradeTypeCreate' );
+        $Route->setParameterDefault( 'Acronym', null );
+        $Route->setParameterDefault( 'Name', null );
+
+        return $Configuration;
     }
 
     /**
@@ -50,15 +74,6 @@ class Graduation extends AbstractApplication
     {
 
         return Score::getApi();
-    }
-
-    /**
-     * @return Service\Grade
-     */
-    public static function serviceGrade()
-    {
-
-        return Grade::getApi();
     }
 
     /**
@@ -83,10 +98,7 @@ class Graduation extends AbstractApplication
         return $View;
     }
 
-    /**
-     * @return void
-     */
-    protected static function setupModuleNavigation()
+    public static function setupModuleNavigation()
     {
 
         self::addModuleNavigationMain( self::$Configuration,
@@ -102,9 +114,94 @@ class Graduation extends AbstractApplication
 
         self::setupModuleNavigation();
         $View = new Stage();
-        $View->setTitle( 'Zensuren' );
-        $View->setMessage( 'Bitte wählen Sie ein Thema' );
+        $View->setTitle( 'Zensurentypen' );
+        $View->setDescription( 'für Ihre Schule zugelassen' );
+        $View->setMessage( 'Hier können Sie die Zensurentypen Ihrer Schule anpassen' );
+
+        $GradeTypeList = Graduation::serviceGrade()->entityGradeTypeAll();
+        if (!empty( $GradeTypeList )) {
+            array_walk( $GradeTypeList, function ( TblGradeType &$V, $I, $B ) {
+
+                $_POST['Id'] = $V->getId();
+
+                // bei aktiven Zensurentypen "deaktivieren"-Button anzeigen; sonst "aktivieren"-Button
+                $V->getActiveState() == true ? $myButton = new ButtonSubmitDanger( 'deaktivieren' ) : $myButton = new ButtonSubmitSuccess( 'aktivieren' );
+
+                $V->Option = new FormDefault(
+                    new GridFormGroup(
+                        new GridFormRow( new GridFormCol( array(
+                            new InputHidden( 'Id' ),
+                            $myButton
+                        ) ) )
+                    ),
+                    null,
+                    $B.'/Sphere/Graduation/Grade/Type'
+                );
+
+            }, null ); //self::getUrlBase()
+        }
+
+        $View->setContent( new TableData( $GradeTypeList, null, array(
+            //'Id' => 'Id',
+            'Acronym' => 'Kürzel',
+            'Name'    => 'Name',
+            //'Active'     => 'Aktiv',
+            'Option'  => 'Option'
+        ) ) );
+        $View->addButton( new ButtonLinkPrimary( 'Zensurentyp hinzufügen', '/Sphere/Graduation/Grade/Type/Create' ) );
+
         return $View;
+    }
+
+    /**
+     * @return Service\Grade
+     */
+    public static function serviceGrade()
+    {
+
+        return Grade::getApi();
+    }
+
+    /**
+     * @param null|string $Acronym
+     * @param null|string $Name
+     *
+     * @return Stage
+     */
+    public static function frontendGradeTypeCreate( $Acronym, $Name )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Zensurentyp erstellen' );
+        $View->setDescription( 'neuer Zensurentyp' );
+        $View->setContent(
+            Graduation::serviceGrade()->executeCreateGradeType(
+                new FormDefault(
+                    new GridFormGroup( array(
+                        new GridFormRow( array(
+                            new GridFormCol(
+                                new InputText( 'Acronym', 'Kürzel', 'Kürzel', new ConversationIcon() )
+                                , 5 ),
+                            new GridFormCol(
+                                new InputText( 'Name', 'Langform', 'Langform', new NameplateIcon() )
+                                , 7 )
+                        ) ),
+                    ), new GridFormTitle( 'Grunddaten' ) ), array(
+                        new ButtonSubmitPrimary( 'Anlegen' )
+                    )
+                )
+                , $Acronym, $Name )
+        );
+
+        return $View;
+    }
+
+    public static function frontendGradeTypeActiveState( $Id )
+    {
+
+        // TODO: erstmal hier hin kommen
+        Graduation::serviceGrade()->executeChangeGradeTypeActiveState( $Id );
+
     }
 
 }

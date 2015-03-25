@@ -11,9 +11,19 @@ use Doctrine\DBAL\Schema\View;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FlashIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Common\Cache\Type\Memcached;
 use KREDA\Sphere\Common\Database\Connection\Connector;
 use KREDA\Sphere\Common\Database\Connection\Identifier;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
+use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
 use MOC\V\Component\Database\Component\IBridgeInterface;
 
 /**
@@ -181,22 +191,25 @@ class Model
     {
 
         if (count( $this->Protocol ) == 1) {
-            $this->Protocol[0] .= '<br/>';
-            $Protocol = '<div class="alert alert-success text-left">'
-                .'<span class="glyphicon glyphicon-ok"></span>&nbsp;'
-                .implode( '', $this->Protocol )
-                .'<hr/><span class="glyphicon glyphicon-refresh"></span>&nbsp;Kein Update notwendig'
-                .'</div>';
+            //$this->Protocol[0] .= '<br/>';
+            $Protocol = new MessageSuccess(
+                new GridLayout( new GridLayoutGroup( new GridLayoutRow( array(
+                    new GridLayoutCol( new OkIcon().'&nbsp'.implode( '', $this->Protocol ), 9 ),
+                    new GridLayoutCol( new OffIcon().'&nbsp;Kein Update notwendig', 3 )
+                ) ) ) )
+            );
         } else {
-            $this->Protocol[0] .= '<hr/>';
-            $Protocol = '<div class="alert alert-info text-left">'
-                .'<span class="glyphicon glyphicon-flash"></span>&nbsp;'
-                .implode( '', $this->Protocol )
-                .( $Simulate
-                    ? '<hr/><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;Update notwendig'
-                    : '<hr/><span class="glyphicon glyphicon-saved"></span>&nbsp;Update durchgeführt'
-                )
-                .'</div>';
+            //$this->Protocol[0] .= '<hr/>';
+            $Protocol = new MessageInfo(
+                new GridLayout( new GridLayoutGroup( new GridLayoutRow( array(
+                    new GridLayoutCol( new FlashIcon().'&nbsp;'.implode( '', $this->Protocol ), 9 ),
+                    new GridLayoutCol(
+                        ( $Simulate
+                            ? new WarningIcon().'&nbsp;Update notwendig'
+                            : new OkIcon().'&nbsp;Update durchgeführt'
+                        ), 3 )
+                ) ) ) )
+            );
         }
         $this->Protocol = array();
 

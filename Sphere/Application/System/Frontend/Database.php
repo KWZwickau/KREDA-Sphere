@@ -4,6 +4,9 @@ namespace KREDA\Sphere\Application\System\Frontend;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ClusterIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Database\Connection\Identifier;
 use KREDA\Sphere\Common\Database\Handler;
@@ -65,10 +68,10 @@ class Database extends AbstractFrontend
 
                         try {
                             new Handler( new Identifier( $Application, $Service[0], $Service[1] ) );
-                            $Status = new MessageSuccess( 'Verbunden' );
+                            $Status = new MessageSuccess( 'Verbunden', new OkIcon() );
 
                         } catch( \Exception $E ) {
-                            $Status = new MessageDanger( 'Fehler' );
+                            $Status = new MessageDanger( 'Fehler', new WarningIcon() );
                         }
 
                         if ($Service[1]) {
@@ -80,9 +83,9 @@ class Database extends AbstractFrontend
                             new GridTableCol( new TextWarning( $Application ) ),
                             new GridTableCol( new TextDanger( $Service[0] ) ),
                             new GridTableCol( new TextDanger(
-                                $Service[1]
+                                isset( $tblConsumer )
                                     ? new MessageInfo( 'Mandant: '.$tblConsumer->getName().' ('.$tblConsumer->getDatabaseSuffix().')' )
-                                    : new MessageWarning( 'Systemübergreifend' )
+                                    : new MessageWarning( 'Systemübergreifend', new ClusterIcon() )
                             ) ),
                             new GridTableCol( new TextWarning( $Parameter['Driver'] ) ),
                             new GridTableCol( new TextDanger( $Parameter['Host'] ) ),
