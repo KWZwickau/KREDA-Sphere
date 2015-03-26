@@ -44,7 +44,7 @@ class Client
     /**
      *
      */
-    function __construct()
+    final public function __construct()
     {
 
         $this->Debug = new Debugger();
@@ -52,7 +52,7 @@ class Client
         $this->Configuration = new Configuration( new UniversalRouter(), new LevelClient() );
     }
 
-    public function runPlatform()
+    final public function runPlatform()
     {
 
         /**

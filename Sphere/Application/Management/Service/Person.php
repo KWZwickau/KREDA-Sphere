@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
+use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonGender;
@@ -30,12 +30,12 @@ class Person extends EntityAction
     protected static $DatabaseHandler = null;
 
     /**
-     * @param TblConsumer $tblConsumer
+     *
      */
-    function __construct( TblConsumer $tblConsumer = null )
+    final public function __construct()
     {
 
-        $this->setDatabaseHandler( 'Management', 'Person', $this->getConsumerSuffix( $tblConsumer ) );
+        $this->setDatabaseHandler( 'Management', 'Person', $this->getConsumerSuffix() );
     }
 
     /**
@@ -546,5 +546,14 @@ class Person extends EntityAction
         } else {
             return $Effect;
         }
+    }
+
+    /**
+     * @return Table
+     */
+    public function getTablePerson()
+    {
+
+        return parent::getTablePerson();
     }
 }

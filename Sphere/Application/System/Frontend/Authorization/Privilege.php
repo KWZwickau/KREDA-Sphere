@@ -20,6 +20,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRight;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Redirect;
@@ -47,6 +48,7 @@ class Privilege extends Right
         $View->setDescription( 'Privilegien' );
 
         $PrivilegeList = Gatekeeper::serviceAccess()->entityPrivilegeAll();
+        /** @noinspection PhpUnusedParameterInspection */
         array_walk( $PrivilegeList, function ( TblAccessPrivilege &$V, $I, $B ) {
 
             $Id = new InputHidden( 'Id' );
@@ -54,11 +56,14 @@ class Privilege extends Right
 
             $LinkList = Gatekeeper::serviceAccess()->entityRightAllByPrivilege( $V );
             if (empty( $LinkList )) {
+                /** @noinspection PhpUndefinedFieldInspection */
                 $V->Available = new MessageWarning( 'Keine Rechte vergeben' );
             } else {
+                /** @noinspection PhpUndefinedFieldInspection */
                 $V->Available = new TableData( $LinkList, null, array( 'Route' => 'Recht' ), false );
             }
 
+            /** @noinspection PhpUndefinedFieldInspection */
             $V->Option = ''
                 .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                     $Id,
@@ -125,6 +130,7 @@ class Privilege extends Right
             }
         );
 
+        /** @noinspection PhpUnusedParameterInspection */
         array_walk( $tblRightListAvailable, function ( TblAccessRight &$V, $I, $B ) {
 
             $Id = new InputHidden( 'Id' );
@@ -132,18 +138,19 @@ class Privilege extends Right
             $Right = new InputHidden( 'Right' );
             $Right->setDefaultValue( $V->getId(), true );
 
-            $V->Option =
-                '<div class="pull-right">'
-                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+            /** @noinspection PhpUndefinedFieldInspection */
+            $V->Option = new GridLayoutRight(
+                new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                     $Id,
                     $Right,
                     new ButtonSubmitSuccess( 'Hinzufügen' )
                 ) ) ) ),
-                    null, $B[1].'/Sphere/System/Authorization/Privilege/Right'
+                    null, '/Sphere/System/Authorization/Privilege/Right'
                 )
-                .'</div>';
+            );
         }, array( $Id, self::getUrlBase() ) );
 
+        /** @noinspection PhpUnusedParameterInspection */
         array_walk( $tblRightList, function ( TblAccessRight &$V, $I, $B ) {
 
             $Id = new InputHidden( 'Id' );
@@ -153,17 +160,17 @@ class Privilege extends Right
             $Remove = new InputHidden( 'Remove' );
             $Remove->setDefaultValue( 1, true );
 
-            $V->Option =
-                '<div class="pull-right">'
-                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
-                        $Id,
-                        $Right,
-                        $Remove,
-                        new ButtonSubmitDanger( 'Entfernen' )
-                    ) ) ) ),
-                        null, $B[1].'/Sphere/System/Authorization/Privilege/Right'
-                    )
-                    .'</div>';
+            /** @noinspection PhpUndefinedFieldInspection */
+            $V->Option = new GridLayoutRight(
+                new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+                    $Id,
+                    $Right,
+                    $Remove,
+                    new ButtonSubmitDanger( 'Entfernen' )
+                ) ) ) ),
+                    null, '/Sphere/System/Authorization/Privilege/Right'
+                )
+            );
         }, array( $Id, self::getUrlBase() ) );
 
         $View->setContent(

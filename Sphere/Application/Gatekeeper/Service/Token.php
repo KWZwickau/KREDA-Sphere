@@ -27,7 +27,7 @@ class Token extends EntityAction
     /**
      * @throws \Exception
      */
-    public function __construct()
+    final public function __construct()
     {
 
         $this->setDatabaseHandler( 'Gatekeeper', 'Token' );

@@ -1,8 +1,11 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
+use KREDA\Sphere\Application\Management\Service\Education\Entity\TblCategory;
+use KREDA\Sphere\Application\Management\Service\Education\Entity\TblGroup;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblLevel;
+use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
+use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup;
 use KREDA\Sphere\Application\Management\Service\Education\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
 
@@ -18,12 +21,12 @@ class Education extends EntityAction
     protected static $DatabaseHandler = null;
 
     /**
-     * @param TblConsumer $tblConsumer
+     *
      */
-    function __construct( TblConsumer $tblConsumer = null )
+    final public function __construct()
     {
 
-        $this->setDatabaseHandler( 'Management', 'Education', $this->getConsumerSuffix( $tblConsumer ) );
+        $this->setDatabaseHandler( 'Management', 'Education', $this->getConsumerSuffix() );
     }
 
     public function setupDatabaseContent()
@@ -71,5 +74,49 @@ class Education extends EntityAction
     {
 
         return parent::entityLevelById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblGroup
+     */
+    public function entityGroupById( $Id )
+    {
+
+        return parent::entityGroupById( $Id );
+    }
+
+    /**
+     * @param int $Id
+     *
+     * @return bool|TblSubjectGroup
+     */
+    public function entitySubjectGroupById( $Id )
+    {
+
+        return parent::entitySubjectGroupById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblSubject
+     */
+    public function entitySubjectById( $Id )
+    {
+
+        return parent::entitySubjectById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblCategory
+     */
+    public function entityCategoryById( $Id )
+    {
+
+        return parent::entityCategoryById( $Id );
     }
 }

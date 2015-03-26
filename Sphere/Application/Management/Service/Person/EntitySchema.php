@@ -186,4 +186,14 @@ abstract class EntitySchema extends AbstractService
         }
         return $Table;
     }
+
+    /**
+     * @return Table
+     * @throws SchemaException
+     */
+    protected function getTablePerson()
+    {
+
+        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblPerson' );
+    }
 }

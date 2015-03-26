@@ -26,9 +26,14 @@ abstract class EntitySchema extends AbstractService
          * Table
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
-        $this->setTableSubject( $Schema );
+        $tblSubject = $this->setTableSubject( $Schema );
         $tblLevel = $this->setTableLevel( $Schema );
-        $this->setTableGroup( $Schema, $tblLevel );
+        $tblGroup = $this->setTableGroup( $Schema, $tblLevel );
+        $tblCategory = $this->setTableCategory( $Schema );
+        $this->setTableSubjectCategory( $Schema, $tblSubject, $tblCategory );
+        $tblSubjectGroup = $this->setTableSubjectGroup( $Schema, $tblSubject, $tblGroup );
+        $this->setTableSubjectGroupTeacher( $Schema, $tblSubjectGroup );
+        $this->setTableSubjectGroupStudent( $Schema, $tblSubjectGroup );
         /**
          * Migration & Protocol
          */
@@ -106,42 +111,123 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblGroup', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblGroup', 'tblLevel' )) {
-            $Table->addColumn( 'tblLevel', 'bigint', array( 'notnull' => false ) );
-            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblLevel, array( 'tblLevel' ), array( 'Id' ) );
-            }
+        $this->schemaTableAddForeignKey( $Table, $tblLevel );
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     *
+     * @return Table
+     * @throws SchemaException
+     */
+    private function setTableCategory( Schema &$Schema )
+    {
+
+        /**
+         * Install
+         */
+        $Table = $this->schemaTableCreate( $Schema, 'tblCategory' );
+        /**
+         * Upgrade
+         */
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblCategory', 'Name' )) {
+            $Table->addColumn( 'Name', 'string' );
+        }
+
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table  $tblSubject
+     * @param Table  $tblCategory
+     *
+     * @return Table
+     */
+    private function setTableSubjectCategory( Schema &$Schema, Table $tblSubject, Table $tblCategory )
+    {
+
+        /**
+         * Install
+         */
+        $Table = $this->schemaTableCreate( $Schema, 'tblSubjectCategory' );
+        /**
+         * Upgrade
+         */
+        $this->schemaTableAddForeignKey( $Table, $tblSubject );
+        $this->schemaTableAddForeignKey( $Table, $tblCategory );
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table  $tblSubject
+     * @param Table  $tblGroup
+     *
+     * @return Table
+     */
+    private function setTableSubjectGroup( Schema &$Schema, Table $tblSubject, Table $tblGroup )
+    {
+
+        /**
+         * Install
+         */
+        $Table = $this->schemaTableCreate( $Schema, 'tblSubjectGroup' );
+        /**
+         * Upgrade
+         */
+        $this->schemaTableAddForeignKey( $Table, $tblSubject );
+        $this->schemaTableAddForeignKey( $Table, $tblGroup );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblSubjectGroup', 'serviceGraduation_Dimension' )) {
+            $Table->addColumn( 'serviceGraduation_Dimension', 'bigint' );
         }
         return $Table;
     }
 
     /**
+     * @param Schema $Schema
+     * @param Table  $tblSubjectGroup
+     *
      * @return Table
-     * @throws SchemaException
      */
-    protected function getTableSubject()
+    private function setTableSubjectGroupTeacher( Schema &$Schema, Table $tblSubjectGroup )
     {
 
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblSubject' );
+        /**
+         * Install
+         */
+        $Table = $this->schemaTableCreate( $Schema, 'tblSubjectGroupTeacher' );
+        /**
+         * Upgrade
+         */
+        $this->schemaTableAddForeignKey( $Table, $tblSubjectGroup );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblSubjectGroupTeacher', 'serviceManagement_Person' )) {
+            $Table->addColumn( 'serviceManagement_Person', 'bigint' );
+        }
+        return $Table;
     }
 
     /**
+     * @param Schema $Schema
+     * @param Table  $tblSubjectGroup
+     *
      * @return Table
-     * @throws SchemaException
      */
-    protected function getTableLevel()
+    private function setTableSubjectGroupStudent( Schema &$Schema, Table $tblSubjectGroup )
     {
 
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblLevel' );
-    }
-
-    /**
-     * @return Table
-     * @throws SchemaException
-     */
-    protected function getTableGroup()
-    {
-
-        return $this->getDatabaseHandler()->getSchema()->getTable( 'tblGroup' );
+        /**
+         * Install
+         */
+        $Table = $this->schemaTableCreate( $Schema, 'tblSubjectGroupStudent' );
+        /**
+         * Upgrade
+         */
+        $this->schemaTableAddForeignKey( $Table, $tblSubjectGroup );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblSubjectGroupStudent', 'serviceManagement_Person' )) {
+            $Table->addColumn( 'serviceManagement_Person', 'bigint' );
+        }
+        return $Table;
     }
 }

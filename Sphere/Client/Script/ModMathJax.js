@@ -1,13 +1,8 @@
 (function( $ )
 {
     'use strict';
-    $.fn.ModMathJax = function( options )
+    $.fn.ModMathJax = function()
     {
-
-        // This is the easiest way to have default options.
-        var settings = $.extend( {
-            // These are the defaults.
-        }, options );
 
         return this;
     };

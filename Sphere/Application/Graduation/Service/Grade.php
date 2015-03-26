@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Graduation\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Graduation\Service\Grade\Entity\TblGradeType;
 use KREDA\Sphere\Application\Graduation\Service\Grade\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
@@ -20,12 +19,12 @@ class Grade extends EntityAction
     protected static $DatabaseHandler = null;
 
     /**
-     * @param TblConsumer $tblConsumer
+     *
      */
-    function __construct( TblConsumer $tblConsumer = null )
+    final public function __construct()
     {
 
-        $this->setDatabaseHandler( 'Graduation', 'Grade', $this->getConsumerSuffix( $tblConsumer ) );
+        $this->setDatabaseHandler( 'Graduation', 'Grade', $this->getConsumerSuffix() );
     }
 
     public function setupDatabaseContent()

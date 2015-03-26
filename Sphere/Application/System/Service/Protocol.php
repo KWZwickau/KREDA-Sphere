@@ -17,7 +17,7 @@ class Protocol extends EntityAction
     /**
      *
      */
-    function __construct()
+    final public function __construct()
     {
 
         $this->setDatabaseHandler( 'System', 'Protocol' );

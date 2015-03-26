@@ -13,15 +13,6 @@ h6 small,
     color: rgb(153, 153, 153);
 }
 
-h1,
-h2,
-h3,
-.h1,
-.h2,
-.h3 {
-
-}
-
 hr {
     border-top: 1px solid rgb(153, 153, 153);
     margin-top: 10px;
@@ -142,12 +133,16 @@ h5 {
 }
 
 .bootstrap-datetimepicker-widget td span:hover,
-.bootstrap-datetimepicker-widget td.day:hover, .bootstrap-datetimepicker-widget td.hour:hover, .bootstrap-datetimepicker-widget td.minute:hover, .bootstrap-datetimepicker-widget td.second:hover,
+.bootstrap-datetimepicker-widget .day:hover,
+.bootstrap-datetimepicker-widget .hour:hover,
+.bootstrap-datetimepicker-widget .minute:hover,
+.bootstrap-datetimepicker-widget .second:hover,
 .bootstrap-datetimepicker-widget thead tr:first-child th:hover {
     background: rgb(204, 204, 204);
 }
 
-.bootstrap-datetimepicker-widget td.old, .bootstrap-datetimepicker-widget td.new {
+.bootstrap-datetimepicker-widget .old,
+.bootstrap-datetimepicker-widget .new {
     color: rgb(119, 102, 102);
 }
 
@@ -156,14 +151,14 @@ table.dataTable thead > tr > th {
     padding-right: 18px;
 }
 
-span.twitter-typeahead .tt-dropdown-menu {
+.twitter-typeahead .tt-dropdown-menu {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-top: 0;
 }
 
 @media (min-width: 769px) {
-    .footer dl.footer-nav:first-of-type {
+    .footer .footer-nav:first-of-type {
         width: 40%;
     }
 }

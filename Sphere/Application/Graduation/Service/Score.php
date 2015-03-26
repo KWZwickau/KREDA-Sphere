@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Graduation\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreCondition;
 use KREDA\Sphere\Application\Graduation\Service\Score\Entity\TblScoreGroup;
@@ -21,12 +20,12 @@ class Score extends EntityAction
     protected static $DatabaseHandler = null;
 
     /**
-     * @param TblConsumer $tblConsumer
+     *
      */
-    function __construct( TblConsumer $tblConsumer = null )
+    final public function __construct()
     {
 
-        $this->setDatabaseHandler( 'Graduation', 'Score', $this->getConsumerSuffix( $tblConsumer ) );
+        $this->setDatabaseHandler( 'Graduation', 'Score', $this->getConsumerSuffix() );
     }
 
     public function setupDatabaseContent()

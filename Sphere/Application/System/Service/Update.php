@@ -45,6 +45,8 @@ class Update extends AbstractService
         $Protocol[] = Graduation::serviceScore()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Graduation::serviceWeight()->setupDatabaseSchema( $Simulate );
 
+        $Protocol[] = Management::serviceEducation()->setupDatabaseSchema( $Simulate );
+
         if (!$Simulate) {
             /**
              * Basics
