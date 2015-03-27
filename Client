@@ -9,7 +9,7 @@ use MOC\V\Core\AutoLoader\AutoLoader;
  */
 header( 'Content-type: text/html; charset=utf-8' );
 error_reporting( E_ALL );
-ini_set( 'display_errors', 1 );
+ini_set( 'display_errors', 0 );
 date_default_timezone_set( 'Europe/Berlin' );
 session_start();
 session_write_close();

@@ -63,66 +63,75 @@ class Client
             /**
              * REST
              */
-            $this->runRestApi();
-            /**
-             * MAIN
-             */
-            try {
+            if (!$this->runRestApi()) {
                 /**
-                 * Assistance
+                 * MAIN
                  */
-                if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance' )) {
-                    $this->runAssistance();
+                try {
+                    /**
+                     * Assistance
+                     */
+                    if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance' )) {
+                        $this->runAssistance();
+                    }
+                    /**
+                     * Application
+                     */
+                    if (false === strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance' )) {
+                        $this->runApplication();
+                    }
+                } catch( \PDOException $Exception ) {
+                    /**
+                     * PDO Exception
+                     */
+                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                    $this->Display->addError( $Exception );
+                } catch( DBALException $Exception ) {
+                    /**
+                     * Repair Database
+                     */
+                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                    $this->Display->addToContent( new Container( Database::stageRepair( $Exception ) ) );
+                } catch( DatabaseException $Exception ) {
+                    /**
+                     * Error
+                     */
+                    Assistance::registerApplication( $this->Configuration );
+                    $this->Configuration->getClientNavigation()->addLinkToMeta(
+                        new LevelClient\Link( new UrlParameter( '/Sphere' ),
+                            new NameParameter( 'Zurück zur Anwendung' ) )
+                    );
+                    /** @var Element $Route */
+                    $Route = $this->Configuration->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
+                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                    $this->Display->addToContent( new Container( $Route ) );
+                } catch( \ErrorException $Exception ) {
+                    /**
+                     * Error Exception
+                     */
+                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                    $this->Display->addError( $Exception );
+                } catch( \Exception $Exception ) {
+                    /**
+                     * Unexpected Exception
+                     */
+                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                    $this->Display->addException( $Exception, get_class( $Exception ) );
                 }
+
                 /**
-                 * Application
+                 * Output
                  */
-                if (false === strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance' )) {
-                    $this->runApplication();
-                }
-            } catch( \PDOException $Exception ) {
-                /**
-                 * PDO Exception
-                 */
-                $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
-                $this->Display->addError( $Exception );
-            } catch( DBALException $Exception ) {
-                /**
-                 * Repair Database
-                 */
-                $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
-                $this->Display->addToContent( new Container( Database::stageRepair( $Exception ) ) );
-            } catch( DatabaseException $Exception ) {
-                /**
-                 * Error
-                 */
-                Assistance::registerApplication( $this->Configuration );
-                $this->Configuration->getClientNavigation()->addLinkToMeta(
-                    new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
-                );
-                /** @var Element $Route */
-                $Route = $this->Configuration->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
-                $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
-                $this->Display->addToContent( new Container( $Route ) );
-            } catch( \ErrorException $Exception ) {
-                /**
-                 * Error Exception
-                 */
-                $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
-                $this->Display->addError( $Exception );
-            } catch( \Exception $Exception ) {
-                /**
-                 * Unexpected Exception
-                 */
-                $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
-                $this->Display->addException( $Exception, get_class( $Exception ) );
+                $this->prepareOutput();
+                echo $this->Display->getContent();
             }
+        } else {
+            /**
+             * Output
+             */
+            $this->prepareOutput();
+            echo $this->Display->getContent();
         }
-        /**
-         * Output
-         */
-        $this->prepareOutput();
-        echo $this->Display->getContent();
     }
 
     /**
@@ -167,7 +176,6 @@ class Client
                 $Route = $Configuration->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Fatal' );
                 $Screen->setContent( new Container( $Route ) );
                 print $Screen->getContent();
-                exit( 0 );
             }, $this->Display, $this->Configuration
         );
     }
@@ -232,7 +240,7 @@ class Client
     }
 
     /**
-     *
+     * @return bool
      */
     private function runRestApi()
     {
@@ -266,9 +274,9 @@ class Client
                 header( 'HTTP/1.1 401 Unauthorized' );
                 print '401 Unauthorized';
             }
-            exit( 0 );
+            return true;
         }
-
+        return false;
     }
 
     private function runAssistance()

@@ -37,7 +37,9 @@ abstract class Bridge implements IBridgeInterface
             }, $this );
             $Loader = in_array( false, $Loader );
         } else {
+            // @codeCoverageIgnoreStart
             $Loader = false;
+            // @codeCoverageIgnoreEnd
         }
         /**
          * Register Loader-Instance
