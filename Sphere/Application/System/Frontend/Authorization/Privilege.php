@@ -48,8 +48,8 @@ class Privilege extends Right
         $View->setDescription( 'Privilegien' );
 
         $PrivilegeList = Gatekeeper::serviceAccess()->entityPrivilegeAll();
-        /** @noinspection PhpUnusedParameterInspection */
-        array_walk( $PrivilegeList, function ( TblAccessPrivilege &$V, $I, $B ) {
+
+        array_walk( $PrivilegeList, function ( TblAccessPrivilege &$V ) {
 
             $Id = new InputHidden( 'Id' );
             $Id->setDefaultValue( $V->getId(), true );
@@ -64,13 +64,14 @@ class Privilege extends Right
             }
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $V->Option = ''
-                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+            $V->Option = ( new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol(
+                array(
                     $Id,
                     new ButtonSubmitPrimary( 'Rechte bearbeiten' )
-                ) ) ) ), null, $B.'/Sphere/System/Authorization/Privilege/Right' );
+                )
+            ) ) ), null, '/Sphere/System/Authorization/Privilege/Right' ) )->__toString();
 
-        }, self::getUrlBase() );
+        } );
 
         $View->setContent(
             new TableData( $PrivilegeList, new GridTableTitle( 'Bestehende Privilegien', 'Rechtegruppen' ),
@@ -131,15 +132,15 @@ class Privilege extends Right
         );
 
         /** @noinspection PhpUnusedParameterInspection */
-        array_walk( $tblRightListAvailable, function ( TblAccessRight &$V, $I, $B ) {
+        array_walk( $tblRightListAvailable, function ( TblAccessRight &$Entity, $Index, $Identifier ) {
 
             $Id = new InputHidden( 'Id' );
-            $Id->setDefaultValue( $B[0], true );
+            $Id->setDefaultValue( $Identifier, true );
             $Right = new InputHidden( 'Right' );
-            $Right->setDefaultValue( $V->getId(), true );
+            $Right->setDefaultValue( $Entity->getId(), true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $V->Option = new GridLayoutRight(
+            $Entity->Option = ( new GridLayoutRight(
                 new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                     $Id,
                     $Right,
@@ -147,31 +148,31 @@ class Privilege extends Right
                 ) ) ) ),
                     null, '/Sphere/System/Authorization/Privilege/Right'
                 )
-            );
-        }, array( $Id, self::getUrlBase() ) );
+            ) )->__toString();
+        }, $Id );
 
         /** @noinspection PhpUnusedParameterInspection */
-        array_walk( $tblRightList, function ( TblAccessRight &$V, $I, $B ) {
+        array_walk( $tblRightList, function ( TblAccessRight &$Entity, $Index, $Identifier ) {
 
             $Id = new InputHidden( 'Id' );
-            $Id->setDefaultValue( $B[0], true );
+            $Id->setDefaultValue( $Identifier, true );
             $Right = new InputHidden( 'Right' );
-            $Right->setDefaultValue( $V->getId(), true );
+            $Right->setDefaultValue( $Entity->getId(), true );
             $Remove = new InputHidden( 'Remove' );
             $Remove->setDefaultValue( 1, true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $V->Option = new GridLayoutRight(
-                new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
-                    $Id,
-                    $Right,
-                    $Remove,
-                    new ButtonSubmitDanger( 'Entfernen' )
-                ) ) ) ),
-                    null, '/Sphere/System/Authorization/Privilege/Right'
-                )
-            );
-        }, array( $Id, self::getUrlBase() ) );
+            $Entity->Option = ( new GridLayoutRight(
+                new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol(
+                    array(
+                        $Id,
+                        $Right,
+                        $Remove,
+                        new ButtonSubmitDanger( 'Entfernen' )
+                    )
+                ) ) ), null, '/Sphere/System/Authorization/Privilege/Right' )
+            ) )->__toString();
+        }, $Id );
 
         $View->setContent(
             new TableData( array( $tblPrivilege ), new GridTableTitle( 'Privileg' ), array(), false )

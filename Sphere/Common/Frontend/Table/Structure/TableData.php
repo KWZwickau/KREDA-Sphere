@@ -83,30 +83,31 @@ class TableData extends TableDefault
         } );
 
         /** @var GridTableRow[] $DataList */
-        array_walk( $DataList, function ( &$R, $I, $C ) {
+        /** @noinspection PhpUnusedParameterInspection */
+        array_walk( $DataList, function ( &$Row, $Index, $Content ) {
 
-            array_walk( $R, function ( &$V, $I, $C ) {
+            array_walk( $Row, function ( &$Column, $Index, $Content ) {
 
-                if (empty( $C )) {
-                    $V = new GridTableCol( $V );
-                } elseif (in_array( preg_replace( '!^[^a-z0-9_]*!is', '', $I ), array_keys( $C ) )) {
-                    $V = new GridTableCol( $V );
+                if (empty( $Content )) {
+                    $Column = new GridTableCol( $Column );
+                } elseif (in_array( preg_replace( '!^[^a-z0-9_]*!is', '', $Index ), array_keys( $Content ) )) {
+                    $Column = new GridTableCol( $Column );
                 } else {
-                    $V = false;
+                    $Column = false;
                 }
-            }, $C );
+            }, $Content );
             // Convert to Array
-            if (is_object( $R )) {
-                /** @var AbstractEntity $R */
-                $R = array_filter( $R->__toArray() );
+            if (is_object( $Row )) {
+                /** @var AbstractEntity $Row */
+                $Row = array_filter( $Row->__toArray() );
             } else {
-                $R = array_filter( $R );
+                $Row = array_filter( $Row );
             }
-            /** @var array $R */
+            /** @var array $Row */
             // Sort by ShowCol
-            $R = array_merge( array_flip( array_keys( $C ) ), $R );
+            $Row = array_merge( array_flip( array_keys( $Content ) ), $Row );
             /** @noinspection PhpParamsInspection */
-            $R = new GridTableRow( $R );
+            $Row = new GridTableRow( $Row );
         }, $ColumnDefinition );
 
         if (count( $DataList ) > 0 || $Interactive) {

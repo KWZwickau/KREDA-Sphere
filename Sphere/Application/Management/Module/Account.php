@@ -51,12 +51,14 @@ class Account extends Token
 
         self::$Configuration = $Configuration;
 
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Account', __CLASS__.'::frontendAccount'
-        )->setParameterDefault( 'Account', null )->setParameterDefault( 'Id', null );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Account/Edit', __CLASS__.'::frontendAccountEdit'
-        )->setParameterDefault( 'Id', null );
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Account' )) {
+            self::registerClientRoute( self::$Configuration,
+                '/Sphere/Management/Account', __CLASS__.'::frontendAccount'
+            )->setParameterDefault( 'Account', null )->setParameterDefault( 'Id', null );
+            self::registerClientRoute( self::$Configuration,
+                '/Sphere/Management/Account/Edit', __CLASS__.'::frontendAccountEdit'
+            )->setParameterDefault( 'Id', null );
+        }
     }
 
     /**

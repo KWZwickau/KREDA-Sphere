@@ -219,7 +219,7 @@ class Access extends EntityAction
                                 $tblRightList = $this->entityRightAllByPrivilege( $tblPrivilege );
                                 /** @noinspection PhpUnusedParameterInspection */
                                 array_walk( $tblRightList,
-                                    function ( TblAccessRight &$tblRight, $I, TblAccessRight $Right ) {
+                                    function ( TblAccessRight &$tblRight, $Index, TblAccessRight $Right ) {
 
                                         if ($tblRight->getId() == $Right->getId()) {
                                             // Access valid -> Access granted

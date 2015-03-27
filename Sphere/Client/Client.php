@@ -80,19 +80,19 @@ class Client
                 if (false === strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance' )) {
                     $this->runApplication();
                 }
-            } catch( \PDOException $E ) {
+            } catch( \PDOException $Exception ) {
                 /**
                  * PDO Exception
                  */
-                $this->Display->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
-                $this->Display->addError( $E );
-            } catch( DBALException $E ) {
+                $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                $this->Display->addError( $Exception );
+            } catch( DBALException $Exception ) {
                 /**
                  * Repair Database
                  */
-                $this->Display->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
-                $this->Display->addToContent( new Container( Database::stageRepair( $E ) ) );
-            } catch( DatabaseException $E ) {
+                $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                $this->Display->addToContent( new Container( Database::stageRepair( $Exception ) ) );
+            } catch( DatabaseException $Exception ) {
                 /**
                  * Error
                  */
@@ -102,20 +102,20 @@ class Client
                 );
                 /** @var Element $Route */
                 $Route = $this->Configuration->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
-                $this->Display->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
+                $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
                 $this->Display->addToContent( new Container( $Route ) );
-            } catch( \ErrorException $E ) {
+            } catch( \ErrorException $Exception ) {
                 /**
                  * Error Exception
                  */
-                $this->Display->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
-                $this->Display->addError( $E );
-            } catch( \Exception $E ) {
+                $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                $this->Display->addError( $Exception );
+            } catch( \Exception $Exception ) {
                 /**
                  * Unexpected Exception
                  */
-                $this->Display->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
-                $this->Display->addException( $E, get_class( $E ) );
+                $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                $this->Display->addException( $Exception, get_class( $Exception ) );
             }
         }
         /**
@@ -132,41 +132,41 @@ class Client
     {
 
         set_error_handler(
-            function ( $N, $S, $F, $L ) {
+            function ( $Code, $Message, $File, $Line ) {
 
-                if (!preg_match( '!apc_store.*?was.*?on.*?gc-list.*?for!is', $S )) {
-                    throw new \ErrorException( $S, 0, $N, $F, $L );
+                if (!preg_match( '!apc_store.*?was.*?on.*?gc-list.*?for!is', $Message )) {
+                    throw new \ErrorException( $Message, 0, $Code, $File, $Line );
                 }
             }, E_ALL
         );
         register_shutdown_function(
-            function ( Screen $S, Configuration $C ) {
+            function ( Screen $Screen, Configuration $Configuration ) {
 
                 $Error = error_get_last();
                 if (!$Error) {
                     return;
                 }
-                $S->setNavigation(
-                    new Container( $C->getClientNavigation() )
+                $Screen->setNavigation(
+                    new Container( $Configuration->getClientNavigation() )
                 );
-                if ($C->hasModuleNavigation()) {
-                    $S->addToNavigation(
-                        new Container( $C->getModuleNavigation() )
+                if ($Configuration->hasModuleNavigation()) {
+                    $Screen->addToNavigation(
+                        new Container( $Configuration->getModuleNavigation() )
                     );
                 }
-                if ($C->hasApplicationNavigation()) {
-                    $S->addToNavigation(
-                        new Container( $C->getApplicationNavigation() )
+                if ($Configuration->hasApplicationNavigation()) {
+                    $Screen->addToNavigation(
+                        new Container( $Configuration->getApplicationNavigation() )
                     );
                 }
-                Assistance::registerApplication( $C );
-                $C->getClientNavigation()->addLinkToMeta(
+                Assistance::registerApplication( $Configuration );
+                $Configuration->getClientNavigation()->addLinkToMeta(
                     new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
                 );
-                /** @var Element $R */
-                $R = $C->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Fatal' );
-                $S->setContent( new Container( $R ) );
-                print $S->getContent();
+                /** @var Element $Route */
+                $Route = $Configuration->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Fatal' );
+                $Screen->setContent( new Container( $Route ) );
+                print $Screen->getContent();
                 exit( 0 );
             }, $this->Display, $this->Configuration
         );

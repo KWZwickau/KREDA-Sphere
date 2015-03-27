@@ -59,28 +59,28 @@ class Screen extends AbstractContent implements IElementInterface
     }
 
     /**
-     * @param \Exception $E
+     * @param \Exception $Exception
      *
      * @return Screen
      */
-    public function addError( \Exception $E )
+    public function addError( \Exception $Exception )
     {
 
-        return $this->addMessageToContent( $E, 'Error' );
+        return $this->addMessageToContent( $Exception, 'Error' );
 
     }
 
     /**
-     * @param \Exception $E
+     * @param \Exception $Exception
      * @param string     $Name
      *
      * @return $this
      */
-    private function addMessageToContent( \Exception $E, $Name = 'Error' )
+    private function addMessageToContent( \Exception $Exception, $Name = 'Error' )
     {
 
         $TraceList = '';
-        foreach ((array)$E->getTrace() as $Index => $Trace) {
+        foreach ((array)$Exception->getTrace() as $Index => $Trace) {
             $TraceList .= '<br/><samp class="text-info">'
                 .( isset( $Trace['type'] ) && isset( $Trace['function'] ) ? '<br/>Method: '.$Trace['type'].$Trace['function'] : '<br/>Method: ' )
                 .( isset( $Trace['class'] ) ? '<br/>Class: '.$Trace['class'] : '<br/>Class: ' )
@@ -88,9 +88,9 @@ class Screen extends AbstractContent implements IElementInterface
                 .( isset( $Trace['line'] ) ? '<br/>Line: '.$Trace['line'] : '<br/>Line: ' )
                 .'</samp>';
         }
-        $Hit = '<samp class="text-danger"><p class="h6">'.$E->getMessage().'</p><br/>File: '.$E->getFile().'<br/>Line: '.$E->getLine().'</samp>'.$TraceList;
+        $Hit = '<samp class="text-danger"><p class="h6">'.$Exception->getMessage().'</p><br/>File: '.$Exception->getFile().'<br/>Line: '.$Exception->getLine().'</samp>'.$TraceList;
         $this->addToContent( new Container( new Error(
-            $E->getCode() == 0 ? $Name : $E->getCode(), $Hit
+            $Exception->getCode() == 0 ? $Name : $Exception->getCode(), $Hit
         ) ) );
         return $this;
 
@@ -121,15 +121,15 @@ class Screen extends AbstractContent implements IElementInterface
     }
 
     /**
-     * @param \Exception $E
+     * @param \Exception $Exception
      * @param string     $Identifier
      *
      * @return Screen
      */
-    public function addException( \Exception $E, $Identifier = 'Unhandled Exception' )
+    public function addException( \Exception $Exception, $Identifier = 'Unhandled Exception' )
     {
 
-        return $this->addMessageToContent( $E, $Identifier );
+        return $this->addMessageToContent( $Exception, $Identifier );
 
     }
 

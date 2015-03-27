@@ -17,6 +17,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRight;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
@@ -39,11 +40,13 @@ class Token extends Common
 
         self::$Configuration = $Configuration;
 
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Token', __CLASS__.'::frontendToken'
-        )
-            ->setParameterDefault( 'CredentialKey', null )
-            ->setParameterDefault( 'Id', null );
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Token' )) {
+            self::registerClientRoute( self::$Configuration,
+                '/Sphere/Management/Token', __CLASS__.'::frontendToken'
+            )
+                ->setParameterDefault( 'CredentialKey', null )
+                ->setParameterDefault( 'Id', null );
+        }
     }
 
     /**
@@ -83,15 +86,16 @@ class Token extends Common
             if (empty( $tblAccountList )) {
                 $Id = new InputHidden( 'Id' );
                 $Id->setDefaultValue( $T->getId(), true );
+                /** @noinspection PhpUndefinedFieldInspection */
                 $T->AccountList =
                     new MessageInfo( 'Keine Daten verfügbar' )
-                    .'<div class="pull-right">'.new FormDefault(
+                    .new GridLayoutRight( new FormDefault(
                         new GridFormGroup(
                             new GridFormRow(
                                 new GridFormCol( array( $Id, new ButtonSubmitDanger( 'Schlüssel löschen' ) ) )
                             )
                         )
-                    ).'</div>';
+                    ) );
             } else {
                 array_walk( $tblAccountList, function ( TblAccount &$A ) {
 
@@ -103,6 +107,7 @@ class Token extends Common
                             ( empty( $tblPerson ) ? new MessageWarning( 'Keine Daten verfügbar' ) : $tblPerson->getFullName() )
                     );
                 } );
+                /** @noinspection PhpUndefinedFieldInspection */
                 $T->AccountList = new TableData( $tblAccountList, null, array(), false );
             }
         } );

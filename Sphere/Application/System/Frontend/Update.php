@@ -20,6 +20,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRight;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Updater\Type\GitHub;
@@ -63,13 +64,13 @@ class Update extends AbstractFrontend
                                     'Version: '.$Update['name'].'<hr/>'.$Update['message']
                                 ),
                                 new GridLayoutCol(
-                                    '<div class="pull-right">'.new FormDefault(
+                                    new GridLayoutRight( new FormDefault(
                                         new GridFormGroup( new GridFormRow( new GridFormCol( array(
                                             $Version,
                                             new ButtonSubmitPrimary( 'Installieren' )
                                         ) ) ) ),
                                         null, '/Sphere/System/Update/Install'
-                                    ).'</div>'
+                                    ) )
                                 )
                             ) )
                         ) )
@@ -98,13 +99,13 @@ class Update extends AbstractFrontend
                                 'Version: '.$Next.'<hr/>'.$Updater->fetchMessage( $Next )
                             ),
                             new GridLayoutCol(
-                                '<div class="pull-right">'.new FormDefault(
+                                new GridLayoutRight( new FormDefault(
                                     new GridFormGroup( new GridFormRow( new GridFormCol( array(
                                         $Version,
                                         new ButtonSubmitSuccess( 'Installieren' )
                                     ) ) ) ),
                                     null, '/Sphere/System/Update/Install'
-                                ).'</div>'
+                                ) )
                             )
                         ) )
                     ) )

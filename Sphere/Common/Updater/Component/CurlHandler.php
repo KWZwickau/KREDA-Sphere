@@ -76,7 +76,7 @@ class CurlHandler extends GitApi
 
         $Tags = $this->fetchTags();
         /** @noinspection PhpUnusedParameterInspection */
-        array_walk( $Tags, function ( &$Tag, $I, $Version ) {
+        array_walk( $Tags, function ( &$Tag, $Index, $Version ) {
 
             if ($Tag['name'] != $Version) {
                 $Tag = false;
@@ -87,6 +87,11 @@ class CurlHandler extends GitApi
         return $Tags['zipball_url'];
     }
 
+    /**
+     * @param string $Version
+     *
+     * @return string Download location
+     */
     public function getDownload( $Version )
     {
 

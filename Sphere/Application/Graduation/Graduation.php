@@ -120,14 +120,15 @@ class Graduation extends AbstractApplication
 
         $GradeTypeList = Graduation::serviceGrade()->entityGradeTypeAll();
         if (!empty( $GradeTypeList )) {
-            array_walk( $GradeTypeList, function ( TblGradeType &$V, $I, $B ) {
 
-                $_POST['Id'] = $V->getId();
+            array_walk( $GradeTypeList, function ( TblGradeType &$Entity ) {
+
+                $_POST['Id'] = $Entity->getId();
 
                 // bei aktiven Zensurentypen "deaktivieren"-Button anzeigen; sonst "aktivieren"-Button
-                $V->getActiveState() == true ? $myButton = new ButtonSubmitDanger( 'deaktivieren' ) : $myButton = new ButtonSubmitSuccess( 'aktivieren' );
+                $Entity->getActiveState() == true ? $myButton = new ButtonSubmitDanger( 'deaktivieren' ) : $myButton = new ButtonSubmitSuccess( 'aktivieren' );
 
-                $V->Option = new FormDefault(
+                $Entity->Option = new FormDefault(
                     new GridFormGroup(
                         new GridFormRow( new GridFormCol( array(
                             new InputHidden( 'Id' ),
@@ -135,10 +136,10 @@ class Graduation extends AbstractApplication
                         ) ) )
                     ),
                     null,
-                    $B.'/Sphere/Graduation/Grade/Type'
+                    '/Sphere/Graduation/Grade/Type'
                 );
 
-            }, null ); //self::getUrlBase()
+            }, null );
         }
 
         $View->setContent( new TableData( $GradeTypeList, null, array(

@@ -41,12 +41,8 @@ class Management extends Module\Education
                 new CogWheelsIcon() );
 
             Module\Common::registerApplication( $Configuration );
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Token' )) {
-                Module\Token::registerApplication( $Configuration );
-            }
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Account' )) {
-                Module\Account::registerApplication( $Configuration );
-            }
+            Module\Token::registerApplication( $Configuration );
+            Module\Account::registerApplication( $Configuration );
             Module\Person::registerApplication( $Configuration );
             Module\Relationship::registerApplication( $Configuration );
             Module\Education::registerApplication( $Configuration );

@@ -21,6 +21,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRight;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Redirect;
@@ -52,13 +53,17 @@ class Role extends Access
 
             $LinkList = Gatekeeper::serviceAccount()->entityAccessAllByAccountRole( $V );
             if (empty( $LinkList )) {
+                /** @noinspection PhpUndefinedFieldInspection */
                 $V->Available = new MessageWarning( 'Keine Zugriffslevel vergeben' );
             } else {
+                /** @noinspection PhpUndefinedFieldInspection */
                 $V->Available = new TableData( $LinkList, null, array( 'Name' => 'Zugriffslevel' ), false );
             }
 
-            $V->Option = new ButtonLinkPrimary( 'Zugriffslevel bearbeiten', '/Sphere/System/Authorization/Role/Access',
-                null, array( 'Id' => $V->getId() ) );
+            /** @noinspection PhpUndefinedFieldInspection */
+            $V->Option = ( new ButtonLinkPrimary( 'Zugriffslevel bearbeiten',
+                '/Sphere/System/Authorization/Role/Access',
+                null, array( 'Id' => $V->getId() ) ) )->__toString();
         } );
 
         $View->setContent(
@@ -122,46 +127,48 @@ class Role extends Access
             }
         );
 
-        array_walk( $tblAccessListAvailable, function ( TblAccess &$V, $I, $B ) {
+        /** @noinspection PhpUnusedParameterInspection */
+        array_walk( $tblAccessListAvailable, function ( TblAccess &$Entity, $Index, $Identifier ) {
 
             $Id = new InputHidden( 'Id' );
-            $Id->setDefaultValue( $B[0], true );
+            $Id->setDefaultValue( $Identifier, true );
             $Access = new InputHidden( 'Access' );
-            $Access->setDefaultValue( $V->getId(), true );
+            $Access->setDefaultValue( $Entity->getId(), true );
 
-            $V->Option =
-                '<div class="pull-right">'
-                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+            /** @noinspection PhpUndefinedFieldInspection */
+            $Entity->Option = ( new GridLayoutRight(
+                new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                     $Id,
                     $Access,
                     new ButtonSubmitSuccess( 'Hinzufügen' )
                 ) ) ) ),
-                    null, $B[1].'/Sphere/System/Authorization/Role/Access'
+                    null, '/Sphere/System/Authorization/Role/Access'
                 )
-                .'</div>';
-        }, array( $Id, self::getUrlBase() ) );
+            ) )->__toString();
+        }, $Id );
 
-        array_walk( $tblAccessList, function ( TblAccess &$V, $I, $B ) {
+        /** @noinspection PhpUnusedParameterInspection */
+        array_walk( $tblAccessList, function ( TblAccess &$Entity, $Index, $Identifier ) {
 
             $Id = new InputHidden( 'Id' );
-            $Id->setDefaultValue( $B[0], true );
+            $Id->setDefaultValue( $Identifier, true );
             $Access = new InputHidden( 'Access' );
-            $Access->setDefaultValue( $V->getId(), true );
+            $Access->setDefaultValue( $Entity->getId(), true );
             $Remove = new InputHidden( 'Remove' );
             $Remove->setDefaultValue( 1, true );
 
-            $V->Option =
-                '<div class="pull-right">'
-                .new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+            /** @noinspection PhpUndefinedFieldInspection */
+            $Entity->Option = ( new GridLayoutRight(
+                new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                     $Id,
                     $Access,
                     $Remove,
                     new ButtonSubmitDanger( 'Entfernen' )
                 ) ) ) ),
-                    null, $B[1].'/Sphere/System/Authorization/Role/Access'
+                    null, '/Sphere/System/Authorization/Role/Access'
                 )
-                .'</div>';
-        }, array( $Id, self::getUrlBase() ) );
+            ) )->__toString();
+        }, $Id );
 
         $View->setContent(
             new TableData( array( $tblRole ), new GridTableTitle( 'Rolle' ), array(), false )

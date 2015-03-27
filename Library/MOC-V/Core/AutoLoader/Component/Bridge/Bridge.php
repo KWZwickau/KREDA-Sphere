@@ -17,6 +17,9 @@ abstract class Bridge implements IBridgeInterface
     public function registerLoader()
     {
 
+        /**
+         * Prevent multiple Loader-Instance
+         */
         $Loader = spl_autoload_functions();
         if (is_array( $Loader )) {
             array_walk( $Loader, function ( &$L ) {
@@ -36,6 +39,9 @@ abstract class Bridge implements IBridgeInterface
         } else {
             $Loader = false;
         }
+        /**
+         * Register Loader-Instance
+         */
         if (!$Loader) {
             spl_autoload_register( array( $this, 'loadSourceFile' ), true, false );
         }

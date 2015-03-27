@@ -133,18 +133,18 @@ abstract class EntityAction extends EntitySchema
         return self::extensionDataTables(
             $this->getEntityManager()->getEntity( 'TblPerson' )
         )
-            ->setCallbackFunction( function ( TblPerson $V, $P ) {
+            ->setCallbackFunction( function ( TblPerson $Entity, $Person ) {
 
                 /** @noinspection PhpUndefinedFieldInspection */
-                $V->Name = $V->getFullName();
+                $Entity->Name = $Entity->getFullName();
 
                 /** @noinspection PhpUndefinedFieldInspection */
-                $V->Option = ( new FormDefault(
+                $Entity->Option = ( new FormDefault(
                     new GridFormGroup(
                         new GridFormRow( array(
                             new GridFormCol(
                                 new InputSelect( 'tblRelationshipType', '',
-                                    array( 'Name' => $P[1] )
+                                    array( 'Name' => $Person[1] )
                                 )
                                 , 7 ),
                             new GridFormCol(
@@ -153,11 +153,11 @@ abstract class EntityAction extends EntitySchema
                         ) )
                     ), null,
                     '/Sphere/Management/Person/Relationship', array(
-                        'tblPerson'       => $P[0],
-                        'tblRelationship' => $V->getId()
+                        'tblPerson'       => $Person[0],
+                        'tblRelationship' => $Entity->getId()
                     )
                 ) )->__toString();
-                return $V;
+                return $Entity;
             }, array( $tblPerson, $tblPersonRelationshipType ) )
             ->getResult();
     }

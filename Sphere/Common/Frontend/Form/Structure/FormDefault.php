@@ -35,7 +35,7 @@ class FormDefault extends AbstractForm
         $this->GridButtonList = $FormButtonList;
 
         $this->Template = $this->extensionTemplate( __DIR__.'/FormDefault.twig' );
-        $this->Template->setVariable( 'UrlBase', $this->extensionRequest()->getUrlBase() );
+//        $this->Template->setVariable( 'UrlBase', $this->extensionRequest()->getUrlBase() );
         if (!empty( $FormData )) {
             $this->Template->setVariable( 'FormAction', $this->extensionRequest()->getUrlBase().$FormAction );
             $this->Template->setVariable( 'FormData', '?'.http_build_query(

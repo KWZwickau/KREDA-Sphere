@@ -21,6 +21,7 @@ class GitHub extends CurlHandler implements IUpdaterInterface
     function __construct( $CacheLocation = null )
     {
 
+        set_time_limit( 3600 );
         parent::__construct( $CacheLocation );
     }
 

@@ -28,27 +28,27 @@ class TableVertical extends AbstractTable
         }
 
         /** @var GridTableRow[] $DataList */
-        array_walk( $DataList, function ( &$R ) {
+        array_walk( $DataList, function ( &$Row ) {
 
-            array_walk( $R, function ( &$V, $I ) {
+            array_walk( $Row, function ( &$Column, $Index ) {
 
-                if (!is_object( $V ) || !$V instanceof GridTableCol) {
-                    if ($I == 0) {
-                        $V = new GridTableCol( $V, 1, '1%' );
+                if (!is_object( $Column ) || !$Column instanceof GridTableCol) {
+                    if ($Index == 0) {
+                        $Column = new GridTableCol( $Column, 1, '1%' );
                     } else {
-                        $V = new GridTableCol( $V );
+                        $Column = new GridTableCol( $Column );
                     }
                 }
             } );
             // Convert to Array
-            if (is_object( $R )) {
-                /** @var AbstractEntity $R */
-                $R = array_filter( $R->__toArray() );
+            if (is_object( $Row )) {
+                /** @var AbstractEntity $Row */
+                $Row = array_filter( $Row->__toArray() );
             } else {
-                $R = array_filter( $R );
+                $Row = array_filter( $Row );
             }
             /** @noinspection PhpParamsInspection */
-            $R = new GridTableRow( $R );
+            $Row = new GridTableRow( $Row );
         } );
 
         $this->GridBodyList = array( new GridTableBody( $DataList ) );
