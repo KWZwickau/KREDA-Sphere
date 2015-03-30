@@ -64,6 +64,68 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param string $Name
+     *
+     * @return TblCategory
+     */
+    protected function actionCreateCategory( $Name )
+    {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblCategory' )
+            ->findOneBy( array( TblCategory::ATTR_NAME => $Name ) );
+        if (null === $Entity) {
+            $Entity = new TblCategory( $Name );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return TblGroup
+     */
+    protected function actionCreateGroup( $Name )
+    {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblGroup' )
+            ->findOneBy( array( TblGroup::ATTR_NAME => $Name ) );
+        if (null === $Entity) {
+            $Entity = new TblGroup( $Name );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
+     * @param string $Name
+     * @param string $Description
+     *
+     * @return TblLevel
+     */
+    protected function actionCreateLevel( $Name, $Description )
+    {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblLevel' )
+            ->findOneBy( array( TblLevel::ATTR_NAME => $Name ) );
+        if (null === $Entity) {
+            $Entity = new TblLevel( $Name );
+            $Entity->setDescription( $Description );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
      * @return bool|TblTerm[]
      */
     protected function entityTermAll()
@@ -71,6 +133,32 @@ abstract class EntityAction extends EntitySchema
 
         $EntityList = $this->getEntityManager()->getEntity( 'TblTerm' )->findAll();
         return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblTerm
+     */
+    protected function entityTermByName( $Name )
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblTerm' )
+            ->findOneBy( array( TblTerm::ATTR_NAME => $Name ) );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblLevel
+     */
+    protected function entityLevelByName( $Name )
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblLevel' )
+            ->findOneBy( array( TblLevel::ATTR_NAME => $Name ) );
+        return ( null === $Entity ? false : $Entity );
     }
 
     /**

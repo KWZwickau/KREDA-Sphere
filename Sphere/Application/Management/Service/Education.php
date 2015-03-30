@@ -9,6 +9,8 @@ use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblTerm;
 use KREDA\Sphere\Application\Management\Service\Education\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
+use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
+use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class Education
@@ -159,4 +161,86 @@ class Education extends EntityAction
         return parent::entityGroupAll();
     }
 
+    /**
+     * @return bool|TblTerm[]
+     */
+    public function entityTermAll()
+    {
+
+        return parent::entityTermAll();
+    }
+
+    /**
+     * @param AbstractForm $View
+     * @param array        $Term
+     *
+     * @return AbstractForm|Redirect
+     */
+    public function executeCreateTerm( AbstractForm &$View, $Term )
+    {
+
+        if (null === $Term) {
+            return $View;
+        }
+
+        $Error = false;
+        if (isset( $Term['Name'] ) && empty( $Term['Name'] )) {
+            $View->setError( 'Term[Name]', 'Bitte geben Sie einen Namen für das Halbjahr an' );
+            $Error = true;
+        }
+        if (isset( $Term['Name'] ) && !empty( $Term['Name'] )) {
+            if ($this->entityTermByName( $Term['Name'] )) {
+                $View->setError( 'Term[Name]', 'Bitte geben Sie einen eindeutigen Namen für das Halbjahr ein' );
+                $Error = true;
+            }
+        }
+        if (isset( $Term['DateFrom'] ) && empty( $Term['DateFrom'] )) {
+            $View->setError( 'Term[DateFrom]', 'Bitte geben Sie ein Start-Datum an' );
+            $Error = true;
+        }
+        if (isset( $Term['DateTo'] ) && empty( $Term['DateTo'] )) {
+            $View->setError( 'Term[DateTo]', 'Bitte geben Sie ein Ende-Datum an' );
+            $Error = true;
+        }
+
+        if ($Error) {
+            return $View;
+        } else {
+            $this->actionCreateTerm( $Term['Name'], $Term['DateFrom'], $Term['DateTo'] );
+            return new Redirect( '/Sphere/Management/Education/Setup', 0 );
+        }
+    }
+
+    /**
+     * @param AbstractForm $View
+     * @param array        $Level
+     *
+     * @return AbstractForm|Redirect
+     */
+    public function executeCreateLevel( AbstractForm &$View, $Level )
+    {
+
+        if (null === $Level) {
+            return $View;
+        }
+
+        $Error = false;
+        if (isset( $Level['Name'] ) && empty( $Level['Name'] )) {
+            $View->setError( 'Level[Name]', 'Bitte geben Sie einen Namen für die Klassenstufe an' );
+            $Error = true;
+        }
+        if (isset( $Level['Name'] ) && !empty( $Level['Name'] )) {
+            if ($this->entityLevelByName( $Level['Name'] )) {
+                $View->setError( 'Level[Name]', 'Bitte geben Sie einen eindeutigen Namen für die Klassenstufe ein' );
+                $Error = true;
+            }
+        }
+
+        if ($Error) {
+            return $View;
+        } else {
+            $this->actionCreateLevel( $Level['Name'], $Level['Description'] );
+            return new Redirect( '/Sphere/Management/Education/Setup', 0 );
+        }
+    }
 }

@@ -22,13 +22,15 @@ hr {
 h3 {
     border-bottom: 1px solid silver;
     padding-top: 3px;
-    padding-bottom: 3px;
+    padding-bottom: 8px;
+    margin-top: 20px;
 }
 
 h4 {
-    border-bottom: 1px solid #dadada;
+    border-bottom: 1px dotted silver;
     padding-top: 3px;
-    padding-bottom: 2px;
+    padding-bottom: 5px;
+    margin-top: 20px;
 }
 
 h5 {
