@@ -2,7 +2,6 @@
 namespace KREDA\Sphere\Application\Management;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipList;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
@@ -72,25 +71,21 @@ class Management extends Module\Education
     }
 
     /**
-     * @param TblConsumer $tblConsumer
-     *
      * @return Service\Education
      */
-    public static function serviceEducation( TblConsumer $tblConsumer = null )
+    public static function serviceEducation()
     {
 
-        return Service\Education::getApi( $tblConsumer );
+        return Service\Education::getApi();
     }
 
     /**
-     * @param TblConsumer $tblConsumer
-     *
      * @return Service\Address
      */
-    public static function serviceAddress( TblConsumer $tblConsumer = null )
+    public static function serviceAddress()
     {
 
-        return Service\Address::getApi( $tblConsumer );
+        return Service\Address::getApi();
     }
 
     /**
@@ -132,14 +127,12 @@ class Management extends Module\Education
     }
 
     /**
-     * @param TblConsumer $tblConsumer
-     *
      * @return Service\Person
      */
-    public static function servicePerson( TblConsumer $tblConsumer = null )
+    public static function servicePerson()
     {
 
-        return Service\Person::getApi( $tblConsumer );
+        return Service\Person::getApi();
     }
 
     /**

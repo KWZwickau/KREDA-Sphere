@@ -3,8 +3,10 @@ namespace KREDA\Sphere\Application\Management\Module;
 
 use KREDA\Sphere\Application\Management\Frontend\Education as Frontend;
 use KREDA\Sphere\Application\Management\Frontend\Education\Group;
+use KREDA\Sphere\Application\Management\Frontend\Education\Setup;
 use KREDA\Sphere\Application\Management\Frontend\Education\Subject;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
 use KREDA\Sphere\Client\Configuration;
 
@@ -29,6 +31,15 @@ class Education extends Campus
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Education', __CLASS__.'::frontendEducation'
         );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Education/Setup', __CLASS__.'::frontendEducationSetup'
+        )
+            ->setParameterDefault( 'Term', null )
+            ->setParameterDefault( 'Level', null )
+            ->setParameterDefault( 'Group', null )
+            ->setParameterDefault( 'Subject', null );
+
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Education/Group', __CLASS__.'::frontendGroup'
         );
@@ -67,6 +78,25 @@ class Education extends Campus
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/Education/Subject', 'Fächer', new ShareIcon()
         );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Education/Setup', 'Einstellungen', new CogWheelsIcon()
+        );
+    }
+
+    /**
+     * @param null|array $Term
+     * @param null|array $Level
+     * @param null|array $Group
+     * @param null|array $Subject
+     *
+     * @return Stage
+     */
+    public static function frontendEducationSetup( $Term, $Level, $Group, $Subject )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Setup::stageSetup( $Term, $Level, $Group, $Subject );
     }
 
     /**

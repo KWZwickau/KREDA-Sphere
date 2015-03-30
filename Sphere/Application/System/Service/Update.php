@@ -64,6 +64,9 @@ class Update extends AbstractService
             Graduation::serviceGrade()->setupDatabaseContent();
             Graduation::serviceScore()->setupDatabaseContent();
             Graduation::serviceWeight()->setupDatabaseContent();
+
+            Management::serviceEducation()->setupDatabaseContent();
+
         }
 
         return implode( $Protocol );

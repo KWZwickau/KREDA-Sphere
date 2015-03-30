@@ -131,4 +131,32 @@ class Education extends EntityAction
 
         return parent::entityCategoryById( $Id );
     }
+
+    /**
+     * @return bool|TblSubject[]
+     */
+    public function entitySubjectAll()
+    {
+
+        return parent::entitySubjectAll();
+    }
+
+    /**
+     * @return bool|TblLevel[]
+     */
+    public function entityLevelAll()
+    {
+
+        return parent::entityLevelAll();
+    }
+
+    /**
+     * @return bool|TblGroup[]
+     */
+    public function entityGroupAll()
+    {
+
+        return parent::entityGroupAll();
+    }
+
 }

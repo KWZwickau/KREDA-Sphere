@@ -21,6 +21,7 @@ class TblSubjectGroup extends AbstractEntity
 {
 
     const ATTR_TBL_TERM = 'tblTerm';
+    const ATTR_TBL_LEVEL = 'tblLevel';
     const ATTR_TBL_SUBJECT = 'tblSubject';
     const ATTR_TBL_GROUP = 'tblGroup';
     const ATTR_SERVICE_GRADUATION_DIMENSION = 'serviceGraduation_Dimension';
@@ -38,6 +39,10 @@ class TblSubjectGroup extends AbstractEntity
     /**
      * @Column(type="bigint")
      */
+    protected $tblLevel;
+    /**
+     * @Column(type="bigint")
+     */
     protected $tblSubject;
     /**
      * @Column(type="bigint")
@@ -47,6 +52,28 @@ class TblSubjectGroup extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $serviceGraduation_Dimension;
+
+    /**
+     * @return bool|TblLevel
+     */
+    public function getTblLevel()
+    {
+
+        if (null === $this->tblLevel) {
+            return false;
+        } else {
+            return Management::serviceEducation()->entityLevelById( $this->tblLevel );
+        }
+    }
+
+    /**
+     * @param null|TblLevel $tblLevel
+     */
+    public function setTblLevel( TblLevel $tblLevel = null )
+    {
+
+        $this->tblLevel = ( null === $tblLevel ? null : $tblLevel->getId() );
+    }
 
     /**
      * @return bool|TblTerm

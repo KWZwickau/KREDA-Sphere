@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Education;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -20,7 +19,6 @@ class TblGroup extends AbstractEntity
 {
 
     const ATTR_NAME = 'Name';
-    const ATTR_TBL_LEVEL = 'tblLevel';
 
     /**
      * @Id
@@ -32,10 +30,6 @@ class TblGroup extends AbstractEntity
      * @Column(type="string")
      */
     protected $Name;
-    /**
-     * @Column(type="bigint")
-     */
-    protected $tblLevel;
 
     /**
      * @param string $Name
@@ -80,27 +74,5 @@ class TblGroup extends AbstractEntity
     {
 
         $this->Id = $Id;
-    }
-
-    /**
-     * @return bool|TblLevel
-     */
-    public function getTblLevel()
-    {
-
-        if (null === $this->tblLevel) {
-            return false;
-        } else {
-            return Management::serviceEducation()->entityLevelById( $this->tblLevel );
-        }
-    }
-
-    /**
-     * @param null|TblLevel $tblLevel
-     */
-    public function setTblLevel( TblLevel $tblLevel = null )
-    {
-
-        $this->tblLevel = ( null === $tblLevel ? null : $tblLevel->getId() );
     }
 }

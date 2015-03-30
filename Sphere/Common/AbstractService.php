@@ -22,14 +22,12 @@ abstract class AbstractService extends AbstractExtension implements IServiceInte
     protected static $DatabaseHandler = null;
 
     /**
-     * @param null|TblConsumer $tblConsumer
-     *
      * @return static Service Instance
      */
-    final public static function getApi( TblConsumer $tblConsumer = null )
+    final public static function getApi()
     {
 
-        return new static( $tblConsumer );
+        return new static();
     }
 
     /**

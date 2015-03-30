@@ -29,10 +29,10 @@ abstract class EntitySchema extends AbstractService
         $tblTerm = $this->setTableTerm( $Schema );
         $tblSubject = $this->setTableSubject( $Schema );
         $tblLevel = $this->setTableLevel( $Schema );
-        $tblGroup = $this->setTableGroup( $Schema, $tblLevel );
+        $tblGroup = $this->setTableGroup( $Schema );
         $tblCategory = $this->setTableCategory( $Schema );
         $this->setTableSubjectCategory( $Schema, $tblSubject, $tblCategory );
-        $tblSubjectGroup = $this->setTableSubjectGroup( $Schema, $tblTerm, $tblSubject, $tblGroup );
+        $tblSubjectGroup = $this->setTableSubjectGroup( $Schema, $tblTerm, $tblLevel, $tblSubject, $tblGroup );
         $this->setTableSubjectGroupTeacher( $Schema, $tblSubjectGroup );
         $this->setTableSubjectGroupStudent( $Schema, $tblSubjectGroup );
         /**
@@ -117,12 +117,11 @@ abstract class EntitySchema extends AbstractService
 
     /**
      * @param Schema $Schema
-     * @param Table  $tblLevel
      *
      * @throws SchemaException
      * @return Table
      */
-    private function setTableGroup( Schema &$Schema, Table $tblLevel )
+    private function setTableGroup( Schema &$Schema )
     {
 
         /**
@@ -135,7 +134,6 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblGroup', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
-        $this->schemaTableAddForeignKey( $Table, $tblLevel );
         return $Table;
     }
 
@@ -187,13 +185,19 @@ abstract class EntitySchema extends AbstractService
     /**
      * @param Schema $Schema
      * @param Table  $tblTerm
+     * @param Table  $tblLevel
      * @param Table  $tblSubject
      * @param Table  $tblGroup
      *
      * @return Table
      */
-    private function setTableSubjectGroup( Schema &$Schema, Table $tblTerm, Table $tblSubject, Table $tblGroup )
-    {
+    private function setTableSubjectGroup(
+        Schema &$Schema,
+        Table $tblTerm,
+        Table $tblLevel,
+        Table $tblSubject,
+        Table $tblGroup
+    ) {
 
         /**
          * Install
@@ -203,6 +207,7 @@ abstract class EntitySchema extends AbstractService
          * Upgrade
          */
         $this->schemaTableAddForeignKey( $Table, $tblTerm );
+        $this->schemaTableAddForeignKey( $Table, $tblLevel );
         $this->schemaTableAddForeignKey( $Table, $tblSubject );
         $this->schemaTableAddForeignKey( $Table, $tblGroup );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblSubjectGroup', 'serviceGraduation_Dimension' )) {
