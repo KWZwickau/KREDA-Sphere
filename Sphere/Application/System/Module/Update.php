@@ -5,6 +5,12 @@ use KREDA\Sphere\Application\System\Frontend\Update as Frontend;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\Cache\Type\ApcSma;
+use KREDA\Sphere\Common\Cache\Type\Apcu;
+use KREDA\Sphere\Common\Cache\Type\ApcUser;
+use KREDA\Sphere\Common\Cache\Type\Memcached;
+use KREDA\Sphere\Common\Cache\Type\OpCache;
+use KREDA\Sphere\Common\Cache\Type\TwigCache;
 use KREDA\Sphere\Common\Updater\Type\GitHub;
 
 /**
@@ -76,6 +82,9 @@ class Update extends Database
     public static function frontendAjaxRun( $Version )
     {
 
+        /**
+         * Set MAINTENANCE
+         */
         file_put_contents( __DIR__.'/../../../../MAINTENANCE', date( 'd.m.Y H:i:s' ) );
 
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
@@ -161,6 +170,18 @@ class Update extends Database
     public static function frontendAjaxUpdate()
     {
 
+        /**
+         * Clear Cache
+         */
+        ApcSma::clearCache();
+        ApcUser::clearCache();
+        Apcu::clearCache();
+        Memcached::clearCache();
+        OpCache::clearCache();
+        TwigCache::clearCache();
+        /**
+         * Unset MAINTENANCE
+         */
         unlink( __DIR__.'/../../../../MAINTENANCE' );
         return System::serviceUpdate()->setupDatabaseSchema( false );
     }

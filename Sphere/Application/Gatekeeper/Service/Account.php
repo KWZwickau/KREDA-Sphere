@@ -54,13 +54,12 @@ class Account extends EntityAction
         $tblAccountRole = $this->actionCreateAccountRole( 'System' );
         $tblAccountType = $this->actionCreateAccountType( 'System' );
         $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'DS' );
-        $this->actionCreateAccount( 'System', 'System', $tblAccountType, $tblAccountRole, null, null, $tblConsumer );
+        $this->actionCreateAccount( 'System', 'System',
+            $tblAccountType, $tblAccountRole, null, null, $tblConsumer
+        );
 
         $this->actionAddRoleAccess( $tblAccountRole,
-            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount' )
-        );
-        $this->actionAddRoleAccess( $tblAccountRole,
-            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount:System' )
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:Administrator' )
         );
         $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'System:Administrator' )
@@ -72,14 +71,15 @@ class Account extends EntityAction
         /**
          * Create Consumer-Admin
          */
-        $tblAccountRole = $this->actionCreateAccountRole( 'DS-Admin' );
-        $tblAccountType = $this->actionCreateAccountType( 'System' );
+        $tblAccountRole = $this->actionCreateAccountRole( 'Administrator' );
+        $tblAccountType = $this->actionCreateAccountType( 'Verwaltung' );
         $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'DS' );
-        $this->actionCreateAccount( 'DS-Admin', '12345', $tblAccountType, $tblAccountRole, null, null,
-            $tblConsumer );
+        $this->actionCreateAccount( 'DS-Admin', '12345',
+            $tblAccountType, $tblAccountRole, null, null, $tblConsumer
+        );
 
         $this->actionAddRoleAccess( $tblAccountRole,
-            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount:View' )
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount' )
         );
         $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'Management:Administrator' )
@@ -88,9 +88,8 @@ class Account extends EntityAction
         /**
          * Create Primary Login-Type
          */
-        $this->actionCreateAccountType( 'Schüler' );
         $this->actionCreateAccountType( 'Lehrer' );
-        $this->actionCreateAccountType( 'Verwaltung' );
+        $this->actionCreateAccountType( 'Schüler' );
     }
 
     /**

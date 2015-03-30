@@ -195,7 +195,7 @@ class Person extends AbstractFrontend
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Interessenten' );
         $View->setContent(
-            new TableData( '/Sphere/Management/REST/PersonListInterest', null,
+            new TableData( '/Sphere/Management/Table/PersonInterest', null,
                 array(
                     'Id'         => '#',
                     'FirstName'  => 'Vorname',
@@ -220,7 +220,7 @@ class Person extends AbstractFrontend
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Schüler' );
         $View->setContent(
-            new TableData( '/Sphere/Management/REST/PersonListStudent', null,
+            new TableData( '/Sphere/Management/Table/PersonStudent', null,
                 array(
                     'Id'         => '#',
                     'FirstName'  => 'Vorname',
@@ -245,7 +245,7 @@ class Person extends AbstractFrontend
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Sorgeberechtigte' );
         $View->setContent(
-            new TableData( '/Sphere/Management/REST/PersonListGuardian', null,
+            new TableData( '/Sphere/Management/Table/PersonGuardian', null,
                 array(
                     'Id'         => '#',
                     'FirstName'  => 'Vorname',

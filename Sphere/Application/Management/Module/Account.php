@@ -9,6 +9,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Wire;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonKeyIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
@@ -29,6 +30,7 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
+use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRight;
 use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
@@ -292,7 +294,10 @@ class Account extends Token
                         $A->Token = new MessageDanger( 'Keine Daten verfügbar', new WarningIcon() );
                     }
                 } else {
-                    $A->Token = $tblToken->getSerial();
+                    $A->Token = new MessageSuccess(
+                        implode( ' ', str_split( str_pad( $tblToken->getSerial(), 8, '0', STR_PAD_LEFT ), 4 ) ),
+                        new OkIcon()
+                    );
                 }
 
                 $Id = new InputHidden( 'Id' );
@@ -312,10 +317,10 @@ class Account extends Token
                         new GridFormRow(
                             new GridFormCol( array( $Id, new ButtonSubmitPrimary( 'Bearbeiten' ) ) )
                         )
-                    ), null, self::getUrlBase().'/Sphere/Management/Account/Edit'
+                    ), null, '/Sphere/Management/Account/Edit'
                 );
                 $FormDestroy->setConfirm( 'Wollen Sie den Benutzer '.$A->getUsername().' wirklich löschen?' );
-                $A->Option = '<div class="pull-right">'.$FormDestroy.'</div>'.'<div class="pull-right">'.$FormEdit.'</div>';
+                $A->Option = new GridLayoutRight( $FormDestroy ).new GridLayoutRight( $FormEdit );
             }
         } );
         return array_filter( $tblAccountList );

@@ -101,6 +101,11 @@ h5 {
     display: none;
 }
 
+.alert {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
 .input-group .selecter-selected {
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;

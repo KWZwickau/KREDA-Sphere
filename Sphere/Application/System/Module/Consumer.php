@@ -25,16 +25,21 @@ class Consumer extends Authorization
         self::$Configuration = $Configuration;
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Consumer/Create', __CLASS__.'::frontendCreate'
-        );
+        )
+            ->setParameterDefault( 'ConsumerSuffix', null )
+            ->setParameterDefault( 'ConsumerName', null );
     }
 
     /**
+     * @param string $ConsumerSuffix
+     * @param string $ConsumerName
+     *
      * @return Stage
      */
-    public static function frontendCreate()
+    public static function frontendCreate( $ConsumerSuffix, $ConsumerName )
     {
 
         self::setupModuleNavigation();
-        return Frontend::stageCreate();
+        return Frontend::stageCreate( $ConsumerSuffix, $ConsumerName );
     }
 }

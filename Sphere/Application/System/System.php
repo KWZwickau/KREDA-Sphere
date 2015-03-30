@@ -49,7 +49,7 @@ class System extends Module\Consumer
         /**
          * Observer
          */
-        self::registerClientRoute( self::$Configuration, '/Sphere/System/REST/ProtocolList',
+        self::registerClientRoute( self::$Configuration, '/Sphere/System/Table/Protocol',
             __CLASS__.'::restProtocolAll' );
     }
 

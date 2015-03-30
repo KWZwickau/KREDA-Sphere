@@ -74,8 +74,12 @@ class Database extends AbstractFrontend
                             $Status = new MessageDanger( 'Fehler', new WarningIcon() );
                         }
 
+                        $ConsumerError = false;
                         if ($Service[1]) {
                             $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( $Service[1] );
+                            if (!$tblConsumer) {
+                                $ConsumerError = true;
+                            }
                         }
 
                         $Configuration[$Application.$Service[0].$Service[1]] = new GridTableRow( array(
@@ -84,7 +88,13 @@ class Database extends AbstractFrontend
                             new GridTableCol( new TextDanger( $Service[0] ) ),
                             new GridTableCol( new TextDanger(
                                 isset( $tblConsumer )
-                                    ? new MessageInfo( 'Mandant: '.$tblConsumer->getName().' ('.$tblConsumer->getDatabaseSuffix().')' )
+                                    ?
+                                    ( !$ConsumerError
+                                        ? new MessageInfo( 'Mandant: '.$tblConsumer->getName().' ('.$tblConsumer->getDatabaseSuffix().')' )
+                                        : new MessageDanger(
+                                            'Der zugehörige Mandant '.$Service[1].' existiert nicht', new WarningIcon()
+                                        )
+                                    )
                                     : new MessageWarning( 'Systemübergreifend', new ClusterIcon() )
                             ) ),
                             new GridTableCol( new TextWarning( $Parameter['Driver'] ) ),

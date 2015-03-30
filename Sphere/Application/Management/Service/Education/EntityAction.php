@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Management\Service\Education\Entity\TblGroup;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblLevel;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup;
+use KREDA\Sphere\Application\Management\Service\Education\Entity\TblTerm;
 use KREDA\Sphere\Application\System\System;
 
 /**
@@ -17,12 +18,12 @@ abstract class EntityAction extends EntitySchema
 {
 
     /**
-     * @param string $Name
      * @param string $Acronym
+     * @param string $Name
      *
      * @return TblSubject
      */
-    protected function actionCreateSubject( $Name, $Acronym )
+    protected function actionCreateSubject( $Acronym, $Name )
     {
 
         $Manager = $this->getEntityManager();
@@ -36,6 +37,16 @@ abstract class EntityAction extends EntitySchema
                 $Entity );
         }
         return $Entity;
+    }
+
+    /**
+     * @return bool|TblTerm[]
+     */
+    protected function entityTermAll()
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblTerm' )->findAll();
+        return ( empty( $EntityList ) ? false : $EntityList );
     }
 
     /**
@@ -66,6 +77,22 @@ abstract class EntityAction extends EntitySchema
 
         $EntityList = $this->getEntityManager()->getEntity( 'TblGroup' )->findAll();
         return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblTerm
+     */
+    protected function entityTermById( $Id )
+    {
+
+        $Entity = $this->getEntityManager()->getEntityById( 'TblTerm', $Id );
+        if (null === $Entity) {
+            return false;
+        } else {
+            return $Entity;
+        }
     }
 
     /**

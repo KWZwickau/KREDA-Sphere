@@ -110,7 +110,7 @@ class Relationship extends AbstractFrontend
                                 new GridLayoutCol( array(
                                     new GridLayoutTitle( 'Personen', 'Suchen' ),
                                     new TableData(
-                                        '/Sphere/Management/REST/PersonListRelationship?tblPerson='.$tblPerson->getId()
+                                        '/Sphere/Management/Table/PersonRelationship?tblPerson='.$tblPerson->getId()
                                         , null,
                                         array(
                                             'Id' => '#',

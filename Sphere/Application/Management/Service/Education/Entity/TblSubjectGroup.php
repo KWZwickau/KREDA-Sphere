@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Graduation\Graduation;
+use KREDA\Sphere\Application\Graduation\Service\Weight\Entity\TblWeightDimension;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -19,6 +20,7 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblSubjectGroup extends AbstractEntity
 {
 
+    const ATTR_TBL_TERM = 'tblTerm';
     const ATTR_TBL_SUBJECT = 'tblSubject';
     const ATTR_TBL_GROUP = 'tblGroup';
     const ATTR_SERVICE_GRADUATION_DIMENSION = 'serviceGraduation_Dimension';
@@ -32,6 +34,10 @@ class TblSubjectGroup extends AbstractEntity
     /**
      * @Column(type="bigint")
      */
+    protected $tblTerm;
+    /**
+     * @Column(type="bigint")
+     */
     protected $tblSubject;
     /**
      * @Column(type="bigint")
@@ -41,6 +47,28 @@ class TblSubjectGroup extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $serviceGraduation_Dimension;
+
+    /**
+     * @return bool|TblTerm
+     */
+    public function getTblTerm()
+    {
+
+        if (null === $this->tblTerm) {
+            return false;
+        } else {
+            return Management::serviceEducation()->entityTermById( $this->tblTerm );
+        }
+    }
+
+    /**
+     * @param null|TblTerm $tblTerm
+     */
+    public function setTblTerm( TblTerm $tblTerm = null )
+    {
+
+        $this->tblTerm = ( null === $tblTerm ? null : $tblTerm->getId() );
+    }
 
     /**
      * @return bool|TblSubject
@@ -87,7 +115,7 @@ class TblSubjectGroup extends AbstractEntity
     }
 
     /**
-     * @return bool|TblDimension
+     * @return bool|TblWeightDimension
      */
     public function getServiceGraduationDimension()
     {
@@ -95,17 +123,17 @@ class TblSubjectGroup extends AbstractEntity
         if (null === $this->serviceGraduation_Dimension) {
             return false;
         } else {
-            return Graduation::serviceWeight()->entityDimensionById( $this->serviceGraduation_Dimension );
+            return Graduation::serviceWeight()->entityWeightDimensionById( $this->serviceGraduation_Dimension );
         }
     }
 
     /**
-     * @param null|TblDimension $tblDimension
+     * @param null|TblWeightDimension $tblWeightDimension
      */
-    public function setServiceGraduationDimension( TblDimension $tblDimension = null )
+    public function setServiceGraduationDimension( TblWeightDimension $tblWeightDimension = null )
     {
 
-        $this->serviceGraduation_Dimension = ( null === $tblDimension ? null : $tblDimension->getId() );
+        $this->serviceGraduation_Dimension = ( null === $tblWeightDimension ? null : $tblWeightDimension->getId() );
     }
 
     /**

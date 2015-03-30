@@ -42,35 +42,41 @@ class Access extends EntityAction
         $Privilege = $this->actionCreatePrivilege( 'System:Administrator' );
         $Right = $this->actionCreateRight( 'Application:System' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Table/Protocol' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
         $this->actionAddAccessPrivilege( $Access, $Privilege );
 
         $Access = $this->actionCreateAccess( 'Management:Administrator' );
         $Privilege = $this->actionCreatePrivilege( 'Management:Administrator' );
         $Right = $this->actionCreateRight( 'Application:Management' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $this->actionAddAccessPrivilege( $Access, $Privilege );
         $Right = $this->actionCreateRight( '/Sphere/Management/Token' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $Right = $this->actionCreateRight( '/Sphere/Management/Account' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonInterest' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonStudent' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonGuardian' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $this->actionAddAccessPrivilege( $Access, $Privilege );
+
+        $Access = $this->actionCreateAccess( 'Gatekeeper:Administrator' );
+        $Privilege = $this->actionCreatePrivilege( 'Gatekeeper:Administrator' );
+        $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount/ChangePassword' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount/ChangeConsumer' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $this->actionAddAccessPrivilege( $Access, $Privilege );
 
         $Access = $this->actionCreateAccess( 'Gatekeeper:MyAccount' );
         $Privilege = $this->actionCreatePrivilege( 'Gatekeeper:MyAccount' );
         $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount/ChangePassword' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $this->actionAddAccessPrivilege( $Access, $Privilege );
-
-        $Access = $this->actionCreateAccess( 'Gatekeeper:MyAccount:View' );
-        $Privilege = $this->actionCreatePrivilege( 'Gatekeeper:MyAccount:View' );
-        $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $this->actionAddAccessPrivilege( $Access, $Privilege );
-
-        $Access = $this->actionCreateAccess( 'Gatekeeper:MyAccount:System' );
-        $Privilege = $this->actionCreatePrivilege( 'Gatekeeper:MyAccount:System' );
-        $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount/ChangeConsumer' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $this->actionAddAccessPrivilege( $Access, $Privilege );
     }

@@ -29,7 +29,7 @@ class Relationship extends Person
          * REST Service
          */
         self::registerClientRoute( $Configuration,
-            '/Sphere/Management/REST/PersonListRelationship', __CLASS__.'::restPersonListRelationship'
+            '/Sphere/Management/Table/PersonRelationship', __CLASS__.'::restPersonListRelationship'
         );
 
     }

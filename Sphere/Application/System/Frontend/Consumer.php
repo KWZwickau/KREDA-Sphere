@@ -23,9 +23,12 @@ class Consumer extends AbstractFrontend
 {
 
     /**
+     * @param string $ConsumerSuffix
+     * @param string $ConsumerName
+     *
      * @return Stage
      */
-    public static function stageCreate()
+    public static function stageCreate( $ConsumerSuffix, $ConsumerName )
     {
 
         $View = new Stage();
@@ -35,26 +38,27 @@ class Consumer extends AbstractFrontend
         $ConsumerList = Gatekeeper::serviceConsumer()->entityConsumerAll();
         $View->setContent(
             new TableData( $ConsumerList, new GridTableTitle( 'Bestehende Mandanten' ), array(
-                'Id'                        => 'Id',
-                'Name'                      => 'Mandanten-Name',
-                'DatabaseSuffix'            => 'Datenbank-Kürzel'
+                'Id'             => 'Id',
+                'Name'           => 'Mandanten-Name',
+                'DatabaseSuffix' => 'Datenbank-Kürzel'
             ) )
-            .
-            new FormDefault(
-                new GridFormGroup(
-                    new GridFormRow( array(
-                        new GridFormCol(
-                            new InputText(
-                                'ConsumerName', 'Name des Mandanten', 'Name des Mandanten'
-                            )
-                        , 6),
-                        new GridFormCol(
-                            new InputText(
-                                'ConsumerSuffix', 'Kürzel des Mandanten', 'Kürzel des Mandanten'
-                            )
-                        , 6)
-                    ) ), new GridFormTitle( 'Mandant anlegen' ) )
-            , new ButtonSubmitPrimary( 'Hinzufügen' ) )
+            .Gatekeeper::serviceConsumer()->executeCreateConsumer(
+                new FormDefault(
+                    new GridFormGroup(
+                        new GridFormRow( array(
+                            new GridFormCol(
+                                new InputText(
+                                    'ConsumerName', 'Name des Mandanten', 'Name des Mandanten'
+                                )
+                                , 6 ),
+                            new GridFormCol(
+                                new InputText(
+                                    'ConsumerSuffix', 'Kürzel des Mandanten', 'Kürzel des Mandanten'
+                                )
+                                , 6 )
+                        ) ), new GridFormTitle( 'Mandant anlegen' ) )
+                    , new ButtonSubmitPrimary( 'Hinzufügen' ) )
+                , $ConsumerSuffix, $ConsumerName )
         );
         return $View;
     }

@@ -64,18 +64,21 @@ class Person extends Account
         /**
          * REST Service
          */
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListInterest',
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonInterest',
             __CLASS__.'::restPersonListByType' )
             ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId() );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListStudent',
+                Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId()
+            );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonStudent',
             __CLASS__.'::restPersonListByType' )
             ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId() );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListGuardian',
+                Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId()
+            );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonGuardian',
             __CLASS__.'::restPersonListByType' )
             ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId() );
+                Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId()
+            );
     }
 
     /**

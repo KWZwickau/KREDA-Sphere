@@ -24,7 +24,7 @@ class Protocol extends AbstractFrontend
         $View->setDescription( 'Status' );
 
         $View->setContent(
-            new TableData( '/Sphere/System/REST/ProtocolList', null,
+            new TableData( '/Sphere/System/Table/Protocol', null,
                 array(
                     'Id'     => '#',
                     'Editor' => 'Editor',

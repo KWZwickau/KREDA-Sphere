@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Management\Service\Education\Entity\TblGroup;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblLevel;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup;
+use KREDA\Sphere\Application\Management\Service\Education\Entity\TblTerm;
 use KREDA\Sphere\Application\Management\Service\Education\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
 
@@ -32,37 +33,48 @@ class Education extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $this->actionCreateSubject( 'Astronomie', 'Ast' );
-        $this->actionCreateSubject( 'Biologie', 'Bio' );
-        $this->actionCreateSubject( 'Chemie', 'Ch' );
-        $this->actionCreateSubject( 'Deutsch', 'De' );
-        $this->actionCreateSubject( 'Deutsch als Zweitsprache', 'DaZ' );
-        $this->actionCreateSubject( 'Englisch', 'En' );
-        $this->actionCreateSubject( 'Ethik', 'Eth' );
-        $this->actionCreateSubject( 'Französisch', 'Fr' );
-        $this->actionCreateSubject( 'Förderunterricht Mathematik', 'FöMa' );
-        $this->actionCreateSubject( 'Gemeinschaftskunde/Rechtserziehung', 'GK' );
-        $this->actionCreateSubject( 'Geographie', 'Geo' );
-        $this->actionCreateSubject( 'Geschichte', 'Ge' );
-        $this->actionCreateSubject( 'Informatik', 'Inf' );
-        $this->actionCreateSubject( 'Klassenleiterstunde', 'KL' );
-        $this->actionCreateSubject( 'Kunst', 'Ku' );
-        $this->actionCreateSubject( 'Künstlerisches Profil', 'Pk' );
-        $this->actionCreateSubject( 'Latein', 'La' );
-        $this->actionCreateSubject( 'Mathematik', 'Ma' );
-        $this->actionCreateSubject( 'Musik', 'Mu' );
-        $this->actionCreateSubject( 'Neigungskurs', 'Nk' );
-        $this->actionCreateSubject( 'Physik', 'Ph' );
-        $this->actionCreateSubject( 'Profil Geisteswissensch.', 'Pg' );
-        $this->actionCreateSubject( 'Profil Naturwissenschaften', 'Pn' );
-        $this->actionCreateSubject( 'Religion evangelisch', 'ReE' );
-        $this->actionCreateSubject( 'Russisch', 'Ru' );
-        $this->actionCreateSubject( 'Sorbisch', 'Sor' );
-        $this->actionCreateSubject( 'Sport', 'Spo' );
-        $this->actionCreateSubject( 'Technik und Natur', 'TuN' );
-        $this->actionCreateSubject( 'Technik/Computer', 'TC' );
-        $this->actionCreateSubject( 'Vertiefungskurs', 'VK' );
-        $this->actionCreateSubject( 'Wirtschaft-Technik-Haushalt/Soziales', 'WTH' );
+        $this->actionCreateSubject( 'Ast', 'Astronomie' );
+        $this->actionCreateSubject( 'Bio', 'Biologie' );
+        $this->actionCreateSubject( 'Ch', 'Chemie' );
+        $this->actionCreateSubject( 'De', 'Deutsch' );
+        $this->actionCreateSubject( 'DaZ', 'Deutsch als Zweitsprache' );
+        $this->actionCreateSubject( 'En', 'Englisch' );
+        $this->actionCreateSubject( 'Eth', 'Ethik' );
+        $this->actionCreateSubject( 'Fr', 'Französisch' );
+        $this->actionCreateSubject( 'FöMa', 'Förderunterricht Mathematik' );
+        $this->actionCreateSubject( 'GK', 'Gemeinschaftskunde/Rechtserziehung' );
+        $this->actionCreateSubject( 'Geo', 'Geographie' );
+        $this->actionCreateSubject( 'Ge', 'Geschichte' );
+        $this->actionCreateSubject( 'Inf', 'Informatik' );
+        $this->actionCreateSubject( 'KL', 'Klassenleiterstunde' );
+        $this->actionCreateSubject( 'Ku', 'Kunst' );
+        $this->actionCreateSubject( 'Pk', 'Künstlerisches Profil' );
+        $this->actionCreateSubject( 'La', 'Latein' );
+        $this->actionCreateSubject( 'Ma', 'Mathematik' );
+        $this->actionCreateSubject( 'Mu', 'Musik' );
+        $this->actionCreateSubject( 'Nk', 'Neigungskurs' );
+        $this->actionCreateSubject( 'Ph', 'Physik' );
+        $this->actionCreateSubject( 'Pg', 'Profil Geisteswissensch.' );
+        $this->actionCreateSubject( 'Pn', 'Profil Naturwissenschaften' );
+        $this->actionCreateSubject( 'ReE', 'Religion evangelisch' );
+        $this->actionCreateSubject( 'Ru', 'Russisch' );
+        $this->actionCreateSubject( 'Sor', 'Sorbisch' );
+        $this->actionCreateSubject( 'Spo', 'Sport' );
+        $this->actionCreateSubject( 'TuN', 'Technik und Natur' );
+        $this->actionCreateSubject( 'TC', 'Technik/Computer' );
+        $this->actionCreateSubject( 'VK', 'Vertiefungskurs' );
+        $this->actionCreateSubject( 'WTH', 'Wirtschaft-Technik-Haushalt/Soziales' );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblTerm
+     */
+    public function entityTermById( $Id )
+    {
+
+        return parent::entityTermById( $Id );
     }
 
     /**

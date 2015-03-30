@@ -48,12 +48,13 @@ class TblConsumer extends AbstractEntity
     protected $DatabaseSuffix;
 
     /**
-     * @param string $Name
+     * @param string $Suffix
      */
-    function __construct( $Name )
+    function __construct( $Suffix )
     {
 
-        $this->Name = $Name;
+        $this->TableSuffix = $Suffix;
+        $this->DatabaseSuffix = $Suffix;
     }
 
     /**

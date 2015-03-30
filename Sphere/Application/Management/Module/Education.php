@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Management\Module;
 
 use KREDA\Sphere\Application\Management\Frontend\Education as Frontend;
+use KREDA\Sphere\Application\Management\Frontend\Education\Group;
 use KREDA\Sphere\Application\Management\Frontend\Education\Subject;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
@@ -76,7 +77,7 @@ class Education extends Campus
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Subject::stageGroup();
+        return Group::stageGroup();
     }
 
     /**
