@@ -221,7 +221,7 @@ class Client
     private function runMaintenanceCheck()
     {
 
-        if (file_exists( __DIR__.'/MAINTENANCE' )) {
+        if (file_exists( __DIR__.'/../MAINTENANCE' )) {
             $Restricted = true;
             if (( $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession() )) {
                 if ($tblAccount->getTblAccountRole()->getName() == 'System') {

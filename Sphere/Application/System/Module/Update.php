@@ -82,6 +82,8 @@ class Update extends Database
     public static function frontendAjaxRun( $Version )
     {
 
+        set_time_limit( 3600 );
+
         /**
          * Set MAINTENANCE
          */
@@ -98,6 +100,8 @@ class Update extends Database
      */
     public static function frontendAjaxLog( $Version )
     {
+
+        set_time_limit( 3600 );
 
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
         $Log = $Updater->getDownload( $Version ).'.log';
@@ -133,6 +137,8 @@ class Update extends Database
     public static function frontendAjaxExtract( $Archive )
     {
 
+        set_time_limit( 3600 );
+
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
         return $Updater->extractArchive( $Archive );
     }
@@ -144,6 +150,8 @@ class Update extends Database
      */
     public static function frontendAjaxWrite( $Location )
     {
+
+        set_time_limit( 3600 );
 
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
         $Source = realpath( $Updater->getCache().'/'.$Location );
@@ -169,6 +177,8 @@ class Update extends Database
      */
     public static function frontendAjaxClean()
     {
+
+        set_time_limit( 3600 );
 
         /**
          * Clear Cache

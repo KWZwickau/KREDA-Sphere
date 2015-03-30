@@ -40,6 +40,30 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param string $Name
+     * @param string $DateFrom
+     * @param string $DateTo
+     *
+     * @return TblTerm
+     */
+    protected function actionCreateTerm( $Name, $DateFrom, $DateTo )
+    {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblTerm' )
+            ->findOneBy( array( TblTerm::ATTR_NAME => $Name ) );
+        if (null === $Entity) {
+            $Entity = new TblTerm( $Name );
+            $Entity->setDateFrom( new \DateTime( $DateFrom ) );
+            $Entity->setDateTo( new \DateTime( $DateTo ) );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
      * @return bool|TblTerm[]
      */
     protected function entityTermAll()

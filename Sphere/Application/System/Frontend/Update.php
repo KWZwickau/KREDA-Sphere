@@ -133,13 +133,13 @@ class Update extends AbstractFrontend
 
         $View->setContent(
             new MessageInfo( 'Update von Version '.$Updater->getCurrentVersion().' auf '.$Version, new ShareIcon() )
-            .new GridLayoutTitle( '', 'Das Update wird heruntergeladen' )
+            .new GridLayoutTitle( 'Schritt 1', 'Das Update wird heruntergeladen' )
             .new Progress( 'StatusDownload' )
-            .new GridLayoutTitle( '', 'Das Update wird überprüft' )
+            .new GridLayoutTitle( 'Schritt 2', 'Das Update wird überprüft' )
             .new Progress( 'StatusExtract' )
-            .new GridLayoutTitle( '', 'Dateien werden aktualisiert' )
+            .new GridLayoutTitle( 'Schritt 3', 'Dateien werden aktualisiert' )
             .new Progress( 'StatusInstall' )
-            .new GridLayoutTitle( '', 'Datenbanken werden aktualisiert' )
+            .new GridLayoutTitle( 'Schritt 4', 'Datenbanken werden aktualisiert' )
             .new Progress( 'StatusUpdate' )
             .'<script>Client.Use("ModProgress",function(){
                 var Run = true;
@@ -266,7 +266,7 @@ class Update extends AbstractFrontend
                                         "Size": Response.SizeCurrent,
                                         "Speed": Response.DownloadSpeed,
                                         "Time": Response.DownloadTime,
-                                        "Message": Number(Response.SizeCurrent / 1024 / 1024 ).toFixed(2) +"/"+ Number(Response.SizeTotal / 1024 / 1024 ).toFixed(2) + "MB @ " + Number(Response.DownloadSpeed / 1024).toFixed(2) + "KB/s"
+                                        "Message": Number(Response.SizeCurrent / 1024 / 1024 ).toFixed(2) +" / "+ Number(Response.SizeTotal / 1024 / 1024 ).toFixed(2) + "MB (" + Number(Response.DownloadSpeed / 1024).toFixed(2) + "KB/s)"
                                     });
                                 }
                             }

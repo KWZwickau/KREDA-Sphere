@@ -30,6 +30,14 @@ class TblTerm extends AbstractEntity
      * @Column(type="string")
      */
     protected $Name;
+    /**
+     * @Column(type="date")
+     */
+    protected $DateFrom;
+    /**
+     * @Column(type="date")
+     */
+    protected $DateTo;
 
     /**
      * @param string $Name
@@ -38,6 +46,52 @@ class TblTerm extends AbstractEntity
     {
 
         $this->Name = $Name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateFrom()
+    {
+
+        if (null === $this->DateFrom) {
+            return false;
+        }
+        /** @var \DateTime $DateFrom */
+        $DateFrom = $this->DateFrom;
+        return $DateFrom->format( 'd.m.Y' );
+    }
+
+    /**
+     * @param \DateTime $DateFrom
+     */
+    public function setDateFrom( \DateTime $DateFrom )
+    {
+
+        $this->DateFrom = $DateFrom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateTo()
+    {
+
+        if (null === $this->DateTo) {
+            return false;
+        }
+        /** @var \DateTime $DateTo */
+        $DateTo = $this->DateTo;
+        return $DateTo->format( 'd.m.Y' );
+    }
+
+    /**
+     * @param \DateTime $DateTo
+     */
+    public function setDateTo( \DateTime $DateTo )
+    {
+
+        $this->DateTo = $DateTo;
     }
 
     /**
