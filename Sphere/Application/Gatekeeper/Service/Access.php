@@ -44,6 +44,16 @@ class Access extends EntityAction
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $Right = $this->actionCreateRight( '/Sphere/System/Table/Protocol' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Update/Run' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Update/Log' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Update/Extract' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Update/Write' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Update/Clean' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
         $this->actionAddAccessPrivilege( $Access, $Privilege );
 
         $Access = $this->actionCreateAccess( 'Management:Administrator' );

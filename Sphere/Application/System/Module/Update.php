@@ -46,7 +46,7 @@ class Update extends Database
             '/Sphere/System/Update/Write', __CLASS__.'::frontendAjaxWrite'
         )->setParameterDefault( 'Location', null );
         self::registerClientRoute( $Configuration,
-            '/Sphere/System/Update/Update', __CLASS__.'::frontendAjaxUpdate'
+            '/Sphere/System/Update/Clean', __CLASS__.'::frontendAjaxClean'
         );
     }
 
@@ -167,7 +167,7 @@ class Update extends Database
     /**
      * @return string
      */
-    public static function frontendAjaxUpdate()
+    public static function frontendAjaxClean()
     {
 
         /**

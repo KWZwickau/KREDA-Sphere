@@ -151,7 +151,7 @@ class Update extends AbstractFrontend
                         "Time": 0
                     });
                     jQuery.ajax({
-                        url: "'.self::getUrlBase().'/Sphere/System/Update/Update",
+                        url: "'.self::getUrlBase().'/Sphere/System/Update/Clean",
                         data: { "REST":true, "_": jQuery.now() },
                         success: function( Response ) {
                             jQuery("div#StatusUpdate").ModProgress({
