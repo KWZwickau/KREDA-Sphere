@@ -72,12 +72,6 @@ class Account extends EntityAction
          * Create Consumer-Admin
          */
         $tblAccountRole = $this->actionCreateAccountRole( 'Administrator' );
-        $tblAccountType = $this->actionCreateAccountType( 'Verwaltung' );
-        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'DS' );
-        $this->actionCreateAccount( 'DS-Admin', '12345',
-            $tblAccountType, $tblAccountRole, null, null, $tblConsumer
-        );
-
         $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount' )
         );
@@ -88,6 +82,7 @@ class Account extends EntityAction
         /**
          * Create Primary Login-Type
          */
+        $this->actionCreateAccountType( 'Verwaltung' );
         $this->actionCreateAccountType( 'Lehrer' );
         $this->actionCreateAccountType( 'Schüler' );
     }
@@ -122,31 +117,6 @@ class Account extends EntityAction
         $CredentialKey,
         TblAccountType $tblAccountType
     ) {
-
-        /**
-         * Demo-Admin
-         */
-        if ($CredentialName == 'DS-Admin' && $CredentialLock == '12345' && $CredentialKey == 'demo') {
-            $tblAccount = $this->entityAccountByCredential( $CredentialName, $CredentialLock, $tblAccountType );
-            if (false === $tblAccount) {
-                if (null !== $CredentialName && empty( $CredentialName )) {
-                    $View->setError( 'CredentialName', 'Bitte geben Sie einen gültigen Benutzernamen ein' );
-                }
-                if (null !== $CredentialName && !empty( $CredentialName )) {
-                    $View->setError( 'CredentialName', 'Bitte geben Sie einen gültigen Benutzernamen ein' );
-                }
-                if (null !== $CredentialLock && empty( $CredentialLock )) {
-                    $View->setError( 'CredentialLock', 'Bitte geben Sie ein Passwort ein' );
-                }
-                if (null !== $CredentialLock && !empty( $CredentialLock )) {
-                    $View->setError( 'CredentialLock', 'Bitte geben Sie ein Passwort ein' );
-                }
-            } else {
-                session_regenerate_id();
-                Gatekeeper::serviceAccount()->actionCreateSession( $tblAccount, session_id() );
-                return new Redirect( '/Sphere', 1 );
-            }
-        }
 
         switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, $CredentialKey, $tblAccountType )) {
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
