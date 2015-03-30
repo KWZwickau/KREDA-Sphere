@@ -182,7 +182,9 @@ class Update extends Database
         /**
          * Unset MAINTENANCE
          */
-        unlink( __DIR__.'/../../../../MAINTENANCE' );
+        if (file_exists( __DIR__.'/../../../../MAINTENANCE' )) {
+            unlink( __DIR__.'/../../../../MAINTENANCE' );
+        }
         return System::serviceUpdate()->setupDatabaseSchema( false );
     }
 }

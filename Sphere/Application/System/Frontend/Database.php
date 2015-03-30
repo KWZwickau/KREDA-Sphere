@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\System\Frontend;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ClusterIcon;
@@ -74,11 +75,18 @@ class Database extends AbstractFrontend
                             $Status = new MessageDanger( 'Fehler', new WarningIcon() );
                         }
 
-                        $ConsumerError = false;
-                        if ($Service[1]) {
+                        if (empty( $Service[1] )) {
+                            $ConsumerType = new MessageWarning( 'Systemübergreifend', new ClusterIcon() );
+                        } else {
                             $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( $Service[1] );
-                            if (!$tblConsumer) {
-                                $ConsumerError = true;
+                            if ($tblConsumer instanceof TblConsumer) {
+                                $ConsumerType = new MessageInfo(
+                                    'Mandant: '.$tblConsumer->getName().' ('.$tblConsumer->getDatabaseSuffix().')'
+                                );
+                            } else {
+                                $ConsumerType = new MessageDanger(
+                                    'Der zugehörige Mandant '.$Service[1].' existiert nicht', new WarningIcon()
+                                );
                             }
                         }
 
@@ -86,17 +94,7 @@ class Database extends AbstractFrontend
                             new GridTableCol( $Status ),
                             new GridTableCol( new TextWarning( $Application ) ),
                             new GridTableCol( new TextDanger( $Service[0] ) ),
-                            new GridTableCol( new TextDanger(
-                                isset( $tblConsumer )
-                                    ?
-                                    ( !$ConsumerError
-                                        ? new MessageInfo( 'Mandant: '.$tblConsumer->getName().' ('.$tblConsumer->getDatabaseSuffix().')' )
-                                        : new MessageDanger(
-                                            'Der zugehörige Mandant '.$Service[1].' existiert nicht', new WarningIcon()
-                                        )
-                                    )
-                                    : new MessageWarning( 'Systemübergreifend', new ClusterIcon() )
-                            ) ),
+                            new GridTableCol( new TextDanger( $ConsumerType ) ),
                             new GridTableCol( new TextWarning( $Parameter['Driver'] ) ),
                             new GridTableCol( new TextDanger( $Parameter['Host'] ) ),
                             new GridTableCol( new TextMuted( ( $Parameter['Port'] ? $Parameter['Port'] : 'Default' ) ) ),
