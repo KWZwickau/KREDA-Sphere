@@ -2,8 +2,8 @@
 namespace KREDA\Sphere\Common\Frontend\Form;
 
 use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
+use KREDA\Sphere\Client\Frontend\Button\AbstractType as AbstractButton;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\AbstractElement as AbstractButton;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;

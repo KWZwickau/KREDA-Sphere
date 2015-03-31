@@ -2,9 +2,9 @@
 namespace KREDA\Sphere\Application\Demo\Service;
 
 use KREDA\Sphere\Application\Demo\Service\DemoService\EntityAction;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class DemoService

@@ -8,23 +8,23 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ClusterIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger as DangerMessage;
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Text\Type\Danger as DangerText;
+use KREDA\Sphere\Client\Frontend\Text\Type\Muted as MutedText;
+use KREDA\Sphere\Client\Frontend\Text\Type\Primary as PrimaryText;
+use KREDA\Sphere\Client\Frontend\Text\Type\Warning as WarningText;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Database\Connection\Identifier;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Table\AbstractTable;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableBody;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableCol;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableHead;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableRow;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableDefault;
-use KREDA\Sphere\Common\Frontend\Text\Element\TextDanger;
-use KREDA\Sphere\Common\Frontend\Text\Element\TextMuted;
-use KREDA\Sphere\Common\Frontend\Text\Element\TextPrimary;
-use KREDA\Sphere\Common\Frontend\Text\Element\TextWarning;
 
 /**
  * Class Database
@@ -69,22 +69,22 @@ class Database extends AbstractFrontend
 
                         try {
                             new Handler( new Identifier( $Application, $Service[0], $Service[1] ) );
-                            $Status = new MessageSuccess( 'Verbunden', new OkIcon() );
+                            $Status = new Success( 'Verbunden', new OkIcon() );
 
                         } catch( \Exception $E ) {
-                            $Status = new MessageDanger( 'Fehler', new WarningIcon() );
+                            $Status = new DangerMessage( 'Fehler', new WarningIcon() );
                         }
 
                         if (empty( $Service[1] )) {
-                            $ConsumerType = new MessageWarning( 'Systemübergreifend', new ClusterIcon() );
+                            $ConsumerType = new Warning( 'Systemübergreifend', new ClusterIcon() );
                         } else {
                             $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( $Service[1] );
                             if ($tblConsumer instanceof TblConsumer) {
-                                $ConsumerType = new MessageInfo(
+                                $ConsumerType = new Info(
                                     'Mandant: '.$tblConsumer->getName().' ('.$tblConsumer->getDatabaseSuffix().')'
                                 );
                             } else {
-                                $ConsumerType = new MessageDanger(
+                                $ConsumerType = new DangerMessage(
                                     'Der zugehörige Mandant '.$Service[1].' existiert nicht', new WarningIcon()
                                 );
                             }
@@ -92,13 +92,13 @@ class Database extends AbstractFrontend
 
                         $Configuration[$Application.$Service[0].$Service[1]] = new GridTableRow( array(
                             new GridTableCol( $Status ),
-                            new GridTableCol( new TextWarning( $Application ) ),
-                            new GridTableCol( new TextDanger( $Service[0] ) ),
-                            new GridTableCol( new TextDanger( $ConsumerType ) ),
-                            new GridTableCol( new TextWarning( $Parameter['Driver'] ) ),
-                            new GridTableCol( new TextDanger( $Parameter['Host'] ) ),
-                            new GridTableCol( new TextMuted( ( $Parameter['Port'] ? $Parameter['Port'] : 'Default' ) ) ),
-                            new GridTableCol( new TextDanger( $Parameter['Database'].new TextPrimary( $Service[1] ? '_'.$Service[1] : '' ) ) )
+                            new GridTableCol( new WarningText( $Application ) ),
+                            new GridTableCol( new DangerText( $Service[0] ) ),
+                            new GridTableCol( new DangerText( $ConsumerType ) ),
+                            new GridTableCol( new WarningText( $Parameter['Driver'] ) ),
+                            new GridTableCol( new DangerText( $Parameter['Host'] ) ),
+                            new GridTableCol( new MutedText( ( $Parameter['Port'] ? $Parameter['Port'] : 'Default' ) ) ),
+                            new GridTableCol( new DangerText( $Parameter['Database'].new PrimaryText( $Service[1] ? '_'.$Service[1] : '' ) ) )
                         ) );
                     }
                 }
@@ -153,9 +153,9 @@ class Database extends AbstractFrontend
         $View->setTitle( 'KREDA Systemreparatur' );
         $View->setDescription( 'Datenbanken' );
         $View->setMessage(
-            new MessageDanger( 'Die Anwendung hat festgestellt, dass manche Datenbanken nicht korrekt arbeiten.' )
-            .new MessageWarning( 'Sollte das Problem nach dem automatischen Reparaturversuch nicht behoben sein wenden Sie sich bitte an den Support' )
-            .( null === $E ? '' : new MessageInfo( $E->getMessage() ) )
+            new DangerMessage( 'Die Anwendung hat festgestellt, dass manche Datenbanken nicht korrekt arbeiten.' )
+            .new Warning( 'Sollte das Problem nach dem automatischen Reparaturversuch nicht behoben sein wenden Sie sich bitte an den Support' )
+            .( null === $E ? '' : new Info( $E->getMessage() ) )
         );
         $View->setContent(
             System::serviceUpdate()->setupDatabaseSchema( false )

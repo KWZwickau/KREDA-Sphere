@@ -5,12 +5,19 @@ use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitSuccess;
+use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
+use KREDA\Sphere\Client\Frontend\Layout\Type\PullRight;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
@@ -18,13 +25,6 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRight;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
-use KREDA\Sphere\Common\Frontend\Redirect;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
@@ -54,14 +54,14 @@ class Role extends Access
             $LinkList = Gatekeeper::serviceAccount()->entityAccessAllByAccountRole( $V );
             if (empty( $LinkList )) {
                 /** @noinspection PhpUndefinedFieldInspection */
-                $V->Available = new MessageWarning( 'Keine Zugriffslevel vergeben' );
+                $V->Available = new Warning( 'Keine Zugriffslevel vergeben' );
             } else {
                 /** @noinspection PhpUndefinedFieldInspection */
                 $V->Available = new TableData( $LinkList, null, array( 'Name' => 'Zugriffslevel' ), false );
             }
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $V->Option = ( new ButtonLinkPrimary( 'Zugriffslevel bearbeiten',
+            $V->Option = ( new Primary( 'Zugriffslevel bearbeiten',
                 '/Sphere/System/Authorization/Role/Access',
                 null, array( 'Id' => $V->getId() ) ) )->__toString();
         } );
@@ -80,7 +80,7 @@ class Role extends Access
                                 )
                             )
                         ), new GridFormTitle( 'Rolle anlegen', 'Zugriffslevelgruppe' ) )
-                    , new ButtonSubmitPrimary( 'Hinzufügen' )
+                    , new SubmitPrimary( 'Hinzufügen' )
                 )
                 , $Name )
         );
@@ -136,11 +136,11 @@ class Role extends Access
             $Access->setDefaultValue( $Entity->getId(), true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $Entity->Option = ( new GridLayoutRight(
+            $Entity->Option = ( new PullRight(
                 new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                     $Id,
                     $Access,
-                    new ButtonSubmitSuccess( 'Hinzufügen' )
+                    new SubmitSuccess( 'Hinzufügen' )
                 ) ) ) ),
                     null, '/Sphere/System/Authorization/Role/Access'
                 )
@@ -158,12 +158,12 @@ class Role extends Access
             $Remove->setDefaultValue( 1, true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $Entity->Option = ( new GridLayoutRight(
+            $Entity->Option = ( new PullRight(
                 new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                     $Id,
                     $Access,
                     $Remove,
-                    new ButtonSubmitDanger( 'Entfernen' )
+                    new SubmitDanger( 'Entfernen' )
                 ) ) ) ),
                     null, '/Sphere/System/Authorization/Role/Access'
                 )
@@ -173,25 +173,25 @@ class Role extends Access
         $View->setContent(
             new TableData( array( $tblRole ), new GridTableTitle( 'Rolle' ), array(), false )
             .
-            new GridLayout(
-                new GridLayoutGroup(
-                    new GridLayoutRow( array(
-                        new GridLayoutCol( array(
-                            new GridLayoutTitle( 'Zugriffslevel', 'Zugewiesen' ),
+            new Grid(
+                new Group(
+                    new Row( array(
+                        new Column( array(
+                            new Title( 'Zugriffslevel', 'Zugewiesen' ),
                             ( empty( $tblAccessList )
-                                ? new MessageWarning( 'Keine Zugriffslevel vergeben' )
+                                ? new Warning( 'Keine Zugriffslevel vergeben' )
                                 : new TableData( $tblAccessList )
                             )
                         ), 6 ),
-                        new GridLayoutCol( array(
-                            new GridLayoutTitle( 'Zugriffslevel', 'Verfügbar' ),
+                        new Column( array(
+                            new Title( 'Zugriffslevel', 'Verfügbar' ),
                             ( empty( $tblAccessListAvailable )
-                                ? new MessageInfo( 'Keine weiteren Zugriffslevel verfügbar' )
+                                ? new Info( 'Keine weiteren Zugriffslevel verfügbar' )
                                 : new TableData( $tblAccessListAvailable )
                             )
                         ), 6 )
                     ) )
-                    , new GridLayoutTitle( 'Rollen', 'Zusammensetzung' ) )
+                    , new Title( 'Rollen', 'Zusammensetzung' ) )
             )
         );
         return $View;

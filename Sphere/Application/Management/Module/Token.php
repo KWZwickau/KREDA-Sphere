@@ -7,9 +7,11 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
+use KREDA\Sphere\Client\Frontend\Layout\Type\PullRight;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
@@ -17,8 +19,6 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRight;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
@@ -88,11 +88,11 @@ class Token extends Common
                 $Id->setDefaultValue( $T->getId(), true );
                 /** @noinspection PhpUndefinedFieldInspection */
                 $T->AccountList =
-                    new MessageInfo( 'Keine Daten verfügbar' )
-                    .new GridLayoutRight( new FormDefault(
+                    new Info( 'Keine Daten verfügbar' )
+                    .new PullRight( new FormDefault(
                         new GridFormGroup(
                             new GridFormRow(
-                                new GridFormCol( array( $Id, new ButtonSubmitDanger( 'Schlüssel löschen' ) ) )
+                                new GridFormCol( array( $Id, new SubmitDanger( 'Schlüssel löschen' ) ) )
                             )
                         )
                     ) );
@@ -104,7 +104,7 @@ class Token extends Common
                     $A = array(
                         'Konto'  => $A->getUsername(),
                         'Person' =>
-                            ( empty( $tblPerson ) ? new MessageWarning( 'Keine Daten verfügbar' ) : $tblPerson->getFullName() )
+                            ( empty( $tblPerson ) ? new Warning( 'Keine Daten verfügbar' ) : $tblPerson->getFullName() )
                     );
                 } );
                 /** @noinspection PhpUndefinedFieldInspection */
@@ -113,10 +113,10 @@ class Token extends Common
         } );
 
         $View->setContent(
-            new GridLayoutTitle( 'Bestehende Schlüssel', 'YubiKey' )
+            new Title( 'Bestehende Schlüssel', 'YubiKey' )
             .
             ( empty( $tblTokenList )
-                ? new MessageWarning( 'Keine Schlüssel verfügbar' )
+                ? new Warning( 'Keine Schlüssel verfügbar' )
                 : new TableData( $tblTokenList, null, array(
                     'Id'          => 'Schlüssel-Id',
                     'Serial'      => 'Serien-Nummer',

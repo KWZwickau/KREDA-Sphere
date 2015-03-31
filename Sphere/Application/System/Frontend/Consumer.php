@@ -3,8 +3,8 @@ namespace KREDA\Sphere\Application\System\Frontend;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
@@ -57,7 +57,7 @@ class Consumer extends AbstractFrontend
                                 )
                                 , 6 )
                         ) ), new GridFormTitle( 'Mandant anlegen' ) )
-                    , new ButtonSubmitPrimary( 'Hinzufügen' ) )
+                    , new SubmitPrimary( 'Hinzufügen' ) )
                 , $ConsumerSuffix, $ConsumerName )
         );
         return $View;

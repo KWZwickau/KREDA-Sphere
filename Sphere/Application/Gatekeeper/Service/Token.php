@@ -9,9 +9,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\EntityAction;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class Token

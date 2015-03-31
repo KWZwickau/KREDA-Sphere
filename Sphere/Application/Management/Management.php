@@ -6,7 +6,7 @@ use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelations
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Common\Wire\Data;
 use KREDA\Sphere\Common\Wire\Observer;
 use KREDA\Sphere\Common\Wire\Plug;
@@ -115,7 +115,7 @@ class Management extends Module\Education
                 /**
                  * Done, CRITICAL -> return wire
                  */
-                $Return = new MessageDanger( 'Die Person kann nicht gelöscht werden, da noch Beziehungen zu anderen Personen existieren' );
+                $Return = new Danger( 'Die Person kann nicht gelöscht werden, da noch Beziehungen zu anderen Personen existieren' );
                 $Return .= implode( (array)$tblRelationshipList );
                 return $Return;
             }

@@ -3,8 +3,8 @@ namespace KREDA\Sphere\Application\System\Frontend\Authorization;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
@@ -46,7 +46,7 @@ class Right extends AbstractFrontend
                                 )
                             )
                         ), new GridFormTitle( 'Recht anlegen', 'Route' ) )
-                    , new ButtonSubmitPrimary( 'Hinzufügen' )
+                    , new SubmitPrimary( 'Hinzufügen' )
                 )
                 , $Name )
         );

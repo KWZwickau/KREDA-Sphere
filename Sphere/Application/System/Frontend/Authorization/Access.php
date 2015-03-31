@@ -5,11 +5,18 @@ use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitSuccess;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
+use KREDA\Sphere\Client\Frontend\Layout\Type\PullRight;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
@@ -17,13 +24,6 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRight;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
-use KREDA\Sphere\Common\Frontend\Redirect;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
@@ -56,7 +56,7 @@ class Access extends Privilege
             $LinkList = Gatekeeper::serviceAccess()->entityPrivilegeAllByAccess( $V );
             if (empty( $LinkList )) {
                 /** @noinspection PhpUndefinedFieldInspection */
-                $V->Available = new MessageWarning( 'Keine Privilegien vergeben' );
+                $V->Available = new Warning( 'Keine Privilegien vergeben' );
             } else {
                 /** @noinspection PhpUndefinedFieldInspection */
                 $V->Available = new TableData( $LinkList, null, array( 'Name' => 'Privilegien' ), false );
@@ -66,7 +66,7 @@ class Access extends Privilege
             $V->Option =
                 ( new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                     $Id,
-                    new ButtonSubmitPrimary( 'Privilegien bearbeiten' )
+                    new SubmitPrimary( 'Privilegien bearbeiten' )
                 ) ) ) ), null, '/Sphere/System/Authorization/Access/Privilege' ) )->__toString();
 
         } );
@@ -85,7 +85,7 @@ class Access extends Privilege
                                 )
                             )
                         ), new GridFormTitle( 'Zugriffslevel anlegen', 'Privilegiengruppe' ) )
-                    , new ButtonSubmitPrimary( 'Hinzufügen' )
+                    , new SubmitPrimary( 'Hinzufügen' )
                 )
                 , $Name )
         );
@@ -141,11 +141,11 @@ class Access extends Privilege
             $Privilege->setDefaultValue( $Entity->getId(), true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $Entity->Option = ( new GridLayoutRight(
+            $Entity->Option = ( new PullRight(
                 new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                     $Id,
                     $Privilege,
-                    new ButtonSubmitSuccess( 'Hinzufügen' )
+                    new SubmitSuccess( 'Hinzufügen' )
                 ) ) ) ),
                     null, '/Sphere/System/Authorization/Access/Privilege'
                 )
@@ -163,12 +163,12 @@ class Access extends Privilege
             $Remove->setDefaultValue( 1, true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $Entity->Option = ( new GridLayoutRight(
+            $Entity->Option = ( new PullRight(
                 new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                     $Id,
                     $Privilege,
                     $Remove,
-                    new ButtonSubmitDanger( 'Entfernen' )
+                    new SubmitDanger( 'Entfernen' )
                 ) ) ) ),
                     null, '/Sphere/System/Authorization/Access/Privilege'
                 )
@@ -178,25 +178,25 @@ class Access extends Privilege
         $View->setContent(
             new TableData( array( $tblAccess ), new GridTableTitle( 'Zugriffslevel' ), array(), false )
             .
-            new GridLayout(
-                new GridLayoutGroup(
-                    new GridLayoutRow( array(
-                        new GridLayoutCol( array(
-                            new GridLayoutTitle( 'Privilegien', 'Zugewiesen' ),
+            new Grid(
+                new Group(
+                    new Row( array(
+                        new Column( array(
+                            new Title( 'Privilegien', 'Zugewiesen' ),
                             ( empty( $tblPrivilegeList )
-                                ? new MessageWarning( 'Keine Privilegien vergeben' )
+                                ? new Warning( 'Keine Privilegien vergeben' )
                                 : new TableData( $tblPrivilegeList )
                             )
                         ), 6 ),
-                        new GridLayoutCol( array(
-                            new GridLayoutTitle( 'Privilegien', 'Verfügbar' ),
+                        new Column( array(
+                            new Title( 'Privilegien', 'Verfügbar' ),
                             ( empty( $tblPrivilegeListAvailable )
-                                ? new MessageInfo( 'Keine weiteren Privilegien verfügbar' )
+                                ? new Info( 'Keine weiteren Privilegien verfügbar' )
                                 : new TableData( $tblPrivilegeListAvailable )
                             )
                         ), 6 )
                     ) )
-                    , new GridLayoutTitle( 'Zugriffslevel', 'Zusammensetzung' ) )
+                    , new Title( 'Zugriffslevel', 'Zusammensetzung' ) )
             )
         );
         return $View;

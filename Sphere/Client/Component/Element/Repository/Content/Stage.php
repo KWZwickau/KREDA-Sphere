@@ -3,7 +3,7 @@ namespace KREDA\Sphere\Client\Component\Element\Repository\Content;
 
 use KREDA\Sphere\Client\Component\Element\Repository\AbstractContent;
 use KREDA\Sphere\Client\Component\IElementInterface;
-use KREDA\Sphere\Common\Frontend\Button\AbstractElement;
+use KREDA\Sphere\Client\Frontend\Button\AbstractType;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 
@@ -103,11 +103,11 @@ class Stage extends AbstractContent implements IElementInterface
     }
 
     /**
-     * @param AbstractElement $Button
+     * @param \KREDA\Sphere\Client\Frontend\Button\AbstractType $Button
      *
      * @return Stage
      */
-    public function addButton( AbstractElement $Button )
+    public function addButton( AbstractType $Button )
     {
 
         $this->Menu[] = $Button->__toString();

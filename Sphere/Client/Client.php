@@ -17,11 +17,11 @@ use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Common\Extension\Debugger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Signature\Type\GetSignature;
 use KREDA\Sphere\Common\Signature\Type\PostSignature;
 use MOC\V\Component\Database\Exception\DatabaseException;
@@ -194,16 +194,16 @@ class Client
                 $Stage->setTitle( 'KREDA Sicherheit' );
                 $Stage->setDescription( 'Parameter' );
                 $Stage->setContent(
-                    new MessageDanger( 'Das System hat fehlerhafte oder mutwillig veränderte Eingabedaten erkannt',
+                    new Danger( 'Das System hat fehlerhafte oder mutwillig veränderte Eingabedaten erkannt',
                         new WarningIcon()
                     )
-                    .new MessageWarning( 'Bitte ändern Sie keine Daten in der Url',
+                    .new Warning( 'Bitte ändern Sie keine Daten in der Url',
                         new WarningIcon()
                     )
-                    .new MessageInfo( 'Bitte führen Sie Anfragen an das System nicht über Tagesgrenzen hinweg aus',
+                    .new Info( 'Bitte führen Sie Anfragen an das System nicht über Tagesgrenzen hinweg aus',
                         new WarningIcon()
                     )
-                    .new MessageSuccess( 'Alle Parameter wurden entfernt',
+                    .new Success( 'Alle Parameter wurden entfernt',
                         new WarningIcon()
                     )
                 );

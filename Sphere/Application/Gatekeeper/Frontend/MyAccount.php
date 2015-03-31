@@ -8,10 +8,10 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CertificateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RepeatIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Complex\Structure\ComplexAddress;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
@@ -73,7 +73,7 @@ class MyAccount extends AbstractFrontend
                     new GridTableCol( $tblAccount->getTblAccountRole()->getName() )
                 ) )
             ) ) )
-                : new MessageDanger( 'Keine Accountdaten verfügbar', new WarningIcon() ) )
+                : new Danger( 'Keine Accountdaten verfügbar', new WarningIcon() ) )
             .( $tblPerson ? new TableDefault(
                 new GridTableHead(
                     new GridTableRow(
@@ -98,7 +98,7 @@ class MyAccount extends AbstractFrontend
                         new GridTableCol( $tblPerson->getBirthday() )
                     ) )
                 ) )
-            ) : new MessageWarning( 'Keine Personendaten verfügbar', new WarningIcon() ) )
+            ) : new Warning( 'Keine Personendaten verfügbar', new WarningIcon() ) )
             .( $tblConsumer ? new TableDefault(
                 new GridTableHead(
                     new GridTableRow(
@@ -115,11 +115,11 @@ class MyAccount extends AbstractFrontend
                     ) ),
                     new GridTableRow( array(
                         new GridTableCol( 'Addresse' ),
-                        new GridTableCol( $tblAddress ? new ComplexAddress( $tblAddress ) : new MessageWarning( 'Keine Adressdaten verfügbar',
+                        new GridTableCol( $tblAddress ? new ComplexAddress( $tblAddress ) : new Warning( 'Keine Adressdaten verfügbar',
                             new WarningIcon() ) )
                     ) )
                 ) )
-            ) : new MessageWarning( 'Keine Mandantendaten verfügbar', new WarningIcon() ) )
+            ) : new Warning( 'Keine Mandantendaten verfügbar', new WarningIcon() ) )
         );
         return $View;
     }
@@ -148,7 +148,7 @@ class MyAccount extends AbstractFrontend
                                 new RepeatIcon() )
                             , 6 )
                     ) )
-                ), new ButtonSubmitPrimary( 'Neues Passwort speichern' )
+                ), new SubmitPrimary( 'Neues Passwort speichern' )
             ), $CredentialLock, $CredentialLockSafety
         ) );
         return $View;
@@ -187,7 +187,7 @@ class MyAccount extends AbstractFrontend
                     new GridFormRow( array(
                         new GridFormCol( $SelectConsumer )
                     ) )
-                ), new ButtonSubmitPrimary( 'Neuen Mandant speichern' )
+                ), new SubmitPrimary( 'Neuen Mandant speichern' )
             ), $serviceGatekeeperConsumer
         ) );
         return $View;

@@ -2,8 +2,8 @@
 namespace KREDA\Sphere\Common;
 
 use KREDA\Sphere\Client\Component\Element\Repository\AbstractContent;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Redirect;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 
 /**
@@ -21,7 +21,7 @@ abstract class AbstractFrontend extends AbstractContent
      * @param string $Route
      * @param int    $Timeout
      *
-     * @return Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Redirect
      */
     final protected static function getRedirect( $Route, $Timeout = 15 )
     {
@@ -73,7 +73,7 @@ abstract class AbstractFrontend extends AbstractContent
     public function getContent()
     {
 
-        $Error = new MessageDanger( __METHOD__.' MUST NOT create content.' );
+        $Error = new Danger( __METHOD__.' MUST NOT create content.' );
         return $Error->getContent();
     }
 

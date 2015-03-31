@@ -9,9 +9,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRightList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\EntityAction;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class Access

@@ -5,8 +5,8 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\Service\Protocol\Entity\TblProtocol;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Common\AbstractEntity;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableBody;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableCol;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableHead;
@@ -214,7 +214,7 @@ abstract class EntityAction extends EntitySchema
             $dump = preg_replace_callback( '/:\d+:"\0.*?\0([^"]+)"/', $fix_key, $dump );
             // 4. Unserialize the modified object again.
             $dump = unserialize( $dump );
-            $dump->ERROR = new MessageDanger( "Structure mismatch!<br/>".$match[0]."<br/>Please delete this Item" );
+            $dump->ERROR = new Danger( "Structure mismatch!<br/>".$match[0]."<br/>Please delete this Item" );
             return $dump;
         } else {
             return $object;

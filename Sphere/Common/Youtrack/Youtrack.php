@@ -1,8 +1,8 @@
 <?php
 namespace KREDA\Sphere\Common\Youtrack;
 
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
 use KREDA\Sphere\Common\AbstractExtension;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
@@ -87,14 +87,14 @@ class Youtrack extends AbstractExtension
 
             }
 
-            $Issues[$Index] = new MessageInfo(
+            $Issues[$Index] = new Info(
                 '<strong>'.$Content[0].'</strong>'
                 .'<div class="pull-right label '.$Label.'"><samp>'.$Content[2].'</samp></div>'
                 .'<hr/><small>'.nl2br( $Content[1] ).'</small>'
             );
         }
         if (empty( $Issues )) {
-            $Issues[0] = new MessageInfo( 'Keine Supportanfragen vorhanden' );
+            $Issues[0] = new Info( 'Keine Supportanfragen vorhanden' );
         }
         krsort( $Issues );
         return new GridFormGroup(

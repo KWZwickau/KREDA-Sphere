@@ -12,9 +12,9 @@ use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkDanger;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
+use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
@@ -148,7 +148,7 @@ abstract class EntityAction extends EntitySchema
                                 )
                                 , 7 ),
                             new GridFormCol(
-                                new ButtonSubmitPrimary( 'Hinzufügen', new ShareIcon() )
+                                new SubmitPrimary( 'Hinzufügen', new ShareIcon() )
                                 , 5 )
                         ) )
                     ), null,
@@ -179,10 +179,10 @@ abstract class EntityAction extends EntitySchema
 
                 /** @noinspection PhpUndefinedFieldInspection */
                 $V->Option =
-                    ( new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Edit', new PencilIcon(),
+                    ( new Primary( 'Bearbeiten', '/Sphere/Management/Person/Edit', new PencilIcon(),
                         array( 'Id' => $V->getId() )
                     ) )->__toString()
-                    .( new ButtonLinkDanger( 'Löschen', '/Sphere/Management/Person/Destroy', new RemoveIcon(),
+                    .( new Danger( 'Löschen', '/Sphere/Management/Person/Destroy', new RemoveIcon(),
                         array( 'Id' => $V->getId() )
                     ) )->__toString();
                 return $V;

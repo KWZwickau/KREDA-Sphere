@@ -5,11 +5,18 @@ use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitSuccess;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
+use KREDA\Sphere\Client\Frontend\Layout\Type\PullRight;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
@@ -17,13 +24,6 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRight;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
-use KREDA\Sphere\Common\Frontend\Redirect;
 use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
@@ -57,7 +57,7 @@ class Privilege extends Right
             $LinkList = Gatekeeper::serviceAccess()->entityRightAllByPrivilege( $V );
             if (empty( $LinkList )) {
                 /** @noinspection PhpUndefinedFieldInspection */
-                $V->Available = new MessageWarning( 'Keine Rechte vergeben' );
+                $V->Available = new Warning( 'Keine Rechte vergeben' );
             } else {
                 /** @noinspection PhpUndefinedFieldInspection */
                 $V->Available = new TableData( $LinkList, null, array( 'Route' => 'Recht' ), false );
@@ -67,7 +67,7 @@ class Privilege extends Right
             $V->Option = ( new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol(
                 array(
                     $Id,
-                    new ButtonSubmitPrimary( 'Rechte bearbeiten' )
+                    new SubmitPrimary( 'Rechte bearbeiten' )
                 )
             ) ) ), null, '/Sphere/System/Authorization/Privilege/Right' ) )->__toString();
 
@@ -87,7 +87,7 @@ class Privilege extends Right
                                 )
                             )
                         ), new GridFormTitle( 'Privileg anlegen', 'Rechtegruppe' ) )
-                    , new ButtonSubmitPrimary( 'Hinzufügen' )
+                    , new SubmitPrimary( 'Hinzufügen' )
                 )
                 , $Name )
         );
@@ -140,11 +140,11 @@ class Privilege extends Right
             $Right->setDefaultValue( $Entity->getId(), true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $Entity->Option = ( new GridLayoutRight(
+            $Entity->Option = ( new PullRight(
                 new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
                     $Id,
                     $Right,
-                    new ButtonSubmitSuccess( 'Hinzufügen' )
+                    new SubmitSuccess( 'Hinzufügen' )
                 ) ) ) ),
                     null, '/Sphere/System/Authorization/Privilege/Right'
                 )
@@ -162,13 +162,13 @@ class Privilege extends Right
             $Remove->setDefaultValue( 1, true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $Entity->Option = ( new GridLayoutRight(
+            $Entity->Option = ( new PullRight(
                 new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol(
                     array(
                         $Id,
                         $Right,
                         $Remove,
-                        new ButtonSubmitDanger( 'Entfernen' )
+                        new SubmitDanger( 'Entfernen' )
                     )
                 ) ) ), null, '/Sphere/System/Authorization/Privilege/Right' )
             ) )->__toString();
@@ -177,25 +177,25 @@ class Privilege extends Right
         $View->setContent(
             new TableData( array( $tblPrivilege ), new GridTableTitle( 'Privileg' ), array(), false )
             .
-            new GridLayout(
-                new GridLayoutGroup(
-                    new GridLayoutRow( array(
-                        new GridLayoutCol( array(
-                            new GridLayoutTitle( 'Rechte', 'Zugewiesen' ),
+            new Grid(
+                new Group(
+                    new Row( array(
+                        new Column( array(
+                            new Title( 'Rechte', 'Zugewiesen' ),
                             ( empty( $tblRightList )
-                                ? new MessageWarning( 'Keine Rechte vergeben' )
+                                ? new Warning( 'Keine Rechte vergeben' )
                                 : new TableData( $tblRightList )
                             )
                         ), 6 ),
-                        new GridLayoutCol( array(
-                            new GridLayoutTitle( 'Rechte', 'Verfügbar' ),
+                        new Column( array(
+                            new Title( 'Rechte', 'Verfügbar' ),
                             ( empty( $tblRightListAvailable )
-                                ? new MessageInfo( 'Keine weiteren Rechte verfügbar' )
+                                ? new Info( 'Keine weiteren Rechte verfügbar' )
                                 : new TableData( $tblRightListAvailable )
                             )
                         ), 6 )
                     ) )
-                    , new GridLayoutTitle( 'Privileg', 'Zusammensetzung' ) )
+                    , new Title( 'Privileg', 'Zusammensetzung' ) )
             )
         );
         return $View;

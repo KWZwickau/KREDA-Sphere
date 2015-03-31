@@ -3,6 +3,8 @@ namespace KREDA\Sphere\Application\System\Frontend;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FlashIcon;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Cache\Frontend\Status;
 use KREDA\Sphere\Common\Cache\Type\ApcSma;
@@ -11,14 +13,12 @@ use KREDA\Sphere\Common\Cache\Type\ApcUser;
 use KREDA\Sphere\Common\Cache\Type\Memcached;
 use KREDA\Sphere\Common\Cache\Type\OpCache;
 use KREDA\Sphere\Common\Cache\Type\TwigCache;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class Cache
@@ -72,7 +72,7 @@ class Cache extends AbstractFrontend
                 new GridFormGroup( new GridFormRow(
                     new GridFormCol( $Clear )
                 ) )
-            ), new ButtonSubmitDanger( 'Clear', new FlashIcon() ) )
+            ), new SubmitDanger( 'Clear', new FlashIcon() ) )
         );
         return $View;
     }

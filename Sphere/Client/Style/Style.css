@@ -33,7 +33,7 @@ h4 {
 }
 
 h4:before {
-    font-family: "Glyphicons Regular";
+    font-family: "Glyphicons Regular", serif;
     font-size: 15px;
     color: #efc34e;
     content: "\e156";
@@ -312,7 +312,7 @@ table.dataTable.dtr-inline.collapsed > tbody th:first-child:before {
     line-height: 21px;
     box-shadow: none;
     box-sizing: content-box;
-    font-family: 'Glyphicons Regular';
+    font-family: 'Glyphicons Regular', serif;
     content: '\e052';
     background-color: transparent;
 }
@@ -341,7 +341,7 @@ table.dataTable.dtr-inline.collapsed > tbody tr.parent th:first-child:before {
 }
 
 .checkbox input[type=checkbox]:checked + label:after {
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     content: "\e013";
     padding: 0 4px;
     margin-top: -1px;

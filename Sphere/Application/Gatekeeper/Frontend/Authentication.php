@@ -5,9 +5,9 @@ use KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\SignIn;
 use KREDA\Sphere\Application\Gatekeeper\Frontend\Authentication\SignOut;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
+use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
+use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkDanger;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 use KREDA\Sphere\Common\Frontend\Button\Structure\GroupDefault;
 
 /**
@@ -93,16 +93,16 @@ class Authentication extends AbstractFrontend
         $View->setMessage( 'Bitte wählen Sie den Typ der Anmeldung' );
         $View->setContent(
             new GroupDefault( array(
-                new ButtonLinkPrimary(
+                new Primary(
                     'Schüler', '/Sphere/Gatekeeper/SignIn/Student', new LockIcon()
                 ),
-                new ButtonLinkPrimary(
+                new Primary(
                     'Lehrer', '/Sphere/Gatekeeper/SignIn/Teacher', new LockIcon()
                 ),
-                new ButtonLinkPrimary(
+                new Primary(
                     'Verwaltung', '/Sphere/Gatekeeper/SignIn/Management', new LockIcon()
                 ),
-                new ButtonLinkDanger(
+                new Danger(
                     'System', '/Sphere/Gatekeeper/SignIn/System', new LockIcon()
                 )
             ) )

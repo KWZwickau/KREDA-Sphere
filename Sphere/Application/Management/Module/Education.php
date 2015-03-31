@@ -3,7 +3,6 @@ namespace KREDA\Sphere\Application\Management\Module;
 
 use KREDA\Sphere\Application\Management\Frontend\Education as Frontend;
 use KREDA\Sphere\Application\Management\Frontend\Education\Definition;
-use KREDA\Sphere\Application\Management\Frontend\Education\Group;
 use KREDA\Sphere\Application\Management\Frontend\Education\Setup;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;

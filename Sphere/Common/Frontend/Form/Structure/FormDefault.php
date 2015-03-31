@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Common\Frontend\Form\Structure;
 
-use KREDA\Sphere\Common\Frontend\Button\AbstractElement;
+use KREDA\Sphere\Client\Frontend\Button\AbstractType;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 use KREDA\Sphere\Common\Signature\Type\GetSignature;
 
@@ -15,7 +15,7 @@ class FormDefault extends AbstractForm
 
     /**
      * @param GridFormGroup|GridFormGroup[]          $GridGroupList
-     * @param null|AbstractElement|AbstractElement[] $FormButtonList
+     * @param null|AbstractType|\KREDA\Sphere\Client\Frontend\Button\AbstractType[] $FormButtonList
      * @param string                                 $FormAction
      * @param array                                  $FormData
      */

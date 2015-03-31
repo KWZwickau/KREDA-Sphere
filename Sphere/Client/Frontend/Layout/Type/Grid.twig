@@ -1,0 +1,16 @@
+{% for Group in Grid %}
+    {% if( Group.getTitle is not empty ) %}
+        {{ Group.getTitle }}
+    {% endif %}
+    {% for Row in Group.getRow %}
+        <div class="row">
+            {% for Column in Row.getColumn %}
+                <div class="col-md-{{ Column.getSize }}">
+                    {% for AbstractFrontend in Column.getAbstractFrontend %}
+                        {{ AbstractFrontend }}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endfor %}

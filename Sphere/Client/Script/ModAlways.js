@@ -1,8 +1,7 @@
 (function( $ )
 {
     'use strict';
-    $.fn.ModAlways = function(
-    )
+    $.fn.ModAlways = function()
     {
 
         return this;

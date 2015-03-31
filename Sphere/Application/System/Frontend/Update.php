@@ -6,23 +6,23 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ClusterIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitSuccess;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
+use KREDA\Sphere\Client\Frontend\Layout\Type\PullRight;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRight;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Updater\Type\GitHub;
 
 /**
@@ -48,7 +48,7 @@ class Update extends AbstractFrontend
         $Next = $Updater->getLatestVersion();
         $Available = $Updater->getAvailableVersions();
         if (!is_array( $Available ) || count( $Available ) == 1) {
-            $UpdateList = new MessageSuccess( '&nbsp;Keine vorherigen Updates verfügbar', new OkIcon() );
+            $UpdateList = new Success( '&nbsp;Keine vorherigen Updates verfügbar', new OkIcon() );
         } else {
             krsort( $Available );
             array_pop( $Available );
@@ -57,17 +57,17 @@ class Update extends AbstractFrontend
                 $Version = new InputHidden( 'Version' );
                 $Version->setDefaultValue( $Update['name'], true );
                 $UpdateList .=
-                    new MessageInfo(
-                        new GridLayout( new GridLayoutGroup(
-                            new GridLayoutRow( array(
-                                new GridLayoutCol(
+                    new Info(
+                        new Grid( new Group(
+                            new Row( array(
+                                new Column(
                                     'Version: '.$Update['name'].'<hr/>'.$Update['message']
                                 ),
-                                new GridLayoutCol(
-                                    new GridLayoutRight( new FormDefault(
+                                new Column(
+                                    new PullRight( new FormDefault(
                                         new GridFormGroup( new GridFormRow( new GridFormCol( array(
                                             $Version,
-                                            new ButtonSubmitPrimary( 'Installieren' )
+                                            new SubmitPrimary( 'Installieren' )
                                         ) ) ) ),
                                         null, '/Sphere/System/Update/Install'
                                     ) )
@@ -82,27 +82,27 @@ class Update extends AbstractFrontend
         $Version->setDefaultValue( $Next, true );
 
         $View->setContent(
-            new MessageInfo( '&nbsp;Installierte Version: '.$Current, new ClusterIcon() )
-            .( $Current == $Next ? new MessageSuccess( '&nbsp;Das System ist auf dem aktuellsten Stand',
+            new Info( '&nbsp;Installierte Version: '.$Current, new ClusterIcon() )
+            .( $Current == $Next ? new Success( '&nbsp;Das System ist auf dem aktuellsten Stand',
                 new OkIcon() ) :
-                new MessageWarning(
+                new Warning(
                     '&nbsp;Neuere Version verfügbar: '.$Next,
                     new ShareIcon()
                 )
-                .new GridLayoutTitle( 'Historie', 'Verfügbare Updates' )
+                .new Title( 'Historie', 'Verfügbare Updates' )
                 .$UpdateList
-                .new GridLayoutTitle( 'Aktuelle Version' )
-                .new MessageSuccess(
-                    new GridLayout( new GridLayoutGroup(
-                        new GridLayoutRow( array(
-                            new GridLayoutCol(
+                .new Title( 'Aktuelle Version' )
+                .new Success(
+                    new Grid( new Group(
+                        new Row( array(
+                            new Column(
                                 'Version: '.$Next.'<hr/>'.$Updater->fetchMessage( $Next )
                             ),
-                            new GridLayoutCol(
-                                new GridLayoutRight( new FormDefault(
+                            new Column(
+                                new PullRight( new FormDefault(
                                     new GridFormGroup( new GridFormRow( new GridFormCol( array(
                                         $Version,
-                                        new ButtonSubmitSuccess( 'Installieren' )
+                                        new SubmitSuccess( 'Installieren' )
                                     ) ) ) ),
                                     null, '/Sphere/System/Update/Install'
                                 ) )
@@ -132,14 +132,14 @@ class Update extends AbstractFrontend
         $Updater = new GitHub();
 
         $View->setContent(
-            new MessageInfo( 'Update von Version '.$Updater->getCurrentVersion().' auf '.$Version, new ShareIcon() )
-            .new GridLayoutTitle( 'Schritt 1', 'Das Update wird heruntergeladen' )
+            new Info( 'Update von Version '.$Updater->getCurrentVersion().' auf '.$Version, new ShareIcon() )
+            .new Title( 'Schritt 1', 'Das Update wird heruntergeladen' )
             .new Progress( 'StatusDownload' )
-            .new GridLayoutTitle( 'Schritt 2', 'Das Update wird überprüft' )
+            .new Title( 'Schritt 2', 'Das Update wird überprüft' )
             .new Progress( 'StatusExtract' )
-            .new GridLayoutTitle( 'Schritt 3', 'Dateien werden aktualisiert' )
+            .new Title( 'Schritt 3', 'Dateien werden aktualisiert' )
             .new Progress( 'StatusInstall' )
-            .new GridLayoutTitle( 'Schritt 4', 'Datenbanken werden aktualisiert' )
+            .new Title( 'Schritt 4', 'Datenbanken werden aktualisiert' )
             .new Progress( 'StatusUpdate' )
             .'<script>Client.Use("ModProgress",function(){
                 var Run = true;

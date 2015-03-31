@@ -7,23 +7,24 @@ use KREDA\Sphere\Application\Management\Service\Education\Entity\TblLevel;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Text\Type\Danger;
+use KREDA\Sphere\Client\Frontend\Text\Type\Muted;
+use KREDA\Sphere\Client\Frontend\Text\Type\Primary as PrimaryText;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputCheckBox;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
-use KREDA\Sphere\Common\Frontend\Text\Element\TextDanger;
-use KREDA\Sphere\Common\Frontend\Text\Element\TextMuted;
-use KREDA\Sphere\Common\Frontend\Text\Element\TextPrimary;
 
 /**
  * Class Definition
@@ -47,23 +48,23 @@ class Definition extends AbstractFrontend
             array_walk( $tblSubjectGroup, function ( TblSubjectGroup &$tblSubjectGroup ) {
 
                 $tblSubjectGroup->displayTerm =
-                    new TextDanger( $tblSubjectGroup->getTblTerm()->getName() )
-                    .new TextMuted(
+                    new Danger( $tblSubjectGroup->getTblTerm()->getName() )
+                    .new Muted(
                         $tblSubjectGroup->getTblTerm()->getDateFrom()
                         .' - '.$tblSubjectGroup->getTblTerm()->getDateTo()
                     );
 
                 $tblSubjectGroup->displayLevel =
-                    new TextPrimary( $tblSubjectGroup->getTblLevel()->getName() )
-                    .new TextMuted( $tblSubjectGroup->getTblLevel()->getDescription() );
+                    new PrimaryText( $tblSubjectGroup->getTblLevel()->getName() )
+                    .new Muted( $tblSubjectGroup->getTblLevel()->getDescription() );
 
                 $tblSubjectGroup->displayGroup =
-                    new TextPrimary( $tblSubjectGroup->getTblGroup()->getName() )
-                    .new TextMuted( $tblSubjectGroup->getTblGroup()->getDescription() );
+                    new PrimaryText( $tblSubjectGroup->getTblGroup()->getName() )
+                    .new Muted( $tblSubjectGroup->getTblGroup()->getDescription() );
 
                 $tblSubjectGroup->displaySubject =
-                    new TextPrimary( $tblSubjectGroup->getTblSubject()->getAcronym() )
-                    .new TextMuted( $tblSubjectGroup->getTblSubject()->getName() );
+                    new PrimaryText( $tblSubjectGroup->getTblSubject()->getAcronym() )
+                    .new Muted( $tblSubjectGroup->getTblSubject()->getName() );
 
             } );
         }
@@ -93,18 +94,18 @@ class Definition extends AbstractFrontend
         }
 
         $View->setContent(
-            new GridLayout(
-                new GridLayoutGroup( array(
-                    new GridLayoutRow( array(
-                        new GridLayoutCol( array(
-                            new GridLayoutTitle( 'Verfügbare Fach-Klassen', 'Kombinationen' ),
+            new Grid(
+                new Group( array(
+                    new Row( array(
+                        new Column( array(
+                            new Title( 'Verfügbare Fach-Klassen', 'Kombinationen' ),
                             new TableData( $tblSubjectGroup, null, array(
                                 'displayTerm'    => 'Zeitraum',
                                 'displayLevel'   => 'Stufe',
                                 'displayGroup'   => 'Gruppe',
                                 'displaySubject' => 'Fach',
                             ) ),
-                            new GridLayoutTitle( 'Fach-Klasse', 'Hinzufügen' ),
+                            new Title( 'Fach-Klasse', 'Hinzufügen' ),
                             new FormDefault(
                                 new GridFormGroup( array(
                                     new GridFormRow( array(
@@ -117,8 +118,8 @@ class Definition extends AbstractFrontend
                                     new GridFormRow( array(
                                         new GridFormCol(
                                             new TableData( $tblLevel, null, array(
-                                                'Selector' => '',
-                                                'Name'     => 'Name',
+                                                'Selector' => new Primary( 'Alle auswählen', '' ),
+                                                'Name'     => 'Klassenstufe',
                                             ), false )
                                             , 3 ),
                                         new GridFormCol(
@@ -137,7 +138,7 @@ class Definition extends AbstractFrontend
                                     ) ),
                                     new GridFormRow( array(
                                         new GridFormCol(
-                                            new ButtonSubmitPrimary( 'Hinzufügen' )
+                                            new SubmitPrimary( 'Hinzufügen' )
                                         )
                                     ) )
                                 ) )

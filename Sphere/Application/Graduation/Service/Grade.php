@@ -3,9 +3,9 @@ namespace KREDA\Sphere\Application\Graduation\Service;
 
 use KREDA\Sphere\Application\Graduation\Service\Grade\Entity\TblGradeType;
 use KREDA\Sphere\Application\Graduation\Service\Grade\EntityAction;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class Grade

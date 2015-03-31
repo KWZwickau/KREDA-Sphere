@@ -1,8 +1,8 @@
 <?php
 namespace KREDA\Sphere\Common\Frontend\Button;
 
+use KREDA\Sphere\Client\Frontend\Button\AbstractType;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 
 /**
@@ -13,7 +13,7 @@ use MOC\V\Component\Template\Component\IBridgeInterface;
 abstract class AbstractGroup extends AbstractFrontend
 {
 
-    /** @var ButtonLinkPrimary[] $ButtonList */
+    /** @var AbstractType[] $ButtonList */
     protected $ButtonList = array();
     /** @var IBridgeInterface $Template */
     protected $Template = null;

@@ -12,10 +12,15 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
@@ -25,11 +30,6 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
@@ -95,8 +95,8 @@ class Person extends AbstractFrontend
         $View->setDescription( 'Hinzufügen' );
 
         $Form = self::formPersonBasic();
-        $Form->appendFormButton( new ButtonSubmitPrimary( 'Anlegen' ) );
-        $Form->appendFormButton( new ButtonSubmitPrimary( 'Anlegen & Bearbeiten' ) );
+        $Form->appendFormButton( new SubmitPrimary( 'Anlegen' ) );
+        $Form->appendFormButton( new SubmitPrimary( 'Anlegen & Bearbeiten' ) );
 
         $View->setContent( Management::servicePerson()->executeCreatePerson(
             $Form, $PersonName, $PersonInformation, $BirthDetail, $Button )
@@ -272,11 +272,11 @@ class Person extends AbstractFrontend
         $View->setTitle( 'Person' );
         $View->setDescription( 'Löschen' );
         if (empty( $Id )) {
-            $View->setContent( new MessageWarning( 'Die Daten konnten nicht abgerufen werden' ) );
+            $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
         } else {
             $tblPerson = Management::servicePerson()->entityPersonById( $Id );
             if (empty( $tblPerson )) {
-                $View->setContent( new MessageWarning( 'Die Person konnte nicht abgerufen werden' ) );
+                $View->setContent( new Warning( 'Die Person konnte nicht abgerufen werden' ) );
             } else {
                 if (true !== ( $Effect = Management::servicePerson()->executeDestroyPerson( $tblPerson ) )) {
                     $View->setContent( $Effect );
@@ -303,11 +303,11 @@ class Person extends AbstractFrontend
         $View->setTitle( 'Person' );
         $View->setDescription( 'Bearbeiten' );
         if (empty( $Id )) {
-            $View->setContent( new MessageWarning( 'Die Daten konnten nicht abgerufen werden' ) );
+            $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
         } else {
             $tblPerson = Management::servicePerson()->entityPersonById( $Id );
             if (empty( $tblPerson )) {
-                $View->setContent( new MessageWarning( 'Die Person konnte nicht abgerufen werden' ) );
+                $View->setContent( new Warning( 'Die Person konnte nicht abgerufen werden' ) );
             } else {
 
                 $View->setMessage( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() );
@@ -322,7 +322,7 @@ class Person extends AbstractFrontend
                 $_POST['PersonInformation']['Nationality'] = $tblPerson->getNationality();
                 $_POST['PersonInformation']['Type'] = $tblPerson->getTblPersonType()->getId();
                 $FormPersonBasic = self::formPersonBasic();
-                $FormPersonBasic->appendFormButton( new ButtonSubmitPrimary( 'Änderungen speichern' ) );
+                $FormPersonBasic->appendFormButton( new SubmitPrimary( 'Änderungen speichern' ) );
 
                 $FormPersonRelationship = self::formPersonRelationship( $tblPerson );
 
@@ -345,17 +345,17 @@ class Person extends AbstractFrontend
     private static function formPersonRelationship( TblPerson $tblPerson )
     {
 
-        return new GridLayout(
-            new GridLayoutGroup( array(
-                new GridLayoutRow( array(
-                    new GridLayoutCol(
-                        new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Person/Relationship', new PencilIcon(),
+        return new Grid(
+            new Group( array(
+                new Row( array(
+                    new Column(
+                        new Primary( 'Bearbeiten', '/Sphere/Management/Person/Relationship', new PencilIcon(),
                             array(
                                 'tblPerson' => $tblPerson->getId()
                             ) )
                         , 4 )
                 ) ),
-            ), new GridLayoutTitle( 'Beziehungen' ) )
+            ), new Title( 'Beziehungen' ) )
         );
     }
 }

@@ -13,9 +13,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use KREDA\Sphere\Common\Frontend\Redirect;
 use KREDA\Sphere\Common\Wire\Data;
 use KREDA\Sphere\Common\Wire\Effect;
 
@@ -108,7 +108,7 @@ class Account extends EntityAction
      * @param string         $CredentialKey
      * @param TblAccountType $tblAccountType
      *
-     * @return AbstractForm|Redirect
+     * @return AbstractForm|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeActionSignInWithToken(
         AbstractForm &$View,
@@ -198,7 +198,7 @@ class Account extends EntityAction
      * @param string         $CredentialLock
      * @param TblAccountType $tblAccountType
      *
-     * @return AbstractForm|Redirect
+     * @return AbstractForm|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeActionSignIn(
         AbstractForm &$View,

@@ -10,7 +10,7 @@ use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Common\Wire\Data;
 use KREDA\Sphere\Common\Wire\Observer;
 use KREDA\Sphere\Common\Wire\Plug;
@@ -188,7 +188,7 @@ class Gatekeeper extends Module\MyAccount
                 /**
                  * Done, CRITICAL -> return wire
                  */
-                $Return = new MessageDanger( 'Der Account kann nicht gelöscht werden, da der Benutzer noch offene Sessions hat' );
+                $Return = new Danger( 'Der Account kann nicht gelöscht werden, da der Benutzer noch offene Sessions hat' );
                 $Return .= implode( (array)$tblSessionList );
                 return $Return;
             }

@@ -10,11 +10,11 @@ use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelations
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonSalutation;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use KREDA\Sphere\Common\Frontend\Redirect;
 use KREDA\Sphere\Common\Wire\Data;
 use KREDA\Sphere\Common\Wire\Effect;
 
@@ -210,10 +210,10 @@ class Person extends EntityAction
                 $tblPersonType
             )
             ) {
-                $View .= new MessageSuccess( 'Änderungen gespeichert, die Daten werden neu geladen...' )
+                $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
                     .new Redirect( '/Sphere/Management/Person/Edit', 3, array( 'Id' => $tblPerson->getId() ) );
             } else {
-                $View .= new MessageDanger( 'Änderungen konnten nicht gespeichert werden' );
+                $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' );
             };
         }
         return $View;
@@ -344,10 +344,10 @@ class Person extends EntityAction
                 $tblPersonType
             );
             if ($Button['Submit'] == 'Anlegen') {
-                return new MessageSuccess( 'Die Person wurde erfolgreich angelegt' )
+                return new Success( 'Die Person wurde erfolgreich angelegt' )
                 .new Redirect( '/Sphere/Management/Person/Create', 2 );
             } else {
-                return new MessageSuccess( 'Der Person wurde erfolgreich angelegt' )
+                return new Success( 'Der Person wurde erfolgreich angelegt' )
                 .new Redirect( '/Sphere/Management/Person/Edit', 2, array( 'Id' => $Entity->getId() ) );
             }
         } else {

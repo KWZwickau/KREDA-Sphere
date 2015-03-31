@@ -12,13 +12,13 @@ use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 class GridFormCol extends AbstractForm
 {
 
-    /** @var \KREDA\Sphere\Common\Frontend\IElementInterface[]|\KREDA\Sphere\Common\Frontend\Alert\AbstractElement[] $GridElementList */
+    /** @var \KREDA\Sphere\Common\Frontend\IElementInterface[]|\KREDA\Sphere\Client\Frontend\Message\AbstractType[] $GridElementList */
     private $GridElementList = array();
     /** @var string $GridTitle */
     private $GridSize = 12;
 
     /**
-     * @param \KREDA\Sphere\Common\Frontend\IElementInterface|\KREDA\Sphere\Common\Frontend\IElementInterface[]|\KREDA\Sphere\Common\Frontend\Alert\AbstractElement|\KREDA\Sphere\Common\Frontend\Alert\AbstractElement[] $GridElementList
+     * @param \KREDA\Sphere\Common\Frontend\IElementInterface|\KREDA\Sphere\Common\Frontend\IElementInterface[]|\KREDA\Sphere\Client\Frontend\Message\AbstractType|\KREDA\Sphere\Client\Frontend\Message\AbstractType[] $GridElementList
      * @param int                                                                                                                                                                                                         $GridSize
      */
     function __construct( $GridElementList, $GridSize = 12 )

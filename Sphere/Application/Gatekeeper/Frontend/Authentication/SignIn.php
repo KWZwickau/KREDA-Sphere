@@ -6,8 +6,8 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
@@ -50,7 +50,7 @@ class SignIn extends AbstractFrontend
                             new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
-                ), new ButtonSubmitPrimary( 'Anmelden' )
+                ), new SubmitPrimary( 'Anmelden' )
             ),
             $CredentialName, $CredentialLock, $CredentialKey,
             Gatekeeper::serviceAccount()->entityAccountTypeByName( 'Lehrer' )
@@ -85,7 +85,7 @@ class SignIn extends AbstractFrontend
                             new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
-                ), new ButtonSubmitPrimary( 'Anmelden' )
+                ), new SubmitPrimary( 'Anmelden' )
             ),
             $CredentialName, $CredentialLock, $CredentialKey,
             Gatekeeper::serviceAccount()->entityAccountTypeByName( 'System' )
@@ -120,7 +120,7 @@ class SignIn extends AbstractFrontend
                                     new LockIcon() ) )
                             )
                         )
-                    ), new ButtonSubmitPrimary( 'Anmelden' )
+                    ), new SubmitPrimary( 'Anmelden' )
                 ),
 
                 $CredentialName, $CredentialLock,
@@ -160,7 +160,7 @@ class SignIn extends AbstractFrontend
                             new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
-                ), new ButtonSubmitPrimary( 'Anmelden' )
+                ), new SubmitPrimary( 'Anmelden' )
             ),
             $CredentialName, $CredentialLock, $CredentialKey,
             Gatekeeper::serviceAccount()->entityAccountTypeByName( 'Verwaltung' )

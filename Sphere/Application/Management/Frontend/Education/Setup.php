@@ -6,20 +6,20 @@ use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkDanger;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
@@ -49,7 +49,7 @@ class Setup extends AbstractFrontend
             array_walk( $tblSubject, function ( TblSubject &$tblSubject ) {
 
                 /** @noinspection PhpUndefinedFieldInspection */
-                $tblSubject->Option = ( new ButtonLinkDanger( 'Deaktivieren',
+                $tblSubject->Option = ( new Danger( 'Deaktivieren',
                     '/Sphere/Management/Education/Setup/Subject', new RemoveIcon(), array(
                         'tblSubject'  => $tblSubject->getId(),
                         'ActiveState' => 0
@@ -59,11 +59,11 @@ class Setup extends AbstractFrontend
         }
 
         $View->setContent(
-            new GridLayout(
-                new GridLayoutGroup( array(
-                    new GridLayoutRow( array(
-                        new GridLayoutCol( array(
-                            new GridLayoutTitle( 'Schulhalbjahr', 'Hinzufügen' ),
+            new Grid(
+                new Group( array(
+                    new Row( array(
+                        new Column( array(
+                            new Title( 'Schulhalbjahr', 'Hinzufügen' ),
                             new TableData( Management::serviceEducation()->entityTermAll(), null, array(
                                 'Name'     => 'Name',
                                 'DateFrom' => 'Vom',
@@ -85,16 +85,16 @@ class Setup extends AbstractFrontend
                                         ) ),
                                         new GridFormRow( array(
                                             new GridFormCol(
-                                                new ButtonSubmitPrimary( 'Hinzufügen' )
+                                                new SubmitPrimary( 'Hinzufügen' )
                                             )
                                         ) )
                                     ) )
                                 ), $Term )
                         ) ),
                     ) ),
-                    new GridLayoutRow( array(
-                        new GridLayoutCol( array(
-                            new GridLayoutTitle( 'Klassenstufen', 'Hinzufügen' ),
+                    new Row( array(
+                        new Column( array(
+                            new Title( 'Klassenstufen', 'Hinzufügen' ),
                             new TableData( Management::serviceEducation()->entityLevelAll(), null, array(
                                 'Name' => 'Name',
                                 'Description' => 'Beschreibung',
@@ -112,14 +112,14 @@ class Setup extends AbstractFrontend
                                         ) ),
                                         new GridFormRow( array(
                                             new GridFormCol(
-                                                new ButtonSubmitPrimary( 'Hinzufügen' )
+                                                new SubmitPrimary( 'Hinzufügen' )
                                             )
                                         ) )
                                     ) )
                                 ), $Level )
                         ), 6 ),
-                        new GridLayoutCol( array(
-                            new GridLayoutTitle( 'Klassengruppen', 'Hinzufügen' ),
+                        new Column( array(
+                            new Title( 'Klassengruppen', 'Hinzufügen' ),
                             new TableData( Management::serviceEducation()->entityGroupAll(), null, array(
                                 'Name'        => 'Name',
                                 'Description' => 'Beschreibung',
@@ -137,16 +137,16 @@ class Setup extends AbstractFrontend
                                         ) ),
                                         new GridFormRow( array(
                                             new GridFormCol(
-                                                new ButtonSubmitPrimary( 'Hinzufügen' )
+                                                new SubmitPrimary( 'Hinzufügen' )
                                             )
                                         ) )
                                     ) )
                                 ), $Group )
                         ), 6 )
                     ) ),
-                    new GridLayoutRow(
-                        new GridLayoutCol( array(
-                            new GridLayoutTitle( 'Fächer', 'Hinzufügen/Deaktivieren' ),
+                    new Row(
+                        new Column( array(
+                            new Title( 'Fächer', 'Hinzufügen/Deaktivieren' ),
                             new TableData( $tblSubject, null, array(
                                 'Acronym' => 'Kürzel',
                                 'Name'    => 'Name',
@@ -165,7 +165,7 @@ class Setup extends AbstractFrontend
                                         ) ),
                                         new GridFormRow( array(
                                             new GridFormCol(
-                                                new ButtonSubmitPrimary( 'Hinzufügen' )
+                                                new SubmitPrimary( 'Hinzufügen' )
                                             )
                                         ) )
                                     ) )

@@ -8,9 +8,9 @@ use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblTerm;
 use KREDA\Sphere\Application\Management\Service\Education\EntityAction;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class Education
@@ -215,7 +215,7 @@ class Education extends EntityAction
      * @param AbstractForm $View
      * @param array        $Subject
      *
-     * @return AbstractForm|Redirect
+     * @return AbstractForm|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeCreateSubject( AbstractForm &$View, $Subject )
     {
@@ -252,7 +252,7 @@ class Education extends EntityAction
      * @param AbstractForm $View
      * @param array        $Level
      *
-     * @return AbstractForm|Redirect
+     * @return AbstractForm|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeCreateLevel( AbstractForm &$View, $Level )
     {
@@ -285,7 +285,7 @@ class Education extends EntityAction
      * @param AbstractForm $View
      * @param array        $Group
      *
-     * @return AbstractForm|Redirect
+     * @return AbstractForm|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeCreateGroup( AbstractForm &$View, $Group )
     {

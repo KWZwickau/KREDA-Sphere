@@ -12,11 +12,11 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EducationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagListIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitSuccess;
+use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Common\AbstractApplication;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
 use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
@@ -126,7 +126,7 @@ class Graduation extends AbstractApplication
                 $_POST['Id'] = $Entity->getId();
 
                 // bei aktiven Zensurentypen "deaktivieren"-Button anzeigen; sonst "aktivieren"-Button
-                $Entity->getActiveState() == true ? $myButton = new ButtonSubmitDanger( 'deaktivieren' ) : $myButton = new ButtonSubmitSuccess( 'aktivieren' );
+                $Entity->getActiveState() == true ? $myButton = new SubmitDanger( 'deaktivieren' ) : $myButton = new SubmitSuccess( 'aktivieren' );
 
                 $Entity->Option = new FormDefault(
                     new GridFormGroup(
@@ -149,7 +149,7 @@ class Graduation extends AbstractApplication
             //'Active'     => 'Aktiv',
             'Option'  => 'Option'
         ) ) );
-        $View->addButton( new ButtonLinkPrimary( 'Zensurentyp hinzufügen', '/Sphere/Graduation/Grade/Type/Create' ) );
+        $View->addButton( new Primary( 'Zensurentyp hinzufügen', '/Sphere/Graduation/Grade/Type/Create' ) );
 
         return $View;
     }
@@ -188,7 +188,7 @@ class Graduation extends AbstractApplication
                                 , 7 )
                         ) ),
                     ), new GridFormTitle( 'Grunddaten' ) ), array(
-                        new ButtonSubmitPrimary( 'Anlegen' )
+                        new SubmitPrimary( 'Anlegen' )
                     )
                 )
                 , $Acronym, $Name )

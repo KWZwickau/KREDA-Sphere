@@ -6,8 +6,12 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BookIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TaskIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
 use KREDA\Sphere\Common\AbstractApplication;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Complex\Element\ComplexMathJax;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
@@ -20,10 +24,6 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayout;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutCol;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutGroup;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRow;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
@@ -100,31 +100,31 @@ class Demo extends AbstractApplication
                             )
                         ) )
                     )
-                    , new ButtonSubmitPrimary( 'Speichern' ) )
+                    , new SubmitPrimary( 'Speichern' ) )
                 , $DemoCompleter, $DemoTextArea )
 
             .
-            new GridLayout(
-                new GridLayoutGroup( array(
-                    new GridLayoutRow( array(
-                        new GridLayoutCol(
+            new Grid(
+                new Group( array(
+                    new Row( array(
+                        new Column(
                             new ComplexMathJax( '`a != 0,`' )
                             , 2 ),
-                        new GridLayoutCol(
+                        new Column(
                             new ComplexMathJax( '`ax^2 + bx + c = 0`' )
                             , 3 ),
-                        new GridLayoutCol(
+                        new Column(
                             new ComplexMathJax( '`a != 0,`' )
                             , 2 ),
-                        new GridLayoutCol(
+                        new Column(
                             new ComplexMathJax( '`ax^2 + bx + c = 0`' )
                             , 3 )
                     ) ),
-                    new GridLayoutRow(
-                        new GridLayoutCol( '&nbsp;' )
+                    new Row(
+                        new Column( '&nbsp;' )
                     ),
-                    new GridLayoutRow(
-                        new GridLayoutCol(
+                    new Row(
+                        new Column(
                             new ComplexMathJax( '`x = (-b +- sqrt(b^2-4ac))/(2a)`' )
                             , 6 )
                     )

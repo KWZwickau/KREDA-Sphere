@@ -16,8 +16,6 @@ class InputCheckBox extends AbstractElement
      * @param string       $Name
      * @param null|string  $Label
      * @param AbstractIcon $Icon
-     *
-     * @internal param null|string $Placeholder
      */
     function __construct(
         $Name,

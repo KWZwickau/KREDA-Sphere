@@ -16,12 +16,14 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RepeatIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Layout\Type\PullRight;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
@@ -31,8 +33,6 @@ use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutRight;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
 use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
@@ -135,7 +135,7 @@ class Account extends Token
                     )
                 ) ),
             ), new GridFormTitle( 'Benutzer hinzufügen', 'Account' ) )
-            , new ButtonSubmitPrimary( 'Hinzufügen' )
+            , new SubmitPrimary( 'Hinzufügen' )
         );
         /**
          * Action Create
@@ -162,10 +162,10 @@ class Account extends Token
 
         $tblAccountList = self::getAccountList( $tblConsumer );
         $View->setContent(
-            new GridLayoutTitle( 'Bestehende Benutzerkonten', 'Accounts' )
+            new Title( 'Bestehende Benutzerkonten', 'Accounts' )
             .
             ( empty( $tblAccountList )
-                ? new MessageWarning( 'Keine Benutzer verfügbar' )
+                ? new Warning( 'Keine Benutzer verfügbar' )
                 : new TableData( $tblAccountList, null, array(
                     'Username' => 'Benutzername',
                     'AccountType' => 'Authentifizierungstyp',
@@ -283,19 +283,19 @@ class Account extends Token
                 $A->AccountRole = $tblAccountRole->getName();
                 $tblPerson = $A->getServiceManagementPerson();
                 if (empty( $tblPerson )) {
-                    $A->Person = new MessageWarning( 'Keine Daten verfügbar', new QuestionIcon() );
+                    $A->Person = new Warning( 'Keine Daten verfügbar', new QuestionIcon() );
                 } else {
                     $A->Person = $tblPerson->getFullName();
                 }
                 $tblToken = $A->getServiceGatekeeperToken();
                 if (empty( $tblToken )) {
                     if ($A->getTblAccountType()->getId() == Gatekeeper::serviceAccount()->entityAccountTypeByName( 'Schüler' )->getId()) {
-                        $A->Token = new MessageSuccess( 'Keine Daten verfügbar', new LockIcon() );
+                        $A->Token = new Success( 'Keine Daten verfügbar', new LockIcon() );
                     } else {
-                        $A->Token = new MessageDanger( 'Keine Daten verfügbar', new WarningIcon() );
+                        $A->Token = new Danger( 'Keine Daten verfügbar', new WarningIcon() );
                     }
                 } else {
-                    $A->Token = new MessageSuccess(
+                    $A->Token = new Success(
                         implode( ' ', str_split( str_pad( $tblToken->getSerial(), 8, '0', STR_PAD_LEFT ), 4 ) ),
                         new OkIcon()
                     );
@@ -309,16 +309,16 @@ class Account extends Token
                 $FormDestroy = new FormDefault(
                     new GridFormGroup(
                         new GridFormRow(
-                            new GridFormCol( array( $Id, $Remove, new ButtonSubmitDanger( 'Löschen' ) ) )
+                            new GridFormCol( array( $Id, $Remove, new SubmitDanger( 'Löschen' ) ) )
                         )
                     )
                 );
 
-                $FormEdit = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Account/Edit', null, array(
+                $FormEdit = new Primary( 'Bearbeiten', '/Sphere/Management/Account/Edit', null, array(
                     'Id' => $A->getId()
                 ) );
                 $FormDestroy->setConfirm( 'Wollen Sie den Benutzer '.$A->getUsername().' wirklich löschen?' );
-                $A->Option = new GridLayoutRight( $FormDestroy.$FormEdit );
+                $A->Option = new PullRight( $FormDestroy.$FormEdit );
             }
         } );
         return array_filter( $tblAccountList );
