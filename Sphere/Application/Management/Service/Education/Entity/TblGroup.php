@@ -30,6 +30,10 @@ class TblGroup extends AbstractEntity
      * @Column(type="string")
      */
     protected $Name;
+    /**
+     * @Column(type="string")
+     */
+    protected $Description;
 
     /**
      * @param string $Name
@@ -56,6 +60,24 @@ class TblGroup extends AbstractEntity
     {
 
         $this->Name = $Name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+
+        return $this->Description;
+    }
+
+    /**
+     * @param string $Description
+     */
+    public function setDescription( $Description )
+    {
+
+        $this->Description = $Description;
     }
 
     /**

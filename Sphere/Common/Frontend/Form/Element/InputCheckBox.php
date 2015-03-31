@@ -3,7 +3,6 @@ namespace KREDA\Sphere\Common\Frontend\Form\Element;
 
 use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
 use KREDA\Sphere\Common\Frontend\Form\AbstractElement;
-use MOC\V\Component\Template\Exception\TemplateTypeException;
 
 /**
  * Class InputCheckBox
@@ -15,16 +14,14 @@ class InputCheckBox extends AbstractElement
 
     /**
      * @param string       $Name
-     * @param null|string  $Placeholder
      * @param null|string  $Label
      * @param AbstractIcon $Icon
      *
-     * @throws TemplateTypeException
+     * @internal param null|string $Placeholder
      */
     function __construct(
         $Name,
-        $Placeholder = '',
-        $Label = '',
+        $Label = '&nbsp',
         AbstractIcon $Icon = null
     ) {
 
@@ -34,7 +31,7 @@ class InputCheckBox extends AbstractElement
 
         $this->Template->setVariable( 'ElementName', $Name );
         $this->Template->setVariable( 'ElementLabel', $Label );
-        $this->Template->setVariable( 'ElementPlaceholder', $Placeholder );
+        $this->Template->setVariable( 'ElementHash', sha1( $Name.$Label.( new \DateTime() )->getTimestamp() ) );
         if (null !== $Icon) {
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }

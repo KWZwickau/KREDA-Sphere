@@ -213,6 +213,43 @@ class Education extends EntityAction
 
     /**
      * @param AbstractForm $View
+     * @param array        $Subject
+     *
+     * @return AbstractForm|Redirect
+     */
+    public function executeCreateSubject( AbstractForm &$View, $Subject )
+    {
+
+        if (null === $Subject) {
+            return $View;
+        }
+
+        $Error = false;
+        if (isset( $Subject['Acronym'] ) && empty( $Subject['Acronym'] )) {
+            $View->setError( 'Subject[Acronym]', 'Bitte geben Sie ein Kürzel an' );
+            $Error = true;
+        }
+        if (isset( $Subject['Acronym'] ) && !empty( $Subject['Acronym'] )) {
+            if ($this->entitySubjectByAcronym( $Subject['Acronym'] )) {
+                $View->setError( 'Subject[Acronym]', 'Bitte geben Sie ein eindeutiges Kürzel ein' );
+                $Error = true;
+            }
+        }
+        if (isset( $Subject['Name'] ) && empty( $Subject['Name'] )) {
+            $View->setError( 'Subject[Name]', 'Bitte geben Sie einen Namen an' );
+            $Error = true;
+        }
+
+        if ($Error) {
+            return $View;
+        } else {
+            $this->actionCreateSubject( $Subject['Acronym'], $Subject['Name'] );
+            return new Redirect( '/Sphere/Management/Education/Setup', 0 );
+        }
+    }
+
+    /**
+     * @param AbstractForm $View
      * @param array        $Level
      *
      * @return AbstractForm|Redirect
@@ -243,4 +280,47 @@ class Education extends EntityAction
             return new Redirect( '/Sphere/Management/Education/Setup', 0 );
         }
     }
+
+    /**
+     * @param AbstractForm $View
+     * @param array        $Group
+     *
+     * @return AbstractForm|Redirect
+     */
+    public function executeCreateGroup( AbstractForm &$View, $Group )
+    {
+
+        if (null === $Group) {
+            return $View;
+        }
+
+        $Error = false;
+        if (isset( $Group['Name'] ) && empty( $Group['Name'] )) {
+            $View->setError( 'Group[Name]', 'Bitte geben Sie einen Namen für die Klassengruppe an' );
+            $Error = true;
+        }
+        if (isset( $Group['Name'] ) && !empty( $Group['Name'] )) {
+            if ($this->entityGroupByName( $Group['Name'] )) {
+                $View->setError( 'Group[Name]', 'Bitte geben Sie einen eindeutigen Namen für die Klassengruppe ein' );
+                $Error = true;
+            }
+        }
+
+        if ($Error) {
+            return $View;
+        } else {
+            $this->actionCreateGroup( $Group['Name'], $Group['Description'] );
+            return new Redirect( '/Sphere/Management/Education/Setup', 0 );
+        }
+    }
+
+    /**
+     * @return bool|TblSubjectGroup[]
+     */
+    public function entitySubjectGroupAll()
+    {
+
+        return parent::entitySubjectGroupAll();
+    }
+
 }

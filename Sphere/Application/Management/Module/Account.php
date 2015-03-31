@@ -19,6 +19,7 @@ use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
@@ -312,15 +313,12 @@ class Account extends Token
                         )
                     )
                 );
-                $FormEdit = new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow(
-                            new GridFormCol( array( $Id, new ButtonSubmitPrimary( 'Bearbeiten' ) ) )
-                        )
-                    ), null, '/Sphere/Management/Account/Edit'
-                );
+
+                $FormEdit = new ButtonLinkPrimary( 'Bearbeiten', '/Sphere/Management/Account/Edit', null, array(
+                    'Id' => $A->getId()
+                ) );
                 $FormDestroy->setConfirm( 'Wollen Sie den Benutzer '.$A->getUsername().' wirklich löschen?' );
-                $A->Option = new GridLayoutRight( $FormDestroy ).new GridLayoutRight( $FormEdit );
+                $A->Option = new GridLayoutRight( $FormDestroy.$FormEdit );
             }
         } );
         return array_filter( $tblAccountList );

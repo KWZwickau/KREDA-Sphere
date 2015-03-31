@@ -2,9 +2,9 @@
 namespace KREDA\Sphere\Application\Management\Module;
 
 use KREDA\Sphere\Application\Management\Frontend\Education as Frontend;
+use KREDA\Sphere\Application\Management\Frontend\Education\Definition;
 use KREDA\Sphere\Application\Management\Frontend\Education\Group;
 use KREDA\Sphere\Application\Management\Frontend\Education\Setup;
-use KREDA\Sphere\Application\Management\Frontend\Education\Subject;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
@@ -41,11 +41,9 @@ class Education extends Campus
             ->setParameterDefault( 'Subject', null );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Education/Group', __CLASS__.'::frontendGroup'
+            '/Sphere/Management/Education/Definition', __CLASS__.'::frontendEducationDefinition'
         );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Education/Subject', __CLASS__.'::frontendSubject'
-        );
+
 //
 //        self::registerClientRoute( self::$Configuration,
 //            '/Sphere/Management/Education/Period', __CLASS__.'::frontendPeriod'
@@ -73,13 +71,10 @@ class Education extends Campus
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Group', 'Klassen', new ShareIcon()
+            '/Sphere/Management/Education/Setup', 'Grunddaten', new CogWheelsIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Subject', 'Fächer', new ShareIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Setup', 'Einstellungen', new CogWheelsIcon()
+            '/Sphere/Management/Education/Definition', 'Klassenerstellung', new ShareIcon()
         );
     }
 
@@ -102,22 +97,11 @@ class Education extends Campus
     /**
      * @return Stage
      */
-    public static function frontendGroup()
+    public static function frontendEducationDefinition()
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Group::stageGroup();
-    }
-
-    /**
-     * @return Stage
-     */
-    public static function frontendSubject()
-    {
-
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Subject::stageSubject();
+        return Definition::stageDefinition();
     }
 }

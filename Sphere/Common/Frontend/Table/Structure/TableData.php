@@ -88,14 +88,23 @@ class TableData extends TableDefault
 
             array_walk( $Row, function ( &$Column, $Index, $Content ) {
 
-                if (empty( $Content )) {
+                /**
+                 * With object, use getter instead of property (if available)
+                 */
+                if (is_object( $Column ) && method_exists( $Content[1], 'get'.substr( trim( $Index ), 2 ) )) {
+                    $Column = $Content[1]->{'get'.substr( trim( $Index ), 2 )}();
+                }
+                /**
+                 * Other values
+                 */
+                if (empty( $Content[0] )) {
                     $Column = new GridTableCol( $Column );
-                } elseif (in_array( preg_replace( '!^[^a-z0-9_]*!is', '', $Index ), array_keys( $Content ) )) {
+                } elseif (in_array( preg_replace( '!^[^a-z0-9_]*!is', '', $Index ), array_keys( $Content[0] ) )) {
                     $Column = new GridTableCol( $Column );
                 } else {
                     $Column = false;
                 }
-            }, $Content );
+            }, array( $Content, $Row ) );
             // Convert to Array
             if (is_object( $Row )) {
                 /** @var AbstractEntity $Row */

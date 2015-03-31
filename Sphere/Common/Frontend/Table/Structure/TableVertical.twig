@@ -1,7 +1,7 @@
 {% if( Title is not empty ) %}
     {{ Title }}
 {% endif %}
-<table class="table table-bordered table-condensed small">
+<table class="table table-bordered table-condensed">
     {% for GridTableBody in GridBodyList %}
         <tbody>
         {% for Index, GridTableRow in GridTableBody.getRowList %}

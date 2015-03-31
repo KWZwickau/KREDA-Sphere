@@ -143,6 +143,10 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblGroup', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblGroup', 'Description' )) {
+            $Table->addColumn( 'Description', 'string' );
+        }
+
         return $Table;
     }
 
@@ -220,7 +224,7 @@ abstract class EntitySchema extends AbstractService
         $this->schemaTableAddForeignKey( $Table, $tblSubject );
         $this->schemaTableAddForeignKey( $Table, $tblGroup );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblSubjectGroup', 'serviceGraduation_Dimension' )) {
-            $Table->addColumn( 'serviceGraduation_Dimension', 'bigint' );
+            $Table->addColumn( 'serviceGraduation_Dimension', 'bigint', array( 'notnull' => false ) );
         }
         return $Table;
     }

@@ -162,12 +162,48 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param string $Name
+     *
+     * @return bool|TblGroup
+     */
+    protected function entityGroupByName( $Name )
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblGroup' )
+            ->findOneBy( array( TblGroup::ATTR_NAME => $Name ) );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param string $Acronym
+     *
+     * @return bool|TblSubject
+     */
+    protected function entitySubjectByAcronym( $Acronym )
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblSubject' )
+            ->findOneBy( array( TblSubject::ATTR_ACRONYM => $Acronym ) );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @return bool|TblSubject[]
      */
     protected function entitySubjectAll()
     {
 
         $EntityList = $this->getEntityManager()->getEntity( 'TblSubject' )->findAll();
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @return bool|TblSubjectGroup[]
+     */
+    protected function entitySubjectGroupAll()
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblSubjectGroup' )->findAll();
         return ( empty( $EntityList ) ? false : $EntityList );
     }
 

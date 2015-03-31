@@ -1,7 +1,7 @@
 {% if( Title is not empty ) %}
     {{ Title }}
 {% endif %}
-<table id="{{ Hash }}" class="table table-bordered table-condensed small">
+<table id="{{ Hash }}" class="table table-bordered table-condensed">
     {% for GridTableHead in GridHeadList %}
         <thead>
         {% for GridTableRow in GridTableHead.getRowList %}

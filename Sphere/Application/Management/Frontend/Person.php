@@ -15,7 +15,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitSuccess;
+use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
 use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
@@ -95,8 +95,8 @@ class Person extends AbstractFrontend
         $View->setDescription( 'Hinzufügen' );
 
         $Form = self::formPersonBasic();
-        $Form->appendFormButton( new ButtonSubmitSuccess( 'Anlegen' ) );
-        $Form->appendFormButton( new ButtonSubmitSuccess( 'Anlegen & Bearbeiten' ) );
+        $Form->appendFormButton( new ButtonSubmitPrimary( 'Anlegen' ) );
+        $Form->appendFormButton( new ButtonSubmitPrimary( 'Anlegen & Bearbeiten' ) );
 
         $View->setContent( Management::servicePerson()->executeCreatePerson(
             $Form, $PersonName, $PersonInformation, $BirthDetail, $Button )
@@ -322,7 +322,7 @@ class Person extends AbstractFrontend
                 $_POST['PersonInformation']['Nationality'] = $tblPerson->getNationality();
                 $_POST['PersonInformation']['Type'] = $tblPerson->getTblPersonType()->getId();
                 $FormPersonBasic = self::formPersonBasic();
-                $FormPersonBasic->appendFormButton( new ButtonSubmitSuccess( 'Änderungen speichern' ) );
+                $FormPersonBasic->appendFormButton( new ButtonSubmitPrimary( 'Änderungen speichern' ) );
 
                 $FormPersonRelationship = self::formPersonRelationship( $tblPerson );
 

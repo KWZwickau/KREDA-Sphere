@@ -42,7 +42,7 @@ class Setup extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Einstellungen' );
+        $View->setTitle( 'Grunddaten' );
 
         $tblSubject = Management::serviceEducation()->entitySubjectAll();
         if (!empty( $tblSubject )) {
@@ -90,7 +90,6 @@ class Setup extends AbstractFrontend
                                         ) )
                                     ) )
                                 ), $Term )
-
                         ) ),
                     ) ),
                     new GridLayoutRow( array(
@@ -106,10 +105,10 @@ class Setup extends AbstractFrontend
                                         new GridFormRow( array(
                                             new GridFormCol(
                                                 new InputText( 'Level[Name]', 'Name', 'Name' )
-                                            ),
+                                                , 3 ),
                                             new GridFormCol(
                                                 new InputText( 'Level[Description]', 'Beschreibung', 'Beschreibung' )
-                                            )
+                                                , 9 )
                                         ) ),
                                         new GridFormRow( array(
                                             new GridFormCol(
@@ -122,22 +121,27 @@ class Setup extends AbstractFrontend
                         new GridLayoutCol( array(
                             new GridLayoutTitle( 'Klassengruppen', 'Hinzufügen' ),
                             new TableData( Management::serviceEducation()->entityGroupAll(), null, array(
-                                'Name' => 'Name',
+                                'Name'        => 'Name',
+                                'Description' => 'Beschreibung',
                             ), false ),
-                            new FormDefault(
-                                new GridFormGroup( array(
-                                    new GridFormRow( array(
-                                        new GridFormCol(
-                                            new InputText( 'Group[Name]', 'Name', 'Name' )
-                                        )
-                                    ) ),
-                                    new GridFormRow( array(
-                                        new GridFormCol(
-                                            new ButtonSubmitPrimary( 'Hinzufügen' )
-                                        )
+                            Management::serviceEducation()->executeCreateGroup(
+                                new FormDefault(
+                                    new GridFormGroup( array(
+                                        new GridFormRow( array(
+                                            new GridFormCol(
+                                                new InputText( 'Group[Name]', 'Name', 'Name' )
+                                                , 3 ),
+                                            new GridFormCol(
+                                                new InputText( 'Group[Description]', 'Beschreibung', 'Beschreibung' )
+                                                , 9 )
+                                        ) ),
+                                        new GridFormRow( array(
+                                            new GridFormCol(
+                                                new ButtonSubmitPrimary( 'Hinzufügen' )
+                                            )
+                                        ) )
                                     ) )
-                                ) )
-                            )
+                                ), $Group )
                         ), 6 )
                     ) ),
                     new GridLayoutRow(
@@ -148,23 +152,24 @@ class Setup extends AbstractFrontend
                                 'Name'    => 'Name',
                                 'Option'  => 'Option'
                             ) ),
-                            new FormDefault(
-                                new GridFormGroup( array(
-                                    new GridFormRow( array(
-                                        new GridFormCol(
-                                            new InputText( 'Subject[Acronym]', 'Kürzel', 'Kürzel' )
-                                            , 3 ),
-                                        new GridFormCol(
-                                            new InputText( 'Subject[Name]', 'Name', 'Name' )
-                                            , 9 )
-                                    ) ),
-                                    new GridFormRow( array(
-                                        new GridFormCol(
-                                            new ButtonSubmitPrimary( 'Hinzufügen' )
-                                        )
+                            Management::serviceEducation()->executeCreateSubject(
+                                new FormDefault(
+                                    new GridFormGroup( array(
+                                        new GridFormRow( array(
+                                            new GridFormCol(
+                                                new InputText( 'Subject[Acronym]', 'Kürzel', 'Kürzel' )
+                                                , 3 ),
+                                            new GridFormCol(
+                                                new InputText( 'Subject[Name]', 'Name', 'Name' )
+                                                , 9 )
+                                        ) ),
+                                        new GridFormRow( array(
+                                            new GridFormCol(
+                                                new ButtonSubmitPrimary( 'Hinzufügen' )
+                                            )
+                                        ) )
                                     ) )
-                                ) )
-                            )
+                                ), $Subject )
                         ) )
                     )
                 ) )

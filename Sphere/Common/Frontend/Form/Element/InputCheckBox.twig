@@ -1,24 +1,20 @@
+{% if( ElementIcon is not empty ) %}
 <div class="form-group {{ ElementGroup }}">
-    {% if( ElementLabel is not empty ) %}
-        <label>{{ ElementLabel }}</label>
     {% endif %}
-    {% if( ElementIcon is not empty ) %}
-    <div class="checkbox">
-        <span class="input-group-addon">
-            {{ ElementIcon }}
-        </span>
-        {% endif %}
-        <input type="checkbox" class="checkbox-inline" name="{{ ElementName }}" placeholder="{{ ElementPlaceholder }}"
-               value="{{ ElementValue }}" autocomplete="off"/>
-        {{ ElementFeedbackIcon }}
+    <div class="checkbox checkbox-primary">
         {% if( ElementIcon is not empty ) %}
+            <span class="input-group-addon">
+                {{ ElementIcon }}
+            </span>
+        {% endif %}
+        <input id="{{ ElementHash }}" type="checkbox" name="{{ ElementName }}"
+               value="{{ ElementValue }}" autocomplete="off"/>
+        {% if( ElementLabel is not empty ) %}
+            <label for="{{ ElementHash }}">{{ ElementLabel }}</label>
+        {% endif %}
+        {{ ElementFeedbackIcon }}
     </div>
-    {% endif %}
+    {% if( ElementIcon is not empty ) %}
     {{ ElementFeedbackMessage }}
 </div>
-<script type="text/javascript">
-    Client.Use( 'ModCheckBox', function()
-    {
-        jQuery( 'input[type="checkbox"][name="{{ ElementName }}"]' ).ModCheckBox();
-    } );
-</script>
+{% endif %}
