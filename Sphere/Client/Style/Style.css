@@ -54,62 +54,6 @@ h5 {
 /*background: url("Resource/YubiKeyIcon-16x16.ico") center;*/
 /*}*/
 
-#phpinfo {
-    text-align: left;
-}
-
-#phpinfo a {
-    color: rgb(255, 0, 0);
-}
-
-#phpinfo a:link {
-    color: rgb(255, 0, 0);
-}
-
-#phpinfo a:hover {
-    color: rgb(255, 0, 0);
-}
-
-#phpinfo table {
-    width: 100%;
-}
-
-#phpinfo td, #phpinfo th {
-    border: 1px solid rgb(192, 192, 192);
-    padding: 5px;
-}
-
-#phpinfo th {
-    padding: 5px;
-}
-
-#phpinfo h1 {
-    font-size: 1.3em;
-}
-
-#phpinfo h2 {
-    font-size: 1.2em;
-    text-transform: capitalize;
-    border-bottom: 1px solid rgb(255, 0, 0);
-}
-
-#phpinfo .p {
-    margin: 0;
-}
-
-#phpinfo .e {
-    background: rgb(204, 204, 204);
-    width: 30%;
-}
-
-#phpinfo .h {
-    background: rgb(221, 221, 221);
-}
-
-#phpinfo img {
-    display: none;
-}
-
 .alert {
     padding: 10px;
     margin-bottom: 10px;
@@ -120,7 +64,8 @@ h5 {
     border-bottom-left-radius: 0 !important;
 }
 
-.form-control.tt-input {
+.form-control.tt-input,
+.dropdown-toggle.selectpicker {
     border-top-right-radius: 4px !important;
     border-bottom-right-radius: 4px !important;
 }

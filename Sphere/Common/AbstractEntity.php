@@ -23,7 +23,7 @@ abstract class AbstractEntity extends AbstractExtension
     /**
      * @return integer
      */
-    public function getId()
+    final public function getId()
     {
 
         return $this->Id;
@@ -32,7 +32,7 @@ abstract class AbstractEntity extends AbstractExtension
     /**
      * @param integer $Id
      */
-    public function setId( $Id )
+    final public function setId( $Id )
     {
 
         $this->Id = $Id;
