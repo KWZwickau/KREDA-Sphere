@@ -2,9 +2,9 @@
 namespace KREDA\Sphere\Application\Demo\Service;
 
 use KREDA\Sphere\Application\Demo\Service\DemoService\EntityAction;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 
 /**
  * Class DemoService
@@ -27,12 +27,13 @@ class DemoService extends EntityAction
     }
 
     /**
-     * @param AbstractForm $abstractForm
+     * @param AbstractType $abstractForm
      * @param string       $DemoCompleter
+     * @param              $DemoTextArea
      *
-     * @return AbstractForm
+     * @return AbstractType
      */
-    public function executeCreateDemo( AbstractForm $abstractForm, $DemoCompleter, $DemoTextArea )
+    public function executeCreateDemo( AbstractType $abstractForm, $DemoCompleter, $DemoTextArea )
     {
 
         if (null !== $DemoCompleter && empty( $DemoCompleter )) {

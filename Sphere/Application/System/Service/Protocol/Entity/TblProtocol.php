@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\System\Service\Protocol\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
@@ -22,12 +20,6 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblProtocol extends AbstractEntity
 {
 
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
     /**
      * @Column(type="string")
      */
@@ -303,23 +295,5 @@ class TblProtocol extends AbstractEntity
     {
 
         $this->EntityTo = $EntityTo;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 }

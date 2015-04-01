@@ -1,10 +1,10 @@
 <?php
 namespace KREDA\Sphere\Application\Assistance\Service;
 
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Common\AbstractService;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 
 /**
  * Class Youtrack
@@ -15,13 +15,13 @@ class Youtrack extends AbstractService
 {
 
     /**
-     * @param AbstractForm $Ticket
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $Ticket
      * @param null|string  $TicketSubject
      * @param null|string  $TicketMessage
      *
-     * @return \KREDA\Sphere\Client\Frontend\Message\AbstractType|AbstractForm
+     * @return \KREDA\Sphere\Client\Frontend\Message\AbstractType|\KREDA\Sphere\Client\Frontend\Form\AbstractType
      */
-    public function executeCreateTicket( AbstractForm &$Ticket, $TicketSubject, $TicketMessage )
+    public function executeCreateTicket( AbstractType &$Ticket, $TicketSubject, $TicketMessage )
     {
 
         $Error = false;

@@ -12,6 +12,11 @@ use KREDA\Sphere\Client\Frontend\Message\Type\Danger as DangerMessage;
 use KREDA\Sphere\Client\Frontend\Message\Type\Info;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableBody;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableColumn;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableHead;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableRow;
+use KREDA\Sphere\Client\Frontend\Table\Type\Table;
 use KREDA\Sphere\Client\Frontend\Text\Type\Danger as DangerText;
 use KREDA\Sphere\Client\Frontend\Text\Type\Muted as MutedText;
 use KREDA\Sphere\Client\Frontend\Text\Type\Primary as PrimaryText;
@@ -19,12 +24,6 @@ use KREDA\Sphere\Client\Frontend\Text\Type\Warning as WarningText;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Common\Database\Connection\Identifier;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Table\AbstractTable;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableBody;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableCol;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableHead;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableRow;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableDefault;
 
 /**
  * Class Database
@@ -48,7 +47,7 @@ class Database extends AbstractFrontend
     }
 
     /**
-     * @return AbstractTable
+     * @return \KREDA\Sphere\Client\Frontend\Table\AbstractTable
      */
     private static function stageConfig()
     {
@@ -90,35 +89,35 @@ class Database extends AbstractFrontend
                             }
                         }
 
-                        $Configuration[$Application.$Service[0].$Service[1]] = new GridTableRow( array(
-                            new GridTableCol( $Status ),
-                            new GridTableCol( new WarningText( $Application ) ),
-                            new GridTableCol( new DangerText( $Service[0] ) ),
-                            new GridTableCol( new DangerText( $ConsumerType ) ),
-                            new GridTableCol( new WarningText( $Parameter['Driver'] ) ),
-                            new GridTableCol( new DangerText( $Parameter['Host'] ) ),
-                            new GridTableCol( new MutedText( ( $Parameter['Port'] ? $Parameter['Port'] : 'Default' ) ) ),
-                            new GridTableCol( new DangerText( $Parameter['Database'].new PrimaryText( $Service[1] ? '_'.$Service[1] : '' ) ) )
+                        $Configuration[$Application.$Service[0].$Service[1]] = new TableRow( array(
+                            new TableColumn( $Status ),
+                            new TableColumn( new WarningText( $Application ) ),
+                            new TableColumn( new DangerText( $Service[0] ) ),
+                            new TableColumn( new DangerText( $ConsumerType ) ),
+                            new TableColumn( new WarningText( $Parameter['Driver'] ) ),
+                            new TableColumn( new DangerText( $Parameter['Host'] ) ),
+                            new TableColumn( new MutedText( ( $Parameter['Port'] ? $Parameter['Port'] : 'Default' ) ) ),
+                            new TableColumn( new DangerText( $Parameter['Database'].new PrimaryText( $Service[1] ? '_'.$Service[1] : '' ) ) )
                         ) );
                     }
                 }
             }
             ksort( $Configuration );
         }
-        return new TableDefault(
-            new GridTableHead(
-                new GridTableRow( array(
-                    new GridTableCol( 'Status' ),
-                    new GridTableCol( 'Application' ),
-                    new GridTableCol( 'Service' ),
-                    new GridTableCol( 'Consumer' ),
-                    new GridTableCol( 'Driver' ),
-                    new GridTableCol( 'Server' ),
-                    new GridTableCol( 'Port' ),
-                    new GridTableCol( 'Database' )
+        return new Table(
+            new TableHead(
+                new TableRow( array(
+                    new TableColumn( 'Status' ),
+                    new TableColumn( 'Application' ),
+                    new TableColumn( 'Service' ),
+                    new TableColumn( 'Consumer' ),
+                    new TableColumn( 'Driver' ),
+                    new TableColumn( 'Server' ),
+                    new TableColumn( 'Port' ),
+                    new TableColumn( 'Database' )
                 ) )
             ),
-            new GridTableBody(
+            new TableBody(
                 $Configuration
             ), null, true
         );

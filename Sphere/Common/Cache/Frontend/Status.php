@@ -1,15 +1,15 @@
 <?php
 namespace KREDA\Sphere\Common\Cache\Frontend;
 
+use KREDA\Sphere\Client\Frontend\Input\AbstractType;
 use KREDA\Sphere\Common\Cache\ICacheInterface;
-use KREDA\Sphere\Common\Frontend\Form\AbstractElement;
 
 /**
  * Class Status
  *
  * @package KREDA\Sphere\Common\Cache\Frontend
  */
-class Status extends AbstractElement
+class Status extends AbstractType
 {
 
     /** @var string $Stage */

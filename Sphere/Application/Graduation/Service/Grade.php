@@ -3,9 +3,9 @@ namespace KREDA\Sphere\Application\Graduation\Service;
 
 use KREDA\Sphere\Application\Graduation\Service\Grade\Entity\TblGradeType;
 use KREDA\Sphere\Application\Graduation\Service\Grade\EntityAction;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 
 /**
  * Class Grade
@@ -73,16 +73,16 @@ class Grade extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      *
      * @param null|string  $Acronym
      * @param null|string  $Name
      *
-     * @return AbstractForm
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
      */
     public function executeCreateGradeType(
 
-        AbstractForm &$View = null,
+        AbstractType &$View = null,
         $Acronym,
         $Name
     ) {

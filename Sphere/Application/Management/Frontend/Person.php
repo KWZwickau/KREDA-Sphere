@@ -14,23 +14,23 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn as FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup as FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow as FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle as FormTitle;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\AutoCompleter;
+use KREDA\Sphere\Client\Frontend\Input\Type\DatePicker;
+use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class Person
@@ -105,7 +105,7 @@ class Person extends AbstractFrontend
     }
 
     /**
-     * @return FormDefault
+     * @return Form
      */
     private static function formPersonBasic()
     {
@@ -136,52 +136,52 @@ class Person extends AbstractFrontend
         }
         $PersonBirthPlace = array_unique( $PersonBirthPlace );
 
-        return new FormDefault(
-            new GridFormGroup( array(
-                new GridFormRow( array(
-                    new GridFormCol(
-                        new InputSelect( 'PersonName[Salutation]', 'Anrede',
+        return new Form(
+            new FormGroup( array(
+                new FormRow( array(
+                    new FormColumn(
+                        new SelectBox( 'PersonName[Salutation]', 'Anrede',
                             array( 'Name' => $tblPersonSalutationAll ), new ConversationIcon()
                         ), 4 ),
-                    new GridFormCol(
-                        new InputText( 'PersonName[Title]', 'Titel', 'Titel', new ConversationIcon()
+                    new FormColumn(
+                        new TextField( 'PersonName[Title]', 'Titel', 'Titel', new ConversationIcon()
                         ), 4 )
                 ) ),
-                new GridFormRow( array(
-                    new GridFormCol(
-                        new InputText( 'PersonName[First]', 'Vorname', 'Vorname', new NameplateIcon() )
+                new FormRow( array(
+                    new FormColumn(
+                        new TextField( 'PersonName[First]', 'Vorname', 'Vorname', new NameplateIcon() )
                         , 4 ),
-                    new GridFormCol(
-                        new InputText( 'PersonName[Middle]', 'Zweitname', 'Zweitname', new NameplateIcon() )
+                    new FormColumn(
+                        new TextField( 'PersonName[Middle]', 'Zweitname', 'Zweitname', new NameplateIcon() )
                         , 4 ),
-                    new GridFormCol(
-                        new InputText( 'PersonName[Last]', 'Nachname', 'Nachname', new NameplateIcon() )
+                    new FormColumn(
+                        new TextField( 'PersonName[Last]', 'Nachname', 'Nachname', new NameplateIcon() )
                         , 4 )
                 ) ),
-                new GridFormRow( array(
-                    new GridFormCol(
-                        new InputSelect( 'BirthDetail[Gender]', 'Geschlecht',
+                new FormRow( array(
+                    new FormColumn(
+                        new SelectBox( 'BirthDetail[Gender]', 'Geschlecht',
                             array( 'Name' => $tblPersonGenderAll ), new ChildIcon()
                         ), 4 ),
-                    new GridFormCol(
-                        new InputDate( 'BirthDetail[Date]', 'Geburtstag', 'Geburtstag', new TimeIcon() )
+                    new FormColumn(
+                        new DatePicker( 'BirthDetail[Date]', 'Geburtstag', 'Geburtstag', new TimeIcon() )
                         , 4 ),
-                    new GridFormCol(
-                        new InputCompleter( 'BirthDetail[Place]', 'Geburtsort', 'Geburtsort',
+                    new FormColumn(
+                        new AutoCompleter( 'BirthDetail[Place]', 'Geburtsort', 'Geburtsort',
                             $PersonBirthPlace, new MapMarkerIcon()
                         ), 4 ),
                 ) ),
-                new GridFormRow( array(
-                    new GridFormCol(
-                        new InputCompleter( 'PersonInformation[Nationality]', 'Staatsangehörigkeit',
+                new FormRow( array(
+                    new FormColumn(
+                        new AutoCompleter( 'PersonInformation[Nationality]', 'Staatsangehörigkeit',
                             'Staatsangehörigkeit', $PersonNationality, new PersonIcon()
                         ), 4 ),
-                    new GridFormCol(
-                        new InputSelect( 'PersonInformation[Type]', 'Art der Person',
+                    new FormColumn(
+                        new SelectBox( 'PersonInformation[Type]', 'Art der Person',
                             array( 'Name' => $tblPersonTypeAll ), new GroupIcon()
                         ), 4 )
                 ) )
-            ), new GridFormTitle( 'Grunddaten' ) )
+            ), new FormTitle( 'Grunddaten' ) )
         );
     }
 
@@ -340,22 +340,22 @@ class Person extends AbstractFrontend
     /**
      * @param TblPerson $tblPerson
      *
-     * @return FormDefault
+     * @return Form
      */
     private static function formPersonRelationship( TblPerson $tblPerson )
     {
 
-        return new Grid(
-            new Group( array(
-                new Row( array(
-                    new Column(
+        return new Layout(
+            new LayoutGroup( array(
+                new LayoutRow( array(
+                    new LayoutColumn(
                         new Primary( 'Bearbeiten', '/Sphere/Management/Person/Relationship', new PencilIcon(),
                             array(
                                 'tblPerson' => $tblPerson->getId()
                             ) )
                         , 4 )
                 ) ),
-            ), new Title( 'Beziehungen' ) )
+            ), new LayoutTitle( 'Beziehungen' ) )
         );
     }
 }

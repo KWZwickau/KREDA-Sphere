@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Management\Service\Person\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
@@ -29,12 +27,7 @@ class TblPerson extends AbstractEntity
     const ATTR_LAST_NAME = 'LastName';
     const ATTR_BIRTHDAY = 'Birthday';
     const ATTR_BIRTHPLACE = 'Birthplace';
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
+
     /**
      * @Column(type="string")
      */
@@ -265,24 +258,6 @@ class TblPerson extends AbstractEntity
     {
 
         $this->Birthday = $Birthday;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 
     /**

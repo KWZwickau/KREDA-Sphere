@@ -6,9 +6,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerType;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\EntityAction;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 
 /**
  * Class Consumer
@@ -119,15 +119,15 @@ class Consumer extends EntityAction
     }
 
     /**
-     * @param AbstractForm    $View
+     * @param AbstractType $View
      * @param string          $ConsumerSuffix
      * @param string          $ConsumerName
      * @param null|TblAddress $tblAddress
      *
-     * @return AbstractForm|\KREDA\Sphere\Client\Frontend\Redirect
+     * @return AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeCreateConsumer(
-        AbstractForm &$View,
+        AbstractType &$View,
         $ConsumerSuffix,
         $ConsumerName,
         TblAddress $tblAddress = null

@@ -10,11 +10,11 @@ use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelations
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonSalutation;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Application\Management\Service\Person\EntityAction;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 use KREDA\Sphere\Common\Wire\Data;
 use KREDA\Sphere\Common\Wire\Effect;
 
@@ -121,17 +121,17 @@ class Person extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      *
      * @param TblPerson    $tblPerson
      * @param array        $PersonName
      * @param array        $PersonInformation
      * @param array        $BirthDetail
      *
-     * @return AbstractForm
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
      */
     public function executeChangePerson(
-        AbstractForm &$View = null,
+        AbstractType &$View = null,
         TblPerson $tblPerson,
         $PersonName,
         $PersonInformation,
@@ -254,17 +254,17 @@ class Person extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      *
      * @param array        $PersonName
      * @param array        $BirthDetail
      * @param array        $PersonInformation
      * @param array        $Button
      *
-     * @return AbstractForm
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
      */
     public function executeCreatePerson(
-        AbstractForm &$View = null,
+        AbstractType &$View = null,
         $PersonName,
         $PersonInformation,
         $BirthDetail,

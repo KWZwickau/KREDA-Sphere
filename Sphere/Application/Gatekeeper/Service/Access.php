@@ -9,9 +9,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRightList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\EntityAction;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 
 /**
  * Class Access
@@ -103,12 +103,12 @@ class Access extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param AbstractType $View
      * @param null|string  $ApplicationRoute
      *
      * @return TblAccessRight
      */
-    public function executeCreateApplicationRoute( AbstractForm &$View = null, $ApplicationRoute )
+    public function executeCreateApplicationRoute( AbstractType &$View = null, $ApplicationRoute )
     {
 
         if (null !== $ApplicationRoute && empty( $ApplicationRoute )) {
@@ -145,12 +145,12 @@ class Access extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      * @param string       $AccessName
      *
-     * @return AbstractForm|Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|Redirect
      */
-    public function executeCreateAccess( AbstractForm &$View, $AccessName )
+    public function executeCreateAccess( AbstractType &$View, $AccessName )
     {
 
         if (null !== $AccessName && empty( $AccessName )) {
@@ -165,12 +165,12 @@ class Access extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      * @param string       $PrivilegeName
      *
-     * @return AbstractForm|Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|Redirect
      */
-    public function executeCreatePrivilege( AbstractForm &$View, $PrivilegeName )
+    public function executeCreatePrivilege( AbstractType &$View, $PrivilegeName )
     {
 
         if (null !== $PrivilegeName && empty( $PrivilegeName )) {
@@ -185,12 +185,12 @@ class Access extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param AbstractType $View
      * @param string       $RightName
      *
-     * @return AbstractForm|Redirect
+     * @return AbstractType|Redirect
      */
-    public function executeCreateRight( AbstractForm &$View, $RightName )
+    public function executeCreateRight( AbstractType &$View, $RightName )
     {
 
         if (null !== $RightName && empty( $RightName )) {

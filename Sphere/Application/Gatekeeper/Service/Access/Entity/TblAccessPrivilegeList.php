@@ -3,8 +3,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Common\AbstractEntity;
@@ -19,12 +17,6 @@ class TblAccessPrivilegeList extends AbstractEntity
     const ATTR_TBL_ACCESS_PRIVILEGE = 'tblAccessPrivilege';
     const ATTR_TBL_ACCESS = 'tblAccess';
 
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
     /**
      * @Column(type="bigint")
      */
@@ -76,23 +68,5 @@ class TblAccessPrivilegeList extends AbstractEntity
     {
 
         $this->tblAccess = ( null === $tblAccess ? null : $tblAccess->getId() );
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 }

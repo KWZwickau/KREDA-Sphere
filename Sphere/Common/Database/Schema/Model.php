@@ -15,10 +15,10 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FlashIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Column as ColumnLayout;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn as ColumnLayout;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Message\Type\Info;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Common\Cache\Type\Memcached;
@@ -193,7 +193,7 @@ class Model
         if (count( $this->Protocol ) == 1) {
             //$this->Protocol[0] .= '<br/>';
             $Protocol = new Success(
-                new Grid( new Group( new Row( array(
+                new Layout( new LayoutGroup( new LayoutRow( array(
                     new ColumnLayout( new OkIcon().'&nbsp'.implode( '', $this->Protocol ), 9 ),
                     new ColumnLayout( new OffIcon().'&nbsp;Kein Update notwendig', 3 )
                 ) ) ) )
@@ -201,7 +201,7 @@ class Model
         } else {
             //$this->Protocol[0] .= '<hr/>';
             $Protocol = new Info(
-                new Grid( new Group( new Row( array(
+                new Layout( new LayoutGroup( new LayoutRow( array(
                     new ColumnLayout( new FlashIcon().'&nbsp;'.implode( '', $this->Protocol ), 9 ),
                     new ColumnLayout(
                         ( $Simulate

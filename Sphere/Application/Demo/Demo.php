@@ -7,24 +7,24 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BookIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TaskIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn as FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup as FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow as FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\AutoCompleter;
+use KREDA\Sphere\Client\Frontend\Input\Type\DatePicker;
+use KREDA\Sphere\Client\Frontend\Input\Type\FileUpload;
+use KREDA\Sphere\Client\Frontend\Input\Type\PasswordField;
+use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextArea;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
+use KREDA\Sphere\Client\Frontend\Text\Type\MathJax;
 use KREDA\Sphere\Common\AbstractApplication;
-use KREDA\Sphere\Common\Frontend\Complex\Element\ComplexMathJax;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputCompleter;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputFile;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputTextArea;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class Demo
@@ -53,6 +53,9 @@ class Demo extends AbstractApplication
     }
 
     /**
+     * @param $DemoCompleter
+     * @param $DemoTextArea
+     *
      * @return Stage
      */
     public static function frontendDemo( $DemoCompleter, $DemoTextArea )
@@ -75,7 +78,7 @@ class Demo extends AbstractApplication
             $tblDemoCompleterListSelect[$tblDemoCompleter->getId()] = $tblDemoCompleter->getName();
         }
 
-        $DemoText = new InputText( 'DemoText', 'DemoText', 'DemoText' );
+        $DemoText = new TextField( 'DemoText', 'DemoText', 'DemoText' );
         $DemoText->setDefaultValue( 'DefaultValue' );
         $View->setContent(
 
@@ -84,18 +87,18 @@ class Demo extends AbstractApplication
             .
 
             Demo::serviceDemoService()->executeCreateDemo(
-                new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow( array(
-                            new GridFormCol( array(
-                                    new InputCompleter( 'DemoCompleter', 'DemoCompleter', 'DemoCompleter',
+                new Form(
+                    new FormGroup(
+                        new FormRow( array(
+                            new FormColumn( array(
+                                    new AutoCompleter( 'DemoCompleter', 'DemoCompleter', 'DemoCompleter',
                                         $tblDemoCompleterListSelect, new BookIcon() ),
-                                    new InputDate( 'DemoDate', 'DemoDate', 'DemoDate' ),
-                                    new InputFile( 'DemoFile', 'DemoFile', 'DemoFile' ),
-                                    new InputPassword( 'DemoPassword', 'DemoPassword', 'DemoPassword' ),
-                                    new InputSelect( 'DemoSelect', 'DemoSelect', $tblDemoCompleterListSelect ),
+                                    new DatePicker( 'DemoDate', 'DemoDate', 'DemoDate' ),
+                                    new FileUpload( 'DemoFile', 'DemoFile', 'DemoFile' ),
+                                    new PasswordField( 'DemoPassword', 'DemoPassword', 'DemoPassword' ),
+                                    new SelectBox( 'DemoSelect', 'DemoSelect', $tblDemoCompleterListSelect ),
                                     $DemoText,
-                                    new InputTextArea( 'DemoTextArea', 'DemoTextArea', 'DemoTextArea' )
+                                    new TextArea( 'DemoTextArea', 'DemoTextArea', 'DemoTextArea' )
                                 )
                             )
                         ) )
@@ -104,28 +107,28 @@ class Demo extends AbstractApplication
                 , $DemoCompleter, $DemoTextArea )
 
             .
-            new Grid(
-                new Group( array(
-                    new Row( array(
-                        new Column(
-                            new ComplexMathJax( '`a != 0,`' )
+            new Layout(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new MathJax( '`a != 0,`' )
                             , 2 ),
-                        new Column(
-                            new ComplexMathJax( '`ax^2 + bx + c = 0`' )
+                        new LayoutColumn(
+                            new MathJax( '`ax^2 + bx + c = 0`' )
                             , 3 ),
-                        new Column(
-                            new ComplexMathJax( '`a != 0,`' )
+                        new LayoutColumn(
+                            new MathJax( '`a != 0,`' )
                             , 2 ),
-                        new Column(
-                            new ComplexMathJax( '`ax^2 + bx + c = 0`' )
+                        new LayoutColumn(
+                            new MathJax( '`ax^2 + bx + c = 0`' )
                             , 3 )
                     ) ),
-                    new Row(
-                        new Column( '&nbsp;' )
+                    new LayoutRow(
+                        new LayoutColumn( '&nbsp;' )
                     ),
-                    new Row(
-                        new Column(
-                            new ComplexMathJax( '`x = (-b +- sqrt(b^2-4ac))/(2a)`' )
+                    new LayoutRow(
+                        new LayoutColumn(
+                            new MathJax( '`x = (-b +- sqrt(b^2-4ac))/(2a)`' )
                             , 6 )
                     )
                 ) )

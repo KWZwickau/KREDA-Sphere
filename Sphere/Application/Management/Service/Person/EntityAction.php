@@ -15,11 +15,11 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
 
 /**
  * Class EntityAction
@@ -139,15 +139,15 @@ abstract class EntityAction extends EntitySchema
                 $Entity->Name = $Entity->getFullName();
 
                 /** @noinspection PhpUndefinedFieldInspection */
-                $Entity->Option = ( new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow( array(
-                            new GridFormCol(
-                                new InputSelect( 'tblRelationshipType', '',
+                $Entity->Option = ( new Form(
+                    new FormGroup(
+                        new FormRow( array(
+                            new FormColumn(
+                                new SelectBox( 'tblRelationshipType', '',
                                     array( 'Name' => $Person[1] )
                                 )
                                 , 7 ),
-                            new GridFormCol(
+                            new FormColumn(
                                 new SubmitPrimary( 'Hinzufügen', new ShareIcon() )
                                 , 5 )
                         ) )

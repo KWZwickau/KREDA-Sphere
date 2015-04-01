@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Management\Service\Education\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Graduation\Service\Weight\Entity\TblWeightDimension;
@@ -26,12 +24,6 @@ class TblSubjectGroup extends AbstractEntity
     const ATTR_TBL_GROUP = 'tblGroup';
     const ATTR_SERVICE_GRADUATION_DIMENSION = 'serviceGraduation_Dimension';
 
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
     /**
      * @Column(type="bigint")
      */
@@ -161,23 +153,5 @@ class TblSubjectGroup extends AbstractEntity
     {
 
         $this->serviceGraduation_Dimension = ( null === $tblWeightDimension ? null : $tblWeightDimension->getId() );
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 }

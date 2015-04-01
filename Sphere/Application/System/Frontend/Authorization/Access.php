@@ -8,24 +8,24 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitSuccess;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
-use KREDA\Sphere\Client\Frontend\Layout\Type\PullRight;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn as FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup as FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow as FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle as FormTitle;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\HiddenField;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutRight;
 use KREDA\Sphere\Client\Frontend\Message\Type\Info;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Redirect;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableTitle;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 
 /**
  * Class Access
@@ -50,7 +50,7 @@ class Access extends Privilege
         $AccessList = Gatekeeper::serviceAccess()->entityAccessAll();
         array_walk( $AccessList, function ( TblAccess &$V ) {
 
-            $Id = new InputHidden( 'Id' );
+            $Id = new HiddenField( 'Id' );
             $Id->setDefaultValue( $V->getId(), true );
 
             $LinkList = Gatekeeper::serviceAccess()->entityPrivilegeAllByAccess( $V );
@@ -64,7 +64,7 @@ class Access extends Privilege
 
             /** @noinspection PhpUndefinedFieldInspection */
             $V->Option =
-                ( new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+                ( new Form( new FormGroup( new FormRow( new FormColumn( array(
                     $Id,
                     new SubmitPrimary( 'Privilegien bearbeiten' )
                 ) ) ) ), null, '/Sphere/System/Authorization/Access/Privilege' ) )->__toString();
@@ -72,19 +72,19 @@ class Access extends Privilege
         } );
 
         $View->setContent(
-            new TableData( $AccessList, new GridTableTitle( 'Bestehende Zugriffslevel', 'Privilegiengruppen' ),
+            new TableData( $AccessList, new TableTitle( 'Bestehende Zugriffslevel', 'Privilegiengruppen' ),
                 array( 'Name' => 'Zugriffslevel', 'Available' => 'Privileg', 'Option' => 'Optionen' )
             )
             .Gatekeeper::serviceAccess()->executeCreateAccess(
-                new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow(
-                            new GridFormCol(
-                                new InputText(
+                new Form(
+                    new FormGroup(
+                        new FormRow(
+                            new FormColumn(
+                                new TextField(
                                     'AccessName', 'Name', 'Privilegiengruppe'
                                 )
                             )
-                        ), new GridFormTitle( 'Zugriffslevel anlegen', 'Privilegiengruppe' ) )
+                        ), new FormTitle( 'Zugriffslevel anlegen', 'Privilegiengruppe' ) )
                     , new SubmitPrimary( 'Hinzufügen' )
                 )
                 , $Name )
@@ -135,14 +135,14 @@ class Access extends Privilege
         /** @noinspection PhpUnusedParameterInspection */
         array_walk( $tblPrivilegeListAvailable, function ( TblAccessPrivilege &$Entity, $Index, $Identifier ) {
 
-            $Id = new InputHidden( 'Id' );
+            $Id = new HiddenField( 'Id' );
             $Id->setDefaultValue( $Identifier, true );
-            $Privilege = new InputHidden( 'Privilege' );
+            $Privilege = new HiddenField( 'Privilege' );
             $Privilege->setDefaultValue( $Entity->getId(), true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $Entity->Option = ( new PullRight(
-                new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+            $Entity->Option = ( new LayoutRight(
+                new Form( new FormGroup( new FormRow( new FormColumn( array(
                     $Id,
                     $Privilege,
                     new SubmitSuccess( 'Hinzufügen' )
@@ -155,16 +155,16 @@ class Access extends Privilege
         /** @noinspection PhpUnusedParameterInspection */
         array_walk( $tblPrivilegeList, function ( TblAccessPrivilege &$Entity, $Index, $Identifier ) {
 
-            $Id = new InputHidden( 'Id' );
+            $Id = new HiddenField( 'Id' );
             $Id->setDefaultValue( $Identifier, true );
-            $Privilege = new InputHidden( 'Privilege' );
+            $Privilege = new HiddenField( 'Privilege' );
             $Privilege->setDefaultValue( $Entity->getId(), true );
-            $Remove = new InputHidden( 'Remove' );
+            $Remove = new HiddenField( 'Remove' );
             $Remove->setDefaultValue( 1, true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $Entity->Option = ( new PullRight(
-                new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+            $Entity->Option = ( new LayoutRight(
+                new Form( new FormGroup( new FormRow( new FormColumn( array(
                     $Id,
                     $Privilege,
                     $Remove,
@@ -176,27 +176,27 @@ class Access extends Privilege
         }, $Id );
 
         $View->setContent(
-            new TableData( array( $tblAccess ), new GridTableTitle( 'Zugriffslevel' ), array(), false )
+            new TableData( array( $tblAccess ), new TableTitle( 'Zugriffslevel' ), array(), false )
             .
-            new Grid(
-                new Group(
-                    new Row( array(
-                        new Column( array(
-                            new Title( 'Privilegien', 'Zugewiesen' ),
+            new Layout(
+                new LayoutGroup(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            new LayoutTitle( 'Privilegien', 'Zugewiesen' ),
                             ( empty( $tblPrivilegeList )
                                 ? new Warning( 'Keine Privilegien vergeben' )
                                 : new TableData( $tblPrivilegeList )
                             )
                         ), 6 ),
-                        new Column( array(
-                            new Title( 'Privilegien', 'Verfügbar' ),
+                        new LayoutColumn( array(
+                            new LayoutTitle( 'Privilegien', 'Verfügbar' ),
                             ( empty( $tblPrivilegeListAvailable )
                                 ? new Info( 'Keine weiteren Privilegien verfügbar' )
                                 : new TableData( $tblPrivilegeListAvailable )
                             )
                         ), 6 )
                     ) )
-                    , new Title( 'Zugriffslevel', 'Zusammensetzung' ) )
+                    , new LayoutTitle( 'Zugriffslevel', 'Zusammensetzung' ) )
             )
         );
         return $View;

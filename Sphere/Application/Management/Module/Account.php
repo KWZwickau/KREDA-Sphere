@@ -19,21 +19,21 @@ use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
-use KREDA\Sphere\Client\Frontend\Layout\Type\PullRight;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle as FormTitle;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\HiddenField;
+use KREDA\Sphere\Client\Frontend\Input\Type\PasswordField;
+use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutRight;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 
 /**
  * Class Account
@@ -102,39 +102,39 @@ class Account extends Token
         /**
          * Form Create
          */
-        $AccountName = new InputText( 'Account[Name]', 'Benutzername', 'Benutzername', new PersonIcon() );
+        $AccountName = new TextField( 'Account[Name]', 'Benutzername', 'Benutzername', new PersonIcon() );
         $AccountName->setPrefixValue( $tblConsumer->getDatabaseSuffix() );
-        $Form = new FormDefault(
-            new GridFormGroup( array(
-                new GridFormRow( array(
-                    new GridFormCol(
+        $Form = new Form(
+            new FormGroup( array(
+                new FormRow( array(
+                    new FormColumn(
                         $AccountName, 4
                     ),
-                    new GridFormCol(
-                        new InputPassword( 'Account[Password]', 'Passwort', 'Passwort',
+                    new FormColumn(
+                        new PasswordField( 'Account[Password]', 'Passwort', 'Passwort',
                             new LockIcon()
                         ), 4
                     ),
-                    new GridFormCol(
-                        new InputPassword( 'Account[PasswordSafety]', 'Passwort wiederholen',
+                    new FormColumn(
+                        new PasswordField( 'Account[PasswordSafety]', 'Passwort wiederholen',
                             'Passwort wiederholen',
                             new RepeatIcon()
                         ), 4
                     )
                 ) ),
-                new GridFormRow( array(
-                    new GridFormCol(
-                        new InputSelect( 'Account[Type]', 'Authentifizierungstyp', $tblAccountTypeSelect,
+                new FormRow( array(
+                    new FormColumn(
+                        new SelectBox( 'Account[Type]', 'Authentifizierungstyp', $tblAccountTypeSelect,
                             new PersonKeyIcon()
                         ), 6
                     ),
-                    new GridFormCol(
-                        new InputSelect( 'Account[Role]', 'Berechtigungsstufe', $tblAccountRoleSelect,
+                    new FormColumn(
+                        new SelectBox( 'Account[Role]', 'Berechtigungsstufe', $tblAccountRoleSelect,
                             new PersonKeyIcon()
                         ), 6
                     )
                 ) ),
-            ), new GridFormTitle( 'Benutzer hinzufügen', 'Account' ) )
+            ), new FormTitle( 'Benutzer hinzufügen', 'Account' ) )
             , new SubmitPrimary( 'Hinzufügen' )
         );
         /**
@@ -162,7 +162,7 @@ class Account extends Token
 
         $tblAccountList = self::getAccountList( $tblConsumer );
         $View->setContent(
-            new Title( 'Bestehende Benutzerkonten', 'Accounts' )
+            new LayoutTitle( 'Bestehende Benutzerkonten', 'Accounts' )
             .
             ( empty( $tblAccountList )
                 ? new Warning( 'Keine Benutzer verfügbar' )
@@ -301,15 +301,15 @@ class Account extends Token
                     );
                 }
 
-                $Id = new InputHidden( 'Id' );
+                $Id = new HiddenField( 'Id' );
                 $Id->setDefaultValue( $A->getId(), true );
-                $Remove = new InputHidden( 'Remove' );
+                $Remove = new HiddenField( 'Remove' );
                 $Remove->setDefaultValue( 1, true );
 
-                $FormDestroy = new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow(
-                            new GridFormCol( array( $Id, $Remove, new SubmitDanger( 'Löschen' ) ) )
+                $FormDestroy = new Form(
+                    new FormGroup(
+                        new FormRow(
+                            new FormColumn( array( $Id, $Remove, new SubmitDanger( 'Löschen' ) ) )
                         )
                     )
                 );
@@ -318,7 +318,7 @@ class Account extends Token
                     'Id' => $A->getId()
                 ) );
                 $FormDestroy->setConfirm( 'Wollen Sie den Benutzer '.$A->getUsername().' wirklich löschen?' );
-                $A->Option = new PullRight( $FormDestroy.$FormEdit );
+                $A->Option = new LayoutRight( $FormDestroy.$FormEdit );
             }
         } );
         return array_filter( $tblAccountList );

@@ -1,0 +1,41 @@
+<form {% if( Hash is not empty ) %}id="{{ Hash }}"{% endif %}
+      action="{{ FormAction }}{{ FormData }}{% if( Hash is not empty ) %}#{{ Hash }}{% endif %}" method="post"
+      enctype="multipart/form-data" autocomplete="off">
+    {% for FormGroup in GridGroupList %}
+        {% if( FormGroup.getFormTitle is not empty ) %}
+            {{ FormGroup.getFormTitle }}
+        {% endif %}
+        {% for FormRow in FormGroup.getFormRow %}
+            <div class="row">
+                {% for FormColumn in FormRow.getFormColumn %}
+                    <div class="col-md-{{ FormColumn.Size }}">
+                        {% for GridElement in FormColumn.getAbstractFrontend %}
+                            {{ GridElement }}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% if( FormButtonList|length > 0) %}
+        <div class="form-group">
+            <div class="btn-group">
+                {% for FormButton in FormButtonList %}
+                    {{ FormButton }}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</form>
+{% if FormConfirm is not empty %}
+    <script type="text/javascript">
+        Client.Use( 'jQuery', function()
+        {
+            jQuery( "form#{{ Hash }}" ).submit( function( Event )
+            {
+                Event.stopImmediatePropagation();
+                return confirm( "{{ FormConfirm }}" );
+            } );
+        } )
+    </script>
+{% endif %}

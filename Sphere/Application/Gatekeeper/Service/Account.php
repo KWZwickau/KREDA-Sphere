@@ -13,9 +13,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 use KREDA\Sphere\Common\Wire\Data;
 use KREDA\Sphere\Common\Wire\Effect;
 
@@ -102,16 +102,16 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm   $View
+     * @param AbstractType $View
      * @param string         $CredentialName
      * @param string         $CredentialLock
      * @param string         $CredentialKey
      * @param TblAccountType $tblAccountType
      *
-     * @return AbstractForm|\KREDA\Sphere\Client\Frontend\Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeActionSignInWithToken(
-        AbstractForm &$View,
+        AbstractType &$View,
         $CredentialName,
         $CredentialLock,
         $CredentialKey,
@@ -193,15 +193,15 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm   $View
+     * @param AbstractType $View
      * @param string         $CredentialName
      * @param string         $CredentialLock
      * @param TblAccountType $tblAccountType
      *
-     * @return AbstractForm|\KREDA\Sphere\Client\Frontend\Redirect
+     * @return AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeActionSignIn(
-        AbstractForm &$View,
+        AbstractType &$View,
         $CredentialName,
         $CredentialLock,
         TblAccountType $tblAccountType
@@ -233,12 +233,12 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param AbstractType $View
      * @param integer      $tblConsumer
      *
-     * @return AbstractForm|Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|Redirect
      */
-    public function executeChangeConsumer( AbstractForm &$View, $tblConsumer )
+    public function executeChangeConsumer( AbstractType &$View, $tblConsumer )
     {
 
         if (null !== $tblConsumer && empty( $tblConsumer )) {
@@ -258,12 +258,12 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param AbstractType $View
      * @param string       $RoleName
      *
-     * @return AbstractForm|Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|Redirect
      */
-    public function executeCreateRole( AbstractForm &$View, $RoleName )
+    public function executeCreateRole( AbstractType &$View, $RoleName )
     {
 
         if (null !== $RoleName && empty( $RoleName )) {
@@ -278,13 +278,13 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param AbstractType $View
      * @param string       $CredentialLock
      * @param string       $CredentialLockSafety
      *
-     * @return AbstractForm|Redirect
+     * @return AbstractType|Redirect
      */
-    public function executeChangePassword( AbstractForm &$View, $CredentialLock, $CredentialLockSafety )
+    public function executeChangePassword( AbstractType &$View, $CredentialLock, $CredentialLockSafety )
     {
 
         if (null !== $CredentialLock && empty( $CredentialLock )) {
@@ -524,7 +524,7 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm   $View
+     * @param AbstractType $View
      * @param string         $Username
      * @param string         $Password
      * @param string         $PasswordSafety
@@ -535,7 +535,7 @@ class Account extends EntityAction
      * @return TblAccount
      */
     public function executeCreateAccount(
-        AbstractForm &$View,
+        AbstractType &$View,
         $Username,
         $Password,
         $PasswordSafety,

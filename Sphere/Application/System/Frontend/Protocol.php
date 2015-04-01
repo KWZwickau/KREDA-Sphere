@@ -2,8 +2,8 @@
 namespace KREDA\Sphere\Application\System\Frontend;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class Protocol

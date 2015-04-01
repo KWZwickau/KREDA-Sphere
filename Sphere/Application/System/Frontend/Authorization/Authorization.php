@@ -7,8 +7,8 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\System\Frontend\Authorization\Summary\Summary;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableTitle;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 
 /**
  * Class Authorization
@@ -71,7 +71,7 @@ class Authorization extends Role
         }
         $View->setContent(
             new TableData( Gatekeeper::serviceAccess()->entityRightAll(),
-                new GridTableTitle( 'Überwachte Routen', 'Rechte' )
+                new TableTitle( 'Überwachte Routen', 'Rechte' )
             )
             .new Summary( $TwigData )
         );

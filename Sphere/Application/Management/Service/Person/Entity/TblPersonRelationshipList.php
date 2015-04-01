@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Management\Service\Person\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
@@ -22,12 +20,7 @@ class TblPersonRelationshipList extends AbstractEntity
     const ATTR_TBL_PERSON_RELATIONSHIP_TYPE = 'tblPersonRelationshipType';
     const ATTR_TBL_PERSON_A = 'tblPersonA';
     const ATTR_TBL_PERSON_B = 'tblPersonB';
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
+
     /**
      * @OneToOne(targetEntity="TblPersonRelationshipType",fetch="EXTRA_LAZY")
      * @Column(type="bigint")
@@ -43,24 +36,6 @@ class TblPersonRelationshipList extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $tblPersonB;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param int $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
-    }
 
     /**
      * @return bool|TblPerson

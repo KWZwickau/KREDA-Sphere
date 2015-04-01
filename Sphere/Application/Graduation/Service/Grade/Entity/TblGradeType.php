@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Graduation\Service\Grade\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -21,12 +19,6 @@ class TblGradeType extends AbstractEntity
     const ATTR_NAME = 'Name';
     const ATTR_ACTIVE = 'Active';
 
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
     /**
      * @Column(type="string")
      */
@@ -66,24 +58,6 @@ class TblGradeType extends AbstractEntity
     {
 
         $this->Acronym = $Acronym;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 
     /**

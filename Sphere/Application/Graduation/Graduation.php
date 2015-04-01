@@ -16,15 +16,15 @@ use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitSuccess;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\HiddenField;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractApplication;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class Graduation
@@ -128,10 +128,10 @@ class Graduation extends AbstractApplication
                 // bei aktiven Zensurentypen "deaktivieren"-Button anzeigen; sonst "aktivieren"-Button
                 $Entity->getActiveState() == true ? $myButton = new SubmitDanger( 'deaktivieren' ) : $myButton = new SubmitSuccess( 'aktivieren' );
 
-                $Entity->Option = new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow( new GridFormCol( array(
-                            new InputHidden( 'Id' ),
+                $Entity->Option = new Form(
+                    new FormGroup(
+                        new FormRow( new FormColumn( array(
+                            new HiddenField( 'Id' ),
                             $myButton
                         ) ) )
                     ),
@@ -177,17 +177,17 @@ class Graduation extends AbstractApplication
         $View->setDescription( 'neuer Zensurentyp' );
         $View->setContent(
             Graduation::serviceGrade()->executeCreateGradeType(
-                new FormDefault(
-                    new GridFormGroup( array(
-                        new GridFormRow( array(
-                            new GridFormCol(
-                                new InputText( 'Acronym', 'Kürzel', 'Kürzel', new ConversationIcon() )
+                new Form(
+                    new FormGroup( array(
+                        new FormRow( array(
+                            new FormColumn(
+                                new TextField( 'Acronym', 'Kürzel', 'Kürzel', new ConversationIcon() )
                                 , 5 ),
-                            new GridFormCol(
-                                new InputText( 'Name', 'Langform', 'Langform', new NameplateIcon() )
+                            new FormColumn(
+                                new TextField( 'Name', 'Langform', 'Langform', new NameplateIcon() )
                                 , 7 )
                         ) ),
-                    ), new GridFormTitle( 'Grunddaten' ) ), array(
+                    ), new FormTitle( 'Grunddaten' ) ), array(
                         new SubmitPrimary( 'Anlegen' )
                     )
                 )

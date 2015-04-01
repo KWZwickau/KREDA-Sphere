@@ -3,8 +3,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Common\AbstractEntity;
@@ -19,12 +17,6 @@ class TblConsumerTypeList extends AbstractEntity
     const ATTR_TBL_CONSUMER_TYPE = 'tblConsumerType';
     const ATTR_TBL_CONSUMER = 'tblConsumer';
 
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
     /**
      * @Column(type="bigint")
      */
@@ -76,23 +68,5 @@ class TblConsumerTypeList extends AbstractEntity
     {
 
         $this->tblConsumer = ( null === $tblConsumer ? null : $tblConsumer->getId() );
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 }

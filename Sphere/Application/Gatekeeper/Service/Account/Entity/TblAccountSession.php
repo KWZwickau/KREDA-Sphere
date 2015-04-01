@@ -3,8 +3,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Common\AbstractEntity;
@@ -20,12 +18,6 @@ class TblAccountSession extends AbstractEntity
     const ATTR_TIMEOUT = 'Timeout';
     const ATTR_TBL_ACCOUNT = 'tblAccount';
 
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
     /**
      * @Column(type="string")
      */
@@ -86,24 +78,6 @@ class TblAccountSession extends AbstractEntity
     {
 
         $this->Timeout = $Timeout;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 
     /**

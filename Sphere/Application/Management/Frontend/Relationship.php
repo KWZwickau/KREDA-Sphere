@@ -7,15 +7,15 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class Relationship
@@ -93,22 +93,22 @@ class Relationship extends AbstractFrontend
                     }
                 }
                 $View->setContent(
-                    new Grid(
-                        new Group( array(
-                            new Row( array(
-                                new Column( array(
+                    new Layout(
+                        new LayoutGroup( array(
+                            new LayoutRow( array(
+                                new LayoutColumn( array(
                                     new Success(
                                         $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName()
                                     )
                                 ) )
                             ) ),
-                            new Row( array(
-                                new Column( array(
-                                    new Title( 'Personen', 'Zugewiesen' ),
+                            new LayoutRow( array(
+                                new LayoutColumn( array(
+                                    new LayoutTitle( 'Personen', 'Zugewiesen' ),
                                     new TableData( $PersonRelationshipList, null, array(), false )
                                 ), 5 ),
-                                new Column( array(
-                                    new Title( 'Personen', 'Suchen' ),
+                                new LayoutColumn( array(
+                                    new LayoutTitle( 'Personen', 'Suchen' ),
                                     new TableData(
                                         '/Sphere/Management/Table/PersonRelationship?tblPerson='.$tblPerson->getId()
                                         , null,

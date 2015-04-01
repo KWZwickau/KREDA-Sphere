@@ -7,13 +7,13 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\PasswordField;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 
 /**
  * Class SignIn
@@ -38,16 +38,16 @@ class SignIn extends AbstractFrontend
         $View->setDescription( 'Lehrer' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeActionSignInWithToken(
-            new FormDefault(
-                new GridFormGroup( array(
-                        new GridFormRow(
-                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
+            new Form(
+                new FormGroup( array(
+                        new FormRow(
+                            new FormColumn( new TextField( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
                         ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+                        new FormRow(
+                            new FormColumn( new PasswordField( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
                         ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
+                        new FormRow(
+                            new FormColumn( new PasswordField( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
                 ), new SubmitPrimary( 'Anmelden' )
@@ -73,16 +73,16 @@ class SignIn extends AbstractFrontend
         $View->setDescription( 'System' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeActionSignInWithToken(
-            new FormDefault(
-                new GridFormGroup( array(
-                        new GridFormRow(
-                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
+            new Form(
+                new FormGroup( array(
+                        new FormRow(
+                            new FormColumn( new TextField( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
                         ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+                        new FormRow(
+                            new FormColumn( new PasswordField( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
                         ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
+                        new FormRow(
+                            new FormColumn( new PasswordField( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
                 ), new SubmitPrimary( 'Anmelden' )
@@ -109,14 +109,14 @@ class SignIn extends AbstractFrontend
         $View->setContent(
             Gatekeeper::serviceAccount()->executeActionSignIn(
 
-                new FormDefault(
-                    new GridFormGroup( array(
-                            new GridFormRow(
-                                new GridFormCol( new InputText( 'CredentialName', 'Benutzername', 'Benutzername',
+                new Form(
+                    new FormGroup( array(
+                            new FormRow(
+                                new FormColumn( new TextField( 'CredentialName', 'Benutzername', 'Benutzername',
                                     new PersonIcon() ) )
                             ),
-                            new GridFormRow(
-                                new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', 'Passwort',
+                            new FormRow(
+                                new FormColumn( new PasswordField( 'CredentialLock', 'Passwort', 'Passwort',
                                     new LockIcon() ) )
                             )
                         )
@@ -148,16 +148,16 @@ class SignIn extends AbstractFrontend
         $View->setDescription( 'Verwaltung' );
         $View->setMessage( 'Bitte geben Sie Ihre Benutzerdaten ein' );
         $View->setContent( Gatekeeper::serviceAccount()->executeActionSignInWithToken(
-            new FormDefault(
-                new GridFormGroup( array(
-                        new GridFormRow(
-                            new GridFormCol( new InputText( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
+            new Form(
+                new FormGroup( array(
+                        new FormRow(
+                            new FormColumn( new TextField( 'CredentialName', 'Benutzername', '', new PersonIcon() ) )
                         ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
+                        new FormRow(
+                            new FormColumn( new PasswordField( 'CredentialLock', 'Passwort', '', new LockIcon() ) )
                         ),
-                        new GridFormRow(
-                            new GridFormCol( new InputPassword( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
+                        new FormRow(
+                            new FormColumn( new PasswordField( 'CredentialKey', 'YubiKey', '', new YubiKeyIcon() ) )
                         )
                     )
                 ), new SubmitPrimary( 'Anmelden' )

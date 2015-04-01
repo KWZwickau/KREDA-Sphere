@@ -8,21 +8,21 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitSuccess;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
-use KREDA\Sphere\Client\Frontend\Layout\Type\PullRight;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn as FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup as FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow as FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\HiddenField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutRight;
 use KREDA\Sphere\Client\Frontend\Message\Type\Info;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
 use KREDA\Sphere\Common\Updater\Type\GitHub;
 
 /**
@@ -54,18 +54,18 @@ class Update extends AbstractFrontend
             array_pop( $Available );
             $UpdateList = '';
             foreach ((array)$Available as $Update) {
-                $Version = new InputHidden( 'Version' );
+                $Version = new HiddenField( 'Version' );
                 $Version->setDefaultValue( $Update['name'], true );
                 $UpdateList .=
                     new Info(
-                        new Grid( new Group(
-                            new Row( array(
-                                new Column(
+                        new Layout( new LayoutGroup(
+                            new LayoutRow( array(
+                                new LayoutColumn(
                                     'Version: '.$Update['name'].'<hr/>'.$Update['message']
                                 ),
-                                new Column(
-                                    new PullRight( new FormDefault(
-                                        new GridFormGroup( new GridFormRow( new GridFormCol( array(
+                                new LayoutColumn(
+                                    new LayoutRight( new Form(
+                                        new FormGroup( new FormRow( new FormColumn( array(
                                             $Version,
                                             new SubmitPrimary( 'Installieren' )
                                         ) ) ) ),
@@ -78,7 +78,7 @@ class Update extends AbstractFrontend
             }
         }
 
-        $Version = new InputHidden( 'Version' );
+        $Version = new HiddenField( 'Version' );
         $Version->setDefaultValue( $Next, true );
 
         $View->setContent(
@@ -89,18 +89,18 @@ class Update extends AbstractFrontend
                     '&nbsp;Neuere Version verfügbar: '.$Next,
                     new ShareIcon()
                 )
-                .new Title( 'Historie', 'Verfügbare Updates' )
+                .new LayoutTitle( 'Historie', 'Verfügbare Updates' )
                 .$UpdateList
-                .new Title( 'Aktuelle Version' )
+                .new LayoutTitle( 'Aktuelle Version' )
                 .new Success(
-                    new Grid( new Group(
-                        new Row( array(
-                            new Column(
+                    new Layout( new LayoutGroup(
+                        new LayoutRow( array(
+                            new LayoutColumn(
                                 'Version: '.$Next.'<hr/>'.$Updater->fetchMessage( $Next )
                             ),
-                            new Column(
-                                new PullRight( new FormDefault(
-                                    new GridFormGroup( new GridFormRow( new GridFormCol( array(
+                            new LayoutColumn(
+                                new LayoutRight( new Form(
+                                    new FormGroup( new FormRow( new FormColumn( array(
                                         $Version,
                                         new SubmitSuccess( 'Installieren' )
                                     ) ) ) ),
@@ -133,13 +133,13 @@ class Update extends AbstractFrontend
 
         $View->setContent(
             new Info( 'Update von Version '.$Updater->getCurrentVersion().' auf '.$Version, new ShareIcon() )
-            .new Title( 'Schritt 1', 'Das Update wird heruntergeladen' )
+            .new LayoutTitle( 'Schritt 1', 'Das Update wird heruntergeladen' )
             .new Progress( 'StatusDownload' )
-            .new Title( 'Schritt 2', 'Das Update wird überprüft' )
+            .new LayoutTitle( 'Schritt 2', 'Das Update wird überprüft' )
             .new Progress( 'StatusExtract' )
-            .new Title( 'Schritt 3', 'Dateien werden aktualisiert' )
+            .new LayoutTitle( 'Schritt 3', 'Dateien werden aktualisiert' )
             .new Progress( 'StatusInstall' )
-            .new Title( 'Schritt 4', 'Datenbanken werden aktualisiert' )
+            .new LayoutTitle( 'Schritt 4', 'Datenbanken werden aktualisiert' )
             .new Progress( 'StatusUpdate' )
             .'<script>Client.Use("ModProgress",function(){
                 var Run = true;

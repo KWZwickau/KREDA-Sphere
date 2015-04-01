@@ -6,12 +6,12 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\Service\Protocol\Entity\TblProtocol;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableBody;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableColumn;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableHead;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableRow;
+use KREDA\Sphere\Client\Frontend\Table\Type\Table;
 use KREDA\Sphere\Common\AbstractEntity;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableBody;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableCol;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableHead;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableRow;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableDefault;
 
 /**
  * Class EntityAction
@@ -88,30 +88,30 @@ abstract class EntityAction extends EntitySchema
         )
             ->setCallbackFunction( function ( TblProtocol &$V ) {
 
-                $Editor = new TableDefault(
-                    new GridTableHead( new GridTableRow(
-                        new GridTableCol( '', 2 )
+                $Editor = new Table(
+                    new TableHead( new TableRow(
+                        new TableColumn( '', 2 )
                     ) ),
-                    new GridTableBody( array(
-                        new GridTableRow( array(
-                            new GridTableCol( 'Database' ),
-                            new GridTableCol( $V->getProtocolDatabase() )
+                    new TableBody( array(
+                        new TableRow( array(
+                            new TableColumn( 'Database' ),
+                            new TableColumn( $V->getProtocolDatabase() )
                         ) ),
-                        new GridTableRow( array(
-                            new GridTableCol( 'Consumer' ),
-                            new GridTableCol( $V->getConsumerName().' '.$V->getConsumerSuffix() )
+                        new TableRow( array(
+                            new TableColumn( 'Consumer' ),
+                            new TableColumn( $V->getConsumerName().' '.$V->getConsumerSuffix() )
                         ) ),
-                        new GridTableRow( array(
-                            new GridTableCol( 'Login' ),
-                            new GridTableCol( $V->getAccountUsername() )
+                        new TableRow( array(
+                            new TableColumn( 'Login' ),
+                            new TableColumn( $V->getAccountUsername() )
                         ) ),
-                        new GridTableRow( array(
-                            new GridTableCol( 'Person' ),
-                            new GridTableCol( $V->getPersonFirstName().' '.$V->getPersonLastName() )
+                        new TableRow( array(
+                            new TableColumn( 'Person' ),
+                            new TableColumn( $V->getPersonFirstName().' '.$V->getPersonLastName() )
                         ) ),
-                        new GridTableRow( array(
-                            new GridTableCol( 'Time' ),
-                            new GridTableCol( date( 'd.m.Y H:i:s', $V->getProtocolTimestamp() ) )
+                        new TableRow( array(
+                            new TableColumn( 'Time' ),
+                            new TableColumn( date( 'd.m.Y H:i:s', $V->getProtocolTimestamp() ) )
                         ) )
                     ) )
                 );
@@ -122,22 +122,22 @@ abstract class EntityAction extends EntitySchema
                     $Data = (array)$DataOrigin;
                     array_walk( $Data, function ( &$Entity, $Index ) {
 
-                        $Entity = new GridTableRow( array( new GridTableCol( $Index ), new GridTableCol( $Entity ) ) );
+                        $Entity = new TableRow( array( new TableColumn( $Index ), new TableColumn( $Entity ) ) );
                     } );
-                    $TableOrigin = new TableDefault(
-                        new GridTableHead( new GridTableRow(
-                            new GridTableCol( str_replace( '\\', '\\&shy;', get_class( $DataOrigin ) ), 2 )
-                        ) ), new GridTableBody( $Data )
+                    $TableOrigin = new Table(
+                        new TableHead( new TableRow(
+                            new TableColumn( str_replace( '\\', '\\&shy;', get_class( $DataOrigin ) ), 2 )
+                        ) ), new TableBody( $Data )
                     );
                     $Data = (array)$DataCommit;
                     array_walk( $Data, function ( &$Entity, $Index ) {
 
-                        $Entity = new GridTableRow( array( new GridTableCol( $Index ), new GridTableCol( $Entity ) ) );
+                        $Entity = new TableRow( array( new TableColumn( $Index ), new TableColumn( $Entity ) ) );
                     } );
-                    $TableCommit = new TableDefault(
-                        new GridTableHead( new GridTableRow(
-                            new GridTableCol( str_replace( '\\', '\\&shy;', get_class( $DataCommit ) ), 2 )
-                        ) ), new GridTableBody( $Data )
+                    $TableCommit = new Table(
+                        new TableHead( new TableRow(
+                            new TableColumn( str_replace( '\\', '\\&shy;', get_class( $DataCommit ) ), 2 )
+                        ) ), new TableBody( $Data )
                     );
 
                     $V = array(
@@ -150,12 +150,12 @@ abstract class EntityAction extends EntitySchema
                     $Data = (array)$DataOrigin;
                     array_walk( $Data, function ( &$Entity, $Index ) {
 
-                        $Entity = new GridTableRow( array( new GridTableCol( $Index ), new GridTableCol( $Entity ) ) );
+                        $Entity = new TableRow( array( new TableColumn( $Index ), new TableColumn( $Entity ) ) );
                     } );
-                    $Table = new TableDefault(
-                        new GridTableHead( new GridTableRow(
-                            new GridTableCol( str_replace( '\\', '\\&shy;', get_class( $DataOrigin ) ), 2 )
-                        ) ), new GridTableBody( $Data )
+                    $Table = new Table(
+                        new TableHead( new TableRow(
+                            new TableColumn( str_replace( '\\', '\\&shy;', get_class( $DataOrigin ) ), 2 )
+                        ) ), new TableBody( $Data )
                     );
                     $V = array(
                         'Id'     => $V->getId(),
@@ -167,12 +167,12 @@ abstract class EntityAction extends EntitySchema
                     $Data = (array)$DataCommit;
                     array_walk( $Data, function ( &$Entity, $Index ) {
 
-                        $Entity = new GridTableRow( array( new GridTableCol( $Index ), new GridTableCol( $Entity ) ) );
+                        $Entity = new TableRow( array( new TableColumn( $Index ), new TableColumn( $Entity ) ) );
                     } );
-                    $Table = new TableDefault(
-                        new GridTableHead( new GridTableRow(
-                            new GridTableCol( str_replace( '\\', '\\&shy;', get_class( $DataCommit ) ), 2 )
-                        ) ), new GridTableBody( $Data )
+                    $Table = new Table(
+                        new TableHead( new TableRow(
+                            new TableColumn( str_replace( '\\', '\\&shy;', get_class( $DataCommit ) ), 2 )
+                        ) ), new TableBody( $Data )
                     );
                     $V = array(
                         'Id'     => $V->getId(),

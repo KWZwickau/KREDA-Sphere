@@ -3,8 +3,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -18,12 +16,6 @@ class TblAccessRight extends AbstractEntity
     const ATTR_ROUTE = 'Route';
 
     /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
-    /**
      * @Column(type="string")
      */
     protected $Route;
@@ -35,24 +27,6 @@ class TblAccessRight extends AbstractEntity
     {
 
         $this->Route = $Route;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 
     /**

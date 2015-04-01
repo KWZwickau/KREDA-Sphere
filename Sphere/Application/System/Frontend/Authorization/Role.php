@@ -9,24 +9,24 @@ use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitSuccess;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
-use KREDA\Sphere\Client\Frontend\Layout\Type\PullRight;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn as FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup as FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow as FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle as FormTitle;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\HiddenField;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutRight;
 use KREDA\Sphere\Client\Frontend\Message\Type\Info;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Redirect;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableTitle;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 
 /**
  * Class Role
@@ -67,19 +67,19 @@ class Role extends Access
         } );
 
         $View->setContent(
-            new TableData( $RoleList, new GridTableTitle( 'Bestehende Rollen', 'Zugriffslevelgruppen' ),
+            new TableData( $RoleList, new TableTitle( 'Bestehende Rollen', 'Zugriffslevelgruppen' ),
                 array( 'Name' => 'Rolle', 'Available' => 'Zugriffslevel', 'Option' => 'Optionen' )
             )
             .Gatekeeper::serviceAccount()->executeCreateRole(
-                new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow(
-                            new GridFormCol(
-                                new InputText(
+                new Form(
+                    new FormGroup(
+                        new FormRow(
+                            new FormColumn(
+                                new TextField(
                                     'RoleName', 'Name', 'Zugriffslevelgruppe'
                                 )
                             )
-                        ), new GridFormTitle( 'Rolle anlegen', 'Zugriffslevelgruppe' ) )
+                        ), new FormTitle( 'Rolle anlegen', 'Zugriffslevelgruppe' ) )
                     , new SubmitPrimary( 'Hinzufügen' )
                 )
                 , $Name )
@@ -130,14 +130,14 @@ class Role extends Access
         /** @noinspection PhpUnusedParameterInspection */
         array_walk( $tblAccessListAvailable, function ( TblAccess &$Entity, $Index, $Identifier ) {
 
-            $Id = new InputHidden( 'Id' );
+            $Id = new HiddenField( 'Id' );
             $Id->setDefaultValue( $Identifier, true );
-            $Access = new InputHidden( 'Access' );
+            $Access = new HiddenField( 'Access' );
             $Access->setDefaultValue( $Entity->getId(), true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $Entity->Option = ( new PullRight(
-                new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+            $Entity->Option = ( new LayoutRight(
+                new Form( new FormGroup( new FormRow( new FormColumn( array(
                     $Id,
                     $Access,
                     new SubmitSuccess( 'Hinzufügen' )
@@ -150,16 +150,16 @@ class Role extends Access
         /** @noinspection PhpUnusedParameterInspection */
         array_walk( $tblAccessList, function ( TblAccess &$Entity, $Index, $Identifier ) {
 
-            $Id = new InputHidden( 'Id' );
+            $Id = new HiddenField( 'Id' );
             $Id->setDefaultValue( $Identifier, true );
-            $Access = new InputHidden( 'Access' );
+            $Access = new HiddenField( 'Access' );
             $Access->setDefaultValue( $Entity->getId(), true );
-            $Remove = new InputHidden( 'Remove' );
+            $Remove = new HiddenField( 'Remove' );
             $Remove->setDefaultValue( 1, true );
 
             /** @noinspection PhpUndefinedFieldInspection */
-            $Entity->Option = ( new PullRight(
-                new FormDefault( new GridFormGroup( new GridFormRow( new GridFormCol( array(
+            $Entity->Option = ( new LayoutRight(
+                new Form( new FormGroup( new FormRow( new FormColumn( array(
                     $Id,
                     $Access,
                     $Remove,
@@ -171,27 +171,27 @@ class Role extends Access
         }, $Id );
 
         $View->setContent(
-            new TableData( array( $tblRole ), new GridTableTitle( 'Rolle' ), array(), false )
+            new TableData( array( $tblRole ), new TableTitle( 'Rolle' ), array(), false )
             .
-            new Grid(
-                new Group(
-                    new Row( array(
-                        new Column( array(
-                            new Title( 'Zugriffslevel', 'Zugewiesen' ),
+            new Layout(
+                new LayoutGroup(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            new LayoutTitle( 'Zugriffslevel', 'Zugewiesen' ),
                             ( empty( $tblAccessList )
                                 ? new Warning( 'Keine Zugriffslevel vergeben' )
                                 : new TableData( $tblAccessList )
                             )
                         ), 6 ),
-                        new Column( array(
-                            new Title( 'Zugriffslevel', 'Verfügbar' ),
+                        new LayoutColumn( array(
+                            new LayoutTitle( 'Zugriffslevel', 'Verfügbar' ),
                             ( empty( $tblAccessListAvailable )
                                 ? new Info( 'Keine weiteren Zugriffslevel verfügbar' )
                                 : new TableData( $tblAccessListAvailable )
                             )
                         ), 6 )
                     ) )
-                    , new Title( 'Rollen', 'Zusammensetzung' ) )
+                    , new LayoutTitle( 'Rollen', 'Zusammensetzung' ) )
             )
         );
         return $View;

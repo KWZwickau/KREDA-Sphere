@@ -9,21 +9,21 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RepeatIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\PasswordField;
+use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutAddress;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableBody;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableColumn;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableHead;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableRow;
+use KREDA\Sphere\Client\Frontend\Table\Type\Table;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Complex\Structure\ComplexAddress;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableBody;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableCol;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableHead;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableRow;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableDefault;
 
 /**
  * Class MyAccount
@@ -54,68 +54,68 @@ class MyAccount extends AbstractFrontend
             $tblAddress = false;
         }
         $View->setContent(
-            ( $tblAccount ? new TableDefault(
-                new GridTableHead(
-                    new GridTableRow(
-                        new GridTableCol( 'Account', 2 )
+            ( $tblAccount ? new Table(
+                new TableHead(
+                    new TableRow(
+                        new TableColumn( 'Account', 2 )
                     )
-                ), new GridTableBody( array(
-                new GridTableRow( array(
-                    new GridTableCol( 'Benutzername (Account)', 1, '20%' ),
-                    new GridTableCol( $tblAccount->getUsername() )
+                ), new TableBody( array(
+                new TableRow( array(
+                    new TableColumn( 'Benutzername (Account)', 1, '20%' ),
+                    new TableColumn( $tblAccount->getUsername() )
                 ) ),
-                new GridTableRow( array(
-                    new GridTableCol( 'Zugangstyp (Authentifizierung)' ),
-                    new GridTableCol( $tblAccount->getTblAccountType()->getName() )
+                new TableRow( array(
+                    new TableColumn( 'Zugangstyp (Authentifizierung)' ),
+                    new TableColumn( $tblAccount->getTblAccountType()->getName() )
                 ) ),
-                new GridTableRow( array(
-                    new GridTableCol( 'Berechtigungsstufe (Rolle)' ),
-                    new GridTableCol( $tblAccount->getTblAccountRole()->getName() )
+                new TableRow( array(
+                    new TableColumn( 'Berechtigungsstufe (Rolle)' ),
+                    new TableColumn( $tblAccount->getTblAccountRole()->getName() )
                 ) )
             ) ) )
                 : new Danger( 'Keine Accountdaten verfügbar', new WarningIcon() ) )
-            .( $tblPerson ? new TableDefault(
-                new GridTableHead(
-                    new GridTableRow(
-                        new GridTableCol( 'Benutzerdaten', 2 )
+            .( $tblPerson ? new Table(
+                new TableHead(
+                    new TableRow(
+                        new TableColumn( 'Benutzerdaten', 2 )
                     )
-                ), new GridTableBody( array(
-                    new GridTableRow( array(
-                        new GridTableCol( 'Name', 1, '20%' ),
-                        new GridTableCol(
+                ), new TableBody( array(
+                    new TableRow( array(
+                        new TableColumn( 'Name', 1, '20%' ),
+                        new TableColumn(
                             $tblPerson->getSalutation()
                             .'<br/>'.$tblPerson->getFirstName()
                             .' '.$tblPerson->getMiddleName()
                             .', '.$tblPerson->getLastName()
                         )
                     ) ),
-                    new GridTableRow( array(
-                        new GridTableCol( 'Geschlecht' ),
-                        new GridTableCol( $tblPerson->getGender() )
+                    new TableRow( array(
+                        new TableColumn( 'Geschlecht' ),
+                        new TableColumn( $tblPerson->getGender() )
                     ) ),
-                    new GridTableRow( array(
-                        new GridTableCol( 'Geburtstag' ),
-                        new GridTableCol( $tblPerson->getBirthday() )
+                    new TableRow( array(
+                        new TableColumn( 'Geburtstag' ),
+                        new TableColumn( $tblPerson->getBirthday() )
                     ) )
                 ) )
             ) : new Warning( 'Keine Personendaten verfügbar', new WarningIcon() ) )
-            .( $tblConsumer ? new TableDefault(
-                new GridTableHead(
-                    new GridTableRow(
-                        new GridTableCol( 'Mandant', 2 )
+            .( $tblConsumer ? new Table(
+                new TableHead(
+                    new TableRow(
+                        new TableColumn( 'Mandant', 2 )
                     )
-                ), new GridTableBody( array(
-                    new GridTableRow( array(
-                        new GridTableCol( 'Name', 1, '20%' ),
-                        new GridTableCol( $tblConsumer->getName() )
+                ), new TableBody( array(
+                    new TableRow( array(
+                        new TableColumn( 'Name', 1, '20%' ),
+                        new TableColumn( $tblConsumer->getName() )
                     ) ),
-                    new GridTableRow( array(
-                        new GridTableCol( 'Kürzel' ),
-                        new GridTableCol( $tblConsumer->getDatabaseSuffix() )
+                    new TableRow( array(
+                        new TableColumn( 'Kürzel' ),
+                        new TableColumn( $tblConsumer->getDatabaseSuffix() )
                     ) ),
-                    new GridTableRow( array(
-                        new GridTableCol( 'Addresse' ),
-                        new GridTableCol( $tblAddress ? new ComplexAddress( $tblAddress ) : new Warning( 'Keine Adressdaten verfügbar',
+                    new TableRow( array(
+                        new TableColumn( 'Addresse' ),
+                        new TableColumn( $tblAddress ? new LayoutAddress( $tblAddress ) : new Warning( 'Keine Adressdaten verfügbar',
                             new WarningIcon() ) )
                     ) )
                 ) )
@@ -137,14 +137,14 @@ class MyAccount extends AbstractFrontend
         $View->setTitle( 'Mein Account' );
         $View->setDescription( 'Passwort ändern' );
         $View->setContent( Gatekeeper::serviceAccount()->executeChangePassword(
-            new FormDefault(
-                new GridFormGroup(
-                    new GridFormRow( array(
-                        new GridFormCol(
-                            new InputPassword( 'CredentialLock', 'Neues Passwort', 'Neues Passwort', new LockIcon() )
+            new Form(
+                new FormGroup(
+                    new FormRow( array(
+                        new FormColumn(
+                            new PasswordField( 'CredentialLock', 'Neues Passwort', 'Neues Passwort', new LockIcon() )
                             , 6 ),
-                        new GridFormCol(
-                            new InputPassword( 'CredentialLockSafety', 'Passwort wiederholen', 'Passwort wiederholen',
+                        new FormColumn(
+                            new PasswordField( 'CredentialLockSafety', 'Passwort wiederholen', 'Passwort wiederholen',
                                 new RepeatIcon() )
                             , 6 )
                     ) )
@@ -172,7 +172,7 @@ class MyAccount extends AbstractFrontend
         /**
          * Form warm
          */
-        $SelectConsumer = new InputSelect( 'serviceGatekeeperConsumer', 'Mandant', $tblConsumerSelect,
+        $SelectConsumer = new SelectBox( 'serviceGatekeeperConsumer', 'Mandant', $tblConsumerSelect,
             new CertificateIcon() );
         if (null === $serviceGatekeeperConsumer) {
             $SelectConsumer->setDefaultValue( Gatekeeper::serviceConsumer()->entityConsumerBySession()->getId() );
@@ -182,10 +182,10 @@ class MyAccount extends AbstractFrontend
         $View->setTitle( 'Mein Account' );
         $View->setDescription( 'Mandant ändern' );
         $View->setContent( Gatekeeper::serviceAccount()->executeChangeConsumer(
-            new FormDefault(
-                new GridFormGroup(
-                    new GridFormRow( array(
-                        new GridFormCol( $SelectConsumer )
+            new Form(
+                new FormGroup(
+                    new FormRow( array(
+                        new FormColumn( $SelectConsumer )
                     ) )
                 ), new SubmitPrimary( 'Neuen Mandant speichern' )
             ), $serviceGatekeeperConsumer

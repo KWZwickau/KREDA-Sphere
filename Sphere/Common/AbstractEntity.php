@@ -1,6 +1,10 @@
 <?php
 namespace KREDA\Sphere\Common;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+
 /**
  * Class AbstractEntity
  *
@@ -8,6 +12,31 @@ namespace KREDA\Sphere\Common;
  */
 abstract class AbstractEntity extends AbstractExtension
 {
+
+    /**
+     * @Id
+     * @GeneratedValue
+     * @Column(type="bigint")
+     */
+    protected $Id;
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+
+        return $this->Id;
+    }
+
+    /**
+     * @param integer $Id
+     */
+    public function setId( $Id )
+    {
+
+        $this->Id = $Id;
+    }
 
     /**
      * @throws \Exception

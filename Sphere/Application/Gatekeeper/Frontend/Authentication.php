@@ -7,8 +7,8 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Button\Structure\ButtonGroup;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Structure\GroupDefault;
 
 /**
  * Class Authentication
@@ -92,7 +92,7 @@ class Authentication extends AbstractFrontend
         $View->setTitle( 'Anmeldung' );
         $View->setMessage( 'Bitte wählen Sie den Typ der Anmeldung' );
         $View->setContent(
-            new GroupDefault( array(
+            new ButtonGroup( array(
                 new Primary(
                     'Schüler', '/Sphere/Gatekeeper/SignIn/Student', new LockIcon()
                 ),

@@ -8,19 +8,19 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Column;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Grid;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Group;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Row;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn as FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup as FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow as FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\DatePicker;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputDate;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class Setup
@@ -59,32 +59,32 @@ class Setup extends AbstractFrontend
         }
 
         $View->setContent(
-            new Grid(
-                new Group( array(
-                    new Row( array(
-                        new Column( array(
-                            new Title( 'Schulhalbjahr', 'Hinzufügen' ),
+            new Layout(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            new LayoutTitle( 'Schulhalbjahr', 'Hinzufügen' ),
                             new TableData( Management::serviceEducation()->entityTermAll(), null, array(
                                 'Name'     => 'Name',
                                 'DateFrom' => 'Vom',
                                 'DateTo'   => 'Bis',
                             ) ),
                             Management::serviceEducation()->executeCreateTerm(
-                                new FormDefault(
-                                    new GridFormGroup( array(
-                                        new GridFormRow( array(
-                                            new GridFormCol(
-                                                new InputText( 'Term[Name]', 'Name', 'Name' )
+                                new Form(
+                                    new FormGroup( array(
+                                        new FormRow( array(
+                                            new FormColumn(
+                                                new TextField( 'Term[Name]', 'Name', 'Name' )
                                                 , 4 ),
-                                            new GridFormCol(
-                                                new InputDate( 'Term[DateFrom]', 'Von', 'Von', new TimeIcon() )
+                                            new FormColumn(
+                                                new DatePicker( 'Term[DateFrom]', 'Von', 'Von', new TimeIcon() )
                                                 , 4 ),
-                                            new GridFormCol(
-                                                new InputDate( 'Term[DateTo]', 'Bis', 'Bis', new TimeIcon() )
+                                            new FormColumn(
+                                                new DatePicker( 'Term[DateTo]', 'Bis', 'Bis', new TimeIcon() )
                                                 , 4 )
                                         ) ),
-                                        new GridFormRow( array(
-                                            new GridFormCol(
+                                        new FormRow( array(
+                                            new FormColumn(
                                                 new SubmitPrimary( 'Hinzufügen' )
                                             )
                                         ) )
@@ -92,51 +92,51 @@ class Setup extends AbstractFrontend
                                 ), $Term )
                         ) ),
                     ) ),
-                    new Row( array(
-                        new Column( array(
-                            new Title( 'Klassenstufen', 'Hinzufügen' ),
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            new LayoutTitle( 'Klassenstufen', 'Hinzufügen' ),
                             new TableData( Management::serviceEducation()->entityLevelAll(), null, array(
                                 'Name' => 'Name',
                                 'Description' => 'Beschreibung',
                             ), false ),
                             Management::serviceEducation()->executeCreateLevel(
-                                new FormDefault(
-                                    new GridFormGroup( array(
-                                        new GridFormRow( array(
-                                            new GridFormCol(
-                                                new InputText( 'Level[Name]', 'Name', 'Name' )
+                                new Form(
+                                    new FormGroup( array(
+                                        new FormRow( array(
+                                            new FormColumn(
+                                                new TextField( 'Level[Name]', 'Name', 'Name' )
                                                 , 3 ),
-                                            new GridFormCol(
-                                                new InputText( 'Level[Description]', 'Beschreibung', 'Beschreibung' )
+                                            new FormColumn(
+                                                new TextField( 'Level[Description]', 'Beschreibung', 'Beschreibung' )
                                                 , 9 )
                                         ) ),
-                                        new GridFormRow( array(
-                                            new GridFormCol(
+                                        new FormRow( array(
+                                            new FormColumn(
                                                 new SubmitPrimary( 'Hinzufügen' )
                                             )
                                         ) )
                                     ) )
                                 ), $Level )
                         ), 6 ),
-                        new Column( array(
-                            new Title( 'Klassengruppen', 'Hinzufügen' ),
+                        new LayoutColumn( array(
+                            new LayoutTitle( 'Klassengruppen', 'Hinzufügen' ),
                             new TableData( Management::serviceEducation()->entityGroupAll(), null, array(
                                 'Name'        => 'Name',
                                 'Description' => 'Beschreibung',
                             ), false ),
                             Management::serviceEducation()->executeCreateGroup(
-                                new FormDefault(
-                                    new GridFormGroup( array(
-                                        new GridFormRow( array(
-                                            new GridFormCol(
-                                                new InputText( 'Group[Name]', 'Name', 'Name' )
+                                new Form(
+                                    new FormGroup( array(
+                                        new FormRow( array(
+                                            new FormColumn(
+                                                new TextField( 'Group[Name]', 'Name', 'Name' )
                                                 , 3 ),
-                                            new GridFormCol(
-                                                new InputText( 'Group[Description]', 'Beschreibung', 'Beschreibung' )
+                                            new FormColumn(
+                                                new TextField( 'Group[Description]', 'Beschreibung', 'Beschreibung' )
                                                 , 9 )
                                         ) ),
-                                        new GridFormRow( array(
-                                            new GridFormCol(
+                                        new FormRow( array(
+                                            new FormColumn(
                                                 new SubmitPrimary( 'Hinzufügen' )
                                             )
                                         ) )
@@ -144,27 +144,27 @@ class Setup extends AbstractFrontend
                                 ), $Group )
                         ), 6 )
                     ) ),
-                    new Row(
-                        new Column( array(
-                            new Title( 'Fächer', 'Hinzufügen/Deaktivieren' ),
+                    new LayoutRow(
+                        new LayoutColumn( array(
+                            new LayoutTitle( 'Fächer', 'Hinzufügen/Deaktivieren' ),
                             new TableData( $tblSubject, null, array(
                                 'Acronym' => 'Kürzel',
                                 'Name'    => 'Name',
                                 'Option'  => 'Option'
                             ) ),
                             Management::serviceEducation()->executeCreateSubject(
-                                new FormDefault(
-                                    new GridFormGroup( array(
-                                        new GridFormRow( array(
-                                            new GridFormCol(
-                                                new InputText( 'Subject[Acronym]', 'Kürzel', 'Kürzel' )
+                                new Form(
+                                    new FormGroup( array(
+                                        new FormRow( array(
+                                            new FormColumn(
+                                                new TextField( 'Subject[Acronym]', 'Kürzel', 'Kürzel' )
                                                 , 3 ),
-                                            new GridFormCol(
-                                                new InputText( 'Subject[Name]', 'Name', 'Name' )
+                                            new FormColumn(
+                                                new TextField( 'Subject[Name]', 'Name', 'Name' )
                                                 , 9 )
                                         ) ),
-                                        new GridFormRow( array(
-                                            new GridFormCol(
+                                        new FormRow( array(
+                                            new FormColumn(
                                                 new SubmitPrimary( 'Hinzufügen' )
                                             )
                                         ) )

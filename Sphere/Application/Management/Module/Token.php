@@ -8,18 +8,18 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
-use KREDA\Sphere\Client\Frontend\Layout\Type\PullRight;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Title;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle as FormTitle;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\HiddenField;
+use KREDA\Sphere\Client\Frontend\Input\Type\PasswordField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutRight;
 use KREDA\Sphere\Client\Frontend\Message\Type\Info;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 
 /**
  * Class Token
@@ -84,15 +84,15 @@ class Token extends Common
 
             $tblAccountList = Gatekeeper::serviceAccount()->entityAccountAllByToken( $T );
             if (empty( $tblAccountList )) {
-                $Id = new InputHidden( 'Id' );
+                $Id = new HiddenField( 'Id' );
                 $Id->setDefaultValue( $T->getId(), true );
                 /** @noinspection PhpUndefinedFieldInspection */
                 $T->AccountList =
                     new Info( 'Keine Daten verfügbar' )
-                    .new PullRight( new FormDefault(
-                        new GridFormGroup(
-                            new GridFormRow(
-                                new GridFormCol( array( $Id, new SubmitDanger( 'Schlüssel löschen' ) ) )
+                    .new LayoutRight( new Form(
+                        new FormGroup(
+                            new FormRow(
+                                new FormColumn( array( $Id, new SubmitDanger( 'Schlüssel löschen' ) ) )
                             )
                         )
                     ) );
@@ -113,7 +113,7 @@ class Token extends Common
         } );
 
         $View->setContent(
-            new Title( 'Bestehende Schlüssel', 'YubiKey' )
+            new LayoutTitle( 'Bestehende Schlüssel', 'YubiKey' )
             .
             ( empty( $tblTokenList )
                 ? new Warning( 'Keine Schlüssel verfügbar' )
@@ -126,13 +126,13 @@ class Token extends Common
             )
             .
             Gatekeeper::serviceToken()->executeCreateToken(
-                new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow(
-                            new GridFormCol(
-                                new InputPassword( 'CredentialKey', 'YubiKey', 'YubiKey', new YubiKeyIcon() )
+                new Form(
+                    new FormGroup(
+                        new FormRow(
+                            new FormColumn(
+                                new PasswordField( 'CredentialKey', 'YubiKey', 'YubiKey', new YubiKeyIcon() )
                             )
-                        ), new GridFormTitle( 'Schlüssel hinzufügen', 'YubiKey' ) )
+                        ), new FormTitle( 'Schlüssel hinzufügen', 'YubiKey' ) )
                 ), $CredentialKey, $tblConsumer
             )
         );

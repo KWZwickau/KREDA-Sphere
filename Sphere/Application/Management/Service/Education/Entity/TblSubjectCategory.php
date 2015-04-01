@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Management\Service\Education\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Common\AbstractEntity;
@@ -21,12 +19,6 @@ class TblSubjectCategory extends AbstractEntity
     const ATTR_TBL_SUBJECT = 'tblSubject';
     const ATTR_TBL_CATEGORY = 'tblCategory';
 
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
     /**
      * @Column(type="bigint")
      */
@@ -78,23 +70,5 @@ class TblSubjectCategory extends AbstractEntity
     {
 
         $this->tblCategory = ( null === $tblCategory ? null : $tblCategory->getId() );
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 }

@@ -8,9 +8,9 @@ use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblTerm;
 use KREDA\Sphere\Application\Management\Service\Education\EntityAction;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 
 /**
  * Class Education
@@ -171,12 +171,12 @@ class Education extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      * @param array        $Term
      *
-     * @return AbstractForm|Redirect
+     * @return AbstractType|Redirect
      */
-    public function executeCreateTerm( AbstractForm &$View, $Term )
+    public function executeCreateTerm( AbstractType &$View, $Term )
     {
 
         if (null === $Term) {
@@ -212,12 +212,12 @@ class Education extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      * @param array        $Subject
      *
-     * @return AbstractForm|\KREDA\Sphere\Client\Frontend\Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
      */
-    public function executeCreateSubject( AbstractForm &$View, $Subject )
+    public function executeCreateSubject( AbstractType &$View, $Subject )
     {
 
         if (null === $Subject) {
@@ -249,12 +249,12 @@ class Education extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      * @param array        $Level
      *
-     * @return AbstractForm|\KREDA\Sphere\Client\Frontend\Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
      */
-    public function executeCreateLevel( AbstractForm &$View, $Level )
+    public function executeCreateLevel( AbstractType &$View, $Level )
     {
 
         if (null === $Level) {
@@ -282,12 +282,12 @@ class Education extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      * @param array        $Group
      *
-     * @return AbstractForm|\KREDA\Sphere\Client\Frontend\Redirect
+     * @return AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
      */
-    public function executeCreateGroup( AbstractForm &$View, $Group )
+    public function executeCreateGroup( AbstractType &$View, $Group )
     {
 
         if (null === $Group) {
