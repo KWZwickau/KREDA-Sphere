@@ -20,7 +20,8 @@ class Style extends AbstractExtension
     private function __construct()
     {
 
-        $this->setSource( '/Library/Bootstrap/3.2.0/dist/css/bootstrap.min.css' );
+        $this->setSource( '/Sphere/Client/Style/Bootstrap.css' );
+        //$this->setSource( '/Library/Bootstrap/3.2.0/dist/css/bootstrap.min.css' );
         $this->setSource( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_halflings/web/html_css/css/glyphicons-halflings.css' );
         $this->setSource( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons/web/html_css/css/glyphicons.css' );
         $this->setSource( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_filetypes/web/html_css/css/glyphicons-filetypes.css' );

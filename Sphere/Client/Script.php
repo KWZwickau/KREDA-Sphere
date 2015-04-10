@@ -35,7 +35,7 @@ class Script extends AbstractExtension
             "'undefined' !== typeof moment"
         );
         $this->setSource(
-            'Bootstrap', '/Library/Bootstrap/3.2.0/dist/js/bootstrap.min.js',
+            'Bootstrap', '/Library/Bootstrap/3.3.4/dist/js/bootstrap.min.js',
             "'function' === typeof jQuery().emulateTransitionEnd"
         );
         $this->setSource(
