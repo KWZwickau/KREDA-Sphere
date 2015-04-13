@@ -222,67 +222,6 @@ class PhpExcel extends Bridge implements IBridgeInterface
     }
 
     /**
-     * @param null|FileParameter $Location
-     *
-     * @return PhpExcel
-     * @throws TypeFileException
-     * @throws \PHPExcel_Reader_Exception
-     */
-    public function saveFile( FileParameter $Location = null )
-    {
-
-        if (null === $Location) {
-            $Info = $this->getFileParameter()->getFileInfo();
-        } else {
-            $Info = $Location->getFileInfo();
-        }
-        $WriterType = null;
-        switch ($Info->getExtension()) {
-            case 'xlsx':
-            case 'xlsm':
-            case 'xltx':
-            case 'xltm':
-                $WriterType = 'Excel2007';
-                break;
-            case 'xls':
-            case 'xlt':
-                $WriterType = 'Excel5';
-                break;
-            case 'htm':
-            case 'html':
-                $WriterType = 'HTML';
-                break;
-            case 'csv':
-                $WriterType = 'CSV';
-                break;
-            // @codeCoverageIgnoreStart
-            default:
-                break;
-            // @codeCoverageIgnoreEnd
-        }
-        if (null === $Location) {
-            if ($WriterType) {
-                $Writer = \PHPExcel_IOFactory::createWriter( $this->Source, $WriterType );
-                $Writer->save( $this->getFileParameter() );
-            } else {
-                // @codeCoverageIgnoreStart
-                throw new TypeFileException( 'No Writer for '.$Info->getExtension().' available!' );
-                // @codeCoverageIgnoreEnd
-            }
-        } else {
-            if ($WriterType) {
-                $Writer = \PHPExcel_IOFactory::createWriter( $this->Source, $WriterType );
-                $Writer->save( $Location->getFile() );
-            } else {
-                // @codeCoverageIgnoreStart
-                throw new TypeFileException( 'No Writer for '.$Info->getExtension().' available!' );
-                // @codeCoverageIgnoreEnd
-            }
-        }
-        return $this;
-    }
-
-    /**
      * @param PaperOrientationParameter $PaperOrientation
      *
      * @return PhpExcel

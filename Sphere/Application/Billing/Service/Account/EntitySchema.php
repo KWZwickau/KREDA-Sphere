@@ -43,13 +43,7 @@ abstract class EntitySchema extends AbstractService
     private function setTableAccountType( Schema &$Schema )
     {
 
-        /**
-         * Install
-         */
         $Table = $this->schemaTableCreate( $Schema, 'tblAccountType' );
-        /**
-         * Upgrade
-         */
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
@@ -68,13 +62,7 @@ abstract class EntitySchema extends AbstractService
     private function setTableAccount( Schema &$Schema, Table $tblAccountType )
     {
 
-        /**
-         * Install
-         */
         $Table = $this->schemaTableCreate( $Schema, 'tblAccount' );
-        /**
-         * Upgrade
-         */
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Number' )) {
             $Table->addColumn( 'Number', 'string' );
         }

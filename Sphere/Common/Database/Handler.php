@@ -201,6 +201,18 @@ class Handler
     }
 
     /**
+     * @param string $TableName
+     * @param array  $ColumnList
+     *
+     * @return bool
+     */
+    final public function hasIndex( $TableName, $ColumnList )
+    {
+
+        return $this->Model->hasIndex( $TableName, $ColumnList );
+    }
+
+    /**
      * @param string $ViewName
      *
      * @return bool

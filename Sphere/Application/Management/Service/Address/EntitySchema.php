@@ -85,7 +85,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAddressState', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
-        $Table->addUniqueIndex( array( 'Name' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'Name' ) )) {
+            $Table->addUniqueIndex( array( 'Name' ) );
+        }
 
         return $Table;
     }

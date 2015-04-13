@@ -7,6 +7,7 @@ use Doctrine\Common\Cache\MemcachedCache;
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\View;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
@@ -35,11 +36,11 @@ class Model
 {
 
     /** @var array $hasViewCache */
-    private static $hasViewCache = array();
+    private $hasViewCache = array();
     /** @var array $hasColumnCache */
-    private static $hasColumnCache = array();
+    private $hasColumnCache = array();
     /** @var array $hasTableCache */
-    private static $hasTableCache = array();
+    private $hasTableCache = array();
     /** @var IBridgeInterface $Connection */
     private $Connection = null;
     /** @var array $Protocol */
@@ -122,15 +123,15 @@ class Model
     final public function hasView( $ViewName )
     {
 
-        if (in_array( $ViewName, self::$hasViewCache )) {
+        if (in_array( $ViewName, $this->hasViewCache )) {
             return true;
         }
         $SchemaManager = $this->getSchemaManager();
-        self::$hasViewCache = array_map( function ( View $V ) {
+        $this->$hasViewCache = array_map( function ( View $V ) {
 
             return $V->getName();
         }, $SchemaManager->listViews() );
-        return in_array( $ViewName, self::$hasViewCache );
+        return in_array( $ViewName, $this->hasViewCache );
     }
 
     /**
@@ -142,15 +143,31 @@ class Model
     final public function hasColumn( $TableName, $ColumnName )
     {
 
-        if (isset( self::$hasColumnCache[$TableName] )) {
-            return in_array( $ColumnName, self::$hasColumnCache[$TableName] );
+        if (isset( $this->hasColumnCache[$TableName] )) {
+            return in_array( strtolower( $ColumnName ), $this->hasColumnCache[$TableName] );
         }
         $SchemaManager = $this->getSchemaManager();
-        self::$hasColumnCache[$TableName] = array_map( function ( Column $V ) {
+        $this->hasColumnCache[$TableName] = array_map( function ( Column $V ) {
 
-            return $V->getName();
+            return strtolower( $V->getName() );
         }, $SchemaManager->listTableColumns( $TableName ) );
-        return in_array( $ColumnName, self::$hasColumnCache[$TableName] );
+        return in_array( strtolower( $ColumnName ), $this->hasColumnCache[$TableName] );
+    }
+
+    /**
+     * @param Table $Table
+     * @param array $ColumnList
+     *
+     * @return bool
+     */
+    final public function hasIndex( Table $Table, $ColumnList )
+    {
+
+        if ($Table->columnsAreIndexed( $ColumnList )) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -161,12 +178,12 @@ class Model
     final public function hasTable( $TableName )
     {
 
-        if (in_array( $TableName, self::$hasTableCache )) {
+        if (in_array( $TableName, $this->hasTableCache )) {
             return true;
         }
         $SchemaManager = $this->getSchemaManager();
-        self::$hasTableCache = $SchemaManager->listTableNames();
-        return in_array( $TableName, self::$hasTableCache );
+        $this->hasTableCache = $SchemaManager->listTableNames();
+        return in_array( $TableName, $this->hasTableCache );
     }
 
     /**

@@ -59,11 +59,15 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'TableSuffix' )) {
             $Table->addColumn( 'TableSuffix', 'string', array( 'notnull' => false ) );
         }
-        $Table->addUniqueIndex( array( 'TableSuffix' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'TableSuffix' ) )) {
+            $Table->addUniqueIndex( array( 'TableSuffix' ) );
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'DatabaseSuffix' )) {
             $Table->addColumn( 'DatabaseSuffix', 'string', array( 'notnull' => false ) );
         }
-        $Table->addUniqueIndex( array( 'DatabaseSuffix' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'DatabaseSuffix' ) )) {
+            $Table->addUniqueIndex( array( 'DatabaseSuffix' ) );
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumer', 'serviceManagement_Address' )) {
             $Table->addColumn( 'serviceManagement_Address', 'bigint', array( 'notnull' => false ) );
         }
@@ -90,7 +94,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblConsumerType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
-        $Table->addUniqueIndex( array( 'Name' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'Name' ) )) {
+            $Table->addUniqueIndex( array( 'Name' ) );
+        }
         return $Table;
     }
 
