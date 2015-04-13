@@ -60,8 +60,13 @@ h5 {
 }
 
 .input-group .selecter-selected {
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 4px 8px;
+}
+
+.input-group .selecter-selected:after {
+    top: 13px;
 }
 
 .form-control.tt-input,

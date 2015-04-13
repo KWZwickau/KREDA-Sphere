@@ -25,7 +25,7 @@ AutoLoader::getNamespaceAutoLoader( 'Markdownify', __DIR__.'/Library/Markdownify
 
 if (false) {
 
-    require_once( __DIR__.'/Library/LessPhp/1.7.0.3/Less.php' );
+    require_once( __DIR__.'/Library/LessPhp/1.7.0.3/lessc.inc.php' );
 
     $Parser = array( 'cache_dir' => __DIR__.'/Update/Style' );
     $Less = new \Less_Parser( $Parser );
@@ -84,15 +84,15 @@ if (false) {
 //    $Less->parse( '@table-cell-padding: 6px;' );
 //    $Less->parse( '@table-condensed-cell-padding: 5px;' );
 
-//Component
-//    $Less->parse( '@padding-base-vertical: 6px;' );
-//    $Less->parse( '@padding-base-horizontal: 12px;' );
-//    $Less->parse( '@padding-large-vertical: 10px;' );
-//    $Less->parse( '@padding-large-horizontal: 16px;' );
-//    $Less->parse( '@padding-small-vertical: 5px;' );
-//    $Less->parse( '@padding-small-horizontal: 10px;' );
-//    $Less->parse( '@padding-xs-vertical: 1px;' );
-//    $Less->parse( '@padding-xs-horizontal: 5px;' );
+// Component
+    $Less->parse( '@padding-base-vertical: 4px;' );
+    $Less->parse( '@padding-base-horizontal: 10px;' );
+    $Less->parse( '@padding-large-vertical: 8px;' );
+    $Less->parse( '@padding-large-horizontal: 14px;' );
+    $Less->parse( '@padding-small-vertical: 3px;' );
+    $Less->parse( '@padding-small-horizontal: 8px;' );
+    $Less->parse( '@padding-xs-vertical: 1px;' );
+    $Less->parse( '@padding-xs-horizontal: 3px;' );
 //    $Less->parse( '@line-height-large: 1.3333333;' );
 //    $Less->parse( '@line-height-small: 1.5;' );
 //    $Less->parse( '@border-radius-base: 4px;' );
@@ -105,7 +105,6 @@ if (false) {
 
     $Style = FileSystem::getFileWriter( __DIR__.'/Sphere/Client/Style/Bootstrap.css' )->getLocation();
     file_put_contents( $Style, $Less->getCss() );
-
 }
 /**
  * Run: Client

@@ -2,7 +2,6 @@
 namespace KREDA\Sphere\Application\System\Service;
 
 use KREDA\Sphere\Application\Billing\Billing;
-use KREDA\Sphere\Application\Demo\Demo;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
@@ -35,10 +34,6 @@ class Update extends AbstractService
         $Protocol[] = Gatekeeper::serviceAccount()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Management::servicePerson()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Management::serviceAddress()->setupDatabaseSchema( $Simulate );
-        /**
-         * Demo
-         */
-        $Protocol[] = Demo::serviceDemoService()->setupDatabaseSchema( $Simulate );
         /**
          * Payload
          */
