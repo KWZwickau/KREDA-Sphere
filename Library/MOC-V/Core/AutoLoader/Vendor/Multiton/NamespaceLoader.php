@@ -49,6 +49,7 @@ class NamespaceLoader
 
         if (function_exists( 'apc_fetch' )) {
             $Hash = sha1( $this->Namespace.$this->Path.$this->Separator.$this->Extension.$this->Prefix );
+            // @codeCoverageIgnoreStart
             if (false === ( $Result = apc_fetch( $Hash.'#'.$ClassName ) )) {
                 $Result = $this->checkCanLoadClass( $ClassName );
                 apc_store( $Hash.'#'.$ClassName, ( $Result ? 1 : 0 ) );
@@ -57,6 +58,7 @@ class NamespaceLoader
                 return false;
             }
         } else {
+            // @codeCoverageIgnoreEnd
             if (!$this->checkCanLoadClass( $ClassName )) {
                 return false;
             }
@@ -104,7 +106,9 @@ class NamespaceLoader
         if ($this->Path !== null) {
             return is_file( $this->Path.DIRECTORY_SEPARATOR.$File );
         }
+        // @codeCoverageIgnoreStart
         return false;
+        // @codeCoverageIgnoreEnd
     }
 
     /**

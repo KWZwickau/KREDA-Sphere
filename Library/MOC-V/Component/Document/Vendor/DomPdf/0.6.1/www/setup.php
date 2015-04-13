@@ -102,7 +102,7 @@ if (( $gm = extension_loaded( "gmagick" ) ) || ( $im = extension_loaded( "imagic
                     if (isset( $server_config["failure"] )) {
                         echo "<div>".$server_config["failure"]."</div>";
                     }
-                    }
+                }
                 ?>
             </td>
         </tr>
@@ -292,7 +292,7 @@ $constants = array(
                         break;
                 }
                 echo 'class="'.( $success ? "ok" : "failed" ).'"';
-                }
+            }
             ?>><?php echo $message; ?></td>
         </tr>
     <?php } ?>

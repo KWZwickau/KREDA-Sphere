@@ -73,7 +73,7 @@ $extensions = array( "ttf", "afm", "afm.php", "ufm", "ufm.php" );
             }
             ?>
         </td>
-            <?php
+        <?php
             $i = 0;
             foreach ($variants as $name => $path) {
                 if ($i > 0) {
