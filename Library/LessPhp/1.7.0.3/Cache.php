@@ -5,7 +5,7 @@ require_once( dirname( __FILE__ ).'/Version.php' );
 /**
  * Utility for handling the generation and caching of css files
  *
- * @package    Less
+ * @package Less
  * @subpackage cache
  *
  */
@@ -100,7 +100,7 @@ class Less_Cache
 
         // check cached content
         if (!isset( $parser_options['use_cache'] ) || $parser_options['use_cache'] === true) {
-            if (file_exists( $list_file )) {
+            if (file_exists( $list_file)) {
 
                 self::ListFiles( $list_file, $list, $cached_name );
                 $compiled_name = self::CompiledName( $list );
@@ -169,7 +169,7 @@ class Less_Cache
     static function ListFiles( $list_file, &$list, &$css_file_name )
     {
 
-        $list = explode( "\n", file_get_contents( $list_file ) );
+        $list = explode( "\n", file_get_contents( $list_file) );
 
         //pop the cached name that should match $compiled_name
         $css_file_name = array_pop( $list );
@@ -197,7 +197,7 @@ class Less_Cache
     {
 
         //custom output file
-        if (!empty( $parser_options['output'] )) {
+        if (!empty( $parser_options['output'])) {
 
             //relative to cache directory?
             if (preg_match( '#[\\\\/]#', $parser_options['output'] )) {
@@ -220,7 +220,7 @@ class Less_Cache
         }
 
         $parser_options['cache_dir'] = Less_Cache::$cache_dir;
-        $parser = new Less_Parser( $parser_options );
+        $parser = new Less_Parser( $parser_options);
 
         // combine files
         foreach ($less_files as $file_path => $uri_or_less) {
@@ -308,6 +308,6 @@ class Less_Cache
     {
 
         Less_Cache::$cache_dir = $dir;
-    }
+	}
 
 }

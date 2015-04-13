@@ -3,7 +3,7 @@
 /**
  * Release numbers
  *
- * @package    Less
+ * @package Less
  * @subpackage version
  */
 class Less_Version
