@@ -30,11 +30,6 @@ class Authorization extends Role
 
         $TwigData = array();
         $tblAccountRoleList = Gatekeeper::serviceAccount()->entityAccountRoleAll();
-
-        $Export = self::extensionDocumentExcel( '/Test.csv' );
-
-        $Export->saveFile();
-
         /** @var TblAccountRole $tblAccountRole */
         foreach ((array)$tblAccountRoleList as $tblAccountRole) {
             if (!$tblAccountRole) {
