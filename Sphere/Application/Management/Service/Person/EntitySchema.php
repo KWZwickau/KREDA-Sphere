@@ -32,6 +32,8 @@ abstract class EntitySchema extends AbstractService
         $tblPerson = $this->setTablePerson( $Schema, $tblPersonType, $tblPersonGender, $tblPersonSalutation );
         $tblPersonRelationshipType = $this->setTablePersonRelationshipType( $Schema );
         $this->setTablePersonRelationshipList( $Schema, $tblPersonRelationshipType, $tblPerson );
+
+        $this->setTablePersonAddress( $Schema, $tblPerson );
         /**
          * Migration & Protocol
          */
@@ -183,6 +185,23 @@ abstract class EntitySchema extends AbstractService
             if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
                 $Table->addForeignKeyConstraint( $tblPerson, array( 'tblPersonB' ), array( 'Id' ) );
             }
+        }
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table  $tblPerson
+     *
+     * @return Table
+     */
+    private function setTablePersonAddress( Schema &$Schema, Table $tblPerson )
+    {
+
+        $Table = $this->schemaTableCreate( $Schema, 'tblPersonAddress' );
+        $this->schemaTableAddForeignKey( $Table, $tblPerson );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblPersonAddress', 'serviceManagement_Address' )) {
+            $Table->addColumn( 'serviceManagement_Address', 'bigint', array( 'notnull' => false ) );
         }
         return $Table;
     }
