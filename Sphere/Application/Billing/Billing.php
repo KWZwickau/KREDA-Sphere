@@ -34,6 +34,15 @@ class Billing extends AbstractApplication
     }
 
     /**
+     * @return Service\Account
+     */
+    public static function serviceAccount()
+    {
+
+        return Service\Account::getApi();
+    }
+
+    /**
      * @return void
      */
     protected static function setupModuleNavigation()

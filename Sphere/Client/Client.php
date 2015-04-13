@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Client;
 
 use Doctrine\DBAL\DBALException;
 use KREDA\Sphere\Application\Assistance\Assistance;
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Demo\Demo;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Graduation\Graduation;
@@ -324,6 +325,7 @@ class Client
             Management::registerApplication( $this->Configuration );
             Demo::registerApplication( $this->Configuration );
             Graduation::registerApplication( $this->Configuration );
+            Billing::registerApplication( $this->Configuration );
         } else {
             /**
              * Authenticated NO

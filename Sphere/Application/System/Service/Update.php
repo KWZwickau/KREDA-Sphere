@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\System\Service;
 
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Demo\Demo;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Graduation\Graduation;
@@ -47,6 +48,8 @@ class Update extends AbstractService
 
         $Protocol[] = Management::serviceEducation()->setupDatabaseSchema( $Simulate );
 
+        $Protocol[] = Billing::serviceAccount()->setupDatabaseSchema( $Simulate );
+
         if (!$Simulate) {
             /**
              * Basics
@@ -66,6 +69,8 @@ class Update extends AbstractService
             Graduation::serviceWeight()->setupDatabaseContent();
 
             Management::serviceEducation()->setupDatabaseContent();
+
+            Billing::serviceAccount()->setupDatabaseContent();
 
         }
 
