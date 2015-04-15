@@ -52,10 +52,10 @@ if (false) {
 //$Less->parse( '@link-hover-color: #00adef;' );
 //$Less->parse( '@link-hover-decoration: none;' );
 //
-//    $Less->parse( '@nav-link-padding: 12px 12px;' );
+    $Less->parse( '@nav-link-padding: 9px 9px;' );
 //$Less->parse( '@nav-link-hover-bg: transparent;' );
 //
-//    $Less->parse( '@navbar-height: 35px;' );
+    $Less->parse( '@navbar-height: 40px;' );
 //    $Less->parse( '@navbar-margin-bottom: 5px;' );
 //
 //$Less->parse( '@navbar-default-color: @gray-lighter;' );
@@ -95,9 +95,9 @@ if (false) {
     $Less->parse( '@padding-xs-horizontal: 3px;' );
 //    $Less->parse( '@line-height-large: 1.3333333;' );
 //    $Less->parse( '@line-height-small: 1.5;' );
-//    $Less->parse( '@border-radius-base: 4px;' );
-//    $Less->parse( '@border-radius-large: 6px;' );
-//    $Less->parse( '@border-radius-small: 3px;' );
+    $Less->parse( '@border-radius-base: 3px;' );
+    $Less->parse( '@border-radius-large: 5px;' );
+    $Less->parse( '@border-radius-small: 2px;' );
 //    $Less->parse( '@component-active-color: #fff;' );
 //    $Less->parse( '@component-active-bg: @brand-primary;' );
 //    $Less->parse( '@caret-width-base: 4px;' );
