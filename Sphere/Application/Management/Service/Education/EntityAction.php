@@ -41,12 +41,14 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param string $Name
-     * @param string $DateFrom
-     * @param string $DateTo
+     * @param string $FirstDateFrom
+     * @param string $FirstDateToA
+     * @param string $SecondDateFrom
+     * @param string $SecondDateTo
      *
      * @return TblTerm
      */
-    protected function actionCreateTerm( $Name, $DateFrom, $DateTo )
+    protected function actionCreateTerm( $Name, $FirstDateFrom, $FirstDateToA, $SecondDateFrom, $SecondDateTo )
     {
 
         $Manager = $this->getEntityManager();
@@ -54,8 +56,10 @@ abstract class EntityAction extends EntitySchema
             ->findOneBy( array( TblTerm::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblTerm( $Name );
-            $Entity->setDateFrom( new \DateTime( $DateFrom ) );
-            $Entity->setDateTo( new \DateTime( $DateTo ) );
+            $Entity->setFirstDateFrom( new \DateTime( $FirstDateFrom ) );
+            $Entity->setFirstDateTo( new \DateTime( $FirstDateToA ) );
+            $Entity->setSecondDateFrom( new \DateTime( $SecondDateFrom ) );
+            $Entity->setSecondDateTo( new \DateTime( $SecondDateTo ) );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );

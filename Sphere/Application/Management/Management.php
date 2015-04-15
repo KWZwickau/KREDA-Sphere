@@ -40,6 +40,7 @@ class Management extends Module\Education
                 new CogWheelsIcon() );
 
             Module\Common::registerApplication( $Configuration );
+            Module\Period::registerApplication( $Configuration );
             Module\Token::registerApplication( $Configuration );
             Module\Account::registerApplication( $Configuration );
             Module\Person::registerApplication( $Configuration );

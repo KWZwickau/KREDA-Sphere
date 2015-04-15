@@ -171,51 +171,65 @@ class Education extends EntityAction
     }
 
     /**
-     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
-     * @param array        $Term
+     * @param AbstractType $View
+     * @param array        $Name
+     * @param array        $FirstTerm
+     * @param array        $SecondTerm
      *
      * @return AbstractType|Redirect
      */
-    public function executeCreateTerm( AbstractType &$View, $Term )
+    public function executeCreateTerm( AbstractType &$View, $Name, $FirstTerm, $SecondTerm )
     {
 
-        if (null === $Term) {
+        if (
+            null === $Name
+            && null === $FirstTerm
+            && null === $SecondTerm
+        ) {
             return $View;
         }
 
         $Error = false;
-        if (isset( $Term['Name'] ) && empty( $Term['Name'] )) {
-            $View->setError( 'Term[Name]', 'Bitte geben Sie einen Namen für das Halbjahr an' );
+        if (isset( $Name ) && empty( $Name )) {
+            $View->setError( 'Name', 'Bitte geben Sie einen Namen für das Schuljahr an' );
             $Error = true;
         }
-        if (isset( $Term['Name'] ) && !empty( $Term['Name'] )) {
-            if ($this->entityTermByName( $Term['Name'] )) {
-                $View->setError( 'Term[Name]', 'Bitte geben Sie einen eindeutigen Namen für das Halbjahr ein' );
+        if (isset( $Name ) && !empty( $Name )) {
+            if ($this->entityTermByName( $Name )) {
+                $View->setError( 'Name', 'Bitte geben Sie einen eindeutigen Namen für das Schuljahr ein' );
                 $Error = true;
             }
         }
-        if (isset( $Term['DateFrom'] ) && empty( $Term['DateFrom'] )) {
-            $View->setError( 'Term[DateFrom]', 'Bitte geben Sie ein Start-Datum an' );
+        if (isset( $FirstTerm['DateFrom'] ) && empty( $FirstTerm['DateFrom'] )) {
+            $View->setError( 'FirstTerm[DateFrom]', 'Bitte geben Sie ein Start-Datum an' );
             $Error = true;
         }
-        if (isset( $Term['DateTo'] ) && empty( $Term['DateTo'] )) {
-            $View->setError( 'Term[DateTo]', 'Bitte geben Sie ein Ende-Datum an' );
+        if (isset( $FirstTerm['DateTo'] ) && empty( $FirstTerm['DateTo'] )) {
+            $View->setError( 'FirstTerm[DateTo]', 'Bitte geben Sie ein Ende-Datum an' );
             $Error = true;
         }
-
+        if (isset( $SecondTerm['DateFrom'] ) && empty( $SecondTerm['DateFrom'] )) {
+            $View->setError( 'SecondTerm[DateFrom]', 'Bitte geben Sie ein Start-Datum an' );
+            $Error = true;
+        }
+        if (isset( $SecondTerm['DateTo'] ) && empty( $SecondTerm['DateTo'] )) {
+            $View->setError( 'SecondTerm[DateTo]', 'Bitte geben Sie ein Ende-Datum an' );
+            $Error = true;
+        }
         if ($Error) {
             return $View;
         } else {
-            $this->actionCreateTerm( $Term['Name'], $Term['DateFrom'], $Term['DateTo'] );
-            return new Redirect( '/Sphere/Management/Education/Setup', 0 );
+            $this->actionCreateTerm( $Name, $FirstTerm['DateFrom'], $FirstTerm['DateTo'], $SecondTerm['DateFrom'],
+                $SecondTerm['DateTo'] );
+            return new Redirect( '/Sphere/Management/Period/SchoolYear', 0 );
         }
     }
 
     /**
-     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
+     * @param AbstractType $View
      * @param array        $Subject
      *
-     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
+     * @return AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeCreateSubject( AbstractType &$View, $Subject )
     {
@@ -249,10 +263,10 @@ class Education extends EntityAction
     }
 
     /**
-     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
+     * @param AbstractType $View
      * @param array        $Level
      *
-     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
+     * @return AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeCreateLevel( AbstractType &$View, $Level )
     {
@@ -282,7 +296,7 @@ class Education extends EntityAction
     }
 
     /**
-     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
+     * @param AbstractType $View
      * @param array        $Group
      *
      * @return AbstractType|\KREDA\Sphere\Client\Frontend\Redirect

@@ -52,8 +52,8 @@ class Definition extends AbstractFrontend
                 $tblSubjectGroup->displayTerm =
                     new Danger( $tblSubjectGroup->getTblTerm()->getName() )
                     .new Muted(
-                        $tblSubjectGroup->getTblTerm()->getDateFrom()
-                        .' - '.$tblSubjectGroup->getTblTerm()->getDateTo()
+                        $tblSubjectGroup->getTblTerm()->getFirstDateFrom()
+                        .' - '.$tblSubjectGroup->getTblTerm()->getFirstDateTo()
                     );
 
                 $tblSubjectGroup->displayLevel =
@@ -99,7 +99,7 @@ class Definition extends AbstractFrontend
         if (!empty( $tblTerm )) {
             array_walk( $tblTerm, function ( TblTerm &$tblTerm ) {
 
-                $tblTerm->Title = $tblTerm->getName().' '.$tblTerm->getDateFrom().' - '.$tblTerm->getDateTo();
+                $tblTerm->Title = $tblTerm->getName().' '.$tblTerm->getFirstDateFrom().' - '.$tblTerm->getFirstDateTo();
             } );
         }
 

@@ -25,11 +25,19 @@ class TblTerm extends AbstractEntity
     /**
      * @Column(type="date")
      */
-    protected $DateFrom;
+    protected $FirstDateFrom;
     /**
      * @Column(type="date")
      */
-    protected $DateTo;
+    protected $FirstDateTo;
+    /**
+     * @Column(type="date")
+     */
+    protected $SecondDateFrom;
+    /**
+     * @Column(type="date")
+     */
+    protected $SecondDateTo;
 
     /**
      * @param string $Name
@@ -43,47 +51,93 @@ class TblTerm extends AbstractEntity
     /**
      * @return string
      */
-    public function getDateFrom()
+    public function getFirstDateFrom()
     {
 
-        if (null === $this->DateFrom) {
+        if (null === $this->FirstDateFrom) {
             return false;
         }
         /** @var \DateTime $DateFrom */
-        $DateFrom = $this->DateFrom;
+        $DateFrom = $this->FirstDateFrom;
         return $DateFrom->format( 'd.m.Y' );
     }
 
     /**
      * @param \DateTime $DateFrom
      */
-    public function setDateFrom( \DateTime $DateFrom )
+    public function setFirstDateFrom( \DateTime $DateFrom )
     {
 
-        $this->DateFrom = $DateFrom;
+        $this->FirstDateFrom = $DateFrom;
     }
 
     /**
      * @return string
      */
-    public function getDateTo()
+    public function getFirstDateTo()
     {
 
-        if (null === $this->DateTo) {
+        if (null === $this->FirstDateTo) {
             return false;
         }
         /** @var \DateTime $DateTo */
-        $DateTo = $this->DateTo;
+        $DateTo = $this->FirstDateTo;
         return $DateTo->format( 'd.m.Y' );
     }
 
     /**
      * @param \DateTime $DateTo
      */
-    public function setDateTo( \DateTime $DateTo )
+    public function setFirstDateTo( \DateTime $DateTo )
     {
 
-        $this->DateTo = $DateTo;
+        $this->FirstDateTo = $DateTo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecondDateFrom()
+    {
+
+        if (null === $this->SecondDateFrom) {
+            return false;
+        }
+        /** @var \DateTime $DateFrom */
+        $DateFrom = $this->SecondDateFrom;
+        return $DateFrom->format( 'd.m.Y' );
+    }
+
+    /**
+     * @param \DateTime $DateFrom
+     */
+    public function setSecondDateFrom( \DateTime $DateFrom )
+    {
+
+        $this->SecondDateFrom = $DateFrom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecondDateTo()
+    {
+
+        if (null === $this->SecondDateTo) {
+            return false;
+        }
+        /** @var \DateTime $DateTo */
+        $DateTo = $this->SecondDateTo;
+        return $DateTo->format( 'd.m.Y' );
+    }
+
+    /**
+     * @param \DateTime $DateTo
+     */
+    public function setSecondDateTo( \DateTime $DateTo )
+    {
+
+        $this->SecondDateTo = $DateTo;
     }
 
     /**

@@ -62,11 +62,17 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblTerm', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblTerm', 'DateFrom' )) {
-            $Table->addColumn( 'DateFrom', 'date' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblTerm', 'FirstDateFrom' )) {
+            $Table->addColumn( 'FirstDateFrom', 'date' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblTerm', 'DateTo' )) {
-            $Table->addColumn( 'DateTo', 'date' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblTerm', 'FirstDateTo' )) {
+            $Table->addColumn( 'FirstDateTo', 'date' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblTerm', 'SecondDateFrom' )) {
+            $Table->addColumn( 'SecondDateFrom', 'date' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblTerm', 'SecondDateTo' )) {
+            $Table->addColumn( 'SecondDateTo', 'date' );
         }
 
         return $Table;

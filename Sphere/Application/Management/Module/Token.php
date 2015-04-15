@@ -26,7 +26,7 @@ use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
  *
  * @package KREDA\Sphere\Application\Management\Module
  */
-class Token extends Common
+class Token extends Period
 {
 
     /** @var Configuration $Config */

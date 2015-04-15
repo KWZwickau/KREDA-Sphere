@@ -5,14 +5,12 @@ use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
-use KREDA\Sphere\Client\Frontend\Input\Type\DatePicker;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
@@ -31,14 +29,13 @@ class Setup extends AbstractFrontend
 {
 
     /**
-     * @param null|array $Term
      * @param null|array $Level
      * @param null|array $Group
      * @param null|array $Subject
      *
      * @return Stage
      */
-    public static function stageSetup( $Term, $Level, $Group, $Subject )
+    public static function stageSetup( $Level, $Group, $Subject )
     {
 
         $View = new Stage();
@@ -61,37 +58,6 @@ class Setup extends AbstractFrontend
         $View->setContent(
             new Layout(
                 new LayoutGroup( array(
-                    new LayoutRow( array(
-                        new LayoutColumn( array(
-                            new LayoutTitle( 'Schulhalbjahr', 'Hinzufügen' ),
-                            new TableData( Management::serviceEducation()->entityTermAll(), null, array(
-                                'Name'     => 'Name',
-                                'DateFrom' => 'Vom',
-                                'DateTo'   => 'Bis',
-                            ) ),
-                            Management::serviceEducation()->executeCreateTerm(
-                                new Form(
-                                    new FormGroup( array(
-                                        new FormRow( array(
-                                            new FormColumn(
-                                                new TextField( 'Term[Name]', 'Name', 'Name' )
-                                                , 4 ),
-                                            new FormColumn(
-                                                new DatePicker( 'Term[DateFrom]', 'Von', 'Von', new TimeIcon() )
-                                                , 4 ),
-                                            new FormColumn(
-                                                new DatePicker( 'Term[DateTo]', 'Bis', 'Bis', new TimeIcon() )
-                                                , 4 )
-                                        ) ),
-                                        new FormRow( array(
-                                            new FormColumn(
-                                                new SubmitPrimary( 'Hinzufügen' )
-                                            )
-                                        ) )
-                                    ) )
-                                ), $Term )
-                        ) ),
-                    ) ),
                     new LayoutRow( array(
                         new LayoutColumn( array(
                             new LayoutTitle( 'Klassenstufen', 'Hinzufügen' ),
