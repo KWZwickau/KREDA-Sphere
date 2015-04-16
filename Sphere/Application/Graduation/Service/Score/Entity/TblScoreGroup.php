@@ -44,7 +44,7 @@ class TblScoreGroup extends AbstractEntity
     /**
      * @return boolean
      */
-    public function getRound()
+    public function hasRound()
     {
 
         return $this->Round;

@@ -81,7 +81,7 @@ class TblGradeType extends AbstractEntity
     /**
      * @return boolean
      */
-    public function getActiveState()
+    public function hasActiveState()
     {
 
         return $this->Active;

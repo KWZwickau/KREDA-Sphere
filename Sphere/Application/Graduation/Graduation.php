@@ -123,10 +123,12 @@ class Graduation extends AbstractApplication
 
             array_walk( $GradeTypeList, function ( TblGradeType &$Entity ) {
 
-                $_POST['Id'] = $Entity->getId();
+                $Global = self::extensionSuperGlobal();
+                $Global->POST['Id'] = $Entity->getId();
+                $Global->savePost();
 
                 // bei aktiven Zensurentypen "deaktivieren"-Button anzeigen; sonst "aktivieren"-Button
-                $Entity->getActiveState() == true ? $myButton = new SubmitDanger( 'deaktivieren' ) : $myButton = new SubmitSuccess( 'aktivieren' );
+                $Entity->hasActiveState() == true ? $myButton = new SubmitDanger( 'deaktivieren' ) : $myButton = new SubmitSuccess( 'aktivieren' );
 
                 $Entity->Option = new Form(
                     new FormGroup(

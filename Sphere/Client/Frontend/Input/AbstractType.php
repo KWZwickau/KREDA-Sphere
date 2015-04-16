@@ -76,8 +76,10 @@ abstract class AbstractType extends AbstractFrontend implements IElementInterfac
     public function setDefaultValue( $Value, $Force = false )
     {
 
-        if ($Force || !isset( $_POST[$this->getName()] )) {
-            $_POST[$this->getName()] = $Value;
+        $Global = self::extensionSuperGlobal();
+        if ($Force || !isset( $Global->POST[$this->getName()] )) {
+            $Global->POST[$this->getName()] = $Value;
+            $Global->savePost();
         }
     }
 

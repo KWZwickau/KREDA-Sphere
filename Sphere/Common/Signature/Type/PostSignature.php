@@ -1,12 +1,14 @@
 <?php
 namespace KREDA\Sphere\Common\Signature\Type;
 
+use KREDA\Sphere\Common\AbstractExtension;
+
 /**
  * Class PostSignature
  *
  * @package KREDA\Sphere\Common\Signature\Type
  */
-class PostSignature
+class PostSignature extends AbstractExtension
 {
 
     /** @var string $Secret */
@@ -35,7 +37,9 @@ class PostSignature
     public function validateSignature()
     {
 
-        array_walk_recursive( $_POST, array( $this, 'preventXSS' ) );
+        $Global = self::extensionSuperGlobal();
+        array_walk_recursive( $Global->POST, array( $this, 'preventXSS' ) );
+        $Global->saveGet();
 
         return true;
     }

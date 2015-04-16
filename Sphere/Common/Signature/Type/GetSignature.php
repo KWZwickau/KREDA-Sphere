@@ -38,26 +38,32 @@ class GetSignature extends AbstractExtension
     public function validateSignature()
     {
 
-        array_walk_recursive( $_GET, array( $this, 'preventXSS' ) );
+        $Global = self::extensionSuperGlobal();
 
-        if (!empty( $_GET ) && !isset( $_GET['_Sign'] )) {
-            $_GET = array();
+        array_walk_recursive( $Global->GET, array( $this, 'preventXSS' ) );
+
+        if (!empty( $Global->GET ) && !isset( $Global->GET['_Sign'] )) {
+            $Global->GET = array();
+            $Global->saveGet();
             return false;
         } else {
-            if (isset( $_GET['_Sign'] )) {
-                $Data = $_GET;
-                $Signature = $_GET['_Sign'];
+            if (isset( $Global->GET['_Sign'] )) {
+                $Data = $Global->GET;
+                $Signature = $Global->GET['_Sign'];
                 unset( $Data['_Sign'] );
                 $Check = $this->createSignature( $Data );
                 if ($Check['_Sign'] == $Signature) {
-                    unset( $_GET['_Sign'] );
+                    unset( $Global->GET['_Sign'] );
+                    $Global->saveGet();
                     return true;
                 } else {
-                    $_GET = array();
+                    $Global->GET = array();
+                    $Global->saveGet();
                     return false;
                 }
             } else {
-                $_GET = array();
+                $Global->GET = array();
+                $Global->saveGet();
                 return true;
             }
         }

@@ -311,16 +311,18 @@ class Person extends AbstractFrontend
             } else {
 
                 $View->setMessage( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() );
-                $_POST['PersonName']['Salutation'] = $tblPerson->getTblPersonSalutation()->getId();
-                $_POST['PersonName']['Title'] = $tblPerson->getTitle();
-                $_POST['PersonName']['First'] = $tblPerson->getFirstName();
-                $_POST['PersonName']['Middle'] = $tblPerson->getMiddleName();
-                $_POST['PersonName']['Last'] = $tblPerson->getLastName();
-                $_POST['BirthDetail']['Gender'] = $tblPerson->getTblPersonGender()->getId();
-                $_POST['BirthDetail']['Date'] = $tblPerson->getBirthday();
-                $_POST['BirthDetail']['Place'] = $tblPerson->getBirthplace();
-                $_POST['PersonInformation']['Nationality'] = $tblPerson->getNationality();
-                $_POST['PersonInformation']['Type'] = $tblPerson->getTblPersonType()->getId();
+                $Global = self::extensionSuperGlobal();
+                $Global->POST['PersonName']['Salutation'] = $tblPerson->getTblPersonSalutation()->getId();
+                $Global->POST['PersonName']['Title'] = $tblPerson->getTitle();
+                $Global->POST['PersonName']['First'] = $tblPerson->getFirstName();
+                $Global->POST['PersonName']['Middle'] = $tblPerson->getMiddleName();
+                $Global->POST['PersonName']['Last'] = $tblPerson->getLastName();
+                $Global->POST['BirthDetail']['Gender'] = $tblPerson->getTblPersonGender()->getId();
+                $Global->POST['BirthDetail']['Date'] = $tblPerson->getBirthday();
+                $Global->POST['BirthDetail']['Place'] = $tblPerson->getBirthplace();
+                $Global->POST['PersonInformation']['Nationality'] = $tblPerson->getNationality();
+                $Global->POST['PersonInformation']['Type'] = $tblPerson->getTblPersonType()->getId();
+                $Global->savePost();
                 $FormPersonBasic = self::formPersonBasic();
                 $FormPersonBasic->appendFormButton( new SubmitPrimary( 'Änderungen speichern' ) );
 
