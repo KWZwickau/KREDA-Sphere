@@ -17,7 +17,7 @@ class TableHead extends AbstractTable
     /**
      * @param null|TableRow|TableRow[] $TableRow
      */
-    function __construct( $TableRow = null )
+    public function __construct( $TableRow = null )
     {
 
         if (null !== $TableRow && !is_array( $TableRow )) {

@@ -22,7 +22,12 @@ class TableData extends Table
      * @param array                   $ColumnDefinition
      * @param bool|array              $Interactive
      */
-    function __construct( $DataList, TableTitle $TableTitle = null, $ColumnDefinition = array(), $Interactive = true )
+    public function __construct(
+        $DataList,
+        TableTitle $TableTitle = null,
+        $ColumnDefinition = array(),
+        $Interactive = true
+    )
     {
 
         /**

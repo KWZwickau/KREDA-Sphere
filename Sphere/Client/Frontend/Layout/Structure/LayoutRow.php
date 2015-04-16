@@ -17,7 +17,7 @@ class LayoutRow extends AbstractType
     /**
      * @param LayoutColumn|LayoutColumn[] $LayoutColumn
      */
-    function __construct( $LayoutColumn )
+    public function __construct( $LayoutColumn )
     {
 
         if (!is_array( $LayoutColumn )) {

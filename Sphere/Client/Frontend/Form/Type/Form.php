@@ -20,7 +20,7 @@ class Form extends AbstractType
      * @param string                               $FormAction
      * @param array                                $FormData
      */
-    function __construct( $FormGroup, $AbstractButton = null, $FormAction = '', $FormData = array() )
+    public function __construct( $FormGroup, $AbstractButton = null, $FormAction = '', $FormData = array() )
     {
 
         if (!is_array( $FormGroup )) {

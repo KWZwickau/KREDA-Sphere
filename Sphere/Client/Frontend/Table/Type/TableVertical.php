@@ -21,7 +21,7 @@ class TableVertical extends AbstractTable
      * @param TableTitle       $TableTitle
      * @param array            $ColumnDefinition
      */
-    function __construct(
+    public function __construct(
         $DataList,
         TableTitle $TableTitle = null,
         $ColumnDefinition = array()

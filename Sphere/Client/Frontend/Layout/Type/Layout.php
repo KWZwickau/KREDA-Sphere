@@ -15,7 +15,7 @@ class Layout extends AbstractType
     /**
      * @param LayoutGroup|LayoutGroup[] $LayoutGroup
      */
-    function __construct( $LayoutGroup )
+    public function __construct( $LayoutGroup )
     {
 
         if (!is_array( $LayoutGroup )) {

@@ -17,7 +17,7 @@ class TableRow extends AbstractTable
     /**
      * @param TableColumn|TableColumn[] $TableColumn
      */
-    function __construct( $TableColumn )
+    public function __construct( $TableColumn )
     {
 
         if (!is_array( $TableColumn )) {

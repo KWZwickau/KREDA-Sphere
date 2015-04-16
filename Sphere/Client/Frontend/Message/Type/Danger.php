@@ -16,7 +16,7 @@ class Danger extends AbstractType
      * @param string $Content
      * @param AbstractIcon $Icon
      */
-    function __construct( $Content, AbstractIcon $Icon = null )
+    public function __construct( $Content, AbstractIcon $Icon = null )
     {
 
         $this->Template = $this->extensionTemplate( __DIR__.'/Danger.twig' );

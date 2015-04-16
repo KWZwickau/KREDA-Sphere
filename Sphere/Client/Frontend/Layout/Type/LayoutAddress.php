@@ -15,7 +15,7 @@ class LayoutAddress extends AbstractType
     /**
      * @param TblAddress $tblAddress
      */
-    function __construct( TblAddress $tblAddress )
+    public function __construct( TblAddress $tblAddress )
     {
 
         $this->Template = $this->extensionTemplate( __DIR__.'/LayoutAddress.twig' );

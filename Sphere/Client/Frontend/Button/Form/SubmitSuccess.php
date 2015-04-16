@@ -16,7 +16,7 @@ class SubmitSuccess extends AbstractType
      * @param string       $Name
      * @param AbstractIcon $Icon
      */
-    function __construct( $Name, AbstractIcon $Icon = null )
+    public function __construct( $Name, AbstractIcon $Icon = null )
     {
 
         parent::__construct( $Name );

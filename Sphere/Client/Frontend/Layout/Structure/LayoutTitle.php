@@ -20,7 +20,7 @@ class LayoutTitle extends AbstractType
      * @param string $Title
      * @param string $Description
      */
-    function __construct( $Title, $Description = '' )
+    public function __construct( $Title, $Description = '' )
     {
 
         $this->Title = $Title;

@@ -20,7 +20,7 @@ class TableTitle extends AbstractTable
      * @param string $Title
      * @param string $Description
      */
-    function __construct( $Title, $Description = '' )
+    public function __construct( $Title, $Description = '' )
     {
 
         $this->Title = strip_tags( $Title );

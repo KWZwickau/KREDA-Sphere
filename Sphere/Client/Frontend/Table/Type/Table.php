@@ -22,7 +22,7 @@ class Table extends AbstractTable
      * @param bool|array $Interactive
      * @param TableFoot  $TableFoot
      */
-    function __construct(
+    public function __construct(
         TableHead $TableHead,
         TableBody $TableBody,
         TableTitle $TableTitle = null,

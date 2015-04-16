@@ -20,7 +20,7 @@ class LayoutGroup extends AbstractType
      * @param LayoutRow|LayoutRow[] $LayoutRow
      * @param LayoutTitle           $LayoutTitle
      */
-    function __construct( $LayoutRow, LayoutTitle $LayoutTitle = null )
+    public function __construct( $LayoutRow, LayoutTitle $LayoutTitle = null )
     {
 
         if (!is_array( $LayoutRow )) {

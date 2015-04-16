@@ -22,7 +22,7 @@ abstract class AbstractType extends AbstractFrontend implements IElementInterfac
     /**
      * @param string $Name
      */
-    function __construct( $Name )
+    public function __construct( $Name )
     {
 
         $this->Name = $Name;

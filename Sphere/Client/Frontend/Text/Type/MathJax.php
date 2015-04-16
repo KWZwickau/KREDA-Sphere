@@ -14,7 +14,7 @@ class MathJax extends AbstractType
     /**
      * @param string $Formula
      */
-    function __construct( $Formula )
+    public function __construct( $Formula )
     {
 
         $this->Template = $this->extensionTemplate( __DIR__.'/MathJax.twig' );

@@ -20,7 +20,7 @@ class AutoCompleter extends AbstractType
      * @param array        $Data array( value, value, .. )
      * @param AbstractIcon $Icon
      */
-    function __construct(
+    public function __construct(
         $Name,
         $Label = '',
         $Placeholder = '',

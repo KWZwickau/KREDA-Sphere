@@ -21,7 +21,7 @@ class Redirect extends Element
      * @param int    $Timeout
      * @param array  $Data
      */
-    function __construct( $Route, $Timeout = 15, $Data = array() )
+    public function __construct( $Route, $Timeout = 15, $Data = array() )
     {
 
         if (!empty( $Data )) {

@@ -23,7 +23,7 @@ class TableColumn extends AbstractTable
      * @param int    $Size
      * @param string $Width
      */
-    function __construct( $Content, $Size = 1, $Width = 'auto' )
+    public function __construct( $Content, $Size = 1, $Width = 'auto' )
     {
 
         if (is_object( $Content ) && $Content instanceof \DateTime) {

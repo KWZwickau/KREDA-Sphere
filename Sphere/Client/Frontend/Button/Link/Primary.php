@@ -19,7 +19,7 @@ class Primary extends AbstractType
      * @param AbstractIcon $Icon
      * @param array        $Data
      */
-    function __construct( $Name, $Path, AbstractIcon $Icon = null, $Data = array() )
+    public function __construct( $Name, $Path, AbstractIcon $Icon = null, $Data = array() )
     {
 
         parent::__construct( $Name );

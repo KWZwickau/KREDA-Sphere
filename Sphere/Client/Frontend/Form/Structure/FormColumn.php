@@ -22,7 +22,7 @@ class FormColumn extends AbstractType
      * @param AbstractFrontend|AbstractFrontend[] $AbstractFrontend
      * @param int                                 $Size
      */
-    function __construct( $AbstractFrontend, $Size = 12 )
+    public function __construct( $AbstractFrontend, $Size = 12 )
     {
 
         if (!is_array( $AbstractFrontend )) {

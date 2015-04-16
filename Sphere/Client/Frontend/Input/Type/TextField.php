@@ -18,7 +18,7 @@ class TextField extends AbstractType
      * @param null|string  $Label
      * @param AbstractIcon $Icon
      */
-    function __construct(
+    public function __construct(
         $Name,
         $Placeholder = '',
         $Label = '',

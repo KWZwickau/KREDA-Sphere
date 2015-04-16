@@ -14,7 +14,7 @@ class Primary extends AbstractType
     /**
      * @param string $Content
      */
-    function __construct( $Content )
+    public function __construct( $Content )
     {
 
         $this->Template = $this->extensionTemplate( __DIR__.'/Primary.twig' );

@@ -17,7 +17,7 @@ class ButtonGroup extends AbstractType
     /**
      * @param AbstractType|AbstractType[] $ButtonList
      */
-    function __construct( $ButtonList )
+    public function __construct( $ButtonList )
     {
 
         if (!is_array( $ButtonList )) {

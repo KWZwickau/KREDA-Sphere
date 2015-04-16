@@ -19,7 +19,7 @@ class SelectBox extends AbstractType
      * @param array        $Data array( value => title )
      * @param AbstractIcon $Icon
      */
-    function __construct(
+    public function __construct(
         $Name,
         $Label = '',
         $Data = array(),

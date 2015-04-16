@@ -17,7 +17,7 @@ class FormRow extends AbstractType
     /**
      * @param FormColumn|FormColumn[] $FormColumn
      */
-    function __construct( $FormColumn )
+    public function __construct( $FormColumn )
     {
 
         if (!is_array( $FormColumn )) {

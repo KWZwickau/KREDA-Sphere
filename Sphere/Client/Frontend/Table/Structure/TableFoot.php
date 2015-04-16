@@ -17,7 +17,7 @@ class TableFoot extends AbstractTable
     /**
      * @param TableRow|TableRow[] $TableRow
      */
-    function __construct( $TableRow )
+    public function __construct( $TableRow )
     {
 
         if (!is_array( $TableRow )) {

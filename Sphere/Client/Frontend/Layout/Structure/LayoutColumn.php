@@ -21,7 +21,7 @@ class LayoutColumn extends AbstractType
      * @param string|AbstractFrontend|AbstractFrontend[] $AbstractFrontend
      * @param int                                        $Size
      */
-    function __construct( $AbstractFrontend, $Size = 12 )
+    public function __construct( $AbstractFrontend, $Size = 12 )
     {
 
         if (!is_array( $AbstractFrontend )) {

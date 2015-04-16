@@ -17,7 +17,7 @@ class LayoutRight extends AbstractType
     /**
      * @param string $Content
      */
-    function __construct( $Content )
+    public function __construct( $Content )
     {
 
         $this->Content = $Content;

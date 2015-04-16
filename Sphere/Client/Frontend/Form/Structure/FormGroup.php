@@ -20,7 +20,7 @@ class FormGroup extends AbstractType
      * @param FormRow|FormRow[] $FormRow
      * @param FormTitle         $FormTitle
      */
-    function __construct( $FormRow, FormTitle $FormTitle = null )
+    public function __construct( $FormRow, FormTitle $FormTitle = null )
     {
 
         if (!is_array( $FormRow )) {
