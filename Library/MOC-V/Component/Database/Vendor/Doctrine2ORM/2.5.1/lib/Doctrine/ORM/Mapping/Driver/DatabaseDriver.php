@@ -122,6 +122,79 @@ class DatabaseDriver implements MappingDriver
     }
 
     /**
+     * @return void
+     *
+     * @throws \Doctrine\ORM\Mapping\MappingException
+     */
+    private function reverseEngineerMappingFromDatabase()
+    {
+
+        if ($this->tables !== null) {
+            return;
+        }
+
+        $tables = array();
+
+        foreach ($this->_sm->listTableNames() as $tableName) {
+            $tables[$tableName] = $this->_sm->listTableDetails( $tableName );
+        }
+
+        $this->tables = $this->manyToManyTables = $this->classToTableNames = array();
+
+        foreach ($tables as $tableName => $table) {
+            $foreignKeys = ( $this->_sm->getDatabasePlatform()->supportsForeignKeyConstraints() )
+                ? $table->getForeignKeys()
+                : array();
+
+            $allForeignKeyColumns = array();
+
+            foreach ($foreignKeys as $foreignKey) {
+                $allForeignKeyColumns = array_merge( $allForeignKeyColumns, $foreignKey->getLocalColumns() );
+            }
+
+            if (!$table->hasPrimaryKey()) {
+                throw new MappingException(
+                    "Table ".$table->getName()." has no primary key. Doctrine does not ".
+                    "support reverse engineering from tables that don't have a primary key."
+                );
+            }
+
+            $pkColumns = $table->getPrimaryKey()->getColumns();
+
+            sort( $pkColumns );
+            sort( $allForeignKeyColumns );
+
+            if ($pkColumns == $allForeignKeyColumns && count( $foreignKeys ) == 2) {
+                $this->manyToManyTables[$tableName] = $table;
+            } else {
+                // lower-casing is necessary because of Oracle Uppercase Tablenames,
+                // assumption is lower-case + underscore separated.
+                $className = $this->getClassNameForTable( $tableName );
+
+                $this->tables[$tableName] = $table;
+                $this->classToTableNames[$className] = $tableName;
+            }
+        }
+    }
+
+    /**
+     * Returns the mapped class name for a table if it exists. Otherwise return "classified" version.
+     *
+     * @param string $tableName
+     *
+     * @return string
+     */
+    private function getClassNameForTable( $tableName )
+    {
+
+        if (isset( $this->classNamesForTables[$tableName] )) {
+            return $this->namespace.$this->classNamesForTables[$tableName];
+        }
+
+        return $this->namespace.Inflector::classify( strtolower( $tableName ) );
+    }
+
+    /**
      * Sets class name for a table.
      *
      * @param string $tableName
@@ -267,62 +340,6 @@ class DatabaseDriver implements MappingDriver
     }
 
     /**
-     * @return void
-     *
-     * @throws \Doctrine\ORM\Mapping\MappingException
-     */
-    private function reverseEngineerMappingFromDatabase()
-    {
-
-        if ($this->tables !== null) {
-            return;
-        }
-
-        $tables = array();
-
-        foreach ($this->_sm->listTableNames() as $tableName) {
-            $tables[$tableName] = $this->_sm->listTableDetails( $tableName );
-        }
-
-        $this->tables = $this->manyToManyTables = $this->classToTableNames = array();
-
-        foreach ($tables as $tableName => $table) {
-            $foreignKeys = ( $this->_sm->getDatabasePlatform()->supportsForeignKeyConstraints() )
-                ? $table->getForeignKeys()
-                : array();
-
-            $allForeignKeyColumns = array();
-
-            foreach ($foreignKeys as $foreignKey) {
-                $allForeignKeyColumns = array_merge( $allForeignKeyColumns, $foreignKey->getLocalColumns() );
-            }
-
-            if (!$table->hasPrimaryKey()) {
-                throw new MappingException(
-                    "Table ".$table->getName()." has no primary key. Doctrine does not ".
-                    "support reverse engineering from tables that don't have a primary key."
-                );
-            }
-
-            $pkColumns = $table->getPrimaryKey()->getColumns();
-
-            sort( $pkColumns );
-            sort( $allForeignKeyColumns );
-
-            if ($pkColumns == $allForeignKeyColumns && count( $foreignKeys ) == 2) {
-                $this->manyToManyTables[$tableName] = $table;
-            } else {
-                // lower-casing is necessary because of Oracle Uppercase Tablenames,
-                // assumption is lower-case + underscore separated.
-                $className = $this->getClassNameForTable( $tableName );
-
-                $this->tables[$tableName] = $table;
-                $this->classToTableNames[$className] = $tableName;
-            }
-        }
-    }
-
-    /**
      * Build indexes from a class metadata.
      *
      * @param \Doctrine\ORM\Mapping\ClassMetadataInfo $metadata
@@ -395,6 +412,40 @@ class DatabaseDriver implements MappingDriver
     }
 
     /**
+     * Retreive schema table definition primary keys.
+     *
+     * @param \Doctrine\DBAL\Schema\Table $table
+     *
+     * @return array
+     */
+    private function getTablePrimaryKeys( Table $table )
+    {
+
+        try {
+            return $table->getPrimaryKey()->getColumns();
+        } catch( SchemaException $e ) {
+            // Do nothing
+        }
+
+        return array();
+    }
+
+    /**
+     * Build Retreive schema table definition foreign keys.
+     *
+     * @param \Doctrine\DBAL\Schema\Table $table
+     *
+     * @return array
+     */
+    private function getTableForeignKeys( Table $table )
+    {
+
+        return ( $this->_sm->getDatabasePlatform()->supportsForeignKeyConstraints() )
+            ? $table->getForeignKeys()
+            : array();
+    }
+
+    /**
      * Build field mapping from a schema column definition
      *
      * @param string                       $tableName
@@ -453,54 +504,28 @@ class DatabaseDriver implements MappingDriver
     }
 
     /**
-     * Build Retreive schema table definition foreign keys.
+     *n the mapped field name for a column, if it exists. Otherwise return camelized version.
      *
-     * @param \Doctrine\DBAL\Schema\Table $table
-     *
-     * @return array
-     */
-    private function getTableForeignKeys( Table $table )
-    {
-
-        return ( $this->_sm->getDatabasePlatform()->supportsForeignKeyConstraints() )
-            ? $table->getForeignKeys()
-            : array();
-    }
-
-    /**
-     * Retreive schema table definition primary keys.
-     *
-     * @param \Doctrine\DBAL\Schema\Table $table
-     *
-     * @return array
-     */
-    private function getTablePrimaryKeys( Table $table )
-    {
-
-        try {
-            return $table->getPrimaryKey()->getColumns();
-        } catch( SchemaException $e ) {
-            // Do nothing
-        }
-
-        return array();
-    }
-
-    /**
-     * Returns the mapped class name for a table if it exists. Otherwise return "classified" version.
-     *
-     * @param string $tableName
+     * @param string  $tableName
+     * @param string  $columnName
+     * @param boolean $fk Whether the column is a foreignkey or not.
      *
      * @return string
      */
-    private function getClassNameForTable( $tableName )
+    private function getFieldNameForColumn( $tableName, $columnName, $fk = false )
     {
 
-        if (isset( $this->classNamesForTables[$tableName] )) {
-            return $this->namespace.$this->classNamesForTables[$tableName];
+        if (isset( $this->fieldNamesForColumns[$tableName] ) && isset( $this->fieldNamesForColumns[$tableName][$columnName] )) {
+            return $this->fieldNamesForColumns[$tableName][$columnName];
         }
 
-        return $this->namespace.Inflector::classify( strtolower( $tableName ) );
+        $columnName = strtolower( $columnName );
+
+        // Replace _id if it is a foreignkey column
+        if ($fk) {
+            $columnName = str_replace( '_id', '', $columnName );
+        }
+        return Inflector::camelize( $columnName );
     }
 
     /**
@@ -548,30 +573,5 @@ class DatabaseDriver implements MappingDriver
                 $metadata->mapManyToOne( $associationMapping );
             }
         }
-    }
-
-    /**
-     *n the mapped field name for a column, if it exists. Otherwise return camelized version.
-     *
-     * @param string  $tableName
-     * @param string  $columnName
-     * @param boolean $fk Whether the column is a foreignkey or not.
-     *
-     * @return string
-     */
-    private function getFieldNameForColumn( $tableName, $columnName, $fk = false )
-    {
-
-        if (isset( $this->fieldNamesForColumns[$tableName] ) && isset( $this->fieldNamesForColumns[$tableName][$columnName] )) {
-            return $this->fieldNamesForColumns[$tableName][$columnName];
-        }
-
-        $columnName = strtolower( $columnName );
-
-        // Replace _id if it is a foreignkey column
-        if ($fk) {
-            $columnName = str_replace( '_id', '', $columnName );
-        }
-        return Inflector::camelize( $columnName );
     }
 }
