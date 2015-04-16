@@ -42,13 +42,13 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param string $Name
      * @param string $FirstDateFrom
-     * @param string $FirstDateToA
+     * @param string $FirstDateTo
      * @param string $SecondDateFrom
      * @param string $SecondDateTo
      *
      * @return TblTerm
      */
-    protected function actionCreateTerm( $Name, $FirstDateFrom, $FirstDateToA, $SecondDateFrom, $SecondDateTo )
+    protected function actionCreateTerm( $Name, $FirstDateFrom, $FirstDateTo, $SecondDateFrom, $SecondDateTo )
     {
 
         $Manager = $this->getEntityManager();
@@ -57,7 +57,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblTerm( $Name );
             $Entity->setFirstDateFrom( new \DateTime( $FirstDateFrom ) );
-            $Entity->setFirstDateTo( new \DateTime( $FirstDateToA ) );
+            $Entity->setFirstDateTo( new \DateTime( $FirstDateTo ) );
             $Entity->setSecondDateFrom( new \DateTime( $SecondDateFrom ) );
             $Entity->setSecondDateTo( new \DateTime( $SecondDateTo ) );
             $Manager->saveEntity( $Entity );

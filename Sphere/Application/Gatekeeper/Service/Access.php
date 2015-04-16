@@ -56,24 +56,6 @@ class Access extends EntityAction
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $this->actionAddAccessPrivilege( $Access, $Privilege );
 
-        $Access = $this->actionCreateAccess( 'Management:Administrator' );
-        $Privilege = $this->actionCreatePrivilege( 'Management:Administrator' );
-        $Right = $this->actionCreateRight( 'Application:Management' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $Right = $this->actionCreateRight( '/Sphere/Management/Token' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $Right = $this->actionCreateRight( '/Sphere/Management/Account' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonInterest' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonStudent' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonGuardian' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonRelationship' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $this->actionAddAccessPrivilege( $Access, $Privilege );
-
         $Access = $this->actionCreateAccess( 'Gatekeeper:Administrator' );
         $Privilege = $this->actionCreatePrivilege( 'Gatekeeper:Administrator' );
         $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount' );
@@ -89,6 +71,24 @@ class Access extends EntityAction
         $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount/ChangePassword' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $this->actionAddAccessPrivilege( $Access, $Privilege );
+
+        $Access = $this->actionCreateAccess( 'Management:Administrator' );
+        $Privilege = $this->actionCreatePrivilege( 'Management:Administrator' );
+        $Right = $this->actionCreateRight( 'Application:Management' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Token' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Account' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonInterest' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonStudent' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonGuardian' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonRelationship' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $this->actionAddAccessPrivilege( $Access, $Privilege );
     }
@@ -148,7 +148,7 @@ class Access extends EntityAction
 
     /**
      * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
-     * @param string       $AccessName
+     * @param string                                          $AccessName
      *
      * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|Redirect
      */
@@ -168,7 +168,7 @@ class Access extends EntityAction
 
     /**
      * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
-     * @param string       $PrivilegeName
+     * @param string                                          $PrivilegeName
      *
      * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|Redirect
      */

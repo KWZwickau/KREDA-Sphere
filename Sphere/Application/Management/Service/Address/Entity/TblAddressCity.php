@@ -65,7 +65,7 @@ class TblAddressCity extends AbstractEntity
     public function setName( $Name )
     {
 
-        $this->Name = $Name;
+        $this->Name = trim( $Name );
     }
 
     /**
@@ -83,7 +83,7 @@ class TblAddressCity extends AbstractEntity
     public function setDistrict( $District )
     {
 
-        $this->District = $District;
+        $this->District = trim( $District );
     }
 
 }

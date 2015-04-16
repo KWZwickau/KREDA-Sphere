@@ -59,13 +59,19 @@ class Account extends EntityAction
         );
 
         $this->actionAddRoleAccess( $tblAccountRole,
-            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:Administrator' )
-        );
-        $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'System:Administrator' )
         );
         $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:Administrator' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'Management:Administrator' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Graduation:Administrator' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Billing:Administrator' )
         );
 
         /**
@@ -77,6 +83,12 @@ class Account extends EntityAction
         );
         $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'Management:Administrator' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Graduation:Administrator' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Billing:Administrator' )
         );
 
         /**

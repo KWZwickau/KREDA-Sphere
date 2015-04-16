@@ -5,6 +5,8 @@ use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressState;
 use KREDA\Sphere\Application\Management\Service\Address\EntityAction;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 
 /**
@@ -101,4 +103,44 @@ class Address extends EntityAction
 
         return parent::entityAddressStateAll();
     }
+
+    /**
+     * @param AbstractType $Form
+     * @param string       $Code
+     * @param string       $Name
+     * @param null|string  $District
+     *
+     * @return AbstractType|Redirect
+     */
+    public function executeCreateAddressCity( AbstractType &$Form, $Code, $Name, $District = null )
+    {
+
+        if (null === $Code
+            && null === $Name
+            && null === $District
+        ) {
+            return $Form;
+        }
+        $Error = false;
+
+        if (!preg_match( '!^[0-9]{5}$!is', $Code )) {
+            $Form->setError( 'Code', 'Bitte geben Sie eine fünfstellige Postleitzahl ein' );
+            $Error = true;
+        } else {
+            $Form->setSuccess( 'Code' );
+        }
+        if (empty( $Name )) {
+            $Form->setError( 'Name', 'Bitte geben Sie einen Namen ein' );
+            $Error = true;
+        } else {
+            $Form->setSuccess( 'Name' );
+        }
+
+        if (!$Error) {
+            $this->actionCreateAddressCity( $Code, $Name, $District );
+            return new Redirect( '/Sphere/Management/Huppala', 0 );
+        }
+        return $Form;
+    }
+
 }

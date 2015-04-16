@@ -119,18 +119,8 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAddress', 'PostOfficeBox' )) {
             $Table->addColumn( 'PostOfficeBox', 'string', array( 'notnull' => false ) );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAddress', 'tblAddressCity' )) {
-            $Table->addColumn( 'tblAddressCity', 'bigint', array( 'notnull' => false ) );
-            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblAddressCity, array( 'tblAddressCity' ), array( 'Id' ) );
-            }
-        }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAddress', 'tblAddressState' )) {
-            $Table->addColumn( 'tblAddressState', 'bigint', array( 'notnull' => false ) );
-            if ($this->getDatabaseHandler()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-                $Table->addForeignKeyConstraint( $tblAddressState, array( 'tblAddressState' ), array( 'Id' ) );
-            }
-        }
+        $this->schemaTableAddForeignKey( $Table, $tblAddressCity );
+        $this->schemaTableAddForeignKey( $Table, $tblAddressState );
         return $Table;
     }
 }

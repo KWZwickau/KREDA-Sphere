@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Management\Frontend;
 
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChildIcon;
@@ -96,7 +97,7 @@ class Person extends AbstractFrontend
 
         $Form = self::formPersonBasic();
         $Form->appendFormButton( new SubmitPrimary( 'Anlegen' ) );
-        $Form->appendFormButton( new SubmitPrimary( 'Anlegen & Bearbeiten' ) );
+//        $Form->appendFormButton( new SubmitPrimary( 'Anlegen & Bearbeiten' ) );
 
         $View->setContent( Management::servicePerson()->executeCreatePerson(
             $Form, $PersonName, $PersonInformation, $BirthDetail, $Button )
@@ -115,6 +116,7 @@ class Person extends AbstractFrontend
         $tblPersonTypeAll = Management::servicePerson()->entityPersonTypeAll();
         $PersonNationality = Management::servicePerson()->listPersonNationality();
         $PersonBirthPlace = Management::servicePerson()->listPersonBirthplace();
+        $AddressCity = Management::serviceAddress()->entityAddressCityAll();
 
         if (!empty( $PersonNationality )) {
             array_walk( $PersonNationality, function ( &$P ) {
@@ -135,6 +137,18 @@ class Person extends AbstractFrontend
             $PersonBirthPlace = array();
         }
         $PersonBirthPlace = array_unique( $PersonBirthPlace );
+
+        if (!empty( $AddressCity )) {
+            array_walk( $AddressCity, function ( TblAddressCity &$tblAddressCity ) {
+
+                $tblAddressCity = $tblAddressCity->getName();
+            } );
+        } else {
+            $AddressCity = array();
+        }
+        $AddressCity = array_unique( $AddressCity );
+
+        $PersonBirthPlace = array_unique( array_merge( $PersonBirthPlace, $AddressCity ) );
 
         return new Form(
             new FormGroup( array(

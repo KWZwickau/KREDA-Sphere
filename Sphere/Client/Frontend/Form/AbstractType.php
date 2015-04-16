@@ -85,7 +85,7 @@ abstract class AbstractType extends AbstractFrontend
      * @param string       $Message
      * @param AbstractIcon $Icon
      */
-    public function setSuccess( $Name, $Message, AbstractIcon $Icon = null )
+    public function setSuccess( $Name, $Message = '', AbstractIcon $Icon = null )
     {
 
         /** @var FormGroup $GridGroup */
