@@ -33,7 +33,7 @@ class GetSignature extends AbstractExtension
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
     public function validateSignature()
     {
@@ -45,7 +45,7 @@ class GetSignature extends AbstractExtension
         if (!empty( $Global->GET ) && !isset( $Global->GET['_Sign'] )) {
             $Global->GET = array();
             $Global->saveGet();
-            return false;
+            return null;
         } else {
             if (isset( $Global->GET['_Sign'] )) {
                 $Data = $Global->GET;

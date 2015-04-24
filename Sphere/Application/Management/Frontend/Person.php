@@ -4,16 +4,22 @@ namespace KREDA\Sphere\Application\Management\Frontend;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipList;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BarCodeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChildIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EducationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MapMarkerIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TempleChurchIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
@@ -22,13 +28,16 @@ use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
 use KREDA\Sphere\Client\Frontend\Input\Type\AutoCompleter;
 use KREDA\Sphere\Client\Frontend\Input\Type\DatePicker;
+use KREDA\Sphere\Client\Frontend\Input\Type\NumberField;
 use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextArea;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -194,7 +203,13 @@ class Person extends AbstractFrontend
                         new SelectBox( 'PersonInformation[Type]', 'Art der Person',
                             array( 'Name' => $tblPersonTypeAll ), new GroupIcon()
                         ), 4 )
-                ) )
+                ) ),
+                new FormRow( array(
+                    new FormColumn(
+                        new TextArea( 'PersonInformation[Remark]', 'Bemerkungen',
+                            'Bemerkungen', new PencilIcon()
+                        ) ),
+                ) ),
             ), new FormTitle( 'Grunddaten' ) )
         );
     }
@@ -324,7 +339,6 @@ class Person extends AbstractFrontend
                 $View->setContent( new Warning( 'Die Person konnte nicht abgerufen werden' ) );
             } else {
 
-                $View->setMessage( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() );
                 $Global = self::extensionSuperGlobal();
                 $Global->POST['PersonName']['Salutation'] = $tblPerson->getTblPersonSalutation()->getId();
                 $Global->POST['PersonName']['Title'] = $tblPerson->getTitle();
@@ -336,16 +350,31 @@ class Person extends AbstractFrontend
                 $Global->POST['BirthDetail']['Place'] = $tblPerson->getBirthplace();
                 $Global->POST['PersonInformation']['Nationality'] = $tblPerson->getNationality();
                 $Global->POST['PersonInformation']['Type'] = $tblPerson->getTblPersonType()->getId();
+                $Global->POST['PersonInformation']['Remark'] = $tblPerson->getRemark();
                 $Global->savePost();
+
                 $FormPersonBasic = self::formPersonBasic();
-                $FormPersonBasic->appendFormButton( new SubmitPrimary( 'Änderungen speichern' ) );
+                $FormPersonBasic->appendFormButton( new SubmitPrimary( 'Grunddaten speichern' ) );
+
+                if (
+                    $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId()
+                    || $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId()
+                ) {
+                    $FormStudent = self::formStudent( $tblPerson );
+                } else {
+                    $FormStudent = '';
+                }
 
                 $FormPersonRelationship = self::formPersonRelationship( $tblPerson );
+                $FormPersonAddress = self::formPersonAddress( $tblPerson );
 
                 $View->setContent(
-                    Management::servicePerson()->executeChangePerson(
+                    new Success( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() )
+                    .Management::servicePerson()->executeChangePerson(
                         $FormPersonBasic, $tblPerson, $PersonName, $PersonInformation, $BirthDetail
                     )
+                    .$FormStudent
+                    .$FormPersonAddress
                     .$FormPersonRelationship
                 );
             }
@@ -358,20 +387,245 @@ class Person extends AbstractFrontend
      *
      * @return Form
      */
-    private static function formPersonRelationship( TblPerson $tblPerson )
+    private static function formStudent( TblPerson $tblPerson )
     {
+
+        $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson );
+
+        if ($tblStudent) {
+            $Global = self::extensionSuperGlobal();
+            $Global->POST['Course'] = $tblStudent->getServiceManagementCourse()->getId();
+            $Global->savePost();
+        }
+
+        $tblCourseList = Management::serviceCourse()->entityCourseAll();
+
+        $tblSubjectReligion = Management::serviceEducation()->entitySubjectAllByCategory(
+            Management::serviceEducation()->entityCategoryByName( 'Religion' )
+        );
+        $tblSubjectLanguage = Management::serviceEducation()->entitySubjectAllByCategory(
+            Management::serviceEducation()->entityCategoryByName( 'Fremdsprache' )
+        );
+        $tblSubjectProfile = Management::serviceEducation()->entitySubjectAllByCategory(
+            Management::serviceEducation()->entityCategoryByName( 'Profil' )
+        );
+        $tblSubjectAddiction = Management::serviceEducation()->entitySubjectAllByCategory(
+            Management::serviceEducation()->entityCategoryByName( 'Neigungskurs' )
+        );
 
         return new Layout(
             new LayoutGroup( array(
                 new LayoutRow( array(
                     new LayoutColumn(
-                        new Primary( 'Bearbeiten', '/Sphere/Management/Person/Relationship', new PencilIcon(),
-                            array(
-                                'tblPerson' => $tblPerson->getId()
-                            ) )
-                        , 4 )
+                        new Form(
+                            new FormGroup( array(
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Identifier', 'Schülernummer', 'Schülernummer',
+                                            new BarCodeIcon() )
+                                        , 3 ),
+                                    new FormColumn(
+                                        new SelectBox( 'Course', 'Bildungsgang', array( 'Name' => $tblCourseList ),
+                                            new EducationIcon()
+                                        )
+                                        , 3 ),
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new SelectBox( 'Transfer[From][Scool]', 'Abgebende Schule', array() )
+                                        , 9 ),
+                                    new FormColumn(
+                                        new DatePicker( 'Transfer[From][Date]', 'Aufnahmedatum', 'Aufnahmedatum' )
+                                        , 3 ),
+                                    new FormColumn(
+                                        new SelectBox( 'Transfer[To][Scool]', 'Aufnehmende Schule', array() )
+                                        , 9 ),
+                                    new FormColumn(
+                                        new DatePicker( 'Transfer[To][Date]', 'Abgabedatum', 'Abgabedatum' )
+                                        , 3 ),
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new SelectBox( 'Subject[Religion][Type]', 'Religionsunterricht',
+                                            array( '[{{ Acronym }}] {{ Name }}' => $tblSubjectReligion ),
+                                            new TempleChurchIcon()
+                                        )
+                                        , 4 ),
+                                    new FormColumn(
+                                        new NumberField( 'Subject[Religion][Year]', 'Jahre', 'Jahre', new TimeIcon() )
+                                        , 2 ),
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new SelectBox( 'Subject[Language][Type][]', 'Fremdsprache 1',
+                                            array( '[{{ Acronym }}] {{ Name }}' => $tblSubjectLanguage ),
+                                            new ConversationIcon()
+                                        )
+                                        , 4 ),
+                                    new FormColumn(
+                                        new NumberField( 'Subject[Language][Year][]', 'Jahre', 'Jahre', new TimeIcon() )
+                                        , 2 ),
+                                    new FormColumn(
+                                        new SelectBox( 'Subject[Language][Type][]', 'Fremdsprache 2',
+                                            array( '[{{ Acronym }}] {{ Name }}' => $tblSubjectLanguage ),
+                                            new ConversationIcon()
+                                        )
+                                        , 4 ),
+                                    new FormColumn(
+                                        new NumberField( 'Subject[Language][Year][]', 'Jahre', 'Jahre', new TimeIcon() )
+                                        , 2 ),
+                                    new FormColumn(
+                                        new SelectBox( 'Subject[Language][Type][]', 'Fremdsprache 3',
+                                            array( '[{{ Acronym }}] {{ Name }}' => $tblSubjectLanguage ),
+                                            new ConversationIcon()
+                                        )
+                                        , 4 ),
+                                    new FormColumn(
+                                        new NumberField( 'Subject[Language][Year][]', 'Jahre', 'Jahre', new TimeIcon() )
+                                        , 2 ),
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new SelectBox( 'Subject[Profile][Type][]', 'Profil 1',
+                                            array( '[{{ Acronym }}] {{ Name }}' => $tblSubjectProfile ),
+                                            new ConversationIcon()
+                                        )
+                                        , 4 ),
+                                    new FormColumn(
+                                        new NumberField( 'Subject[Profile][Year][]', 'Jahre', 'Jahre', new TimeIcon() )
+                                        , 2 ),
+                                    new FormColumn(
+                                        new SelectBox( 'Subject[Profile][Type][]', 'Profil 2',
+                                            array( '[{{ Acronym }}] {{ Name }}' => $tblSubjectProfile ),
+                                            new ConversationIcon()
+                                        )
+                                        , 4 ),
+                                    new FormColumn(
+                                        new NumberField( 'Subject[Profile][Year][]', 'Jahre', 'Jahre', new TimeIcon() )
+                                        , 2 ),
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new SelectBox( 'Subject[Addiction][Type][]', 'Neigungskurs',
+                                            array( '[{{ Acronym }}] {{ Name }}' => $tblSubjectAddiction ),
+                                            new ConversationIcon()
+                                        )
+                                        , 4 ),
+                                    new FormColumn(
+                                        new NumberField( 'Subject[Addiction][Year][]', 'Jahre', 'Jahre',
+                                            new TimeIcon() )
+                                        , 2 ),
+                                ) ),
+                            ) ), new SubmitPrimary( 'Schülerdaten speichern' )
+                        )
+                    )
+                ) ),
+            ), new LayoutTitle( 'Schülerdaten' ) )
+        );
+    }
+
+    /**
+     * @param TblPerson $tblPerson
+     *
+     * @return Form
+     */
+    private static function formPersonRelationship( TblPerson $tblPerson )
+    {
+
+        $tblRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson( $tblPerson );
+
+        if (!empty( $tblRelationshipList )) {
+            array_walk( $tblRelationshipList,
+                function ( TblPersonRelationshipList &$tblPersonRelationshipList, $I, TblPerson $tblPerson ) {
+
+                    $Person = $tblPersonRelationshipList->getTblPersonA();
+                    if ($Person->getId() == $tblPerson->getId()) {
+                        $Person = $tblPersonRelationshipList->getTblPersonB();
+                    }
+                    $tblPersonRelationshipList->Person = $Person->getFullName().' ('.$Person->getTblPersonType()->getName().')';
+                    $tblPersonRelationshipList->Relationship = $tblPersonRelationshipList->getTblPersonRelationshipType()->getName();
+                    $tblPersonRelationshipList->Option = new Danger( 'Entfernen', '', new RemoveIcon() );
+                }, $tblPerson );
+        }
+        return new Layout(
+            new LayoutGroup( array(
+                new LayoutRow( array(
+                    new LayoutColumn( array(
+                            new TableData( $tblRelationshipList, null, array(
+                                'Person'       => 'Person',
+                                'Relationship' => 'Beziehung',
+                                'Option'       => 'Option'
+                            ) ),
+                            new Primary( 'Bearbeiten', '/Sphere/Management/Person/Relationship', new PencilIcon(),
+                                array(
+                                    'tblPerson' => $tblPerson->getId()
+                                ) ),
+                        )
+                    )
                 ) ),
             ), new LayoutTitle( 'Beziehungen' ) )
         );
+    }
+
+    /**
+     * @param TblPerson $tblPerson
+     *
+     * @return Form
+     */
+    private static function formPersonAddress( TblPerson $tblPerson )
+    {
+
+        $tblAddressState = Management::serviceAddress()->entityAddressStateAll();
+
+        return new Layout(
+            new LayoutGroup( array(
+                new LayoutRow( array(
+                    new LayoutColumn( array(
+                        new TableData( array(), null, array(
+                            'StreetName'    => 'Strasse',
+                            'StreetNumber'  => 'Hausnummer',
+                            'PostOfficeBox' => 'Postfach',
+                            'Code'          => 'Postleitzahl',
+                            'Name'          => 'Ort',
+                            'District'      => 'Ortsteil',
+                            'State'         => 'Bundesland',
+                        ) ),
+                        new Form(
+                            new FormGroup( array(
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new AutoCompleter( 'Street[Name]', 'Strasse', 'Strasse', array() )
+                                        , 5 ),
+                                    new FormColumn(
+                                        new NumberField( 'Street[Number]', 'Hausnummer', 'Hausnummer' )
+                                        , 2 ),
+                                    new FormColumn(
+                                        new NumberField( 'PostOffice[Box]', 'Postfach', 'Postfach' )
+                                        , 5 ),
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new AutoCompleter( 'City[Code]', 'Postleitzahl', 'Postleitzahl', array() )
+                                        , 2 ),
+                                    new FormColumn(
+                                        new AutoCompleter( 'City[Name]', 'Ort', 'Ort', array() )
+                                        , 5 ),
+                                    new FormColumn(
+                                        new AutoCompleter( 'City[District]', 'Ortsteil', 'Ortsteil', array() )
+                                        , 5 ),
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new SelectBox( 'State', 'Bundesland', array(
+                                            'Name' => $tblAddressState
+                                        ) )
+                                        , 5 ),
+                                ) ),
+                            ) ), new SubmitPrimary( 'Adresse hinzufügen' ) )
+                    ) )
+                ) ),
+            ), new LayoutTitle( 'Adressdaten' ) )
+        );
+
     }
 }

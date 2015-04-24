@@ -2,6 +2,9 @@
 namespace KREDA\Sphere\Application\Assistance\Frontend;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Info;
@@ -167,6 +170,34 @@ class Application extends AbstractFrontend
             .new Info( 'Die Anwendung wird gerade auf den neuesten Stand gebracht' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
             .new Success( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
+        );
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stageSignature()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Sicherheit' );
+        $View->setDescription( 'Parameter' );
+        $View->setMessage( '<strong>Problem:</strong> Die Anwendung darf die Anfrage nicht verarbeiten' );
+        $View->setContent(
+            '<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
+            .new Danger( 'Das System hat fehlerhafte oder mutwillig veränderte Eingabedaten erkannt',
+                new WarningIcon() )
+
+            .new Warning( 'Bitte ändern Sie keine Daten in der Url und verwenden Sie nur die vom System erzeugten Anfragen',
+                new TagIcon()
+            )
+            .new Info( 'Bitte führen Sie Anfragen an das System nicht über Tagesgrenzen hinweg aus',
+                new TagIcon()
+            )
+            .new Success( 'Alle Parameter wurden aus Sicherheitsgründen ignoriert',
+                new OkIcon()
+            )
         );
         return $View;
     }

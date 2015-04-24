@@ -81,8 +81,8 @@ if (false) {
 //$Less->parse( '@breadcrumb-padding-vertical: 2px;' );
 //$Less->parse( '@breadcrumb-padding-horizontal: 0;' );
 //
-//    $Less->parse( '@table-cell-padding: 6px;' );
-//    $Less->parse( '@table-condensed-cell-padding: 5px;' );
+    $Less->parse( '@table-cell-padding: 6px;' );
+    $Less->parse( '@table-condensed-cell-padding: 5px;' );
 
 // Component
     $Less->parse( '@padding-base-vertical: 4px;' );
@@ -102,6 +102,8 @@ if (false) {
 //    $Less->parse( '@component-active-bg: @brand-primary;' );
 //    $Less->parse( '@caret-width-base: 4px;' );
 //    $Less->parse( '@caret-width-large: 5px;' );
+
+    $Less->parse( '@form-group-margin-bottom: 10px;' );
 
     $Style = FileSystem::getFileWriter( __DIR__.'/Sphere/Client/Style/Bootstrap.css' )->getLocation();
     file_put_contents( $Style, $Less->getCss() );

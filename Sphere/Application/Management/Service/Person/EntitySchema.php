@@ -154,7 +154,9 @@ abstract class EntitySchema extends AbstractService
         $this->schemaTableAddForeignKey( $Table, $tblPersonType );
         $this->schemaTableAddForeignKey( $Table, $tblPersonGender );
         $this->schemaTableAddForeignKey( $Table, $tblPersonSalutation );
-
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'Remark' )) {
+            $Table->addColumn( 'Remark', 'text', array( 'notnull' => false ) );
+        }
         return $Table;
     }
 

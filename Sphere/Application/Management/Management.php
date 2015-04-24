@@ -90,6 +90,24 @@ class Management extends Module\Education
     }
 
     /**
+     * @return Service\Student
+     */
+    public static function serviceStudent()
+    {
+
+        return Service\Student::getApi();
+    }
+
+    /**
+     * @return Service\Course
+     */
+    public static function serviceCourse()
+    {
+
+        return Service\Course::getApi();
+    }
+
+    /**
      * @param Data $Data
      *
      * @return bool|string

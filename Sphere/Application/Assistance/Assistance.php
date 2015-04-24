@@ -251,6 +251,17 @@ class Assistance extends AbstractApplication
     /**
      * @return Stage
      */
+    public static function frontendApplicationSignature()
+    {
+
+        self::setupModuleNavigation();
+        self::setupFrontendApplication();
+        return Application::stageSignature();
+    }
+
+    /**
+     * @return Stage
+     */
     public static function frontendApplicationUpdate()
     {
 

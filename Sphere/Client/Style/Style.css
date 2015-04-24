@@ -29,7 +29,7 @@ h3 {
 h4 {
     border-bottom: 1px dotted silver;
     padding-bottom: 5px;
-    margin-top: 25px;
+    margin-top: 30px;
 }
 
 h4:before {
@@ -64,12 +64,21 @@ label {
     margin-bottom: 5px;
 }
 
+/* SELECTER RESPONSIVE */
+
+.input-group .selecter.open .selecter-selected {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.selecter .selecter-selected {
+    padding: 4px 8px;
+}
 .input-group .selecter-selected {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     padding: 4px 8px;
 }
-
 .input-group .selecter-selected:after {
     top: 13px;
 }
@@ -116,7 +125,7 @@ label {
 }
 
 table.dataTable thead > tr > th {
-    padding-left: 8px;
+    padding-left: 5px;
     padding-right: 18px;
 }
 

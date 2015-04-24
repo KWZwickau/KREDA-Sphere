@@ -2,11 +2,8 @@
 namespace KREDA\Sphere\Application\Management\Module;
 
 use KREDA\Sphere\Application\Management\Frontend\Education as Frontend;
-use KREDA\Sphere\Application\Management\Frontend\Education\Definition;
-use KREDA\Sphere\Application\Management\Frontend\Education\Setup;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
 use KREDA\Sphere\Client\Configuration;
 
 /**
@@ -32,24 +29,22 @@ class Education extends Campus
         );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Education/Setup', __CLASS__.'::frontendEducationSetup'
+            '/Sphere/Management/Education/Subject', __CLASS__.'::frontendEducationSubject'
         )
-            ->setParameterDefault( 'Term', null )
-            ->setParameterDefault( 'Level', null )
-            ->setParameterDefault( 'Group', null )
             ->setParameterDefault( 'Subject', null );
-
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Education/Definition', __CLASS__.'::frontendEducationDefinition'
+            '/Sphere/Management/Education/Subject/Category', __CLASS__.'::frontendEducationSubjectCategory'
         );
 
-//
-//        self::registerClientRoute( self::$Configuration,
-//            '/Sphere/Management/Education/Period', __CLASS__.'::frontendPeriod'
-//        );
-//        self::registerClientRoute( self::$Configuration,
-//            '/Sphere/Management/Education/Mission', __CLASS__.'::frontendMission'
-//        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Education/Group', __CLASS__.'::frontendEducationGroup'
+        )
+            ->setParameterDefault( 'Level', null )
+            ->setParameterDefault( 'Group', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Education/Composition', __CLASS__.'::frontendEducationComposition'
+        );
     }
 
     /**
@@ -70,37 +65,62 @@ class Education extends Campus
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Setup', 'Grunddaten', new CogWheelsIcon()
+            '/Sphere/Management/Education/Subject', 'Fächer', new CogWheelsIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Definition', 'Klassenerstellung', new ShareIcon()
+            '/Sphere/Management/Education/Group', 'Klassen', new CogWheelsIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Education/Composition', 'Fach-Klassen', new CogWheelsIcon()
         );
     }
 
     /**
-     * @param null|array $Term
-     * @param null|array $Level
-     * @param null|array $Group
      * @param null|array $Subject
      *
      * @return Stage
      */
-    public static function frontendEducationSetup( $Term, $Level, $Group, $Subject )
+    public static function frontendEducationSubject( $Subject )
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Setup::stageSetup( $Term, $Level, $Group, $Subject );
+        return Frontend::stageSubject( $Subject );
     }
 
     /**
      * @return Stage
      */
-    public static function frontendEducationDefinition()
+    public static function frontendEducationSubjectCategory()
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Definition::stageDefinition();
+        return Frontend::stageSubjectCategory();
+    }
+
+    /**
+     * @param null|array $Level
+     * @param null|array $Group
+     *
+     * @return Stage
+     */
+    public static function frontendEducationGroup( $Level, $Group )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageGroup( $Level, $Group );
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendEducationComposition()
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageComposition();
     }
 }

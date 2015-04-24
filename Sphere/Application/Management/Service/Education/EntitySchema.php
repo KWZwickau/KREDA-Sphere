@@ -74,7 +74,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblTerm', 'SecondDateTo' )) {
             $Table->addColumn( 'SecondDateTo', 'date' );
         }
-
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblTerm', 'serviceManagement_Course' )) {
+            $Table->addColumn( 'serviceManagement_Course', 'bigint' );
+        }
         return $Table;
     }
 
@@ -94,11 +96,14 @@ abstract class EntitySchema extends AbstractService
         /**
          * Upgrade
          */
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblSubject', 'Acronym' )) {
+            $Table->addColumn( 'Acronym', 'string' );
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblSubject', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblSubject', 'Acronym' )) {
-            $Table->addColumn( 'Acronym', 'string' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblSubject', 'ActiveState' )) {
+            $Table->addColumn( 'ActiveState', 'boolean' );
         }
 
         return $Table;
@@ -124,7 +129,7 @@ abstract class EntitySchema extends AbstractService
             $Table->addColumn( 'Name', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblLevel', 'Description' )) {
-            $Table->addColumn( 'Description', 'string' );
+            $Table->addColumn( 'Description', 'string', array( 'notnull' => false ) );
         }
 
         return $Table;
@@ -150,7 +155,7 @@ abstract class EntitySchema extends AbstractService
             $Table->addColumn( 'Name', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblGroup', 'Description' )) {
-            $Table->addColumn( 'Description', 'string' );
+            $Table->addColumn( 'Description', 'string', array( 'notnull' => false ) );
         }
 
         return $Table;

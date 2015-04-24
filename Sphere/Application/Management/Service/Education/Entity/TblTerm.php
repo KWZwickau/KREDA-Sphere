@@ -5,6 +5,8 @@ use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Course\Entity\TblCourse;
 use KREDA\Sphere\Application\Management\Service\Education;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -17,6 +19,7 @@ class TblTerm extends AbstractEntity
 {
 
     const ATTR_NAME = 'Name';
+    const ATTR_SERVICE_MANAGEMENT_COURSE = 'serviceManagement_Course';
 
     /**
      * @Column(type="string")
@@ -38,6 +41,10 @@ class TblTerm extends AbstractEntity
      * @Column(type="date")
      */
     protected $SecondDateTo;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $serviceManagement_Course;
 
     /**
      * @param string $Name
@@ -156,5 +163,27 @@ class TblTerm extends AbstractEntity
     {
 
         $this->Name = $Name;
+    }
+
+    /**
+     * @return bool|TblCourse
+     */
+    public function getServiceManagementCourse()
+    {
+
+        if (null === $this->serviceManagement_Course) {
+            return false;
+        } else {
+            return Management::serviceCourse()->entityCourseById( $this->serviceManagement_Course );
+        }
+    }
+
+    /**
+     * @param null|TblCourse $tblCourse
+     */
+    public function setServiceManagementCourse( TblCourse $tblCourse = null )
+    {
+
+        $this->serviceManagement_Course = ( null === $tblCourse ? null : $tblCourse->getId() );
     }
 }

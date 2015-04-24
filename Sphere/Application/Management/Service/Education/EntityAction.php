@@ -1,10 +1,12 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service\Education;
 
+use KREDA\Sphere\Application\Management\Service\Course\Entity\TblCourse;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblCategory;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblGroup;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblLevel;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
+use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectCategory;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblTerm;
 use KREDA\Sphere\Application\System\System;
@@ -32,6 +34,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblSubject( $Acronym );
             $Entity->setName( $Name );
+            $Entity->setActiveState( true );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
@@ -40,16 +43,23 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param string $Name
-     * @param string $FirstDateFrom
-     * @param string $FirstDateTo
-     * @param string $SecondDateFrom
-     * @param string $SecondDateTo
+     * @param string    $Name
+     * @param string    $FirstDateFrom
+     * @param string    $FirstDateTo
+     * @param string    $SecondDateFrom
+     * @param string    $SecondDateTo
+     * @param TblCourse $tblCourse
      *
      * @return TblTerm
      */
-    protected function actionCreateTerm( $Name, $FirstDateFrom, $FirstDateTo, $SecondDateFrom, $SecondDateTo )
-    {
+    protected function actionCreateTerm(
+        $Name,
+        $FirstDateFrom,
+        $FirstDateTo,
+        $SecondDateFrom,
+        $SecondDateTo,
+        TblCourse $tblCourse
+    ) {
 
         $Manager = $this->getEntityManager();
         $Entity = $Manager->getEntity( 'TblTerm' )
@@ -60,6 +70,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setFirstDateTo( new \DateTime( $FirstDateTo ) );
             $Entity->setSecondDateFrom( new \DateTime( $SecondDateFrom ) );
             $Entity->setSecondDateTo( new \DateTime( $SecondDateTo ) );
+            $Entity->setServiceManagementCourse( $tblCourse );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
@@ -89,10 +100,11 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param string $Name
+     * @param string $Description
      *
      * @return TblGroup
      */
-    protected function actionCreateGroup( $Name )
+    protected function actionCreateGroup( $Name, $Description )
     {
 
         $Manager = $this->getEntityManager();
@@ -100,6 +112,7 @@ abstract class EntityAction extends EntitySchema
             ->findOneBy( array( TblGroup::ATTR_NAME => $Name ) );
         if (null === $Entity) {
             $Entity = new TblGroup( $Name );
+            $Entity->setDescription( $Description );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
@@ -122,6 +135,34 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblLevel( $Name );
             $Entity->setDescription( $Description );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
+     * @param TblSubject  $tblSubject
+     * @param TblCategory $tblCategory
+     *
+     * @return TblSubjectCategory
+     */
+    protected function actionAddSubjectCategory(
+        TblSubject $tblSubject,
+        TblCategory $tblCategory
+    ) {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblSubjectCategory' )
+            ->findOneBy( array(
+                TblSubjectCategory::ATTR_TBL_SUBJECT  => $tblSubject->getId(),
+                TblSubjectCategory::ATTR_TBL_CATEGORY => $tblCategory->getId(),
+            ) );
+        if (null === $Entity) {
+            $Entity = new TblSubjectCategory();
+            $Entity->setTblSubject( $tblSubject );
+            $Entity->setTblCategory( $tblCategory );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
@@ -189,6 +230,25 @@ abstract class EntityAction extends EntitySchema
         $Entity = $this->getEntityManager()->getEntity( 'TblSubject' )
             ->findOneBy( array( TblSubject::ATTR_ACRONYM => $Acronym ) );
         return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblCategory $tblCategory
+     *
+     * @return bool|TblSubject[]
+     */
+    protected function entitySubjectAllByCategory( TblCategory $tblCategory )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblSubjectCategory' )
+            ->findBy( array( TblSubjectCategory::ATTR_TBL_CATEGORY => $tblCategory->getId() ) );
+        if (!empty( $EntityList )) {
+            array_walk( $EntityList, function ( TblSubjectCategory &$tblSubjectCategory ) {
+
+                $tblSubjectCategory = $tblSubjectCategory->getTblSubject();
+            } );
+        }
+        return ( null === $EntityList ? false : $EntityList );
     }
 
     /**
@@ -325,5 +385,18 @@ abstract class EntityAction extends EntitySchema
         } else {
             return $Entity;
         }
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblCategory
+     */
+    protected function entityCategoryByName( $Name )
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblCategory' )
+            ->findOneBy( array( TblCategory::ATTR_NAME => $Name ) );
+        return ( null === $Entity ? false : $Entity );
     }
 }

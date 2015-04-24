@@ -40,7 +40,7 @@ class Common extends AbstractApplication
             '/Sphere/System/Cache/Status', 'Cache', new HistoryIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/System/Database', 'Datenbank', new DatabaseIcon()
+            '/Sphere/System/Database/Status', 'Datenbank', new DatabaseIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/System/Update', 'Update', new FlashIcon()

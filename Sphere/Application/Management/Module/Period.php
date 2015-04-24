@@ -32,7 +32,8 @@ class Period extends Common
         )
             ->setParameterDefault( 'Name', null )
             ->setParameterDefault( 'FirstTerm', null )
-            ->setParameterDefault( 'SecondTerm', null );
+            ->setParameterDefault( 'SecondTerm', null )
+            ->setParameterDefault( 'Course', null );
     }
 
     /**
@@ -63,14 +64,15 @@ class Period extends Common
      * @param null|string $Name
      * @param null|array  $FirstTerm
      * @param null|array  $SecondTerm
+     * @param null|int    $Course
      *
      * @return Stage
      */
-    public static function frontendSchoolYear( $Name, $FirstTerm, $SecondTerm )
+    public static function frontendSchoolYear( $Name, $FirstTerm, $SecondTerm, $Course )
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageSchoolYear( $Name, $FirstTerm, $SecondTerm );
+        return Frontend::stageSchoolYear( $Name, $FirstTerm, $SecondTerm, $Course );
     }
 }

@@ -17,6 +17,7 @@ class TblSubject extends AbstractEntity
 
     const ATTR_NAME = 'Name';
     const ATTR_ACRONYM = 'Acronym';
+    const ATTR_ACTIVE_STATE = 'ActiveState';
 
     /**
      * @Column(type="string")
@@ -26,6 +27,10 @@ class TblSubject extends AbstractEntity
      * @Column(type="string")
      */
     protected $Name;
+    /**
+     * @Column(type="boolean")
+     */
+    protected $ActiveState = true;
 
     /**
      * @param string $Acronym
@@ -70,5 +75,23 @@ class TblSubject extends AbstractEntity
     {
 
         $this->Name = $Name;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getActiveState()
+    {
+
+        return $this->ActiveState;
+    }
+
+    /**
+     * @param boolean $ActiveState
+     */
+    public function setActiveState( $ActiveState )
+    {
+
+        $this->ActiveState = $ActiveState;
     }
 }

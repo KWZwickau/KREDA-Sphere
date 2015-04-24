@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblCategory;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblGroup;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblLevel;
@@ -9,6 +10,7 @@ use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblTerm;
 use KREDA\Sphere\Application\Management\Service\Education\EntityAction;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 
@@ -39,10 +41,6 @@ class Education extends EntityAction
         $this->actionCreateSubject( 'Bio', 'Biologie' );
         $this->actionCreateSubject( 'Ch', 'Chemie' );
         $this->actionCreateSubject( 'De', 'Deutsch' );
-        $this->actionCreateSubject( 'DaZ', 'Deutsch als Zweitsprache' );
-        $this->actionCreateSubject( 'En', 'Englisch' );
-        $this->actionCreateSubject( 'Eth', 'Ethik' );
-        $this->actionCreateSubject( 'Fr', 'Französisch' );
         $this->actionCreateSubject( 'FöMa', 'Förderunterricht Mathematik' );
         $this->actionCreateSubject( 'GK', 'Gemeinschaftskunde/Rechtserziehung' );
         $this->actionCreateSubject( 'Geo', 'Geographie' );
@@ -51,21 +49,46 @@ class Education extends EntityAction
         $this->actionCreateSubject( 'KL', 'Klassenleiterstunde' );
         $this->actionCreateSubject( 'Ku', 'Kunst' );
         $this->actionCreateSubject( 'Pk', 'Künstlerisches Profil' );
-        $this->actionCreateSubject( 'La', 'Latein' );
         $this->actionCreateSubject( 'Ma', 'Mathematik' );
         $this->actionCreateSubject( 'Mu', 'Musik' );
-        $this->actionCreateSubject( 'Nk', 'Neigungskurs' );
         $this->actionCreateSubject( 'Ph', 'Physik' );
-        $this->actionCreateSubject( 'Pg', 'Profil Geisteswissensch.' );
-        $this->actionCreateSubject( 'Pn', 'Profil Naturwissenschaften' );
-        $this->actionCreateSubject( 'ReE', 'Religion evangelisch' );
-        $this->actionCreateSubject( 'Ru', 'Russisch' );
-        $this->actionCreateSubject( 'Sor', 'Sorbisch' );
         $this->actionCreateSubject( 'Spo', 'Sport' );
         $this->actionCreateSubject( 'TuN', 'Technik und Natur' );
         $this->actionCreateSubject( 'TC', 'Technik/Computer' );
         $this->actionCreateSubject( 'VK', 'Vertiefungskurs' );
         $this->actionCreateSubject( 'WTH', 'Wirtschaft-Technik-Haushalt/Soziales' );
+
+        $tblCategory = $this->actionCreateCategory( 'Religion' );
+
+        $tblSubject = $this->actionCreateSubject( 'Eth', 'Ethik' );
+        $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
+        $tblSubject = $this->actionCreateSubject( 'ReE', 'Religion evangelisch' );
+        $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
+
+        $tblCategory = $this->actionCreateCategory( 'Fremdsprache' );
+
+        $tblSubject = $this->actionCreateSubject( 'La', 'Latein' );
+        $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
+        $tblSubject = $this->actionCreateSubject( 'En', 'Englisch' );
+        $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
+        $tblSubject = $this->actionCreateSubject( 'Fr', 'Französisch' );
+        $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
+        $tblSubject = $this->actionCreateSubject( 'Ru', 'Russisch' );
+        $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
+        $tblSubject = $this->actionCreateSubject( 'Sor', 'Sorbisch' );
+        $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
+        $tblSubject = $this->actionCreateSubject( 'DaZ', 'Deutsch als Zweitsprache' );
+        $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
+
+        $tblCategory = $this->actionCreateCategory( 'Profil' );
+        $tblSubject = $this->actionCreateSubject( 'Pg', 'Profil Geisteswissensch.' );
+        $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
+        $tblSubject = $this->actionCreateSubject( 'Pn', 'Profil Naturwissenschaften' );
+        $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
+
+        $tblCategory = $this->actionCreateCategory( 'Neigungskurs' );
+        $tblSubject = $this->actionCreateSubject( 'Nk', 'Neigungskurs' );
+        $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
     }
 
     /**
@@ -135,12 +158,34 @@ class Education extends EntityAction
     }
 
     /**
+     * @param string $Name
+     *
+     * @return bool|TblCategory
+     */
+    public function entityCategoryByName( $Name )
+    {
+
+        return parent::entityCategoryByName( $Name );
+    }
+
+    /**
      * @return bool|TblSubject[]
      */
     public function entitySubjectAll()
     {
 
         return parent::entitySubjectAll();
+    }
+
+    /**
+     * @param TblCategory $tblCategory
+     *
+     * @return bool|TblSubject[]
+     */
+    public function entitySubjectAllByCategory( TblCategory $tblCategory )
+    {
+
+        return parent::entitySubjectAllByCategory( $tblCategory );
     }
 
     /**
@@ -175,10 +220,11 @@ class Education extends EntityAction
      * @param array        $Name
      * @param array        $FirstTerm
      * @param array        $SecondTerm
+     * @param int          $Course
      *
      * @return AbstractType|Redirect
      */
-    public function executeCreateTerm( AbstractType &$View, $Name, $FirstTerm, $SecondTerm )
+    public function executeCreateTerm( AbstractType &$View, $Name, $FirstTerm, $SecondTerm, $Course )
     {
 
         if (
@@ -216,11 +262,18 @@ class Education extends EntityAction
             $View->setError( 'SecondTerm[DateTo]', 'Bitte geben Sie ein Ende-Datum an' );
             $Error = true;
         }
+        if (isset( $Course ) && !empty( $Course )) {
+            if (!Management::serviceCourse()->entityCourseById( $Course )) {
+                $View->setError( 'Course', 'Bitte wählen Sie einen verfügbaren Bildungsgang' );
+                $Error = true;
+            }
+        }
+
         if ($Error) {
             return $View;
         } else {
             $this->actionCreateTerm( $Name, $FirstTerm['DateFrom'], $FirstTerm['DateTo'], $SecondTerm['DateFrom'],
-                $SecondTerm['DateTo'] );
+                $SecondTerm['DateTo'], Management::serviceCourse()->entityCourseById( $Course ) );
             return new Redirect( '/Sphere/Management/Period/SchoolYear', 0 );
         }
     }
@@ -258,7 +311,7 @@ class Education extends EntityAction
             return $View;
         } else {
             $this->actionCreateSubject( $Subject['Acronym'], $Subject['Name'] );
-            return new Redirect( '/Sphere/Management/Education/Setup', 0 );
+            return new Redirect( '/Sphere/Management/Education/Subject', 0 );
         }
     }
 
@@ -291,7 +344,8 @@ class Education extends EntityAction
             return $View;
         } else {
             $this->actionCreateLevel( $Level['Name'], $Level['Description'] );
-            return new Redirect( '/Sphere/Management/Education/Setup', 0 );
+            return new Success( 'Die Klassenstufe wurde erfolgreich angelegt' )
+            .new Redirect( '/Sphere/Management/Education/Group', 0 );
         }
     }
 
@@ -324,7 +378,8 @@ class Education extends EntityAction
             return $View;
         } else {
             $this->actionCreateGroup( $Group['Name'], $Group['Description'] );
-            return new Redirect( '/Sphere/Management/Education/Setup', 0 );
+            return new Success( 'Die Klassengruppe wurde erfolgreich angelegt' )
+            .new Redirect( '/Sphere/Management/Education/Group', 0 );
         }
     }
 

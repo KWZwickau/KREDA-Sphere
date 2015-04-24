@@ -71,6 +71,10 @@ class TblPerson extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $tblPersonGender;
+    /**
+     * @Column(type="text")
+     */
+    protected $Remark;
 
     /**
      * @return string
@@ -276,5 +280,27 @@ class TblPerson extends AbstractEntity
     {
 
         $this->Title = $Title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemark()
+    {
+
+        return $this->Remark;
+    }
+
+    /**
+     * @param string $Remark
+     */
+    public function setRemark( $Remark )
+    {
+
+        if (empty( $Remark )) {
+            $this->Remark = null;
+        } else {
+            $this->Remark = $Remark;
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Management\Service;
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonGender;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipList;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipType;
@@ -207,7 +208,7 @@ class Person extends EntityAction
                 $tblPerson, $PersonName['Title'], $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
                 $BirthDetail['Date'],
                 $BirthDetail['Place'], $PersonInformation['Nationality'], $tblPersonSalutation, $tblPersonGender,
-                $tblPersonType
+                $tblPersonType, $PersonInformation['Remark']
             )
             ) {
                 $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
@@ -341,7 +342,7 @@ class Person extends EntityAction
                 $PersonName['Title'], $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
                 $BirthDetail['Date'],
                 $BirthDetail['Place'], $PersonInformation['Nationality'], $tblPersonSalutation, $tblPersonGender,
-                $tblPersonType
+                $tblPersonType, $PersonInformation['Remark']
             );
             if ($Button['Submit'] == 'Anlegen') {
                 return new Success( 'Die Person wurde erfolgreich angelegt' )
@@ -555,5 +556,39 @@ class Person extends EntityAction
     {
 
         return parent::getTablePerson();
+    }
+
+    /**
+     * @param int $tblPerson
+     * @param int $tblAddress
+     *
+     * @return TblPersonAddress
+     */
+    public function executeAddAddress(
+        $tblPerson,
+        $tblAddress
+    ) {
+
+        $tblPerson = $this->entityPersonById( $tblPerson );
+        $tblAddress = Management::serviceAddress()->entityAddressById( $tblAddress );
+
+        return parent::actionAddAddress( $tblPerson, $tblAddress );
+    }
+
+    /**
+     * @param int $tblPerson
+     * @param int $tblAddress
+     *
+     * @return TblPersonAddress
+     */
+    public function executeRemoveAddress(
+        $tblPerson,
+        $tblAddress
+    ) {
+
+        $tblPerson = $this->entityPersonById( $tblPerson );
+        $tblAddress = Management::serviceAddress()->entityAddressById( $tblAddress );
+
+        return parent::actionRemoveAddress( $tblPerson, $tblAddress );
     }
 }

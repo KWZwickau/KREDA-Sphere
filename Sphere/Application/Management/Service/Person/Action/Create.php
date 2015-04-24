@@ -112,6 +112,8 @@ abstract class Create extends Entity
      * @param TblPersonGender     $tblPersonGender
      * @param TblPersonType       $tblPersonType
      *
+     * @param null $Remark
+     *
      * @return TblPerson
      */
     protected function actionCreatePerson(
@@ -124,7 +126,8 @@ abstract class Create extends Entity
         $Nationality,
         $tblPersonSalutation,
         $tblPersonGender,
-        $tblPersonType
+        $tblPersonType,
+        $Remark = null
     ) {
 
         $Manager = $this->getEntityManager();
@@ -140,6 +143,7 @@ abstract class Create extends Entity
         $Entity->setBirthplace( $Birthplace );
         $Entity->setNationality( $Nationality );
         $Entity->setTblPersonType( $tblPersonType );
+        $Entity->setRemark( $Remark );
         $Manager->saveEntity( $Entity );
         System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
 

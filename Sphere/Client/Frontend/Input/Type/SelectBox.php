@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Client\Frontend\Input\Type;
 use KREDA\Sphere\Client\Component\Parameter\Repository\AbstractIcon;
 use KREDA\Sphere\Client\Frontend\Input\AbstractType;
 use KREDA\Sphere\Common\AbstractEntity;
+use MOC\V\Component\Template\Template;
 
 /**
  * Class SelectBox
@@ -30,16 +31,38 @@ class SelectBox extends AbstractType
         $this->Template = $this->extensionTemplate( __DIR__.'/SelectBox.twig' );
         $this->Template->setVariable( 'ElementName', $Name );
         $this->Template->setVariable( 'ElementLabel', $Label );
+        // Data is Entity-List ?
         if (count( $Data ) == 1 && !is_numeric( key( $Data ) )) {
             $Attribute = key( $Data );
             $Convert = array();
-            /** @var AbstractEntity $Entity */
-            foreach ((array)$Data[$Attribute] as $Entity) {
-                if (is_object( $Entity )) {
-                    if (method_exists( $Entity, 'get'.$Attribute )) {
-                        $Convert[$Entity->getId()] = $Entity->{'get'.$Attribute}();
-                    } else {
-                        $Convert[$Entity->getId()] = $Entity->{$Attribute};
+            // Attribute is Twig-Template ?
+            if (preg_match_all( '/\{\%\s*(.*)\s*\%\}|\{\{(?!%)\s*((?:[^\s])*)\s*(?<!%)\}\}/i',
+                $Attribute,
+                $Placeholder )
+            ) {
+                /** @var AbstractEntity $Entity */
+                foreach ((array)$Data[$Attribute] as $Entity) {
+                    if (is_object( $Entity )) {
+                        $Template = Template::getTwigTemplateString( $Attribute );
+                        foreach ((array)$Placeholder[2] as $Variable) {
+                            if (method_exists( $Entity, 'get'.$Variable )) {
+                                $Template->setVariable( $Variable, $Entity->{'get'.$Variable}() );
+                            } else {
+                                $Template->setVariable( $Variable, $Entity->{$Variable} );
+                            }
+                        }
+                        $Convert[$Entity->getId()] = $Template->getContent();
+                    }
+                }
+            } else {
+                /** @var AbstractEntity $Entity */
+                foreach ((array)$Data[$Attribute] as $Entity) {
+                    if (is_object( $Entity )) {
+                        if (method_exists( $Entity, 'get'.$Attribute )) {
+                            $Convert[$Entity->getId()] = $Entity->{'get'.$Attribute}();
+                        } else {
+                            $Convert[$Entity->getId()] = $Entity->{$Attribute};
+                        }
                     }
                 }
             }

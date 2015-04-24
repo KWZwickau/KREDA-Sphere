@@ -1,7 +1,9 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service\Person\Action;
 
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonGender;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipList;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipType;
@@ -33,6 +35,8 @@ abstract class Change extends Create
      * @param TblPersonGender     $tblPersonGender
      * @param TblPersonType       $tblPersonType
      *
+     * @param null $Remark
+     *
      * @return bool
      */
     protected function actionChangePerson(
@@ -46,7 +50,8 @@ abstract class Change extends Create
         $Nationality,
         $tblPersonSalutation,
         $tblPersonGender,
-        $tblPersonType
+        $tblPersonType,
+        $Remark = null
     ) {
 
         $Manager = $this->getEntityManager();
@@ -64,6 +69,7 @@ abstract class Change extends Create
             $Entity->setBirthplace( $Birthplace );
             $Entity->setNationality( $Nationality );
             $Entity->setTblPersonType( $tblPersonType );
+            $Entity->setRemark( $Remark );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Protocol,
@@ -125,6 +131,61 @@ abstract class Change extends Create
                 TblPersonRelationshipList::ATTR_TBL_PERSON_A                 => $tblPersonA->getId(),
                 TblPersonRelationshipList::ATTR_TBL_PERSON_B                 => $tblPersonB->getId(),
                 TblPersonRelationshipList::ATTR_TBL_PERSON_RELATIONSHIP_TYPE => $tblPersonRelationshipType->getId()
+            ) );
+        if (null !== $Entity) {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblPerson  $tblPerson
+     * @param TblAddress $tblAddress
+     *
+     * @return TblPersonAddress
+     */
+    protected function actionAddAddress(
+        TblPerson $tblPerson,
+        TblAddress $tblAddress
+    ) {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblPersonAddress' )
+            ->findOneBy( array(
+                TblPersonAddress::ATTR_TBL_PERSON                 => $tblPerson->getId(),
+                TblPersonAddress::ATTR_SERVICE_MANAGEMENT_ADDRESS => $tblAddress->getId(),
+            ) );
+        if (null === $Entity) {
+            $Entity = new TblPersonAddress();
+            $Entity->setTblPerson( $tblPerson );
+            $Entity->setTblAddress( $tblAddress );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+        return $Entity;
+    }
+
+    /**
+     * @param TblPerson  $tblPerson
+     * @param TblAddress $tblAddress
+     *
+     * @return bool
+     */
+    protected function actionRemoveAddress(
+        TblPerson $tblPerson,
+        TblAddress $tblAddress
+    ) {
+
+        $Manager = $this->getEntityManager();
+        /** @var TblPersonAddress $Entity */
+        $Entity = $Manager->getEntity( 'TblPersonAddress' )
+            ->findOneBy( array(
+                TblPersonAddress::ATTR_TBL_PERSON                 => $tblPerson->getId(),
+                TblPersonAddress::ATTR_SERVICE_MANAGEMENT_ADDRESS => $tblAddress->getId(),
             ) );
         if (null !== $Entity) {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
