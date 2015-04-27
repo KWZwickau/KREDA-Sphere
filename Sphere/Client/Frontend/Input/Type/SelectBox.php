@@ -45,10 +45,15 @@ class SelectBox extends AbstractType
                     if (is_object( $Entity )) {
                         $Template = Template::getTwigTemplateString( $Attribute );
                         foreach ((array)$Placeholder[2] as $Variable) {
-                            if (method_exists( $Entity, 'get'.$Variable )) {
-                                $Template->setVariable( $Variable, $Entity->{'get'.$Variable}() );
+                            $Chain = explode( '.', $Variable );
+                            if (count( $Chain ) > 1) {
+                                $Template->setVariable( $Chain[0], $Entity->{'get'.$Chain[0]}() );
                             } else {
-                                $Template->setVariable( $Variable, $Entity->{$Variable} );
+                                if (method_exists( $Entity, 'get'.$Variable )) {
+                                    $Template->setVariable( $Variable, $Entity->{'get'.$Variable}() );
+                                } else {
+                                    $Template->setVariable( $Variable, $Entity->{$Variable} );
+                                }
                             }
                         }
                         $Convert[$Entity->getId()] = $Template->getContent();

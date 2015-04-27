@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Management\Module;
 use KREDA\Sphere\Application\Management\Frontend\Education as Frontend;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EducationIcon;
 use KREDA\Sphere\Client\Configuration;
 
 /**
@@ -43,7 +44,13 @@ class Education extends Campus
             ->setParameterDefault( 'Group', null );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Education/Composition', __CLASS__.'::frontendEducationComposition'
+            '/Sphere/Management/Education/Session', __CLASS__.'::frontendEducationSubjectGroup'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Education/Student', __CLASS__.'::frontendEducationSubjectGroupStudent'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Education/Teacher', __CLASS__.'::frontendEducationSubjectGroupTeacher'
         );
     }
 
@@ -65,13 +72,19 @@ class Education extends Campus
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Subject', 'Fächer', new CogWheelsIcon()
+            '/Sphere/Management/Education/Subject', 'Schulfächer', new CogWheelsIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Group', 'Klassen', new CogWheelsIcon()
+            '/Sphere/Management/Education/Group', 'Schulklassen', new CogWheelsIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Management/Education/Composition', 'Fach-Klassen', new CogWheelsIcon()
+            '/Sphere/Management/Education/Session', 'Unterrichtsfächer', new EducationIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Education/Student', 'Unterrichtsgruppen', new EducationIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Education/Teacher', 'Lehraufträge', new EducationIcon()
         );
     }
 
@@ -116,11 +129,33 @@ class Education extends Campus
     /**
      * @return Stage
      */
-    public static function frontendEducationComposition()
+    public static function frontendEducationSubjectGroup()
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageComposition();
+        return Frontend::stageSubjectGroup();
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendEducationSubjectGroupStudent()
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageSubjectGroupStudent();
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendEducationSubjectGroupTeacher()
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageSubjectGroupTeacher();
     }
 }

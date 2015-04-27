@@ -4,7 +4,7 @@ namespace KREDA\Sphere\Application\Management\Frontend;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup;
-use KREDA\Sphere\Application\Management\Service\Education\Entity\TblTerm;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EducationIcon;
@@ -28,6 +28,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Message\Type\Info;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Client\Frontend\Text\Type\Danger as DangerText;
 use KREDA\Sphere\Client\Frontend\Text\Type\Muted;
@@ -210,11 +211,11 @@ class Education extends AbstractFrontend
     /**
      * @return Stage
      */
-    public static function stageComposition()
+    public static function stageSubjectGroup()
     {
 
         $View = new Stage();
-        $View->setTitle( 'Fach-Klassen' );
+        $View->setTitle( 'Unterrichtsfächer' );
 
         $tblSubjectGroup = Management::serviceEducation()->entitySubjectGroupAll();
         if (!empty( $tblSubjectGroup )) {
@@ -246,32 +247,26 @@ class Education extends AbstractFrontend
         $tblGroup = Management::serviceEducation()->entityGroupAll();
         $tblSubject = Management::serviceEducation()->entitySubjectAll();
         $tblTerm = Management::serviceEducation()->entityTermAll();
-        if (!empty( $tblTerm )) {
-            array_walk( $tblTerm, function ( TblTerm &$tblTerm ) {
-
-                $tblTerm->Title = $tblTerm->getName().' '.$tblTerm->getServiceManagementCourse()->getName();
-            } );
-        }
 
         $View->setContent(
             new Layout(
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn( array(
-                            new LayoutTitle( 'Bestehende Fach-Klassen', 'Kombinationen' ),
+                            new LayoutTitle( 'Bestehende Unterrichtsfächer' ),
                             new TableData( $tblSubjectGroup, null, array(
                                 'displayTerm'    => 'Zeitraum',
                                 'displayLevel'   => 'Stufe',
                                 'displayGroup'   => 'Gruppe',
                                 'displaySubject' => 'Fach',
                             ) ),
-                            new LayoutTitle( 'Kombination', 'hinzufügen' ),
+                            new LayoutTitle( 'Unterrichtsfach', 'hinzufügen' ),
                             new Form(
                                 new FormGroup( array(
                                     new FormRow( array(
                                         new FormColumn(
                                             new SelectBox( 'SubjectGroup[Term]', 'Zeitraum', array(
-                                                'Title' => $tblTerm
+                                                '{{Name}} {{ServiceManagementCourse.Name}}' => $tblTerm
                                             ), new TimeIcon() )
                                             , 3 ),
                                         new FormColumn(
@@ -295,14 +290,14 @@ class Education extends AbstractFrontend
                                     ) )
                                 ) )
                             ),
-                            new LayoutTitle( 'Fach-Klassen Kombinationen', 'aus Vorlage erstellen' ),
+                            new LayoutTitle( 'Unterrichtsfächer', 'aus Vorlage erstellen' ),
                             new Form(
                                 new FormGroup( array(
                                     new FormRow( array(
                                         new FormColumn( array(
                                             new Info( 'Kopieren von' ),
                                             new SelectBox( 'SubjectGroup[From][Term]', 'Zeitraum', array(
-                                                'Title' => $tblTerm
+                                                '{{Name}} {{ServiceManagementCourse.Name}}' => $tblTerm
                                             ), new TimeIcon() ),
                                             new SelectBox( 'SubjectGroup[From][Level]', 'Klassenstufe', array(
                                                 '[{{Name}}] {{Description}}' => Management::serviceEducation()->entityLevelAll()
@@ -314,7 +309,7 @@ class Education extends AbstractFrontend
                                         new FormColumn( array(
                                             new Info( 'Hinzufügen zu' ),
                                             new SelectBox( 'SubjectGroup[To][Term]', 'Zeitraum', array(
-                                                'Title' => $tblTerm
+                                                '{{Name}} {{ServiceManagementCourse.Name}}' => $tblTerm
                                             ), new TimeIcon() ),
                                             new SelectBox( 'SubjectGroup[To][Level]', 'Klassenstufe', array(
                                                 '[{{Name}}] {{Description}}' => Management::serviceEducation()->entityLevelAll()
@@ -339,6 +334,151 @@ class Education extends AbstractFrontend
                 ) )
             )
         );
+
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stageSubjectGroupStudent()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Unterrichtsgruppen' );
+
+        $tblSubjectGroup = Management::serviceEducation()->entitySubjectGroupAll();
+        if (!empty( $tblSubjectGroup )) {
+            array_walk( $tblSubjectGroup, function ( TblSubjectGroup &$tblSubjectGroup ) {
+
+                $tblSubjectGroup->displayTerm =
+                    new DangerText( $tblSubjectGroup->getTblTerm()->getName() )
+                    .new Muted(
+                        $tblSubjectGroup->getTblTerm()->getFirstDateFrom()
+                        .' - '.$tblSubjectGroup->getTblTerm()->getFirstDateTo()
+                    );
+
+                $tblSubjectGroup->displayLevel =
+                    new PrimaryText( $tblSubjectGroup->getTblLevel()->getName() )
+                    .new Muted( $tblSubjectGroup->getTblLevel()->getDescription() );
+
+                $tblSubjectGroup->displayGroup =
+                    new PrimaryText( $tblSubjectGroup->getTblGroup()->getName() )
+                    .new Muted( $tblSubjectGroup->getTblGroup()->getDescription() );
+
+                $tblSubjectGroup->displaySubject =
+                    new PrimaryText( $tblSubjectGroup->getTblSubject()->getAcronym() )
+                    .new Muted( $tblSubjectGroup->getTblSubject()->getName() );
+
+            } );
+        }
+
+        $tblStudentList = Management::servicePerson()->entityPersonAllByType(
+            Management::servicePerson()->entityPersonTypeByName( 'Schüler' )
+        );
+
+        /** @noinspection PhpUnusedParameterInspection */
+        array_walk( $tblStudentList, function ( TblPerson &$Entity, $Index, $Identifier ) {
+
+            /** @noinspection PhpUndefinedFieldInspection */
+            $Entity->Option = new ( new LayoutRight(
+                new Form( new FormGroup( new FormRow( new FormColumn(
+                    array(
+                        $Id,
+                        $Right,
+                        $Remove,
+                        new SubmitDanger( 'Entfernen' )
+                    )
+                ) ) ), null, '/Sphere/System/Authorization/Privilege/Right' )
+            ) )->__toString();
+        }, $Id );
+
+        $View->setContent(
+            new Layout(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            new LayoutTitle( 'Bestehende Unterrichtsfächer' ),
+                            new TableData( $tblSubjectGroup, null, array(
+                                'displayTerm'    => 'Zeitraum',
+                                'displayLevel'   => 'Stufe',
+                                'displayGroup'   => 'Gruppe',
+                                'displaySubject' => 'Fach',
+                            ) ),
+                            new LayoutTitle( 'Schüler', 'hinzufügen/entfernen' ),
+                        ) )
+                    ) ),
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            ( empty( $tblStudentList )
+                                ? new Warning( 'Keine Schüler zugewiesen' )
+                                : new TableData( $tblStudentList )
+                            )
+                        ), 6 ),
+                        new LayoutColumn( array(
+                            ( empty( $tblStudentList )
+                                ? new Warning( 'Keine Schüler verfügbar' )
+                                : new TableData( $tblStudentList )
+                            )
+                        ), 6 )
+                    ) )
+                ) )
+            ) );
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stageSubjectGroupTeacher()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Lehraufträge' );
+
+        $tblSubjectGroup = Management::serviceEducation()->entitySubjectGroupAll();
+        if (!empty( $tblSubjectGroup )) {
+            array_walk( $tblSubjectGroup, function ( TblSubjectGroup &$tblSubjectGroup ) {
+
+                $tblSubjectGroup->displayTerm =
+                    new DangerText( $tblSubjectGroup->getTblTerm()->getName() )
+                    .new Muted(
+                        $tblSubjectGroup->getTblTerm()->getFirstDateFrom()
+                        .' - '.$tblSubjectGroup->getTblTerm()->getFirstDateTo()
+                    );
+
+                $tblSubjectGroup->displayLevel =
+                    new PrimaryText( $tblSubjectGroup->getTblLevel()->getName() )
+                    .new Muted( $tblSubjectGroup->getTblLevel()->getDescription() );
+
+                $tblSubjectGroup->displayGroup =
+                    new PrimaryText( $tblSubjectGroup->getTblGroup()->getName() )
+                    .new Muted( $tblSubjectGroup->getTblGroup()->getDescription() );
+
+                $tblSubjectGroup->displaySubject =
+                    new PrimaryText( $tblSubjectGroup->getTblSubject()->getAcronym() )
+                    .new Muted( $tblSubjectGroup->getTblSubject()->getName() );
+
+            } );
+        }
+
+        $View->setContent(
+            new Layout(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            new LayoutTitle( 'Bestehende Unterrichtsfächer' ),
+                            new TableData( $tblSubjectGroup, null, array(
+                                'displayTerm'    => 'Zeitraum',
+                                'displayLevel'   => 'Stufe',
+                                'displayGroup'   => 'Gruppe',
+                                'displaySubject' => 'Fach',
+                            ) ),
+                            new LayoutTitle( 'Lehrer', 'hinzufügen/entfernen' ),
+                        ) )
+                    ) )
+                ) )
+            ) );
 
         return $View;
     }
