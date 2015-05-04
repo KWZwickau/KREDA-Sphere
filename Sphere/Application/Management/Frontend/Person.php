@@ -357,16 +357,24 @@ class Person extends AbstractFrontend
                 $FormPersonBasic->appendFormButton( new SubmitPrimary( 'Grunddaten speichern' ) );
 
                 if (
-                    $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId()
-                    || $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId()
+//                    $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId()
+                    $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId()
                 ) {
                     $FormStudent = self::formStudent( $tblPerson );
                 } else {
                     $FormStudent = '';
                 }
 
-                $FormPersonRelationship = self::formPersonRelationship( $tblPerson );
-                $FormPersonAddress = self::formPersonAddress( $tblPerson );
+                if (
+                    $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId()
+                    || $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId()
+                ) {
+                    $FormPersonRelationship = self::formPersonRelationship( $tblPerson );
+                    $FormPersonAddress = self::formPersonAddress( $tblPerson );
+                } else {
+                    $FormPersonRelationship = '';
+                    $FormPersonAddress = '';
+                }
 
                 $View->setContent(
                     new Success( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() )
