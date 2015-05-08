@@ -84,6 +84,13 @@ if (false) {
     $Less->parse( '@table-cell-padding: 6px;' );
     $Less->parse( '@table-condensed-cell-padding: 5px;' );
 
+// Thumbnail
+
+    $Less->parse( '@thumbnail-padding: 6px;' );
+    $Less->parse( '@thumbnail-caption-padding: 9px;' );
+    $Less->parse( '@thumbnail-border: @gray-dark;' );
+    $Less->parse( '@thumbnail-border-radius: 0;' );
+
 // Component
     $Less->parse( '@padding-base-vertical: 4px;' );
     $Less->parse( '@padding-base-horizontal: 10px;' );

@@ -1,7 +1,7 @@
 {% if( TableTitle is not empty ) %}
     {{ TableTitle }}
 {% endif %}
-<table class="table table-bordered table-condensed small">
+<table class="table table-bordered table-condensed">
     {% for TableBody in BodyList %}
         <tbody>
         {% for Index, TableRow in TableBody.getRow %}

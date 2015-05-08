@@ -37,6 +37,8 @@ abstract class Change extends Create
      *
      * @param null $Remark
      *
+     * @param null $Denomination
+     *
      * @return bool
      */
     protected function actionChangePerson(
@@ -51,7 +53,8 @@ abstract class Change extends Create
         $tblPersonSalutation,
         $tblPersonGender,
         $tblPersonType,
-        $Remark = null
+        $Remark = null,
+        $Denomination = null
     ) {
 
         $Manager = $this->getEntityManager();
@@ -70,6 +73,7 @@ abstract class Change extends Create
             $Entity->setNationality( $Nationality );
             $Entity->setTblPersonType( $tblPersonType );
             $Entity->setRemark( $Remark );
+            $Entity->setDenomination( $Denomination );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Protocol,

@@ -61,6 +61,7 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
     const ICON_OK = 'glyphicons glyphicons-ok';
     const ICON_PENCIL = 'glyphicons glyphicons-pencil';
     const ICON_REMOVE = 'glyphicons glyphicons-remove-2';
+    const ICON_TRANSFER = 'glyphicons glyphicons-transfer';
 
     const ICON_DISABLE = 'halflings halflings-remove-circle';
     const ICON_ENABLE = 'halflings halflings-ok-circle';
@@ -69,6 +70,11 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
     const ICON_QRCODE = 'halflings halflings-qrcode';
 
     const ICON_TEMPLE_CHURCH = 'glyphicons glyphicons-temple-christianity-church';
+
+    const ICON_FILETYPE_XLS = 'filetypes filetypes-xls';
+
+    const ICON_DOWNLOAD = 'glyphicons glyphicons-cloud-download';
+    const ICON_UPLOAD = 'glyphicons glyphicons-cloud-upload';
 
     /** @var string $Value */
     private $Value = '';

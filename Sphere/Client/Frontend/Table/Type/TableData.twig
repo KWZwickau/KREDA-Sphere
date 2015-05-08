@@ -1,7 +1,7 @@
 {% if( TableTitle is not empty ) %}
     {{ TableTitle }}
 {% endif %}
-<table id="{{ Hash }}" class="table table-bordered table-condensed small">
+<table id="{{ Hash }}" class="table table-bordered table-condensed">
     {% for TableHead in HeadList %}
         <thead>
         {% for TableRow in TableHead.getTableRow %}

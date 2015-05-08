@@ -113,7 +113,6 @@ class Relationship extends AbstractFrontend
                                         '/Sphere/Management/Table/PersonRelationship?tblPerson='.$tblPerson->getId()
                                         , null,
                                         array(
-                                            'Id' => '#',
                                             'Name'   => 'Name',
                                             'Option' => 'Option'
                                         ),

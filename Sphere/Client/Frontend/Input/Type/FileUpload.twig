@@ -9,7 +9,7 @@
         </span>
         {% endif %}
         <input type="file" class="form-control" name="{{ ElementName }}" placeholder="{{ ElementPlaceholder }}"
-               value="{{ ElementValue }}" autocomplete="off"/>
+               value="{{ ElementValue }}"/>
         {{ ElementFeedbackIcon }}
         {% if( ElementIcon is not empty ) %}
     </div>
@@ -19,7 +19,7 @@
 <script type="text/javascript">
     Client.Use( 'ModUpload', function()
         {
-            jQuery( 'input[type="file"][name="{{ ElementName }}"]' ).ModUpload();
+            jQuery( 'input[type="file"][name="{{ ElementName }}"]' ).ModUpload( {{ ElementOption }} );
         }
     );
 </script>

@@ -1,7 +1,9 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
+use KREDA\Sphere\Application\Management\Service\Course\Entity\TblCourse;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
+use KREDA\Sphere\Application\Management\Service\Student\Entity\TblChildRank;
 use KREDA\Sphere\Application\Management\Service\Student\Entity\TblStudent;
 use KREDA\Sphere\Application\Management\Service\Student\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
@@ -38,6 +40,8 @@ class Student extends EntityAction
         $this->actionCreateChildRank( '4', '4. Kind' );
         $this->actionCreateChildRank( '5', '5. Kind' );
         $this->actionCreateChildRank( '6', '6. Kind' );
+        $this->actionCreateChildRank( '7', '7. Kind' );
+        $this->actionCreateChildRank( '8', '8. Kind' );
     }
 
     /**
@@ -49,6 +53,75 @@ class Student extends EntityAction
     {
 
         return parent::entityStudentByPerson( $tblPerson );
+    }
+
+    /**
+     * @param string $StudentNumber
+     *
+     * @return bool|TblStudent
+     */
+    public function entityStudentByNumber( $StudentNumber )
+    {
+
+        return parent::entityStudentByNumber( $StudentNumber );
+    }
+
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblChildRank
+     */
+    public function entityChildRankByName( $Name )
+    {
+
+        return parent::entityChildRankByName( $Name );
+    }
+
+    /**
+     * @param string       $StudentNumber
+     * @param TblPerson    $tblPerson
+     * @param TblCourse    $tblCourse
+     * @param TblChildRank $tblChildRank
+     *
+     * @return TblStudent
+     */
+    public function actionCreateStudent(
+        $StudentNumber,
+        TblPerson $tblPerson,
+        TblCourse $tblCourse,
+        TblChildRank $tblChildRank
+    ) {
+
+        return parent::actionCreateStudent( $StudentNumber, $tblPerson, $tblCourse, $tblChildRank );
+    }
+
+    /**
+     * @param TblStudent $tblStudent
+     * @param string     $Date
+     *
+     * @return bool
+     */
+    public function actionChangeTransferFromDate(
+        TblStudent $tblStudent,
+        $Date
+    ) {
+
+        return parent::actionChangeTransferFromDate( $tblStudent, $Date );
+    }
+
+    /**
+     * @param TblStudent $tblStudent
+     * @param string     $Date
+     *
+     * @return bool
+     */
+    public function actionChangeTransferToDate(
+        TblStudent $tblStudent,
+        $Date
+    ) {
+
+        return parent::actionChangeTransferToDate( $tblStudent, $Date );
     }
 
 }

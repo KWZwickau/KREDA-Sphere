@@ -79,6 +79,15 @@ class Person extends EntityAction
     /**
      * @return array|bool
      */
+    public function  listPersonDenomination()
+    {
+
+        return parent::listPersonDenomination();
+    }
+
+    /**
+     * @return array|bool
+     */
     public function  listPersonBirthplace()
     {
 
@@ -124,10 +133,10 @@ class Person extends EntityAction
     /**
      * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      *
-     * @param TblPerson    $tblPerson
-     * @param array        $PersonName
-     * @param array        $PersonInformation
-     * @param array        $BirthDetail
+     * @param TblPerson $tblPerson
+     * @param array     $PersonName
+     * @param array     $PersonInformation
+     * @param array     $BirthDetail
      *
      * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
      */
@@ -206,9 +215,8 @@ class Person extends EntityAction
         if (!$Error) {
             if ($this->actionChangePerson(
                 $tblPerson, $PersonName['Title'], $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
-                $BirthDetail['Date'],
-                $BirthDetail['Place'], $PersonInformation['Nationality'], $tblPersonSalutation, $tblPersonGender,
-                $tblPersonType, $PersonInformation['Remark']
+                $BirthDetail['Date'], $BirthDetail['Place'], $PersonInformation['Nationality'], $tblPersonSalutation,
+                $tblPersonGender, $tblPersonType, $PersonInformation['Remark'], $PersonInformation['Denomination']
             )
             ) {
                 $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
@@ -255,12 +263,51 @@ class Person extends EntityAction
     }
 
     /**
+     * @param TblPerson           $tblPerson
+     * @param string              $Title
+     * @param string              $FirstName
+     * @param string              $MiddleName
+     * @param string              $LastName
+     * @param string              $Birthday
+     * @param string              $Birthplace
+     * @param string              $Nationality
+     * @param TblPersonSalutation $tblPersonSalutation
+     * @param TblPersonGender     $tblPersonGender
+     * @param                     $tblPersonType
+     * @param null                $Remark
+     * @param null                $Denomination
+     *
+     * @return bool
+     */
+    public function actionChangePerson(
+        TblPerson $tblPerson,
+        $Title,
+        $FirstName,
+        $MiddleName,
+        $LastName,
+        $Birthday,
+        $Birthplace,
+        $Nationality,
+        $tblPersonSalutation,
+        $tblPersonGender,
+        $tblPersonType,
+        $Remark = null,
+        $Denomination = null
+    ) {
+
+        return parent::actionChangePerson(
+            $tblPerson, $Title, $FirstName, $MiddleName, $LastName, $Birthday, $Birthplace,
+            $Nationality, $tblPersonSalutation, $tblPersonGender, $tblPersonType, $Remark, $Denomination
+        );
+    }
+
+    /**
      * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      *
-     * @param array        $PersonName
-     * @param array        $BirthDetail
-     * @param array        $PersonInformation
-     * @param array        $Button
+     * @param array $PersonName
+     * @param array $BirthDetail
+     * @param array $PersonInformation
+     * @param array $Button
      *
      * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
      */
@@ -340,9 +387,8 @@ class Person extends EntityAction
         if (!$Error) {
             $Entity = $this->actionCreatePerson(
                 $PersonName['Title'], $PersonName['First'], $PersonName['Middle'], $PersonName['Last'],
-                $BirthDetail['Date'],
-                $BirthDetail['Place'], $PersonInformation['Nationality'], $tblPersonSalutation, $tblPersonGender,
-                $tblPersonType, $PersonInformation['Remark']
+                $BirthDetail['Date'], $BirthDetail['Place'], $PersonInformation['Nationality'], $tblPersonSalutation,
+                $tblPersonGender, $tblPersonType, $PersonInformation['Remark'], $PersonInformation['Denomination']
             );
             if ($Button['Submit'] == 'Anlegen') {
                 return new Success( 'Die Person wurde erfolgreich angelegt' )
@@ -355,6 +401,44 @@ class Person extends EntityAction
 
         }
         return $View;
+    }
+
+    /**
+     * @param                     $Title
+     * @param string              $FirstName
+     * @param string              $MiddleName
+     * @param string              $LastName
+     * @param string              $Birthday
+     * @param string              $Birthplace
+     * @param string              $Nationality
+     * @param TblPersonSalutation $tblPersonSalutation
+     * @param TblPersonGender     $tblPersonGender
+     * @param TblPersonType       $tblPersonType
+     * @param null                $Remark
+     *
+     * @param null                $Denomination
+     *
+     * @return TblPerson
+     */
+    public function actionCreatePerson(
+        $Title,
+        $FirstName,
+        $MiddleName,
+        $LastName,
+        $Birthday,
+        $Birthplace,
+        $Nationality,
+        $tblPersonSalutation,
+        $tblPersonGender,
+        $tblPersonType,
+        $Remark = null,
+        $Denomination = null
+    ) {
+
+        return parent::actionCreatePerson(
+            $Title, $FirstName, $MiddleName, $LastName, $Birthday, $Birthplace,
+            $Nationality, $tblPersonSalutation, $tblPersonGender, $tblPersonType, $Remark, $Denomination
+        );
     }
 
     /**
@@ -501,7 +585,6 @@ class Person extends EntityAction
         return parent::entityPersonRelationshipById( $Id );
     }
 
-
     /**
      * @param TblPerson $tblPerson
      *
@@ -591,4 +674,38 @@ class Person extends EntityAction
 
         return parent::actionRemoveAddress( $tblPerson, $tblAddress );
     }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblPersonGender
+     */
+    public function entityPersonGenderByName( $Name )
+    {
+
+        return parent::entityPersonGenderByName( $Name );
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblPersonSalutation
+     */
+    public function entityPersonSalutationByName( $Name )
+    {
+
+        return parent::entityPersonSalutationByName( $Name );
+    }
+
+    /**
+     * @param TblPerson $tblPerson
+     *
+     * @return bool|Address\Entity\TblAddress[]
+     */
+    public function entityAddressAllByPerson( TblPerson $tblPerson )
+    {
+
+        return parent::entityAddressAllByPerson( $tblPerson );
+    }
+
 }

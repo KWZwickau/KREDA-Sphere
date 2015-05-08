@@ -151,6 +151,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'Nationality' ) )) {
             $Table->addIndex( array( 'Nationality' ) );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'Denomination' )) {
+            $Table->addColumn( 'Denomination', 'string', array( 'notnull' => false ) );
+        }
         $this->schemaTableAddForeignKey( $Table, $tblPersonType );
         $this->schemaTableAddForeignKey( $Table, $tblPersonGender );
         $this->schemaTableAddForeignKey( $Table, $tblPersonSalutation );

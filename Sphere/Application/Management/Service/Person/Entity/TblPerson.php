@@ -27,7 +27,10 @@ class TblPerson extends AbstractEntity
     const ATTR_LAST_NAME = 'LastName';
     const ATTR_BIRTHDAY = 'Birthday';
     const ATTR_BIRTHPLACE = 'Birthplace';
-
+    /**
+     * @Column(type="date")
+     */
+    public $Birthday;
     /**
      * @Column(type="string")
      */
@@ -45,10 +48,6 @@ class TblPerson extends AbstractEntity
      */
     protected $LastName;
     /**
-     * @Column(type="date")
-     */
-    protected $Birthday;
-    /**
      * @Column(type="string")
      */
     protected $Birthplace;
@@ -56,6 +55,10 @@ class TblPerson extends AbstractEntity
      * @Column(type="string")
      */
     protected $Nationality;
+    /**
+     * @Column(type="string")
+     */
+    protected $Denomination;
     /**
      * @OneToOne(targetEntity="TblPersonType",fetch="EXTRA_LAZY")
      * @Column(type="bigint")
@@ -110,6 +113,24 @@ class TblPerson extends AbstractEntity
     {
 
         $this->Nationality = $Nationality;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDenomination()
+    {
+
+        return $this->Denomination;
+    }
+
+    /**
+     * @param string $Denomination
+     */
+    public function setDenomination( $Denomination )
+    {
+
+        $this->Denomination = $Denomination;
     }
 
     /**
@@ -252,7 +273,11 @@ class TblPerson extends AbstractEntity
         }
         /** @var \DateTime $Birthday */
         $Birthday = $this->Birthday;
-        return $Birthday->format( 'd.m.Y' );
+        if ($Birthday instanceof \DateTime) {
+            return $Birthday->format( 'd.m.Y' );
+        } else {
+            return (string)$Birthday;
+        }
     }
 
     /**

@@ -8,6 +8,7 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
@@ -133,7 +134,7 @@ class Token extends Period
                                 new PasswordField( 'CredentialKey', 'YubiKey', 'YubiKey', new YubiKeyIcon() )
                             )
                         ), new FormTitle( 'Schlüssel hinzufügen', 'YubiKey' ) )
-                ), $CredentialKey, $tblConsumer
+                    , new SubmitPrimary( 'YubiKey registrieren' ) ), $CredentialKey, $tblConsumer
             )
         );
 

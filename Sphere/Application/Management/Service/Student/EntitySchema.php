@@ -70,6 +70,18 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblStudent', 'serviceManagement_Course' )) {
             $Table->addColumn( 'serviceManagement_Course', 'bigint' );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblStudent', 'StudentNumber' )) {
+            $Table->addColumn( 'StudentNumber', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'StudentNumber' ) )) {
+            $Table->addUniqueIndex( array( 'StudentNumber' ) );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblStudent', 'TransferFromDate' )) {
+            $Table->addColumn( 'TransferFromDate', 'date', array( 'notnull' => false ) );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblStudent', 'TransferToDate' )) {
+            $Table->addColumn( 'TransferToDate', 'date', array( 'notnull' => false ) );
+        }
         return $Table;
     }
 }

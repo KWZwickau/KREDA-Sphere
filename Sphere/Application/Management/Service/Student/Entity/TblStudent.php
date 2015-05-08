@@ -18,10 +18,15 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblStudent extends AbstractEntity
 {
 
+    const ATTR_STUDENT_NUMBER = 'StudentNumber';
     const ATTR_TBL_CHILD_RANK = 'tblChildRank';
     const ATTR_SERVICE_MANAGEMENT_PERSON = 'serviceManagement_Person';
     const ATTR_SERVICE_MANAGEMENT_COURSE = 'serviceManagement_Course';
 
+    /**
+     * @Column(type="integer")
+     */
+    protected $StudentNumber;
     /**
      * @Column(type="bigint")
      */
@@ -34,6 +39,96 @@ class TblStudent extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $serviceManagement_Course;
+
+    /**
+     * @Column(type="date")
+     */
+    protected $TransferFromDate;
+    /**
+     * @Column(type="date")
+     */
+    protected $TransferToDate;
+
+    /**
+     * @param string $StudentNumber
+     */
+    function __construct( $StudentNumber )
+    {
+
+        $this->StudentNumber = $StudentNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStudentNumber()
+    {
+
+        return $this->StudentNumber;
+    }
+
+    /**
+     * @param string $StudentNumber
+     */
+    public function setStudentNumber( $StudentNumber )
+    {
+
+        $this->StudentNumber = $StudentNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransferFromDate()
+    {
+
+        if (null === $this->TransferFromDate) {
+            return false;
+        }
+        /** @var \DateTime $TransferFromDate */
+        $TransferFromDate = $this->TransferFromDate;
+        if ($TransferFromDate instanceof \DateTime) {
+            return $TransferFromDate->format( 'd.m.Y' );
+        } else {
+            return (string)$TransferFromDate;
+        }
+    }
+
+    /**
+     * @param \DateTime $TransferFromDate
+     */
+    public function setTransferFromDate( \DateTime $TransferFromDate = null )
+    {
+
+        $this->TransferFromDate = $TransferFromDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransferToDate()
+    {
+
+        if (null === $this->TransferToDate) {
+            return false;
+        }
+        /** @var \DateTime $TransferToDate */
+        $TransferToDate = $this->TransferToDate;
+        if ($TransferToDate instanceof \DateTime) {
+            return $TransferToDate->format( 'd.m.Y' );
+        } else {
+            return (string)$TransferToDate;
+        }
+    }
+
+    /**
+     * @param \DateTime $TransferToDate
+     */
+    public function setTransferToDate( \DateTime $TransferToDate = null )
+    {
+
+        $this->TransferToDate = $TransferToDate;
+    }
 
     /**
      * @return bool|TblChildRank

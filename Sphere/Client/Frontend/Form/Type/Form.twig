@@ -1,6 +1,8 @@
 <form {% if( Hash is not empty ) %}id="{{ Hash }}"{% endif %}
-      action="{{ FormAction }}{{ FormData }}{% if( Hash is not empty ) %}#{{ Hash }}{% endif %}" method="post"
-      enctype="multipart/form-data" autocomplete="off">
+      action="{{ FormAction }}{{ FormData }}{% if( Hash is not empty ) %}#{{ Hash }}{% endif %}"
+      method="post"
+      enctype="multipart/form-data"
+    >
     {% for FormGroup in GridGroupList %}
         {% if( FormGroup.getFormTitle is not empty ) %}
             {{ FormGroup.getFormTitle }}

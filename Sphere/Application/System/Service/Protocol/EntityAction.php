@@ -29,7 +29,7 @@ abstract class EntityAction extends EntitySchema
      * @param null|AbstractEntity $FromEntity
      * @param null|AbstractEntity $ToEntity
      *
-     * @return TblProtocol
+     * @return false|TblProtocol
      */
     protected function actionCreateProtocolEntry(
         $DatabaseName,
@@ -39,6 +39,17 @@ abstract class EntityAction extends EntitySchema
         AbstractEntity $FromEntity = null,
         AbstractEntity $ToEntity = null
     ) {
+
+        // Skip if nothing changed
+        if (null !== $FromEntity && null !== $ToEntity) {
+            $From = $FromEntity->__toArray();
+            sort( $From );
+            $To = $ToEntity->__toArray();
+            sort( $To );
+            if ($From === $To) {
+                return false;
+            }
+        }
 
         $Manager = $this->getEntityManager();
 

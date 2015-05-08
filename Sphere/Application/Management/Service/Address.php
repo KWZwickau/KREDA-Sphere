@@ -65,6 +65,15 @@ class Address extends EntityAction
     }
 
     /**
+     * @return bool|TblAddress[]
+     */
+    public function entityAddressAll()
+    {
+
+        return parent::entityAddressAll();
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblAddressCity
@@ -105,6 +114,17 @@ class Address extends EntityAction
     }
 
     /**
+     * @param string $Name
+     *
+     * @return bool|TblAddressState
+     */
+    public function entityAddressStateByName( $Name )
+    {
+
+        return parent::entityAddressStateByName( $Name );
+    }
+
+    /**
      * @param AbstractType $Form
      * @param string       $Code
      * @param string       $Name
@@ -141,6 +161,40 @@ class Address extends EntityAction
             return new Redirect( '/Sphere/Management/Huppala', 0 );
         }
         return $Form;
+    }
+
+    /**
+     * @param string $Code
+     * @param string $Name
+     * @param null   $District
+     *
+     * @return TblAddressCity
+     */
+    public function actionCreateAddressCity( $Code, $Name, $District = null )
+    {
+
+        return parent::actionCreateAddressCity( $Code, $Name, $District );
+    }
+
+    /**
+     * @param TblAddressState $TblAddressState
+     * @param TblAddressCity  $TblAddressCity
+     * @param null            $StreetName
+     * @param null            $StreetNumber
+     * @param null            $PostOfficeBox
+     *
+     * @return TblAddress
+     */
+    public function actionCreateAddress(
+        TblAddressState $TblAddressState = null,
+        TblAddressCity $TblAddressCity = null,
+        $StreetName = null,
+        $StreetNumber = null,
+        $PostOfficeBox = null
+    ) {
+
+        return parent::actionCreateAddress( $TblAddressState, $TblAddressCity, $StreetName, $StreetNumber,
+            $PostOfficeBox );
     }
 
 }

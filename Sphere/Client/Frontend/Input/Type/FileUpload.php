@@ -17,12 +17,14 @@ class FileUpload extends AbstractType
      * @param null|string  $Placeholder
      * @param null|string  $Label
      * @param AbstractIcon $Icon
+     * @param null|array   $Option
      */
     public function __construct(
         $Name,
         $Placeholder = '',
         $Label = '',
-        AbstractIcon $Icon = null
+        AbstractIcon $Icon = null,
+        $Option = null
     ) {
 
         parent::__construct( $Name );
@@ -34,5 +36,8 @@ class FileUpload extends AbstractType
             $this->Template->setVariable( 'ElementIcon', $Icon );
         }
         $this->setPostValue( $this->Template, $Name, 'ElementValue' );
+        if (is_array( $Option )) {
+            $this->Template->setVariable( 'ElementOption', json_encode( $Option ) );
+        }
     }
 }

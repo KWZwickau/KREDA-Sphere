@@ -101,6 +101,20 @@ abstract class Entity extends EntitySchema
     }
 
     /**
+     * @param string $Name
+     *
+     * @return bool|TblPersonSalutation
+     */
+    protected function entityPersonSalutationByName( $Name )
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblPersonSalutation' )->findOneBy( array(
+            TblPersonSalutation::ATTR_NAME => $Name
+        ) );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblPersonSalutation
@@ -120,6 +134,20 @@ abstract class Entity extends EntitySchema
 
         $EntityList = $this->getEntityManager()->getEntity( 'TblPersonSalutation' )->findAll();
         return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblPersonGender
+     */
+    protected function entityPersonGenderByName( $Name )
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblPersonGender' )->findOneBy( array(
+            TblPersonGender::ATTR_NAME => $Name
+        ) );
+        return ( null === $Entity ? false : $Entity );
     }
 
     /**

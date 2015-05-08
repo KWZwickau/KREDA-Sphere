@@ -50,6 +50,23 @@ abstract class AbstractFrontend extends AbstractContent
                 /**
                  * Next dimension
                  */
+                if (preg_match( '!\]\[!is', $Match[2] ) == 1) {
+                    $Key = explode( '][', $Match[2] );
+                    if (isset( self::extensionSuperGlobal()->POST[$Match[1]][$Key[0]][$Key[1]] )) {
+                        $Template->setVariable( $VariableName,
+                            htmlentities( self::extensionSuperGlobal()->POST[$Match[1]][$Key[0]][$Key[1]],
+                                ENT_QUOTES ) );
+                    } elseif (isset( self::extensionSuperGlobal()->GET[$Match[1]][$Key[0]][$Key[1]] )) {
+                        $Template->setVariable( $VariableName,
+                            htmlentities( self::extensionSuperGlobal()->GET[$Match[1]][$Key[0]][$Key[1]],
+                                ENT_QUOTES ) );
+                    }
+
+                } else {
+                    /**
+                     * Next dimension
+                     */
+                }
             }
         } else {
             if (isset( self::extensionSuperGlobal()->POST[$RequestKey] )) {

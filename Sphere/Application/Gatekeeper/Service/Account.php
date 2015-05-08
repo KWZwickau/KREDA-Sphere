@@ -566,7 +566,7 @@ class Account extends EntityAction
             $View->setError( 'Account[Name]', 'Bitte geben Sie einen Benutzernamen an' );
             $Error = true;
         } else {
-            if (preg_match( '!^[a-z0-9]+$!is', $Username )) {
+            if (preg_match( '!^[a-z0-9öäüß]+$!is', $Username )) {
                 $Username = $tblConsumer->getDatabaseSuffix().'-'.$Username;
                 if (!Gatekeeper::serviceAccount()->entityAccountByUsername( $Username )) {
                     $View->setSuccess( 'Account[Name]', '' );
@@ -583,10 +583,10 @@ class Account extends EntityAction
             $View->setError( 'Account[Password]', 'Bitte geben Sie ein Passwort an' );
             $Error = true;
         } else {
-            if (strlen( $Password ) >= 5) {
+            if (strlen( $Password ) >= 8) {
                 $View->setSuccess( 'Account[Password]', '' );
             } else {
-                $View->setError( 'Account[Password]', 'Das Passwort muss mindestens 5 Zeichen lang sein' );
+                $View->setError( 'Account[Password]', 'Das Passwort muss mindestens 8 Zeichen lang sein' );
                 $Error = true;
             }
         }

@@ -44,6 +44,22 @@ abstract class EntityAction extends Destroy
     /**
      * @return array|bool
      */
+    protected function listPersonDenomination()
+    {
+
+        $Query = $this->getEntityManager()->getEntity( 'TblPerson' )
+            ->createQueryBuilder( 'p' )
+            ->select( 'p.Denomination' )
+            ->distinct( true )
+            ->getQuery()
+            ->useQueryCache( true );
+        $EntityList = $Query->getArrayResult();
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
+     * @return array|bool
+     */
     protected function listPersonBirthplace()
     {
 
@@ -135,6 +151,8 @@ abstract class EntityAction extends Destroy
             )
         )
             ->setCallbackFunction( function ( TblPerson $V ) {
+
+                $V->Birthday = $V->getBirthday();
 
                 /** @noinspection PhpUndefinedFieldInspection */
                 $V->Option =

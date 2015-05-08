@@ -51,8 +51,10 @@ class TableData extends Table
                 $Interactive = array_merge_recursive( $Interactive, array(
                     "processing" => true,
                     "serverSide" => true,
-                    "ajax"       => ( false === strpos( self::getUrlBase().$DataList,
-                        '?' ) ? self::getUrlBase().$DataList.'?REST=true' : self::getUrlBase().$DataList.'&REST=true' ),
+                    "ajax" => ( false === strpos( self::getUrlBase().$DataList, '?' )
+                        ? self::getUrlBase().$DataList.'?REST=true'
+                        : self::getUrlBase().$DataList.'&REST=true'
+                    ),
                     "columns"    => $DataColumns
                 ) );
             } else {

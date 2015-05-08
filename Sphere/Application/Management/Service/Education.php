@@ -37,6 +37,8 @@ class Education extends EntityAction
     public function setupDatabaseContent()
     {
 
+        $tblSubjectMissing = $this->actionCreateSubject( '---', '(nicht ausgewählt)' );
+
         $this->actionCreateSubject( 'Ast', 'Astronomie' );
         $this->actionCreateSubject( 'Bio', 'Biologie' );
         $this->actionCreateSubject( 'Ch', 'Chemie' );
@@ -59,6 +61,7 @@ class Education extends EntityAction
         $this->actionCreateSubject( 'WTH', 'Wirtschaft-Technik-Haushalt/Soziales' );
 
         $tblCategory = $this->actionCreateCategory( 'Religion' );
+        $this->actionAddSubjectCategory( $tblSubjectMissing, $tblCategory );
 
         $tblSubject = $this->actionCreateSubject( 'Eth', 'Ethik' );
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
@@ -66,6 +69,7 @@ class Education extends EntityAction
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
 
         $tblCategory = $this->actionCreateCategory( 'Fremdsprache' );
+        $this->actionAddSubjectCategory( $tblSubjectMissing, $tblCategory );
 
         $tblSubject = $this->actionCreateSubject( 'La', 'Latein' );
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
@@ -81,12 +85,16 @@ class Education extends EntityAction
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
 
         $tblCategory = $this->actionCreateCategory( 'Profil' );
+        $this->actionAddSubjectCategory( $tblSubjectMissing, $tblCategory );
+
         $tblSubject = $this->actionCreateSubject( 'Pg', 'Profil Geisteswissensch.' );
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
         $tblSubject = $this->actionCreateSubject( 'Pn', 'Profil Naturwissenschaften' );
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
 
         $tblCategory = $this->actionCreateCategory( 'Neigungskurs' );
+        $this->actionAddSubjectCategory( $tblSubjectMissing, $tblCategory );
+
         $tblSubject = $this->actionCreateSubject( 'Nk', 'Neigungskurs' );
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
     }
@@ -313,6 +321,17 @@ class Education extends EntityAction
             $this->actionCreateSubject( $Subject['Acronym'], $Subject['Name'] );
             return new Redirect( '/Sphere/Management/Education/Subject', 0 );
         }
+    }
+
+    /**
+     * @param string $Acronym
+     *
+     * @return bool|TblSubject
+     */
+    public function entitySubjectByAcronym( $Acronym )
+    {
+
+        return parent::entitySubjectByAcronym( $Acronym );
     }
 
     /**

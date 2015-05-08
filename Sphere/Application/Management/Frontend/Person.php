@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Management\Frontend;
 
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipList;
@@ -124,6 +125,7 @@ class Person extends AbstractFrontend
         $tblPersonGenderAll = Management::servicePerson()->entityPersonGenderAll();
         $tblPersonTypeAll = Management::servicePerson()->entityPersonTypeAll();
         $PersonNationality = Management::servicePerson()->listPersonNationality();
+        $PersonDenomination = Management::servicePerson()->listPersonDenomination();
         $PersonBirthPlace = Management::servicePerson()->listPersonBirthplace();
         $AddressCity = Management::serviceAddress()->entityAddressCityAll();
 
@@ -136,6 +138,16 @@ class Person extends AbstractFrontend
             $PersonNationality = array();
         }
         $PersonNationality = array_unique( $PersonNationality );
+
+        if (!empty( $PersonDenomination )) {
+            array_walk( $PersonDenomination, function ( &$P ) {
+
+                $P = $P['Denomination'];
+            } );
+        } else {
+            $PersonDenomination = array();
+        }
+        $PersonDenomination = array_unique( $PersonDenomination );
 
         if (!empty( $PersonBirthPlace )) {
             array_walk( $PersonBirthPlace, function ( &$P ) {
@@ -200,6 +212,10 @@ class Person extends AbstractFrontend
                             'Staatsangehörigkeit', $PersonNationality, new PersonIcon()
                         ), 4 ),
                     new FormColumn(
+                        new AutoCompleter( 'PersonInformation[Denomination]', 'Konfession',
+                            'Konfession', $PersonDenomination, new PersonIcon()
+                        ), 4 ),
+                    new FormColumn(
                         new SelectBox( 'PersonInformation[Type]', 'Art der Person',
                             array( 'Name' => $tblPersonTypeAll ), new GroupIcon()
                         ), 4 )
@@ -226,7 +242,6 @@ class Person extends AbstractFrontend
         $View->setContent(
             new TableData( '/Sphere/Management/Table/PersonInterest', null,
                 array(
-                    'Id'         => '#',
                     'FirstName'  => 'Vorname',
                     'MiddleName' => 'Zweitname',
                     'LastName'   => 'Nachname',
@@ -251,7 +266,6 @@ class Person extends AbstractFrontend
         $View->setContent(
             new TableData( '/Sphere/Management/Table/PersonStudent', null,
                 array(
-                    'Id'         => '#',
                     'FirstName'  => 'Vorname',
                     'MiddleName' => 'Zweitname',
                     'LastName'   => 'Nachname',
@@ -351,6 +365,7 @@ class Person extends AbstractFrontend
                 $Global->POST['PersonInformation']['Nationality'] = $tblPerson->getNationality();
                 $Global->POST['PersonInformation']['Type'] = $tblPerson->getTblPersonType()->getId();
                 $Global->POST['PersonInformation']['Remark'] = $tblPerson->getRemark();
+                $Global->POST['PersonInformation']['Denomination'] = $tblPerson->getDenomination();
                 $Global->savePost();
 
                 $FormPersonBasic = self::formPersonBasic();
@@ -402,7 +417,10 @@ class Person extends AbstractFrontend
 
         if ($tblStudent) {
             $Global = self::extensionSuperGlobal();
+            $Global->POST['Identifier'] = $tblStudent->getStudentNumber();
             $Global->POST['Course'] = $tblStudent->getServiceManagementCourse()->getId();
+            $Global->POST['Transfer']['From']['Date'] = $tblStudent->getTransferFromDate();
+            $Global->POST['Transfer']['To']['Date'] = $tblStudent->getTransferToDate();
             $Global->savePost();
         }
 
@@ -440,17 +458,19 @@ class Person extends AbstractFrontend
                                 ) ),
                                 new FormRow( array(
                                     new FormColumn(
-                                        new SelectBox( 'Transfer[From][Scool]', 'Abgebende Schule', array() )
-                                        , 9 ),
-                                    new FormColumn(
                                         new DatePicker( 'Transfer[From][Date]', 'Aufnahmedatum', 'Aufnahmedatum' )
                                         , 3 ),
                                     new FormColumn(
-                                        new SelectBox( 'Transfer[To][Scool]', 'Aufnehmende Schule', array() )
+                                        new SelectBox( 'Transfer[From][School]', 'Abgebende Schule', array() )
                                         , 9 ),
+                                ) ),
+                                new FormRow( array(
                                     new FormColumn(
                                         new DatePicker( 'Transfer[To][Date]', 'Abgabedatum', 'Abgabedatum' )
                                         , 3 ),
+                                    new FormColumn(
+                                        new SelectBox( 'Transfer[To][School]', 'Aufnehmende Schule', array() )
+                                        , 9 ),
                                 ) ),
                                 new FormRow( array(
                                     new FormColumn(
@@ -543,8 +563,9 @@ class Person extends AbstractFrontend
         $tblRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson( $tblPerson );
 
         if (!empty( $tblRelationshipList )) {
+            /** @noinspection PhpUnusedParameterInspection */
             array_walk( $tblRelationshipList,
-                function ( TblPersonRelationshipList &$tblPersonRelationshipList, $I, TblPerson $tblPerson ) {
+                function ( TblPersonRelationshipList &$tblPersonRelationshipList, $Index, TblPerson $tblPerson ) {
 
                     $Person = $tblPersonRelationshipList->getTblPersonA();
                     if ($Person->getId() == $tblPerson->getId()) {
@@ -585,41 +606,70 @@ class Person extends AbstractFrontend
 
         $tblAddressState = Management::serviceAddress()->entityAddressStateAll();
 
+        $tblAddressStreet = Management::serviceAddress()->entityAddressAll();
+        if (!empty( $tblAddressStreet )) {
+            array_walk( $tblAddressStreet, function ( TblAddress &$tblAddress ) {
+
+                $tblAddress = $tblAddress->getStreetName();
+            } );
+        }
+        $tblAddressStreet = array_unique( $tblAddressStreet );
+
+        $tblAddressCity = Management::serviceAddress()->entityAddressAll();
+        if (!empty( $tblAddressCity )) {
+            array_walk( $tblAddressCity, function ( TblAddress &$tblAddress ) {
+
+                $tblAddress = $tblAddress->getTblAddressCity()->getName();
+            } );
+        }
+        $tblAddressCity = array_unique( $tblAddressCity );
+
+        $tblPersonAddressList = Management::servicePerson()->entityAddressAllByPerson( $tblPerson );
+        if (!empty( $tblPersonAddressList )) {
+            array_walk( $tblPersonAddressList, function ( TblAddress &$tblPersonAddress ) {
+
+                $tblPersonAddress->Code = $tblPersonAddress->getTblAddressCity()->getCode();
+                $tblPersonAddress->Name = $tblPersonAddress->getTblAddressCity()->getName();
+                $tblPersonAddress->District = $tblPersonAddress->getTblAddressCity()->getDistrict();
+                $tblPersonAddress->State = $tblPersonAddress->getTblAddressState()->getName();
+
+            } );
+        }
+
         return new Layout(
             new LayoutGroup( array(
                 new LayoutRow( array(
                     new LayoutColumn( array(
-                        new TableData( array(), null, array(
-                            'StreetName'    => 'Strasse',
-                            'StreetNumber'  => 'Hausnummer',
-                            'PostOfficeBox' => 'Postfach',
-                            'Code'          => 'Postleitzahl',
-                            'Name'          => 'Ort',
-                            'District'      => 'Ortsteil',
-                            'State'         => 'Bundesland',
+                        new TableData( $tblPersonAddressList, null, array(
+                            'StreetName'   => 'Strasse',
+                            'StreetNumber' => 'Hausnummer',
+                            'Code'         => 'Postleitzahl',
+                            'Name'         => 'Ort',
+                            'District'     => 'Ortsteil',
+                            'State'        => 'Bundesland',
                         ) ),
                         new Form(
                             new FormGroup( array(
                                 new FormRow( array(
                                     new FormColumn(
-                                        new AutoCompleter( 'Street[Name]', 'Strasse', 'Strasse', array() )
+                                        new AutoCompleter( 'Street[Name]', 'Strasse', 'Strasse', $tblAddressStreet )
                                         , 5 ),
                                     new FormColumn(
                                         new NumberField( 'Street[Number]', 'Hausnummer', 'Hausnummer' )
                                         , 2 ),
-                                    new FormColumn(
-                                        new NumberField( 'PostOffice[Box]', 'Postfach', 'Postfach' )
-                                        , 5 ),
+//                                    new FormColumn(
+//                                        new NumberField( 'PostOffice[Box]', 'Postfach', 'Postfach' )
+//                                        , 5 ),
                                 ) ),
                                 new FormRow( array(
                                     new FormColumn(
-                                        new AutoCompleter( 'City[Code]', 'Postleitzahl', 'Postleitzahl', array() )
+                                        new TextField( 'City[Code]', 'Postleitzahl', 'Postleitzahl' )
                                         , 2 ),
                                     new FormColumn(
-                                        new AutoCompleter( 'City[Name]', 'Ort', 'Ort', array() )
+                                        new AutoCompleter( 'City[Name]', 'Ort', 'Ort', $tblAddressCity )
                                         , 5 ),
                                     new FormColumn(
-                                        new AutoCompleter( 'City[District]', 'Ortsteil', 'Ortsteil', array() )
+                                        new TextField( 'City[District]', 'Ortsteil', 'Ortsteil' )
                                         , 5 ),
                                 ) ),
                                 new FormRow( array(

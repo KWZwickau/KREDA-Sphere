@@ -9,6 +9,7 @@ use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\System\Frontend\Database;
 use KREDA\Sphere\Application\System\System;
+use KREDA\Sphere\Application\Transfer\Transfer;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Container;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Screen;
@@ -301,6 +302,7 @@ class Client
             Management::registerApplication( $this->Configuration );
             Graduation::registerApplication( $this->Configuration );
             Billing::registerApplication( $this->Configuration );
+            Transfer::registerApplication( $this->Configuration );
         } else {
             /**
              * Authenticated NO

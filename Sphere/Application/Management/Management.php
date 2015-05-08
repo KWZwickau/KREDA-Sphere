@@ -2,6 +2,8 @@
 namespace KREDA\Sphere\Application\Management;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipList;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
@@ -136,6 +138,32 @@ class Management extends Module\Education
                  */
                 $Return = new Danger( 'Die Person kann nicht gelöscht werden, da noch Beziehungen zu anderen Personen existieren' );
                 $Return .= implode( (array)$tblRelationshipList );
+                return $Return;
+            }
+        }
+        /**
+         * Clear AddressList before Kill Person
+         */
+        $tblPerson = Management::servicePerson()->entityPersonById( $Data->getId() );
+        $tblAddressList = Management::servicePerson()->entityAddressAllByPerson( $tblPerson );
+        if (!empty( $tblAddressList )) {
+            /** @noinspection PhpUnusedParameterInspection */
+            array_walk( $tblAddressList, function ( TblAddress &$tblAddress, $Index, TblPerson $tblPerson ) {
+
+                if (true !== ( $Effect = Management::servicePerson()->executeRemoveAddress( $tblPerson->getId(),
+                        $tblAddress->getId() ) )
+                ) {
+                    $tblAddress = $Effect;
+                } else {
+                    $tblAddress = false;
+                }
+            }, $tblPerson );
+            $tblAddressList = array_filter( $tblAddressList );
+            if (!empty( $tblAddressList )) {
+                /**
+                 * Done, CRITICAL -> return wire
+                 */
+                $Return = new Danger( 'Die Person kann nicht gelöscht werden, da noch Adressen existieren' );
                 return $Return;
             }
         }

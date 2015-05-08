@@ -4,7 +4,6 @@ namespace KREDA\Sphere\Application\Management\Frontend;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup;
-use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EducationIcon;
@@ -377,22 +376,7 @@ class Education extends AbstractFrontend
             Management::servicePerson()->entityPersonTypeByName( 'Schüler' )
         );
 
-        /** @noinspection PhpUnusedParameterInspection */
-        array_walk( $tblStudentList, function ( TblPerson &$Entity, $Index, $Identifier ) {
-
-            /** @noinspection PhpUndefinedFieldInspection */
-            $Entity->Option = new ( new LayoutRight(
-                new Form( new FormGroup( new FormRow( new FormColumn(
-                    array(
-                        $Id,
-                        $Right,
-                        $Remove,
-                        new SubmitDanger( 'Entfernen' )
-                    )
-                ) ) ), null, '/Sphere/System/Authorization/Privilege/Right' )
-            ) )->__toString();
-        }, $Id );
-
+//TODO:
         $View->setContent(
             new Layout(
                 new LayoutGroup( array(
@@ -412,13 +396,17 @@ class Education extends AbstractFrontend
                         new LayoutColumn( array(
                             ( empty( $tblStudentList )
                                 ? new Warning( 'Keine Schüler zugewiesen' )
-                                : new TableData( $tblStudentList )
+                                : new TableData( $tblStudentList, null, array(
+                                    'LastName' => 'LastName'
+                                ) )
                             )
                         ), 6 ),
                         new LayoutColumn( array(
                             ( empty( $tblStudentList )
                                 ? new Warning( 'Keine Schüler verfügbar' )
-                                : new TableData( $tblStudentList )
+                                : new TableData( $tblStudentList, null, array(
+                                    'FirstName' => 'FirstName'
+                                ) )
                             )
                         ), 6 )
                     ) )

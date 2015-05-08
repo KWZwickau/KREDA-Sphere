@@ -29,33 +29,34 @@
                                                 width="105"
                                                 height="61"></a>
                 </div>
-                <dl class="footer-nav">
-                    <dt class="nav-title">Mandanten</dt>
-                    <dd class="nav-item">
-                        <a href="http://www.ege-annaberg.de/">Evangelische Schulgemeinschaft Erzgebirge e.V. (EGE)</a>
-                    </dd>
-                    <dd class="nav-item">
-                        <a href="http://eszc.de/">Freie Evangelische Schulverein Chemnitz e.V. (ESZC)</a>
-                    </dd>
-                </dl>
-                <dl class="footer-nav">
-                    <dt class="nav-title">Anwendung</dt>
-                    <dd class="nav-item">
-                        <a href="{{ PathBase }}/Client/Sphere/Assistance/Impressum">Impressum</a>
-                    </dd>
-                    <dd class="nav-item">
-                        <a href="http://www.haus-der-edv.de">Support</a>
-                    </dd>
-                </dl>
-                <dl class="footer-nav">
-                    <dt class="nav-title">Hilfe</dt>
-                    <dd class="nav-item">
-                        <a href="{{ PathBase }}/Client/Sphere/Assistance">Online Hilfe</a>
-                    </dd>
-                    <dd class="nav-item">
-                        <a href="http://kwzwickau.github.io/KREDA-Sphere/">Api Dokumentation</a>
-                    </dd>
-                </dl>
+
+                {#<dl class="footer-nav">#}
+                {#<dt class="nav-title">Mandanten</dt>#}
+                {#<dd class="nav-item">#}
+                {#<a href="http://www.ege-annaberg.de/">Evangelische Schulgemeinschaft Erzgebirge e.V. (EGE)</a>#}
+                {#</dd>#}
+                {#<dd class="nav-item">#}
+                {#<a href="http://eszc.de/">Freie Evangelische Schulverein Chemnitz e.V. (ESZC)</a>#}
+                {#</dd>#}
+                {#</dl>#}
+                {#<dl class="footer-nav">#}
+                {#<dt class="nav-title">Anwendung</dt>#}
+                {#<dd class="nav-item">#}
+                {#<a href="{{ PathBase }}/Client/Sphere/Assistance/Impressum">Impressum</a>#}
+                {#</dd>#}
+                {#<dd class="nav-item">#}
+                {#<a href="http://www.haus-der-edv.de">Support</a>#}
+                {#</dd>#}
+                {#</dl>#}
+                {#<dl class="footer-nav">#}
+                {#<dt class="nav-title">Hilfe</dt>#}
+                {#<dd class="nav-item">#}
+                {#<a href="{{ PathBase }}/Client/Sphere/Assistance">Online Hilfe</a>#}
+                {#</dd>#}
+                {#<dd class="nav-item">#}
+                {#<a href="http://kwzwickau.github.io/KREDA-Sphere/">Api Dokumentation</a>#}
+                {#</dd>#}
+                {#</dl>#}
             </div>
             <div class="footer-copyright text-center small">
                 Mandant: {{ PositionConsumer }}
@@ -74,7 +75,10 @@
     </div>
 </div>
 <script>
-    Client.Use( 'ModAlways' );
+    Client.Use( 'ModAlways', function()
+    {
+        jQuery().ModAlways();
+    } );
 </script>
 </body>
 </html>

@@ -19,6 +19,5 @@ class FrontendTest extends AbstractFrontendTest
         $this->checkMethodName( $Namespace.'\Person' );
         $this->checkMethodName( $Namespace.'\Relationship' );
         $this->checkMethodName( $Namespace.'\Education' );
-        $this->checkMethodName( $Namespace.'\Education\Subject' );
     }
 }

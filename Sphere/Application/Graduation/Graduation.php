@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Graduation;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Graduation\Service\Grade;
 use KREDA\Sphere\Application\Graduation\Service\Grade\Entity\TblGradeType;
 use KREDA\Sphere\Application\Graduation\Service\Score;
@@ -49,22 +50,24 @@ class Graduation extends AbstractApplication
 
         self::$Configuration = $Configuration;
 
-        self::addClientNavigationMain( self::$Configuration,
-            '/Sphere/Graduation', 'Zensuren', new EducationIcon()
-        );
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Graduation' )) {
 
-        self::registerClientRoute( self::$Configuration, '/Sphere/Graduation',
-            __CLASS__.'::frontendGrade' );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type',
-            __CLASS__.'::frontendGradeType' );
-        //self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type/ChangeActiveState',
-        //    __CLASS__.'::frontendGradeTypeActiveState' );
-        $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type/Create',
-            __CLASS__.'::frontendGradeTypeCreate' );
-        $Route->setParameterDefault( 'Acronym', null );
-        $Route->setParameterDefault( 'Name', null );
+            self::addClientNavigationMain( self::$Configuration,
+                '/Sphere/Graduation', 'Zensuren', new EducationIcon()
+            );
 
-        return $Configuration;
+            self::registerClientRoute( self::$Configuration, '/Sphere/Graduation',
+                __CLASS__.'::frontendGrade' );
+            self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type',
+                __CLASS__.'::frontendGradeType' );
+            //self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type/ChangeActiveState',
+            //    __CLASS__.'::frontendGradeTypeActiveState' );
+            $Route = self::registerClientRoute( self::$Configuration, '/Sphere/Graduation/Grade/Type/Create',
+                __CLASS__.'::frontendGradeTypeCreate' );
+            $Route->setParameterDefault( 'Acronym', null );
+            $Route->setParameterDefault( 'Name', null );
+
+        }
     }
 
     /**
