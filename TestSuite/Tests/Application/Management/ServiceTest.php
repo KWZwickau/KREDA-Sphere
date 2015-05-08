@@ -16,7 +16,9 @@ class ServiceTest extends AbstractServiceTest
 
         $Namespace = '\Management\Service';
         $this->checkMethodName( $Namespace.'\Address' );
+        $this->checkMethodName( $Namespace.'\Course' );
         $this->checkMethodName( $Namespace.'\Education' );
         $this->checkMethodName( $Namespace.'\Person' );
+        $this->checkMethodName( $Namespace.'\Student' );
     }
 }
