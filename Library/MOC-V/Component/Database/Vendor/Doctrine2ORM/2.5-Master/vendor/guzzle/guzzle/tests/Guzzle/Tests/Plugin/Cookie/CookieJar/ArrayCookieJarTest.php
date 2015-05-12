@@ -61,23 +61,26 @@ class ArrayCookieJarTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         return array(
-            new Cookie( array( 'name'    => 'foo',
-                               'value'   => 'bar',
-                               'domain'  => 'foo.com',
-                               'path'    => '/',
-                               'discard' => true
+            new Cookie( array(
+                'name'    => 'foo',
+                'value'   => 'bar',
+                'domain'  => 'foo.com',
+                'path'    => '/',
+                'discard' => true
             ) ),
-            new Cookie( array( 'name'    => 'test',
-                               'value'   => '123',
-                               'domain'  => 'baz.com',
-                               'path'    => '/foo',
-                               'expires' => 2
+            new Cookie( array(
+                'name'    => 'test',
+                'value'   => '123',
+                'domain'  => 'baz.com',
+                'path'    => '/foo',
+                'expires' => 2
             ) ),
-            new Cookie( array( 'name'    => 'you',
-                               'value'   => '123',
-                               'domain'  => 'bar.com',
-                               'path'    => '/boo',
-                               'expires' => time() + 1000
+            new Cookie( array(
+                'name'    => 'you',
+                'value'   => '123',
+                'domain'  => 'bar.com',
+                'path'    => '/boo',
+                'expires' => time() + 1000
             ) )
         );
     }
@@ -199,7 +202,7 @@ class ArrayCookieJarTest extends \Guzzle\Tests\GuzzleTestCase
             'domain'  => '.example.com',
             'path'    => '/',
             'max_age' => '86400',
-            'port'    => array( 80, 8080 ),
+            'port' => array( 80, 8080 ),
             'version' => '1',
             'secure'  => true,
             'discard' => true,
@@ -238,7 +241,7 @@ class ArrayCookieJarTest extends \Guzzle\Tests\GuzzleTestCase
             'domain'  => '.example.com',
             'path'    => '/',
             'max_age' => '86400',
-            'port'    => array( 80, 8080 ),
+            'port' => array( 80, 8080 ),
             'version' => '1',
             'secure'  => true,
             'discard' => true,
@@ -317,7 +320,7 @@ class ArrayCookieJarTest extends \Guzzle\Tests\GuzzleTestCase
                 'domain'  => 'example.com',
                 'path'    => '/',
                 'max_age' => '86400',
-                'port'    => array( 443, 8080 ),
+                'port' => array( 443, 8080 ),
                 'version' => '1',
                 'secure'  => true
             ) ),
@@ -327,7 +330,7 @@ class ArrayCookieJarTest extends \Guzzle\Tests\GuzzleTestCase
                 'domain'  => 'example.com',
                 'path'    => '/',
                 'max_age' => '86400',
-                'port'    => array( 80, 8080 ),
+                'port' => array( 80, 8080 ),
                 'version' => '1',
                 'secure'  => true
             ) ),
@@ -389,18 +392,18 @@ class ArrayCookieJarTest extends \Guzzle\Tests\GuzzleTestCase
 
         // Add a cookie that should not be affected
         $a = new Cookie( array(
-            'name'   => 'foo',
-            'value'  => 'nope',
+            'name'  => 'foo',
+            'value' => 'nope',
             'domain' => 'foo.com',
-            'path'   => '/abc'
+            'path'  => '/abc'
         ) );
         $this->jar->add( $a );
 
         $data = array(
-            'name'   => 'foo',
-            'value'  => 'bar',
+            'name'  => 'foo',
+            'value' => 'bar',
             'domain' => 'foo.com',
-            'path'   => '/'
+            'path'  => '/'
         );
 
         $b = new Cookie( $data );

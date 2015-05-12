@@ -76,7 +76,7 @@ EOT
     /**
      * Display all the mapping information for a single Entity.
      *
-     * @param string                 $entityName Full or partial entity class name
+     * @param string $entityName Full or partial entity class name
      * @param EntityManagerInterface $entityManager
      * @param OutputInterface        $output
      */
@@ -133,31 +133,6 @@ EOT
     }
 
     /**
-     * Return all mapped entity class names
-     *
-     * @param EntityManagerInterface $entityManager
-     *
-     * @return string[]
-     */
-    private function getMappedEntities( EntityManagerInterface $entityManager )
-    {
-
-        $entityClassNames = $entityManager
-            ->getConfiguration()
-            ->getMetadataDriverImpl()
-            ->getAllClassNames();
-
-        if (!$entityClassNames) {
-            throw new \InvalidArgumentException(
-                'You do not have any mapped Doctrine ORM entities according to the current configuration. '.
-                'If you have entities or mapping files you should check your mapping configuration for errors.'
-            );
-        }
-
-        return $entityClassNames;
-    }
-
-    /**
      * Return the class metadata for the given entity
      * name
      *
@@ -197,6 +172,49 @@ EOT
         }
 
         return $entityManager->getClassMetadata( current( $matches ) );
+    }
+
+    /**
+     * Return all mapped entity class names
+     *
+     * @param EntityManagerInterface $entityManager
+     *
+     * @return string[]
+     */
+    private function getMappedEntities( EntityManagerInterface $entityManager )
+    {
+
+        $entityClassNames = $entityManager
+            ->getConfiguration()
+            ->getMetadataDriverImpl()
+            ->getAllClassNames();
+
+        if (!$entityClassNames) {
+            throw new \InvalidArgumentException(
+                'You do not have any mapped Doctrine ORM entities according to the current configuration. '.
+                'If you have entities or mapping files you should check your mapping configuration for errors.'
+            );
+        }
+
+        return $entityClassNames;
+    }
+
+    /**
+     * Add the given label and value to the two column table output
+     *
+     * @param string $label Label for the value
+     * @param mixed  $value A Value to show
+     *
+     * @return array
+     */
+    private function formatField( $label, $value )
+    {
+
+        if (null === $value) {
+            $value = '<comment>None</comment>';
+        }
+
+        return array( sprintf( '<info>%s</info>', $label ), $this->formatValue( $value ) );
     }
 
     /**
@@ -246,21 +264,25 @@ EOT
     }
 
     /**
-     * Add the given label and value to the two column table output
+     * Format the entity listeners
      *
-     * @param string $label Label for the value
-     * @param mixed  $value A Value to show
+     * @param array $entityListeners
      *
      * @return array
      */
-    private function formatField( $label, $value )
+    private function formatEntityListeners( array $entityListeners )
     {
 
-        if (null === $value) {
-            $value = '<comment>None</comment>';
-        }
+        return $this->formatField(
+            'Entity listeners',
+            array_map(
+                function ( $entityListener ) {
 
-        return array( sprintf( '<info>%s</info>', $label ), $this->formatValue( $value ) );
+                    return get_class( $entityListener );
+                },
+                $entityListeners
+            )
+        );
     }
 
     /**
@@ -284,27 +306,5 @@ EOT
         }
 
         return $output;
-    }
-
-    /**
-     * Format the entity listeners
-     *
-     * @param array $entityListeners
-     *
-     * @return array
-     */
-    private function formatEntityListeners( array $entityListeners )
-    {
-
-        return $this->formatField(
-            'Entity listeners',
-            array_map(
-                function ( $entityListener ) {
-
-                    return get_class( $entityListener );
-                },
-                $entityListeners
-            )
-        );
     }
 }

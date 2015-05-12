@@ -20,7 +20,7 @@ class PeclHttpMessageParser extends AbstractMessageParser
         $parsed = array(
             'method'   => $parts->requestMethod,
             'protocol' => 'HTTP',
-            'version'  => number_format( $parts->httpVersion, 1 ),
+            'version' => number_format( $parts->httpVersion, 1 ),
             'headers'  => $parts->headers,
             'body'     => $parts->body
         );
@@ -41,7 +41,7 @@ class PeclHttpMessageParser extends AbstractMessageParser
 
         return array(
             'protocol'      => 'HTTP',
-            'version'       => number_format( $parts->httpVersion, 1 ),
+            'version' => number_format( $parts->httpVersion, 1 ),
             'code'          => $parts->responseCode,
             'reason_phrase' => $parts->responseStatus,
             'headers'       => $parts->headers,

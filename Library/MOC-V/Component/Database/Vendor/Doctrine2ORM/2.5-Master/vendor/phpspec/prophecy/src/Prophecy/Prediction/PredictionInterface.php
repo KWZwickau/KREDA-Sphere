@@ -27,7 +27,7 @@ interface PredictionInterface
     /**
      * Tests that double fulfilled prediction.
      *
-     * @param Call[]         $calls
+     * @param Call[] $calls
      * @param ObjectProphecy $object
      * @param MethodProphecy $method
      *

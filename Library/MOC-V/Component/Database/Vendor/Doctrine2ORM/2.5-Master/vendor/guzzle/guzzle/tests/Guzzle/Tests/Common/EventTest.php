@@ -36,6 +36,19 @@ class EventTest extends \Guzzle\Tests\GuzzleTestCase
         $this->assertEquals( 'new', $event['test'] );
     }
 
+    /**
+     * @return Event
+     */
+    private function getEvent()
+    {
+
+        return new Event( array(
+            'test'  => '123',
+            'other' => '456',
+            'event' => 'test.notify'
+        ) );
+    }
+
     public function testImplementsIteratorAggregate()
     {
 
@@ -51,18 +64,5 @@ class EventTest extends \Guzzle\Tests\GuzzleTestCase
             'other' => '456',
             'event' => 'test.notify'
         ), $this->getEvent()->toArray() );
-    }
-
-    /**
-     * @return Event
-     */
-    private function getEvent()
-    {
-
-        return new Event( array(
-            'test'  => '123',
-            'other' => '456',
-            'event' => 'test.notify'
-        ) );
     }
 }

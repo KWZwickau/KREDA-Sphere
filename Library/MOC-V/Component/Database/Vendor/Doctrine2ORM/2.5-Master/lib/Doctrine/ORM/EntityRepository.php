@@ -193,7 +193,7 @@ class EntityRepository implements ObjectRepository, Selectable
     /**
      * Finds a single entity by a set of criteria.
      *
-     * @param array      $criteria
+     * @param array $criteria
      * @param array|null $orderBy
      *
      * @return object|null The entity instance or NULL if the entity can not be found.

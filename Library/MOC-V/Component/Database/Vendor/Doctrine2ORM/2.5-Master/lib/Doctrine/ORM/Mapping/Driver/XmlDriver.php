@@ -177,9 +177,10 @@ class XmlDriver extends FileDriver
                         'columnDefinition' => isset( $discrColumn['column-definition'] ) ? (string)$discrColumn['column-definition'] : null
                     ) );
                 } else {
-                    $metadata->setDiscriminatorColumn( array( 'name'   => 'dtype',
-                                                              'type'   => 'string',
-                                                              'length' => 255
+                    $metadata->setDiscriminatorColumn( array(
+                        'name'   => 'dtype',
+                        'type'   => 'string',
+                        'length' => 255
                     ) );
                 }
 
@@ -272,8 +273,8 @@ class XmlDriver extends FileDriver
                     : true;
 
                 $mapping = array(
-                    'fieldName'    => (string)$embeddedMapping['name'],
-                    'class'        => (string)$embeddedMapping['class'],
+                    'fieldName' => (string)$embeddedMapping['name'],
+                    'class'     => (string)$embeddedMapping['class'],
                     'columnPrefix' => $useColumnPrefix ? $columnPrefix : false
                 );
 
@@ -298,7 +299,7 @@ class XmlDriver extends FileDriver
             }
 
             $mapping = array(
-                'id'        => true,
+                'id' => true,
                 'fieldName' => (string)$idElement['name']
             );
 
@@ -335,9 +336,9 @@ class XmlDriver extends FileDriver
             if (isset( $idElement->{'sequence-generator'} )) {
                 $seqGenerator = $idElement->{'sequence-generator'};
                 $metadata->setSequenceGeneratorDefinition( array(
-                    'sequenceName'   => (string)$seqGenerator['sequence-name'],
+                    'sequenceName' => (string)$seqGenerator['sequence-name'],
                     'allocationSize' => (string)$seqGenerator['allocation-size'],
-                    'initialValue'   => (string)$seqGenerator['initial-value']
+                    'initialValue' => (string)$seqGenerator['initial-value']
                 ) );
             } else {
                 if (isset( $idElement->{'custom-id-generator'} )) {
@@ -357,7 +358,7 @@ class XmlDriver extends FileDriver
         if (isset( $xmlRoot->{'one-to-one'} )) {
             foreach ($xmlRoot->{'one-to-one'} as $oneToOneElement) {
                 $mapping = array(
-                    'fieldName'    => (string)$oneToOneElement['field'],
+                    'fieldName' => (string)$oneToOneElement['field'],
                     'targetEntity' => (string)$oneToOneElement['target-entity']
                 );
 
@@ -412,9 +413,9 @@ class XmlDriver extends FileDriver
         if (isset( $xmlRoot->{'one-to-many'} )) {
             foreach ($xmlRoot->{'one-to-many'} as $oneToManyElement) {
                 $mapping = array(
-                    'fieldName'    => (string)$oneToManyElement['field'],
+                    'fieldName' => (string)$oneToManyElement['field'],
                     'targetEntity' => (string)$oneToManyElement['target-entity'],
-                    'mappedBy'     => (string)$oneToManyElement['mapped-by']
+                    'mappedBy'  => (string)$oneToManyElement['mapped-by']
                 );
 
                 if (isset( $oneToManyElement['fetch'] )) {
@@ -459,7 +460,7 @@ class XmlDriver extends FileDriver
         if (isset( $xmlRoot->{'many-to-one'} )) {
             foreach ($xmlRoot->{'many-to-one'} as $manyToOneElement) {
                 $mapping = array(
-                    'fieldName'    => (string)$manyToOneElement['field'],
+                    'fieldName' => (string)$manyToOneElement['field'],
                     'targetEntity' => (string)$manyToOneElement['target-entity']
                 );
 
@@ -507,7 +508,7 @@ class XmlDriver extends FileDriver
         if (isset( $xmlRoot->{'many-to-many'} )) {
             foreach ($xmlRoot->{'many-to-many'} as $manyToManyElement) {
                 $mapping = array(
-                    'fieldName'    => (string)$manyToManyElement['field'],
+                    'fieldName' => (string)$manyToManyElement['field'],
                     'targetEntity' => (string)$manyToManyElement['target-entity']
                 );
 

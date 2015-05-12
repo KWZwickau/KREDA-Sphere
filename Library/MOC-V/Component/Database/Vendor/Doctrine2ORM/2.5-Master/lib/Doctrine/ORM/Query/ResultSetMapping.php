@@ -172,8 +172,8 @@ class ResultSetMapping
     /**
      * Adds an entity result to this ResultSetMapping.
      *
-     * @param string      $class       The class name of the entity.
-     * @param string      $alias       The alias for the class. The alias must be unique among all entity
+     * @param string $class            The class name of the entity.
+     * @param string $alias            The alias for the class. The alias must be unique among all entity
      *                                 results or joined entity results within this ResultSetMapping.
      * @param string|null $resultAlias The result alias with which the entity result should be
      *                                 placed in the result structure.

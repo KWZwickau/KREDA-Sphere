@@ -147,7 +147,7 @@ interface ClientInterface extends HasDispatcherInterface
      *                                                              associative array of POST fields to send in the body of the
      *                                                              request. Prefix a value in the array with the @ symbol to
      *                                                              reference a file.
-     * @param array                                       $options  Options to apply to the request
+     * @param array $options                                        Options to apply to the request
      *
      * @return EntityEnclosingRequestInterface
      * @see    Guzzle\Http\ClientInterface::createRequest()

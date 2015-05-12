@@ -97,7 +97,7 @@ class ProgressHelper extends Helper
      */
     private $widths = array(
         'current' => 4,
-        'max'     => 4,
+        'max' => 4,
         'percent' => 3,
         'elapsed' => 6,
     );

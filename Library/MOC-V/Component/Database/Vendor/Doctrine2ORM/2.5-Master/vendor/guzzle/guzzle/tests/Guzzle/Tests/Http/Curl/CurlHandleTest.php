@@ -174,7 +174,7 @@ class CurlHandleTest extends \Guzzle\Tests\GuzzleTestCase
         $handle = curl_init( $this->getServer()->getUrl() );
         $h = new CurlHandle( $handle, array(
             CURLOPT_AUTOREFERER => true,
-            CURLOPT_BUFFERSIZE  => 1024
+            CURLOPT_BUFFERSIZE => 1024
         ) );
 
         $this->assertEquals( true, $h->getOptions()->get( CURLOPT_AUTOREFERER ) );
@@ -579,15 +579,15 @@ class CurlHandleTest extends \Guzzle\Tests\GuzzleTestCase
             $postBody,
             array(
                 CURLOPT_RETURNTRANSFER => 0,
-                CURLOPT_HEADER         => 0,
+                CURLOPT_HEADER        => 0,
                 CURLOPT_CONNECTTIMEOUT => 150,
-                CURLOPT_WRITEFUNCTION  => 'callback',
+                CURLOPT_WRITEFUNCTION => 'callback',
                 CURLOPT_HEADERFUNCTION => 'callback',
-                CURLOPT_POST           => 1,
-                CURLOPT_POSTFIELDS     => array(
+                CURLOPT_POST          => 1,
+                CURLOPT_POSTFIELDS    => array(
                     'file' => '@'.$testFile.';filename=phpunit.xml.dist;type=application/octet-stream'
                 ),
-                CURLOPT_HTTPHEADER     => array(
+                CURLOPT_HTTPHEADER    => array(
                     'Accept:',
                     'Host: 127.0.0.1:8124',
                     'Content-Type: multipart/form-data',
@@ -969,11 +969,11 @@ class CurlHandleTest extends \Guzzle\Tests\GuzzleTestCase
             // Conversion of option name to constant value
             array(
                 array(
-                    'CURLOPT_PORT'    => 10,
+                    'CURLOPT_PORT' => 10,
                     'CURLOPT_TIMEOUT' => 99
                 ),
                 array(
-                    CURLOPT_PORT    => 10,
+                    CURLOPT_PORT => 10,
                     CURLOPT_TIMEOUT => 99
                 )
             ),
@@ -1051,7 +1051,7 @@ class CurlHandleTest extends \Guzzle\Tests\GuzzleTestCase
         $this->getServer()->enqueue( "HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\ndata" );
         $client = new Client( $this->getServer()->getUrl() );
         $request = $client->get( '/', array(
-            'Accept'          => 'application/json',
+            'Accept' => 'application/json',
             'Accept-Encoding' => 'gzip, deflate',
         ) );
         $this->updateForHandle( $request );

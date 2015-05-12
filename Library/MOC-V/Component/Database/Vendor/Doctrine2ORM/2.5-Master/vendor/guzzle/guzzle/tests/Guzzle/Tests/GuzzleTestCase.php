@@ -195,7 +195,7 @@ abstract class GuzzleTestCase extends \PHPUnit_Framework_TestCase
      * A header value of '*' means anything after the * will be ignored
      *
      * @param array $filteredHeaders Array of special headers
-     * @param array $actualHeaders   Array of headers to check against
+     * @param array $actualHeaders Array of headers to check against
      *
      * @return array|bool Returns an array of the differences or FALSE if none
      */
@@ -210,9 +210,9 @@ abstract class GuzzleTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Case insensitive assertContains
      *
-     * @param string $needle   Search string
+     * @param string $needle  Search string
      * @param string $haystack Search this
-     * @param string $message  Optional failure message
+     * @param string $message Optional failure message
      */
     public function assertContainsIns( $needle, $haystack, $message = null )
     {

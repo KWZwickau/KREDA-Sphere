@@ -559,8 +559,8 @@ class EntityManager implements EntityManagerInterface
                 case LockMode::NONE === $lockMode:
                 case LockMode::PESSIMISTIC_READ === $lockMode:
                 case LockMode::PESSIMISTIC_WRITE === $lockMode:
-                    $persister = $unitOfWork->getEntityPersister( $class->name );
-                    $persister->refresh( $sortedId, $entity, $lockMode );
+                $persister = $unitOfWork->getEntityPersister( $class->name );
+                $persister->refresh( $sortedId, $entity, $lockMode );
                     break;
             }
 
@@ -584,11 +584,11 @@ class EntityManager implements EntityManagerInterface
             case LockMode::NONE === $lockMode:
             case LockMode::PESSIMISTIC_READ === $lockMode:
             case LockMode::PESSIMISTIC_WRITE === $lockMode:
-                if (!$this->getConnection()->isTransactionActive()) {
+            if (!$this->getConnection()->isTransactionActive()) {
                     throw TransactionRequiredException::transactionRequired();
                 }
 
-                return $persister->load( $sortedId, null, null, array(), $lockMode );
+            return $persister->load( $sortedId, null, null, array(), $lockMode );
 
             default:
                 return $persister->loadById( $sortedId );

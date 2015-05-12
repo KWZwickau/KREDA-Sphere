@@ -59,7 +59,7 @@ class MySqlSchemaManager extends AbstractSchemaManager
     {
 
         return array(
-            'user'     => $user['User'],
+            'user' => $user['User'],
             'password' => $user['Password'],
         );
     }
@@ -149,7 +149,7 @@ class MySqlSchemaManager extends AbstractSchemaManager
             case 'real':
             case 'numeric':
             case 'decimal':
-                if (preg_match( '([A-Za-z]+\(([0-9]+)\,([0-9]+)\))', $tableColumn['type'], $match )) {
+            if (preg_match( '([A-Za-z]+\(([0-9]+)\,([0-9]+)\))', $tableColumn['type'], $match )) {
                     $precision = $match[1];
                     $scale = $match[2];
                     $length = null;
@@ -232,12 +232,12 @@ class MySqlSchemaManager extends AbstractSchemaManager
                 }
 
                 $list[$value['constraint_name']] = array(
-                    'name'         => $value['constraint_name'],
-                    'local'        => array(),
-                    'foreign'      => array(),
+                    'name'     => $value['constraint_name'],
+                    'local'    => array(),
+                    'foreign'  => array(),
                     'foreignTable' => $value['referenced_table_name'],
-                    'onDelete'     => $value['delete_rule'],
-                    'onUpdate'     => $value['update_rule'],
+                    'onDelete' => $value['delete_rule'],
+                    'onUpdate' => $value['update_rule'],
                 );
             }
             $list[$value['constraint_name']]['local'][] = $value['column_name'];

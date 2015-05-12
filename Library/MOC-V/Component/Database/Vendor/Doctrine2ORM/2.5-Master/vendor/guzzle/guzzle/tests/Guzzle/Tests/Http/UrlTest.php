@@ -97,13 +97,13 @@ class UrlTest extends \Guzzle\Tests\GuzzleTestCase
 
         $this->assertEquals( array(
             'fragment' => 'fragment',
-            'host'     => 'www.test.com',
-            'pass'     => 'pass',
-            'path'     => '/path/path2/',
-            'port'     => 8081,
-            'query'    => 'a=1&b=2',
-            'scheme'   => 'http',
-            'user'     => 'test'
+            'host'   => 'www.test.com',
+            'pass'   => 'pass',
+            'path'   => '/path/path2/',
+            'port'   => 8081,
+            'query'  => 'a=1&b=2',
+            'scheme' => 'http',
+            'user'   => 'test'
         ), $url->getParts() );
     }
 

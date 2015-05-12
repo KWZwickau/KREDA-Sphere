@@ -342,7 +342,7 @@ class PHP_Token_FUNCTION extends PHP_TokenWithScopeAndVisibility
                 case 'PHP_Token_QUESTION_MARK': {
                     $this->ccn++;
                 }
-                    break;
+                break;
             }
         }
 

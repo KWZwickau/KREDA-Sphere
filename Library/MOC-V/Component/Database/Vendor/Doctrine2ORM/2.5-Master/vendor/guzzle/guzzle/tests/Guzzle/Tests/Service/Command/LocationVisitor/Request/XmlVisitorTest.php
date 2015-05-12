@@ -67,7 +67,7 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                         'Baz' => array(
                             'type'     => 'array',
                             'location' => 'xml',
-                            'items'    => array(
+                            'items' => array(
                                 'type'   => 'numeric',
                                 'sentAs' => 'Bar'
                             )
@@ -102,7 +102,7 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                         'Baz' => array(
                             'type'     => 'array',
                             'location' => 'xml',
-                            'items'    => array(
+                            'items' => array(
                                 'type'       => 'object',
                                 'sentAs'     => 'Bar',
                                 'properties' => array( 'A' => array(), 'B' => array() )
@@ -160,8 +160,8 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                     'parameters' => array(
                         'Foo' => array(
                             'location' => 'xml',
-                            'type'     => 'string',
-                            'data'     => array(
+                            'type' => 'string',
+                            'data' => array(
                                 'xmlNamespace' => 'http://foo.com'
                             )
                         )
@@ -179,9 +179,9 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                             'location'   => 'xml',
                             'properties' => array(
                                 'Foo' => array(
-                                    'type'   => 'string',
+                                    'type' => 'string',
                                     'sentAs' => 'xsi:baz',
-                                    'data'   => array(
+                                    'data' => array(
                                         'xmlNamespace' => 'http://foo.com',
                                         'xmlAttribute' => true
                                     )
@@ -206,9 +206,9 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                             'location'   => 'xml',
                             'properties' => array(
                                 'Foo' => array(
-                                    'type'   => 'string',
+                                    'type' => 'string',
                                     'sentAs' => 'xsi:Foo',
-                                    'data'   => array(
+                                    'data' => array(
                                         'xmlNamespace' => 'http://foobar.com'
                                     )
                                 )
@@ -228,8 +228,8 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                     'parameters' => array(
                         'Foo' => array(
                             'location' => 'xml',
-                            'type'     => 'string',
-                            'data'     => array(
+                            'type' => 'string',
+                            'data' => array(
                                 'xmlNamespace' => 'http://foo.com'
                             )
                         )
@@ -244,9 +244,9 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                     'parameters' => array(
                         'Bars' => array(
                             'type'     => 'array',
-                            'data'     => array( 'xmlFlattened' => true ),
+                            'data'  => array( 'xmlFlattened' => true ),
                             'location' => 'xml',
-                            'items'    => array(
+                            'items' => array(
                                 'type'       => 'object',
                                 'sentAs'     => 'Bar',
                                 'properties' => array(
@@ -257,11 +257,11 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                         ),
                         'Boos' => array(
                             'type'     => 'array',
-                            'data'     => array( 'xmlFlattened' => true ),
+                            'data'  => array( 'xmlFlattened' => true ),
                             'location' => 'xml',
-                            'items'    => array(
+                            'items' => array(
                                 'sentAs' => 'Boo',
-                                'type'   => 'string'
+                                'type' => 'string'
                             )
                         )
                     )
@@ -284,8 +284,8 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                             'location'   => 'xml',
                             'properties' => array(
                                 'Items' => array(
-                                    'type'  => 'array',
-                                    'data'  => array( 'xmlFlattened' => true ),
+                                    'type' => 'array',
+                                    'data' => array( 'xmlFlattened' => true ),
                                     'items' => array(
                                         'type'       => 'object',
                                         'sentAs'     => 'Item',
@@ -339,7 +339,7 @@ class XmlVisitorTest extends AbstractVisitorTestCase
         $operation = new Operation( array(
             'data'       => array(
                 'xmlRoot' => array(
-                    'name'       => 'test',
+                    'name' => 'test',
                     'namespaces' => array(
                         'xsi' => 'http://foo.com'
                     )
@@ -393,7 +393,7 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                     'required' => true,
                     'type'     => 'array',
                     'min'      => 1,
-                    'items'    => array( 'type' => 'string', 'sentAs' => 'Node' )
+                    'items' => array( 'type' => 'string', 'sentAs' => 'Node' )
                 )
             )
         ) );
@@ -401,7 +401,7 @@ class XmlVisitorTest extends AbstractVisitorTestCase
         $param->setParent( new Operation( array(
             'data' => array(
                 'xmlRoot' => array(
-                    'name'       => 'Test',
+                    'name' => 'Test',
                     'namespaces' => array(
                         'https://foo/'
                     )
@@ -427,7 +427,7 @@ class XmlVisitorTest extends AbstractVisitorTestCase
         $operation = new Operation( array(
             'data'       => array(
                 'xmlRoot' => array(
-                    'name'       => 'Hi',
+                    'name' => 'Hi',
                     'namespaces' => array(
                         'xsi' => 'http://foo.com',
                         'foo' => 'http://foobar.com'
@@ -466,7 +466,7 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                 'Foo' => array(
                     'location' => 'xml',
                     'type'     => 'string',
-                    'filters'  => array( 'strtoupper' )
+                    'filters' => array( 'strtoupper' )
                 ),
                 'Bar' => array(
                     'location'   => 'xml',
@@ -511,8 +511,8 @@ class XmlVisitorTest extends AbstractVisitorTestCase
                     'type'     => 'string'
                 ),
                 'Bar' => array(
-                    'location'   => 'xml',
-                    'type'       => 'object',
+                    'location' => 'xml',
+                    'type'     => 'object',
                     'properties' => array(
                         'Baz' => array(),
                         'Bam' => array(),

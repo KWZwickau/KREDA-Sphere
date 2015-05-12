@@ -14,7 +14,7 @@ class MockCommand extends \Guzzle\Service\Command\AbstractCommand
             'name'       => get_called_class() == __CLASS__ ? 'mock_command' : 'sub.sub',
             'httpMethod' => 'POST',
             'parameters' => array(
-                'test'      => array(
+                'test' => array(
                     'default'  => 123,
                     'required' => true,
                     'doc'      => 'Test argument'
@@ -22,7 +22,7 @@ class MockCommand extends \Guzzle\Service\Command\AbstractCommand
                 '_internal' => array(
                     'default' => 'abc'
                 ),
-                'foo'       => array( 'filters' => array( 'strtoupper' ) )
+                'foo'  => array( 'filters' => array( 'strtoupper' ) )
             )
         ) );
     }

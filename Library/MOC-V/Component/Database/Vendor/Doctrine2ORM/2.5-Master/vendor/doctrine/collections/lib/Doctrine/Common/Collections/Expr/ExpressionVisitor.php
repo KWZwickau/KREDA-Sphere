@@ -29,33 +29,6 @@ abstract class ExpressionVisitor
 {
 
     /**
-     * Converts a comparison expression into the target query language output.
-     *
-     * @param Comparison $comparison
-     *
-     * @return mixed
-     */
-    abstract public function walkComparison( Comparison $comparison );
-
-    /**
-     * Converts a value expression into the target query language part.
-     *
-     * @param Value $value
-     *
-     * @return mixed
-     */
-    abstract public function walkValue( Value $value );
-
-    /**
-     * Converts a composite expression into the target query language output.
-     *
-     * @param CompositeExpression $expr
-     *
-     * @return mixed
-     */
-    abstract public function walkCompositeExpression( CompositeExpression $expr );
-
-    /**
      * Dispatches walking an expression to the appropriate handler.
      *
      * @param Expression $expr
@@ -81,4 +54,31 @@ abstract class ExpressionVisitor
                 throw new \RuntimeException( "Unknown Expression ".get_class( $expr ) );
         }
     }
+
+    /**
+     * Converts a comparison expression into the target query language output.
+     *
+     * @param Comparison $comparison
+     *
+     * @return mixed
+     */
+    abstract public function walkComparison( Comparison $comparison );
+
+    /**
+     * Converts a value expression into the target query language part.
+     *
+     * @param Value $value
+     *
+     * @return mixed
+     */
+    abstract public function walkValue( Value $value );
+
+    /**
+     * Converts a composite expression into the target query language output.
+     *
+     * @param CompositeExpression $expr
+     *
+     * @return mixed
+     */
+    abstract public function walkCompositeExpression( CompositeExpression $expr );
 }

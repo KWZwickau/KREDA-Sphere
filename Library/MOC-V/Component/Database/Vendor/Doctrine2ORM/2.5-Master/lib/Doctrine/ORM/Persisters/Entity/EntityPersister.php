@@ -295,7 +295,7 @@ interface EntityPersister
      *
      * @param array                $assoc        The association mapping of the association being loaded.
      * @param object               $sourceEntity The entity that owns the collection.
-     * @param PersistentCollection $collection   The collection to fill.
+     * @param PersistentCollection $collection The collection to fill.
      *
      * @return array
      */

@@ -16,26 +16,26 @@ class LinkTest extends GuzzleTestCase
         $links = $link->getLinks();
         $this->assertEquals( array(
             array(
-                'rel'  => 'front',
+                'rel' => 'front',
                 'type' => 'image/jpeg',
-                'url'  => 'http:/.../front.jpeg',
+                'url' => 'http:/.../front.jpeg',
             ),
             array(
-                'rel'  => 'back',
+                'rel' => 'back',
                 'type' => 'image/jpeg',
-                'url'  => 'http://.../back.jpeg',
+                'url' => 'http://.../back.jpeg',
             ),
             array(
-                'rel'  => 'side',
+                'rel' => 'side',
                 'type' => 'image/jpeg',
-                'url'  => 'http://.../side.jpeg?test=1'
+                'url' => 'http://.../side.jpeg?test=1'
             )
         ), $links );
 
         $this->assertEquals( array(
-            'rel'  => 'back',
+            'rel' => 'back',
             'type' => 'image/jpeg',
-            'url'  => 'http://.../back.jpeg',
+            'url' => 'http://.../back.jpeg',
         ), $link->getLink( 'back' ) );
 
         $this->assertTrue( $link->hasLink( 'front' ) );
@@ -59,9 +59,9 @@ class LinkTest extends GuzzleTestCase
         $link = new Link( 'Link', '<http://example.com/TheBook/chapter1>; rel="previous"; title="start, index"' );
         $this->assertEquals( array(
             array(
-                'rel'   => 'previous',
+                'rel' => 'previous',
                 'title' => 'start, index',
-                'url'   => 'http://example.com/TheBook/chapter1',
+                'url' => 'http://example.com/TheBook/chapter1',
             )
         ), $link->getLinks() );
     }

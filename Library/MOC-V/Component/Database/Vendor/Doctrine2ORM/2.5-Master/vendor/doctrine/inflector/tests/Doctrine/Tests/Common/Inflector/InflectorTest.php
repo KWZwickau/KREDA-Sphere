@@ -197,16 +197,16 @@ class InflectorTest extends DoctrineTestCase
         $pluralIrregular = array( 'as' => 'ases' );
 
         Inflector::rules( 'singular', array(
-            'rules'       => array( '/^(.*)(a|e|o|u)is$/i' => '\1\2l' ),
+            'rules' => array( '/^(.*)(a|e|o|u)is$/i' => '\1\2l' ),
             'uninflected' => $uninflected,
         ), true );
 
         Inflector::rules( 'plural', array(
-            'rules'       => array(
+            'rules'     => array(
                 '/^(.*)(a|e|o|u)l$/i' => '\1\2is',
             ),
             'uninflected' => $uninflected,
-            'irregular'   => $pluralIrregular
+            'irregular' => $pluralIrregular
         ), true );
 
         $this->assertEquals( Inflector::pluralize( 'Alcool' ), 'Alcoois' );

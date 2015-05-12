@@ -20,20 +20,20 @@ class ServiceBuilderLoaderTest extends \Guzzle\Tests\GuzzleTestCase
                 'abstract' => array(
                     'params' => array(
                         'access_key' => 'xyz',
-                        'secret'     => 'abc',
+                        'secret' => 'abc',
                     ),
                 ),
                 'foo'      => array(
                     'extends' => 'abstract',
-                    'params'  => array(
+                    'params' => array(
                         'baz' => 'bar',
                     ),
                 ),
                 'mock'     => array(
                     'extends' => 'abstract',
-                    'params'  => array(
-                        'username'  => 'foo',
-                        'password'  => 'baz',
+                    'params' => array(
+                        'username' => 'foo',
+                        'password' => 'baz',
                         'subdomain' => 'bar',
                     )
                 )
@@ -116,7 +116,7 @@ class ServiceBuilderLoaderTest extends \Guzzle\Tests\GuzzleTestCase
         $foo = array(
             'extends' => 'bar',
             'class'   => 'stdClass',
-            'params'  => array( 'a' => 'test', 'b' => '456' )
+            'params' => array( 'a' => 'test', 'b' => '456' )
         );
 
         return array(
@@ -152,7 +152,7 @@ class ServiceBuilderLoaderTest extends \Guzzle\Tests\GuzzleTestCase
                     'services' => array(
                         'foo' => array(
                             'extends' => 'foo',
-                            'params'  => array( 'b' => '123', 'c' => 'def' )
+                            'params' => array( 'b' => '123', 'c' => 'def' )
                         )
                     )
                 ),
@@ -160,8 +160,8 @@ class ServiceBuilderLoaderTest extends \Guzzle\Tests\GuzzleTestCase
                     'services' => array(
                         'foo' => array(
                             'extends' => 'bar',
-                            'class'   => 'stdClass',
-                            'params'  => array( 'a' => 'test', 'b' => '123', 'c' => 'def' )
+                            'class'  => 'stdClass',
+                            'params' => array( 'a' => 'test', 'b' => '123', 'c' => 'def' )
                         ),
                         'bar' => array( 'params' => array( 'baz' => '123' ) )
                     )

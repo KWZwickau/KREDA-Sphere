@@ -63,7 +63,7 @@ class IoEmittingEntityBody extends AbstractEntityBodyDecorator implements HasDis
         $event = array(
             'body'   => $this,
             'length' => $length,
-            'read'   => $this->body->read( $length )
+            'read' => $this->body->read( $length )
         );
         $this->dispatch( 'body.read', $event );
 

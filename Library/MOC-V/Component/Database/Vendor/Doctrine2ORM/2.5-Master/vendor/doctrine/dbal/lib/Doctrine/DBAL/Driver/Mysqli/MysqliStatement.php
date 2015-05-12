@@ -32,11 +32,11 @@ class MysqliStatement implements \IteratorAggregate, Statement
      * @var array
      */
     protected static $_paramTypeMap = array(
-        PDO::PARAM_STR  => 's',
+        PDO::PARAM_STR => 's',
         PDO::PARAM_BOOL => 'i',
         PDO::PARAM_NULL => 's',
-        PDO::PARAM_INT  => 'i',
-        PDO::PARAM_LOB  => 's' // TODO Support LOB bigger then max package size.
+        PDO::PARAM_INT => 'i',
+        PDO::PARAM_LOB => 's' // TODO Support LOB bigger then max package size.
     );
 
     /**

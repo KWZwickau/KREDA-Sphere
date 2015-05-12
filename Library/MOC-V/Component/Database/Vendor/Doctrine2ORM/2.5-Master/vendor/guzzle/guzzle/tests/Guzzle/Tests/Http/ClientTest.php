@@ -5,7 +5,6 @@ namespace Guzzle\Tests\Http;
 use Guzzle\Common\Collection;
 use Guzzle\Common\Version;
 use Guzzle\Http\Client;
-use Guzzle\Http\Curl\CurlMulti;
 use Guzzle\Http\Message\Response;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Parser\UriTemplate\UriTemplate;
@@ -59,8 +58,8 @@ class ClientTest extends \Guzzle\Tests\GuzzleTestCase
 
         $client = new Client( 'http://www.google.com/' );
         $client->setConfig( new Collection( array(
-            'api'      => 'v1',
-            'key'      => 'value',
+            'api' => 'v1',
+            'key' => 'value',
             'base_url' => 'http://www.google.com/'
         ) ) );
         $this->assertEquals( 'v1', $client->getConfig( 'api' ) );
@@ -111,7 +110,7 @@ class ClientTest extends \Guzzle\Tests\GuzzleTestCase
 
         $client = new Client( 'http://www.{foo}.{data}/', array(
             'data' => '123',
-            'foo'  => 'bar'
+            'foo' => 'bar'
         ) );
         $this->assertEquals( 'http://www.bar.123/', $client->getBaseUrl() );
         $client->setBaseUrl( 'http://www.google.com/' );
@@ -241,7 +240,7 @@ class ClientTest extends \Guzzle\Tests\GuzzleTestCase
 
         Version::$emitWarnings = false;
         $client = new Client( 'http://www.example.com', array(
-            'api'            => 'v1',
+            'api' => 'v1',
             'request.params' => array(
                 'foo' => 'bar',
                 'baz' => 'jar'
@@ -471,7 +470,7 @@ class ClientTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $client = new Client( 'http://test.com', array(
-            'path'  => array( 'foo', 'bar' ),
+            'path' => array( 'foo', 'bar' ),
             'query' => 'hi there',
             'data'  => array(
                 'test' => 'a&b'
@@ -488,7 +487,7 @@ class ClientTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $client = new Client( 'http://test.com', array(
-            'path'  => array( 'foo', 'bar' ),
+            'path' => array( 'foo', 'bar' ),
             'query' => 'hi there',
         ) );
         $request = $client->get( 'http://test.com{?query}' );
@@ -636,7 +635,7 @@ class ClientTest extends \Guzzle\Tests\GuzzleTestCase
         $this->assertFalse( $client->getDefaultOption( 'allow_redirects' ) );
 
         $this->assertEquals( array(
-            'headers'         => array( 'foo' => 'bar' ),
+            'headers' => array( 'foo' => 'bar' ),
             'allow_redirects' => false
         ), $client->getConfig( 'request.options' ) );
 

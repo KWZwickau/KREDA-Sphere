@@ -66,8 +66,8 @@ abstract class AbstractVisitorTestCase extends \Guzzle\Tests\GuzzleTestCase
                         'bar'  => array( 'default' => 123 )
                     ),
                     'additionalProperties' => array(
-                        'type'     => 'string',
-                        'filters'  => array( 'strtoupper' ),
+                        'type'    => 'string',
+                        'filters' => array( 'strtoupper' ),
                         'location' => $location
                     )
                 ) ),
@@ -90,20 +90,20 @@ abstract class AbstractVisitorTestCase extends \Guzzle\Tests\GuzzleTestCase
             'httpMethod' => 'POST',
             'parameters' => array(
                 'foo' => new Parameter( array(
-                    'type'     => 'string',
+                    'type'    => 'string',
                     'location' => 'query',
-                    'sentAs'   => 'Foo',
+                    'sentAs'  => 'Foo',
                     'required' => true,
-                    'default'  => 'bar',
-                    'filters'  => array( 'strtoupper' )
+                    'default' => 'bar',
+                    'filters' => array( 'strtoupper' )
                 ) ),
                 'arr' => new Parameter( array(
-                    'type'     => 'array',
+                    'type'    => 'array',
                     'location' => 'query',
-                    'sentAs'   => 'Arr',
+                    'sentAs'  => 'Arr',
                     'required' => true,
-                    'default'  => array( 123, 456, 789 ),
-                    'filters'  => array( array( 'method' => 'implode', 'args' => array( ',', '@value' ) ) )
+                    'default' => array( 123, 456, 789 ),
+                    'filters' => array( array( 'method' => 'implode', 'args' => array( ',', '@value' ) ) )
                 ) )
             )
         ) );

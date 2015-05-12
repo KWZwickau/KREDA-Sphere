@@ -270,9 +270,9 @@ class PHPUnit_Util_XML
             case 'string': {
                 $variable = $element->nodeValue;
 
-                settype( $variable, $element->tagName );
+            settype( $variable, $element->tagName );
             }
-                break;
+            break;
         }
 
         return $variable;

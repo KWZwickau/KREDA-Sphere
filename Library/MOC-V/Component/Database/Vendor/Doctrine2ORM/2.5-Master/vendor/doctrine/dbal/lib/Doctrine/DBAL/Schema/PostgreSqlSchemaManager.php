@@ -389,7 +389,7 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
             case 'decimal':
             case 'money':
             case 'numeric':
-                if (preg_match( '([A-Za-z]+\(([0-9]+)\,([0-9]+)\))', $tableColumn['complete_type'], $match )) {
+            if (preg_match( '([A-Za-z]+\(([0-9]+)\,([0-9]+)\))', $tableColumn['complete_type'], $match )) {
                     $precision = $match[1];
                     $scale = $match[2];
                     $length = null;
@@ -406,15 +406,15 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
 
         $options = array(
             'length'        => $length,
-            'notnull'       => (bool)$tableColumn['isnotnull'],
+            'notnull' => (bool)$tableColumn['isnotnull'],
             'default'       => $tableColumn['default'],
-            'primary'       => (bool)( $tableColumn['pri'] == 't' ),
+            'primary' => (bool)( $tableColumn['pri'] == 't' ),
             'precision'     => $precision,
             'scale'         => $scale,
             'fixed'         => $fixed,
             'unsigned'      => false,
             'autoincrement' => $autoincrement,
-            'comment'       => isset( $tableColumn['comment'] ) && $tableColumn['comment'] !== ''
+            'comment' => isset( $tableColumn['comment'] ) && $tableColumn['comment'] !== ''
                 ? $tableColumn['comment']
                 : null,
         );

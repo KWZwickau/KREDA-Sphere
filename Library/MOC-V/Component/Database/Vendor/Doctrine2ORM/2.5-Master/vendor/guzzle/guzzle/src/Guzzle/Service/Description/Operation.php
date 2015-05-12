@@ -432,9 +432,9 @@ class Operation implements OperationInterface
     {
 
         static $types = array(
-            self::TYPE_PRIMITIVE     => true,
-            self::TYPE_CLASS         => true,
-            self::TYPE_MODEL         => true,
+            self::TYPE_PRIMITIVE => true,
+            self::TYPE_CLASS     => true,
+            self::TYPE_MODEL     => true,
             self::TYPE_DOCUMENTATION => true
         );
         if (!isset( $types[$responseType] )) {

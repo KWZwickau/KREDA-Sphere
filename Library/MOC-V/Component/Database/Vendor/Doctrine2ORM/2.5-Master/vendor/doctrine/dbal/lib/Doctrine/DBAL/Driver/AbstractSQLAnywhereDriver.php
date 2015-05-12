@@ -51,27 +51,27 @@ abstract class AbstractSQLAnywhereDriver implements Driver, ExceptionConverterDr
             case '-100':
             case '-103':
             case '-832':
-                return new Exception\ConnectionException( $message, $exception );
+            return new Exception\ConnectionException( $message, $exception );
             case '-143':
                 return new Exception\InvalidFieldNameException( $message, $exception );
             case '-193':
             case '-196':
-                return new Exception\UniqueConstraintViolationException( $message, $exception );
+            return new Exception\UniqueConstraintViolationException( $message, $exception );
             case '-194':
             case '-198':
-                return new Exception\ForeignKeyConstraintViolationException( $message, $exception );
+            return new Exception\ForeignKeyConstraintViolationException( $message, $exception );
             case '-144':
                 return new Exception\NonUniqueFieldNameException( $message, $exception );
             case '-184':
             case '-195':
-                return new Exception\NotNullConstraintViolationException( $message, $exception );
+            return new Exception\NotNullConstraintViolationException( $message, $exception );
             case '-131':
                 return new Exception\SyntaxErrorException( $message, $exception );
             case '-110':
                 return new Exception\TableExistsException( $message, $exception );
             case '-141':
             case '-1041':
-                return new Exception\TableNotFoundException( $message, $exception );
+            return new Exception\TableNotFoundException( $message, $exception );
         }
 
         return new Exception\DriverException( $message, $exception );

@@ -27,7 +27,7 @@ class CollectionTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $testData = array(
-            'test'   => 'value',
+            'test' => 'value',
             'test_2' => 'value2'
         );
         $this->coll = new Collection( $testData );
@@ -81,7 +81,7 @@ class CollectionTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $this->coll->merge( array(
-            'test'  => 'value1',
+            'test' => 'value1',
             'test2' => 'value2'
         ) );
 
@@ -107,7 +107,7 @@ class CollectionTest extends \Guzzle\Tests\GuzzleTestCase
         $this->coll->set( 'test2', 'v2' );
         $this->coll->set( 'test3', 'v3' );
         $this->assertEquals( array(
-            'test'  => 'value',
+            'test' => 'value',
             'test2' => 'v2'
         ), $this->coll->getAll( array( 'test', 'test2' ) ) );
     }
@@ -200,14 +200,14 @@ class CollectionTest extends \Guzzle\Tests\GuzzleTestCase
 
         // Add more parameters by merging them in
         $this->coll->merge( array(
-            'test'          => 'another',
+            'test' => 'another',
             'different_key' => 'new value'
         ) );
 
         $this->assertEquals( array(
-            'test'          => array( 'value1', 'another' ),
-            'test2'         => 'value2',
-            'test3'         => array( 'value3', 'value4' ),
+            'test'  => array( 'value1', 'another' ),
+            'test2' => 'value2',
+            'test3' => array( 'value3', 'value4' ),
             'different_key' => 'new value'
         ), $this->coll->getAll() );
     }
@@ -230,7 +230,7 @@ class CollectionTest extends \Guzzle\Tests\GuzzleTestCase
         $this->assertNotEquals( $filtered, $this->coll );
 
         $this->assertEquals( array(
-            'number'      => 'ten',
+            'number' => 'ten',
             'same_number' => 'ten'
         ), $filtered->getAll() );
     }
@@ -374,7 +374,7 @@ class CollectionTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $c = Collection::fromConfig( array(
-            'a'        => '123',
+            'a' => '123',
             'base_url' => 'http://www.test.com/'
         ), array(
             'a' => 'xyz',
@@ -383,8 +383,8 @@ class CollectionTest extends \Guzzle\Tests\GuzzleTestCase
 
         $this->assertInstanceOf( 'Guzzle\Common\Collection', $c );
         $this->assertEquals( array(
-            'a'        => '123',
-            'b'        => 'lol',
+            'a' => '123',
+            'b' => 'lol',
             'base_url' => 'http://www.test.com/'
         ), $c->getAll() );
 
@@ -442,7 +442,7 @@ class CollectionTest extends \Guzzle\Tests\GuzzleTestCase
             '0' => array(
                 'a' => 'jar'
             ),
-            1   => 'other'
+            1 => 'other'
         ) );
         $this->assertEquals( 'jar', $collection->getPath( '0/a' ) );
         $this->assertEquals( 'other', $collection->getPath( '1' ) );

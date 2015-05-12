@@ -108,7 +108,7 @@ class MultiTableDeleteExecutor extends AbstractSqlExecutor
         foreach ($idColumnNames as $idColumnName) {
             $columnDefinitions[$idColumnName] = array(
                 'notnull' => true,
-                'type'    => \Doctrine\DBAL\Types\Type::getType( $rootClass->getTypeOfColumn( $idColumnName ) )
+                'type' => \Doctrine\DBAL\Types\Type::getType( $rootClass->getTypeOfColumn( $idColumnName ) )
             );
         }
         $this->_createTempTableSql = $platform->getCreateTemporaryTableSnippetSQL().' '.$tempTable.' ('

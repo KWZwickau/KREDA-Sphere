@@ -31,6 +31,25 @@ class CompositeResourceIteratorFactory implements ResourceIteratorFactoryInterfa
         return $factory->build( $command, $options );
     }
 
+    /**
+     * Get the factory that matches the command object
+     *
+     * @param CommandInterface $command Command retrieving the iterator for
+     *
+     * @return ResourceIteratorFactoryInterface|bool
+     */
+    protected function getFactory( CommandInterface $command )
+    {
+
+        foreach ($this->factories as $factory) {
+            if ($factory->canBuild( $command )) {
+                return $factory;
+            }
+        }
+
+        return false;
+    }
+
     public function canBuild( CommandInterface $command )
     {
 
@@ -50,24 +69,5 @@ class CompositeResourceIteratorFactory implements ResourceIteratorFactoryInterfa
         $this->factories[] = $factory;
 
         return $this;
-    }
-
-    /**
-     * Get the factory that matches the command object
-     *
-     * @param CommandInterface $command Command retrieving the iterator for
-     *
-     * @return ResourceIteratorFactoryInterface|bool
-     */
-    protected function getFactory( CommandInterface $command )
-    {
-
-        foreach ($this->factories as $factory) {
-            if ($factory->canBuild( $command )) {
-                return $factory;
-            }
-        }
-
-        return false;
     }
 }

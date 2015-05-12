@@ -47,9 +47,9 @@ class ConvertDoctrine1Schema
      */
     private $legacyTypeMap = array(
         // TODO: This list may need to be updated
-        'clob'      => 'text',
+        'clob' => 'text',
         'timestamp' => 'datetime',
-        'enum'      => 'string'
+        'enum' => 'string'
     );
 
     /**
@@ -160,10 +160,10 @@ class ConvertDoctrine1Schema
 
         if (!$id) {
             $fieldMapping = array(
-                'fieldName'  => 'id',
+                'fieldName' => 'id',
                 'columnName' => 'id',
-                'type'       => 'integer',
-                'id'         => true
+                'type'      => 'integer',
+                'id'        => true
             );
             $metadata->mapField( $fieldMapping );
             $metadata->setIdGeneratorType( ClassMetadataInfo::GENERATOR_TYPE_AUTO );
@@ -326,9 +326,9 @@ class ConvertDoctrine1Schema
                 $foreignType = isset( $relation['foreignType'] ) ? $relation['foreignType'] : 'many';
                 $joinColumns = array(
                     array(
-                        'name'                 => $relation['local'],
+                        'name'     => $relation['local'],
                         'referencedColumnName' => $relation['foreign'],
-                        'onDelete'             => isset( $relation['onDelete'] ) ? $relation['onDelete'] : null,
+                        'onDelete' => isset( $relation['onDelete'] ) ? $relation['onDelete'] : null,
                     )
                 );
             }

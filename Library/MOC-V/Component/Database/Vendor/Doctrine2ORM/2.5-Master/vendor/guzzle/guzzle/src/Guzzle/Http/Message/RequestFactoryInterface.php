@@ -27,9 +27,9 @@ interface RequestFactoryInterface
     /**
      * Create a request from URL parts as returned from parse_url()
      *
-     * @param string                                    $method          HTTP method (GET, POST, PUT, HEAD, DELETE, etc)
+     * @param string $method                                             HTTP method (GET, POST, PUT, HEAD, DELETE, etc)
      *
-     * @param array                                     $urlParts        URL parts containing the same keys as parse_url()
+     * @param array  $urlParts                                           URL parts containing the same keys as parse_url()
      *                                                                   - scheme: e.g. http
      *                                                                   - host:   e.g. www.guzzle-project.com
      *                                                                   - port:   e.g. 80
@@ -97,7 +97,7 @@ interface RequestFactoryInterface
      *                                  the certificate.
      *                                  "proxy": Specify an HTTP proxy (e.g. "http://username:password@192.168.16.1:10")
      *                                  "debug": Set to true to display all data sent over the wire
-     * @param int              $flags   Bitwise flags to apply when applying the options to the request. Defaults to no special
+     * @param int $flags                Bitwise flags to apply when applying the options to the request. Defaults to no special
      *                                  options. `1` (OPTIONS_AS_DEFAULTS): When specified, options will only update a request when
      *                                  the value does not already exist on the request. This is only supported by "query" and
      *                                  "headers". Other bitwise options may be added in the future.

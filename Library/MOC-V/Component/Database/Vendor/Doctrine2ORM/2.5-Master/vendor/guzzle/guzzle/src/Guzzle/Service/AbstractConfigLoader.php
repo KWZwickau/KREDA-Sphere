@@ -13,12 +13,12 @@ abstract class AbstractConfigLoader implements ConfigLoaderInterface
 
     /** @var array JSON error code mappings */
     protected static $jsonErrors = array(
-        JSON_ERROR_NONE           => 'JSON_ERROR_NONE - No errors',
-        JSON_ERROR_DEPTH          => 'JSON_ERROR_DEPTH - Maximum stack depth exceeded',
+        JSON_ERROR_NONE      => 'JSON_ERROR_NONE - No errors',
+        JSON_ERROR_DEPTH     => 'JSON_ERROR_DEPTH - Maximum stack depth exceeded',
         JSON_ERROR_STATE_MISMATCH => 'JSON_ERROR_STATE_MISMATCH - Underflow or the modes mismatch',
-        JSON_ERROR_CTRL_CHAR      => 'JSON_ERROR_CTRL_CHAR - Unexpected control character found',
-        JSON_ERROR_SYNTAX         => 'JSON_ERROR_SYNTAX - Syntax error, malformed JSON',
-        JSON_ERROR_UTF8           => 'JSON_ERROR_UTF8 - Malformed UTF-8 characters, possibly incorrectly encoded'
+        JSON_ERROR_CTRL_CHAR => 'JSON_ERROR_CTRL_CHAR - Unexpected control character found',
+        JSON_ERROR_SYNTAX    => 'JSON_ERROR_SYNTAX - Syntax error, malformed JSON',
+        JSON_ERROR_UTF8      => 'JSON_ERROR_UTF8 - Malformed UTF-8 characters, possibly incorrectly encoded'
     );
     /** @var array Array of aliases for actual filenames */
     protected $aliases = array();
@@ -61,16 +61,16 @@ abstract class AbstractConfigLoader implements ConfigLoaderInterface
         switch (pathinfo( $filename, PATHINFO_EXTENSION )) {
             case 'js':
             case 'json':
-                $level = error_reporting( 0 );
-                $json = file_get_contents( $filename );
-                error_reporting( $level );
+            $level = error_reporting( 0 );
+            $json = file_get_contents( $filename );
+            error_reporting( $level );
 
                 if ($json === false) {
                     $err = error_get_last();
                     throw new InvalidArgumentException( "Unable to open {$filename}: ".$err['message'] );
                 }
 
-                $config = json_decode( $json, true );
+            $config = json_decode( $json, true );
                 // Throw an exception if there was an error loading the file
                 if ($error = json_last_error()) {
                     $message = isset( self::$jsonErrors[$error] ) ? self::$jsonErrors[$error] : 'Unknown error';

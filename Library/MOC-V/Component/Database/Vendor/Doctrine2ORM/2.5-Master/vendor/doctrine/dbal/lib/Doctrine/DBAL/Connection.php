@@ -915,7 +915,7 @@ class Connection implements DriverConnection
      * @param string  $statement The SQL query to be executed.
      * @param array   $params    The prepared statement params.
      * @param integer $column    The 0-indexed column number to retrieve.
-     * @param array   $types     The query parameter types.
+     * @param array $types The query parameter types.
      *
      * @return mixed
      */
@@ -1139,8 +1139,8 @@ class Connection implements DriverConnection
      * Table expression and columns are not escaped and are not safe for user-input.
      *
      * @param string $tableExpression The expression of the table to insert data into, quoted or unquoted.
-     * @param array  $data            An associative array containing column-value pairs.
-     * @param array  $types           Types of the inserted data.
+     * @param array $data  An associative array containing column-value pairs.
+     * @param array $types Types of the inserted data.
      *
      * @return integer The number of affected rows.
      */

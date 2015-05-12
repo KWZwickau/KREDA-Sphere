@@ -14,7 +14,6 @@ use Guzzle\Http\Message\Response;
 use Guzzle\Plugin\Cache\CachePlugin;
 use Guzzle\Plugin\Cache\DefaultCacheStorage;
 use Guzzle\Plugin\Mock\MockPlugin;
-use Guzzle\Tests\Http\Server;
 
 /**
  * @covers Guzzle\Plugin\Cache\DefaultRevalidation
@@ -207,9 +206,9 @@ class DefaultRevalidationTest extends \Guzzle\Tests\GuzzleTestCase
         $lm = gmdate( 'c', time() - 60 );
         $mock = new MockPlugin( array(
             new Response( 200, array(
-                'Date'           => $lm,
-                'Cache-Control'  => 'must-revalidate, max-age=0, stale-if-error=1200',
-                'Last-Modified'  => $lm,
+                'Date'          => $lm,
+                'Cache-Control' => 'must-revalidate, max-age=0, stale-if-error=1200',
+                'Last-Modified' => $lm,
                 'Content-Length' => 2
             ), 'hi' ),
             new CurlException( 'Oh no!' ),

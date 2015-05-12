@@ -506,18 +506,18 @@ class Column extends AbstractAsset
     {
 
         return array_merge( array(
-            'name'             => $this->_name,
-            'type'             => $this->_type,
-            'default'          => $this->_default,
-            'notnull'          => $this->_notnull,
-            'length'           => $this->_length,
-            'precision'        => $this->_precision,
-            'scale'            => $this->_scale,
-            'fixed'            => $this->_fixed,
-            'unsigned'         => $this->_unsigned,
-            'autoincrement'    => $this->_autoincrement,
+            'name'          => $this->_name,
+            'type'          => $this->_type,
+            'default'       => $this->_default,
+            'notnull'       => $this->_notnull,
+            'length'        => $this->_length,
+            'precision'     => $this->_precision,
+            'scale'         => $this->_scale,
+            'fixed'         => $this->_fixed,
+            'unsigned'      => $this->_unsigned,
+            'autoincrement' => $this->_autoincrement,
             'columnDefinition' => $this->_columnDefinition,
-            'comment'          => $this->_comment,
+            'comment'       => $this->_comment,
         ), $this->_platformOptions, $this->_customSchemaOptions );
     }
 }

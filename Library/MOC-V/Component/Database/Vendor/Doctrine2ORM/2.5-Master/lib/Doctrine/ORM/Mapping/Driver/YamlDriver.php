@@ -187,9 +187,10 @@ class YamlDriver extends FileDriver
                         'columnDefinition' => isset( $discrColumn['columnDefinition'] ) ? (string)$discrColumn['columnDefinition'] : null
                     ) );
                 } else {
-                    $metadata->setDiscriminatorColumn( array( 'name'   => 'dtype',
-                                                              'type'   => 'string',
-                                                              'length' => 255
+                    $metadata->setDiscriminatorColumn( array(
+                        'name'   => 'dtype',
+                        'type'   => 'string',
+                        'length' => 255
                     ) );
                 }
 
@@ -270,7 +271,7 @@ class YamlDriver extends FileDriver
                 }
 
                 $mapping = array(
-                    'id'        => true,
+                    'id' => true,
                     'fieldName' => $name
                 );
 
@@ -356,7 +357,7 @@ class YamlDriver extends FileDriver
         if (isset( $element['oneToOne'] )) {
             foreach ($element['oneToOne'] as $name => $oneToOneElement) {
                 $mapping = array(
-                    'fieldName'    => $name,
+                    'fieldName' => $name,
                     'targetEntity' => $oneToOneElement['targetEntity']
                 );
 
@@ -416,9 +417,9 @@ class YamlDriver extends FileDriver
         if (isset( $element['oneToMany'] )) {
             foreach ($element['oneToMany'] as $name => $oneToManyElement) {
                 $mapping = array(
-                    'fieldName'    => $name,
+                    'fieldName' => $name,
                     'targetEntity' => $oneToManyElement['targetEntity'],
-                    'mappedBy'     => $oneToManyElement['mappedBy']
+                    'mappedBy'  => $oneToManyElement['mappedBy']
                 );
 
                 if (isset( $oneToManyElement['fetch'] )) {
@@ -455,7 +456,7 @@ class YamlDriver extends FileDriver
         if (isset( $element['manyToOne'] )) {
             foreach ($element['manyToOne'] as $name => $manyToOneElement) {
                 $mapping = array(
-                    'fieldName'    => $name,
+                    'fieldName' => $name,
                     'targetEntity' => $manyToOneElement['targetEntity']
                 );
 
@@ -507,7 +508,7 @@ class YamlDriver extends FileDriver
         if (isset( $element['manyToMany'] )) {
             foreach ($element['manyToMany'] as $name => $manyToManyElement) {
                 $mapping = array(
-                    'fieldName'    => $name,
+                    'fieldName' => $name,
                     'targetEntity' => $manyToManyElement['targetEntity']
                 );
 

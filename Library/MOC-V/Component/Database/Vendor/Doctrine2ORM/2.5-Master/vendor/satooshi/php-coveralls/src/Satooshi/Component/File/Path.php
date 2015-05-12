@@ -69,7 +69,7 @@ class Path
     /**
      * Return real file path to write.
      *
-     * @param string $path    File path.
+     * @param string $path File path.
      * @param string $rootDir Absolute path to project root directory.
      *
      * @return string|false Real file path string if the parent directory exists, false otherwise.
@@ -89,7 +89,7 @@ class Path
     /**
      * Return real directory path.
      *
-     * @param string $path    Path.
+     * @param string $path Path.
      * @param string $rootDir Absolute path to project root directory.
      *
      * @return string|false Real directory path string if the path string is passed and real directory exists, false otherwise.

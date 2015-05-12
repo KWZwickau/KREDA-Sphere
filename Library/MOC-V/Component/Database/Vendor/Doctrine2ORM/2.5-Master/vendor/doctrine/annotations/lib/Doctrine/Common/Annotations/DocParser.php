@@ -279,13 +279,13 @@ final class DocParser
         // Sets default values for annotation metadata
         $metadata = array(
             'default_property' => null,
-            'has_constructor'  => ( null !== $constructor = $class->getConstructor() ) && $constructor->getNumberOfParameters() > 0,
+            'has_constructor' => ( null !== $constructor = $class->getConstructor() ) && $constructor->getNumberOfParameters() > 0,
             'properties'       => array(),
             'property_types'   => array(),
             'attribute_types'  => array(),
             'targets_literal'  => null,
             'targets'          => Target::TARGET_ALL,
-            'is_annotation'    => false !== strpos( $docComment, '@Annotation' ),
+            'is_annotation'   => false !== strpos( $docComment, '@Annotation' ),
         );
 
         // verify that the class is really meant to be an annotation

@@ -228,7 +228,7 @@ class Paginator implements \Countable, \IteratorAggregate
     /**
      * Appends a custom tree walker to the tree walkers hint.
      *
-     * @param Query  $query
+     * @param Query $query
      * @param string $walkerClass
      */
     private function appendTreeWalker( Query $query, $walkerClass )

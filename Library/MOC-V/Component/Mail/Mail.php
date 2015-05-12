@@ -75,6 +75,15 @@ class Mail implements IVendorInterface
     /**
      * @return IBridgeInterface
      */
+    public function getBridgeInterface()
+    {
+
+        return $this->VendorInterface->getBridgeInterface();
+    }
+
+    /**
+     * @return IBridgeInterface
+     */
     public static function getPop3Mail()
     {
 
@@ -100,15 +109,6 @@ class Mail implements IVendorInterface
         );
 
         return $Mail->getBridgeInterface();
-    }
-
-    /**
-     * @return IBridgeInterface
-     */
-    public function getBridgeInterface()
-    {
-
-        return $this->VendorInterface->getBridgeInterface();
     }
 
     /**

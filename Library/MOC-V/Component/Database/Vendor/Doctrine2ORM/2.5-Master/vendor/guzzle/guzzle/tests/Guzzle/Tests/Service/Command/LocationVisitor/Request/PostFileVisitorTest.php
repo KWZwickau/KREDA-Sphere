@@ -38,7 +38,7 @@ class PostFileVisitorTest extends AbstractVisitorTestCase
                     'parameters' => array(
                         'foo' => array(
                             'location' => 'postFile',
-                            'type'     => array( 'string', 'array' )
+                            'type' => array( 'string', 'array' )
                         )
                     )
                 )

@@ -124,9 +124,9 @@ class MemcacheCache extends CacheProvider
 
         $stats = $this->memcache->getStats();
         return array(
-            Cache::STATS_HITS             => $stats['get_hits'],
-            Cache::STATS_MISSES           => $stats['get_misses'],
-            Cache::STATS_UPTIME           => $stats['uptime'],
+            Cache::STATS_HITS   => $stats['get_hits'],
+            Cache::STATS_MISSES => $stats['get_misses'],
+            Cache::STATS_UPTIME => $stats['uptime'],
             Cache::STATS_MEMORY_USAGE     => $stats['bytes'],
             Cache::STATS_MEMORY_AVAILABLE => $stats['limit_maxbytes'],
         );

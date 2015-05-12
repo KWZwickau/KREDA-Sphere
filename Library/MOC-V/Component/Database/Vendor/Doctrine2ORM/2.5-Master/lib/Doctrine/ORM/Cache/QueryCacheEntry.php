@@ -44,7 +44,7 @@ class QueryCacheEntry implements CacheEntry
     public $time;
 
     /**
-     * @param array   $result
+     * @param array $result
      * @param integer $time
      */
     public function __construct( $result, $time = null )

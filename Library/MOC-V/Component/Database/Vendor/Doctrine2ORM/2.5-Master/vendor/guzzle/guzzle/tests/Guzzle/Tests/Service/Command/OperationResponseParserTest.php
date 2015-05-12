@@ -182,7 +182,7 @@ class OperationResponseParserTest extends \Guzzle\Tests\GuzzleTestCase
                         'type'       => 'object',
                         'properties' => array(
                             'a' => array(
-                                'type'    => 'string',
+                                'type' => 'string',
                                 'filters' => 'strtoupper'
                             )
                         )
@@ -216,9 +216,9 @@ class OperationResponseParserTest extends \Guzzle\Tests\GuzzleTestCase
             'operations' => array( 'test' => array( 'responseClass' => 'Foo' ) ),
             'models'     => array(
                 'Foo' => array(
-                    'type'                 => 'object',
+                    'type'       => 'object',
                     'additionalProperties' => false,
-                    'properties'           => array(
+                    'properties' => array(
                         'name'   => array(
                             'location' => 'json',
                             'type'     => 'string',
@@ -233,7 +233,7 @@ class OperationResponseParserTest extends \Guzzle\Tests\GuzzleTestCase
                                 )
                             ),
                         ),
-                        'code'   => array( 'location' => 'statusCode' )
+                        'code' => array( 'location' => 'statusCode' )
                     ),
 
                 )
@@ -247,11 +247,11 @@ class OperationResponseParserTest extends \Guzzle\Tests\GuzzleTestCase
         $op->prepare()->setResponse( new Response( 200, array( 'Content-Type' => 'application/json' ), $json ), true );
         $result = $op->execute()->toArray();
         $this->assertEquals( array(
-            'name'   => 'test',
+            'name' => 'test',
             'nested' => array(
                 'width' => 10,
             ),
-            'code'   => 200
+            'code' => 200
         ), $result );
     }
 

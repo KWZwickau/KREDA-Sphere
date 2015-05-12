@@ -23,7 +23,7 @@ class Md5ValidatorPluginTest extends \Guzzle\Tests\GuzzleTestCase
         $body = 'abc';
         $hash = md5( $body );
         $response = new Response( 200, array(
-            'Content-MD5'    => $hash,
+            'Content-MD5' => $hash,
             'Content-Length' => 3
         ), 'abc' );
 
@@ -50,7 +50,7 @@ class Md5ValidatorPluginTest extends \Guzzle\Tests\GuzzleTestCase
 
         $request->dispatch( 'request.complete', array(
             'response' => new Response( 200, array(
-                'Content-MD5'    => 'foobar',
+                'Content-MD5' => 'foobar',
                 'Content-Length' => 3
             ), 'abc' )
         ) );
@@ -65,7 +65,7 @@ class Md5ValidatorPluginTest extends \Guzzle\Tests\GuzzleTestCase
 
         $request->dispatch( 'request.complete', array(
             'response' => new Response( 200, array(
-                'Content-MD5'    => 'foobar',
+                'Content-MD5' => 'foobar',
                 'Content-Length' => 3
             ), 'abc' )
         ) );
@@ -87,7 +87,7 @@ class Md5ValidatorPluginTest extends \Guzzle\Tests\GuzzleTestCase
         $body->uncompress();
 
         $response = new Response( 200, array(
-            'Content-MD5'      => $hash,
+            'Content-MD5' => $hash,
             'Content-Encoding' => 'gzip'
         ), 'abc' );
         $request->dispatch( 'request.complete', array(
@@ -97,7 +97,7 @@ class Md5ValidatorPluginTest extends \Guzzle\Tests\GuzzleTestCase
 
         // Try again with an unknown encoding
         $response = new Response( 200, array(
-            'Content-MD5'      => $hash,
+            'Content-MD5' => $hash,
             'Content-Encoding' => 'foobar'
         ), 'abc' );
         $request->dispatch( 'request.complete', array(
@@ -107,7 +107,7 @@ class Md5ValidatorPluginTest extends \Guzzle\Tests\GuzzleTestCase
         // Try again with compress
         $body->compress( 'bzip2.compress' );
         $response = new Response( 200, array(
-            'Content-MD5'      => $body->getContentMd5(),
+            'Content-MD5' => $body->getContentMd5(),
             'Content-Encoding' => 'compress'
         ), 'abc' );
         $request->dispatch( 'request.complete', array(

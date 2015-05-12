@@ -353,10 +353,10 @@ class RequestTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $response = new Response( 200, array(
-            'Date'          => 'Sat, 16 Oct 2010 17:27:14 GMT',
-            'Expires'       => '-1',
+            'Date'         => 'Sat, 16 Oct 2010 17:27:14 GMT',
+            'Expires'      => '-1',
             'Cache-Control' => 'private, max-age=0',
-            'Content-Type'  => 'text/html; charset=ISO-8859-1',
+            'Content-Type' => 'text/html; charset=ISO-8859-1',
         ), 'response body' );
 
         $this->assertSame( $this->request, $this->request->setResponse( $response ),

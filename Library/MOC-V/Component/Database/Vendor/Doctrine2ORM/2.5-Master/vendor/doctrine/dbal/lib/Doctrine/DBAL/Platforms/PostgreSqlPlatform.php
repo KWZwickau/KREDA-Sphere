@@ -49,7 +49,7 @@ class PostgreSqlPlatform extends AbstractPlatform
      * @var array PostgreSQL booleans literals
      */
     private $booleanLiterals = array(
-        'true'  => array(
+        'true' => array(
             't',
             'true',
             'y',

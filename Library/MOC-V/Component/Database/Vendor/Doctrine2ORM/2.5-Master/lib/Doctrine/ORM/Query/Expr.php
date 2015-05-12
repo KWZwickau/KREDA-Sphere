@@ -505,7 +505,7 @@ class Expr
      * Creates a NOT IN() expression with the given arguments.
      *
      * @param string $x Field in string format to be restricted by NOT IN() function.
-     * @param mixed  $y Argument to be used in NOT IN() function.
+     * @param mixed $y Argument to be used in NOT IN() function.
      *
      * @return Expr\Func
      */

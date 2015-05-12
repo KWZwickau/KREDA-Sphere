@@ -186,10 +186,10 @@ class MongoDBCache extends CacheProvider
 
         $serverStatus = $this->collection->db->command( array(
             'serverStatus' => 1,
-            'locks'        => 0,
-            'metrics'      => 0,
-            'recordStats'  => 0,
-            'repl'         => 0,
+            'locks'       => 0,
+            'metrics'     => 0,
+            'recordStats' => 0,
+            'repl'        => 0,
         ) );
 
         $collStats = $this->collection->db->command( array( 'collStats' => 1 ) );

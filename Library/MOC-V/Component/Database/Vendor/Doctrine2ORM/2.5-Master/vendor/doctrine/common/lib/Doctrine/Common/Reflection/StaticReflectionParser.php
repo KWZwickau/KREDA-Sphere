@@ -78,9 +78,9 @@ class StaticReflectionParser implements ReflectionProviderInterface
      * @var string
      */
     protected $docComment = array(
-        'class'    => '',
+        'class'  => '',
         'property' => array(),
-        'method'   => array()
+        'method' => array()
     );
 
     /**

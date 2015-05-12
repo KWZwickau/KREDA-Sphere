@@ -3,7 +3,6 @@
 namespace Guzzle\Tests\Service\Description;
 
 use Guzzle\Service\Description\ServiceDescription;
-use Guzzle\Service\Description\ServiceDescriptionLoader;
 
 /**
  * @covers Guzzle\Service\Description\ServiceDescriptionLoader
@@ -15,8 +14,8 @@ class ServiceDescriptionLoaderTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $d = ServiceDescription::factory( array(
-            'foo'        => true,
-            'baz'        => array( 'bar' ),
+            'foo' => true,
+            'baz' => array( 'bar' ),
             'apiVersion' => '123',
             'operations' => array()
         ) );
@@ -89,7 +88,7 @@ class ServiceDescriptionLoaderTest extends \Guzzle\Tests\GuzzleTestCase
                     )
                 ),
                 'b' => array(
-                    'extends'    => 'a',
+                    'extends' => 'a',
                     'parameters' => array(
                         'b2' => array()
                     )
@@ -106,7 +105,7 @@ class ServiceDescriptionLoaderTest extends \Guzzle\Tests\GuzzleTestCase
                 ),
                 'd' => array(
                     'httpMethod' => 'DELETE',
-                    'extends'    => array( 'b', 'c' ),
+                    'extends' => array( 'b', 'c' ),
                     'parameters' => array(
                         'test' => array()
                     )

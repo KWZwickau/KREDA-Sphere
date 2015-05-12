@@ -137,7 +137,7 @@ class TableGenerator
                 if ($row['sequence_increment_by'] > 1) {
                     $this->sequences[$sequenceName] = array(
                         'value' => $value,
-                        'max'   => $row['sequence_value'] + $row['sequence_increment_by']
+                        'max' => $row['sequence_value'] + $row['sequence_increment_by']
                     );
                 }
 

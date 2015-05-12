@@ -252,7 +252,7 @@ abstract class AbstractHydrator
      * field names during this procedure as well as any necessary conversions on
      * the values applied. Scalar values are kept in a specific key 'scalars'.
      *
-     * @param array $data                SQL Result Row.
+     * @param array $data SQL Result Row.
      * @param array &$id                 Dql-Alias => ID-Hash.
      * @param array &$nonemptyComponents Does this DQL-Alias has at least one non NULL value?
      *
@@ -352,17 +352,17 @@ abstract class AbstractHydrator
                     'isScalar'             => true,
                     'isNewObjectParameter' => true,
                     'fieldName'            => $this->_rsm->scalarMappings[$key],
-                    'type'                 => Type::getType( $this->_rsm->typeMappings[$key] ),
+                    'type'  => Type::getType( $this->_rsm->typeMappings[$key] ),
                     'argIndex'             => $mapping['argIndex'],
                     'objIndex'             => $mapping['objIndex'],
-                    'class'                => new \ReflectionClass( $mapping['className'] ),
+                    'class' => new \ReflectionClass( $mapping['className'] ),
                 );
 
             case ( isset( $this->_rsm->scalarMappings[$key] ) ):
                 return $this->_cache[$key] = array(
                     'isScalar'  => true,
                     'fieldName' => $this->_rsm->scalarMappings[$key],
-                    'type'      => Type::getType( $this->_rsm->typeMappings[$key] ),
+                    'type' => Type::getType( $this->_rsm->typeMappings[$key] ),
                 );
 
             case ( isset( $this->_rsm->metaMappings[$key] ) ):

@@ -44,7 +44,7 @@ class AnnotationDriver extends AbstractAnnotationDriver
      * {@inheritDoc}
      */
     protected $entityAnnotationClasses = array(
-        'Doctrine\ORM\Mapping\Entity'           => 1,
+        'Doctrine\ORM\Mapping\Entity' => 1,
         'Doctrine\ORM\Mapping\MappedSuperclass' => 2,
     );
 
@@ -171,7 +171,7 @@ class AnnotationDriver extends AbstractAnnotationDriver
             $cacheAnnot = $classAnnotations['Doctrine\ORM\Mapping\Cache'];
             $cacheMap = array(
                 'region' => $cacheAnnot->region,
-                'usage'  => constant( 'Doctrine\ORM\Mapping\ClassMetadata::CACHE_USAGE_'.$cacheAnnot->usage ),
+                'usage' => constant( 'Doctrine\ORM\Mapping\ClassMetadata::CACHE_USAGE_'.$cacheAnnot->usage ),
             );
 
             $metadata->enableCache( $cacheMap );
@@ -348,9 +348,9 @@ class AnnotationDriver extends AbstractAnnotationDriver
                     'Doctrine\ORM\Mapping\SequenceGenerator' )
                 ) {
                     $metadata->setSequenceGeneratorDefinition( array(
-                        'sequenceName'   => $seqGeneratorAnnot->sequenceName,
+                        'sequenceName' => $seqGeneratorAnnot->sequenceName,
                         'allocationSize' => $seqGeneratorAnnot->allocationSize,
-                        'initialValue'   => $seqGeneratorAnnot->initialValue
+                        'initialValue' => $seqGeneratorAnnot->initialValue
                     ) );
                 } else {
                     if ($this->reader->getPropertyAnnotation( $property, 'Doctrine\ORM\Mapping\TableGenerator' )) {
@@ -581,11 +581,11 @@ class AnnotationDriver extends AbstractAnnotationDriver
     {
 
         return array(
-            'name'                 => $joinColumn->name,
-            'unique'               => $joinColumn->unique,
-            'nullable'             => $joinColumn->nullable,
-            'onDelete'             => $joinColumn->onDelete,
-            'columnDefinition'     => $joinColumn->columnDefinition,
+            'name'             => $joinColumn->name,
+            'unique'           => $joinColumn->unique,
+            'nullable'         => $joinColumn->nullable,
+            'onDelete'         => $joinColumn->onDelete,
+            'columnDefinition' => $joinColumn->columnDefinition,
             'referencedColumnName' => $joinColumn->referencedColumnName,
         );
     }

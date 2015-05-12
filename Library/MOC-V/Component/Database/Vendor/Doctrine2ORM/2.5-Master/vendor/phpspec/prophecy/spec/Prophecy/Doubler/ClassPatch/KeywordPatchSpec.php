@@ -21,7 +21,7 @@ class KeywordPatchSpec extends ObjectBehavior
     }
 
     /**
-     * @param \Prophecy\Doubler\Generator\Node\ClassNode  $node
+     * @param \Prophecy\Doubler\Generator\Node\ClassNode $node
      * @param \Prophecy\Doubler\Generator\Node\MethodNode $method1
      * @param \Prophecy\Doubler\Generator\Node\MethodNode $method2
      * @param \Prophecy\Doubler\Generator\Node\MethodNode $method3
@@ -37,8 +37,8 @@ class KeywordPatchSpec extends ObjectBehavior
         $method3->getName()->willReturn( 'notKeyword' );
 
         $node->getMethods()->willReturn( array(
-            'echo'       => $method1,
-            'eval'       => $method2,
+            'echo' => $method1,
+            'eval' => $method2,
             'notKeyword' => $method3,
         ) );
 

@@ -85,8 +85,8 @@ class CachePluginTest extends \Guzzle\Tests\GuzzleTestCase
         $can = $this->getMockBuilder( 'Guzzle\Plugin\Cache\CanCacheStrategyInterface' )->getMockForAbstractClass();
         $revalidate = $this->getMockBuilder( 'Guzzle\Plugin\Cache\RevalidationInterface' )->getMockForAbstractClass();
         $plugin = new CachePlugin( array(
-            'storage'      => $this->getMockBuilder( 'Guzzle\Plugin\Cache\CacheStorageInterface' )->getMockForAbstractClass(),
-            'can_cache'    => $can,
+            'storage'   => $this->getMockBuilder( 'Guzzle\Plugin\Cache\CacheStorageInterface' )->getMockForAbstractClass(),
+            'can_cache' => $can,
             'revalidation' => $revalidate
         ) );
         $this->assertSame( $can, $this->readAttribute( $plugin, 'canCache' ) );
@@ -164,7 +164,7 @@ class CachePluginTest extends \Guzzle\Tests\GuzzleTestCase
             } ) );
 
         $plugin = new CachePlugin( array(
-            'storage'      => $storage,
+            'storage' => $storage,
             'revalidation' => $revalidate
         ) );
 
@@ -318,7 +318,7 @@ class CachePluginTest extends \Guzzle\Tests\GuzzleTestCase
         return array(
             array(
                 new Response( 200, array(
-                    'Date'          => $date->format( 'c' ),
+                    'Date' => $date->format( 'c' ),
                     'Cache-Control' => 'max-age=5, stale-if-error'
                 ), 'foo' ),
             )
@@ -340,7 +340,7 @@ class CachePluginTest extends \Guzzle\Tests\GuzzleTestCase
         $plugin->onRequestBeforeSend( new Event( array( 'request' => $request ) ) );
         $plugin->onRequestError(
             $event = new Event( array(
-                'request'  => $request,
+                'request' => $request,
                 'response' => $request->getResponse(),
             ) )
         );
@@ -387,7 +387,7 @@ class CachePluginTest extends \Guzzle\Tests\GuzzleTestCase
         );
         $plugin->onRequestSent(
             new Event( array(
-                'request'  => $request,
+                'request' => $request,
                 'response' => $response = $request->getResponse(),
             ) )
         );
@@ -462,7 +462,7 @@ class CachePluginTest extends \Guzzle\Tests\GuzzleTestCase
         ) ) );
         $plugin->onRequestError(
             $event = new Event( array(
-                'request'  => $request,
+                'request' => $request,
                 'response' => $response = $request->getResponse(),
             ) )
         );

@@ -310,8 +310,8 @@ class PHPUnit_TextUI_Command
                 case 'h':
                 case '--help':
                     $this->showHelp();
-                    exit( PHPUnit_TextUI_TestRunner::SUCCESS_EXIT );
-                    break;
+                exit( PHPUnit_TextUI_TestRunner::SUCCESS_EXIT );
+                break;
 
                 case '--filter':
                     $this->arguments['filter'] = $option[1];

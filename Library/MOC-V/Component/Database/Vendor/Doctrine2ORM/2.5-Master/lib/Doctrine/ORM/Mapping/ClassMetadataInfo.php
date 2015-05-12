@@ -651,7 +651,7 @@ class ClassMetadataInfo implements ClassMetadata
      * Initializes a new ClassMetadata instance that will hold the object-relational mapping
      * metadata of the class with the given name.
      *
-     * @param string              $entityName The name of the entity class the new instance is used for.
+     * @param string $entityName The name of the entity class the new instance is used for.
      * @param NamingStrategy|null $namingStrategy
      */
     public function __construct( $entityName, NamingStrategy $namingStrategy = null )
@@ -3343,7 +3343,7 @@ class ClassMetadataInfo implements ClassMetadata
     /**
      * Inline the embeddable class
      *
-     * @param string            $property
+     * @param string $property
      * @param ClassMetadataInfo $embeddable
      */
     public function inlineEmbeddable( $property, ClassMetadataInfo $embeddable )

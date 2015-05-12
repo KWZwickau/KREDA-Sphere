@@ -28,7 +28,7 @@ class MessageParser extends AbstractMessageParser
         }
 
         $parsed = array(
-            'method'   => strtoupper( $parts['start_line'][0] ),
+            'method' => strtoupper( $parts['start_line'][0] ),
             'protocol' => $protocol,
             'version'  => $version,
             'headers'  => $parts['headers'],

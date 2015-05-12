@@ -85,14 +85,14 @@ class JsonDescriptor extends Descriptor
     {
 
         return array(
-            'name'              => '--'.$option->getName(),
-            'shortcut'          => $option->getShortcut() ? '-'.implode( '|-',
+            'name'         => '--'.$option->getName(),
+            'shortcut'     => $option->getShortcut() ? '-'.implode( '|-',
                     explode( '|', $option->getShortcut() ) ) : '',
-            'accept_value'      => $option->acceptValue(),
+            'accept_value' => $option->acceptValue(),
             'is_value_required' => $option->isValueRequired(),
-            'is_multiple'       => $option->isArray(),
-            'description'       => preg_replace( '/\s*\R\s*/', ' ', $option->getDescription() ),
-            'default'           => $option->getDefault(),
+            'is_multiple'  => $option->isArray(),
+            'description'  => preg_replace( '/\s*\R\s*/', ' ', $option->getDescription() ),
+            'default'      => $option->getDefault(),
         );
     }
 
@@ -147,12 +147,12 @@ class JsonDescriptor extends Descriptor
         $command->mergeApplicationDefinition( false );
 
         return array(
-            'name'        => $command->getName(),
-            'usage'       => array_merge( array( $command->getSynopsis() ), $command->getUsages(),
+            'name'       => $command->getName(),
+            'usage'      => array_merge( array( $command->getSynopsis() ), $command->getUsages(),
                 $command->getAliases() ),
             'description' => $command->getDescription(),
-            'help'        => $command->getProcessedHelp(),
-            'definition'  => $this->getInputDefinitionData( $command->getNativeDefinition() ),
+            'help'       => $command->getProcessedHelp(),
+            'definition' => $this->getInputDefinitionData( $command->getNativeDefinition() ),
         );
     }
 

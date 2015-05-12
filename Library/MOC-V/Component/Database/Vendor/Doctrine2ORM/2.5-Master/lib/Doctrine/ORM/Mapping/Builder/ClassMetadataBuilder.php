@@ -201,7 +201,7 @@ class ClassMetadataBuilder
     {
 
         $this->cm->addNamedQuery( array(
-            'name'  => $name,
+            'name' => $name,
             'query' => $dqlQuery,
         ) );
 
@@ -247,8 +247,8 @@ class ClassMetadataBuilder
     {
 
         $this->cm->setDiscriminatorColumn( array(
-            'name'   => $name,
-            'type'   => $type,
+            'name' => $name,
+            'type' => $type,
             'length' => $length,
         ) );
 

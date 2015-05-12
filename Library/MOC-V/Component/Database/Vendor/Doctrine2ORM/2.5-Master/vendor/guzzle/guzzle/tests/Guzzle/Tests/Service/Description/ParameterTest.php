@@ -189,8 +189,8 @@ class ParameterTest extends \Guzzle\Tests\GuzzleTestCase
             'location'   => 'query',
             'properties' => array(
                 'foo' => array(
-                    'type'       => 'object',
-                    'required'   => true,
+                    'type'     => 'object',
+                    'required' => true,
                     'properties' => array(
                         'baz' => array(
                             'name' => 'baz',
@@ -365,8 +365,8 @@ class ParameterTest extends \Guzzle\Tests\GuzzleTestCase
         ) );
         $p = new Parameter( array( '$ref' => 'Anakin', 'description' => 'added' ), $description );
         $this->assertEquals( array(
-            'type'        => 'array',
-            'items'       => array( 'type' => 'string', 'default' => 'Mesa address tha senate!' ),
+            'type'  => 'array',
+            'items' => array( 'type' => 'string', 'default' => 'Mesa address tha senate!' ),
             'description' => 'added'
         ), $p->toArray() );
     }
@@ -382,11 +382,11 @@ class ParameterTest extends \Guzzle\Tests\GuzzleTestCase
         // Description attribute will be updated, and format added
         $p = new Parameter( array( 'extends' => 'Anakin', 'format' => 'date' ), $description );
         $this->assertEquals( array(
-            'type'   => 'array',
+            'type'  => 'array',
             'format' => 'date',
-            'items'  => array(
-                'type'        => 'string',
-                'default'     => 'Mesa address tha senate!',
+            'items' => array(
+                'type'    => 'string',
+                'default' => 'Mesa address tha senate!',
                 'description' => 'b'
             )
         ), $p->toArray() );
@@ -405,8 +405,8 @@ class ParameterTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $p = new Parameter( array(
-            'type'  => 'array',
-            'name'  => 'Abc',
+            'type' => 'array',
+            'name' => 'Abc',
             'items' => array(
                 'name' => 'Foo',
                 'type' => 'object'
@@ -416,8 +416,8 @@ class ParameterTest extends \Guzzle\Tests\GuzzleTestCase
         $this->assertEquals( array(
             'type'  => 'array',
             'items' => array(
-                'name'                 => 'Foo',
-                'type'                 => 'object',
+                'name' => 'Foo',
+                'type' => 'object',
                 'additionalProperties' => true
             )
         ), $result );

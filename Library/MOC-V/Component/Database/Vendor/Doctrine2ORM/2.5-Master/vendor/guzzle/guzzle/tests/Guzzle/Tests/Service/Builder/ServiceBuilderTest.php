@@ -13,26 +13,26 @@ class ServiceBuilderTest extends \Guzzle\Tests\GuzzleTestCase
 {
 
     protected $arrayData = array(
-        'michael.mock'   => array(
+        'michael.mock'  => array(
             'class'  => 'Guzzle\Tests\Service\Mock\MockClient',
             'params' => array(
-                'username'  => 'michael',
-                'password'  => 'testing123',
+                'username' => 'michael',
+                'password' => 'testing123',
                 'subdomain' => 'michael',
             ),
         ),
-        'billy.mock'     => array(
+        'billy.mock'    => array(
             'alias'  => 'Hello!',
             'class'  => 'Guzzle\Tests\Service\Mock\MockClient',
             'params' => array(
-                'username'  => 'billy',
-                'password'  => 'passw0rd',
+                'username' => 'billy',
+                'password' => 'passw0rd',
                 'subdomain' => 'billy',
             ),
         ),
-        'billy.testing'  => array(
+        'billy.testing' => array(
             'extends' => 'billy.mock',
-            'params'  => array(
+            'params' => array(
                 'subdomain' => 'test.billy',
             ),
         ),
@@ -101,10 +101,10 @@ class ServiceBuilderTest extends \Guzzle\Tests\GuzzleTestCase
             'michael.mock' => array(
                 'class'  => 'Guzzle\Tests\Service\Mock\MockClient',
                 'params' => array(
-                    'base_url'               => 'http://www.test.com/',
-                    'subdomain'              => 'michael',
-                    'password'               => 'test',
-                    'username'               => 'michael',
+                    'base_url'  => 'http://www.test.com/',
+                    'subdomain' => 'michael',
+                    'password'  => 'test',
+                    'username'  => 'michael',
                     'curl.curlopt_proxyport' => 8080
                 )
             )
@@ -121,10 +121,10 @@ class ServiceBuilderTest extends \Guzzle\Tests\GuzzleTestCase
             'michael.mock' => array(
                 'class'  => 'Guzzle\Tests\Service\Mock\MockClient',
                 'params' => array(
-                    'base_url'               => 'http://www.test.com/',
-                    'subdomain'              => 'michael',
-                    'password'               => 'test',
-                    'username'               => 'michael',
+                    'base_url'  => 'http://www.test.com/',
+                    'subdomain' => 'michael',
+                    'password'  => 'test',
+                    'username'  => 'michael',
                     'curl.curlopt_proxyport' => 8080
                 )
             )
@@ -183,7 +183,7 @@ class ServiceBuilderTest extends \Guzzle\Tests\GuzzleTestCase
 
         $builder = ServiceBuilder::factory( array(
             'a' => array(
-                'class'  => 'Guzzle\Tests\Service\Mock\MockClient',
+                'class' => 'Guzzle\Tests\Service\Mock\MockClient',
                 'params' => array(
                     'other_client' => '{b}',
                     'username'     => 'x',
@@ -192,7 +192,7 @@ class ServiceBuilderTest extends \Guzzle\Tests\GuzzleTestCase
                 )
             ),
             'b' => array(
-                'class'  => 'Guzzle\Tests\Service\Mock\MockClient',
+                'class' => 'Guzzle\Tests\Service\Mock\MockClient',
                 'params' => array(
                     'username'  => '1',
                     'password'  => '2',
@@ -216,7 +216,7 @@ class ServiceBuilderTest extends \Guzzle\Tests\GuzzleTestCase
         // Create a test service builder
         $builder = ServiceBuilder::factory( array(
             'a' => array(
-                'class'  => 'Guzzle\Tests\Service\Mock\MockClient',
+                'class' => 'Guzzle\Tests\Service\Mock\MockClient',
                 'params' => array(
                     'username'  => 'test',
                     'password'  => '123',
@@ -323,8 +323,8 @@ class ServiceBuilderTest extends \Guzzle\Tests\GuzzleTestCase
         $b['a'] = array(
             'class'  => 'Guzzle\Tests\Service\Mock\MockClient',
             'params' => array(
-                'username'  => 'billy',
-                'password'  => 'passw0rd',
+                'username' => 'billy',
+                'password' => 'passw0rd',
                 'subdomain' => 'billy',
             )
         );

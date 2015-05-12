@@ -24,7 +24,7 @@ class ResourceIteratorTest extends \Guzzle\Tests\GuzzleTestCase
         $ri = $this->getMockForAbstractClass( 'Guzzle\\Service\\Resource\\ResourceIterator', array(
             $this->getServiceBuilder()->get( 'mock' )->getCommand( 'iterable_command' ),
             array(
-                'limit'     => 10,
+                'limit' => 10,
                 'page_size' => 3
             )
         ), 'MockIterator' );

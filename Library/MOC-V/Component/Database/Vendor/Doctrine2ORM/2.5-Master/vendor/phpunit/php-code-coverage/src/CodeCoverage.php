@@ -371,8 +371,8 @@ class PHP_CodeCoverage
                 switch (get_class( $token )) {
                     case 'PHP_Token_COMMENT':
                     case 'PHP_Token_DOC_COMMENT':
-                        $_token = trim( $token );
-                        $_line = trim( $lines[$token->getLine() - 1] );
+                    $_token = trim( $token );
+                    $_line = trim( $lines[$token->getLine() - 1] );
 
                         if ($_token == '// @codeCoverageIgnore' ||
                             $_token == '//@codeCoverageIgnore'
@@ -419,7 +419,7 @@ class PHP_CodeCoverage
 
                         $this->ignoredLines[$filename][] = $token->getLine();
 
-                        if (strpos( $docblock, '@codeCoverageIgnore' )) {
+                    if (strpos( $docblock, '@codeCoverageIgnore' )) {
                             $endLine = $token->getEndLine();
 
                             for ($i = $token->getLine(); $i <= $endLine; $i++) {
@@ -427,9 +427,9 @@ class PHP_CodeCoverage
                             }
                         } elseif ($token instanceof PHP_Token_INTERFACE ||
                             $token instanceof PHP_Token_TRAIT ||
-                            $token instanceof PHP_Token_CLASS
-                        ) {
-                            if (empty( $classes[$token->getName()]['methods'] )) {
+                        $token instanceof PHP_Token_CLASS
+                    ) {
+                        if (empty( $classes[$token->getName()]['methods'] )) {
                                 for ($i = $token->getLine();
                                      $i <= $token->getEndLine();
                                      $i++) {

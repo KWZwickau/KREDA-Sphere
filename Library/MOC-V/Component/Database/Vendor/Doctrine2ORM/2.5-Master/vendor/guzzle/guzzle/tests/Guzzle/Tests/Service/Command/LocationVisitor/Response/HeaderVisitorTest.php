@@ -32,7 +32,7 @@ class HeaderVisitorTest extends AbstractResponseVisitorTest
         $param = new Parameter( array(
             'location' => 'header',
             'name'     => 'Content-Type',
-            'filters'  => array( 'strtoupper' )
+            'filters' => array( 'strtoupper' )
         ) );
         $visitor->visit( $this->command, $this->response, $param, $this->value );
         $this->assertEquals( 'TEXT/PLAIN', $this->value['Content-Type'] );
@@ -53,14 +53,14 @@ class HeaderVisitorTest extends AbstractResponseVisitorTest
         ) );
         $response = new Response( 200, array(
             'X-Baz-Test'     => 'ABC',
-            'X-Baz-Bar'      => array( '123', '456' ),
+            'X-Baz-Bar' => array( '123', '456' ),
             'Content-Length' => 3
         ), 'Foo' );
         $visitor->visit( $this->command, $response, $param, $this->value );
         $this->assertEquals( array(
             'Metadata' => array(
                 'Test' => 'ABC',
-                'Bar'  => array( '123', '456' )
+                'Bar' => array( '123', '456' )
             )
         ), $this->value );
     }

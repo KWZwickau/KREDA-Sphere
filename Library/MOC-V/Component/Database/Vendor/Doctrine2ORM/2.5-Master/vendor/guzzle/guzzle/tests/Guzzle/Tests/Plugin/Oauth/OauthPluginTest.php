@@ -210,7 +210,7 @@ class OauthPluginTest extends \Guzzle\Tests\GuzzleTestCase
 
         $p = new OauthPlugin( $this->config );
         $event = new Event( array(
-            'request'   => $this->getRequest(),
+            'request' => $this->getRequest(),
             'timestamp' => self::TIMESTAMP
         ) );
         $params = $p->onRequestBeforeSend( $event );
@@ -260,7 +260,7 @@ class OauthPluginTest extends \Guzzle\Tests\GuzzleTestCase
 
         $p = new OauthPlugin( $config );
         $event = new Event( array(
-            'request'   => $this->getRequest(),
+            'request' => $this->getRequest(),
             'timestamp' => self::TIMESTAMP
         ) );
         $params = $p->onRequestBeforeSend( $event );
@@ -313,7 +313,7 @@ class OauthPluginTest extends \Guzzle\Tests\GuzzleTestCase
 
         $p = new OauthPlugin( $config );
         $event = new Event( array(
-            'request'   => $this->getRequest(),
+            'request' => $this->getRequest(),
             'timestamp' => self::TIMESTAMP
         ) );
 
@@ -343,7 +343,7 @@ class OauthPluginTest extends \Guzzle\Tests\GuzzleTestCase
 
         $plugin = new OauthPlugin( $config );
         $event = new Event( array(
-            'request'   => $this->getRequest(),
+            'request' => $this->getRequest(),
             'timestamp' => self::TIMESTAMP
         ) );
 

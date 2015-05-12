@@ -436,7 +436,7 @@ class CommandTest extends AbstractCommandTest
         $description = ServiceDescription::factory( array(
             'operations' => array(
                 'foo' => array(
-                    'parameters'           => array(
+                    'parameters' => array(
                         'baz' => array( 'type' => 'integer' )
                     ),
                     'additionalParameters' => array(

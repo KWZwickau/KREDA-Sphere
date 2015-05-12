@@ -902,8 +902,8 @@ EOT;
     }
 
     /**
-     * @param ClassMetadata        $class
-     * @param \ReflectionMethod    $method
+     * @param ClassMetadata     $class
+     * @param \ReflectionMethod $method
      * @param \ReflectionParameter $parameter
      *
      * @return string|null

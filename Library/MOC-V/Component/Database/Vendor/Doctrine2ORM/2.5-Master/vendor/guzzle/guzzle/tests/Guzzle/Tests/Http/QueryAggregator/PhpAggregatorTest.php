@@ -25,8 +25,8 @@ class PhpAggregatorTest extends \Guzzle\Tests\GuzzleTestCase
         );
         $result = $a->aggregate( $key, $value, $query );
         $this->assertEquals( array(
-            't[v1]'     => 'a',
-            't[v2]'     => 'b',
+            't[v1]' => 'a',
+            't[v2]' => 'b',
             't[v3][v4]' => 'c',
             't[v3][v5]' => 'd',
         ), $result );

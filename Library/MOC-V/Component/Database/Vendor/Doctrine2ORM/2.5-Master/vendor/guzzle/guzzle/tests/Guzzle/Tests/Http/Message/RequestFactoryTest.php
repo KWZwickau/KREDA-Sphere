@@ -11,7 +11,6 @@ use Guzzle\Http\Message\Response;
 use Guzzle\Http\QueryString;
 use Guzzle\Http\Url;
 use Guzzle\Parser\Message\MessageParser;
-use Guzzle\Plugin\Log\LogPlugin;
 use Guzzle\Plugin\Mock\MockPlugin;
 
 /**
@@ -170,10 +169,10 @@ class HttpRequestFactoryTest extends \Guzzle\Tests\GuzzleTestCase
         $this->assertEquals( '8080', $request->getPort() );
         $this->assertEquals( array(
             'scheme' => 'http',
-            'host'   => 'www.google.com',
-            'port'   => 8080,
-            'path'   => '/path',
-            'query'  => 'q=1&v=2',
+            'host'  => 'www.google.com',
+            'port'  => 8080,
+            'path'  => '/path',
+            'query' => 'q=1&v=2',
         ), parse_url( $request->getUrl() ) );
     }
 
@@ -250,7 +249,7 @@ class HttpRequestFactoryTest extends \Guzzle\Tests\GuzzleTestCase
         $this->assertEquals( array(
             'DATE' => 'Mon, 09 Sep 2011 23:36:00 GMT',
             'host' => 'host.foo.com',
-            'ZOO'  => array( 'abc', '123', 'HI' ),
+            'ZOO' => array( 'abc', '123', 'HI' ),
             'zoo'  => '456',
         ), $parts['headers'] );
 
@@ -484,7 +483,7 @@ class HttpRequestFactoryTest extends \Guzzle\Tests\GuzzleTestCase
 
         $client = new Client();
         $request = $client->get( '/', array(), array(
-            'plugins'    => array( new MockPlugin( array( new Response( 500 ) ) ) ),
+            'plugins' => array( new MockPlugin( array( new Response( 500 ) ) ) ),
             'exceptions' => false
         ) );
         $this->assertEquals( 500, $request->send()->getStatusCode() );

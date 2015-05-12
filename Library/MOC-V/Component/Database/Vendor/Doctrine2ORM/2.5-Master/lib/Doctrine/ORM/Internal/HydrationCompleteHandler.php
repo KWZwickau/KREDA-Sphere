@@ -53,7 +53,7 @@ final class HydrationCompleteHandler
     /**
      * Constructor for this object
      *
-     * @param ListenersInvoker       $listenersInvoker
+     * @param ListenersInvoker $listenersInvoker
      * @param EntityManagerInterface $em
      */
     public function __construct( ListenersInvoker $listenersInvoker, EntityManagerInterface $em )

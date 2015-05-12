@@ -49,7 +49,7 @@ class ProxyLogicTest extends PHPUnit_Framework_TestCase
     protected $lazyObject;
 
     protected $identifier = array(
-        'publicIdentifierField'    => 'publicIdentifierFieldValue',
+        'publicIdentifierField' => 'publicIdentifierFieldValue',
         'protectedIdentifierField' => 'protectedIdentifierFieldValue',
     );
 
@@ -382,7 +382,7 @@ class ProxyLogicTest extends PHPUnit_Framework_TestCase
             ->method( 'load' )
             ->with(
                 array(
-                    'publicIdentifierField'    => 'publicIdentifierFieldValue',
+                    'publicIdentifierField' => 'publicIdentifierFieldValue',
                     'protectedIdentifierField' => 'protectedIdentifierFieldValue',
                 ),
                 $this->lazyObject

@@ -2799,10 +2799,10 @@ class UnitOfWork implements PropertyChangedListener
                     throw TransactionRequiredException::transactionRequired();
                 }
 
-                $oid = spl_object_hash( $entity );
+            $oid = spl_object_hash( $entity );
 
-                $this->getEntityPersister( $class->name )->lock(
-                    array_combine( $class->getIdentifierFieldNames(), $this->entityIdentifiers[$oid] ),
+            $this->getEntityPersister( $class->name )->lock(
+                array_combine( $class->getIdentifierFieldNames(), $this->entityIdentifiers[$oid] ),
                     $lockMode
                 );
                 break;

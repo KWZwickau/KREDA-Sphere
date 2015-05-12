@@ -139,7 +139,7 @@ class XmlExporter extends AbstractExporter
         foreach ($metadata->associationMappings as $name => $assoc) {
             if (isset( $assoc['id'] ) && $assoc['id']) {
                 $id[$name] = array(
-                    'fieldName'      => $name,
+                    'fieldName' => $name,
                     'associationKey' => true
                 );
             }

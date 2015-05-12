@@ -118,7 +118,7 @@ class PHP_CodeCoverage_Report_HTML_Renderer_Dashboard extends PHP_CodeCoverage_R
     {
 
         $result = array(
-            'class'  => array(
+            'class' => array(
                 '0%'      => 0,
                 '0-10%'   => 0,
                 '10-20%'  => 0,

@@ -153,7 +153,7 @@ class JoinedSubclassPersister extends AbstractEntityInheritancePersister
                 );
                 $postInsertIds[] = array(
                     'generatedId' => $generatedId,
-                    'entity'      => $entity,
+                    'entity' => $entity,
                 );
             } else {
                 $id = $this->em->getUnitOfWork()->getEntityIdentifier( $entity );

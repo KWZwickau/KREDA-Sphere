@@ -56,7 +56,7 @@ class SqliteSchemaManager extends AbstractSchemaManager
         $driver = $params['driver'];
         $options = array(
             'driver' => $driver,
-            'path'   => $database
+            'path' => $database
         );
         $conn = \Doctrine\DBAL\DriverManager::getConnection( $options );
         $conn->connect();
@@ -266,9 +266,9 @@ class SqliteSchemaManager extends AbstractSchemaManager
         foreach ($indexArray as $indexColumnRow) {
             if ($indexColumnRow['pk'] != "0") {
                 $indexBuffer[] = array(
-                    'key_name'    => 'primary',
-                    'primary'     => true,
-                    'non_unique'  => false,
+                    'key_name'   => 'primary',
+                    'primary'    => true,
+                    'non_unique' => false,
                     'column_name' => $indexColumnRow['name']
                 );
             }
@@ -418,24 +418,24 @@ class SqliteSchemaManager extends AbstractSchemaManager
             case 'real':
             case 'decimal':
             case 'numeric':
-                if (isset( $tableColumn['length'] )) {
-                    if (strpos( $tableColumn['length'], ',' ) === false) {
+            if (isset( $tableColumn['length'] )) {
+                if (strpos( $tableColumn['length'], ',' ) === false) {
                         $tableColumn['length'] .= ",0";
                     }
-                    list( $precision, $scale ) = array_map( 'trim', explode( ',', $tableColumn['length'] ) );
+                list( $precision, $scale ) = array_map( 'trim', explode( ',', $tableColumn['length'] ) );
                 }
                 $length = null;
                 break;
         }
 
         $options = array(
-            'length'        => $length,
-            'unsigned'      => (bool)$unsigned,
-            'fixed'         => $fixed,
-            'notnull'       => $notnull,
-            'default'       => $default,
-            'precision'     => $precision,
-            'scale'         => $scale,
+            'length'    => $length,
+            'unsigned'  => (bool)$unsigned,
+            'fixed'     => $fixed,
+            'notnull'   => $notnull,
+            'default'   => $default,
+            'precision' => $precision,
+            'scale'     => $scale,
             'autoincrement' => false,
         );
 

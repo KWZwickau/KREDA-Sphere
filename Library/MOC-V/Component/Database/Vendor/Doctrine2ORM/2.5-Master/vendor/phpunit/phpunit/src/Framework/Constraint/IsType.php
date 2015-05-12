@@ -42,19 +42,19 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
      * @var array
      */
     protected $types = array(
-        'array'    => true,
-        'boolean'  => true,
-        'bool'     => true,
-        'double'   => true,
-        'float'    => true,
-        'integer'  => true,
-        'int'      => true,
-        'null'     => true,
-        'numeric'  => true,
-        'object'   => true,
+        'array'   => true,
+        'boolean' => true,
+        'bool'    => true,
+        'double'  => true,
+        'float'   => true,
+        'integer' => true,
+        'int'     => true,
+        'null'    => true,
+        'numeric' => true,
+        'object'  => true,
         'resource' => true,
-        'string'   => true,
-        'scalar'   => true,
+        'string'  => true,
+        'scalar'  => true,
         'callable' => true
     );
 
@@ -118,13 +118,13 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 
             case 'integer':
             case 'int': {
-                return is_integer( $other );
-            }
+            return is_integer( $other );
+        }
 
             case 'double':
             case 'float': {
-                return is_float( $other );
-            }
+            return is_float( $other );
+        }
 
             case 'string': {
                 return is_string( $other );
@@ -132,8 +132,8 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 
             case 'boolean':
             case 'bool': {
-                return is_bool( $other );
-            }
+            return is_bool( $other );
+        }
 
             case 'null': {
                 return is_null( $other );

@@ -303,8 +303,8 @@ class DatabaseDriver implements MappingDriver
                     $associationMapping['inversedBy'] = $this->getFieldNameForColumn( $manyTable->getName(),
                         current( $myFk->getColumns() ), true );
                     $associationMapping['joinTable'] = array(
-                        'name'               => strtolower( $manyTable->getName() ),
-                        'joinColumns'        => array(),
+                        'name'        => strtolower( $manyTable->getName() ),
+                        'joinColumns' => array(),
                         'inverseJoinColumns' => array(),
                     );
 
@@ -313,7 +313,7 @@ class DatabaseDriver implements MappingDriver
 
                     for ($i = 0; $i < count( $cols ); $i++) {
                         $associationMapping['joinTable']['joinColumns'][] = array(
-                            'name'                 => $cols[$i],
+                            'name' => $cols[$i],
                             'referencedColumnName' => $fkCols[$i],
                         );
                     }
@@ -323,7 +323,7 @@ class DatabaseDriver implements MappingDriver
 
                     for ($i = 0; $i < count( $cols ); $i++) {
                         $associationMapping['joinTable']['inverseJoinColumns'][] = array(
-                            'name'                 => $cols[$i],
+                            'name' => $cols[$i],
                             'referencedColumnName' => $fkCols[$i],
                         );
                     }
@@ -457,10 +457,10 @@ class DatabaseDriver implements MappingDriver
     {
 
         $fieldMapping = array(
-            'fieldName'  => $this->getFieldNameForColumn( $tableName, $column->getName(), false ),
+            'fieldName' => $this->getFieldNameForColumn( $tableName, $column->getName(), false ),
             'columnName' => $column->getName(),
             'type'       => $column->getType()->getName(),
-            'nullable'   => ( !$column->getNotNull() ),
+            'nullable'  => ( !$column->getNotNull() ),
         );
 
         // Type specific elements
@@ -474,13 +474,13 @@ class DatabaseDriver implements MappingDriver
             case Type::STRING:
             case Type::TEXT:
                 $fieldMapping['length'] = $column->getLength();
-                $fieldMapping['options']['fixed'] = $column->getFixed();
+            $fieldMapping['options']['fixed'] = $column->getFixed();
                 break;
 
             case Type::DECIMAL:
             case Type::FLOAT:
                 $fieldMapping['precision'] = $column->getPrecision();
-                $fieldMapping['scale'] = $column->getScale();
+            $fieldMapping['scale'] = $column->getScale();
                 break;
 
             case Type::INTEGER:

@@ -20,7 +20,6 @@ use Doctrine\DBAL\Platforms\SQLAnywherePlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\ORM\Query\AST\OrderByClause;
 use Doctrine\ORM\Query\AST\PartialObjectExpression;
-use Doctrine\ORM\Query\AST\PathExpression;
 use Doctrine\ORM\Query\AST\SelectExpression;
 use Doctrine\ORM\Query\AST\SelectStatement;
 use Doctrine\ORM\Query\SqlWalker;

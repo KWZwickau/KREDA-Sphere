@@ -28,6 +28,23 @@ class FileCookieJar extends ArrayCookieJar
     }
 
     /**
+     * Load the contents of the json formatted file into the data array and discard any unsaved state
+     */
+    protected function load()
+    {
+
+        $json = file_get_contents( $this->filename );
+        if (false === $json) {
+            // @codeCoverageIgnoreStart
+            throw new RuntimeException( 'Unable to open file '.$this->filename );
+            // @codeCoverageIgnoreEnd
+        }
+
+        $this->unserialize( $json );
+        $this->cookies = $this->cookies ?: array();
+    }
+
+    /**
      * Saves the file when shutting down
      */
     public function __destruct()
@@ -49,22 +66,5 @@ class FileCookieJar extends ArrayCookieJar
             throw new RuntimeException( 'Unable to open file '.$this->filename );
             // @codeCoverageIgnoreEnd
         }
-    }
-
-    /**
-     * Load the contents of the json formatted file into the data array and discard any unsaved state
-     */
-    protected function load()
-    {
-
-        $json = file_get_contents( $this->filename );
-        if (false === $json) {
-            // @codeCoverageIgnoreStart
-            throw new RuntimeException( 'Unable to open file '.$this->filename );
-            // @codeCoverageIgnoreEnd
-        }
-
-        $this->unserialize( $json );
-        $this->cookies = $this->cookies ?: array();
     }
 }

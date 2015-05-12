@@ -67,12 +67,12 @@ class QueryStringTest extends \Guzzle\Tests\GuzzleTestCase
         $params = array(
             'test'   => 'value',
             'test 2' => 'this is a test?',
-            'test3'  => array( 'v1', 'v2', 'v3' ),
+            'test3' => array( 'v1', 'v2', 'v3' ),
             'ሴ'      => 'bar'
         );
         $encoded = array(
             'test'         => 'value',
-            'test%202'     => rawurlencode( 'this is a test?' ),
+            'test%202' => rawurlencode( 'this is a test?' ),
             'test3%5B0%5D' => 'v1',
             'test3%5B1%5D' => 'v2',
             'test3%5B2%5D' => 'v3',
@@ -97,7 +97,7 @@ class QueryStringTest extends \Guzzle\Tests\GuzzleTestCase
         $params = array(
             'test'   => 'value',
             'test 2' => 'this is a test?',
-            'test3'  => array( 'v1', 'v2', 'v3' ),
+            'test3' => array( 'v1', 'v2', 'v3' ),
             'test4'  => null,
         );
         $this->q->replace( $params );
@@ -129,7 +129,7 @@ class QueryStringTest extends \Guzzle\Tests\GuzzleTestCase
 
         $this->q->replace( array(
             'test' => 'value',
-            't'    => array(
+            't' => array(
                 'v1' => 'a',
                 'v2' => 'b',
                 'v3' => array(

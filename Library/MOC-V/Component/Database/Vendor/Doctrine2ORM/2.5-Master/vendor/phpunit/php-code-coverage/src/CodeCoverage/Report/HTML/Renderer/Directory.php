@@ -67,13 +67,13 @@ class PHP_CodeCoverage_Report_HTML_Renderer_Directory extends PHP_CodeCoverage_R
             'numTestedClasses'             => $item->getNumTestedClassesAndTraits(),
             'numMethods'                   => $item->getNumMethods(),
             'numTestedMethods'             => $item->getNumTestedMethods(),
-            'linesExecutedPercent'         => $item->getLineExecutedPercent( false ),
+            'linesExecutedPercent' => $item->getLineExecutedPercent( false ),
             'linesExecutedPercentAsString' => $item->getLineExecutedPercent(),
             'numExecutedLines'             => $item->getNumExecutedLines(),
             'numExecutableLines'           => $item->getNumExecutableLines(),
-            'testedMethodsPercent'         => $item->getTestedMethodsPercent( false ),
+            'testedMethodsPercent' => $item->getTestedMethodsPercent( false ),
             'testedMethodsPercentAsString' => $item->getTestedMethodsPercent(),
-            'testedClassesPercent'         => $item->getTestedClassesAndTraitsPercent( false ),
+            'testedClassesPercent' => $item->getTestedClassesAndTraitsPercent( false ),
             'testedClassesPercentAsString' => $item->getTestedClassesAndTraitsPercent()
         );
 

@@ -44,8 +44,8 @@ class FinalizationTest extends \PHPUnit_Framework_TestCase
 
         $a = array(
             'level1' => array(
-                'level2'        => array(
-                    'somevalue'    => 'foo',
+                'level2' => array(
+                    'somevalue' => 'foo',
                     'anothervalue' => 'bar',
                 ),
                 'level1_scalar' => 'foo',

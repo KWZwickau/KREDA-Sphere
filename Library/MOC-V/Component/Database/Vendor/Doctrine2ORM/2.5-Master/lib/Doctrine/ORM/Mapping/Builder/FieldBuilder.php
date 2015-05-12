@@ -226,9 +226,9 @@ class FieldBuilder
     {
 
         $this->sequenceDef = array(
-            'sequenceName'   => $sequenceName,
+            'sequenceName' => $sequenceName,
             'allocationSize' => $allocationSize,
-            'initialValue'   => $initialValue,
+            'initialValue' => $initialValue,
         );
         return $this;
     }

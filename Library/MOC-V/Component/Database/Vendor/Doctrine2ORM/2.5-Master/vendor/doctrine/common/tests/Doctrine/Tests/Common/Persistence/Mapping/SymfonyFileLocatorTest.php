@@ -116,7 +116,7 @@ class SymfonyFileLocatorTest extends DoctrineTestCase
     {
 
         return array(
-            'directory separator'   => array(
+            'directory separator' => array(
                 DIRECTORY_SEPARATOR,
                 "/_custom_ns/dir",
                 array(

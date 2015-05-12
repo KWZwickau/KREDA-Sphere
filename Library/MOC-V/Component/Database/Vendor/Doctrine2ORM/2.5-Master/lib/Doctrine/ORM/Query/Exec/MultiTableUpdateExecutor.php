@@ -65,7 +65,7 @@ class MultiTableUpdateExecutor extends AbstractSqlExecutor
      * Internal note: Any SQL construction and preparation takes place in the constructor for
      *                best performance. With a query cache the executor will be cached.
      *
-     * @param \Doctrine\ORM\Query\AST\Node  $AST       The root AST node of the DQL query.
+     * @param \Doctrine\ORM\Query\AST\Node $AST The root AST node of the DQL query.
      * @param \Doctrine\ORM\Query\SqlWalker $sqlWalker The walker used for SQL generation from the AST.
      */
     public function __construct( AST\Node $AST, $sqlWalker )
@@ -154,7 +154,7 @@ class MultiTableUpdateExecutor extends AbstractSqlExecutor
         foreach ($idColumnNames as $idColumnName) {
             $columnDefinitions[$idColumnName] = array(
                 'notnull' => true,
-                'type'    => Type::getType( $rootClass->getTypeOfColumn( $idColumnName ) )
+                'type' => Type::getType( $rootClass->getTypeOfColumn( $idColumnName ) )
             );
         }
 

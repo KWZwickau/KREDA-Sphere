@@ -69,26 +69,26 @@ class MergeTest extends \PHPUnit_Framework_TestCase
             ->buildTree();
 
         $a = array(
-            'foo'        => 'bar',
+            'foo'      => 'bar',
             'unsettable' => array(
                 'foo' => 'a',
                 'bar' => 'b',
             ),
-            'unsetted'   => false,
+            'unsetted' => false,
         );
 
         $b = array(
-            'foo'        => 'moo',
-            'bar'        => 'b',
+            'foo'      => 'moo',
+            'bar'      => 'b',
             'unsettable' => false,
-            'unsetted'   => array( 'a', 'b' ),
+            'unsetted' => array( 'a', 'b' ),
         );
 
         $this->assertEquals( array(
-            'foo'        => 'moo',
-            'bar'        => 'b',
+            'foo'      => 'moo',
+            'bar'      => 'b',
             'unsettable' => false,
-            'unsetted'   => array( 'a', 'b' ),
+            'unsetted' => array( 'a', 'b' ),
         ), $tree->merge( $a, $b ) );
     }
 

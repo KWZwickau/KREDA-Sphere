@@ -115,7 +115,7 @@ class XmlVisitorTest extends AbstractResponseVisitorTest
             'location' => 'xml',
             'name'     => 'foo',
             'type'     => 'array',
-            'items'    => array( 'type' => 'string' )
+            'items' => array( 'type' => 'string' )
         ) );
 
         $value = array( 'foo' => array( 'bar', 'baz' ) );
@@ -210,11 +210,11 @@ class XmlVisitorTest extends AbstractResponseVisitorTest
                         'sentAs'     => 'currentState',
                         'properties' => array(
                             'Code' => array(
-                                'type'   => 'numeric',
+                                'type' => 'numeric',
                                 'sentAs' => 'code',
                             ),
                             'Name' => array(
-                                'type'   => 'string',
+                                'type' => 'string',
                                 'sentAs' => 'name',
                             ),
                         ),
@@ -224,11 +224,11 @@ class XmlVisitorTest extends AbstractResponseVisitorTest
                         'sentAs'     => 'previousState',
                         'properties' => array(
                             'Code' => array(
-                                'type'   => 'numeric',
+                                'type' => 'numeric',
                                 'sentAs' => 'code',
                             ),
                             'Name' => array(
-                                'type'   => 'string',
+                                'type' => 'string',
                                 'sentAs' => 'name',
                             ),
                         ),
@@ -240,8 +240,8 @@ class XmlVisitorTest extends AbstractResponseVisitorTest
         $value = array(
             'instancesSet' => array(
                 'item' => array(
-                    'instanceId'    => 'i-3ea74257',
-                    'currentState'  => array(
+                    'instanceId'   => 'i-3ea74257',
+                    'currentState' => array(
                         'code' => '32',
                         'name' => 'shutting-down',
                     ),
@@ -258,8 +258,8 @@ class XmlVisitorTest extends AbstractResponseVisitorTest
         $this->assertEquals( array(
             'TerminatingInstances' => array(
                 array(
-                    'InstanceId'    => 'i-3ea74257',
-                    'CurrentState'  => array(
+                    'InstanceId'   => 'i-3ea74257',
+                    'CurrentState' => array(
                         'Code' => '32',
                         'Name' => 'shutting-down',
                     ),
@@ -284,14 +284,14 @@ class XmlVisitorTest extends AbstractResponseVisitorTest
                 'type'       => 'object',
                 'sentAs'     => 'item',
                 'properties' => array(
-                    'QueueId'       => array(
+                    'QueueId'      => array(
                         'type'   => 'string',
                         'sentAs' => 'queue_id',
                         'data'   => array(
                             'xmlAttribute' => true,
                         ),
                     ),
-                    'CurrentState'  => array(
+                    'CurrentState' => array(
                         'type'       => 'object',
                         'properties' => array(
                             'Code' => array(
@@ -338,8 +338,8 @@ class XmlVisitorTest extends AbstractResponseVisitorTest
         $this->assertEquals( array(
             'RunningQueues' => array(
                 array(
-                    'QueueId'       => 'q-3ea74257',
-                    'CurrentState'  => array(
+                    'QueueId'      => 'q-3ea74257',
+                    'CurrentState' => array(
                         'Code' => '32',
                         'Name' => 'processing',
                     ),
@@ -360,7 +360,7 @@ class XmlVisitorTest extends AbstractResponseVisitorTest
             'name'     => 'Foo',
             'type'     => 'array',
             'location' => 'xml',
-            'items'    => array(
+            'items' => array(
                 'type'       => 'object',
                 'properties' => array(
                     'Baz' => array( 'type' => 'array' ),

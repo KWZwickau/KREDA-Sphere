@@ -67,8 +67,8 @@ class BackoffPlugin extends AbstractHasDispatcher implements EventSubscriberInte
     {
 
         return array(
-            'request.sent'                      => 'onRequestSent',
-            'request.exception'                 => 'onRequestSent',
+            'request.sent'      => 'onRequestSent',
+            'request.exception' => 'onRequestSent',
             CurlMultiInterface::POLLING_REQUEST => 'onRequestPoll'
         );
     }
@@ -98,7 +98,7 @@ class BackoffPlugin extends AbstractHasDispatcher implements EventSubscriberInte
             $this->dispatch( self::RETRY_EVENT, array(
                 'request'  => $request,
                 'response' => $response,
-                'handle'   => ( $exception && $exception instanceof CurlException ) ? $exception->getCurlHandle() : null,
+                'handle' => ( $exception && $exception instanceof CurlException ) ? $exception->getCurlHandle() : null,
                 'retries'  => $retries,
                 'delay'    => $delay
             ) );

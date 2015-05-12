@@ -97,18 +97,22 @@ class TraceableEventDispatcherTest extends \PHPUnit_Framework_TestCase
         } );
 
         $this->assertEquals( array(), $tdispatcher->getCalledListeners() );
-        $this->assertEquals( array( 'foo.closure' => array( 'event'  => 'foo',
-                                                            'type'   => 'Closure',
-                                                            'pretty' => 'closure'
-        )
+        $this->assertEquals( array(
+            'foo.closure' => array(
+                'event'  => 'foo',
+                'type'   => 'Closure',
+                'pretty' => 'closure'
+            )
         ), $tdispatcher->getNotCalledListeners() );
 
         $tdispatcher->dispatch( 'foo' );
 
-        $this->assertEquals( array( 'foo.closure' => array( 'event'  => 'foo',
-                                                            'type'   => 'Closure',
-                                                            'pretty' => 'closure'
-        )
+        $this->assertEquals( array(
+            'foo.closure' => array(
+                'event'  => 'foo',
+                'type'   => 'Closure',
+                'pretty' => 'closure'
+            )
         ), $tdispatcher->getCalledListeners() );
         $this->assertEquals( array(), $tdispatcher->getNotCalledListeners() );
     }

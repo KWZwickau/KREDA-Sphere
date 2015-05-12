@@ -114,21 +114,21 @@ class ArrayNodeTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    0            => array(
+                    0 => array(
                         'name' => 'something',
                     ),
-                    5            => array(
-                        0         => 'this won\'t work too',
+                    5 => array(
+                        0 => 'this won\'t work too',
                         'new_key' => 'some other value',
                     ),
                     'string_key' => 'just value',
                 ),
                 array(
-                    0            => array(
+                    0 => array(
                         'name' => 'something',
                     ),
-                    5            => array(
-                        0         => 'this won\'t work too',
+                    5 => array(
+                        0 => 'this won\'t work too',
                         'new_key' => 'some other value',
                     ),
                     'string_key' => 'just value',

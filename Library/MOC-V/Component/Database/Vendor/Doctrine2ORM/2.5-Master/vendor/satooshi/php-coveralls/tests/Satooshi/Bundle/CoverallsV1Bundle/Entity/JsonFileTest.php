@@ -289,7 +289,7 @@ class JsonFileTest extends ProjectTestCase
 
         $expected = array(
             'source_files' => array(),
-            'environment'  => array( 'packagist_version' => Version::VERSION ),
+            'environment' => array( 'packagist_version' => Version::VERSION ),
         );
 
         $this->assertEquals( $expected, $this->object->toArray() );
@@ -331,7 +331,7 @@ class JsonFileTest extends ProjectTestCase
         $expected = array(
             'service_name' => $item,
             'source_files' => array(),
-            'environment'  => array( 'packagist_version' => Version::VERSION ),
+            'environment' => array( 'packagist_version' => Version::VERSION ),
         );
 
         $this->assertEquals( $expected, $object->toArray() );
@@ -352,7 +352,7 @@ class JsonFileTest extends ProjectTestCase
         $expected = array(
             'service_job_id' => $item,
             'source_files'   => array(),
-            'environment'    => array( 'packagist_version' => Version::VERSION ),
+            'environment' => array( 'packagist_version' => Version::VERSION ),
         );
 
         $this->assertEquals( $expected, $object->toArray() );
@@ -373,7 +373,7 @@ class JsonFileTest extends ProjectTestCase
         $expected = array(
             'repo_token'   => $item,
             'source_files' => array(),
-            'environment'  => array( 'packagist_version' => Version::VERSION ),
+            'environment' => array( 'packagist_version' => Version::VERSION ),
         );
 
         $this->assertEquals( $expected, $object->toArray() );
@@ -396,7 +396,7 @@ class JsonFileTest extends ProjectTestCase
         $expected = array(
             'git'          => $git->toArray(),
             'source_files' => array(),
-            'environment'  => array( 'packagist_version' => Version::VERSION ),
+            'environment' => array( 'packagist_version' => Version::VERSION ),
         );
 
         $this->assertSame( $expected, $object->toArray() );
@@ -420,7 +420,7 @@ class JsonFileTest extends ProjectTestCase
         $expected = array(
             'run_at'       => $item,
             'source_files' => array(),
-            'environment'  => array( 'packagist_version' => Version::VERSION ),
+            'environment' => array( 'packagist_version' => Version::VERSION ),
         );
 
         $this->assertEquals( $expected, $object->toArray() );

@@ -13,15 +13,15 @@ abstract class AbstractUriTemplateTest extends \Guzzle\Tests\GuzzleTestCase
 
         $t = array();
         $params = array(
-            'var'        => 'value',
-            'hello'      => 'Hello World!',
-            'empty'      => '',
-            'path'       => '/foo/bar',
-            'x'          => '1024',
-            'y'          => '768',
-            'null'       => null,
-            'list'       => array( 'red', 'green', 'blue' ),
-            'keys'       => array(
+            'var'   => 'value',
+            'hello' => 'Hello World!',
+            'empty' => '',
+            'path'  => '/foo/bar',
+            'x'     => '1024',
+            'y'     => '768',
+            'null'  => null,
+            'list'  => array( 'red', 'green', 'blue' ),
+            'keys'  => array(
                 "semi"  => ';',
                 "dot"   => '.',
                 "comma" => ','

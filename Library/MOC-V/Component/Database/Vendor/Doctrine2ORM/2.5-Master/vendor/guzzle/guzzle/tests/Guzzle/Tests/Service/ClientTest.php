@@ -35,7 +35,7 @@ class ClientTest extends \Guzzle\Tests\GuzzleTestCase
                     'bucket' => array(
                         'required' => true
                     ),
-                    'key'    => array(
+                    'key' => array(
                         'required' => true
                     )
                 )
@@ -60,7 +60,7 @@ class ClientTest extends \Guzzle\Tests\GuzzleTestCase
 
         $client = Client::factory( array(
             'base_url' => 'http://www.test.com/',
-            'test'     => '123'
+            'test' => '123'
         ) );
 
         $this->assertEquals( 'http://www.test.com/', $client->getBaseUrl() );

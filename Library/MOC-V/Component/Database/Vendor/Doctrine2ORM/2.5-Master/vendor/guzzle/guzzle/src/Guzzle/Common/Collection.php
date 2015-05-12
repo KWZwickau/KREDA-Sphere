@@ -57,12 +57,6 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
         return new \ArrayIterator( $this->data );
     }
 
-    public function toArray()
-    {
-
-        return $this->data;
-    }
-
     /**
      * Removes all key value pairs
      *
@@ -114,29 +108,6 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
     {
 
         $this->data[$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Add a value to a key.  If a key of the same name has already been added, the key value will be converted into an
-     * array and the new value will be pushed to the end of the array.
-     *
-     * @param string $key   Key to add
-     * @param mixed  $value Value to add to the key
-     *
-     * @return Collection Returns a reference to the object.
-     */
-    public function add( $key, $value )
-    {
-
-        if (!array_key_exists( $key, $this->data )) {
-            $this->data[$key] = $value;
-        } elseif (is_array( $this->data[$key] )) {
-            $this->data[$key][] = $value;
-        } else {
-            $this->data[$key] = array( $this->data[$key], $value );
-        }
 
         return $this;
     }
@@ -245,6 +216,29 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
     }
 
     /**
+     * Add a value to a key.  If a key of the same name has already been added, the key value will be converted into an
+     * array and the new value will be pushed to the end of the array.
+     *
+     * @param string $key   Key to add
+     * @param mixed  $value Value to add to the key
+     *
+     * @return Collection Returns a reference to the object.
+     */
+    public function add( $key, $value )
+    {
+
+        if (!array_key_exists( $key, $this->data )) {
+            $this->data[$key] = $value;
+        } elseif (is_array( $this->data[$key] )) {
+            $this->data[$key][] = $value;
+        } else {
+            $this->data[$key] = array( $this->data[$key], $value );
+        }
+
+        return $this;
+    }
+
+    /**
      * Over write key value pairs in this collection with all of the data from an array or collection.
      *
      * @param array|\Traversable $data Values to override over this config
@@ -265,6 +259,12 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
         }
 
         return $this;
+    }
+
+    public function toArray()
+    {
+
+        return $this->data;
     }
 
     /**

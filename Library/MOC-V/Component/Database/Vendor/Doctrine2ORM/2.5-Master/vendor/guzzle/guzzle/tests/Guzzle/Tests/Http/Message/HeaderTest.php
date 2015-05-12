@@ -122,13 +122,13 @@ class HeaderTest extends \Guzzle\Tests\GuzzleTestCase
         $res1 = array(
             array(
                 '<http:/.../front.jpeg>' => '',
-                'rel'                    => 'front',
-                'type'                   => 'image/jpeg',
+                'rel'  => 'front',
+                'type' => 'image/jpeg',
             ),
             array(
                 '<http://.../back.jpeg>' => '',
-                'rel'                    => 'back',
-                'type'                   => 'image/jpeg',
+                'rel'  => 'back',
+                'type' => 'image/jpeg',
             ),
         );
 

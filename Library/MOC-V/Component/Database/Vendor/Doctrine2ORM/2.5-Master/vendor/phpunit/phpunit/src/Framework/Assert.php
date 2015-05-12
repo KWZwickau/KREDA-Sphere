@@ -489,10 +489,10 @@ abstract class PHPUnit_Framework_Assert
      * Asserts that a haystack that is stored in a static attribute of a class
      * or an attribute of an object contains only values of a given type.
      *
-     * @param string  $type
+     * @param string         $type
      * @param string  $haystackAttributeName
      * @param mixed   $haystackClassOrObject
-     * @param boolean $isNativeType
+     * @param boolean        $isNativeType
      * @param string  $message
      *
      * @since  Method available since Release 3.1.4

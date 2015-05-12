@@ -120,6 +120,21 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
     }
 
     /**
+     * Lazy initialization of this stuff, especially the metadata driver,
+     * since these are not needed at all when a metadata cache is active.
+     *
+     * @return void
+     */
+    abstract protected function initialize();
+
+    /**
+     * Returns the mapping driver implementation.
+     *
+     * @return \Doctrine\Common\Persistence\Mapping\Driver\MappingDriver
+     */
+    abstract protected function getDriver();
+
+    /**
      * Gets the class metadata descriptor for a class.
      *
      * @param string $className The name of the class.
@@ -187,52 +202,24 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
     }
 
     /**
-     * Checks whether the factory has the metadata for a class loaded already.
+     * Gets the fully qualified class-name from the namespace alias.
      *
-     * @param string $className
+     * @param string $namespaceAlias
+     * @param string $simpleClassName
      *
-     * @return boolean TRUE if the metadata of the class in question is already loaded, FALSE otherwise.
+     * @return string
      */
-    public function hasMetadataFor( $className )
-    {
-
-        return isset( $this->loadedMetadata[$className] );
-    }
+    abstract protected function getFqcnFromAlias( $namespaceAlias, $simpleClassName );
 
     /**
-     * Sets the metadata descriptor for a specific class.
+     * Wakes up reflection after ClassMetadata gets unserialized from cache.
      *
-     * NOTE: This is only useful in very special cases, like when generating proxy classes.
-     *
-     * @param string        $className
-     * @param ClassMetadata $class
+     * @param ClassMetadata     $class
+     * @param ReflectionService $reflService
      *
      * @return void
      */
-    public function setMetadataFor( $className, $class )
-    {
-
-        $this->loadedMetadata[$className] = $class;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function isTransient( $class )
-    {
-
-        if (!$this->initialized) {
-            $this->initialize();
-        }
-
-        // Check for namespace alias
-        if (strpos( $class, ':' ) !== false) {
-            list( $namespaceAlias, $simpleClassName ) = explode( ':', $class, 2 );
-            $class = $this->getFqcnFromAlias( $namespaceAlias, $simpleClassName );
-        }
-
-        return $this->getDriver()->isTransient( $class );
-    }
+    abstract protected function wakeupReflection( ClassMetadata $class, ReflectionService $reflService );
 
     /**
      * Gets the reflection service associated with this metadata factory.
@@ -259,82 +246,6 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
     {
 
         $this->reflectionService = $reflectionService;
-    }
-
-    /**
-     * Lazy initialization of this stuff, especially the metadata driver,
-     * since these are not needed at all when a metadata cache is active.
-     *
-     * @return void
-     */
-    abstract protected function initialize();
-
-    /**
-     * Gets the fully qualified class-name from the namespace alias.
-     *
-     * @param string $namespaceAlias
-     * @param string $simpleClassName
-     *
-     * @return string
-     */
-    abstract protected function getFqcnFromAlias( $namespaceAlias, $simpleClassName );
-
-    /**
-     * Returns the mapping driver implementation.
-     *
-     * @return \Doctrine\Common\Persistence\Mapping\Driver\MappingDriver
-     */
-    abstract protected function getDriver();
-
-    /**
-     * Wakes up reflection after ClassMetadata gets unserialized from cache.
-     *
-     * @param ClassMetadata     $class
-     * @param ReflectionService $reflService
-     *
-     * @return void
-     */
-    abstract protected function wakeupReflection( ClassMetadata $class, ReflectionService $reflService );
-
-    /**
-     * Initializes Reflection after ClassMetadata was constructed.
-     *
-     * @param ClassMetadata     $class
-     * @param ReflectionService $reflService
-     *
-     * @return void
-     */
-    abstract protected function initializeReflection( ClassMetadata $class, ReflectionService $reflService );
-
-    /**
-     * Checks whether the class metadata is an entity.
-     *
-     * This method should return false for mapped superclasses or embedded classes.
-     *
-     * @param ClassMetadata $class
-     *
-     * @return boolean
-     */
-    abstract protected function isEntity( ClassMetadata $class );
-
-    /**
-     * Gets an array of parent classes for the given entity class.
-     *
-     * @param string $name
-     *
-     * @return array
-     */
-    protected function getParentClasses( $name )
-    {
-
-        // Collect parent classes, ignoring transient (not-mapped) classes.
-        $parentClasses = array();
-        foreach (array_reverse( $this->getReflectionService()->getParentClasses( $name ) ) as $parentClass) {
-            if (!$this->getDriver()->isTransient( $parentClass )) {
-                $parentClasses[] = $parentClass;
-            }
-        }
-        return $parentClasses;
     }
 
     /**
@@ -401,19 +312,54 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
     }
 
     /**
-     * Provides a fallback hook for loading metadata when loading failed due to reflection/mapping exceptions
+     * Gets an array of parent classes for the given entity class.
      *
-     * Override this method to implement a fallback strategy for failed metadata loading
+     * @param string $name
+     *
+     * @return array
+     */
+    protected function getParentClasses( $name )
+    {
+
+        // Collect parent classes, ignoring transient (not-mapped) classes.
+        $parentClasses = array();
+        foreach (array_reverse( $this->getReflectionService()->getParentClasses( $name ) ) as $parentClass) {
+            if (!$this->getDriver()->isTransient( $parentClass )) {
+                $parentClasses[] = $parentClass;
+            }
+        }
+        return $parentClasses;
+    }
+
+    /**
+     * Checks whether the class metadata is an entity.
+     *
+     * This method should return false for mapped superclasses or embedded classes.
+     *
+     * @param ClassMetadata $class
+     *
+     * @return boolean
+     */
+    abstract protected function isEntity( ClassMetadata $class );
+
+    /**
+     * Creates a new ClassMetadata instance for the given class name.
      *
      * @param string $className
      *
-     * @return \Doctrine\Common\Persistence\Mapping\ClassMetadata|null
+     * @return ClassMetadata
      */
-    protected function onNotFoundMetadata( $className )
-    {
+    abstract protected function newClassMetadataInstance( $className );
 
-        return null;
-    }
+    /**
+     * Initializes Reflection after ClassMetadata was constructed.
+     *
+     * @param ClassMetadata     $class
+     * @param ReflectionService $reflService
+     *
+     * @return void
+     */
+    abstract protected function initializeReflection( ClassMetadata $class, ReflectionService $reflService );
 
     /**
      * Actually loads the metadata from the underlying metadata.
@@ -429,11 +375,65 @@ abstract class AbstractClassMetadataFactory implements ClassMetadataFactory
     abstract protected function doLoadMetadata( $class, $parent, $rootEntityFound, array $nonSuperclassParents );
 
     /**
-     * Creates a new ClassMetadata instance for the given class name.
+     * Provides a fallback hook for loading metadata when loading failed due to reflection/mapping exceptions
+     *
+     * Override this method to implement a fallback strategy for failed metadata loading
      *
      * @param string $className
      *
-     * @return ClassMetadata
+     * @return \Doctrine\Common\Persistence\Mapping\ClassMetadata|null
      */
-    abstract protected function newClassMetadataInstance( $className );
+    protected function onNotFoundMetadata( $className )
+    {
+
+        return null;
+    }
+
+    /**
+     * Checks whether the factory has the metadata for a class loaded already.
+     *
+     * @param string $className
+     *
+     * @return boolean TRUE if the metadata of the class in question is already loaded, FALSE otherwise.
+     */
+    public function hasMetadataFor( $className )
+    {
+
+        return isset( $this->loadedMetadata[$className] );
+    }
+
+    /**
+     * Sets the metadata descriptor for a specific class.
+     *
+     * NOTE: This is only useful in very special cases, like when generating proxy classes.
+     *
+     * @param string        $className
+     * @param ClassMetadata $class
+     *
+     * @return void
+     */
+    public function setMetadataFor( $className, $class )
+    {
+
+        $this->loadedMetadata[$className] = $class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isTransient( $class )
+    {
+
+        if (!$this->initialized) {
+            $this->initialize();
+        }
+
+        // Check for namespace alias
+        if (strpos( $class, ':' ) !== false) {
+            list( $namespaceAlias, $simpleClassName ) = explode( ':', $class, 2 );
+            $class = $this->getFqcnFromAlias( $namespaceAlias, $simpleClassName );
+        }
+
+        return $this->getDriver()->isTransient( $class );
+    }
 }

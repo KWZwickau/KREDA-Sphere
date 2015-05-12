@@ -322,7 +322,7 @@ class PHP_CodeCoverage_Report_Node_File extends PHP_CodeCoverage_Report_Node
                 'coverage'        => 0,
                 'crap'            => 0,
                 'package'         => $class['package'],
-                'link'            => $link.$class['startLine']
+                'link' => $link.$class['startLine']
             );
 
             $this->startLines[$class['startLine']] = &$this->classes[$className];
@@ -339,7 +339,7 @@ class PHP_CodeCoverage_Report_Node_File extends PHP_CodeCoverage_Report_Node
                     'ccn'             => $method['ccn'],
                     'coverage'        => 0,
                     'crap'            => 0,
-                    'link'            => $link.$method['startLine']
+                    'link' => $link.$method['startLine']
                 );
 
                 $this->startLines[$method['startLine']] = &$this->classes[$className]['methods'][$methodName];
@@ -370,7 +370,7 @@ class PHP_CodeCoverage_Report_Node_File extends PHP_CodeCoverage_Report_Node
                 'coverage'        => 0,
                 'crap'            => 0,
                 'package'         => $trait['package'],
-                'link'            => $link.$trait['startLine']
+                'link' => $link.$trait['startLine']
             );
 
             $this->startLines[$trait['startLine']] = &$this->traits[$traitName];
@@ -387,7 +387,7 @@ class PHP_CodeCoverage_Report_Node_File extends PHP_CodeCoverage_Report_Node
                     'ccn'             => $method['ccn'],
                     'coverage'        => 0,
                     'crap'            => 0,
-                    'link'            => $link.$method['startLine']
+                    'link' => $link.$method['startLine']
                 );
 
                 $this->startLines[$method['startLine']] = &$this->traits[$traitName]['methods'][$methodName];
@@ -417,7 +417,7 @@ class PHP_CodeCoverage_Report_Node_File extends PHP_CodeCoverage_Report_Node
                 'ccn'             => $function['ccn'],
                 'coverage'        => 0,
                 'crap'            => 0,
-                'link'            => $link.$function['startLine']
+                'link' => $link.$function['startLine']
             );
 
             $this->startLines[$function['startLine']] = &$this->functions[$functionName];

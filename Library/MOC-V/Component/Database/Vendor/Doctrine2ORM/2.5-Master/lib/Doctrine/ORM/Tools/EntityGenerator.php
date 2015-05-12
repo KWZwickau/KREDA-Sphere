@@ -935,7 +935,7 @@ public function __construct(<params>)
     }
 
     /**
-     * @param array             $associationMapping
+     * @param array $associationMapping
      * @param ClassMetadataInfo $metadata
      *
      * @return string
@@ -1286,7 +1286,7 @@ public function __construct(<params>)
     }
 
     /**
-     * @param string            $method
+     * @param string $method
      * @param ClassMetadataInfo $metadata
      *
      * @return bool

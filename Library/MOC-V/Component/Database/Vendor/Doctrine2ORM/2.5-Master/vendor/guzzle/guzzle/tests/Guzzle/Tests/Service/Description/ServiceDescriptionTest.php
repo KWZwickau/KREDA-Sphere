@@ -162,7 +162,7 @@ class ServiceDescriptionTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $data = array(
-            'operations'  => array( 'foo' => array( 'class' => 'foo', 'parameters' => array() ) ),
+            'operations' => array( 'foo' => array( 'class' => 'foo', 'parameters' => array() ) ),
             'name'        => 'Name',
             'description' => 'Test',
             'apiVersion'  => '1.24',

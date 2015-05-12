@@ -59,7 +59,7 @@ interface ClassMetadataFactory
     /**
      * Sets the metadata descriptor for a specific class.
      *
-     * @param string        $className
+     * @param string $className
      *
      * @param ClassMetadata $class
      */

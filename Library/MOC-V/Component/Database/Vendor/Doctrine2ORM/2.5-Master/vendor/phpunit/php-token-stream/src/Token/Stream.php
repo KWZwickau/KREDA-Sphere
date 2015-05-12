@@ -478,7 +478,7 @@ class PHP_Token_Stream implements ArrayAccess, Countable, SeekableIterator
                     case 'PHP_Token_INCLUDE': {
                         $this->includes[$token->getType()][] = $token->getName();
                     }
-                        break;
+                    break;
                 }
             }
         }

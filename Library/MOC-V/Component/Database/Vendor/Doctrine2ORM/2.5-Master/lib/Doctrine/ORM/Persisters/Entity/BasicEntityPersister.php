@@ -289,7 +289,7 @@ class BasicEntityPersister implements EntityPersister
                 );
                 $postInsertIds[] = array(
                     'generatedId' => $generatedId,
-                    'entity'      => $entity,
+                    'entity' => $entity,
                 );
             } else {
                 $id = $this->class->getIdentifierValues( $entity );

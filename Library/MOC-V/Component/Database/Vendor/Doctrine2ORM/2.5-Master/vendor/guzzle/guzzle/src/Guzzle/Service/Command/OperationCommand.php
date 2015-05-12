@@ -16,6 +16,13 @@ class OperationCommand extends AbstractCommand
     /** @var ResponseParserInterface Response parser */
     protected $responseParser;
 
+    protected function build()
+    {
+
+        // Prepare and serialize the request
+        $this->request = $this->getRequestSerializer()->prepare( $this );
+    }
+
     /**
      * Get the request serializer used with the command
      *
@@ -47,6 +54,15 @@ class OperationCommand extends AbstractCommand
         return $this;
     }
 
+    protected function process()
+    {
+
+        // Do not process the response if 'command.response_processing' is set to 'raw'
+        $this->result = $this[self::RESPONSE_PROCESSING] == self::TYPE_RAW
+            ? $this->request->getResponse()
+            : $this->getResponseParser()->parse( $this );
+    }
+
     /**
      * Get the response parser used for the operation
      *
@@ -76,21 +92,5 @@ class OperationCommand extends AbstractCommand
         $this->responseParser = $parser;
 
         return $this;
-    }
-
-    protected function build()
-    {
-
-        // Prepare and serialize the request
-        $this->request = $this->getRequestSerializer()->prepare( $this );
-    }
-
-    protected function process()
-    {
-
-        // Do not process the response if 'command.response_processing' is set to 'raw'
-        $this->result = $this[self::RESPONSE_PROCESSING] == self::TYPE_RAW
-            ? $this->request->getResponse()
-            : $this->getResponseParser()->parse( $this );
     }
 }

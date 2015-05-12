@@ -202,8 +202,8 @@ abstract class PHP_CodeCoverage_Report_HTML_Renderer
             array(
                 'id'               => $node->getId(),
                 'full_path'        => $node->getPath(),
-                'path_to_root'     => $this->getPathToRoot( $node ),
-                'breadcrumbs'      => $this->getBreadcrumbs( $node ),
+                'path_to_root' => $this->getPathToRoot( $node ),
+                'breadcrumbs'  => $this->getBreadcrumbs( $node ),
                 'date'             => $this->date,
                 'version'          => $this->version,
                 'runtime_name'     => $runtime->getName(),

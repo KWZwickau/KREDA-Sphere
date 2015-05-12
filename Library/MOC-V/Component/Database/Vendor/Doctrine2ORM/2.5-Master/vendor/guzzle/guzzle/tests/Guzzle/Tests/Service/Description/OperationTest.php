@@ -32,7 +32,7 @@ class OperationTest extends \Guzzle\Tests\GuzzleTestCase
             'responseNotes'    => 'returns the json_decoded response',
             'deprecated'       => true,
             'parameters'       => array(
-                'key'   => array(
+                'key' => array(
                     'required'  => true,
                     'type'      => 'string',
                     'maxLength' => 10
@@ -108,7 +108,7 @@ class OperationTest extends \Guzzle\Tests\GuzzleTestCase
             'documentationUrl' => 'http://www.example.com',
             'httpMethod'       => 'PUT',
             'uri'              => '/',
-            'parameters'       => array( 'p' => array( 'name' => 'foo' ) )
+            'parameters' => array( 'p' => array( 'name' => 'foo' ) )
         );
         $c = new Operation( $data );
         $toArray = $c->toArray();
@@ -233,9 +233,10 @@ class OperationTest extends \Guzzle\Tests\GuzzleTestCase
                 'test_function' => array( 'type' => 'string', 'filters' => __CLASS__.'::strtoupper' )
             ),
             'errorResponses' => array(
-                array( 'code'   => 503,
-                       'reason' => 'InsufficientCapacity',
-                       'class'  => 'Guzzle\\Exception\\RuntimeException'
+                array(
+                    'code'   => 503,
+                    'reason' => 'InsufficientCapacity',
+                    'class'  => 'Guzzle\\Exception\\RuntimeException'
                 )
             )
         ) );
@@ -261,7 +262,7 @@ class OperationTest extends \Guzzle\Tests\GuzzleTestCase
         $this->assertEquals( array(
             'parameters'    => array(),
             'class'         => 'Guzzle\Service\Command\OperationCommand',
-            'data'          => array( 'foo' => 'baz', 'bar' => 123, 'test' => false ),
+            'data' => array( 'foo' => 'baz', 'bar' => 123, 'test' => false ),
             'responseClass' => 'array',
             'responseType'  => 'primitive'
         ), $o->toArray() );

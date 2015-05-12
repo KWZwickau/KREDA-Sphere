@@ -168,7 +168,7 @@ class SchemaValidatorTest extends \Guzzle\Tests\GuzzleTestCase
                     'type'     => 'array',
                     'minItems' => 2,
                     'required' => true,
-                    "items"    => array( "type" => "string" )
+                    "items" => array( "type" => "string" )
                 )
             )
         ) );
@@ -273,9 +273,9 @@ class SchemaValidatorTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $param = new Parameter( array(
-            'name'                 => 'foo',
-            'type'                 => 'object',
-            'properties'           => array( 'bar' => array( 'type' => 'string' ) ),
+            'name'       => 'foo',
+            'type'       => 'object',
+            'properties' => array( 'bar' => array( 'type' => 'string' ) ),
             'additionalProperties' => false
         ) );
         $value = array( 'test' => '123' );

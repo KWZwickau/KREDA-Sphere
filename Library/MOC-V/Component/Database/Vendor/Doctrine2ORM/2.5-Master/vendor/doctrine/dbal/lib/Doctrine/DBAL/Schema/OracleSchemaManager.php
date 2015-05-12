@@ -274,14 +274,14 @@ class OracleSchemaManager extends AbstractSchemaManager
         }
 
         $options = array(
-            'notnull'         => (bool)( $tableColumn['nullable'] === 'N' ),
-            'fixed'           => (bool)$fixed,
-            'unsigned'        => (bool)$unsigned,
-            'default'         => $tableColumn['data_default'],
-            'length'          => $length,
-            'precision'       => $precision,
-            'scale'           => $scale,
-            'comment'         => isset( $tableColumn['comments'] ) && '' !== $tableColumn['comments']
+            'notnull'   => (bool)( $tableColumn['nullable'] === 'N' ),
+            'fixed'     => (bool)$fixed,
+            'unsigned'  => (bool)$unsigned,
+            'default'   => $tableColumn['data_default'],
+            'length'    => $length,
+            'precision' => $precision,
+            'scale'     => $scale,
+            'comment'   => isset( $tableColumn['comments'] ) && '' !== $tableColumn['comments']
                 ? $tableColumn['comments']
                 : null,
             'platformDetails' => array(),
@@ -306,11 +306,11 @@ class OracleSchemaManager extends AbstractSchemaManager
                 }
 
                 $list[$value['constraint_name']] = array(
-                    'name'         => $this->getQuotedIdentifierName( $value['constraint_name'] ),
-                    'local'        => array(),
-                    'foreign'      => array(),
+                    'name'     => $this->getQuotedIdentifierName( $value['constraint_name'] ),
+                    'local'    => array(),
+                    'foreign'  => array(),
                     'foreignTable' => $value['references_table'],
-                    'onDelete'     => $value['delete_rule'],
+                    'onDelete' => $value['delete_rule'],
                 );
             }
 

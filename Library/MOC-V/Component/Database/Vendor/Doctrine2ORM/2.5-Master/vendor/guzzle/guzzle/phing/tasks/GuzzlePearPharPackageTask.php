@@ -120,11 +120,11 @@ class GuzzlePearPharPackageTask extends Task
         $apiversion = $v[0].'.0.0';
 
         $opts = array(
-            'packagedirectory'  => (string)$this->basedir.'/.subsplit/src/',
+            'packagedirectory' => (string)$this->basedir.'/.subsplit/src/',
             'filelistgenerator' => 'file',
-            'ignore'            => array( '*composer.json' ),
-            'baseinstalldir'    => '/',
-            'packagefile'       => 'package.xml'
+            'ignore'           => array( '*composer.json' ),
+            'baseinstalldir'   => '/',
+            'packagefile'      => 'package.xml'
             //'outputdirectory' => (string) $this->basedir . '/build/pearwork/'
         );
         $pfm = new PEAR_PackageFileManager2();
@@ -273,11 +273,11 @@ class GuzzlePearPharPackageTask extends Task
 
         $package = str_replace( '/', '_', $baseinstalldir );
         $opts = array(
-            'packagedirectory'  => $dir,
+            'packagedirectory' => $dir,
             'filelistgenerator' => 'file',
-            'ignore'            => array( '*composer.json', '*package.xml' ),
-            'baseinstalldir'    => '/'.$info['target-dir'],
-            'packagefile'       => 'package.xml'
+            'ignore'           => array( '*composer.json', '*package.xml' ),
+            'baseinstalldir'   => '/'.$info['target-dir'],
+            'packagefile'      => 'package.xml'
         );
         $pfm = new PEAR_PackageFileManager2();
         $pfm->setOptions( $opts );

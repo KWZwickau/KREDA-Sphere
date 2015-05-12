@@ -26,7 +26,7 @@ class ScalarComparator extends Comparator
      * Returns whether the comparator can compare two values.
      *
      * @param  mixed $expected The first value to compare
-     * @param  mixed $actual   The second value to compare
+     * @param  mixed $actual The second value to compare
      *
      * @return boolean
      * @since  Method available since Release 3.6.0

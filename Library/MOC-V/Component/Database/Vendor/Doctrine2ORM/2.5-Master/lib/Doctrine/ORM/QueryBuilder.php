@@ -79,14 +79,14 @@ class QueryBuilder
      */
     private $_dqlParts = array(
         'distinct' => false,
-        'select'   => array(),
-        'from'     => array(),
-        'join'     => array(),
-        'set'      => array(),
-        'where'    => null,
-        'groupBy'  => array(),
-        'having'   => null,
-        'orderBy'  => array()
+        'select'  => array(),
+        'from'    => array(),
+        'join'    => array(),
+        'set'     => array(),
+        'where'   => null,
+        'groupBy' => array(),
+        'having'  => null,
+        'orderBy' => array()
     );
     /**
      * The type of query this is. Can be select, update or delete.

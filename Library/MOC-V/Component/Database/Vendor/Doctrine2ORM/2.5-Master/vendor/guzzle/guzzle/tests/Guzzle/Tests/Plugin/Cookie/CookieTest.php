@@ -50,7 +50,7 @@ class CookieTest extends \Guzzle\Tests\GuzzleTestCase
             'max_age'     => 100,
             'comment'     => 'Hi',
             'comment_url' => 'foo.com',
-            'port'        => array( 1, 2 ),
+            'port' => array( 1, 2 ),
             'version'     => 2,
             'secure'      => true,
             'discard'     => true,

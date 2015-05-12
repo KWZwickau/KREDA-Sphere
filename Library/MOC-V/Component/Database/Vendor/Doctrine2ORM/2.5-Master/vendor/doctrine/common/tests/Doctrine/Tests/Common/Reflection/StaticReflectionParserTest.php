@@ -12,7 +12,7 @@ class StaticReflectionParserTest extends DoctrineTestCase
     /**
      * @dataProvider parentClassData
      *
-     * @param bool   $classAnnotationOptimize
+     * @param bool $classAnnotationOptimize
      * @param string $parsedClassName
      * @param string $expectedClassName
      *

@@ -410,10 +410,10 @@ class Command
     /**
      * Adds an argument.
      *
-     * @param string $name        The argument name
-     * @param int    $mode        The argument mode: InputArgument::REQUIRED or InputArgument::OPTIONAL
+     * @param string $name    The argument name
+     * @param int    $mode    The argument mode: InputArgument::REQUIRED or InputArgument::OPTIONAL
      * @param string $description A description text
-     * @param mixed  $default     The default value (for InputArgument::OPTIONAL mode only)
+     * @param mixed  $default The default value (for InputArgument::OPTIONAL mode only)
      *
      * @return Command The current instance
      *

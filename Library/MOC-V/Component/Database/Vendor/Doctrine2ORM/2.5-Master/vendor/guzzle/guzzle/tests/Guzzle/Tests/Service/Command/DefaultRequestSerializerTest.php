@@ -85,12 +85,12 @@ class DefaultRequestSerializerTest extends \Guzzle\Tests\GuzzleTestCase
 
         $this->operation->setUri( 'bar{?limit,fields}' );
         $this->operation->addParam( new Parameter( array(
-            'name'     => 'limit',
+            'name' => 'limit',
             'location' => 'uri',
             'required' => false,
         ) ) );
         $this->operation->addParam( new Parameter( array(
-            'name'     => 'fields',
+            'name' => 'fields',
             'location' => 'uri',
             'required' => true,
         ) ) );
@@ -107,8 +107,8 @@ class DefaultRequestSerializerTest extends \Guzzle\Tests\GuzzleTestCase
         $description = ServiceDescription::factory( array(
             'operations' => array(
                 'foo' => array(
-                    'httpMethod'           => 'PUT',
-                    'parameters'           => array(
+                    'httpMethod' => 'PUT',
+                    'parameters' => array(
                         'bar' => array( 'location' => 'header' )
                     ),
                     'additionalParameters' => array(

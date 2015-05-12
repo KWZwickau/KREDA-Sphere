@@ -23,34 +23,34 @@ class ResponseTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $this->response = new Response( 200, new Collection( array(
-            'Accept-Ranges'       => 'bytes',
-            'Age'                 => '12',
-            'Allow'               => 'GET, HEAD',
-            'Cache-Control'       => 'no-cache',
-            'Content-Encoding'    => 'gzip',
-            'Content-Language'    => 'da',
-            'Content-Length'      => '348',
-            'Content-Location'    => '/index.htm',
+            'Accept-Ranges'      => 'bytes',
+            'Age'                => '12',
+            'Allow'              => 'GET, HEAD',
+            'Cache-Control'      => 'no-cache',
+            'Content-Encoding'   => 'gzip',
+            'Content-Language'   => 'da',
+            'Content-Length'     => '348',
+            'Content-Location'   => '/index.htm',
             'Content-Disposition' => 'attachment; filename=fname.ext',
-            'Content-MD5'         => 'Q2hlY2sgSW50ZWdyaXR5IQ==',
-            'Content-Range'       => 'bytes 21010-47021/47022',
-            'Content-Type'        => 'text/html; charset=utf-8',
-            'Date'                => 'Tue, 15 Nov 1994 08:12:31 GMT',
-            'ETag'                => '737060cd8c284d8af7ad3082f209582d',
-            'Expires'             => 'Thu, 01 Dec 1994 16:00:00 GMT',
-            'Last-Modified'       => 'Tue, 15 Nov 1994 12:45:26 GMT',
-            'Location'            => 'http://www.w3.org/pub/WWW/People.html',
-            'Pragma'              => 'no-cache',
-            'Proxy-Authenticate'  => 'Basic',
-            'Retry-After'         => '120',
-            'Server'              => 'Apache/1.3.27 (Unix) (Red-Hat/Linux)',
-            'Set-Cookie'          => 'UserID=JohnDoe; Max-Age=3600; Version=1',
-            'Trailer'             => 'Max-Forwards',
-            'Transfer-Encoding'   => 'chunked',
-            'Vary'                => '*',
-            'Via'                 => '1.0 fred, 1.1 nowhere.com (Apache/1.1)',
-            'Warning'             => '199 Miscellaneous warning',
-            'WWW-Authenticate'    => 'Basic'
+            'Content-MD5'        => 'Q2hlY2sgSW50ZWdyaXR5IQ==',
+            'Content-Range'      => 'bytes 21010-47021/47022',
+            'Content-Type'       => 'text/html; charset=utf-8',
+            'Date'               => 'Tue, 15 Nov 1994 08:12:31 GMT',
+            'ETag'               => '737060cd8c284d8af7ad3082f209582d',
+            'Expires'            => 'Thu, 01 Dec 1994 16:00:00 GMT',
+            'Last-Modified'      => 'Tue, 15 Nov 1994 12:45:26 GMT',
+            'Location'           => 'http://www.w3.org/pub/WWW/People.html',
+            'Pragma'             => 'no-cache',
+            'Proxy-Authenticate' => 'Basic',
+            'Retry-After'        => '120',
+            'Server'             => 'Apache/1.3.27 (Unix) (Red-Hat/Linux)',
+            'Set-Cookie'         => 'UserID=JohnDoe; Max-Age=3600; Version=1',
+            'Trailer'            => 'Max-Forwards',
+            'Transfer-Encoding'  => 'chunked',
+            'Vary'               => '*',
+            'Via'                => '1.0 fred, 1.1 nowhere.com (Apache/1.1)',
+            'Warning'            => '199 Miscellaneous warning',
+            'WWW-Authenticate'   => 'Basic'
         ) ), 'body' );
     }
 
@@ -185,8 +185,8 @@ class ResponseTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $response = new Response( 200, new Collection( array(
-            'Keep-Alive'     => 155,
-            'User-Agent'     => 'Guzzle',
+            'Keep-Alive' => 155,
+            'User-Agent' => 'Guzzle',
             'Content-Length' => 4
         ) ), 'body' );
 
@@ -494,26 +494,26 @@ class ResponseTest extends \Guzzle\Tests\GuzzleTestCase
     {
 
         $stats = array(
-            'url'                     => 'http://www.google.com/',
-            'content_type'            => 'text/html; charset=ISO-8859-1',
-            'http_code'               => 200,
-            'header_size'             => 606,
-            'request_size'            => 53,
-            'filetime'                => -1,
-            'ssl_verify_result'       => 0,
-            'redirect_count'          => 0,
-            'total_time'              => 0.093284,
-            'namelookup_time'         => 0.001349,
-            'connect_time'            => 0.01635,
-            'pretransfer_time'        => 0.016358,
-            'size_upload'             => 0,
-            'size_download'           => 10330,
-            'speed_download'          => 110737,
-            'speed_upload'            => 0,
+            'url'                   => 'http://www.google.com/',
+            'content_type'          => 'text/html; charset=ISO-8859-1',
+            'http_code'             => 200,
+            'header_size'           => 606,
+            'request_size'          => 53,
+            'filetime'              => -1,
+            'ssl_verify_result'     => 0,
+            'redirect_count'        => 0,
+            'total_time'            => 0.093284,
+            'namelookup_time'       => 0.001349,
+            'connect_time'          => 0.01635,
+            'pretransfer_time'      => 0.016358,
+            'size_upload'           => 0,
+            'size_download'         => 10330,
+            'speed_download'        => 110737,
+            'speed_upload'          => 0,
             'download_content_length' => -1,
-            'upload_content_length'   => 0,
-            'starttransfer_time'      => 0.07066,
-            'redirect_time'           => 0,
+            'upload_content_length' => 0,
+            'starttransfer_time'    => 0.07066,
+            'redirect_time'         => 0,
         );
 
         // Uninitialized state
@@ -588,7 +588,7 @@ class ResponseTest extends \Guzzle\Tests\GuzzleTestCase
         // Uses the response's max-age
         $this->assertEquals( 120, $this->getResponse( 200, array(
             'Cache-Control' => 'max-age=120',
-            'Expires'       => gmdate( ClientInterface::HTTP_DATE, strtotime( '+1 day' ) )
+            'Expires' => gmdate( ClientInterface::HTTP_DATE, strtotime( '+1 day' ) )
         ) )->getMaxAge() );
 
         // Uses the Expires date

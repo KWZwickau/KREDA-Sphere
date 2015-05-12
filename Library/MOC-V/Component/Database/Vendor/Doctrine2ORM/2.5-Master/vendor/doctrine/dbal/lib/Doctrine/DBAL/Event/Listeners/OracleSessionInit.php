@@ -44,11 +44,11 @@ class OracleSessionInit implements EventSubscriber
      * @var array
      */
     protected $_defaultSessionVars = array(
-        'NLS_TIME_FORMAT'         => "HH24:MI:SS",
-        'NLS_DATE_FORMAT'         => "YYYY-MM-DD HH24:MI:SS",
-        'NLS_TIMESTAMP_FORMAT'    => "YYYY-MM-DD HH24:MI:SS",
+        'NLS_TIME_FORMAT'        => "HH24:MI:SS",
+        'NLS_DATE_FORMAT'        => "YYYY-MM-DD HH24:MI:SS",
+        'NLS_TIMESTAMP_FORMAT'   => "YYYY-MM-DD HH24:MI:SS",
         'NLS_TIMESTAMP_TZ_FORMAT' => "YYYY-MM-DD HH24:MI:SS TZH:TZM",
-        'NLS_NUMERIC_CHARACTERS'  => ".,",
+        'NLS_NUMERIC_CHARACTERS' => ".,",
     );
 
     /**

@@ -211,7 +211,7 @@ class ObjectProphecySpec extends ObjectBehavior
             'getUsername' => array(
                 $methodProphecy1
             ),
-            'isUsername'  => array(
+            'isUsername' => array(
                 $methodProphecy2
             )
         ) );

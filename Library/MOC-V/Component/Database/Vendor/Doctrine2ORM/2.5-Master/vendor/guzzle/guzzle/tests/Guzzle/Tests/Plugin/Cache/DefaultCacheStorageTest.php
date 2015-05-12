@@ -31,9 +31,9 @@ class DefaultCacheStorageTest extends \Guzzle\Tests\GuzzleTestCase
         $request = new Request( 'GET', 'http://foo.com', array( 'Accept' => 'application/json' ) );
         $response = new Response( 200, array(
             'Content-Type' => 'application/json',
-            'Connection'   => 'close',
-            'X-Foo'        => 'Bar',
-            'Vary'         => 'Accept'
+            'Connection' => 'close',
+            'X-Foo'      => 'Bar',
+            'Vary'       => 'Accept'
         ), 'test' );
         $s->cache( $request, $response );
         $data = $this->readAttribute( $a, 'data' );

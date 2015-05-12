@@ -332,7 +332,7 @@ class MappingException extends \Doctrine\ORM\ORMException
      * because there might be long classnames that will be shortened
      * within the stacktrace
      *
-     * @param string               $entity The entity's name
+     * @param string $entity The entity's name
      * @param \ReflectionException $previousException
      *
      * @return MappingException

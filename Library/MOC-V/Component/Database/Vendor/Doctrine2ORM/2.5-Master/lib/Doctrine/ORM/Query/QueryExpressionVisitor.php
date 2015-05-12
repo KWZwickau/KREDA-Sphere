@@ -38,7 +38,7 @@ class QueryExpressionVisitor extends ExpressionVisitor
      * @var array
      */
     private static $operatorMap = array(
-        Comparison::GT  => Expr\Comparison::GT,
+        Comparison::GT => Expr\Comparison::GT,
         Comparison::GTE => Expr\Comparison::GTE,
         Comparison::LT  => Expr\Comparison::LT,
         Comparison::LTE => Expr\Comparison::LTE
@@ -160,11 +160,11 @@ class QueryExpressionVisitor extends ExpressionVisitor
 
             case Comparison::EQ:
             case Comparison::IS:
-                if ($this->walkValue( $comparison->getValue() ) === null) {
-                    return $this->expr->isNull( $field );
+            if ($this->walkValue( $comparison->getValue() ) === null) {
+                return $this->expr->isNull( $field );
                 }
                 $this->parameters[] = $parameter;
-                return $this->expr->eq( $field, $placeholder );
+            return $this->expr->eq( $field, $placeholder );
 
             case Comparison::NEQ:
                 if ($this->walkValue( $comparison->getValue() ) === null) {

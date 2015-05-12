@@ -32,8 +32,8 @@ class JsonVisitorTest extends AbstractResponseVisitorTest
 
         $visitor = new Visitor();
         $param = new Parameter( array(
-            'name'  => 'foo',
-            'type'  => 'array',
+            'name' => 'foo',
+            'type' => 'array',
             'items' => array(
                 'filters' => 'strtoupper',
                 'type'    => 'string'

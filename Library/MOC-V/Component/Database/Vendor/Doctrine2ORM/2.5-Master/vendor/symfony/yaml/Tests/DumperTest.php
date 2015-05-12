@@ -22,11 +22,11 @@ class DumperTest extends \PHPUnit_Framework_TestCase
     protected $path;
 
     protected $array = array(
-        ''         => 'bar',
-        'foo'      => '#bar',
+        ''       => 'bar',
+        'foo'    => '#bar',
         'foo\'bar' => array(),
-        'bar'      => array( 1, 'foo' ),
-        'foobar'   => array(
+        'bar'    => array( 1, 'foo' ),
+        'foobar' => array(
             'foo'    => 'bar',
             'bar'    => array( 1, 'foo' ),
             'foobar' => array(

@@ -200,16 +200,16 @@ EOF
         $obj->foo = 'bar';
 
         $array = array(
-            0             => 0,
-            'null'        => null,
-            'boolean'     => true,
-            'integer'     => 1,
-            'double'      => 1.2,
-            'string'      => '1',
-            'text'        => "this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext",
-            'object'      => $obj,
+            0         => 0,
+            'null'    => null,
+            'boolean' => true,
+            'integer' => 1,
+            'double'  => 1.2,
+            'string'  => '1',
+            'text'    => "this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext",
+            'object'  => $obj,
             'objectagain' => $obj,
-            'array'       => array( 'foo' => 'bar' ),
+            'array'   => array( 'foo' => 'bar' ),
         );
 
         $array['self'] = &$array;
