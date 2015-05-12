@@ -72,6 +72,8 @@ abstract class AbstractType extends AbstractFrontend implements IElementInterfac
     /**
      * @param mixed $Value
      * @param bool  $Force
+     *
+     * @return AbstractType
      */
     public function setDefaultValue( $Value, $Force = false )
     {
@@ -81,6 +83,8 @@ abstract class AbstractType extends AbstractFrontend implements IElementInterfac
             $Global->POST[$this->getName()] = $Value;
             $Global->savePost();
         }
+
+        return $this;
     }
 
     /**

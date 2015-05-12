@@ -60,6 +60,7 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
     const ICON_WARNING = 'glyphicons glyphicons-warning-sign';
     const ICON_OK = 'glyphicons glyphicons-ok';
     const ICON_PENCIL = 'glyphicons glyphicons-pencil';
+    const ICON_EDIT = 'glyphicons glyphicons-pencil';
     const ICON_REMOVE = 'glyphicons glyphicons-remove-2';
     const ICON_TRANSFER = 'glyphicons glyphicons-transfer';
 

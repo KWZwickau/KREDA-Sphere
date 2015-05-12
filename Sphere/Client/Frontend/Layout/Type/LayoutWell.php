@@ -4,11 +4,11 @@ namespace KREDA\Sphere\Client\Frontend\Layout\Type;
 use KREDA\Sphere\Client\Frontend\Layout\AbstractType;
 
 /**
- * Class LayoutRight
+ * Class LayoutWell
  *
  * @package KREDA\Sphere\Client\Frontend\Layout\Type
  */
-class LayoutRight extends AbstractType
+class LayoutWell extends AbstractType
 {
 
     /** @var string $Content */
@@ -29,6 +29,6 @@ class LayoutRight extends AbstractType
     function __toString()
     {
 
-        return '<div class="clearfix"><div class="pull-right">'.$this->Content.'</div></div>';
+        return '<div class="well">'.$this->Content.'</div>';
     }
 }

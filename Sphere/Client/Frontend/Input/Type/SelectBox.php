@@ -43,6 +43,9 @@ class SelectBox extends AbstractType
                 /** @var AbstractEntity $Entity */
                 foreach ((array)$Data[$Attribute] as $Entity) {
                     if (is_object( $Entity )) {
+                        if ($Entity->getId() === null) {
+                            $Entity->setId( 0 );
+                        }
                         $Template = Template::getTwigTemplateString( $Attribute );
                         foreach ((array)$Placeholder[2] as $Variable) {
                             $Chain = explode( '.', $Variable );
@@ -63,6 +66,9 @@ class SelectBox extends AbstractType
                 /** @var AbstractEntity $Entity */
                 foreach ((array)$Data[$Attribute] as $Entity) {
                     if (is_object( $Entity )) {
+                        if ($Entity->getId() === null) {
+                            $Entity->setId( 0 );
+                        }
                         if (method_exists( $Entity, 'get'.$Attribute )) {
                             $Convert[$Entity->getId()] = $Entity->{'get'.$Attribute}();
                         } else {
@@ -71,9 +77,15 @@ class SelectBox extends AbstractType
                     }
                 }
             }
+            if (array_key_exists( 0, $Convert )) {
+                $Convert[0] = '-[ Nicht ausgewählt ]-';
+            }
             asort( $Convert );
             $this->Template->setVariable( 'ElementData', $Convert );
         } else {
+            if (array_key_exists( 0, $Data )) {
+                $Data[0] = '-[ Nicht ausgewählt ]-';
+            }
             asort( $Data );
             $this->Template->setVariable( 'ElementData', $Data );
         }

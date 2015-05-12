@@ -66,7 +66,10 @@ class TblToken extends AbstractEntity
     public function getSerial()
     {
 
-        return $this->Serial;
+        if ($this->Serial === null) {
+            return null;
+        }
+        return str_pad( $this->Serial, 8, '0', STR_PAD_LEFT );
     }
 
     /**

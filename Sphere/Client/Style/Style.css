@@ -59,6 +59,10 @@ label {
 /*background: url("Resource/YubiKeyIcon-16x16.ico") center;*/
 /*}*/
 
+.thumbnail a > img, .thumbnail > img {
+    width: inherit;
+}
+
 .alert {
     padding: 10px;
     margin-bottom: 5px;

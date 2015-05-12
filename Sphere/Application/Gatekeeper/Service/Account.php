@@ -463,17 +463,6 @@ class Account extends EntityAction
     }
 
     /**
-     * @param integer $Id
-     *
-     * @return bool|TblAccountType
-     */
-    public function entityAccountTypeById( $Id )
-    {
-
-        return parent::entityAccountTypeById( $Id );
-    }
-
-    /**
      * @param string $Name
      *
      * @return bool|TblAccountType
@@ -482,17 +471,6 @@ class Account extends EntityAction
     {
 
         return parent::entityAccountTypeByName( $Name );
-    }
-
-    /**
-     * @param integer $Id
-     *
-     * @return bool|TblAccountRole
-     */
-    public function entityAccountRoleById( $Id )
-    {
-
-        return parent::entityAccountRoleById( $Id );
     }
 
     /**
@@ -536,7 +514,7 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractType $View
+     * @param AbstractType   $View
      * @param string         $Username
      * @param string         $Password
      * @param string         $PasswordSafety
@@ -625,6 +603,95 @@ class Account extends EntityAction
     {
 
         return parent::entityAccountByUsername( $Name );
+    }
+
+    /**
+     * @param AbstractType $View
+     * @param TblAccount   $tblAccount
+     * @param null|array   $Account
+     *
+     * @return AbstractType|Redirect
+     */
+    public function executeChangeAccount(
+        AbstractType &$View,
+        TblAccount $tblAccount,
+        $Account
+    ) {
+
+        if (null === $Account) {
+            return $View;
+        }
+
+        $Password = trim( $Account['Password'] );
+        $PasswordSafety = trim( $Account['PasswordSafety'] );
+
+        $Error = false;
+
+        if (!empty( $Password ) && !empty( $PasswordSafety )) {
+            if (strlen( $Password ) >= 8) {
+                $View->setSuccess( 'Account[Password]', '' );
+            } else {
+                $View->setError( 'Account[Password]', 'Das Passwort muss mindestens 8 Zeichen lang sein' );
+                $Error = true;
+            }
+            if (!empty( $Password ) && empty( $PasswordSafety )) {
+                $View->setError( 'Account[PasswordSafety]', 'Bitte geben Sie ein Passwort an' );
+                $Error = true;
+            }
+            if ($Password != $PasswordSafety) {
+                $View->setError( 'Account[Password]', '' );
+                $View->setError( 'Account[PasswordSafety]', 'Die beiden Passworte stimmen nicht überein' );
+                $Error = true;
+            } else {
+                if (!empty( $Password ) && !empty( $PasswordSafety )) {
+                    $View->setSuccess( 'Account[PasswordSafety]', '' );
+                } else {
+                    $View->setError( 'Account[PasswordSafety]', '' );
+                }
+            }
+        }
+        $tblAccountType = Gatekeeper::serviceAccount()->entityAccountTypeById( $Account['Type'] );
+        $tblAccountRole = Gatekeeper::serviceAccount()->entityAccountRoleById( $Account['Role'] );
+        if ($Account['Token']) {
+            $tblToken = Gatekeeper::serviceToken()->entityTokenById( $Account['Token'] );
+        } else {
+            $tblToken = null;
+        }
+
+        if (!$Error) {
+            if (!empty( $Password )) {
+                parent::actionChangePassword( $Password, $tblAccount );
+            }
+            parent::actionChangeToken( $tblToken, $tblAccount );
+            parent::actionChangeAccountRole( $tblAccountRole, $tblAccount );
+            parent::actionChangeAccountType( $tblAccountType, $tblAccount );
+
+            return new Redirect( '/Sphere/Management/Account', 0 );
+        }
+
+        return $View;
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccountType
+     */
+    public function entityAccountTypeById( $Id )
+    {
+
+        return parent::entityAccountTypeById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccountRole
+     */
+    public function entityAccountRoleById( $Id )
+    {
+
+        return parent::entityAccountRoleById( $Id );
     }
 
     /**

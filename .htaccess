@@ -4,9 +4,9 @@
 
 # Set Security Option
 
-	# ASAP 7 - Disable Directory-Listing
+	# Disable Directory-Listing
 	Options -Indexes
-	# ASAP 8 - Implement Option HttpOnly/Secure for Cookies (Secure works only if page is under httpS) !
+	# Implement Option HttpOnly/Secure for Cookies (Secure works only if page is under httpS) !
 	Header edit Set-Cookie ^(.*)$ $1;HttpOnly
 	# "Pragma: " is deprecated, use "Cache-Control: "
 	Header unset Pragma
@@ -25,31 +25,34 @@
 	<Files 'Client'>
 		ForceType application/x-httpd-php
 	</Files>
-#	<Files *.php>
-#		Order Deny,Allow
-#		Deny from All
-#	</Files>
-#	<FilesMatch "^(Client|index.php)$">
-#		Allow from All
-#	</FilesMatch>
+	<Files *.php>
+		Order Deny,Allow
+		Deny from All
+	</Files>
+	<FilesMatch "^(Client|index.php)$">
+		Allow from All
+	</FilesMatch>
+
+# Rewrite settings
 
 	RewriteEngine On
-	#Force WWW:
-	#RewriteCond %{HTTP_HOST} !^www\.kreda-professional\.de [NC]
-	#RewriteRule ^(.*)$ http://www.kreda-professional.de/$1 [R=301,L]
 
-	#Force SSL:
+	# Force WWW:
+	#RewriteCond %{HTTP_HOST} !^www\.domain\.de [NC]
+	#RewriteRule ^(.*)$ http://www.domain.de/$1 [R=301,L]
+
+	# Force SSL:
 	#RewriteCond %{SERVER_PORT} 80
-	#RewriteRule ^(.*)$ https://www.kreda-professional.de/$1 [R=301,L]
+	#RewriteRule ^(.*)$ https://www.domain.de/$1 [R=301,L]
 
-# Platform Root
-#	RewriteCond %{REQUEST_URI} !^/Client
-#	RewriteCond %{REQUEST_URI} !^/Library
-#	RewriteCond %{REQUEST_URI} !^/Sphere/Client/Style
-#	RewriteCond %{REQUEST_URI} !^/Sphere/Client/Script
-#	RewriteCond %{REQUEST_URI} !^/TestSuite/Console
-#	RewriteRule ^(.*)$ /Client/$1 [L,R=302]
+	# Platform Root:
+	RewriteCond %{REQUEST_URI} ^/$
+	RewriteRule ^(.*)$ /Client/ [R=301,L]
 
+	RewriteCond %{REQUEST_URI} !^/Client/
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ /Client/$1 [R=302,L]
 
 # Cache settings
 

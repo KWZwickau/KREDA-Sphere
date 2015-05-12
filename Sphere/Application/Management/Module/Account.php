@@ -6,17 +6,18 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountType;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
+use KREDA\Sphere\Application\Management\Frontend\Account as Frontend;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Element\Repository\Content\Wire;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonKeyIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RepeatIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
@@ -24,12 +25,10 @@ use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
-use KREDA\Sphere\Client\Frontend\Input\Type\HiddenField;
 use KREDA\Sphere\Client\Frontend\Input\Type\PasswordField;
 use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
-use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutRight;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
@@ -57,37 +56,56 @@ class Account extends Token
         if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Account' )) {
             self::registerClientRoute( self::$Configuration,
                 '/Sphere/Management/Account', __CLASS__.'::frontendAccount'
-            )->setParameterDefault( 'Account', null )->setParameterDefault( 'Id', null );
+            )
+                ->setParameterDefault( 'Account', null )
+                ->setParameterDefault( 'Id', null );
+
             self::registerClientRoute( self::$Configuration,
                 '/Sphere/Management/Account/Edit', __CLASS__.'::frontendAccountEdit'
-            )->setParameterDefault( 'Id', null );
+            )
+                ->setParameterDefault( 'Id', null )
+                ->setParameterDefault( 'Account', null );
+
+            self::registerClientRoute( self::$Configuration,
+                '/Sphere/Management/Account/Destroy', __CLASS__.'::frontendAccountDestroy'
+            )
+                ->setParameterDefault( 'Id', null )
+                ->setParameterDefault( 'Confirm', false );
         }
     }
 
     /**
-     * @param int $Id
+     * @param int        $Id
+     * @param null|array $Account
      *
      * @return Stage
      */
-    public static function frontendAccountEdit( $Id )
+    public static function frontendAccountEdit( $Id, $Account )
     {
 
         self::setupModuleNavigation();
-        $View = new Stage();
-        $View->setTitle( 'Benutzerkonten' );
-        $View->setDescription( 'Bearbeiten' );
+        return Frontend::stageEdit( $Id, $Account );
+    }
 
-        return $View;
+    /**
+     * @param int  $Id
+     * @param bool $Confirm
+     *
+     * @return Stage
+     */
+    public static function frontendAccountDestroy( $Id, $Confirm )
+    {
+
+        self::setupModuleNavigation();
+        return Frontend::stageDestroy( $Id, $Confirm );
     }
 
     /**
      * @param null|array $Account
-     * @param null|int   $Id
-     * @param bool       $Remove
      *
      * @return Stage
      */
-    public static function frontendAccount( $Account, $Id = null, $Remove = false )
+    public static function frontendAccount( $Account )
     {
 
         self::setupModuleNavigation();
@@ -147,17 +165,6 @@ class Account extends Token
                 Gatekeeper::serviceAccount()->entityAccountRoleById( $Account['Role'] ),
                 $tblConsumer
             );
-        }
-        /**
-         * Action Destroy
-         */
-        if (null !== $Id && $Remove) {
-            $tblAccount = Gatekeeper::serviceAccount()->entityAccountById( $Id );
-            if ($tblAccount && $tblAccount->getServiceGatekeeperConsumer() && $tblAccount->getServiceGatekeeperConsumer()->getId() == $tblConsumer->getId()) {
-                if (true !== ( $Wire = Gatekeeper::serviceAccount()->executeDestroyAccount( $tblAccount ) )) {
-                    return new Wire( $Wire );
-                }
-            }
         }
 
         $tblAccountList = self::getAccountList( $tblConsumer );
@@ -301,24 +308,12 @@ class Account extends Token
                     );
                 }
 
-                $Id = new HiddenField( 'Id' );
-                $Id->setDefaultValue( $A->getId(), true );
-                $Remove = new HiddenField( 'Remove' );
-                $Remove->setDefaultValue( 1, true );
-
-                $FormDestroy = new Form(
-                    new FormGroup(
-                        new FormRow(
-                            new FormColumn( array( $Id, $Remove, new SubmitDanger( 'Löschen' ) ) )
-                        )
+                $A->Option = new Primary(
+                        'Bearbeiten', '/Sphere/Management/Account/Edit', new EditIcon(), array( 'Id' => $A->getId() )
                     )
-                );
-
-                $FormEdit = new Primary( 'Bearbeiten', '/Sphere/Management/Account/Edit', null, array(
-                    'Id' => $A->getId()
-                ) );
-                $FormDestroy->setConfirm( 'Wollen Sie den Benutzer '.$A->getUsername().' wirklich löschen?' );
-                $A->Option = new LayoutRight( $FormDestroy.$FormEdit );
+                    .new \KREDA\Sphere\Client\Frontend\Button\Link\Danger(
+                        'Löschen', '/Sphere/Management/Account/Destroy', new RemoveIcon(), array( 'Id' => $A->getId() )
+                    );
             }
         } );
         return array_filter( $tblAccountList );

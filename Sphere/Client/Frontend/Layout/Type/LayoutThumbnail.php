@@ -42,6 +42,11 @@ class LayoutThumbnail extends AbstractType
 
         $this->Template = $this->extensionTemplate( __DIR__.'/LayoutThumbnail.twig' );
         $this->Template->setVariable( 'File', $File->getLocation() );
+
+        $Size = getimagesize( $File->getRealPath() );
+
+        $this->Template->setVariable( 'Height', $Size[1] );
+
         $this->Template->setVariable( 'Type', $Type );
         $this->Template->setVariable( 'Title', $Title );
         $this->Template->setVariable( 'Description', $Description );

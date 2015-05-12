@@ -1,14 +1,14 @@
 <?php
-namespace KREDA\Sphere\Client\Frontend\Layout\Type;
+namespace KREDA\Sphere\Client\Frontend\Layout\Structure;
 
 use KREDA\Sphere\Client\Frontend\Layout\AbstractType;
 
 /**
- * Class LayoutRight
+ * Class LayoutContainer
  *
- * @package KREDA\Sphere\Client\Frontend\Layout\Type
+ * @package KREDA\Sphere\Client\Frontend\Layout\Structure
  */
-class LayoutRight extends AbstractType
+class LayoutContainer extends AbstractType
 {
 
     /** @var string $Content */
@@ -29,6 +29,6 @@ class LayoutRight extends AbstractType
     function __toString()
     {
 
-        return '<div class="clearfix"><div class="pull-right">'.$this->Content.'</div></div>';
+        return '<div>'.$this->Content.'</div>';
     }
 }
