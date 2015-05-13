@@ -124,4 +124,17 @@ class Student extends EntityAction
         return parent::actionChangeTransferToDate( $tblStudent, $Date );
     }
 
+    /**
+     * @param TblStudent $tblStudent
+     * @param TblPerson  $tblPerson
+     *
+     * @return bool
+     */
+    public function actionChangePerson(
+        TblStudent $tblStudent,
+        TblPerson $tblPerson
+    ) {
+
+        return parent::actionChangePerson( $tblStudent, $tblPerson );
+    }
 }

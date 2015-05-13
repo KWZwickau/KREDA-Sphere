@@ -61,6 +61,7 @@ class Person extends EntityAction
         $this->actionCreateType( 'Interessent' );
         $this->actionCreateType( 'Schüler' );
         $this->actionCreateType( 'Sorgeberechtigter' );
+        $this->actionCreateType( 'Lehrer' );
         /**
          * Relationship Type
          */
@@ -307,7 +308,6 @@ class Person extends EntityAction
      * @param array $PersonName
      * @param array $BirthDetail
      * @param array $PersonInformation
-     * @param array $Button
      *
      * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
      */
@@ -315,8 +315,7 @@ class Person extends EntityAction
         AbstractType &$View = null,
         $PersonName,
         $PersonInformation,
-        $BirthDetail,
-        $Button
+        $BirthDetail
     ) {
 
         /**
@@ -325,7 +324,6 @@ class Person extends EntityAction
         if (null === $PersonName
             && null === $BirthDetail
             && null === $PersonInformation
-            && null === $Button
         ) {
             return $View;
         }
@@ -390,15 +388,8 @@ class Person extends EntityAction
                 $BirthDetail['Date'], $BirthDetail['Place'], $PersonInformation['Nationality'], $tblPersonSalutation,
                 $tblPersonGender, $tblPersonType, $PersonInformation['Remark'], $PersonInformation['Denomination']
             );
-            if ($Button['Submit'] == 'Anlegen') {
-                return new Success( 'Die Person wurde erfolgreich angelegt' )
-                .new Redirect( '/Sphere/Management/Person/Create', 2 );
-            } else {
-                return new Success( 'Der Person wurde erfolgreich angelegt' )
-                .new Redirect( '/Sphere/Management/Person/Edit', 2, array( 'Id' => $Entity->getId() ) );
-            }
-        } else {
-
+            return new Success( 'Die Person wurde erfolgreich angelegt' )
+            .new Redirect( '/Sphere/Management/Person/Edit', 2, array( 'Id' => $Entity->getId() ) );
         }
         return $View;
     }

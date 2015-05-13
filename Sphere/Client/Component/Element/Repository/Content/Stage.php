@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Client\Component\Element\Repository\Content;
 use KREDA\Sphere\Client\Component\Element\Repository\AbstractContent;
 use KREDA\Sphere\Client\Component\IElementInterface;
 use KREDA\Sphere\Client\Frontend\Button\AbstractType;
+use KREDA\Sphere\Client\Frontend\Text\Type\Muted;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 use MOC\V\Component\Template\Exception\TemplateTypeException;
 
@@ -98,7 +99,7 @@ class Stage extends AbstractContent implements IElementInterface
     public function setMessage( $Message )
     {
 
-        $this->Message = $Message;
+        $this->Message = new Muted( $Message );
         return $this;
     }
 

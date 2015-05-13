@@ -32,6 +32,13 @@ h4 {
     margin-top: 30px;
 }
 
+h5 {
+    border-bottom: 1px dotted silver;
+    padding: 2px;
+    margin: 5px 1px 10px;
+    font-size: inherit;
+}
+
 h4:before {
     font-family: "Glyphicons Regular", serif;
     font-size: 15px;
@@ -40,10 +47,12 @@ h4:before {
     padding-right: 6px;
 }
 
-h5 {
-    padding: 1px;
-    margin: 1px;
-    font-size: inherit;
+h5:before {
+    font-family: "Glyphicons Regular", serif;
+    font-size: 11px;
+    color: #efc34e;
+    content: "\e066";
+    padding-right: 6px;
 }
 
 label {
