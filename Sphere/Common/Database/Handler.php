@@ -5,6 +5,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Common\Database\Connection\Connector;
 use KREDA\Sphere\Common\Database\Connection\Identifier;
 use KREDA\Sphere\Common\Database\Schema\EntityManager;
@@ -198,6 +199,18 @@ class Handler
     {
 
         return $this->Model->hasColumn( $TableName, $ColumnName );
+    }
+
+    /**
+     * @param Table $Table
+     * @param array $ColumnList
+     *
+     * @return bool
+     */
+    final public function hasIndex( Table $Table, $ColumnList )
+    {
+
+        return $this->Model->hasIndex( $Table, $ColumnList );
     }
 
     /**

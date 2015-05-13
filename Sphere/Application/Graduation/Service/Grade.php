@@ -1,9 +1,10 @@
 <?php
 namespace KREDA\Sphere\Application\Graduation\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Graduation\Service\Grade\Entity\TblGradeType;
 use KREDA\Sphere\Application\Graduation\Service\Grade\EntityAction;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 
 /**
@@ -18,12 +19,12 @@ class Grade extends EntityAction
     protected static $DatabaseHandler = null;
 
     /**
-     * @param TblConsumer $tblConsumer
+     *
      */
-    function __construct( TblConsumer $tblConsumer = null )
+    final public function __construct()
     {
 
-        $this->setDatabaseHandler( 'Graduation', 'Grade', $this->getConsumerSuffix( $tblConsumer ) );
+        $this->setDatabaseHandler( 'Graduation', 'Grade', $this->getConsumerSuffix() );
     }
 
     public function setupDatabaseContent()
@@ -31,6 +32,15 @@ class Grade extends EntityAction
 
         $this->actionCreateGradeType( 'LK', 'Leistungskontrolle' );
         $this->actionCreateGradeType( 'KA', 'Klassenarbeit' );
+    }
+
+    /**
+     * @return bool|TblGradeType[]
+     */
+    public function entityGradeTypeAll()
+    {
+
+        return parent::entityGradeTypeAll();
     }
 
     /**
@@ -53,5 +63,51 @@ class Grade extends EntityAction
     {
 
         return parent::entityGradeTypeByAcronym( $Acronym );
+    }
+
+    public function executeChangeGradeTypeActiveState( $Id )
+    {
+
+        echo "Test".$Id;
+        // $this->actionGradeTypeChangeState( $Id );
+    }
+
+    /**
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
+     *
+     * @param null|string  $Acronym
+     * @param null|string  $Name
+     *
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
+     */
+    public function executeCreateGradeType(
+
+        AbstractType &$View = null,
+        $Acronym,
+        $Name
+    ) {
+
+        if (null !== $Acronym && empty( $Acronym )) {
+            $View->setError( 'Acronym', 'Bitte geben Sie ein Kürzel ein' );
+        }
+        if (null !== $Name && empty( $Name )) {
+            $View->setError( 'Name', 'Bitte geben Sie einen Namen ein' );
+        }
+
+        if (!empty( $Acronym ) && !empty( $Name )) {
+
+            $Manager = $this->getEntityManager();
+            $Entity = $Manager->getEntity( 'TblGradeType' )
+                ->findOneBy( array( TblGradeType::ATTR_ACRONYM => $Acronym ) );
+            if (null === $Entity) {
+                $this->actionCreateGradeType( $Acronym, $Name );
+                $View->setSuccess( 'Acronym', 'Zensurentyp wurde angelegt' );
+                $View->setSuccess( 'Acronym', new Redirect( '/Sphere/Graduation/Grade/Type', 5 ) );
+            } else {
+                $View->setError( 'Acronym', 'Zensurentyp existiert bereits' );
+            }
+
+        }
+        return $View;
     }
 }

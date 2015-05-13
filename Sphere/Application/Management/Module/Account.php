@@ -6,31 +6,33 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountRole;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccountType;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
+use KREDA\Sphere\Application\Management\Frontend\Account as Frontend;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Element\Repository\Content\Wire;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\LockIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonKeyIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RepeatIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputSelect;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\PasswordField;
+use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 
 /**
  * Class Account
@@ -51,38 +53,59 @@ class Account extends Token
 
         self::$Configuration = $Configuration;
 
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Account', __CLASS__.'::frontendAccount'
-        )->setParameterDefault( 'Account', null )->setParameterDefault( 'Id', null );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Account/Edit', __CLASS__.'::frontendAccountEdit'
-        )->setParameterDefault( 'Id', null );
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Account' )) {
+            self::registerClientRoute( self::$Configuration,
+                '/Sphere/Management/Account', __CLASS__.'::frontendAccount'
+            )
+                ->setParameterDefault( 'Account', null )
+                ->setParameterDefault( 'Id', null );
+
+            self::registerClientRoute( self::$Configuration,
+                '/Sphere/Management/Account/Edit', __CLASS__.'::frontendAccountEdit'
+            )
+                ->setParameterDefault( 'Id', null )
+                ->setParameterDefault( 'Account', null );
+
+            self::registerClientRoute( self::$Configuration,
+                '/Sphere/Management/Account/Destroy', __CLASS__.'::frontendAccountDestroy'
+            )
+                ->setParameterDefault( 'Id', null )
+                ->setParameterDefault( 'Confirm', false );
+        }
     }
 
     /**
-     * @param int $Id
+     * @param int        $Id
+     * @param null|array $Account
      *
      * @return Stage
      */
-    public static function frontendAccountEdit( $Id )
+    public static function frontendAccountEdit( $Id, $Account )
     {
 
         self::setupModuleNavigation();
-        $View = new Stage();
-        $View->setTitle( 'Benutzerkonten' );
-        $View->setDescription( 'Bearbeiten' );
+        return Frontend::stageEdit( $Id, $Account );
+    }
 
-        return $View;
+    /**
+     * @param int  $Id
+     * @param bool $Confirm
+     *
+     * @return Stage
+     */
+    public static function frontendAccountDestroy( $Id, $Confirm )
+    {
+
+        self::setupModuleNavigation();
+        return Frontend::stageDestroy( $Id, $Confirm );
     }
 
     /**
      * @param null|array $Account
-     * @param null|int   $Id
-     * @param bool       $Remove
      *
      * @return Stage
      */
-    public static function frontendAccount( $Account, $Id = null, $Remove = false )
+    public static function frontendAccount( $Account )
     {
 
         self::setupModuleNavigation();
@@ -97,40 +120,40 @@ class Account extends Token
         /**
          * Form Create
          */
-        $AccountName = new InputText( 'Account[Name]', 'Benutzername', 'Benutzername', new PersonIcon() );
+        $AccountName = new TextField( 'Account[Name]', 'Benutzername', 'Benutzername', new PersonIcon() );
         $AccountName->setPrefixValue( $tblConsumer->getDatabaseSuffix() );
-        $Form = new FormDefault(
-            new GridFormGroup( array(
-                new GridFormRow( array(
-                    new GridFormCol(
+        $Form = new Form(
+            new FormGroup( array(
+                new FormRow( array(
+                    new FormColumn(
                         $AccountName, 4
                     ),
-                    new GridFormCol(
-                        new InputPassword( 'Account[Password]', 'Passwort', 'Passwort',
+                    new FormColumn(
+                        new PasswordField( 'Account[Password]', 'Passwort', 'Passwort',
                             new LockIcon()
                         ), 4
                     ),
-                    new GridFormCol(
-                        new InputPassword( 'Account[PasswordSafety]', 'Passwort wiederholen',
+                    new FormColumn(
+                        new PasswordField( 'Account[PasswordSafety]', 'Passwort wiederholen',
                             'Passwort wiederholen',
                             new RepeatIcon()
                         ), 4
                     )
                 ) ),
-                new GridFormRow( array(
-                    new GridFormCol(
-                        new InputSelect( 'Account[Type]', 'Authentifizierungstyp', $tblAccountTypeSelect,
+                new FormRow( array(
+                    new FormColumn(
+                        new SelectBox( 'Account[Type]', 'Authentifizierungstyp', $tblAccountTypeSelect,
                             new PersonKeyIcon()
                         ), 6
                     ),
-                    new GridFormCol(
-                        new InputSelect( 'Account[Role]', 'Berechtigungsstufe', $tblAccountRoleSelect,
+                    new FormColumn(
+                        new SelectBox( 'Account[Role]', 'Berechtigungsstufe', $tblAccountRoleSelect,
                             new PersonKeyIcon()
                         ), 6
                     )
                 ) ),
-            ), new GridFormTitle( 'Benutzer hinzufügen', 'Account' ) )
-            , new ButtonSubmitPrimary( 'Hinzufügen' )
+            ), new FormTitle( 'Benutzer hinzufügen', 'Account' ) )
+            , new SubmitPrimary( 'Hinzufügen' )
         );
         /**
          * Action Create
@@ -143,24 +166,13 @@ class Account extends Token
                 $tblConsumer
             );
         }
-        /**
-         * Action Destroy
-         */
-        if (null !== $Id && $Remove) {
-            $tblAccount = Gatekeeper::serviceAccount()->entityAccountById( $Id );
-            if ($tblAccount && $tblAccount->getServiceGatekeeperConsumer() && $tblAccount->getServiceGatekeeperConsumer()->getId() == $tblConsumer->getId()) {
-                if (true !== ( $Wire = Gatekeeper::serviceAccount()->executeDestroyAccount( $tblAccount ) )) {
-                    return new Wire( $Wire );
-                }
-            }
-        }
 
         $tblAccountList = self::getAccountList( $tblConsumer );
         $View->setContent(
-            new GridLayoutTitle( 'Bestehende Benutzerkonten', 'Accounts' )
+            new LayoutTitle( 'Bestehende Benutzerkonten', 'Accounts' )
             .
             ( empty( $tblAccountList )
-                ? new MessageWarning( 'Keine Benutzer verfügbar' )
+                ? new Warning( 'Keine Benutzer verfügbar' )
                 : new TableData( $tblAccountList, null, array(
                     'Username' => 'Benutzername',
                     'AccountType' => 'Authentifizierungstyp',
@@ -278,42 +290,30 @@ class Account extends Token
                 $A->AccountRole = $tblAccountRole->getName();
                 $tblPerson = $A->getServiceManagementPerson();
                 if (empty( $tblPerson )) {
-                    $A->Person = new MessageWarning( 'Keine Daten verfügbar', new QuestionIcon() );
+                    $A->Person = new Warning( 'Keine Daten verfügbar', new QuestionIcon() );
                 } else {
                     $A->Person = $tblPerson->getFullName();
                 }
                 $tblToken = $A->getServiceGatekeeperToken();
                 if (empty( $tblToken )) {
                     if ($A->getTblAccountType()->getId() == Gatekeeper::serviceAccount()->entityAccountTypeByName( 'Schüler' )->getId()) {
-                        $A->Token = new MessageSuccess( 'Keine Daten verfügbar', new LockIcon() );
+                        $A->Token = new Success( 'Keine Daten verfügbar', new LockIcon() );
                     } else {
-                        $A->Token = new MessageDanger( 'Keine Daten verfügbar', new WarningIcon() );
+                        $A->Token = new Danger( 'Keine Daten verfügbar', new WarningIcon() );
                     }
                 } else {
-                    $A->Token = $tblToken->getSerial();
+                    $A->Token = new Success(
+                        implode( ' ', str_split( str_pad( $tblToken->getSerial(), 8, '0', STR_PAD_LEFT ), 4 ) ),
+                        new OkIcon()
+                    );
                 }
 
-                $Id = new InputHidden( 'Id' );
-                $Id->setDefaultValue( $A->getId(), true );
-                $Remove = new InputHidden( 'Remove' );
-                $Remove->setDefaultValue( 1, true );
-
-                $FormDestroy = new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow(
-                            new GridFormCol( array( $Id, $Remove, new ButtonSubmitDanger( 'Löschen' ) ) )
-                        )
+                $A->Option = new Primary(
+                        'Bearbeiten', '/Sphere/Management/Account/Edit', new EditIcon(), array( 'Id' => $A->getId() )
                     )
-                );
-                $FormEdit = new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow(
-                            new GridFormCol( array( $Id, new ButtonSubmitPrimary( 'Bearbeiten' ) ) )
-                        )
-                    ), null, self::getUrlBase().'/Sphere/Management/Account/Edit'
-                );
-                $FormDestroy->setConfirm( 'Wollen Sie den Benutzer '.$A->getUsername().' wirklich löschen?' );
-                $A->Option = '<div class="pull-right">'.$FormDestroy.'</div>'.'<div class="pull-right">'.$FormEdit.'</div>';
+                    .new \KREDA\Sphere\Client\Frontend\Button\Link\Danger(
+                        'Löschen', '/Sphere/Management/Account/Destroy', new RemoveIcon(), array( 'Id' => $A->getId() )
+                    );
             }
         } );
         return array_filter( $tblAccountList );

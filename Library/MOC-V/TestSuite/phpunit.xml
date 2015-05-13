@@ -14,6 +14,7 @@
             <directory suffix=".php">./Tests/Component/Database</directory>
             <directory suffix=".php">./Tests/Component/Document</directory>
             <directory suffix=".php">./Tests/Component/Documentation</directory>
+            <directory suffix=".php">./Tests/Component/Mail</directory>
         </testsuite>
     </testsuites>
     <filter>
@@ -33,11 +34,13 @@
                 <directory>./../Component/Documentation/Vendor/Template</directory>
                 <directory>./../Component/Document/Vendor/PhpExcel</directory>
                 <directory>./../Component/Document/Vendor/DomPdf</directory>
+                <directory>./../Component/Document/Vendor/mPdf</directory>
+                <directory>./../Component/Mail/Vendor/EdenPhpMail</directory>
             </exclude>
         </whitelist>
     </filter>
     <logging>
         <log type="coverage-clover" target="./Report/Coverage.xml"/>
-        <log type="coverage-html" target="./Report/Coverage.html"/>
+        <!--<log type="coverage-html" target="./Report/Coverage.html"/>-->
     </logging>
 </phpunit>

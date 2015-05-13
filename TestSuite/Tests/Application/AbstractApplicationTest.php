@@ -25,7 +25,7 @@ abstract class AbstractApplicationTest extends \PHPUnit_Framework_TestCase imple
     {
 
         $Name = 'registerApplication';
-        $Prefix = 'registerApplication|setup|frontend|service|extension|observer(Destroy)|listener(Destroy)';
+        $Prefix = 'registerApplication|setup|frontend|service|extension|observer(Destroy)|listener(Destroy)|rest';
         $this->checkNamePattern( 'KREDA\Sphere\Application'.$Application, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
             \ReflectionMethod::IS_PUBLIC );
     }

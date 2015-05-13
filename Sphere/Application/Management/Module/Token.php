@@ -7,25 +7,27 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitDanger;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputHidden;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Layout\Structure\GridLayoutTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitDanger;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\HiddenField;
+use KREDA\Sphere\Client\Frontend\Input\Type\PasswordField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutRight;
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 
 /**
  * Class Token
  *
  * @package KREDA\Sphere\Application\Management\Module
  */
-class Token extends Common
+class Token extends Period
 {
 
     /** @var Configuration $Config */
@@ -39,11 +41,13 @@ class Token extends Common
 
         self::$Configuration = $Configuration;
 
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Token', __CLASS__.'::frontendToken'
-        )
-            ->setParameterDefault( 'CredentialKey', null )
-            ->setParameterDefault( 'Id', null );
+        if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Token' )) {
+            self::registerClientRoute( self::$Configuration,
+                '/Sphere/Management/Token', __CLASS__.'::frontendToken'
+            )
+                ->setParameterDefault( 'CredentialKey', null )
+                ->setParameterDefault( 'Id', null );
+        }
     }
 
     /**
@@ -81,17 +85,18 @@ class Token extends Common
 
             $tblAccountList = Gatekeeper::serviceAccount()->entityAccountAllByToken( $T );
             if (empty( $tblAccountList )) {
-                $Id = new InputHidden( 'Id' );
+                $Id = new HiddenField( 'Id' );
                 $Id->setDefaultValue( $T->getId(), true );
+                /** @noinspection PhpUndefinedFieldInspection */
                 $T->AccountList =
-                    new MessageInfo( 'Keine Daten verfügbar' )
-                    .'<div class="pull-right">'.new FormDefault(
-                        new GridFormGroup(
-                            new GridFormRow(
-                                new GridFormCol( array( $Id, new ButtonSubmitDanger( 'Schlüssel löschen' ) ) )
+                    new Info( 'Keine Daten verfügbar' )
+                    .new LayoutRight( new Form(
+                        new FormGroup(
+                            new FormRow(
+                                new FormColumn( array( $Id, new SubmitDanger( 'Schlüssel löschen' ) ) )
                             )
                         )
-                    ).'</div>';
+                    ) );
             } else {
                 array_walk( $tblAccountList, function ( TblAccount &$A ) {
 
@@ -100,18 +105,19 @@ class Token extends Common
                     $A = array(
                         'Konto'  => $A->getUsername(),
                         'Person' =>
-                            ( empty( $tblPerson ) ? new MessageWarning( 'Keine Daten verfügbar' ) : $tblPerson->getFullName() )
+                            ( empty( $tblPerson ) ? new Warning( 'Keine Daten verfügbar' ) : $tblPerson->getFullName() )
                     );
                 } );
+                /** @noinspection PhpUndefinedFieldInspection */
                 $T->AccountList = new TableData( $tblAccountList, null, array(), false );
             }
         } );
 
         $View->setContent(
-            new GridLayoutTitle( 'Bestehende Schlüssel', 'YubiKey' )
+            new LayoutTitle( 'Bestehende Schlüssel', 'YubiKey' )
             .
             ( empty( $tblTokenList )
-                ? new MessageWarning( 'Keine Schlüssel verfügbar' )
+                ? new Warning( 'Keine Schlüssel verfügbar' )
                 : new TableData( $tblTokenList, null, array(
                     'Id'          => 'Schlüssel-Id',
                     'Serial'      => 'Serien-Nummer',
@@ -121,14 +127,14 @@ class Token extends Common
             )
             .
             Gatekeeper::serviceToken()->executeCreateToken(
-                new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow(
-                            new GridFormCol(
-                                new InputPassword( 'CredentialKey', 'YubiKey', 'YubiKey', new YubiKeyIcon() )
+                new Form(
+                    new FormGroup(
+                        new FormRow(
+                            new FormColumn(
+                                new PasswordField( 'CredentialKey', 'YubiKey', 'YubiKey', new YubiKeyIcon() )
                             )
-                        ), new GridFormTitle( 'Schlüssel hinzufügen', 'YubiKey' ) )
-                ), $CredentialKey, $tblConsumer
+                        ), new FormTitle( 'Schlüssel hinzufügen', 'YubiKey' ) )
+                    , new SubmitPrimary( 'YubiKey registrieren' ) ), $CredentialKey, $tblConsumer
             )
         );
 

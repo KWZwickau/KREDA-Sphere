@@ -2,8 +2,8 @@
 namespace KREDA\Sphere\Common;
 
 use KREDA\Sphere\Client\Component\Element\Repository\AbstractContent;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Redirect;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use MOC\V\Component\Template\Component\IBridgeInterface;
 
 /**
@@ -21,7 +21,7 @@ abstract class AbstractFrontend extends AbstractContent
      * @param string $Route
      * @param int    $Timeout
      *
-     * @return Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Redirect
      */
     final protected static function getRedirect( $Route, $Timeout = 15 )
     {
@@ -39,21 +39,42 @@ abstract class AbstractFrontend extends AbstractContent
 
         if (preg_match( '!^(.*?)\[(.*?)\]$!is', $RequestKey, $Match )) {
             if (false === strpos( $Match[2], '[' )) {
-                if (isset( $_POST[$Match[1]][$Match[2]] )) {
-                    $Template->setVariable( $VariableName, htmlentities( $_POST[$Match[1]][$Match[2]], ENT_QUOTES ) );
-                } elseif (isset( $_GET[$Match[1]][$Match[2]] )) {
-                    $Template->setVariable( $VariableName, htmlentities( $_GET[$Match[1]][$Match[2]], ENT_QUOTES ) );
+                if (isset( self::extensionSuperGlobal()->POST[$Match[1]][$Match[2]] )) {
+                    $Template->setVariable( $VariableName,
+                        htmlentities( self::extensionSuperGlobal()->POST[$Match[1]][$Match[2]], ENT_QUOTES ) );
+                } elseif (isset( self::extensionSuperGlobal()->GET[$Match[1]][$Match[2]] )) {
+                    $Template->setVariable( $VariableName,
+                        htmlentities( self::extensionSuperGlobal()->GET[$Match[1]][$Match[2]], ENT_QUOTES ) );
                 }
             } else {
                 /**
                  * Next dimension
                  */
+                if (preg_match( '!\]\[!is', $Match[2] ) == 1) {
+                    $Key = explode( '][', $Match[2] );
+                    if (isset( self::extensionSuperGlobal()->POST[$Match[1]][$Key[0]][$Key[1]] )) {
+                        $Template->setVariable( $VariableName,
+                            htmlentities( self::extensionSuperGlobal()->POST[$Match[1]][$Key[0]][$Key[1]],
+                                ENT_QUOTES ) );
+                    } elseif (isset( self::extensionSuperGlobal()->GET[$Match[1]][$Key[0]][$Key[1]] )) {
+                        $Template->setVariable( $VariableName,
+                            htmlentities( self::extensionSuperGlobal()->GET[$Match[1]][$Key[0]][$Key[1]],
+                                ENT_QUOTES ) );
+                    }
+
+                } else {
+                    /**
+                     * Next dimension
+                     */
+                }
             }
         } else {
-            if (isset( $_POST[$RequestKey] )) {
-                $Template->setVariable( $VariableName, htmlentities( $_POST[$RequestKey], ENT_QUOTES ) );
-            } elseif (isset( $_GET[$RequestKey] )) {
-                $Template->setVariable( $VariableName, htmlentities( $_GET[$RequestKey], ENT_QUOTES ) );
+            if (isset( self::extensionSuperGlobal()->POST[$RequestKey] )) {
+                $Template->setVariable( $VariableName,
+                    htmlentities( self::extensionSuperGlobal()->POST[$RequestKey], ENT_QUOTES ) );
+            } elseif (isset( self::extensionSuperGlobal()->GET[$RequestKey] )) {
+                $Template->setVariable( $VariableName,
+                    htmlentities( self::extensionSuperGlobal()->GET[$RequestKey], ENT_QUOTES ) );
             }
         }
     }
@@ -73,7 +94,7 @@ abstract class AbstractFrontend extends AbstractContent
     public function getContent()
     {
 
-        $Error = new MessageDanger( __METHOD__.' MUST NOT create content.' );
+        $Error = new Danger( __METHOD__.' MUST NOT create content.' );
         return $Error->getContent();
     }
 

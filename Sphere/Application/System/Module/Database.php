@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\System\Frontend\Database as Frontend;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
 use KREDA\Sphere\Client\Configuration;
 
 /**
@@ -26,14 +27,17 @@ class Database extends Cache
 
         self::$Configuration = $Configuration;
         self::registerClientRoute( self::$Configuration,
+            '/Sphere/System/Database', __CLASS__.'::frontendStatus'
+        )->setParameterDefault( 'Clear', null );
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Database/Status', __CLASS__.'::frontendStatus'
         )->setParameterDefault( 'Clear', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/System/Database/Check', __CLASS__.'::frontendCheck'
-        )->setParameterDefault( 'Simulation', true );
+        );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/System/Database/Repair', __CLASS__.'::frontendCheck'
-        )->setParameterDefault( 'Simulation', false );
+            '/Sphere/System/Database/Repair', __CLASS__.'::frontendRepair'
+        );
     }
 
     /**
@@ -56,6 +60,9 @@ class Database extends Cache
     {
 
         self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/System/Database/Status', 'Status', new QuestionIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/System/Database/Check', 'Prüfung', new CogIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
@@ -64,15 +71,24 @@ class Database extends Cache
     }
 
     /**
-     * @param $Simulation
-     *
      * @return Stage
      */
-    public static function frontendCheck( $Simulation )
+    public static function frontendCheck()
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageCheck( $Simulation );
+        return Frontend::stageCheck( true );
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendRepair()
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageCheck( false );
     }
 }

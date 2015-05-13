@@ -3,16 +3,16 @@ namespace KREDA\Sphere\Application\System\Frontend\Authorization;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableTitle;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputText;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class Right
@@ -35,18 +35,18 @@ class Right extends AbstractFrontend
         $View->setDescription( 'Rechte' );
         $View->setContent(
             new TableData( Gatekeeper::serviceAccess()->entityRightAll(),
-                new GridTableTitle( 'Bestehende Rechte', 'Routen' ) )
+                new TableTitle( 'Bestehende Rechte', 'Routen' ) )
             .Gatekeeper::serviceAccess()->executeCreateRight(
-                new FormDefault(
-                    new GridFormGroup(
-                        new GridFormRow(
-                            new GridFormCol(
-                                new InputText(
+                new Form(
+                    new FormGroup(
+                        new FormRow(
+                            new FormColumn(
+                                new TextField(
                                     'RightName', 'Route', 'Name'
                                 )
                             )
-                        ), new GridFormTitle( 'Recht anlegen', 'Route' ) )
-                    , new ButtonSubmitPrimary( 'Hinzufügen' )
+                        ), new FormTitle( 'Recht anlegen', 'Route' ) )
+                    , new SubmitPrimary( 'Hinzufügen' )
                 )
                 , $Name )
         );

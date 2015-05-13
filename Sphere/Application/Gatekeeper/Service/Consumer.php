@@ -6,6 +6,8 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumerType;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\EntityAction;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 
 /**
@@ -26,7 +28,7 @@ class Consumer extends EntityAction
     /**
      * @throws \Exception
      */
-    public function __construct()
+    final public function __construct()
     {
 
         $this->setDatabaseHandler( 'Gatekeeper', 'Consumer' );
@@ -35,7 +37,7 @@ class Consumer extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $this->actionCreateConsumer( 'Demo-Schule', 'DS' );
+        $this->actionCreateConsumer( 'DS', 'Demo-Schule' );
     }
 
     /**
@@ -105,6 +107,61 @@ class Consumer extends EntityAction
     }
 
     /**
+     * @param TblAddress       $tblAddress
+     * @param null|TblConsumer $tblConsumer
+     *
+     * @return bool
+     */
+    public function executeChangeAddress( TblAddress $tblAddress, TblConsumer $tblConsumer = null )
+    {
+
+        return parent::actionChangeAddress( $tblAddress, $tblConsumer );
+    }
+
+    /**
+     * @param AbstractType $View
+     * @param string          $ConsumerSuffix
+     * @param string          $ConsumerName
+     * @param null|TblAddress $tblAddress
+     *
+     * @return AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
+     */
+    public function executeCreateConsumer(
+        AbstractType &$View,
+        $ConsumerSuffix,
+        $ConsumerName,
+        TblAddress $tblAddress = null
+    ) {
+
+        if (null === $ConsumerName
+            && null === $ConsumerSuffix
+        ) {
+            return $View;
+        }
+
+        $Error = false;
+        if (null !== $ConsumerSuffix && empty( $ConsumerSuffix )) {
+            $View->setError( 'ConsumerSuffix', 'Bitte geben Sie ein Mandantenkürzel an' );
+            $Error = true;
+        }
+        if ($this->entityConsumerBySuffix( $ConsumerSuffix )) {
+            $View->setError( 'ConsumerSuffix', 'Das Mandantenkürzel muss einzigartig sein' );
+            $Error = true;
+        }
+        if (null !== $ConsumerName && empty( $ConsumerName )) {
+            $View->setError( 'ConsumerName', 'Bitte geben Sie einen gültigen Mandantenname ein' );
+            $Error = true;
+        }
+
+        if ($Error) {
+            return $View;
+        } else {
+            $this->actionCreateConsumer( $ConsumerSuffix, $ConsumerName, $tblAddress );
+            return new Redirect( '/Sphere/System/Consumer/Create', 0 );
+        }
+    }
+
+    /**
      * @param string $Suffix
      *
      * @return bool|TblConsumer
@@ -117,17 +174,5 @@ class Consumer extends EntityAction
         }
         self::$ConsumerBySuffixCache[$Suffix] = parent::entityConsumerBySuffix( $Suffix );
         return self::$ConsumerBySuffixCache[$Suffix];
-    }
-
-    /**
-     * @param TblAddress       $tblAddress
-     * @param null|TblConsumer $tblConsumer
-     *
-     * @return bool
-     */
-    public function executeChangeAddress( TblAddress $tblAddress, TblConsumer $tblConsumer = null )
-    {
-
-        return parent::actionChangeAddress( $tblAddress, $tblConsumer );
     }
 }

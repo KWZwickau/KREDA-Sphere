@@ -4,10 +4,7 @@ namespace KREDA\Sphere\Application\Management\Service\Education\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Education;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -20,22 +17,15 @@ class TblGroup extends AbstractEntity
 {
 
     const ATTR_NAME = 'Name';
-    const ATTR_TBL_LEVEL = 'tblLevel';
 
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
     /**
      * @Column(type="string")
      */
     protected $Name;
     /**
-     * @Column(type="bigint")
+     * @Column(type="string")
      */
-    protected $tblLevel;
+    protected $Description;
 
     /**
      * @param string $Name
@@ -65,38 +55,20 @@ class TblGroup extends AbstractEntity
     }
 
     /**
-     * @return integer
+     * @return string
      */
-    public function getId()
+    public function getDescription()
     {
 
-        return $this->Id;
+        return $this->Description;
     }
 
     /**
-     * @param integer $Id
+     * @param string $Description
      */
-    public function setId( $Id )
+    public function setDescription( $Description )
     {
 
-        $this->Id = $Id;
-    }
-
-    /**
-     * @return bool|TblLevel
-     */
-    public function getTblLevel()
-    {
-
-        return Management::serviceEducation()->entityLevelById( $this->tblLevel );
-    }
-
-    /**
-     * @param null|TblLevel $tblLevel
-     */
-    public function setTblLevel( TblLevel $tblLevel = null )
-    {
-
-        $this->tblLevel = ( null === $tblLevel ? null : $tblLevel->getId() );
+        $this->Description = $Description;
     }
 }

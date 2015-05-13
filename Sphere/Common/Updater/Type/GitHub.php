@@ -21,6 +21,7 @@ class GitHub extends CurlHandler implements IUpdaterInterface
     function __construct( $CacheLocation = null )
     {
 
+        set_time_limit( 3600 );
         parent::__construct( $CacheLocation );
     }
 
@@ -101,7 +102,7 @@ class GitHub extends CurlHandler implements IUpdaterInterface
     private function mergeIni( $Current, $New )
     {
 
-        foreach ($New AS $Key => $Value) {
+        foreach ($New as $Key => $Value) {
             if (is_array( $Value )) {
                 $Current[$Key] = $this->mergeIni( $Current[$Key], $New[$Key] );
             } else {

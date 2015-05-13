@@ -7,10 +7,21 @@ use Doctrine\Common\Cache\MemcachedCache;
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\View;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FlashIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OffIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn as ColumnLayout;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Common\Cache\Type\Memcached;
 use KREDA\Sphere\Common\Database\Connection\Connector;
 use KREDA\Sphere\Common\Database\Connection\Identifier;
@@ -25,11 +36,11 @@ class Model
 {
 
     /** @var array $hasViewCache */
-    private static $hasViewCache = array();
+    private $hasViewCache = array();
     /** @var array $hasColumnCache */
-    private static $hasColumnCache = array();
+    private $hasColumnCache = array();
     /** @var array $hasTableCache */
-    private static $hasTableCache = array();
+    private $hasTableCache = array();
     /** @var IBridgeInterface $Connection */
     private $Connection = null;
     /** @var array $Protocol */
@@ -60,10 +71,15 @@ class Model
         if (class_exists( '\Memcached', false )) {
             $Cache = new MemcachedCache();
             $Cache->setMemcached( ( new Memcached() )->getServer() );
-            $MetadataConfiguration->setQueryCacheImpl( $Cache );
-            $MetadataConfiguration->setMetadataCacheImpl( $Cache );
-            $MetadataConfiguration->setHydrationCacheImpl( $Cache );
+            $Cache->setNamespace( $EntityPath );
             $ConnectionConfig->setResultCacheImpl( $Cache );
+            $MetadataConfiguration->setQueryCacheImpl( $Cache );
+            $MetadataConfiguration->setHydrationCacheImpl( $Cache );
+            if (function_exists( 'apc_fetch' )) {
+                $MetadataConfiguration->setMetadataCacheImpl( new ApcCache() );
+            } else {
+                $MetadataConfiguration->setMetadataCacheImpl( new ArrayCache() );
+            }
         } else {
             if (function_exists( 'apc_fetch' )) {
                 $MetadataConfiguration->setQueryCacheImpl( new ApcCache() );
@@ -77,7 +93,7 @@ class Model
                 $ConnectionConfig->setResultCacheImpl( new ArrayCache() );
             }
         }
-//        $ConnectionConfig->setSQLLogger( new Logger() );
+        //$ConnectionConfig->setSQLLogger( new Logger() );
         return EntityManager::create( $this->Connection->getConnection(), $MetadataConfiguration );
     }
 
@@ -107,15 +123,15 @@ class Model
     final public function hasView( $ViewName )
     {
 
-        if (in_array( $ViewName, self::$hasViewCache )) {
+        if (in_array( $ViewName, $this->hasViewCache )) {
             return true;
         }
         $SchemaManager = $this->getSchemaManager();
-        self::$hasViewCache = array_map( function ( View $V ) {
+        $this->$hasViewCache = array_map( function ( View $V ) {
 
             return $V->getName();
         }, $SchemaManager->listViews() );
-        return in_array( $ViewName, self::$hasViewCache );
+        return in_array( $ViewName, $this->hasViewCache );
     }
 
     /**
@@ -127,15 +143,31 @@ class Model
     final public function hasColumn( $TableName, $ColumnName )
     {
 
-        if (isset( self::$hasColumnCache[$TableName] )) {
-            return in_array( $ColumnName, self::$hasColumnCache[$TableName] );
+        if (isset( $this->hasColumnCache[$TableName] )) {
+            return in_array( strtolower( $ColumnName ), $this->hasColumnCache[$TableName] );
         }
         $SchemaManager = $this->getSchemaManager();
-        self::$hasColumnCache[$TableName] = array_map( function ( Column $V ) {
+        $this->hasColumnCache[$TableName] = array_map( function ( Column $V ) {
 
-            return $V->getName();
+            return strtolower( $V->getName() );
         }, $SchemaManager->listTableColumns( $TableName ) );
-        return in_array( $ColumnName, self::$hasColumnCache[$TableName] );
+        return in_array( strtolower( $ColumnName ), $this->hasColumnCache[$TableName] );
+    }
+
+    /**
+     * @param Table $Table
+     * @param array $ColumnList
+     *
+     * @return bool
+     */
+    final public function hasIndex( Table $Table, $ColumnList )
+    {
+
+        if ($Table->columnsAreIndexed( $ColumnList )) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -146,12 +178,12 @@ class Model
     final public function hasTable( $TableName )
     {
 
-        if (in_array( $TableName, self::$hasTableCache )) {
+        if (in_array( $TableName, $this->hasTableCache )) {
             return true;
         }
         $SchemaManager = $this->getSchemaManager();
-        self::$hasTableCache = $SchemaManager->listTableNames();
-        return in_array( $TableName, self::$hasTableCache );
+        $this->hasTableCache = $SchemaManager->listTableNames();
+        return in_array( $TableName, $this->hasTableCache );
     }
 
     /**
@@ -176,22 +208,25 @@ class Model
     {
 
         if (count( $this->Protocol ) == 1) {
-            $this->Protocol[0] .= '<br/>';
-            $Protocol = '<div class="alert alert-success text-left">'
-                .'<span class="glyphicon glyphicon-ok"></span>&nbsp;'
-                .implode( '', $this->Protocol )
-                .'<hr/><span class="glyphicon glyphicon-refresh"></span>&nbsp;Kein Update notwendig'
-                .'</div>';
+            //$this->Protocol[0] .= '<br/>';
+            $Protocol = new Success(
+                new Layout( new LayoutGroup( new LayoutRow( array(
+                    new ColumnLayout( new OkIcon().'&nbsp'.implode( '', $this->Protocol ), 9 ),
+                    new ColumnLayout( new OffIcon().'&nbsp;Kein Update notwendig', 3 )
+                ) ) ) )
+            );
         } else {
-            $this->Protocol[0] .= '<hr/>';
-            $Protocol = '<div class="alert alert-info text-left">'
-                .'<span class="glyphicon glyphicon-flash"></span>&nbsp;'
-                .implode( '', $this->Protocol )
-                .( $Simulate
-                    ? '<hr/><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;Update notwendig'
-                    : '<hr/><span class="glyphicon glyphicon-saved"></span>&nbsp;Update durchgeführt'
-                )
-                .'</div>';
+            //$this->Protocol[0] .= '<hr/>';
+            $Protocol = new Info(
+                new Layout( new LayoutGroup( new LayoutRow( array(
+                    new ColumnLayout( new FlashIcon().'&nbsp;'.implode( '', $this->Protocol ), 9 ),
+                    new ColumnLayout(
+                        ( $Simulate
+                            ? new WarningIcon().'&nbsp;Update notwendig'
+                            : new OkIcon().'&nbsp;Update durchgeführt'
+                        ), 3 )
+                ) ) ) )
+            );
         }
         $this->Protocol = array();
 

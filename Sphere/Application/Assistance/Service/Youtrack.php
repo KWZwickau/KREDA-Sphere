@@ -1,11 +1,10 @@
 <?php
 namespace KREDA\Sphere\Application\Assistance\Service;
 
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Common\AbstractService;
-use KREDA\Sphere\Common\Frontend\Alert\AbstractElement;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
 
 /**
  * Class Youtrack
@@ -16,13 +15,13 @@ class Youtrack extends AbstractService
 {
 
     /**
-     * @param AbstractForm $Ticket
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $Ticket
      * @param null|string  $TicketSubject
      * @param null|string  $TicketMessage
      *
-     * @return AbstractElement|AbstractForm
+     * @return \KREDA\Sphere\Client\Frontend\Message\AbstractType|\KREDA\Sphere\Client\Frontend\Form\AbstractType
      */
-    public function executeCreateTicket( AbstractForm &$Ticket, $TicketSubject, $TicketMessage )
+    public function executeCreateTicket( AbstractType &$Ticket, $TicketSubject, $TicketMessage )
     {
 
         $Error = false;
@@ -52,7 +51,7 @@ class Youtrack extends AbstractService
                 $Ticket->prependGridGroup( $Youtrack->ticketCurrent() );
                 return $Ticket;
             } catch( \Exception $E ) {
-                return new MessageDanger( 'Das Support-System konnten nicht geladen werden' );
+                return new Danger( 'Das Support-System konnten nicht geladen werden' );
             }
         } else {
             /**
@@ -61,9 +60,9 @@ class Youtrack extends AbstractService
             try {
                 $Youtrack = new \KREDA\Sphere\Common\Youtrack\Youtrack();
                 $Youtrack->ticketCreate( $TicketSubject, $TicketMessage );
-                return new MessageSuccess( 'Das Problem wurde erfolgreich dem Support mitgeteilt' );
+                return new Success( 'Das Problem wurde erfolgreich dem Support mitgeteilt' );
             } catch( \Exception $E ) {
-                return new MessageDanger( 'Das Problem konnte nicht übertragen werden' );
+                return new Danger( 'Das Problem konnte nicht übertragen werden' );
             }
         }
     }

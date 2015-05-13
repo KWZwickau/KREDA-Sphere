@@ -3,8 +3,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccess;
@@ -22,12 +20,6 @@ class TblAccountAccessList extends AbstractEntity
     const ATTR_SERVICE_GATEKEEPER_ACCESS = 'serviceGatekeeper_Access';
 
     /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
-    /**
      * @Column(type="bigint")
      */
     protected $tblAccountRole;
@@ -35,24 +27,6 @@ class TblAccountAccessList extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $serviceGatekeeper_Access;
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param null|integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
-    }
 
     /**
      * @return bool|TblAccess

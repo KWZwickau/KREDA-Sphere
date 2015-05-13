@@ -2,8 +2,10 @@
 namespace KREDA\Sphere\Application\Management\Module;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ClusterIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonKeyIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
@@ -33,24 +35,15 @@ class Common extends AbstractApplication
      */
     protected static function setupModuleNavigation()
     {
-
-//        self::addModuleNavigationMain( self::$Configuration,
-//            '/Sphere/Management/Campus', 'Immobilien', new BuildingIcon()
-//        );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Person', 'Personen', new GroupIcon()
         );
-
-//        self::addModuleNavigationMain( self::$Configuration,
-//            '/Sphere/Management/Education/Group', 'Klassen', new ClusterIcon()
-//        );
-//        self::addModuleNavigationMain( self::$Configuration,
-//            '/Sphere/Management/Education/Subject', 'Fächer', new ShareIcon()
-//        );
-//
-//        self::addModuleNavigationMain( self::$Configuration,
-//            '/Sphere/Management/Education/Period', 'Zeiten', new TimeIcon()
-//        );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Management/Period/SchoolYear', 'Zeiten', new TimeIcon()
+        );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Management/Education', 'Klassen und Fächer', new ClusterIcon()
+        );
 //        self::addModuleNavigationMain( self::$Configuration,
 //            '/Sphere/Management/Education/Mission', 'Aufträge', new BriefcaseIcon()
 //        );

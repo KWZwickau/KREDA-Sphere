@@ -35,7 +35,7 @@ class Script extends AbstractExtension
             "'undefined' !== typeof moment"
         );
         $this->setSource(
-            'Bootstrap', '/Library/Bootstrap/3.2.0/dist/js/bootstrap.min.js',
+            'Bootstrap', '/Library/Bootstrap/3.3.4/dist/js/bootstrap.min.js',
             "'function' === typeof jQuery().emulateTransitionEnd"
         );
         $this->setSource(
@@ -74,6 +74,11 @@ class Script extends AbstractExtension
             "'undefined' !== typeof jQuery.fn.fileinput"
         );
         $this->setSource(
+            'Bootstrap.Select',
+            '/Library/Bootstrap.Select/1.6.4/dist/js/bootstrap-select.min.js',
+            "'undefined' !== typeof jQuery.fn.selectpicker"
+        );
+        $this->setSource(
             'Twitter.Typeahead', '/Library/Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min.js',
             "'undefined' !== typeof jQuery.fn.typeahead"
         );
@@ -98,6 +103,9 @@ class Script extends AbstractExtension
         );
         $this->setModule(
             'ModSelecter', array( 'jQuery.Selecter', 'jQuery' )
+        );
+        $this->setModule(
+            'ModSelect', array( 'Bootstrap.Select', 'Bootstrap', 'jQuery' )
         );
         $this->setModule(
             'ModCompleter', array( 'Twitter.Typeahead', 'Bootstrap', 'jQuery' )

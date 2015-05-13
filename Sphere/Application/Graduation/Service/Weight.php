@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Graduation\Service;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Graduation\Service\Weight\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
 
@@ -17,12 +16,12 @@ class Weight extends EntityAction
     protected static $DatabaseHandler = null;
 
     /**
-     * @param TblConsumer $tblConsumer
+     *
      */
-    function __construct( TblConsumer $tblConsumer = null )
+    final public function __construct()
     {
 
-        $this->setDatabaseHandler( 'Graduation', 'Weight', $this->getConsumerSuffix( $tblConsumer ) );
+        $this->setDatabaseHandler( 'Graduation', 'Weight', $this->getConsumerSuffix() );
     }
 
     public function setupDatabaseContent()

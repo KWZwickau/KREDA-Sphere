@@ -3,26 +3,20 @@ namespace KREDA\Sphere\Client;
 
 use Doctrine\DBAL\DBALException;
 use KREDA\Sphere\Application\Assistance\Assistance;
-use KREDA\Sphere\Application\Demo\Demo;
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\System\Frontend\Database;
 use KREDA\Sphere\Application\System\System;
+use KREDA\Sphere\Application\Transfer\Transfer;
 use KREDA\Sphere\Client\Component\Element\Element;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Container;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Screen;
-use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelApplication;
 use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelClient;
-use KREDA\Sphere\Client\Component\Element\Repository\Navigation\LevelModule;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\NameParameter;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Link\UrlParameter;
 use KREDA\Sphere\Common\Extension\Debugger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
 use KREDA\Sphere\Common\Signature\Type\GetSignature;
 use KREDA\Sphere\Common\Signature\Type\PostSignature;
 use MOC\V\Component\Database\Exception\DatabaseException;
@@ -45,7 +39,7 @@ class Client
     /**
      *
      */
-    function __construct()
+    final public function __construct()
     {
 
         $this->Debug = new Debugger();
@@ -53,7 +47,7 @@ class Client
         $this->Configuration = new Configuration( new UniversalRouter(), new LevelClient() );
     }
 
-    public function runPlatform()
+    final public function runPlatform()
     {
 
         /**
@@ -64,108 +58,119 @@ class Client
             /**
              * REST
              */
-            $this->runRestApi();
-            /**
-             * MAIN
-             */
-            try {
+            if (!$this->runRestApi()) {
                 /**
-                 * Assistance
+                 * MAIN
                  */
-                if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance' )) {
-                    $this->runAssistance();
+                try {
+                    /**
+                     * Assistance
+                     */
+                    if (false !== strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance' )) {
+                        $this->runAssistance();
+                    }
+                    /**
+                     * Application
+                     */
+                    if (false === strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance' )) {
+                        $this->runApplication();
+                    }
+                } catch( \PDOException $Exception ) {
+                    /**
+                     * PDO Exception
+                     */
+                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                    $this->Display->addError( $Exception );
+                } catch( DBALException $Exception ) {
+                    /**
+                     * Repair Database
+                     */
+                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                    $this->Display->addToContent( new Container( Database::stageRepair( $Exception ) ) );
+                } catch( DatabaseException $Exception ) {
+                    /**
+                     * Error
+                     */
+                    Assistance::registerApplication( $this->Configuration );
+                    $this->Configuration->getClientNavigation()->addLinkToMeta(
+                        new LevelClient\Link( new UrlParameter( '/Sphere' ),
+                            new NameParameter( 'Zurück zur Anwendung' ) )
+                    );
+                    /** @var Element $Route */
+                    $Route = $this->Configuration->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
+                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                    $this->Display->addToContent( new Container( $Route ) );
+                } catch( \ErrorException $Exception ) {
+                    /**
+                     * Error Exception
+                     */
+                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                    $this->Display->addError( $Exception );
+                } catch( \Exception $Exception ) {
+                    /**
+                     * Unexpected Exception
+                     */
+                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                    $this->Display->addException( $Exception, get_class( $Exception ) );
                 }
+
                 /**
-                 * Application
+                 * Output
                  */
-                if (false === strpos( HttpKernel::getRequest()->getPathInfo(), '/Sphere/Assistance' )) {
-                    $this->runApplication();
-                }
-            } catch( \PDOException $E ) {
-                /**
-                 * PDO Exception
-                 */
-                $this->Display->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
-                $this->Display->addError( $E );
-            } catch( DBALException $E ) {
-                /**
-                 * Repair Database
-                 */
-                $this->Display->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
-                $this->Display->addToContent( new Container( Database::stageRepair( $E ) ) );
-            } catch( DatabaseException $E ) {
-                /**
-                 * Error
-                 */
-                Assistance::registerApplication( $this->Configuration );
-                $this->Configuration->getClientNavigation()->addLinkToMeta(
-                    new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
-                );
-                /** @var Element $Route */
-                $Route = $this->Configuration->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Start' );
-                $this->Display->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
-                $this->Display->addToContent( new Container( $Route ) );
-            } catch( \ErrorException $E ) {
-                /**
-                 * Error Exception
-                 */
-                $this->Display->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
-                $this->Display->addError( $E );
-            } catch( \Exception $E ) {
-                /**
-                 * Unexpected Exception
-                 */
-                $this->Display->extensionDebugger()->addProtocol( $E->getMessage(), 'warning-sign' );
-                $this->Display->addException( $E, get_class( $E ) );
+                $this->prepareOutput();
+                echo $this->Display->getContent();
             }
+        } else {
+            /**
+             * Output
+             */
+            $this->prepareOutput();
+            echo $this->Display->getContent();
         }
-        /**
-         * Output
-         */
-        $this->prepareOutput();
-        echo $this->Display->getContent();
     }
 
+    /**
+     *
+     */
     private function prepareErrorHandler()
     {
 
         set_error_handler(
-            function ( $N, $S, $F, $L ) {
+            function ( $Code, $Message, $File, $Line ) {
 
-                if (!preg_match( '!apc_store.*?was.*?on.*?gc-list.*?for!is', $S )) {
-                    throw new \ErrorException( $S, 0, $N, $F, $L );
+                if (!preg_match( '!apc_store.*?was.*?on.*?gc-list.*?for!is', $Message )) {
+                    throw new \ErrorException( $Message, 0, $Code, $File, $Line );
                 }
             }, E_ALL
         );
         register_shutdown_function(
-            function ( Screen $S, Configuration $C ) {
+            function ( Screen $Screen, Configuration $Configuration ) {
 
                 $Error = error_get_last();
                 if (!$Error) {
                     return;
                 }
-                $S->setNavigation(
-                    new Container( $C->getClientNavigation() )
+                $Screen->setNavigation(
+                    new Container( $Configuration->getClientNavigation() )
                 );
-                if ($C->hasModuleNavigation()) {
-                    $S->addToNavigation(
-                        new Container( $C->getModuleNavigation() )
+                if ($Configuration->hasModuleNavigation()) {
+                    $Screen->addToNavigation(
+                        new Container( $Configuration->getModuleNavigation() )
                     );
                 }
-                if ($C->hasApplicationNavigation()) {
-                    $S->addToNavigation(
-                        new Container( $C->getApplicationNavigation() )
+                if ($Configuration->hasApplicationNavigation()) {
+                    $Screen->addToNavigation(
+                        new Container( $Configuration->getApplicationNavigation() )
                     );
                 }
-                Assistance::registerApplication( $C );
-                $C->getClientNavigation()->addLinkToMeta(
+                Assistance::registerApplication( $Configuration );
+                $Configuration->getClientNavigation()->addLinkToMeta(
                     new LevelClient\Link( new UrlParameter( '/Sphere' ), new NameParameter( 'Zurück zur Anwendung' ) )
                 );
-                /** @var Element $R */
-                $R = $C->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Fatal' );
-                $S->setContent( new Container( $R ) );
-                print $S->getContent();
-                exit( 0 );
+                /** @var Element $Route */
+                $Route = $Configuration->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Fatal' );
+                $Screen->setContent( new Container( $Route ) );
+                print $Screen->getContent();
             }, $this->Display, $this->Configuration
         );
     }
@@ -180,25 +185,8 @@ class Client
             $GetSignature = new GetSignature();
             $PostSignature = new PostSignature();
             if (!( $GetSignature->validateSignature() && $PostSignature->validateSignature() )) {
-                $Stage = new Stage();
-                $Stage->setTitle( 'KREDA Sicherheit' );
-                $Stage->setDescription( 'Parameter' );
-                $Stage->setContent(
-                    new MessageDanger( 'Das System hat fehlerhafte oder mutwillig veränderte Eingabedaten erkannt',
-                        new WarningIcon()
-                    )
-                    .new MessageWarning( 'Bitte ändern Sie keine Daten in der Url',
-                        new WarningIcon()
-                    )
-                    .new MessageInfo( 'Bitte führen Sie Anfragen an das System nicht über Tagesgrenzen hinweg aus',
-                        new WarningIcon()
-                    )
-                    .new MessageSuccess( 'Alle Parameter wurden entfernt',
-                        new WarningIcon()
-                    )
-                );
                 Assistance::registerApplication( $this->Configuration );
-                $this->Display->addToContent( new Container( $Stage ) );
+                $this->Display->addToContent( new Container( Assistance::frontendApplicationSignature() ) );
                 return false;
             }
         }
@@ -211,7 +199,7 @@ class Client
     private function runMaintenanceCheck()
     {
 
-        if (file_exists( __DIR__.'/MAINTENANCE' )) {
+        if (file_exists( __DIR__.'/../../MAINTENANCE' )) {
             $Restricted = true;
             if (( $tblAccount = Gatekeeper::serviceAccount()->entityAccountBySession() )) {
                 if ($tblAccount->getTblAccountRole()->getName() == 'System') {
@@ -229,6 +217,9 @@ class Client
         return true;
     }
 
+    /**
+     * @return bool
+     */
     private function runRestApi()
     {
 
@@ -261,9 +252,9 @@ class Client
                 header( 'HTTP/1.1 401 Unauthorized' );
                 print '401 Unauthorized';
             }
-            exit( 0 );
+            return true;
         }
-
+        return false;
     }
 
     private function runAssistance()
@@ -309,7 +300,9 @@ class Client
              */
             System::registerApplication( $this->Configuration );
             Management::registerApplication( $this->Configuration );
-            Demo::registerApplication( $this->Configuration );
+            Graduation::registerApplication( $this->Configuration );
+            Billing::registerApplication( $this->Configuration );
+            Transfer::registerApplication( $this->Configuration );
         } else {
             /**
              * Authenticated NO

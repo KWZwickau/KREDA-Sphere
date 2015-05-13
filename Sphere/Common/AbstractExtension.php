@@ -8,6 +8,7 @@ use KREDA\Sphere\Common\Extension\DataTables;
 use KREDA\Sphere\Common\Extension\Debugger;
 use KREDA\Sphere\Common\Extension\Faker;
 use KREDA\Sphere\Common\Extension\ModHex;
+use KREDA\Sphere\Common\Extension\SuperGlobal;
 use Markdownify\Converter;
 use MOC\V\Component\Database\Database;
 use MOC\V\Component\Database\Exception\DatabaseException;
@@ -185,5 +186,14 @@ abstract class AbstractExtension
     {
 
         return new Faker( $Locale );
+    }
+
+    /**
+     * @return SuperGlobal
+     */
+    final public static function extensionSuperGlobal()
+    {
+
+        return new SuperGlobal( $_GET, $_POST, $_SESSION );
     }
 }

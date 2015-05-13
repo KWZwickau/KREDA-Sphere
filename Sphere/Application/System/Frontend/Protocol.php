@@ -2,8 +2,8 @@
 namespace KREDA\Sphere\Application\System\Frontend;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class Protocol
@@ -24,7 +24,7 @@ class Protocol extends AbstractFrontend
         $View->setDescription( 'Status' );
 
         $View->setContent(
-            new TableData( '/Sphere/System/REST/ProtocolList', null,
+            new TableData( '/Sphere/System/Table/Protocol', null,
                 array(
                     'Id'     => '#',
                     'Editor' => 'Editor',

@@ -5,16 +5,16 @@ use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\PasswordField;
+use KREDA\Sphere\Client\Frontend\Table\Structure\TableTitle;
+use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonSubmitPrimary;
-use KREDA\Sphere\Common\Frontend\Form\Element\InputPassword;
-use KREDA\Sphere\Common\Frontend\Form\Structure\FormDefault;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormCol;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormGroup;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormRow;
-use KREDA\Sphere\Common\Frontend\Form\Structure\GridFormTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\GridTableTitle;
-use KREDA\Sphere\Common\Frontend\Table\Structure\TableData;
 
 /**
  * Class SignOut
@@ -74,23 +74,23 @@ class Token extends AbstractFrontend
         $View->setContent(
             new TableData(
                 $tblToken,
-                new GridTableTitle( 'Zertifizierte Hardware-Schlüssel', 'YubiKey' ),
+                new TableTitle( 'Zertifizierte Hardware-Schlüssel', 'YubiKey' ),
                 array(
                     'Id'      => 'Id',
                     'Serial'  => 'Seriennummer',
                     'Account' => 'Verwendet durch'
                 )
             )
-            .new FormDefault(
-                new GridFormGroup(
-                    new GridFormRow(
-                        new GridFormCol(
-                            new InputPassword(
+            .new Form(
+                new FormGroup(
+                    new FormRow(
+                        new FormColumn(
+                            new PasswordField(
                                 'CredentialKey', 'YubiKey', 'YubiKey'
                             )
                         )
-                    ), new GridFormTitle( 'Hardware-Schlüssel hinzufügen', 'YubiKey' ) ),
-                new ButtonSubmitPrimary( 'Hinzufügen' )
+                    ), new FormTitle( 'Hardware-Schlüssel hinzufügen', 'YubiKey' ) ),
+                new SubmitPrimary( 'Hinzufügen' )
             )
         );
         return $View;

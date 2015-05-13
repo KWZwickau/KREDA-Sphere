@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Management\Service\Person\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
@@ -30,11 +28,9 @@ class TblPerson extends AbstractEntity
     const ATTR_BIRTHDAY = 'Birthday';
     const ATTR_BIRTHPLACE = 'Birthplace';
     /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
+     * @Column(type="date")
      */
-    protected $Id;
+    public $Birthday;
     /**
      * @Column(type="string")
      */
@@ -52,10 +48,6 @@ class TblPerson extends AbstractEntity
      */
     protected $LastName;
     /**
-     * @Column(type="date")
-     */
-    protected $Birthday;
-    /**
      * @Column(type="string")
      */
     protected $Birthplace;
@@ -63,6 +55,10 @@ class TblPerson extends AbstractEntity
      * @Column(type="string")
      */
     protected $Nationality;
+    /**
+     * @Column(type="string")
+     */
+    protected $Denomination;
     /**
      * @OneToOne(targetEntity="TblPersonType",fetch="EXTRA_LAZY")
      * @Column(type="bigint")
@@ -78,6 +74,10 @@ class TblPerson extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $tblPersonGender;
+    /**
+     * @Column(type="text")
+     */
+    protected $Remark;
 
     /**
      * @return string
@@ -113,6 +113,24 @@ class TblPerson extends AbstractEntity
     {
 
         $this->Nationality = $Nationality;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDenomination()
+    {
+
+        return $this->Denomination;
+    }
+
+    /**
+     * @param string $Denomination
+     */
+    public function setDenomination( $Denomination )
+    {
+
+        $this->Denomination = $Denomination;
     }
 
     /**
@@ -187,7 +205,7 @@ class TblPerson extends AbstractEntity
     public function getFullName()
     {
 
-        return $this->getFirstName().( $this->getMiddleName() ? ' '.$this->getMiddleName() : '' ).' '.$this->getLastName();
+        return trim( $this->getFirstName().( $this->getMiddleName() ? ' '.$this->getMiddleName() : '' ).' '.$this->getLastName() );
     }
 
     /**
@@ -250,9 +268,16 @@ class TblPerson extends AbstractEntity
     public function getBirthday()
     {
 
+        if (null === $this->Birthday) {
+            return false;
+        }
         /** @var \DateTime $Birthday */
         $Birthday = $this->Birthday;
-        return $Birthday->format( 'd.m.Y' );
+        if ($Birthday instanceof \DateTime) {
+            return $Birthday->format( 'd.m.Y' );
+        } else {
+            return (string)$Birthday;
+        }
     }
 
     /**
@@ -262,24 +287,6 @@ class TblPerson extends AbstractEntity
     {
 
         $this->Birthday = $Birthday;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 
     /**
@@ -298,5 +305,27 @@ class TblPerson extends AbstractEntity
     {
 
         $this->Title = $Title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemark()
+    {
+
+        return $this->Remark;
+    }
+
+    /**
+     * @param string $Remark
+     */
+    public function setRemark( $Remark )
+    {
+
+        if (empty( $Remark )) {
+            $this->Remark = null;
+        } else {
+            $this->Remark = $Remark;
+        }
     }
 }

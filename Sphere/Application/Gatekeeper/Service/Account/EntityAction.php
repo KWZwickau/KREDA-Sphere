@@ -134,6 +134,20 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblPerson $tblPerson
+     *
+     * @return bool|Entity\TblAccount[]
+     */
+    protected function entityAccountAllByPerson( TblPerson $tblPerson )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblAccount' )->findBy( array(
+            TblAccount::ATTR_SERVICE_MANAGEMENT_PERSON => $tblPerson->getId()
+        ) );
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
      * @param TblConsumer $tblConsumer
      *
      * @return bool|Entity\TblAccount[]
@@ -393,7 +407,7 @@ abstract class EntityAction extends EntitySchema
     {
 
         $Manager = $this->getEntityManager();
-        /** @var TblAccountSession $Entity */
+        /** @var TblAccount $Entity */
         $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
         if (null !== $Entity) {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
@@ -530,10 +544,66 @@ abstract class EntityAction extends EntitySchema
         $Manager = $this->getEntityManager();
         /** @var TblAccount $Entity */
         $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
+        $Protocol = clone $Entity;
         if (null !== $Entity) {
             $Entity->setServiceManagementPerson( $tblPerson );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblAccountType  $tblAccountType
+     * @param null|TblAccount $tblAccount
+     *
+     * @return bool
+     */
+    protected function actionChangeAccountType( TblAccountType $tblAccountType, TblAccount $tblAccount = null )
+    {
+
+        if (null === $tblAccount) {
+            $tblAccount = $this->entityAccountBySession();
+        }
+        $Manager = $this->getEntityManager();
+        /** @var TblAccount $Entity */
+        $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setTblAccountType( $tblAccountType );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblAccountRole  $tblAccountRole
+     * @param null|TblAccount $tblAccount
+     *
+     * @return bool
+     */
+    protected function actionChangeAccountRole( TblAccountRole $tblAccountRole, TblAccount $tblAccount = null )
+    {
+
+        if (null === $tblAccount) {
+            $tblAccount = $this->entityAccountBySession();
+        }
+        $Manager = $this->getEntityManager();
+        /** @var TblAccount $Entity */
+        $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setTblAccountRole( $tblAccountRole );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
                 $Entity );
             return true;
         }

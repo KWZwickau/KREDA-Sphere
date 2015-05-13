@@ -15,7 +15,7 @@ class MapMarkerIcon extends AbstractIcon implements IParameterInterface
     /**
      *
      */
-    function __construct()
+    public function __construct()
     {
 
         $this->setValue( AbstractIcon::ICON_MAP_MARKER );

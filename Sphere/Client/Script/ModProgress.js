@@ -13,10 +13,10 @@
             'Message': null
         }, options );
 
-        if (null !== settings.Message) {
-            this.find( '.progress-bar' ).html( settings.Message );
-        } else {
+        if (null === settings.Message) {
             this.find( '.progress-bar' ).html( '' );
+        } else {
+            this.find( '.progress-bar' ).html( settings.Message );
         }
 
         if (0 >= settings.Total && 0 < settings.Size) {

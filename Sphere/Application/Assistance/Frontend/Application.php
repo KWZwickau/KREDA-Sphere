@@ -2,12 +2,15 @@
 namespace KREDA\Sphere\Application\Assistance\Frontend;
 
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
+use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageDanger;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageInfo;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageSuccess;
-use KREDA\Sphere\Common\Frontend\Alert\Element\MessageWarning;
-use KREDA\Sphere\Common\Frontend\Button\Element\ButtonLinkPrimary;
 
 /**
  * Class Application
@@ -49,15 +52,15 @@ class Application extends AbstractFrontend
                 : ''
             )
             .'<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
-            .new MessageInfo( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
-            .new MessageWarning( 'Die Anwendung kann wegen Kapazitätsproblemen im Moment nicht verwendet werden' )
-            .new MessageDanger( 'Die Anwendung hat erkannt, dass das System nicht fehlerfrei arbeiten kann' )
-            .new MessageDanger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Datenbanken kann gestört sein' )
+            .new Info( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
+            .new Warning( 'Die Anwendung kann wegen Kapazitätsproblemen im Moment nicht verwendet werden' )
+            .new Danger( 'Die Anwendung hat erkannt, dass das System nicht fehlerfrei arbeiten kann' )
+            .new Danger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Datenbanken kann gestört sein' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
-            .new MessageInfo( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
-            .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
+            .new Info( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
+            .new Success( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
-        $View->addButton( new ButtonLinkPrimary( 'Support-Ticket', '/Sphere/Assistance/Support/Ticket', null,
+        $View->addButton( new Primary( 'Support-Ticket', '/Sphere/Assistance/Support/Ticket', null,
                 array(
                     'TicketSubject' => 'Starten der Anwendung'
                         .( self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Start'
@@ -90,16 +93,16 @@ class Application extends AbstractFrontend
                 : ''
             )
             .'<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
-            .new MessageInfo( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
-            .new MessageDanger( 'Die Anwendung hat erkannt, dass das System nicht fehlerfrei arbeiten kann' )
-            .new MessageDanger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Programmen kann gestört sein' )
+            .new Info( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
+            .new Danger( 'Die Anwendung hat erkannt, dass das System nicht fehlerfrei arbeiten kann' )
+            .new Danger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Programmen kann gestört sein' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
-            .new MessageInfo( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
-            .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
+            .new Info( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
+            .new Success( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
         if (self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Fatal') {
             $View->addButton(
-                new ButtonLinkPrimary( 'Fehlerbericht senden', '/Sphere/Assistance/Support/Ticket', null,
+                new Primary( 'Fehlerbericht senden', '/Sphere/Assistance/Support/Ticket', null,
                     array(
                         'TicketSubject' => urlencode( 'Fehler in der Anwendung' ),
                         'TicketMessage' => urlencode( self::extensionRequest()->getPathInfo().': '.$Error['message'].'<br/>'.$Error['file'].':'.$Error['line'] )
@@ -127,18 +130,18 @@ class Application extends AbstractFrontend
                 : ''
             )
             .'<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
-            .new MessageInfo( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
-            .new MessageWarning( 'Sie haben im Browser manuell eine nicht vorhandene Adresse aufgerufen' )
-            .new MessageDanger( 'Sie haben nicht die erforderliche Berechtigung um diese Resourcen verwenden zu können' )
-            .new MessageDanger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Webservern kann gestört sein' )
+            .new Info( 'Dieser Bereich der Anwendung wird eventuell gerade gewartet' )
+            .new Warning( 'Sie haben im Browser manuell eine nicht vorhandene Adresse aufgerufen' )
+            .new Danger( 'Sie haben nicht die erforderliche Berechtigung um diese Resourcen verwenden zu können' )
+            .new Danger( 'Die interne Kommunikation der Anwendung mit weiteren, notwendigen Resourcen zum Beispiel Webservern kann gestört sein' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
-            .new MessageInfo( 'Versuchen Sie die Aktion zu einem späteren Zeitpunkt erneut auszuführen' )
-            .new MessageWarning( 'Vermeiden Sie es die Adresse im Browser manuell zu bearbeiten' )
-            .new MessageSuccess( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
+            .new Info( 'Versuchen Sie die Aktion zu einem späteren Zeitpunkt erneut auszuführen' )
+            .new Warning( 'Vermeiden Sie es die Adresse im Browser manuell zu bearbeiten' )
+            .new Success( 'Bitte wenden Sie sich an den Support damit das Problem schnellstmöglich behoben werden kann' )
         );
         if (self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing') {
             $View->addButton(
-                new ButtonLinkPrimary( 'Support-Ticket', '/Sphere/Assistance/Support/Ticket', null,
+                new Primary( 'Support-Ticket', '/Sphere/Assistance/Support/Ticket', null,
                     array(
                         'TicketSubject' => 'Nicht gefundene Resource'
                             .( self::extensionRequest()->getPathInfo() != '/Sphere/Assistance/Support/Application/Missing'
@@ -164,9 +167,37 @@ class Application extends AbstractFrontend
         $View->setMessage( '<strong>Problem:</strong> Die Anwendung kann im Moment nicht verwendet werden' );
         $View->setContent(
             '<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
-            .new MessageInfo( 'Die Anwendung wird gerade auf den neuesten Stand gebracht' )
+            .new Info( 'Die Anwendung wird gerade auf den neuesten Stand gebracht' )
             .'<h2 class="text-left" ><small > Mögliche Lösungen </small></h2> '
-            .new MessageSuccess( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
+            .new Success( 'Versuchen Sie die Anwendung zu einem späteren Zeitpunkt erneut aufzurufen' )
+        );
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stageSignature()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Sicherheit' );
+        $View->setDescription( 'Parameter' );
+        $View->setMessage( '<strong>Problem:</strong> Die Anwendung darf die Anfrage nicht verarbeiten' );
+        $View->setContent(
+            '<h2 class="text-left"><small>Mögliche Ursachen</small></h2>'
+            .new Danger( 'Das System hat fehlerhafte oder mutwillig veränderte Eingabedaten erkannt',
+                new WarningIcon() )
+
+            .new Warning( 'Bitte ändern Sie keine Daten in der Url und verwenden Sie nur die vom System erzeugten Anfragen',
+                new TagIcon()
+            )
+            .new Info( 'Bitte führen Sie Anfragen an das System nicht über Tagesgrenzen hinweg aus',
+                new TagIcon()
+            )
+            .new Success( 'Alle Parameter wurden aus Sicherheitsgründen ignoriert',
+                new OkIcon()
+            )
         );
         return $View;
     }

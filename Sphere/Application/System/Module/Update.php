@@ -5,6 +5,12 @@ use KREDA\Sphere\Application\System\Frontend\Update as Frontend;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\Cache\Type\ApcSma;
+use KREDA\Sphere\Common\Cache\Type\Apcu;
+use KREDA\Sphere\Common\Cache\Type\ApcUser;
+use KREDA\Sphere\Common\Cache\Type\Memcached;
+use KREDA\Sphere\Common\Cache\Type\OpCache;
+use KREDA\Sphere\Common\Cache\Type\TwigCache;
 use KREDA\Sphere\Common\Updater\Type\GitHub;
 
 /**
@@ -40,7 +46,7 @@ class Update extends Database
             '/Sphere/System/Update/Write', __CLASS__.'::frontendAjaxWrite'
         )->setParameterDefault( 'Location', null );
         self::registerClientRoute( $Configuration,
-            '/Sphere/System/Update/Update', __CLASS__.'::frontendAjaxUpdate'
+            '/Sphere/System/Update/Clean', __CLASS__.'::frontendAjaxClean'
         );
     }
 
@@ -76,6 +82,11 @@ class Update extends Database
     public static function frontendAjaxRun( $Version )
     {
 
+        set_time_limit( 3600 );
+
+        /**
+         * Set MAINTENANCE
+         */
         file_put_contents( __DIR__.'/../../../../MAINTENANCE', date( 'd.m.Y H:i:s' ) );
 
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
@@ -89,6 +100,8 @@ class Update extends Database
      */
     public static function frontendAjaxLog( $Version )
     {
+
+        set_time_limit( 3600 );
 
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
         $Log = $Updater->getDownload( $Version ).'.log';
@@ -124,6 +137,8 @@ class Update extends Database
     public static function frontendAjaxExtract( $Archive )
     {
 
+        set_time_limit( 3600 );
+
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
         return $Updater->extractArchive( $Archive );
     }
@@ -135,6 +150,8 @@ class Update extends Database
      */
     public static function frontendAjaxWrite( $Location )
     {
+
+        set_time_limit( 3600 );
 
         $Updater = new GitHub( __DIR__.'/../../../../Update' );
         $Source = realpath( $Updater->getCache().'/'.$Location );
@@ -158,10 +175,26 @@ class Update extends Database
     /**
      * @return string
      */
-    public static function frontendAjaxUpdate()
+    public static function frontendAjaxClean()
     {
 
-        unlink( __DIR__.'/../../../../MAINTENANCE' );
+        set_time_limit( 3600 );
+
+        /**
+         * Clear Cache
+         */
+        ApcSma::clearCache();
+        ApcUser::clearCache();
+        Apcu::clearCache();
+        Memcached::clearCache();
+        OpCache::clearCache();
+        TwigCache::clearCache();
+        /**
+         * Unset MAINTENANCE
+         */
+        if (file_exists( __DIR__.'/../../../../MAINTENANCE' )) {
+            unlink( __DIR__.'/../../../../MAINTENANCE' );
+        }
         return System::serviceUpdate()->setupDatabaseSchema( false );
     }
 }

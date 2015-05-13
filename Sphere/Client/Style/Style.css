@@ -13,15 +13,6 @@ h6 small,
     color: rgb(153, 153, 153);
 }
 
-h1,
-h2,
-h3,
-.h1,
-.h2,
-.h3 {
-
-}
-
 hr {
     border-top: 1px solid rgb(153, 153, 153);
     margin-top: 10px;
@@ -31,19 +22,33 @@ hr {
 h3 {
     border-bottom: 1px solid silver;
     padding-top: 3px;
-    padding-bottom: 3px;
+    padding-bottom: 8px;
+    margin-top: 20px;
 }
 
 h4 {
-    border-bottom: 1px solid #dadada;
-    padding-top: 3px;
-    padding-bottom: 2px;
+    border-bottom: 1px dotted silver;
+    padding-bottom: 5px;
+    margin-top: 30px;
+}
+
+h4:before {
+    font-family: "Glyphicons Regular", serif;
+    font-size: 15px;
+    color: #efc34e;
+    content: "\e156";
+    padding-right: 6px;
 }
 
 h5 {
     padding: 1px;
     margin: 1px;
     font-size: inherit;
+}
+
+label {
+    font-size: 12px;
+    margin-bottom: 4px;
 }
 
 /*.glyphicon.glyphicon-yubikey:before {*/
@@ -54,68 +59,36 @@ h5 {
 /*background: url("Resource/YubiKeyIcon-16x16.ico") center;*/
 /*}*/
 
-#phpinfo {
-    text-align: left;
+.thumbnail a > img, .thumbnail > img {
+    width: inherit;
 }
 
-#phpinfo a {
-    color: rgb(255, 0, 0);
+.alert {
+    padding: 10px;
+    margin-bottom: 5px;
 }
 
-#phpinfo a:link {
-    color: rgb(255, 0, 0);
+/* SELECTER RESPONSIVE */
+
+.input-group .selecter.open .selecter-selected {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
-#phpinfo a:hover {
-    color: rgb(255, 0, 0);
+.selecter .selecter-selected {
+    padding: 4px 8px;
 }
-
-#phpinfo table {
-    width: 100%;
-}
-
-#phpinfo td, #phpinfo th {
-    border: 1px solid rgb(192, 192, 192);
-    padding: 5px;
-}
-
-#phpinfo th {
-    padding: 5px;
-}
-
-#phpinfo h1 {
-    font-size: 1.3em;
-}
-
-#phpinfo h2 {
-    font-size: 1.2em;
-    text-transform: capitalize;
-    border-bottom: 1px solid rgb(255, 0, 0);
-}
-
-#phpinfo .p {
-    margin: 0;
-}
-
-#phpinfo .e {
-    background: rgb(204, 204, 204);
-    width: 30%;
-}
-
-#phpinfo .h {
-    background: rgb(221, 221, 221);
-}
-
-#phpinfo img {
-    display: none;
-}
-
 .input-group .selecter-selected {
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 4px 8px;
+}
+.input-group .selecter-selected:after {
+    top: 13px;
 }
 
-.form-control.tt-input {
+.form-control.tt-input,
+.dropdown-toggle.selectpicker {
     border-top-right-radius: 4px !important;
     border-bottom-right-radius: 4px !important;
 }
@@ -130,6 +103,10 @@ h5 {
     right: 1px;
 }
 
+.form-inline .form-group {
+    display: block !important;
+}
+
 .bootstrap-datetimepicker-widget.dropdown-menu {
     background: inherit;
     border: 1px solid rgb(204, 204, 204);
@@ -138,28 +115,32 @@ h5 {
 }
 
 .bootstrap-datetimepicker-widget td span:hover,
-.bootstrap-datetimepicker-widget td.day:hover, .bootstrap-datetimepicker-widget td.hour:hover, .bootstrap-datetimepicker-widget td.minute:hover, .bootstrap-datetimepicker-widget td.second:hover,
+.bootstrap-datetimepicker-widget .day:hover,
+.bootstrap-datetimepicker-widget .hour:hover,
+.bootstrap-datetimepicker-widget .minute:hover,
+.bootstrap-datetimepicker-widget .second:hover,
 .bootstrap-datetimepicker-widget thead tr:first-child th:hover {
     background: rgb(204, 204, 204);
 }
 
-.bootstrap-datetimepicker-widget td.old, .bootstrap-datetimepicker-widget td.new {
+.bootstrap-datetimepicker-widget .old,
+.bootstrap-datetimepicker-widget .new {
     color: rgb(119, 102, 102);
 }
 
 table.dataTable thead > tr > th {
-    padding-left: 8px;
+    padding-left: 5px;
     padding-right: 18px;
 }
 
-span.twitter-typeahead .tt-dropdown-menu {
+.twitter-typeahead .tt-dropdown-menu {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-top: 0;
 }
 
 @media (min-width: 769px) {
-    .footer dl.footer-nav:first-of-type {
+    .footer .footer-nav:first-of-type {
         width: 40%;
     }
 }
@@ -299,7 +280,7 @@ table.dataTable.dtr-inline.collapsed > tbody th:first-child:before {
     line-height: 21px;
     box-shadow: none;
     box-sizing: content-box;
-    font-family: 'Glyphicons Regular';
+    font-family: 'Glyphicons Regular', serif;
     content: '\e052';
     background-color: transparent;
 }
@@ -308,4 +289,34 @@ table.dataTable.dtr-inline.collapsed > tbody tr.parent td:first-child:before,
 table.dataTable.dtr-inline.collapsed > tbody tr.parent th:first-child:before {
     content: '\e053';
     background-color: transparent;
+}
+
+/* CHECKBOX RESPONSIVE */
+.checkbox {
+    margin: 1px;
+    padding: 0;
+    line-height: 21px;
+}
+
+.checkbox input[type=checkbox] {
+    position: inherit;
+    margin: 0 0 0 5px;
+    cursor: pointer;
+}
+
+.checkbox label {
+    line-height: 19px;
+}
+
+.checkbox input[type=checkbox]:checked + label:after {
+    font-family: 'Glyphicons Halflings', serif;
+    content: "\e013";
+    padding: 0 4px;
+    margin-top: -1px;
+}
+
+.checkbox label:after {
+    padding-left: 4px;
+    padding-top: 3px;
+    font-size: 9px;
 }

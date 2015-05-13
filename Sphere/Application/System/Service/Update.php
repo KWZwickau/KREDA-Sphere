@@ -1,8 +1,9 @@
 <?php
 namespace KREDA\Sphere\Application\System\Service;
 
-use KREDA\Sphere\Application\Demo\Demo;
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Graduation\Graduation;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Common\AbstractService;
@@ -34,12 +35,17 @@ class Update extends AbstractService
         $Protocol[] = Management::servicePerson()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Management::serviceAddress()->setupDatabaseSchema( $Simulate );
         /**
-         * Demo
-         */
-        $Protocol[] = Demo::serviceDemoService()->setupDatabaseSchema( $Simulate );
-        /**
          * Payload
          */
+        $Protocol[] = Graduation::serviceGrade()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Graduation::serviceScore()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Graduation::serviceWeight()->setupDatabaseSchema( $Simulate );
+
+        $Protocol[] = Management::serviceEducation()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Management::serviceCourse()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Management::serviceStudent()->setupDatabaseSchema( $Simulate );
+
+        $Protocol[] = Billing::serviceAccount()->setupDatabaseSchema( $Simulate );
 
         if (!$Simulate) {
             /**
@@ -55,6 +61,16 @@ class Update extends AbstractService
             /**
              * Payload
              */
+            Graduation::serviceGrade()->setupDatabaseContent();
+            Graduation::serviceScore()->setupDatabaseContent();
+            Graduation::serviceWeight()->setupDatabaseContent();
+
+            Management::serviceEducation()->setupDatabaseContent();
+            Management::serviceCourse()->setupDatabaseContent();
+            Management::serviceStudent()->setupDatabaseContent();
+
+            Billing::serviceAccount()->setupDatabaseContent();
+
         }
 
         return implode( $Protocol );

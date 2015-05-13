@@ -58,7 +58,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessRight', 'Route' )) {
             $Table->addColumn( 'Route', 'string' );
         }
-        $Table->addUniqueIndex( array( 'Route' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'Route' ) )) {
+            $Table->addUniqueIndex( array( 'Route' ) );
+        }
         return $Table;
     }
 
@@ -81,7 +83,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccessPrivilege', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
-        $Table->addUniqueIndex( array( 'Name' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'Name' ) )) {
+            $Table->addUniqueIndex( array( 'Name' ) );
+        }
         return $Table;
     }
 
@@ -104,7 +108,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccess', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
-        $Table->addUniqueIndex( array( 'Name' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'Name' ) )) {
+            $Table->addUniqueIndex( array( 'Name' ) );
+        }
         return $Table;
     }
 

@@ -2,10 +2,14 @@
 namespace KREDA\Sphere\Application\Management;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipList;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CogWheelsIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
+use KREDA\Sphere\Common\Wire\Data;
 use KREDA\Sphere\Common\Wire\Observer;
 use KREDA\Sphere\Common\Wire\Plug;
 
@@ -38,12 +42,9 @@ class Management extends Module\Education
                 new CogWheelsIcon() );
 
             Module\Common::registerApplication( $Configuration );
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Token' )) {
-                Module\Token::registerApplication( $Configuration );
-            }
-            if (Gatekeeper::serviceAccess()->checkIsValidAccess( '/Sphere/Management/Account' )) {
-                Module\Account::registerApplication( $Configuration );
-            }
+            Module\Period::registerApplication( $Configuration );
+            Module\Token::registerApplication( $Configuration );
+            Module\Account::registerApplication( $Configuration );
             Module\Person::registerApplication( $Configuration );
             Module\Relationship::registerApplication( $Configuration );
             Module\Education::registerApplication( $Configuration );
@@ -51,55 +52,7 @@ class Management extends Module\Education
         /**
          * Observer
          */
-
-        /**
-         * REST Service
-         */
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListInterest',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId() );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListStudent',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId() );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/REST/PersonListGuardian',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId() );
-    }
-
-    /**
-     * @param TblConsumer $tblConsumer
-     *
-     * @return Service\Person
-     */
-    public static function servicePerson( TblConsumer $tblConsumer = null )
-    {
-
-        return Service\Person::getApi( $tblConsumer );
-    }
-
-    /**
-     * @param TblConsumer $tblConsumer
-     *
-     * @return Service\Education
-     */
-    public static function serviceEducation( TblConsumer $tblConsumer = null )
-    {
-
-        return Service\Education::getApi( $tblConsumer );
-    }
-
-    /**
-     * @param TblConsumer $tblConsumer
-     *
-     * @return Service\Address
-     */
-    public static function serviceAddress( TblConsumer $tblConsumer = null )
-    {
-
-        return Service\Address::getApi( $tblConsumer );
+        Management::observerDestroyPerson()->plugWire( new Plug( __CLASS__, 'listenerDestroyPerson' ) );
     }
 
     /**
@@ -109,6 +62,124 @@ class Management extends Module\Education
     {
 
         return Observer::initWire( new Plug( __CLASS__, __FUNCTION__ ) );
+    }
+
+    /**
+     * @return Observer
+     */
+    public static function observerDestroyRelationship()
+    {
+
+        return Observer::initWire( new Plug( __CLASS__, __FUNCTION__ ) );
+    }
+
+    /**
+     * @return Service\Education
+     */
+    public static function serviceEducation()
+    {
+
+        return Service\Education::getApi();
+    }
+
+    /**
+     * @return Service\Address
+     */
+    public static function serviceAddress()
+    {
+
+        return Service\Address::getApi();
+    }
+
+    /**
+     * @return Service\Student
+     */
+    public static function serviceStudent()
+    {
+
+        return Service\Student::getApi();
+    }
+
+    /**
+     * @return Service\Course
+     */
+    public static function serviceCourse()
+    {
+
+        return Service\Course::getApi();
+    }
+
+    /**
+     * @param Data $Data
+     *
+     * @return bool|string
+     */
+    public static function listenerDestroyPerson( Data $Data )
+    {
+
+        /**
+         * Kill Relationship before Kill Person
+         */
+        $tblPerson = Management::servicePerson()->entityPersonById( $Data->getId() );
+        $tblRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson( $tblPerson );
+        if (!empty( $tblRelationshipList )) {
+            array_walk( $tblRelationshipList, function ( TblPersonRelationshipList &$R ) {
+
+                if (true !== ( $Effect = Management::servicePerson()->executeDestroyRelationship( $R ) )) {
+                    $R = $Effect;
+                } else {
+                    $R = false;
+                }
+            } );
+            $tblRelationshipList = array_filter( $tblRelationshipList );
+            if (!empty( $tblRelationshipList )) {
+                /**
+                 * Done, CRITICAL -> return wire
+                 */
+                $Return = new Danger( 'Die Person kann nicht gelöscht werden, da noch Beziehungen zu anderen Personen existieren' );
+                $Return .= implode( (array)$tblRelationshipList );
+                return $Return;
+            }
+        }
+        /**
+         * Clear AddressList before Kill Person
+         */
+        $tblPerson = Management::servicePerson()->entityPersonById( $Data->getId() );
+        $tblAddressList = Management::servicePerson()->entityAddressAllByPerson( $tblPerson );
+        if (!empty( $tblAddressList )) {
+            /** @noinspection PhpUnusedParameterInspection */
+            array_walk( $tblAddressList, function ( TblAddress &$tblAddress, $Index, TblPerson $tblPerson ) {
+
+                if (true !== ( $Effect = Management::servicePerson()->executeRemoveAddress( $tblPerson->getId(),
+                        $tblAddress->getId() ) )
+                ) {
+                    $tblAddress = $Effect;
+                } else {
+                    $tblAddress = false;
+                }
+            }, $tblPerson );
+            $tblAddressList = array_filter( $tblAddressList );
+            if (!empty( $tblAddressList )) {
+                /**
+                 * Done, CRITICAL -> return wire
+                 */
+                $Return = new Danger( 'Die Person kann nicht gelöscht werden, da noch Adressen existieren' );
+                return $Return;
+            }
+        }
+        /**
+         * Done, not critical -> return true
+         */
+        return true;
+    }
+
+    /**
+     * @return Service\Person
+     */
+    public static function servicePerson()
+    {
+
+        return Service\Person::getApi();
     }
 
     /**
@@ -122,15 +193,5 @@ class Management extends Module\Education
         $View->setTitle( 'Verwaltung' );
         $View->setMessage( 'Bitte wählen Sie ein Thema' );
         return $View;
-    }
-
-    /**
-     * @param int $tblPersonType
-     */
-    public static function restPersonListByType( $tblPersonType )
-    {
-
-        $tblPersonType = Management::servicePerson()->entityPersonTypeById( $tblPersonType );
-        print Management::servicePerson()->tablePersonAllByType( $tblPersonType );
     }
 }

@@ -1,6 +1,8 @@
 <?php
 namespace KREDA\Sphere\Common\Wire;
 
+use KREDA\Sphere\Common\Extension\Debugger;
+
 /**
  * Class Observer
  *
@@ -68,6 +70,7 @@ class Observer
     public function sendWire( Data $Data )
     {
 
+        $Debug = new Debugger();
         $Switchboard = self::$Listener[$this->getWire()];
         $Return = array();
         /** @var Plug $Plug */
@@ -76,6 +79,11 @@ class Observer
                 array( $Plug->getClass()->getName(), $Plug->getMethod()->getShortName() ),
                 array( $Data )
             );
+            if (true === $Return[$Plug->getWire()]) {
+                $Debug->addProtocol( $Plug->getClass()->getName().'::'.$Plug->getMethod()->getShortName().' >> OK' );
+            } else {
+                $Debug->addProtocol( $Plug->getClass()->getName().'::'.$Plug->getMethod()->getShortName().' >> FAILED' );
+            }
         }
         if (empty( $Return )) {
             return true;

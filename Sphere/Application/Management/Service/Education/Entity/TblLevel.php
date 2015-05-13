@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Management\Service\Education\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -20,15 +18,13 @@ class TblLevel extends AbstractEntity
     const ATTR_NAME = 'Name';
 
     /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
-    /**
      * @Column(type="string")
      */
     protected $Name;
+    /**
+     * @Column(type="string")
+     */
+    protected $Description;
 
     /**
      * @param string $Name
@@ -58,21 +54,20 @@ class TblLevel extends AbstractEntity
     }
 
     /**
-     * @return integer
+     * @return string
      */
-    public function getId()
+    public function getDescription()
     {
 
-        return $this->Id;
+        return $this->Description;
     }
 
     /**
-     * @param integer $Id
+     * @param string $Description
      */
-    public function setId( $Id )
+    public function setDescription( $Description )
     {
 
-        $this->Id = $Id;
+        $this->Description = $Description;
     }
-
 }

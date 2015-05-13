@@ -9,9 +9,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessPrivilege
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRight;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\Entity\TblAccessRightList;
 use KREDA\Sphere\Application\Gatekeeper\Service\Access\EntityAction;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class Access
@@ -29,7 +29,7 @@ class Access extends EntityAction
     /**
      * @throws \Exception
      */
-    public function __construct()
+    final public function __construct()
     {
 
         $this->setDatabaseHandler( 'Gatekeeper', 'Access' );
@@ -42,17 +42,29 @@ class Access extends EntityAction
         $Privilege = $this->actionCreatePrivilege( 'System:Administrator' );
         $Right = $this->actionCreateRight( 'Application:System' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Table/Protocol' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Update/Run' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Update/Log' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Update/Extract' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Update/Write' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/System/Update/Clean' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
         $this->actionAddAccessPrivilege( $Access, $Privilege );
 
-        $Access = $this->actionCreateAccess( 'Management:Administrator' );
-        $Privilege = $this->actionCreatePrivilege( 'Management:Administrator' );
-        $Right = $this->actionCreateRight( 'Application:Management' );
+        $Access = $this->actionCreateAccess( 'Gatekeeper:Administrator' );
+        $Privilege = $this->actionCreatePrivilege( 'Gatekeeper:Administrator' );
+        $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount/ChangePassword' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount/ChangeConsumer' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $this->actionAddAccessPrivilege( $Access, $Privilege );
-        $Right = $this->actionCreateRight( '/Sphere/Management/Token' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $Right = $this->actionCreateRight( '/Sphere/Management/Account' );
-        $this->actionAddPrivilegeRight( $Privilege, $Right );
 
         $Access = $this->actionCreateAccess( 'Gatekeeper:MyAccount' );
         $Privilege = $this->actionCreatePrivilege( 'Gatekeeper:MyAccount' );
@@ -62,15 +74,21 @@ class Access extends EntityAction
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $this->actionAddAccessPrivilege( $Access, $Privilege );
 
-        $Access = $this->actionCreateAccess( 'Gatekeeper:MyAccount:View' );
-        $Privilege = $this->actionCreatePrivilege( 'Gatekeeper:MyAccount:View' );
-        $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount' );
+        $Access = $this->actionCreateAccess( 'Management:Administrator' );
+        $Privilege = $this->actionCreatePrivilege( 'Management:Administrator' );
+        $Right = $this->actionCreateRight( 'Application:Management' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
-        $this->actionAddAccessPrivilege( $Access, $Privilege );
-
-        $Access = $this->actionCreateAccess( 'Gatekeeper:MyAccount:System' );
-        $Privilege = $this->actionCreatePrivilege( 'Gatekeeper:MyAccount:System' );
-        $Right = $this->actionCreateRight( '/Sphere/Gatekeeper/MyAccount/ChangeConsumer' );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Token' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Account' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonInterest' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonStudent' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonGuardian' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonRelationship' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $this->actionAddAccessPrivilege( $Access, $Privilege );
     }
@@ -87,12 +105,12 @@ class Access extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param AbstractType $View
      * @param null|string  $ApplicationRoute
      *
      * @return TblAccessRight
      */
-    public function executeCreateApplicationRoute( AbstractForm &$View = null, $ApplicationRoute )
+    public function executeCreateApplicationRoute( AbstractType &$View = null, $ApplicationRoute )
     {
 
         if (null !== $ApplicationRoute && empty( $ApplicationRoute )) {
@@ -129,12 +147,12 @@ class Access extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
-     * @param string       $AccessName
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
+     * @param string                                          $AccessName
      *
-     * @return AbstractForm|Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|Redirect
      */
-    public function executeCreateAccess( AbstractForm &$View, $AccessName )
+    public function executeCreateAccess( AbstractType &$View, $AccessName )
     {
 
         if (null !== $AccessName && empty( $AccessName )) {
@@ -149,12 +167,12 @@ class Access extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
-     * @param string       $PrivilegeName
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
+     * @param string                                          $PrivilegeName
      *
-     * @return AbstractForm|Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|Redirect
      */
-    public function executeCreatePrivilege( AbstractForm &$View, $PrivilegeName )
+    public function executeCreatePrivilege( AbstractType &$View, $PrivilegeName )
     {
 
         if (null !== $PrivilegeName && empty( $PrivilegeName )) {
@@ -169,12 +187,12 @@ class Access extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param AbstractType $View
      * @param string       $RightName
      *
-     * @return AbstractForm|Redirect
+     * @return AbstractType|Redirect
      */
-    public function executeCreateRight( AbstractForm &$View, $RightName )
+    public function executeCreateRight( AbstractType &$View, $RightName )
     {
 
         if (null !== $RightName && empty( $RightName )) {
@@ -217,13 +235,22 @@ class Access extends EntityAction
                             $tblPrivilegeList = $this->entityPrivilegeAllByAccess( $tblAccess );
                             foreach ((array)$tblPrivilegeList as $tblPrivilege) {
                                 $tblRightList = $this->entityRightAllByPrivilege( $tblPrivilege );
-                                /** @var TblAccessRight $tblRight */
-                                foreach ((array)$tblRightList as $tblRight) {
-                                    if ($tblRight->getId() == $Right->getId()) {
-                                        // Access valid -> Access granted
-                                        self::$AccessCache[] = $Route;
-                                        return true;
-                                    }
+                                /** @noinspection PhpUnusedParameterInspection */
+                                array_walk( $tblRightList,
+                                    function ( TblAccessRight &$tblRight, $Index, TblAccessRight $Right ) {
+
+                                        if ($tblRight->getId() == $Right->getId()) {
+                                            // Access valid -> Access granted
+                                            $tblRight = true;
+                                        } else {
+                                            // Right not valid -> Access denied
+                                            $tblRight = false;
+                                        }
+                                    }, $Right );
+                                $tblRightList = array_filter( $tblRightList );
+                                if (!empty( $tblRightList )) {
+                                    self::$AccessCache[] = $Route;
+                                    return true;
                                 }
                             }
                         }

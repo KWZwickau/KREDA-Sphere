@@ -16,7 +16,7 @@ abstract class AbstractActionTest extends \PHPUnit_Framework_TestCase implements
     {
 
         $Name = 'get(ClientServiceRoute|EntityManager)|schema(Migration|Table(Create|AddForeignKey))';
-        $Prefix = 'getTable|action(Create|Destroy|Add|Remove|Change)|entity';
+        $Prefix = 'getTable|action(Create|Destroy|Add|Remove|Change)|entity|list|count|table';
         $this->checkNamePattern( 'KREDA\Sphere\Application'.$Action, '!^(('.$Name.')|('.$Prefix.')[a-zA-Z]+)$!',
             \ReflectionMethod::IS_PROTECTED );
     }

@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Graduation\Service\Score\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -21,12 +19,6 @@ class TblScoreGroup extends AbstractEntity
     const ATTR_ROUND = 'Round';
     const ATTR_MULTIPLIER = 'Multiplier';
 
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
     /**
      * @Column(type="string")
      */
@@ -52,7 +44,7 @@ class TblScoreGroup extends AbstractEntity
     /**
      * @return boolean
      */
-    public function getRound()
+    public function hasRound()
     {
 
         return $this->Round;
@@ -83,24 +75,6 @@ class TblScoreGroup extends AbstractEntity
     {
 
         $this->Multiplier = $Multiplier;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 
     /**

@@ -69,7 +69,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountRole', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
-        $Table->addUniqueIndex( array( 'Name' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'Name' ) )) {
+            $Table->addUniqueIndex( array( 'Name' ) );
+        }
         return $Table;
     }
 
@@ -93,7 +95,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountType', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
-        $Table->addUniqueIndex( array( 'Name' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'Name' ) )) {
+            $Table->addUniqueIndex( array( 'Name' ) );
+        }
         return $Table;
     }
 
@@ -125,11 +129,15 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Username' )) {
             $Table->addColumn( 'Username', 'string' );
         }
-        $Table->addUniqueIndex( array( 'Username' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'Username' ) )) {
+            $Table->addUniqueIndex( array( 'Username' ) );
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Password' )) {
             $Table->addColumn( 'Password', 'string' );
         }
-        $Table->addIndex( array( 'Username', 'Password' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'Username', 'Password' ) )) {
+            $Table->addIndex( array( 'Username', 'Password' ) );
+        }
         $this->schemaTableAddForeignKey( $Table, $tblAccountType );
         $this->schemaTableAddForeignKey( $Table, $tblAccountRole );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'serviceGatekeeper_Token' )) {
@@ -170,7 +178,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountSession', 'Session' )) {
             $Table->addColumn( 'Session', 'string' );
         }
-        $Table->addIndex( array( 'Session' ) );
+        if (!$this->getDatabaseHandler()->hasIndex( $Table, array( 'Session' ) )) {
+            $Table->addIndex( array( 'Session' ) );
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountSession', 'Timeout' )) {
             $Table->addColumn( 'Timeout', 'integer' );
         }

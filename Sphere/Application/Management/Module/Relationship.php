@@ -25,9 +25,11 @@ class Relationship extends Person
         )
             ->setParameterDefault( 'tblRelationship', null )
             ->setParameterDefault( 'tblRelationshipType', null );
-
+        /**
+         * REST Service
+         */
         self::registerClientRoute( $Configuration,
-            '/Sphere/Management/REST/PersonListRelationship', __CLASS__.'::restPersonListRelationship'
+            '/Sphere/Management/Table/PersonRelationship', __CLASS__.'::restPersonListRelationship'
         );
 
     }
@@ -45,14 +47,15 @@ class Relationship extends Person
      * @param int      $tblPerson
      * @param null|int $tblRelationship
      * @param null|int $tblRelationshipType
+     * @param bool|int $Remove
      *
      * @return Stage
      */
-    public static function frontendRelationship( $tblPerson, $tblRelationship, $tblRelationshipType )
+    public static function frontendRelationship( $tblPerson, $tblRelationship, $tblRelationshipType, $Remove = false )
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageRelationship( $tblPerson, $tblRelationship, $tblRelationshipType );
+        return Frontend::stageRelationship( $tblPerson, $tblRelationship, $tblRelationshipType, $Remove );
     }
 }

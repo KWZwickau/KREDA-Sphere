@@ -9,9 +9,9 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Token\EntityAction;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\ComponentException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\BadOTPException;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Hardware\YubiKey\Exception\Repository\ReplayedOTPException;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use KREDA\Sphere\Common\Frontend\Redirect;
 
 /**
  * Class Token
@@ -27,7 +27,7 @@ class Token extends EntityAction
     /**
      * @throws \Exception
      */
-    public function __construct()
+    final public function __construct()
     {
 
         $this->setDatabaseHandler( 'Gatekeeper', 'Token' );
@@ -42,9 +42,6 @@ class Token extends EntityAction
         $tblToken = $this->actionCreateToken( 'ccccccdilkui' );
         Gatekeeper::serviceAccount()->executeChangeToken( $tblToken,
             Gatekeeper::serviceAccount()->entityAccountByUsername( 'System' )
-        );
-        Gatekeeper::serviceAccount()->executeChangeToken( $tblToken,
-            Gatekeeper::serviceAccount()->entityAccountByUsername( 'DS-Admin' )
         );
     }
 
@@ -98,13 +95,13 @@ class Token extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      * @param string       $CredentialKey
      * @param TblConsumer  $tblConsumer
      *
      * @return bool|TblToken
      */
-    public function executeCreateToken( AbstractForm $View, $CredentialKey, TblConsumer $tblConsumer = null )
+    public function executeCreateToken( AbstractType $View, $CredentialKey, TblConsumer $tblConsumer = null )
     {
 
         try {

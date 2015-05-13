@@ -2059,7 +2059,6 @@
                     m = 0;
                     for (var q = g.length, p; m < q; m++)if (p = g[m]) {
                         for (; (p = p.previousSibling) && p.nodeType !== 1;) {
-                            ;
                         }
                         g[m] = l || p && p.nodeName.toLowerCase() === h ? p || false : p === h
                     }

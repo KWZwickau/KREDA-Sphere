@@ -25,6 +25,16 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return bool|TblGradeType[]
+     */
+    protected function entityGradeTypeAll()
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblGradeType' )->findAll();
+        return ( empty( $EntityList ) ? false : $EntityList );
+    }
+
+    /**
      * @param string $Acronym
      *
      * @return bool|TblGradeType
@@ -53,6 +63,7 @@ abstract class EntityAction extends EntitySchema
         if (null === $Entity) {
             $Entity = new TblGradeType( $Acronym );
             $Entity->setName( $Name );
+            $Entity->setActiveState( true );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );

@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Management\Service\Address\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Common\AbstractEntity;
@@ -23,12 +21,7 @@ class TblAddress extends AbstractEntity
     const ATTR_POST_OFFICE_BOX = 'PostOfficeBox';
     const ATTR_TBL_ADDRESS_CITY = 'tblAddressCity';
     const ATTR_TBL_ADDRESS_STATE = 'tblAddressState';
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
+
     /**
      * @Column(type="string")
      */
@@ -105,30 +98,16 @@ class TblAddress extends AbstractEntity
     }
 
     /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
-    }
-
-    /**
      * @return bool|TblAddressCity
      */
     public function getTblAddressCity()
     {
 
-        return Management::serviceAddress()->entityAddressCityById( $this->tblAddressCity );
+        if (null === $this->tblAddressCity) {
+            return false;
+        } else {
+            return Management::serviceAddress()->entityAddressCityById( $this->tblAddressCity );
+        }
     }
 
     /**
@@ -146,7 +125,11 @@ class TblAddress extends AbstractEntity
     public function getTblAddressState()
     {
 
-        return Management::serviceAddress()->entityAddressStateById( $this->tblAddressState );
+        if (null === $this->tblAddressState) {
+            return false;
+        } else {
+            return Management::serviceAddress()->entityAddressStateById( $this->tblAddressState );
+        }
     }
 
     /**

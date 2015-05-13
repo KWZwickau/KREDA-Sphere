@@ -67,27 +67,21 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param string $Suffix
      * @param string          $Name
-     * @param string          $DatabaseSuffix
      * @param null|TblAddress $TblAddress
-     * @param string          $TableSuffix
      *
      * @return TblConsumer
      */
-    protected function actionCreateConsumer( $Name, $DatabaseSuffix, TblAddress $TblAddress = null, $TableSuffix = '' )
+    protected function actionCreateConsumer( $Suffix, $Name, TblAddress $TblAddress = null )
     {
-
-        if (empty( $TableSuffix )) {
-            $TableSuffix = $DatabaseSuffix;
-        }
 
         $Manager = $this->getEntityManager();
         $Entity = $Manager->getEntity( 'TblConsumer' )
-            ->findOneBy( array( TblConsumer::ATTR_NAME => $Name ) );
+            ->findOneBy( array( TblConsumer::ATTR_SUFFIX => $Suffix ) );
         if (null === $Entity) {
-            $Entity = new TblConsumer( $Name );
-            $Entity->setDatabaseSuffix( $DatabaseSuffix );
-            $Entity->setTableSuffix( $TableSuffix );
+            $Entity = new TblConsumer( $Suffix );
+            $Entity->setName( $Name );
             $Entity->setServiceManagementAddress( $TblAddress );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
@@ -117,7 +111,7 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param TblConsumer    $tblConsumer
+     * @param TblConsumer $tblConsumer
      * @param TblConsumerType $tblConsumerType
      *
      * @return TblConsumerTypeList
@@ -139,7 +133,7 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param TblConsumer    $tblConsumer
+     * @param TblConsumer $tblConsumer
      * @param TblConsumerType $tblConsumerType
      *
      * @return bool|TblConsumer
@@ -156,7 +150,7 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param TblConsumer    $tblConsumer
+     * @param TblConsumer $tblConsumer
      * @param TblConsumerType $tblConsumerType
      *
      * @return bool

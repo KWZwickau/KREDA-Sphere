@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
@@ -22,12 +20,6 @@ class TblToken extends AbstractEntity
     const ATTR_IDENTIFIER = 'Identifier';
     const ATTR_SERVICE_GATEKEEPER_CONSUMER = 'serviceGatekeeper_Consumer';
 
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
     /**
      * @Column(type="string")
      */
@@ -74,7 +66,10 @@ class TblToken extends AbstractEntity
     public function getSerial()
     {
 
-        return $this->Serial;
+        if ($this->Serial === null) {
+            return null;
+        }
+        return str_pad( $this->Serial, 8, '0', STR_PAD_LEFT );
     }
 
     /**
@@ -106,23 +101,5 @@ class TblToken extends AbstractEntity
     {
 
         $this->serviceGatekeeper_Consumer = ( null === $tblConsumer ? null : $tblConsumer->getId() );
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 }

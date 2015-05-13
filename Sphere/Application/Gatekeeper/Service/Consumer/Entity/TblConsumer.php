@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
@@ -29,12 +27,6 @@ class TblConsumer extends AbstractEntity
      */
     public $serviceManagement_Address;
     /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
-    /**
      * @Column(type="string")
      */
     protected $Name;
@@ -48,12 +40,13 @@ class TblConsumer extends AbstractEntity
     protected $DatabaseSuffix;
 
     /**
-     * @param string $Name
+     * @param string $Suffix
      */
-    function __construct( $Name )
+    function __construct( $Suffix )
     {
 
-        $this->Name = $Name;
+        $this->TableSuffix = $Suffix;
+        $this->DatabaseSuffix = $Suffix;
     }
 
     /**
@@ -112,24 +105,6 @@ class TblConsumer extends AbstractEntity
     {
 
         $this->serviceManagement_Address = ( null === $tblAddress ? null : $tblAddress->getId() );
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-
-        return $this->Id;
-    }
-
-    /**
-     * @param integer $Id
-     */
-    public function setId( $Id )
-    {
-
-        $this->Id = $Id;
     }
 
     /**

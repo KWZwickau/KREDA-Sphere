@@ -13,11 +13,11 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\EntityAction;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Gatekeeper\Service\Token\Entity\TblToken;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
-use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Common\Frontend\Form\AbstractForm;
-use KREDA\Sphere\Common\Frontend\Redirect;
 use KREDA\Sphere\Common\Wire\Data;
+use KREDA\Sphere\Common\Wire\Effect;
 
 /**
  * Class Account
@@ -39,7 +39,7 @@ class Account extends EntityAction
     /**
      * @throws \Exception
      */
-    public function __construct()
+    final public function __construct()
     {
 
         $this->setDatabaseHandler( 'Gatekeeper', 'Account' );
@@ -54,43 +54,49 @@ class Account extends EntityAction
         $tblAccountRole = $this->actionCreateAccountRole( 'System' );
         $tblAccountType = $this->actionCreateAccountType( 'System' );
         $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'DS' );
-        $this->actionCreateAccount( 'System', 'System', $tblAccountType, $tblAccountRole, null, null, $tblConsumer );
+        $this->actionCreateAccount( 'System', 'System',
+            $tblAccountType, $tblAccountRole, null, null, $tblConsumer
+        );
 
-        $this->actionAddRoleAccess( $tblAccountRole,
-            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount' )
-        );
-        $this->actionAddRoleAccess( $tblAccountRole,
-            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount:System' )
-        );
         $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'System:Administrator' )
         );
         $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:Administrator' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'Management:Administrator' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Graduation:Administrator' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Billing:Administrator' )
         );
 
         /**
          * Create Consumer-Admin
          */
-        $tblAccountRole = $this->actionCreateAccountRole( 'DS-Admin' );
-        $tblAccountType = $this->actionCreateAccountType( 'System' );
-        $tblConsumer = Gatekeeper::serviceConsumer()->entityConsumerBySuffix( 'DS' );
-        $this->actionCreateAccount( 'DS-Admin', '12345', $tblAccountType, $tblAccountRole, null, null,
-            $tblConsumer );
-
+        $tblAccountRole = $this->actionCreateAccountRole( 'Administrator' );
         $this->actionAddRoleAccess( $tblAccountRole,
-            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount:View' )
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Gatekeeper:MyAccount' )
         );
         $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'Management:Administrator' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Graduation:Administrator' )
+        );
+        $this->actionAddRoleAccess( $tblAccountRole,
+            Gatekeeper::serviceAccess()->entityAccessByName( 'Billing:Administrator' )
         );
 
         /**
          * Create Primary Login-Type
          */
-        $this->actionCreateAccountType( 'Schüler' );
-        $this->actionCreateAccountType( 'Lehrer' );
         $this->actionCreateAccountType( 'Verwaltung' );
+        $this->actionCreateAccountType( 'Lehrer' );
+        $this->actionCreateAccountType( 'Schüler' );
     }
 
     /**
@@ -108,46 +114,21 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm   $View
+     * @param AbstractType $View
      * @param string         $CredentialName
      * @param string         $CredentialLock
      * @param string         $CredentialKey
      * @param TblAccountType $tblAccountType
      *
-     * @return AbstractForm|Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeActionSignInWithToken(
-        AbstractForm &$View,
+        AbstractType &$View,
         $CredentialName,
         $CredentialLock,
         $CredentialKey,
         TblAccountType $tblAccountType
     ) {
-
-        /**
-         * Demo-Admin
-         */
-        if ($CredentialName == 'DS-Admin' && $CredentialLock == '12345' && $CredentialKey == 'demo') {
-            $tblAccount = $this->entityAccountByCredential( $CredentialName, $CredentialLock, $tblAccountType );
-            if (false === $tblAccount) {
-                if (null !== $CredentialName && empty( $CredentialName )) {
-                    $View->setError( 'CredentialName', 'Bitte geben Sie einen gültigen Benutzernamen ein' );
-                }
-                if (null !== $CredentialName && !empty( $CredentialName )) {
-                    $View->setError( 'CredentialName', 'Bitte geben Sie einen gültigen Benutzernamen ein' );
-                }
-                if (null !== $CredentialLock && empty( $CredentialLock )) {
-                    $View->setError( 'CredentialLock', 'Bitte geben Sie ein Passwort ein' );
-                }
-                if (null !== $CredentialLock && !empty( $CredentialLock )) {
-                    $View->setError( 'CredentialLock', 'Bitte geben Sie ein Passwort ein' );
-                }
-            } else {
-                session_regenerate_id();
-                Gatekeeper::serviceAccount()->actionCreateSession( $tblAccount, session_id() );
-                return new Redirect( '/Sphere', 1 );
-            }
-        }
 
         switch ($this->checkIsValidCredential( $CredentialName, $CredentialLock, $CredentialKey, $tblAccountType )) {
             case Account::API_SIGN_IN_ERROR_CREDENTIAL:
@@ -224,15 +205,15 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm   $View
+     * @param AbstractType $View
      * @param string         $CredentialName
      * @param string         $CredentialLock
      * @param TblAccountType $tblAccountType
      *
-     * @return AbstractForm|Redirect
+     * @return AbstractType|\KREDA\Sphere\Client\Frontend\Redirect
      */
     public function executeActionSignIn(
-        AbstractForm &$View,
+        AbstractType &$View,
         $CredentialName,
         $CredentialLock,
         TblAccountType $tblAccountType
@@ -264,12 +245,12 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param AbstractType $View
      * @param integer      $tblConsumer
      *
-     * @return AbstractForm|Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|Redirect
      */
-    public function executeChangeConsumer( AbstractForm &$View, $tblConsumer )
+    public function executeChangeConsumer( AbstractType &$View, $tblConsumer )
     {
 
         if (null !== $tblConsumer && empty( $tblConsumer )) {
@@ -289,12 +270,12 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param AbstractType $View
      * @param string       $RoleName
      *
-     * @return AbstractForm|Redirect
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType|Redirect
      */
-    public function executeCreateRole( AbstractForm &$View, $RoleName )
+    public function executeCreateRole( AbstractType &$View, $RoleName )
     {
 
         if (null !== $RoleName && empty( $RoleName )) {
@@ -309,13 +290,13 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm $View
+     * @param AbstractType $View
      * @param string       $CredentialLock
      * @param string       $CredentialLockSafety
      *
-     * @return AbstractForm|Redirect
+     * @return AbstractType|Redirect
      */
-    public function executeChangePassword( AbstractForm &$View, $CredentialLock, $CredentialLockSafety )
+    public function executeChangePassword( AbstractType &$View, $CredentialLock, $CredentialLockSafety )
     {
 
         if (null !== $CredentialLock && empty( $CredentialLock )) {
@@ -482,17 +463,6 @@ class Account extends EntityAction
     }
 
     /**
-     * @param integer $Id
-     *
-     * @return bool|TblAccountType
-     */
-    public function entityAccountTypeById( $Id )
-    {
-
-        return parent::entityAccountTypeById( $Id );
-    }
-
-    /**
      * @param string $Name
      *
      * @return bool|TblAccountType
@@ -501,17 +471,6 @@ class Account extends EntityAction
     {
 
         return parent::entityAccountTypeByName( $Name );
-    }
-
-    /**
-     * @param integer $Id
-     *
-     * @return bool|TblAccountRole
-     */
-    public function entityAccountRoleById( $Id )
-    {
-
-        return parent::entityAccountRoleById( $Id );
     }
 
     /**
@@ -555,7 +514,7 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractForm   $View
+     * @param AbstractType   $View
      * @param string         $Username
      * @param string         $Password
      * @param string         $PasswordSafety
@@ -566,7 +525,7 @@ class Account extends EntityAction
      * @return TblAccount
      */
     public function executeCreateAccount(
-        AbstractForm &$View,
+        AbstractType &$View,
         $Username,
         $Password,
         $PasswordSafety,
@@ -585,7 +544,7 @@ class Account extends EntityAction
             $View->setError( 'Account[Name]', 'Bitte geben Sie einen Benutzernamen an' );
             $Error = true;
         } else {
-            if (preg_match( '!^[a-z0-9]+$!is', $Username )) {
+            if (preg_match( '!^[a-z0-9öäüß]+$!is', $Username )) {
                 $Username = $tblConsumer->getDatabaseSuffix().'-'.$Username;
                 if (!Gatekeeper::serviceAccount()->entityAccountByUsername( $Username )) {
                     $View->setSuccess( 'Account[Name]', '' );
@@ -602,10 +561,10 @@ class Account extends EntityAction
             $View->setError( 'Account[Password]', 'Bitte geben Sie ein Passwort an' );
             $Error = true;
         } else {
-            if (strlen( $Password ) >= 5) {
+            if (strlen( $Password ) >= 8) {
                 $View->setSuccess( 'Account[Password]', '' );
             } else {
-                $View->setError( 'Account[Password]', 'Das Passwort muss mindestens 5 Zeichen lang sein' );
+                $View->setError( 'Account[Password]', 'Das Passwort muss mindestens 8 Zeichen lang sein' );
                 $Error = true;
             }
         }
@@ -647,34 +606,134 @@ class Account extends EntityAction
     }
 
     /**
+     * @param AbstractType $View
+     * @param TblAccount   $tblAccount
+     * @param null|array   $Account
+     *
+     * @return AbstractType|Redirect
+     */
+    public function executeChangeAccount(
+        AbstractType &$View,
+        TblAccount $tblAccount,
+        $Account
+    ) {
+
+        if (null === $Account) {
+            return $View;
+        }
+
+        $Password = trim( $Account['Password'] );
+        $PasswordSafety = trim( $Account['PasswordSafety'] );
+
+        $Error = false;
+
+        if (!empty( $Password ) && !empty( $PasswordSafety )) {
+            if (strlen( $Password ) >= 8) {
+                $View->setSuccess( 'Account[Password]', '' );
+            } else {
+                $View->setError( 'Account[Password]', 'Das Passwort muss mindestens 8 Zeichen lang sein' );
+                $Error = true;
+            }
+            if (!empty( $Password ) && empty( $PasswordSafety )) {
+                $View->setError( 'Account[PasswordSafety]', 'Bitte geben Sie ein Passwort an' );
+                $Error = true;
+            }
+            if ($Password != $PasswordSafety) {
+                $View->setError( 'Account[Password]', '' );
+                $View->setError( 'Account[PasswordSafety]', 'Die beiden Passworte stimmen nicht überein' );
+                $Error = true;
+            } else {
+                if (!empty( $Password ) && !empty( $PasswordSafety )) {
+                    $View->setSuccess( 'Account[PasswordSafety]', '' );
+                } else {
+                    $View->setError( 'Account[PasswordSafety]', '' );
+                }
+            }
+        }
+        $tblAccountType = Gatekeeper::serviceAccount()->entityAccountTypeById( $Account['Type'] );
+        $tblAccountRole = Gatekeeper::serviceAccount()->entityAccountRoleById( $Account['Role'] );
+        if ($Account['Token']) {
+            $tblToken = Gatekeeper::serviceToken()->entityTokenById( $Account['Token'] );
+        } else {
+            $tblToken = null;
+        }
+
+        if (!$Error) {
+            if (!empty( $Password )) {
+                parent::actionChangePassword( $Password, $tblAccount );
+            }
+            parent::actionChangeToken( $tblToken, $tblAccount );
+            parent::actionChangeAccountRole( $tblAccountRole, $tblAccount );
+            parent::actionChangeAccountType( $tblAccountType, $tblAccount );
+
+            return new Redirect( '/Sphere/Management/Account', 0 );
+        }
+
+        return $View;
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccountType
+     */
+    public function entityAccountTypeById( $Id )
+    {
+
+        return parent::entityAccountTypeById( $Id );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAccountRole
+     */
+    public function entityAccountRoleById( $Id )
+    {
+
+        return parent::entityAccountRoleById( $Id );
+    }
+
+    /**
      * @param TblAccount $tblAccount
      *
-     * @return bool|Stage
+     * @return bool|Effect
      */
     public function executeDestroyAccount( TblAccount $tblAccount )
     {
 
-        $Wire = Gatekeeper::observerDestroyAccount()->sendWire( new Data( $tblAccount->getId() ) );
-        if (true === $Wire) {
+        $Effect = Gatekeeper::observerDestroyAccount()->sendWire( new Data( $tblAccount->getId() ) );
+        if (true === $Effect) {
             return $this->actionDestroyAccount( $tblAccount );
         } else {
-            return $Wire;
+            return $Effect;
         }
     }
 
     /**
      * @param TblAccountSession $tblAccountSession
      *
-     * @return bool|Stage
+     * @return bool|Effect
      */
     public function executeDestroySession( TblAccountSession $tblAccountSession )
     {
 
-        $Wire = Gatekeeper::observerDestroySession()->sendWire( new Data( $tblAccountSession->getId() ) );
-        if (true === $Wire) {
+        $Effect = Gatekeeper::observerDestroySession()->sendWire( new Data( $tblAccountSession->getId() ) );
+        if (true === $Effect) {
             return $this->actionDestroySession( $tblAccountSession->getSession() );
         } else {
-            return $Wire;
+            return $Effect;
         }
+    }
+
+    /**
+     * @param TblPerson $tblPerson
+     *
+     * @return bool|TblAccount[]
+     */
+    public function entityAccountAllByPerson( TblPerson $tblPerson )
+    {
+
+        return parent::entityAccountAllByPerson( $tblPerson );
     }
 }

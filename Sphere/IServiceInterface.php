@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere;
 
-use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Common\Database\Handler;
 
 /**
@@ -13,11 +12,9 @@ interface IServiceInterface
 {
 
     /**
-     * @param null|TblConsumer $tblConsumer
-     *
      * @return static Service Instance
      */
-    public static function getApi( TblConsumer $tblConsumer = null );
+    public static function getApi();
 
     /**
      * @param bool $Simulate

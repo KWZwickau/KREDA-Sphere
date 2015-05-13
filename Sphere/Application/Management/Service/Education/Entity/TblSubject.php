@@ -4,8 +4,6 @@ namespace KREDA\Sphere\Application\Management\Service\Education\Entity;
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -19,12 +17,8 @@ class TblSubject extends AbstractEntity
 
     const ATTR_NAME = 'Name';
     const ATTR_ACRONYM = 'Acronym';
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="bigint")
-     */
-    protected $Id;
+    const ATTR_ACTIVE_STATE = 'ActiveState';
+
     /**
      * @Column(type="string")
      */
@@ -33,6 +27,10 @@ class TblSubject extends AbstractEntity
      * @Column(type="string")
      */
     protected $Name;
+    /**
+     * @Column(type="boolean")
+     */
+    protected $ActiveState = true;
 
     /**
      * @param string $Acronym
@@ -80,21 +78,20 @@ class TblSubject extends AbstractEntity
     }
 
     /**
-     * @return integer
+     * @return boolean
      */
-    public function getId()
+    public function getActiveState()
     {
 
-        return $this->Id;
+        return $this->ActiveState;
     }
 
     /**
-     * @param integer $Id
+     * @param boolean $ActiveState
      */
-    public function setId( $Id )
+    public function setActiveState( $ActiveState )
     {
 
-        $this->Id = $Id;
+        $this->ActiveState = $ActiveState;
     }
-
 }
