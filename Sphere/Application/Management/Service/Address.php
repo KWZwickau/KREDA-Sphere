@@ -1,13 +1,16 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressState;
 use KREDA\Sphere\Application\Management\Service\Address\EntityAction;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
+use MOC\V\Core\HttpKernel\HttpKernel;
 
 /**
  * Class Address
@@ -94,17 +97,6 @@ class Address extends EntityAction
     }
 
     /**
-     * @param integer $Id
-     *
-     * @return bool|TblAddressState
-     */
-    public function entityAddressStateById( $Id )
-    {
-
-        return parent::entityAddressStateById( $Id );
-    }
-
-    /**
      * @return bool|TblAddressState[]
      */
     public function entityAddressStateAll()
@@ -174,6 +166,85 @@ class Address extends EntityAction
     {
 
         return parent::actionCreateAddressCity( $Code, $Name, $District );
+    }
+
+    /**
+     * @param AbstractType $Form
+     * @param int|array    $State
+     * @param array        $City
+     * @param array        $Street
+     *
+     * @param TblPerson    $tblPerson
+     *
+     * @return AbstractType|Redirect
+     */
+    public function executeCreateFullAddress( AbstractType &$Form, $State, $City, $Street, TblPerson $tblPerson = null )
+    {
+
+        if (null === $State
+            && null === $City
+            && null === $Street
+        ) {
+            return $Form;
+        }
+        $Error = false;
+
+        if (is_numeric( $State )) {
+            $State = array( 'Name' => Management::serviceAddress()->entityAddressStateById( $State )->getName() );
+        }
+
+        if (!preg_match( '!^[0-9]{5}$!is', $City['Code'] )) {
+            $Form->setError( 'City[Code]', 'Bitte geben Sie eine fünfstellige Postleitzahl ein' );
+            $Error = true;
+        } else {
+            $Form->setSuccess( 'City[Code]' );
+        }
+        if (empty( $City['Name'] )) {
+            $Form->setError( 'City[Name]', 'Bitte geben Sie einen Namen ein' );
+            $Error = true;
+        } else {
+            $Form->setSuccess( 'City[Name]' );
+        }
+
+        if (empty( $Street['Name'] )) {
+            $Form->setError( 'Street[Name]', 'Bitte geben Sie einen Namen ein' );
+            $Error = true;
+        } else {
+            $Form->setSuccess( 'Street[Name]' );
+        }
+
+        if (!isset( $City['District'] ) || empty( $City['District'] )) {
+            $City['District'] = null;
+        }
+        if (!isset( $Street['Box'] ) || empty( $Street['Box'] )) {
+            $Street['Box'] = null;
+        }
+
+        if (!$Error) {
+            $tblAddress = $this->actionCreateFullAddress(
+                $State['Name'],
+                $City['Code'], $City['Name'], $City['District'],
+                $Street['Name'], $Street['Number'],
+                $Street['Box']
+            );
+            var_dump( $tblAddress );
+            if (null !== $tblPerson) {
+                Management::servicePerson()->executeAddAddress( $tblPerson->getId(), $tblAddress->getId() );
+            }
+            return new Redirect( HttpKernel::getRequest()->getUrl(), 2 );
+        }
+        return $Form;
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblAddressState
+     */
+    public function entityAddressStateById( $Id )
+    {
+
+        return parent::entityAddressStateById( $Id );
     }
 
     /**
