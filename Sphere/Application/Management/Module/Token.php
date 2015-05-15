@@ -119,7 +119,6 @@ class Token extends Period
             ( empty( $tblTokenList )
                 ? new Warning( 'Keine Schlüssel verfügbar' )
                 : new TableData( $tblTokenList, null, array(
-                    'Id'          => 'Schlüssel-Id',
                     'Serial'      => 'Serien-Nummer',
                     'Identifier'  => 'Schlüssel-Nummer',
                     'AccountList' => 'verknüpfte Benutzerkonten'

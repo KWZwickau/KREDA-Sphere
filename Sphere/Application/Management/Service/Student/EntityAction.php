@@ -187,4 +187,30 @@ abstract class EntityAction extends EntitySchema
         }
         return false;
     }
+
+    /**
+     * @param TblStudent $tblStudent
+     * @param TblPerson  $tblPerson
+     *
+     * @return bool
+     */
+    protected function actionChangePerson(
+        TblStudent $tblStudent,
+        TblPerson $tblPerson
+    ) {
+
+        $Manager = $this->getEntityManager();
+        /** @var TblStudent $Entity */
+        $Entity = $Manager->getEntityById( 'TblStudent', $tblStudent->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setServiceManagementPerson( $tblPerson );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
 }

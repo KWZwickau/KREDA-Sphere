@@ -79,6 +79,47 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblTerm   $tblTerm
+     * @param string    $Name
+     * @param string    $FirstDateFrom
+     * @param string    $FirstDateTo
+     * @param string    $SecondDateFrom
+     * @param string    $SecondDateTo
+     * @param TblCourse $tblCourse
+     *
+     * @return bool
+     */
+    protected function actionChangeTerm(
+        TblTerm $tblTerm,
+        $Name,
+        $FirstDateFrom,
+        $FirstDateTo,
+        $SecondDateFrom,
+        $SecondDateTo,
+        TblCourse $tblCourse
+    ) {
+
+        $Manager = $this->getEntityManager();
+        /** @var TblTerm $Entity */
+        $Entity = $Manager->getEntityById( 'TblTerm', $tblTerm->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setName( $Name );
+            $Entity->setFirstDateFrom( new \DateTime( $FirstDateFrom ) );
+            $Entity->setFirstDateTo( new \DateTime( $FirstDateTo ) );
+            $Entity->setSecondDateFrom( new \DateTime( $SecondDateFrom ) );
+            $Entity->setSecondDateTo( new \DateTime( $SecondDateTo ) );
+            $Entity->setServiceManagementCourse( $tblCourse );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @param string $Name
      *
      * @return TblCategory

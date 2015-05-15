@@ -37,8 +37,6 @@ class Education extends EntityAction
     public function setupDatabaseContent()
     {
 
-        $tblSubjectMissing = $this->actionCreateSubject( '---', '(nicht ausgewählt)' );
-
         $this->actionCreateSubject( 'Ast', 'Astronomie' );
         $this->actionCreateSubject( 'Bio', 'Biologie' );
         $this->actionCreateSubject( 'Ch', 'Chemie' );
@@ -61,7 +59,6 @@ class Education extends EntityAction
         $this->actionCreateSubject( 'WTH', 'Wirtschaft-Technik-Haushalt/Soziales' );
 
         $tblCategory = $this->actionCreateCategory( 'Religion' );
-        $this->actionAddSubjectCategory( $tblSubjectMissing, $tblCategory );
 
         $tblSubject = $this->actionCreateSubject( 'Eth', 'Ethik' );
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
@@ -69,7 +66,6 @@ class Education extends EntityAction
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
 
         $tblCategory = $this->actionCreateCategory( 'Fremdsprache' );
-        $this->actionAddSubjectCategory( $tblSubjectMissing, $tblCategory );
 
         $tblSubject = $this->actionCreateSubject( 'La', 'Latein' );
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
@@ -85,7 +81,6 @@ class Education extends EntityAction
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
 
         $tblCategory = $this->actionCreateCategory( 'Profil' );
-        $this->actionAddSubjectCategory( $tblSubjectMissing, $tblCategory );
 
         $tblSubject = $this->actionCreateSubject( 'Pg', 'Profil Geisteswissensch.' );
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
@@ -93,21 +88,9 @@ class Education extends EntityAction
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
 
         $tblCategory = $this->actionCreateCategory( 'Neigungskurs' );
-        $this->actionAddSubjectCategory( $tblSubjectMissing, $tblCategory );
 
         $tblSubject = $this->actionCreateSubject( 'Nk', 'Neigungskurs' );
         $this->actionAddSubjectCategory( $tblSubject, $tblCategory );
-    }
-
-    /**
-     * @param integer $Id
-     *
-     * @return bool|TblTerm
-     */
-    public function entityTermById( $Id )
-    {
-
-        return parent::entityTermById( $Id );
     }
 
     /**
@@ -284,6 +267,83 @@ class Education extends EntityAction
                 $SecondTerm['DateTo'], Management::serviceCourse()->entityCourseById( $Course ) );
             return new Redirect( '/Sphere/Management/Period/SchoolYear', 0 );
         }
+    }
+
+    /**
+     * @param AbstractType $View
+     * @param array        $Name
+     * @param array        $FirstTerm
+     * @param array        $SecondTerm
+     * @param int          $Course
+     *
+     * @return AbstractType|Redirect
+     */
+    public function executeChangeTerm( AbstractType &$View, $Id, $Name, $FirstTerm, $SecondTerm, $Course )
+    {
+
+        if (
+            null === $Name
+            && null === $FirstTerm
+            && null === $SecondTerm
+        ) {
+            return $View;
+        }
+
+        $tblTerm = Management::serviceEducation()->entityTermById( $Id );
+
+        $Error = false;
+        if (isset( $Name ) && empty( $Name )) {
+            $View->setError( 'Name', 'Bitte geben Sie einen Namen für das Schuljahr an' );
+            $Error = true;
+        }
+        if (isset( $Name ) && !empty( $Name )) {
+            if ($tblTerm->getName() != $Name && $this->entityTermByName( $Name )) {
+                $View->setError( 'Name', 'Bitte geben Sie einen eindeutigen Namen für das Schuljahr ein' );
+                $Error = true;
+            }
+        }
+        if (isset( $FirstTerm['DateFrom'] ) && empty( $FirstTerm['DateFrom'] )) {
+            $View->setError( 'FirstTerm[DateFrom]', 'Bitte geben Sie ein Start-Datum an' );
+            $Error = true;
+        }
+        if (isset( $FirstTerm['DateTo'] ) && empty( $FirstTerm['DateTo'] )) {
+            $View->setError( 'FirstTerm[DateTo]', 'Bitte geben Sie ein Ende-Datum an' );
+            $Error = true;
+        }
+        if (isset( $SecondTerm['DateFrom'] ) && empty( $SecondTerm['DateFrom'] )) {
+            $View->setError( 'SecondTerm[DateFrom]', 'Bitte geben Sie ein Start-Datum an' );
+            $Error = true;
+        }
+        if (isset( $SecondTerm['DateTo'] ) && empty( $SecondTerm['DateTo'] )) {
+            $View->setError( 'SecondTerm[DateTo]', 'Bitte geben Sie ein Ende-Datum an' );
+            $Error = true;
+        }
+        if (isset( $Course ) && !empty( $Course )) {
+            if (!Management::serviceCourse()->entityCourseById( $Course )) {
+                $View->setError( 'Course', 'Bitte wählen Sie einen verfügbaren Bildungsgang' );
+                $Error = true;
+            }
+        }
+
+        if ($Error) {
+            return $View;
+        } else {
+            $this->actionChangeTerm( $tblTerm, $Name, $FirstTerm['DateFrom'], $FirstTerm['DateTo'],
+                $SecondTerm['DateFrom'],
+                $SecondTerm['DateTo'], Management::serviceCourse()->entityCourseById( $Course ) );
+            return new Redirect( '/Sphere/Management/Period/SchoolYear', 0 );
+        }
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblTerm
+     */
+    public function entityTermById( $Id )
+    {
+
+        return parent::entityTermById( $Id );
     }
 
     /**

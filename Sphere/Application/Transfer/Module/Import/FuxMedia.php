@@ -427,14 +427,25 @@ class FuxMedia extends AbstractApplication
                             $tblPersonGender = Management::servicePerson()->entityPersonGenderByName( $PersonGender );
                             $tblPersonType = Management::servicePerson()->entityPersonTypeByName( 'Schüler' );
 
-                            $tblPersonStudent = Management::servicePerson()->actionChangePerson(
-                                $tblPersonStudent, '', $PersonFirstName, '', $PersonLastName, $PersonBirthDay,
-                                $PersonBirthPlace,
-                                $PersonNationality, $tblPersonSalutation, $tblPersonGender, $tblPersonType,
-                                $PersonRemark, $PersonDenomination
-                            );
+                            if (!$tblPersonStudent) {
+                                $tblPersonStudent = Management::servicePerson()->actionCreatePerson(
+                                    '', $PersonFirstName, '', $PersonLastName, $PersonBirthDay,
+                                    $PersonBirthPlace,
+                                    $PersonNationality, $tblPersonSalutation, $tblPersonGender, $tblPersonType,
+                                    $PersonRemark, $PersonDenomination
+                                );
+                            } else {
+                                Management::servicePerson()->actionChangePerson(
+                                    $tblPersonStudent, '', $PersonFirstName, '', $PersonLastName, $PersonBirthDay,
+                                    $PersonBirthPlace,
+                                    $PersonNationality, $tblPersonSalutation, $tblPersonGender, $tblPersonType,
+                                    $PersonRemark, $PersonDenomination
+                                );
+                            }
 
                             // Update Student
+
+                            Management::serviceStudent()->actionChangePerson( $tblStudent, $tblPersonStudent );
 
                             $TransferFromDate = $Document->getValue( $Document->getCell( $Location['Schüler_Aufnahme_am'],
                                 $RunY ) );
@@ -444,7 +455,6 @@ class FuxMedia extends AbstractApplication
                             Management::serviceStudent()->actionChangeTransferFromDate( $tblStudent,
                                 $TransferFromDate );
                             Management::serviceStudent()->actionChangeTransferToDate( $tblStudent, $TransferToDate );
-
                         }
                     }
                 }

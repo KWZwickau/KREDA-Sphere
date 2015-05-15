@@ -35,8 +35,7 @@ class Person extends Account
         )
             ->setParameterDefault( 'PersonName', null )
             ->setParameterDefault( 'BirthDetail', null )
-            ->setParameterDefault( 'PersonInformation', null )
-            ->setParameterDefault( 'Button', null );
+            ->setParameterDefault( 'PersonInformation', null );
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Edit', __CLASS__.'::frontendEdit'
@@ -60,6 +59,9 @@ class Person extends Account
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/List/Guardian', __CLASS__.'::frontendListGuardian'
         );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/List/Teacher', __CLASS__.'::frontendListTeacher'
+        );
 
         /**
          * REST Service
@@ -78,6 +80,11 @@ class Person extends Account
             __CLASS__.'::restPersonListByType' )
             ->setParameterDefault( 'tblPersonType',
                 Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId()
+            );
+        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonTeacher',
+            __CLASS__.'::restPersonListByType' )
+            ->setParameterDefault( 'tblPersonType',
+                Management::servicePerson()->entityPersonTypeByName( 'Lehrer' )->getId()
             );
     }
 
@@ -121,22 +128,24 @@ class Person extends Account
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/Person/List/Guardian', 'Sorgeberechtigte', new GroupIcon()
         );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Person/List/Teacher', 'Lehrer', new GroupIcon()
+        );
     }
 
     /**
      * @param null|array $PersonName
      * @param null|array $PersonInformation
      * @param null|array $BirthDetail
-     * @param null|array $Button
      *
      * @return Stage
      */
-    public static function frontendCreate( $PersonName, $PersonInformation, $BirthDetail, $Button )
+    public static function frontendCreate( $PersonName, $PersonInformation, $BirthDetail )
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageCreate( $PersonName, $PersonInformation, $BirthDetail, $Button );
+        return Frontend::stageCreate( $PersonName, $PersonInformation, $BirthDetail );
     }
 
     /**
@@ -200,5 +209,16 @@ class Person extends Account
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::stageListGuardian();
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendListTeacher()
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageListTeacher();
     }
 }
