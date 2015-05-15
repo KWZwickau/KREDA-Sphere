@@ -28,7 +28,15 @@ class Period extends Common
             '/Sphere/Management/Period', __CLASS__.'::frontendPeriod'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Period/SchoolYear', __CLASS__.'::frontendSchoolYear'
+            '/Sphere/Management/Period/SchoolYear', __CLASS__.'::frontendSchoolYearCreate'
+        )
+            ->setParameterDefault( 'Name', null )
+            ->setParameterDefault( 'FirstTerm', null )
+            ->setParameterDefault( 'SecondTerm', null )
+            ->setParameterDefault( 'Course', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Period/SchoolYear/Edit', __CLASS__.'::frontendSchoolYearEdit'
         )
             ->setParameterDefault( 'Name', null )
             ->setParameterDefault( 'FirstTerm', null )
@@ -68,11 +76,28 @@ class Period extends Common
      *
      * @return Stage
      */
-    public static function frontendSchoolYear( $Name, $FirstTerm, $SecondTerm, $Course )
+    public static function frontendSchoolYearCreate( $Name, $FirstTerm, $SecondTerm, $Course )
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageSchoolYear( $Name, $FirstTerm, $SecondTerm, $Course );
+        return Frontend::stageSchoolYearCreate( $Name, $FirstTerm, $SecondTerm, $Course );
+    }
+
+    /**
+     * @param null|int    $Id
+     * @param null|string $Name
+     * @param null|array  $FirstTerm
+     * @param null|array  $SecondTerm
+     * @param null|int    $Course
+     *
+     * @return Stage
+     */
+    public static function frontendSchoolYearEdit( $Id, $Name, $FirstTerm, $SecondTerm, $Course )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageSchoolYearEdit( $Id, $Name, $FirstTerm, $SecondTerm, $Course );
     }
 }

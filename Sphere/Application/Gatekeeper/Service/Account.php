@@ -84,12 +84,12 @@ class Account extends EntityAction
         $this->actionAddRoleAccess( $tblAccountRole,
             Gatekeeper::serviceAccess()->entityAccessByName( 'Management:Administrator' )
         );
-        $this->actionAddRoleAccess( $tblAccountRole,
-            Gatekeeper::serviceAccess()->entityAccessByName( 'Graduation:Administrator' )
-        );
-        $this->actionAddRoleAccess( $tblAccountRole,
-            Gatekeeper::serviceAccess()->entityAccessByName( 'Billing:Administrator' )
-        );
+//        $this->actionAddRoleAccess( $tblAccountRole,
+//            Gatekeeper::serviceAccess()->entityAccessByName( 'Graduation:Administrator' )
+//        );
+//        $this->actionAddRoleAccess( $tblAccountRole,
+//            Gatekeeper::serviceAccess()->entityAccessByName( 'Billing:Administrator' )
+//        );
 
         /**
          * Create Primary Login-Type

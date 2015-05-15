@@ -88,6 +88,8 @@ class Access extends EntityAction
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonGuardian' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
+        $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonTeacher' );
+        $this->actionAddPrivilegeRight( $Privilege, $Right );
         $Right = $this->actionCreateRight( '/Sphere/Management/Table/PersonRelationship' );
         $this->actionAddPrivilegeRight( $Privilege, $Right );
         $this->actionAddAccessPrivilege( $Access, $Privilege );

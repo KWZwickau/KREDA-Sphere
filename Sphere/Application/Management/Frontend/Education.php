@@ -130,6 +130,12 @@ class Education extends AbstractFrontend
 
         $View = new Stage();
         $View->setTitle( 'Klassen' );
+        $View->setDescription( 'Schulformübergreifend' );
+        $View->setMessage(
+            'Hier werden die generell verfügbaren Klassen definiert.<br/>'
+            .' Wenn zum Beispiel die Klassen [10a,10b,10c] benötigt werden, so muss man erst eine Klassenstufe [10] hinzufügen und dann jeweils die Klassengruppen [a], [b] und [c]. '
+            .' Das Feld Beschreibung muss nicht unbedingt befüllt werden.'
+        );
 
         $View->setContent(
             new Layout(
@@ -146,7 +152,7 @@ class Education extends AbstractFrontend
                                     new FormGroup( array(
                                         new FormRow( array(
                                             new FormColumn(
-                                                new TextField( 'Level[Name]', 'Name', 'Name' )
+                                                new TextField( 'Level[Name]', 'Name z.B. 1,2,3.. ', 'Name' )
                                                 , 3 ),
                                             new FormColumn(
                                                 new TextField( 'Level[Description]', 'Beschreibung', 'Beschreibung' )
@@ -171,7 +177,7 @@ class Education extends AbstractFrontend
                                     new FormGroup( array(
                                         new FormRow( array(
                                             new FormColumn(
-                                                new TextField( 'Group[Name]', 'Name', 'Name' )
+                                                new TextField( 'Group[Name]', 'Name z.B. a,b,c..', 'Name' )
                                                 , 3 ),
                                             new FormColumn(
                                                 new TextField( 'Group[Description]', 'Beschreibung', 'Beschreibung' )
@@ -215,6 +221,9 @@ class Education extends AbstractFrontend
 
         $View = new Stage();
         $View->setTitle( 'Unterrichtsfächer' );
+        $View->setMessage(
+            'Hier werden die im jeweiligen Schuljahr/Schulform zur Verfügung stehenden Unterrichtsfächer pro Klasse/Gruppe definiert.'
+        );
 
         $tblSubjectGroup = Management::serviceEducation()->entitySubjectGroupAll();
         if (!empty( $tblSubjectGroup )) {

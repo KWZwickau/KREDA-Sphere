@@ -1,11 +1,15 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Frontend;
 
+use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
+use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelationshipList;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BarCodeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChildIcon;
@@ -22,6 +26,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormAspect;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
@@ -61,31 +66,24 @@ class Person extends AbstractFrontend
         $View->setTitle( 'Personen' );
         $View->setDescription( 'Übersicht' );
         $View->setMessage( 'Zeigt die Anzahl an Personen in den jeweiligen Personengruppen' );
-        $View->setContent( new TableData( array(
-                array(
-                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Alle',
-                    'Anzahl'   => Management::servicePerson()->countPersonAll()
-                ),
-                array(
-                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Interessenten',
-                    'Anzahl'   => Management::servicePerson()->countPersonAllByType(
-                        Management::servicePerson()->entityPersonTypeByName( 'Interessent' )
-                    )
-                ),
-                array(
-                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Schüler',
-                    'Anzahl'   => Management::servicePerson()->countPersonAllByType(
-                        Management::servicePerson()->entityPersonTypeByName( 'Schüler' )
-                    )
-                ),
-                array(
-                    'Personen' => new GroupIcon().'&nbsp;&nbsp;Sorgeberechtigte',
-                    'Anzahl'   => Management::servicePerson()->countPersonAllByType(
-                        Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )
-                    )
-                )
-            ), null, array(), false )
+
+        $tblPersonTypeAll = Management::servicePerson()->entityPersonTypeAll();
+        $DataList = array(
+            array(
+                'Personen' => new GroupIcon().'&nbsp;&nbsp;Alle',
+                'Anzahl'   => Management::servicePerson()->countPersonAll()
+            )
         );
+        /** @var TblPersonType $tblPersonType */
+        foreach ((array)$tblPersonTypeAll as $tblPersonType) {
+            array_push( $DataList,
+                array(
+                    'Personen' => new GroupIcon().'&nbsp;&nbsp;'.$tblPersonType->getName(),
+                    'Anzahl'   => Management::servicePerson()->countPersonAllByType( $tblPersonType )
+                )
+            );
+        }
+        $View->setContent( new TableData( $DataList, null, array(), false ) );
 
         return $View;
     }
@@ -94,11 +92,10 @@ class Person extends AbstractFrontend
      * @param null|array $PersonName
      * @param null|array $PersonInformation
      * @param null|array $BirthDetail
-     * @param null|array $Button
      *
      * @return Stage
      */
-    public static function stageCreate( $PersonName, $PersonInformation, $BirthDetail, $Button )
+    public static function stageCreate( $PersonName, $PersonInformation, $BirthDetail )
     {
 
         $View = new Stage();
@@ -107,10 +104,9 @@ class Person extends AbstractFrontend
 
         $Form = self::formPersonBasic();
         $Form->appendFormButton( new SubmitPrimary( 'Anlegen' ) );
-//        $Form->appendFormButton( new SubmitPrimary( 'Anlegen & Bearbeiten' ) );
 
         $View->setContent( Management::servicePerson()->executeCreatePerson(
-            $Form, $PersonName, $PersonInformation, $BirthDetail, $Button )
+            $Form, $PersonName, $PersonInformation, $BirthDetail )
         );
         return $View;
     }
@@ -171,7 +167,15 @@ class Person extends AbstractFrontend
 
         $PersonBirthPlace = array_unique( array_merge( $PersonBirthPlace, $AddressCity ) );
 
-        return new Form(
+        return new Form( array(
+            new FormGroup( array(
+                new FormRow( array(
+                    new FormColumn(
+                        new SelectBox( 'PersonInformation[Type]', 'Art der Person',
+                            array( 'Name' => $tblPersonTypeAll ), new GroupIcon()
+                        ), 4 )
+                ) ),
+            ), new FormTitle( 'Grunddaten' ) ),
             new FormGroup( array(
                 new FormRow( array(
                     new FormColumn(
@@ -193,41 +197,39 @@ class Person extends AbstractFrontend
                         new TextField( 'PersonName[Last]', 'Nachname', 'Nachname', new NameplateIcon() )
                         , 4 )
                 ) ),
+            ), new FormAspect( 'Name' ) ),
+            new FormGroup( array(
                 new FormRow( array(
                     new FormColumn(
                         new SelectBox( 'BirthDetail[Gender]', 'Geschlecht',
                             array( 'Name' => $tblPersonGenderAll ), new ChildIcon()
-                        ), 4 ),
+                        ), 2 ),
                     new FormColumn(
                         new DatePicker( 'BirthDetail[Date]', 'Geburtstag', 'Geburtstag', new TimeIcon() )
-                        , 4 ),
+                        , 2 ),
                     new FormColumn(
                         new AutoCompleter( 'BirthDetail[Place]', 'Geburtsort', 'Geburtsort',
                             $PersonBirthPlace, new MapMarkerIcon()
                         ), 4 ),
-                ) ),
-                new FormRow( array(
                     new FormColumn(
                         new AutoCompleter( 'PersonInformation[Nationality]', 'Staatsangehörigkeit',
                             'Staatsangehörigkeit', $PersonNationality, new PersonIcon()
                         ), 4 ),
+                ) ),
+            ), new FormAspect( 'Geburtsdaten' ) ),
+            new FormGroup( array(
+                new FormRow( array(
                     new FormColumn(
                         new AutoCompleter( 'PersonInformation[Denomination]', 'Konfession',
                             'Konfession', $PersonDenomination, new PersonIcon()
                         ), 4 ),
                     new FormColumn(
-                        new SelectBox( 'PersonInformation[Type]', 'Art der Person',
-                            array( 'Name' => $tblPersonTypeAll ), new GroupIcon()
-                        ), 4 )
-                ) ),
-                new FormRow( array(
-                    new FormColumn(
                         new TextArea( 'PersonInformation[Remark]', 'Bemerkungen',
                             'Bemerkungen', new PencilIcon()
-                        ) ),
+                        ), 8 ),
                 ) ),
-            ), new FormTitle( 'Grunddaten' ) )
-        );
+            ), new FormAspect( 'Informationen' ) )
+        ) );
     }
 
     /**
@@ -236,11 +238,23 @@ class Person extends AbstractFrontend
     public static function stageListInterest()
     {
 
+        return self::listPersonTable( 'Interessenten', '/Sphere/Management/Table/PersonInterest' );
+    }
+
+    /**
+     * @param $Name
+     * @param $RestUri
+     *
+     * @return Stage
+     */
+    private static function listPersonTable( $Name, $RestUri )
+    {
+
         $View = new Stage();
         $View->setTitle( 'Personen' );
-        $View->setDescription( 'Interessenten' );
+        $View->setDescription( $Name );
         $View->setContent(
-            new TableData( '/Sphere/Management/Table/PersonInterest', null,
+            new TableData( $RestUri, null,
                 array(
                     'FirstName'  => 'Vorname',
                     'MiddleName' => 'Zweitname',
@@ -252,6 +266,7 @@ class Person extends AbstractFrontend
             )
         );
         return $View;
+
     }
 
     /**
@@ -260,22 +275,7 @@ class Person extends AbstractFrontend
     public static function stageListStudent()
     {
 
-        $View = new Stage();
-        $View->setTitle( 'Personen' );
-        $View->setDescription( 'Schüler' );
-        $View->setContent(
-            new TableData( '/Sphere/Management/Table/PersonStudent', null,
-                array(
-                    'FirstName'  => 'Vorname',
-                    'MiddleName' => 'Zweitname',
-                    'LastName'   => 'Nachname',
-                    'Birthday'   => 'Geburtstag',
-                    'Birthplace' => 'Geburtsort',
-                    'Option'     => 'Option'
-                )
-            )
-        );
-        return $View;
+        return self::listPersonTable( 'Schüler', '/Sphere/Management/Table/PersonStudent' );
     }
 
     /**
@@ -284,23 +284,16 @@ class Person extends AbstractFrontend
     public static function stageListGuardian()
     {
 
-        $View = new Stage();
-        $View->setTitle( 'Personen' );
-        $View->setDescription( 'Sorgeberechtigte' );
-        $View->setContent(
-            new TableData( '/Sphere/Management/Table/PersonGuardian', null,
-                array(
-                    'Id'         => '#',
-                    'FirstName'  => 'Vorname',
-                    'MiddleName' => 'Zweitname',
-                    'LastName'   => 'Nachname',
-                    'Birthday'   => 'Geburtstag',
-                    'Birthplace' => 'Geburtsort',
-                    'Option'     => 'Option'
-                )
-            )
-        );
-        return $View;
+        return self::listPersonTable( 'Sorgeberechtigte', '/Sphere/Management/Table/PersonGuardian' );
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function stageListTeacher()
+    {
+
+        return self::listPersonTable( 'Lehrer', '/Sphere/Management/Table/PersonTeacher' );
     }
 
     /**
@@ -368,37 +361,37 @@ class Person extends AbstractFrontend
                 $Global->POST['PersonInformation']['Denomination'] = $tblPerson->getDenomination();
                 $Global->savePost();
 
-                $FormPersonBasic = self::formPersonBasic();
-                $FormPersonBasic->appendFormButton( new SubmitPrimary( 'Grunddaten speichern' ) );
+                $FormPerson = self::formPersonBasic();
+                $FormPerson->appendFormButton( new SubmitPrimary( 'Änderungen speichern' ) );
 
-                if (
-//                    $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId()
-                    $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId()
-                ) {
-                    $FormStudent = self::formStudent( $tblPerson );
-                } else {
-                    $FormStudent = '';
-                }
-
-                if (
-                    $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId()
-                    || $tblPerson->getTblPersonType()->getId() == Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId()
-                ) {
-                    $FormPersonRelationship = self::formPersonRelationship( $tblPerson );
-                    $FormPersonAddress = self::formPersonAddress( $tblPerson );
-                } else {
-                    $FormPersonRelationship = '';
-                    $FormPersonAddress = '';
+                /**
+                 * Additional
+                 */
+                switch ($tblPerson->getTblPersonType()->getId()) {
+                    case Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId():
+                        $FormStudent = self::formStudent( $tblPerson );
+                        $FormRelationship = self::formPersonRelationship( $tblPerson );
+                        $FormAddress = self::formPersonAddress( $tblPerson );
+                        break;
+                    case Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId():
+                        $FormStudent = '';
+                        $FormRelationship = self::formPersonRelationship( $tblPerson );
+                        $FormAddress = self::formPersonAddress( $tblPerson );
+                        break;
+                    default:
+                        $FormStudent = '';
+                        $FormRelationship = '';
+                        $FormAddress = '';
                 }
 
                 $View->setContent(
                     new Success( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() )
                     .Management::servicePerson()->executeChangePerson(
-                        $FormPersonBasic, $tblPerson, $PersonName, $PersonInformation, $BirthDetail
+                        $FormPerson, $tblPerson, $PersonName, $PersonInformation, $BirthDetail
                     )
                     .$FormStudent
-                    .$FormPersonAddress
-                    .$FormPersonRelationship
+                    .$FormAddress
+                    .$FormRelationship
                 );
             }
         }
@@ -429,15 +422,22 @@ class Person extends AbstractFrontend
         $tblSubjectReligion = Management::serviceEducation()->entitySubjectAllByCategory(
             Management::serviceEducation()->entityCategoryByName( 'Religion' )
         );
+        array_unshift( $tblSubjectReligion, new TblSubject( null ) );
         $tblSubjectLanguage = Management::serviceEducation()->entitySubjectAllByCategory(
             Management::serviceEducation()->entityCategoryByName( 'Fremdsprache' )
         );
+        array_unshift( $tblSubjectLanguage, new TblSubject( null ) );
         $tblSubjectProfile = Management::serviceEducation()->entitySubjectAllByCategory(
             Management::serviceEducation()->entityCategoryByName( 'Profil' )
         );
+        array_unshift( $tblSubjectProfile, new TblSubject( null ) );
         $tblSubjectAddiction = Management::serviceEducation()->entitySubjectAllByCategory(
             Management::serviceEducation()->entityCategoryByName( 'Neigungskurs' )
         );
+        array_unshift( $tblSubjectAddiction, new TblSubject( null ) );
+
+        $tblSchoolList = Gatekeeper::serviceConsumer()->entityConsumerAll();
+        array_unshift( $tblSchoolList, new TblConsumer( null ) );
 
         return new Layout(
             new LayoutGroup( array(
@@ -461,7 +461,8 @@ class Person extends AbstractFrontend
                                         new DatePicker( 'Transfer[From][Date]', 'Aufnahmedatum', 'Aufnahmedatum' )
                                         , 3 ),
                                     new FormColumn(
-                                        new SelectBox( 'Transfer[From][School]', 'Abgebende Schule', array() )
+                                        new SelectBox( 'Transfer[From][School]', 'Abgebende Schule',
+                                            array( 'Name' => $tblSchoolList ) )
                                         , 9 ),
                                 ) ),
                                 new FormRow( array(
@@ -469,7 +470,8 @@ class Person extends AbstractFrontend
                                         new DatePicker( 'Transfer[To][Date]', 'Abgabedatum', 'Abgabedatum' )
                                         , 3 ),
                                     new FormColumn(
-                                        new SelectBox( 'Transfer[To][School]', 'Aufnehmende Schule', array() )
+                                        new SelectBox( 'Transfer[To][School]', 'Aufnehmende Schule',
+                                            array( 'Name' => $tblSchoolList ) )
                                         , 9 ),
                                 ) ),
                                 new FormRow( array(
