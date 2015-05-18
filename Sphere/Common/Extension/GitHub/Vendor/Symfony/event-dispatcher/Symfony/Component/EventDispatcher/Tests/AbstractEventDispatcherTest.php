@@ -289,6 +289,8 @@ abstract class AbstractEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue( $dispatcher->hasListeners( 'bug.62976' ) );
     }
 
+    abstract protected function createEventDispatcher();
+
     public function testHasListenersWhenAddedCallbackListenerIsRemoved()
     {
 
@@ -322,8 +324,6 @@ abstract class AbstractEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->dispatcher = $this->createEventDispatcher();
         $this->listener = new TestEventListener();
     }
-
-    abstract protected function createEventDispatcher();
 
     protected function tearDown()
     {

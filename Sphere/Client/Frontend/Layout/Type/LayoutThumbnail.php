@@ -25,8 +25,6 @@ class LayoutThumbnail extends AbstractType
      * @param string           $Description
      * @param array            $ButtonList
      * @param string           $Type THUMBNAIL_TYPE_DEFAULT
-     *
-     * @internal param string $Content
      */
     public function __construct(
         IBridgeInterface $File,

@@ -60,6 +60,11 @@ class Script extends AbstractExtension
             "'undefined' !== typeof jQuery.fn.DataTable.Responsive"
         );
         $this->setSource(
+            'jQuery.DataTable.Plugin.Sorting.Weekday',
+            '/Library/jQuery.DataTables.Plugins/1.0.1/sorting/weekday.js',
+            "'undefined' !== typeof jQuery.fn.dataTable.ext.type.order['weekday-pre']"
+        );
+        $this->setSource(
             'Bootstrap.DataTable',
             '/Library/jQuery.DataTables.Plugins/1.0.1/integration/bootstrap/3/dataTables.bootstrap.min.js',
             "'undefined' !== typeof jQuery.fn.DataTable.ext.renderer.pageButton.bootstrap"
@@ -96,7 +101,13 @@ class Script extends AbstractExtension
         );
         $this->setModule(
             'ModTable',
-            array( 'Bootstrap.DataTable', 'jQuery.DataTable.Responsive', 'jQuery.DataTable', 'jQuery' )
+            array(
+                'jQuery.DataTable.Plugin.Sorting.Weekday',
+                'Bootstrap.DataTable',
+                'jQuery.DataTable.Responsive',
+                'jQuery.DataTable',
+                'jQuery'
+            )
         );
         $this->setModule(
             'ModPicker', array( 'Bootstrap.DatetimePicker', 'Moment.js', 'jQuery' )
