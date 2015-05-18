@@ -43,7 +43,10 @@ class Person extends Account
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'PersonName', null )
             ->setParameterDefault( 'BirthDetail', null )
-            ->setParameterDefault( 'PersonInformation', null );
+            ->setParameterDefault( 'PersonInformation', null )
+            ->setParameterDefault( 'State', null )
+            ->setParameterDefault( 'City', null )
+            ->setParameterDefault( 'Street', null );
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Destroy', __CLASS__.'::frontendDestroy'
@@ -149,20 +152,24 @@ class Person extends Account
     }
 
     /**
-     * @param null|integer $Id
-     * @param null|array   $PersonName
-     * @param null|array   $PersonInformation
-     * @param null|array   $BirthDetail
+     * @param null|integer   $Id
+     * @param null|array     $PersonName
+     * @param null|array     $PersonInformation
+     * @param null|array     $BirthDetail
      *
+     *
+     * @param null|int|array $State
+     * @param null|array     $City
+     * @param null|array     $Street
      *
      * @return Stage
      */
-    public static function frontendEdit( $Id, $PersonName, $PersonInformation, $BirthDetail )
+    public static function frontendEdit( $Id, $PersonName, $PersonInformation, $BirthDetail, $State, $City, $Street )
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageEdit( $Id, $PersonName, $PersonInformation, $BirthDetail );
+        return Frontend::stageEdit( $Id, $PersonName, $PersonInformation, $BirthDetail, $State, $City, $Street );
     }
 
     /**
@@ -186,7 +193,7 @@ class Person extends Account
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageListStudent();
+        return Frontend\ListTable::stageListStudent();
     }
 
     /**
@@ -197,7 +204,7 @@ class Person extends Account
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageListInterest();
+        return Frontend\ListTable::stageListInterest();
     }
 
     /**
@@ -208,7 +215,7 @@ class Person extends Account
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageListGuardian();
+        return Frontend\ListTable::stageListGuardian();
     }
 
     /**
@@ -219,6 +226,6 @@ class Person extends Account
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageListTeacher();
+        return Frontend\ListTable::stageListTeacher();
     }
 }

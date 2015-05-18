@@ -95,6 +95,32 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param      $StateName
+     * @param      $CityCode
+     * @param      $CityName
+     * @param      $CityDistrict
+     * @param      $StreetName
+     * @param      $StreetNumber
+     * @param null $PostOfficeBox
+     *
+     * @return TblAddress
+     */
+    protected function actionCreateFullAddress(
+        $StateName,
+        $CityCode,
+        $CityName,
+        $CityDistrict,
+        $StreetName,
+        $StreetNumber,
+        $PostOfficeBox = null
+    ) {
+
+        $tblState = $this->actionCreateAddressState( $StateName );
+        $tblCity = $this->actionCreateAddressCity( $CityCode, $CityName, $CityDistrict );
+        return $this->actionCreateAddress( $tblState, $tblCity, $StreetName, $StreetNumber, $PostOfficeBox );
+    }
+
+    /**
      * @param string $Name
      *
      * @return TblAddressState
@@ -182,5 +208,4 @@ abstract class EntityAction extends EntitySchema
         }
         return $Entity;
     }
-
 }
