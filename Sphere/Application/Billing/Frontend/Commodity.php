@@ -43,29 +43,28 @@ class Commodity extends AbstractFrontend
     }
 
     /**
-     * @param null|array $Name
-     * @param null|array $Description
-     *
+     * @param $Commodity
      * @return Stage
      */
-    public static function stageCreate( $Name, $Description )
+    public static function frontendCreate( $Commodity )
     {
         $View = new Stage();
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Hinzufügen' );
 
-        $View->setContent(new Form( array(
-            new FormGroup( array(
-                new FormRow( array(
-                    new FormColumn(
-                        new TextField( 'Commodity[Name]', 'Name', 'Name', new ConversationIcon()
-                        ), 6 ),
-                    new FormColumn(
-                        new TextField( 'Commodity[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                        ), 6 )
+        $View->setContent(Billing::serviceCommodity()->executeCreateCommodity(
+            new Form( array(
+                new FormGroup( array(
+                    new FormRow( array(
+                        new FormColumn(
+                            new TextField( 'Commodity[Name]', 'Name', 'Name', new ConversationIcon()
+                            ), 6 ),
+                        new FormColumn(
+                            new TextField( 'Commodity[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
+                            ), 6 )
                 ) )
 
-        ))), new SubmitPrimary( 'Hinzufügen' )));
+        ))), new SubmitPrimary( 'Hinzufügen' )), $Commodity));
 
         return $View;
     }

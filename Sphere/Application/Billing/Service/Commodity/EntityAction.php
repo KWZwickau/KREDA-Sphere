@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Billing\Service\Commodity;
 
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
+use KREDA\Sphere\Application\System\System;
 
 /**
  * Class EntityAction
@@ -44,5 +45,29 @@ abstract class EntityAction extends EntitySchema
 
         $Entity = $this->getEntityManager()->getEntityById( 'TblItem', $Id );
         return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param string              $Name
+     * @param string              $Description
+     *
+     * @return TblCommodity
+     */
+    protected function actionCreateCommodity(
+        $Name,
+        $Description
+    ) {
+
+        $Manager = $this->getEntityManager();
+
+        $Entity = new TblCommodity();
+        $Entity->setName($Name);
+        $Entity->setDescription( $Description );
+
+        $Manager->saveEntity( $Entity );
+
+        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+
+        return $Entity;
     }
 }

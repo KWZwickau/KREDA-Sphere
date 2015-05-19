@@ -32,8 +32,7 @@ class Commodity extends Common
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Commodity/Create', __CLASS__.'::frontendCreate'
         )
-            ->setParameterDefault( 'Name', null )
-            ->setParameterDefault( 'Description', null );
+            ->setParameterDefault( 'Commodity', null );
     }
 
     /**
@@ -48,17 +47,15 @@ class Commodity extends Common
 
 
     /**
-     * @param null|array $Name
-     * @param null|array $Description
+     * @param $Commodity
      *
      * @return Stage
      */
-    public static function frontendCreate( $Name, $Description )
+    public static function frontendCreate( $Commodity )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageCreate( $Name, $Description);
+        return Frontend::frontendCreate( $Commodity );
     }
 
     /**
@@ -66,7 +63,6 @@ class Commodity extends Common
      */
     protected static function setupApplicationNavigation()
     {
-
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Billing/Commodity/Create', 'Leistung anlegen', new PersonIcon()
         );
