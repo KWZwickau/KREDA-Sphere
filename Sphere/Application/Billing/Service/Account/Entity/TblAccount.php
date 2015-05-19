@@ -17,6 +17,7 @@ class TblAccount extends AbstractEntity
 {
 
     const ATTR_TBL_ACCOUNT_TYPE = 'tblAccountType';
+    const ATTR_TBL_ACCOUNT_KEY = 'tblAccountKey';
 
     /**
      * @Column(type="string")
@@ -34,6 +35,10 @@ class TblAccount extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $tblAccountType;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $tblAccountKey;
 
     /**
      * @return string
@@ -110,4 +115,26 @@ class TblAccount extends AbstractEntity
 
         $this->tblAccountType = ( null === $tblAccountType ? null : $tblAccountType->getId() );
     }
+
+    /**
+     * @return bool|TblAccountKey
+     */
+    public function getTblAccountKey()
+    {
+
+        if (null === $this->tblAccountKey ) {
+            return false;
+        } else {
+            return Billing::serviceAccount()->entityAccountKeyById( $this->tblAccountKey );
+        }
+    }
+
+    /**
+     * @param null|TblAccountKey $tblAccountKey
+     */
+    public function setTblAccountKey( tblAccountKey $tblAccountKey = null )
+    {
+        $this->tblAccountKey = ( null === $tblAccountKey ? null : $tblAccountKey->getId() );
+    }
+
 }

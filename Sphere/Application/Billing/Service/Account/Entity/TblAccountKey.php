@@ -1,38 +1,41 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Account\Entity;
 
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Common\AbstractEntity;
 
 class TblAccountKey extends AbstractEntity
 {
 
+    const ATTR_TBL_ACCOUNT_KEY_TYPE = 'tblAccountKeyType';
+
     /**
-     * @Column(type="string")
+     * @Column(type="date")
      */
     protected $ValidFrom;
-
     /**
-     * @Column(type="string")
+     * @Column(type="decimal")
      */
     protected $Value;
-
     /**
-     * @Column(type="string")
+     * @Column(type="date")
      */
     protected $ValidTo;
-
     /**
      * @Column(type="string")
      */
     protected $Description;
-
     /**
      * @Column(type="string")
      */
     protected $Code;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $tblAccountKeyType;
 
     /**
-     * @return string $validFrom
+     * @return date $validFrom
      */
     public function getValidFrom()
     {
@@ -40,7 +43,7 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @param string $validFrom
+     * @param date $validFrom
      */
     public function setValidFrom($validFrom)
     {
@@ -49,7 +52,7 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @return string $value
+     * @return decimal $value
      */
     public function getValue()
     {
@@ -58,7 +61,7 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @param string $value
+     * @param decimal $value
      */
     public function setValue($value)
     {
@@ -67,7 +70,7 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @return string $validTo
+     * @return date $validTo
      */
     public function getValidTo()
     {
@@ -76,7 +79,7 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @param string $validTo
+     * @param date $validTo
      */
     public function setValidTo($validTo)
     {
@@ -118,5 +121,26 @@ class TblAccountKey extends AbstractEntity
     {
 
         $this->Code = $code;
+    }
+
+    /**
+     * @return bool|TblAccountKeyType
+     */
+    public function getTableAccountKey()
+    {
+
+        if (null === $this->tblAccountKeyType ){
+            return false;
+        } else {
+            return Billing::serviceAccount()->entityAccountKeyTypeById( $this->tblAccountKeyType);
+        }
+    }
+
+    /**
+     * @param bool|TblAccountKeyType $tblAccountKeyType
+     */
+    public function setTableAccountKeyType( tblAccountKeyType $tblAccountKeyType = null )
+    {
+        $this->tblAccountKeyType = ( null === $tblAccountKeyType ? null : $tblAccountKeyType->getId() );
     }
 }

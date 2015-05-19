@@ -25,10 +25,10 @@ abstract class EntitySchema extends AbstractService
          * Table
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
+        $tblAccountKeyType = $this->setTableAccountKeyType( $Schema );
         $tblAccountType = $this->setTableAccountType( $Schema );
-        $this->setTableAccount( $Schema, $tblAccountType );
-        $this->setTableAccountKeyType( $Schema );
-        $this->setTableAccountKey( $Schema );
+        $tblAccountKey = $this->setTableAccountKey( $Schema, $tblAccountKeyType );
+        $this->setTableAccount( $Schema, $tblAccountType, $tblAccountKey );
         /**
          * Migration & Protocol
          */
@@ -61,7 +61,7 @@ abstract class EntitySchema extends AbstractService
      *
      * @return Table
      */
-    private function setTableAccount( Schema &$Schema, Table $tblAccountType )
+    private function setTableAccount( Schema &$Schema, Table $tblAccountType, Table $tblAccountKey )
     {
 
         $Table = $this->schemaTableCreate( $Schema, 'tblAccount' );
@@ -75,6 +75,7 @@ abstract class EntitySchema extends AbstractService
             $Table->addColumn( 'Value', 'float' );
         }
         $this->schemaTableAddForeignKey( $Table, $tblAccountType );
+        $this->schemaTableAddForeignKey( $Table, $tblAccountKey );
         return $Table;
     }
 
@@ -103,18 +104,18 @@ abstract class EntitySchema extends AbstractService
      *
      * @return Table
      */
-    private function setTableAccountKey( Schema &$Schema )
+    private function setTableAccountKey( Schema &$Schema, Table $tblAccountKeyType )
     {
 
         $Table = $this->schemaTableCreate( $Schema, 'tblAccountKey' );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'ValidFrom' )){
-            $Table->addColumn( 'ValidFrom', 'string' );
+            $Table->addColumn( 'ValidFrom', 'date' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'Value' )){
-            $Table->addColumn( 'Value', 'string' );
+            $Table->addColumn( 'Value', 'decimal' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'ValidTo' )){
-            $Table->addColumn( 'ValidTo', 'string' );
+            $Table->addColumn( 'ValidTo', 'date' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'Description' )){
             $Table->addColumn( 'Description', 'string' );
@@ -122,6 +123,7 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'Code' )){
             $Table->addColumn( 'Code', 'string' );
         }
+        $this->schemaTableAddForeignKey( $Table, $tblAccountKeyType );
         return $Table;
     }
 
