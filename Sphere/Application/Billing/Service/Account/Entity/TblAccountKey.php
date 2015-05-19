@@ -14,7 +14,7 @@ class TblAccountKey extends AbstractEntity
      */
     protected $ValidFrom;
     /**
-     * @Column(type="decimal")
+     * @Column(type="string")
      */
     protected $Value;
     /**
@@ -26,7 +26,7 @@ class TblAccountKey extends AbstractEntity
      */
     protected $Description;
     /**
-     * @Column(type="string")
+     * @Column(type="integer")
      */
     protected $Code;
     /**
@@ -52,7 +52,7 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @return decimal $value
+     * @return string $value
      */
     public function getValue()
     {
@@ -61,7 +61,7 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @param decimal $value
+     * @param string $value
      */
     public function setValue($value)
     {
@@ -106,7 +106,7 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @return string code
+     * @return integer code
      */
     public function getCode()
     {
@@ -115,7 +115,7 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @param string $code
+     * @param integer $code
      */
     public function setCode($code)
     {

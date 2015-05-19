@@ -112,7 +112,7 @@ abstract class EntitySchema extends AbstractService
             $Table->addColumn( 'ValidFrom', 'date' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'Value' )){
-            $Table->addColumn( 'Value', 'decimal' );
+            $Table->addColumn( 'Value', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'ValidTo' )){
             $Table->addColumn( 'ValidTo', 'date' );
@@ -121,7 +121,7 @@ abstract class EntitySchema extends AbstractService
             $Table->addColumn( 'Description', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'Code' )){
-            $Table->addColumn( 'Code', 'string' );
+            $Table->addColumn( 'Code', 'integer' );
         }
         $this->schemaTableAddForeignKey( $Table, $tblAccountKeyType );
         return $Table;
