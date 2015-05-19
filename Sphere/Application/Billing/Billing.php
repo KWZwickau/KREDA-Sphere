@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Common\AbstractApplication;
 
 /**
@@ -12,7 +13,7 @@ use KREDA\Sphere\Common\AbstractApplication;
  *
  * @package KREDA\Sphere\Application\Billing
  */
-class Billing extends AbstractApplication
+class Billing extends Module\Commodity
 {
 
     /** @var Configuration $Config */
@@ -29,15 +30,16 @@ class Billing extends AbstractApplication
          */
         self::setupApplicationAccess( 'Billing' );
         self::$Configuration = $Configuration;
+
         /**
          * Navigation
          */
         if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Billing' )) {
             self::addClientNavigationMain( self::$Configuration, '/Sphere/Billing', 'Fakturierung', new MoneyIcon() );
+            self::registerClientRoute( self::$Configuration, '/Sphere/Billing', __CLASS__.'::frontendBilling' );
         }
-
-        self::registerClientRoute( self::$Configuration, '/Sphere/Billing',
-            __CLASS__.'::frontendBilling' );
+        Module\Common::registerApplication( $Configuration );
+        Module\Commodity::registerApplication( $Configuration );
     }
 
     /**
@@ -76,6 +78,8 @@ class Billing extends AbstractApplication
      */
     protected static function setupModuleNavigation()
     {
-
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Commodity/Create', 'Leistungen', new GroupIcon()
+        );
     }
 }

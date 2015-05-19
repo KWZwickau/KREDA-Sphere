@@ -64,7 +64,7 @@ abstract class EntitySchema extends AbstractService
             $Table->addColumn( 'Description', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblItem', 'Price' )) {
-            $Table->addColumn( 'Price', 'decimal' );
+            $Table->addColumn( 'Price', 'decimal', array( 'precision' => 14 , 'scale' => 4) );
         }
         return $Table;
     }
@@ -81,7 +81,7 @@ abstract class EntitySchema extends AbstractService
         $Table = $this->schemaTableCreate( $Schema, 'tblCommodityItem' );
 
         if (!$this->getDatabaseHandler()->hasColumn( 'tblCommodityItem', 'Quantity' )) {
-            $Table->addColumn( 'Quantity', 'decimal' );
+            $Table->addColumn( 'Quantity', 'decimal' , array( 'precision' => 14 , 'scale' => 4) );
         }
 
         $this->schemaTableAddForeignKey( $Table, $tblCommodity );

@@ -20,7 +20,7 @@ class TblItem extends AbstractEntity
     protected $Description;
 
     /**
-     * @Column(type="decimal")
+     * @Column(type="decimal" precision=14 scale=4)
      */
     protected $Price;
 
