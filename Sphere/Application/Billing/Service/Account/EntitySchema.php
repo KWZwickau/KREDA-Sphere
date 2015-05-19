@@ -27,6 +27,8 @@ abstract class EntitySchema extends AbstractService
         $Schema = clone $this->getDatabaseHandler()->getSchema();
         $tblAccountType = $this->setTableAccountType( $Schema );
         $this->setTableAccount( $Schema, $tblAccountType );
+        $this->setTableAccountKeyType( $Schema );
+        $this->setTableAccountKey( $Schema );
         /**
          * Migration & Protocol
          */
@@ -75,4 +77,52 @@ abstract class EntitySchema extends AbstractService
         $this->schemaTableAddForeignKey( $Table, $tblAccountType );
         return $Table;
     }
+
+    /**
+     * @param Schema $Schema
+     * @return Table $tblAccountKeyType
+     *
+     * @return Table
+     */
+    private function setTableAccountKeyType( Schema &$Schema)
+    {
+
+        $Table = $this->schemaTableCreate( $Schema, 'tblAccountKeyType' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKeyType', 'Name' )) {
+            $Table->addColumn( 'Name', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKeyType', 'Description' )) {
+            $Table->addColumn( 'Description', 'string' );
+        }
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @return Table $tblAccountKey
+     *
+     * @return Table
+     */
+    private function setTableAccountKey( Schema &$Schema )
+    {
+
+        $Table = $this->schemaTableCreate( $Schema, 'tblAccountKey' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'ValidFrom' )){
+            $Table->addColumn( 'ValidFrom', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'Value' )){
+            $Table->addColumn( 'Value', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'ValidTo' )){
+            $Table->addColumn( 'ValidTo', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'Description' )){
+            $Table->addColumn( 'Description', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccountKey', 'Code' )){
+            $Table->addColumn( 'Code', 'string' );
+        }
+        return $Table;
+    }
+
 }
