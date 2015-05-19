@@ -26,7 +26,9 @@ abstract class EntitySchema extends AbstractService
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
         $tblCommodity = $this->setTableCommodity( $Schema );
-        //$this->setTableAccount( $Schema, $tblAccountType );
+        $tblItem = $this->setTableItem( $Schema );
+        $this->setTableCommodityItem( $Schema, $tblCommodity, $tblItem);
+
         /**
          * Migration & Protocol
          */
@@ -42,7 +44,6 @@ abstract class EntitySchema extends AbstractService
      */
     private function setTableCommodity( Schema &$Schema )
     {
-
         $Table = $this->schemaTableCreate( $Schema, 'tblCommodity' );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblCommodity', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
@@ -50,6 +51,42 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblCommodity', 'Description' )) {
             $Table->addColumn( 'Description', 'string' );
         }
+        return $Table;
+    }
+
+    private function setTableItem ( Schema &$Schema)
+    {
+        $Table = $this->schemaTableCreate( $Schema, 'tblItem' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblItem', 'Name' )) {
+            $Table->addColumn( 'Name', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblItem', 'Description' )) {
+            $Table->addColumn( 'Description', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblItem', 'Price' )) {
+            $Table->addColumn( 'Price', 'decimal' );
+        }
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table  $tblCommodity
+     * @param Table  $tblItem
+     *
+     * @return Table
+     */
+    private function setTableCommodityItem( Schema &$Schema, Table $tblCommodity, Table $tblItem )
+    {
+        $Table = $this->schemaTableCreate( $Schema, 'tblCommodityItem' );
+
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblCommodityItem', 'Quantity' )) {
+            $Table->addColumn( 'Quantity', 'decimal' );
+        }
+
+        $this->schemaTableAddForeignKey( $Table, $tblCommodity );
+        $this->schemaTableAddForeignKey( $Table, $tblItem );
+
         return $Table;
     }
 }

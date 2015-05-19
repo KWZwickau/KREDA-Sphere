@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Billing\Service\Commodity;
 
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
 
 /**
  * Class EntityAction
@@ -20,6 +21,18 @@ abstract class EntityAction extends EntitySchema
     {
 
         $Entity = $this->getEntityManager()->getEntityById( 'TblCommodity', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblItem
+     */
+    protected function entityItemById( $Id )
+    {
+
+        $Entity = $this->getEntityManager()->getEntityById( 'TblItem', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 }
