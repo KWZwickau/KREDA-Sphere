@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Billing;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
+use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
@@ -34,6 +35,22 @@ class Billing extends AbstractApplication
         if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Billing' )) {
             self::addClientNavigationMain( self::$Configuration, '/Sphere/Billing', 'Fakturierung', new MoneyIcon() );
         }
+
+        self::registerClientRoute( self::$Configuration, '/Sphere/Billing',
+            __CLASS__.'::frontendBilling' );
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendBilling()
+    {
+
+        self::setupModuleNavigation();
+        $View = new Stage();
+        $View->setTitle('Fraktuierung');
+        $View->setMessage('Bitte wählen Sie ein Thema');
+        return $View;
     }
 
     /**
@@ -43,6 +60,15 @@ class Billing extends AbstractApplication
     {
 
         return Service\Account::getApi();
+    }
+
+    /**
+     * @return Service\Commodity
+     */
+    public static function serviceCommodity()
+    {
+
+        return Service\Commodity::getApi();
     }
 
     /**
