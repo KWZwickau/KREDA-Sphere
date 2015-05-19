@@ -24,9 +24,32 @@ use KREDA\Sphere\Client\Frontend\Form\Type\Form;
  */
 class Commodity extends AbstractFrontend
 {
-    public static function stageCreate( $Name, $Description )
+    /**
+     * @return Stage
+     */
+    public static function frontendStatus()
     {
 
+        $View = new Stage();
+        $View->setTitle( 'Leistungen' );
+        $View->setDescription( 'Übersicht' );
+        $View->setMessage( 'Zeigt die verfügbaren Leistungen' );
+
+        $tblCommodityAll = Billing::serviceCommodity()->entityCommodityAll();
+
+        $View->setContent( new TableData( $tblCommodityAll, null, array(), false ) );
+
+        return $View;
+    }
+
+    /**
+     * @param null|array $Name
+     * @param null|array $Description
+     *
+     * @return Stage
+     */
+    public static function stageCreate( $Name, $Description )
+    {
         $View = new Stage();
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Hinzufügen' );
@@ -42,7 +65,7 @@ class Commodity extends AbstractFrontend
                         ), 6 )
                 ) )
 
-        )))));
+        ))), new SubmitPrimary( 'Hinzufügen' )));
 
         return $View;
     }

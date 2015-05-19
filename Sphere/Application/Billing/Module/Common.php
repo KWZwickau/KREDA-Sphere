@@ -35,7 +35,7 @@ class Common extends AbstractApplication
     protected static function setupModuleNavigation()
     {
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Commodity/Create', 'Leistungen', new GroupIcon()
+            '/Sphere/Billing/Commodity', 'Leistungen', new GroupIcon()
         );
     }
 }

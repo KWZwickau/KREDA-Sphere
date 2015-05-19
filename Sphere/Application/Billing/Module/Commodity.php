@@ -27,12 +27,32 @@ class Commodity extends Common
         self::$Configuration = $Configuration;
 
         self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity', __CLASS__.'::frontendStatus'
+        );
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Commodity/Create', __CLASS__.'::frontendCreate'
         )
             ->setParameterDefault( 'Name', null )
             ->setParameterDefault( 'Description', null );
     }
 
+    /**
+     * @return Stage
+     */
+    public static function frontendStatus()
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendStatus();
+    }
+
+
+    /**
+     * @param null|array $Name
+     * @param null|array $Description
+     *
+     * @return Stage
+     */
     public static function frontendCreate( $Name, $Description )
     {
 

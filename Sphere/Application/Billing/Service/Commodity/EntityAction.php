@@ -25,6 +25,16 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return bool|TblCommodity[]
+     */
+    protected function entityCommodityAll()
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblCommodity' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblItem
