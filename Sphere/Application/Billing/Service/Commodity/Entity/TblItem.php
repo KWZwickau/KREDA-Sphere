@@ -30,6 +30,11 @@ class TblItem extends AbstractEntity
     protected $Name;
 
     /**
+     * @Column(type="string")
+     */
+    protected $CostUnit;
+
+    /**
      * @return string
      */
     public function getDescription()
@@ -81,5 +86,23 @@ class TblItem extends AbstractEntity
     {
 
         $this->Name = $Name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCostUnit()
+    {
+
+        return $this->CostUnit;
+    }
+
+    /**
+     * @param string $CostUnit
+     */
+    public function setCostUnit( $CostUnit )
+    {
+
+        $this->CostUnit = $CostUnit;
     }
 }

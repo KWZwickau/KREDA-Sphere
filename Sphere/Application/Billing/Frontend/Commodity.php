@@ -92,10 +92,16 @@ class Commodity extends AbstractFrontend
                             new TextField( 'Item[Price]', 'Preis in €', 'Preis', new ConversationIcon()
                             ), 6 )
                     ) ),
-            new FormRow( array(
-                new FormColumn(
-                    new TextField( 'Item[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                    ), 12)
+                    new FormRow( array(
+                        new FormColumn(
+                            new TextField( 'Item[CostUnit]', 'Kostenstelle', 'Kostenstelle', new ConversationIcon()
+                            ), 6)
+
+                    ) ),
+                    new FormRow( array(
+                        new FormColumn(
+                            new TextField( 'Item[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
+                            ), 12)
 
                     ) )
                 ))), new SubmitPrimary( 'Hinzufügen' )), $Item));

@@ -111,12 +111,17 @@ class Commodity extends EntityAction
             $View->setError( 'Item[Price]', 'Bitte geben Sie einen Preis an' );
             $Error = true;
         }
+        if (isset($Item['CostUnit'] ) && empty( $Item['CostUnit'] )) {
+            $View->setError( 'Item[CostUnit]', 'Bitte geben Sie einen Namen an' );
+            $Error = true;
+        }
 
         if (!$Error) {
             $this->actionCreateItem(
                 $Item['Name'],
                 $Item['Description'],
-                $Item['Price']
+                $Item['Price'],
+                $Item['CostUnit']
             );
             return new Success( 'Der Artikel wurde erfolgreich angelegt' )
             .new Redirect( '/Sphere/Billing/Commodity', 2);

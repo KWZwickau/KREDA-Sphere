@@ -75,13 +75,15 @@ abstract class EntityAction extends EntitySchema
      * @param $Name
      * @param $Description
      * @param $Price
+     * @param $CostUnit
      *
      * @return TblItem
      */
     protected function actionCreateItem(
         $Name,
         $Description,
-        $Price
+        $Price,
+        $CostUnit
     ) {
 
         $Manager = $this->getEntityManager();
@@ -90,6 +92,7 @@ abstract class EntityAction extends EntitySchema
         $Entity->setName( $Name );
         $Entity->setDescription( $Description );
         $Entity->setPrice( $Price );
+        $Entity->setCostUnit( $CostUnit );
 
         $Manager->saveEntity( $Entity );
 
