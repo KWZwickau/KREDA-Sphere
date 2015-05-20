@@ -36,4 +36,10 @@ abstract class EntityAction extends EntitySchema
         $Entity = $this->getEntityManager()->getEntityById( 'TblAccountKeyType', $Id );
         return ( null === $Entity ? false : $Entity);
     }
+
+    protected function entityDebitorById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblDebitor', $Id );
+        return (null === $Entity ? false : $Entity);
+    }
 }

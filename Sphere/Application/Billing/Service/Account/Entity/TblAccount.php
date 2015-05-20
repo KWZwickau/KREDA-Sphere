@@ -28,9 +28,9 @@ class TblAccount extends AbstractEntity
      */
     protected $Description;
     /**
-     * @Column(type="float")
+     * @Column(type="boolean")
      */
-    protected $Value;
+    protected $IsActive;
     /**
      * @Column(type="bigint")
      */
@@ -77,21 +77,21 @@ class TblAccount extends AbstractEntity
     }
 
     /**
-     * @return float
+     * @return boolean $IsActive
      */
-    public function getValue()
+    public function getIsActive()
     {
 
-        return $this->Value;
+        return $this->IsActive;
     }
 
     /**
-     * @param float $Value
+     * @param boolean $IsActive
      */
-    public function setValue( $Value )
+    public function setIsActive( $IsActive )
     {
 
-        $this->Value = $Value;
+        $this->IsActive = $IsActive;
     }
 
     /**

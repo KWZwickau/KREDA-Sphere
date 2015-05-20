@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Billing;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
@@ -40,6 +41,7 @@ class Billing extends Module\Commodity
         }
         Module\Common::registerApplication( $Configuration );
         Module\Commodity::registerApplication( $Configuration );
+        Module\Account::registerApplication( $Configuration );
     }
 
     /**
@@ -80,6 +82,10 @@ class Billing extends Module\Commodity
     {
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Billing/Commodity', 'Leistungen', new GroupIcon()
+        );
+
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Account', 'Account', new EditIcon()
         );
     }
 }

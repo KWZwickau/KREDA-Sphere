@@ -29,6 +29,11 @@ abstract class EntitySchema extends AbstractService
         $tblAccountType = $this->setTableAccountType( $Schema );
         $tblAccountKey = $this->setTableAccountKey( $Schema, $tblAccountKeyType );
         $this->setTableAccount( $Schema, $tblAccountType, $tblAccountKey );
+
+        $this->setTableDebitor( $Schema );
+        $this->setTableDebitorLeistung( $Schema );
+
+
         /**
          * Migration & Protocol
          */
@@ -71,8 +76,8 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Description' )) {
             $Table->addColumn( 'Description', 'string' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'Value' )) {
-            $Table->addColumn( 'Value', 'float' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblAccount', 'IsActive' )) {
+            $Table->addColumn( 'IsActive', 'boolean' );
         }
         $this->schemaTableAddForeignKey( $Table, $tblAccountType );
         $this->schemaTableAddForeignKey( $Table, $tblAccountKey );
@@ -127,4 +132,29 @@ abstract class EntitySchema extends AbstractService
         return $Table;
     }
 
+    private function setTableDebitorLeistung( $Schema )
+    {
+        $Table = $this->schemaTableCreate( $Schema, 'tblDebitorLeistung');
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebitorLeistung', 'Commodity')){
+            $Table->addColumn( 'Commodity', 'bigint' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebitorLeistung', 'Debitor')){
+            $Table->addColumn( 'Debitor', 'bigint' );
+        }
+        return $Table;
+    }
+
+    private function setTableDebitor( $Schema )
+    {
+        $Table = $this->schemaTableCreate( $Schema, 'tblDebitor' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebitor','DebitorNummer' )){
+            $Table->addColumn( 'DebitorNummer', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebitor','LeadTimeFirst' )){
+            $Table->addColumn( 'LeadTimeFirst', 'date' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebitor','LeadTimeFollow' )){
+            $Table->addColumn( 'LeadTimeFollow', 'date' );
+        }
+    }
 }
