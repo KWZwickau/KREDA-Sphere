@@ -15,9 +15,10 @@ use KREDA\Sphere\Application\Billing\Billing;
  */
 class TblCommodityItem extends AbstractEntity
 {
+    const ATTR_TBL_COMMODITY = 'tblCommodity';
 
     /**
-     * @Column(type="decimal" precision=14 scale=4)
+     * @Column(type="decimal", precision=14, scale=4)
      */
     protected $Quantity;
 
@@ -32,7 +33,7 @@ class TblCommodityItem extends AbstractEntity
     protected $tblItem;
 
     /**
-     * @return decimal
+     * @return (type="decimal", precision=14, scale=4)
      */
     public function getQuantity()
     {
@@ -40,7 +41,7 @@ class TblCommodityItem extends AbstractEntity
     }
 
     /**
-     * @param decimal $Quantity
+     * @param (type="decimal", precision=14, scale=4) $Quantity
      */
     public function setQuantity( $Quantity )
     {

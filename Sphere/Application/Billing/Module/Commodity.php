@@ -20,6 +20,19 @@ class Commodity extends Common
     private static $Configuration = null;
 
     /**
+     * @return void
+     */
+    protected static function setupApplicationNavigation()
+    {
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Commodity/Create', 'Leistung anlegen', new PersonIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item/Create', 'Artikel anlegen', new PersonIcon()
+        );
+    }
+
+    /**
      * @param Configuration $Configuration
      */
     public static function registerApplication( Configuration $Configuration )
@@ -34,9 +47,18 @@ class Commodity extends Common
         )
             ->setParameterDefault( 'Commodity', null );
         self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity/Edit', __CLASS__.'::frontendEdit'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Commodity', null );
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Commodity/Item/Create', __CLASS__.'::frontendItemCreate'
         )
             ->setParameterDefault( 'Item', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item/Select', __CLASS__.'::frontendItemSelect'
+        )
+            ->setParameterDefault( 'Id', null );
     }
 
     /**
@@ -48,7 +70,6 @@ class Commodity extends Common
         self::setupApplicationNavigation();
         return Frontend::frontendStatus();
     }
-
 
     /**
      * @param $Commodity
@@ -63,6 +84,31 @@ class Commodity extends Common
     }
 
     /**
+     * @param $Id
+     * @param $Commodity
+     *
+     * @return Stage
+     */
+    public static function frontendEdit( $Id, $Commodity )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendEdit( $Id, $Commodity );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendItemSelect ( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendItemSelect( $Id);
+    }
+
+    /**
      * @param $Item
      *
      * @return Stage
@@ -72,18 +118,5 @@ class Commodity extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendItemCreate( $Item );
-    }
-
-    /**
-     * @return void
-     */
-    protected static function setupApplicationNavigation()
-    {
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Commodity/Create', 'Leistung anlegen', new PersonIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Commodity/Item/Create', 'Artikel anlegen', new PersonIcon()
-        );
     }
 }

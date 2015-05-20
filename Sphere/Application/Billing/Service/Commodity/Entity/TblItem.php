@@ -20,7 +20,7 @@ class TblItem extends AbstractEntity
     protected $Description;
 
     /**
-     * @Column(type="decimal" precision=14 scale=4)
+     * @Column(type="decimal", precision=14, scale=4)
      */
     protected $Price;
 
@@ -53,7 +53,7 @@ class TblItem extends AbstractEntity
     }
 
     /**
-     * @return decimal
+     * @return (type="decimal", precision=14, scale=4)
      */
     public function getPrice()
     {
@@ -62,12 +62,11 @@ class TblItem extends AbstractEntity
     }
 
     /**
-     * @param decimal $Price
+     * @param (type="decimal", precision=14, scale=4) $Price
      */
     public function setPrice( $Price )
     {
-
-        $this->Value = $Price;
+        $this->Price = $Price;
     }
 
     /**
