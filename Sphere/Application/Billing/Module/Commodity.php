@@ -33,6 +33,10 @@ class Commodity extends Common
             '/Sphere/Billing/Commodity/Create', __CLASS__.'::frontendCreate'
         )
             ->setParameterDefault( 'Commodity', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item/Create', __CLASS__.'::frontendItemCreate'
+        )
+            ->setParameterDefault( 'Item', null );
     }
 
     /**
@@ -59,12 +63,27 @@ class Commodity extends Common
     }
 
     /**
+     * @param $Item
+     *
+     * @return Stage
+     */
+    public static function frontendItemCreate( $Item )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendItemCreate( $Item );
+    }
+
+    /**
      * @return void
      */
     protected static function setupApplicationNavigation()
     {
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Billing/Commodity/Create', 'Leistung anlegen', new PersonIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item/Create', 'Artikel anlegen', new PersonIcon()
         );
     }
 }

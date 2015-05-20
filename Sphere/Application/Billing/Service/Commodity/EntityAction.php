@@ -70,4 +70,31 @@ abstract class EntityAction extends EntitySchema
 
         return $Entity;
     }
+
+    /**
+     * @param $Name
+     * @param $Description
+     * @param $Price
+     *
+     * @return TblItem
+     */
+    protected function actionCreateItem(
+        $Name,
+        $Description,
+        $Price
+    ) {
+
+        $Manager = $this->getEntityManager();
+
+        $Entity = new TblItem();
+        $Entity->setName( $Name );
+        $Entity->setDescription( $Description );
+        $Entity->setPrice( $Price );
+
+        $Manager->saveEntity( $Entity );
+
+        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+
+        return $Entity;
+    }
 }

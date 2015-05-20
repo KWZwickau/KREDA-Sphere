@@ -77,4 +77,50 @@ class Commodity extends EntityAction
         }
         return $View;
     }
+
+    /**
+     * @param AbstractType $View
+     * @param $Item
+     *
+     * @return AbstractType|string
+     */
+    public function executeCreateItem(
+        AbstractType &$View = null,
+        $Item
+    ) {
+
+        /**
+         * Skip to Frontend
+         */
+        if (null === $Item
+        ) {
+            return $View;
+        }
+
+        $Error = false;
+
+        if (isset($Item['Name'] ) && empty( $Item['Name'] )) {
+            $View->setError( 'Item[Name]', 'Bitte geben Sie einen Namen an' );
+            $Error = true;
+        }
+        if (isset( $Item['Description'] ) && empty(  $Item['Description'] )) {
+            $View->setError( 'Item[Description]', 'Bitte geben Sie eine Beschreibung an' );
+            $Error = true;
+        }
+        if (isset( $Item['Price'] ) && empty(  $Item['Price'] )) {
+            $View->setError( 'Item[Price]', 'Bitte geben Sie einen Preis an' );
+            $Error = true;
+        }
+
+        if (!$Error) {
+            $this->actionCreateItem(
+                $Item['Name'],
+                $Item['Description'],
+                $Item['Price']
+            );
+            return new Success( 'Der Artikel wurde erfolgreich angelegt' )
+            .new Redirect( '/Sphere/Billing/Commodity', 2);
+        }
+        return $View;
+    }
 }

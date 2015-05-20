@@ -44,6 +44,7 @@ class Commodity extends AbstractFrontend
 
     /**
      * @param $Commodity
+     *
      * @return Stage
      */
     public static function frontendCreate( $Commodity )
@@ -65,6 +66,39 @@ class Commodity extends AbstractFrontend
                 ) )
 
         ))), new SubmitPrimary( 'Hinzufügen' )), $Commodity));
+
+        return $View;
+    }
+
+    /**
+     * @param $Item
+     *
+     * @return Stage
+     */
+    public static function frontendItemCreate( $Item )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Artikel' );
+        $View->setDescription( 'Hinzufügen' );
+
+        $View->setContent(Billing::serviceCommodity()->executeCreateItem(
+            new Form( array(
+                new FormGroup( array(
+                    new FormRow( array(
+                        new FormColumn(
+                            new TextField( 'Item[Name]', 'Name', 'Name', new ConversationIcon()
+                            ), 6 ),
+                        new FormColumn(
+                            new TextField( 'Item[Price]', 'Preis in €', 'Preis', new ConversationIcon()
+                            ), 6 )
+                    ) ),
+            new FormRow( array(
+                new FormColumn(
+                    new TextField( 'Item[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
+                    ), 12)
+
+                    ) )
+                ))), new SubmitPrimary( 'Hinzufügen' )), $Item));
 
         return $View;
     }
