@@ -130,4 +130,23 @@ abstract class EntityAction extends EntitySchema
         $Entity = $this->getEntityManager()->getEntity( 'tblAccountType' )->findAll();
         return ( null === $Entity ? false : $Entity );
     }
+
+    /**
+     * @param $Id
+     * @return bool|TblAccount
+     */
+    protected function entityAccountById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblAccount', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @return bool|TblAccount[]
+     */
+    protected function entityAccountAll()
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
 }

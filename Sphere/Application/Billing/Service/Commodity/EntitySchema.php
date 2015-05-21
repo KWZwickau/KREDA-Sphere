@@ -27,6 +27,7 @@ abstract class EntitySchema extends AbstractService
         $tblCommodity = $this->setTableCommodity( $Schema, $tblCommodityType );
         $tblItem = $this->setTableItem( $Schema );
         $this->setTableCommodityItem( $Schema, $tblCommodity, $tblItem);
+        $this->setTableItemAccount( $Schema, $tblItem );
 
         /**
          * Migration & Protocol
@@ -54,6 +55,7 @@ abstract class EntitySchema extends AbstractService
     /**
      * @param Schema $Schema
      * @param Table $tblCommodityType
+     *
      * @return Table
      */
     private function setTableCommodity( Schema &$Schema, Table $tblCommodityType )
@@ -111,6 +113,25 @@ abstract class EntitySchema extends AbstractService
         }
 
         $this->schemaTableAddForeignKey( $Table, $tblCommodity );
+        $this->schemaTableAddForeignKey( $Table, $tblItem );
+
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table $tblItem
+     *
+     * @return Table
+     */
+    private function setTableItemAccount( Schema &$Schema, Table $tblItem)
+    {
+        $Table = $this->schemaTableCreate( $Schema, 'tblItemAccount' );
+
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblItemAccount', 'tblAccount' )) {
+            $Table->addColumn( 'tblAccount', 'bigint');
+        }
+
         $this->schemaTableAddForeignKey( $Table, $tblItem );
 
         return $Table;

@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service;
 
+use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Billing\Service\Account\EntityAction;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Error;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
@@ -125,5 +126,22 @@ class Account extends EntityAction
     {
 
         return parent::entityTypeValueAll();
+    }
+
+    /**
+     * @param $Id
+     * @return bool|TblAccount
+     */
+    public function entityAccountById($Id)
+    {
+        return parent::entityAccountById($Id);
+    }
+
+    /**
+     * @return bool|TblAccount[]
+     */
+    public function entityAccountAll()
+    {
+        return parent::entityAccountAll();
     }
 }
