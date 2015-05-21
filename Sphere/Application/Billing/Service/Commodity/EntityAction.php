@@ -173,13 +173,15 @@ abstract class EntityAction extends EntitySchema
      * @param TblCommodity $tblCommodity
      * @param $Name
      * @param $Description
+     * @param Entity\TblCommodityType $tblCommodityType
      *
      * @return bool
      */
     protected function actionEditCommodity(
         TblCommodity $tblCommodity,
         $Name,
-        $Description
+        $Description,
+        TblCommodityType $tblCommodityType
     ) {
 
         $Manager = $this->getEntityManager();
@@ -190,6 +192,7 @@ abstract class EntityAction extends EntitySchema
         if (null !== $Entity) {
             $Entity->setName( $Name );
             $Entity->setDescription( $Description );
+            $Entity->setTblCommodityType( $tblCommodityType );
 
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),

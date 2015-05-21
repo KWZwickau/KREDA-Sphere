@@ -145,6 +145,8 @@ class Commodity extends AbstractFrontend
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Bearbeiten' );
 
+        $tblCommodityType = Billing::serviceCommodity()->entityCommodityTypeAll();
+
         if (empty( $Id )) {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
         } else {
@@ -156,20 +158,27 @@ class Commodity extends AbstractFrontend
                 $Global = self::extensionSuperGlobal();
                 $Global->POST['Commodity']['Name'] = $tblCommodity->getName();
                 $Global->POST['Commodity']['Description'] = $tblCommodity->getDescription();
+                $Global->POST['Commodity']['Type'] = $tblCommodity->getTblCommodityType()->getId();
                 $Global->savePost();
 
                 $View->setContent(Billing::serviceCommodity()->executeEditCommodity(
                     new Form( array(
-                        new FormGroup( array(
-                            new FormRow( array(
-                                new FormColumn(
-                                    new TextField( 'Commodity[Name]', 'Name', 'Name', new ConversationIcon()
-                                    ), 6 ),
-                                new FormColumn(
-                                    new TextField( 'Commodity[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                                    ), 6 )
-                            ) )
-
+                            new FormGroup( array(
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Commodity[Name]', 'Name', 'Name', new ConversationIcon()
+                                        ), 6 ),
+                                    new FormColumn(
+                                        new SelectBox( 'Commodity[Type]', 'Leistungsart', array(
+                                            'Name' => $tblCommodityType
+                                        ) )
+                                        , 6 )
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Commodity[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
+                                        ), 12 )
+                                ) )
                         ))), new SubmitPrimary( 'Änderungen speichern' )
                     ), $tblCommodity, $Commodity));
             }

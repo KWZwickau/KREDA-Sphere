@@ -149,23 +149,25 @@ class Commodity extends EntityAction
         return parent::sumPriceItemAllByCommodity($tblCommodity);
     }
 
-
     /**
      * @param TblCommodity $tblCommodity
      * @param $Name
      * @param $Description
+     * @param TblCommodityType $tblCommodityType
      *
-     * @return TblCommodity
+     * @return bool
      */
     public function actionEditCommodity(
         TblCommodity $tblCommodity,
         $Name,
-        $Description
+        $Description,
+        TblCommodityType $tblCommodityType
     ) {
         return parent::actionEditCommodity(
             $tblCommodity,
             $Name,
-            $Description
+            $Description,
+            $tblCommodityType
         );
     }
 
@@ -278,7 +280,10 @@ class Commodity extends EntityAction
 
         if (!$Error) {
             if ($this->actionEditCommodity(
-                $tblCommodity, $Commodity['Name'], $Commodity['Description']
+                $tblCommodity,
+                $Commodity['Name'],
+                $Commodity['Description'],
+                $this->entityCommodityTypeById($Commodity['Type'])
             )) {
                 $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
                     .new Redirect( '/Sphere/Billing/Commodity', 2);
