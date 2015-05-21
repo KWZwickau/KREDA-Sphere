@@ -281,24 +281,40 @@ class Commodity extends EntityAction
         if ($this->actionRemoveCommodityItem($tblCommodityItem))
         {
             return new Success( 'Der Artikel ' . $tblCommodityItem->getTblItem()->getName(). ' wurde erfolgreich entfernt' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodityItem->getTblCommodity()->getId()) );
+                .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodityItem->getTblCommodity()->getId()) );
         }
         else
         {
             return new Warning( 'Der Artikel ' . $tblCommodityItem->getTblItem()->getName(). ' konnte nicht entfernt werden' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodityItem->getTblCommodity()->getId()) );
+                .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodityItem->getTblCommodity()->getId()) );
         }
     }
 
     /**
-     * @param TblCommodityItem $tblCommodityItem
+     * @param null $View
+     * @param TblCommodity $tblCommodity
+     * @param TblItem $tblItem
+     * @param $Quantity
      *
-     * @return bool
+     * @return string
      */
-    public function actionRemoveCommodityItem(
-        TblCommodityItem $tblCommodityItem
+    public function executeAddCommodityItem(
+        //AbstractType &$View = null,
+        &$View = null,
+        TblCommodity $tblCommodity,
+        TblItem $tblItem,
+        $Quantity
     )
     {
-        return parent::actionRemoveCommodityItem($tblCommodityItem);
+        if ($this->actionAddCommodityItem($tblCommodity, $tblItem, $Quantity))
+        {
+            return new Success( 'Der Artikel ' . $tblItem->getName(). ' wurde erfolgreich hinzugefügt' )
+                .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodity->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Der Artikel ' .$tblItem->getName(). ' konnte nicht entfernt werden' )
+                .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodity->getId()) );
+        }
     }
 }

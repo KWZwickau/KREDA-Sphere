@@ -196,6 +196,33 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param Entity\TblCommodity $tblCommodity
+     * @param Entity\TblItem $tblItem
+     * @param $Quantity
+     *
+     * @return bool
+     */
+    protected function actionAddCommodityItem(
+        TblCommodity $tblCommodity,
+        TblItem $tblItem,
+        $Quantity
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        $Entity = new TblCommodityItem();
+        $Entity->setTblCommodity( $tblCommodity );
+        $Entity->setTblItem( $tblItem );
+        $Entity->setQuantity( $Quantity );
+
+        $Manager->saveEntity( $Entity );
+
+        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+
+        return $Entity;
+    }
+
+    /**
      * @param TblCommodityItem $tblCommodityItem
      *
      * @return bool

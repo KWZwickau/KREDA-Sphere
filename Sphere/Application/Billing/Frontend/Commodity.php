@@ -4,7 +4,9 @@ namespace KREDA\Sphere\Application\Billing\Frontend;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChildIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
@@ -35,7 +37,6 @@ class Commodity extends AbstractFrontend
      */
     public static function frontendStatus()
     {
-
         $View = new Stage();
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Übersicht' );
@@ -166,6 +167,28 @@ class Commodity extends AbstractFrontend
     }
 
     /**
+     * @param $tblCommodityId
+     * @param $tblItemId
+     * @param $Quantity
+     * @return Stage
+     */
+    public static function frontendItemAdd ( $tblCommodityId, $tblItemId, $Quantity )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Artikel hinzufügen' );
+        $tblCommodity = Billing::serviceCommodity()->entityCommodityById($tblCommodityId);
+        $tblItem = Billing::serviceCommodity()->entityItemById($tblItemId);
+
+        if (!empty($tblCommodityId) && !empty($tblItemId))
+        {
+            $View ->setContent( Billing::serviceCommodity()->executeAddCommodityItem($View, $tblCommodity, $tblItem, $Quantity));
+        }
+
+        return $View;
+    }
+
+
+    /**
      * @param $Id
      *
      * @return Stage
@@ -176,14 +199,19 @@ class Commodity extends AbstractFrontend
         $View->setTitle( 'Leistung' );
         $View->setDescription( 'Artikel auswählen' );
 
-        if (empty( $Id )) {
+        if (empty( $Id ))
+        {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
-        } else {
+        }
+        else
+        {
             $tblCommodity = Billing::serviceCommodity()->entityCommodityById($Id);
-            if (empty( $tblCommodity )) {
+            if (empty( $tblCommodity ))
+            {
                 $View->setContent( new Warning( 'Die Leistung konnte nicht abgerufen werden' ) );
-            } else {
-
+            }
+            else
+            {
                 $tblCommodityItem = Billing::serviceCommodity()->entityCommodityItemAllByCommodity($tblCommodity);
                 $tblItemAll = Billing::serviceCommodity()->entityItemAll();
 
@@ -206,6 +234,22 @@ class Commodity extends AbstractFrontend
                     });
                 }
 
+                if (!empty($tblItemAll))
+                {
+                    foreach ($tblItemAll as $tblItem)
+                    {
+                        $tblItem->Option=
+                            (new TextField( 'Quantity[Quantity]', 'Menge', 'Menge', new ConversationIcon()
+                            ))->__toString().
+                            (new Primary( 'Artikel hinzufügen', '/Sphere/Billing/Commodity/Item/Add',
+                                new ChildIcon(), array(
+                                    'tblCommodityId' => $tblCommodity->getId(),
+                                    'tblItemId' => $tblItem->getId(),
+                                    'Quantity'=> 'Quantity[Quantity]'
+                                ) ))->__toString();
+                    }
+                }
+
                 $View->setTitle( 'Leisung: '. $tblCommodity->getName());
                 $View->setContent(
                     new TableData( $tblCommodityItem, null,
@@ -219,7 +263,8 @@ class Commodity extends AbstractFrontend
                     . new TableData( $tblItemAll, null,
                         array(
                             'Name'  => 'Name',
-                            'Description' => 'Beschreibung'
+                            'Description' => 'Beschreibung',
+                            'Option'  => 'Option'
                         )
                     )
                 );
