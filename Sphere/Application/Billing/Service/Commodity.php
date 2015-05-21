@@ -34,6 +34,18 @@ class Commodity extends EntityAction
     }
 
     /**
+     *
+     */
+    public function setupDatabaseContent()
+    {
+        /**
+         * CommodityType
+         */
+        $this->actionCreateCommodityType( 'Einzelleistung' );
+        $this->actionCreateCommodityType( 'Sammelleistung' );
+    }
+
+    /**
      * @param int $Id
      *
      * @return bool|TblCommodity

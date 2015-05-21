@@ -12,7 +12,6 @@ use KREDA\Sphere\Common\AbstractService;
  */
 abstract class EntitySchema extends AbstractService
 {
-
     /**
      * @param bool $Simulate
      *
@@ -20,12 +19,12 @@ abstract class EntitySchema extends AbstractService
      */
     public function setupDatabaseSchema( $Simulate = true )
     {
-
         /**
          * Table
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
-        $tblCommodity = $this->setTableCommodity( $Schema );
+        $tblCommodityType = $this->setTableCommodityType( $Schema );
+        $tblCommodity = $this->setTableCommodity( $Schema, $tblCommodityType );
         $tblItem = $this->setTableItem( $Schema );
         $this->setTableCommodityItem( $Schema, $tblCommodity, $tblItem);
 
@@ -42,18 +41,42 @@ abstract class EntitySchema extends AbstractService
      *
      * @return Table
      */
-    private function setTableCommodity( Schema &$Schema )
+    private function setTableCommodityType( Schema &$Schema )
+    {
+        $Table = $this->schemaTableCreate( $Schema, 'tblCommodityType');
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblCommodityType', 'Name' ))
+        {
+            $Table->addColumn( 'Name', 'string' );
+        }
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table $tblCommodityType
+     * @return Table
+     */
+    private function setTableCommodity( Schema &$Schema, Table $tblCommodityType )
     {
         $Table = $this->schemaTableCreate( $Schema, 'tblCommodity' );
+
         if (!$this->getDatabaseHandler()->hasColumn( 'tblCommodity', 'Name' )) {
             $Table->addColumn( 'Name', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblCommodity', 'Description' )) {
             $Table->addColumn( 'Description', 'string' );
         }
+
+        $this->schemaTableAddForeignKey( $Table, $tblCommodityType );
+
         return $Table;
     }
 
+    /**
+     * @param Schema $Schema
+     *
+     * @return Table
+     */
     private function setTableItem ( Schema &$Schema)
     {
         $Table = $this->schemaTableCreate( $Schema, 'tblItem' );

@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Billing\Service\Commodity;
 
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityType;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
 use KREDA\Sphere\Application\System\System;
 
@@ -31,6 +32,17 @@ abstract class EntityAction extends EntitySchema
     protected function entityCommodityAll()
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblCommodity' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|TblCommodityType
+     */
+    protected function entityCommodityTypeById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblCommodityType', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -284,5 +296,24 @@ abstract class EntityAction extends EntitySchema
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param $Name
+     *
+     * @return TblCommodityType
+     */
+    protected function actionCreateCommodityType( $Name )
+    {
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblCommodityType' )->findOneBy( array( 'Name' => $Name, ) );
+        if (null === $Entity)
+        {
+            $Entity = new TblCommodityType();
+            $Entity->setName( $Name );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+        return $Entity;
     }
 }
