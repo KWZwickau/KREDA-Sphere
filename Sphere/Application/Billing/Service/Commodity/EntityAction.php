@@ -98,10 +98,27 @@ abstract class EntityAction extends EntitySchema
      */
     protected function countItemAllByCommodity( TblCommodity $tblCommodity )
     {
-
         return (int)$this->getEntityManager()->getEntity( 'TblCommodityItem' )->countBy( array(
             TblCommodityItem::ATTR_TBL_COMMODITY => $tblCommodity->getId()
         ) );
+    }
+
+    /**
+     * @param TblCommodity $tblCommodity
+     *
+     * @return float (type="decimal", precision=14, scale=4)
+     */
+    protected function sumPriceItemAllByCommodity( TblCommodity $tblCommodity)
+    {
+        //(type="decimal", precision=14, scale=4)
+        $sum = 0.00;
+        $tblCommodityItemByCommodity = $this->entityCommodityItemAllByCommodity( $tblCommodity);
+        foreach($tblCommodityItemByCommodity as $tblCommodityItem)
+        {
+            $sum += $tblCommodityItem->getTblItem()->getPrice() * $tblCommodityItem->getQuantity();
+        }
+
+        return $sum;
     }
 
     /**

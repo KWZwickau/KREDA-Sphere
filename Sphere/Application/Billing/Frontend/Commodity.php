@@ -49,6 +49,7 @@ class Commodity extends AbstractFrontend
             array_walk($tblCommodityAll, function (tblCommodity $tblCommodity)
             {
               $tblCommodity->ItemCount = Billing::serviceCommodity()->countItemAllByCommodity( $tblCommodity );
+              $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity);
               $tblCommodity->Option =
                   (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Edit',
                         new EditIcon(), array(
@@ -71,6 +72,7 @@ class Commodity extends AbstractFrontend
                     'Name'  => 'Name',
                     'Description' => 'Beschreibung',
                     'ItemCount' => 'Artikelanzahl',
+                    'SumPriceItem' => 'Gesamtpreis',
                     'Option'  => 'Option'
                 )
             )
@@ -210,7 +212,7 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function frontendItemSelect ( $Id)//, $Quantity = null )
+    public static function frontendItemSelect ( $Id )//, $Quantity = null )
     {
         $View = new Stage();
         $View->setTitle( 'Leistung' );
@@ -239,6 +241,8 @@ class Commodity extends AbstractFrontend
                         $tblItem = $tblCommodityItem->getTblItem();
                         $tblCommodityItem->Name = $tblItem->getName();
                         $tblCommodityItem->Description = $tblItem->getDescription();
+                        $tblCommodityItem->Price = $tblItem->getPrice();
+                        $tblCommodityItem->CostUnit = $tblItem->getCostUnit();
                         $tblCommodityItem->Option =
                             (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
                                 new EditIcon(), array(
@@ -273,6 +277,8 @@ class Commodity extends AbstractFrontend
                         array(
                             'Name'  => 'Name',
                             'Description' => 'Beschreibung',
+                            'CostUnit' => 'Kostenstelle',
+                            'Price' => 'Preis',
                             'Quantity' => 'Menge',
                             'Option'  => 'Option'
                         )
@@ -281,6 +287,8 @@ class Commodity extends AbstractFrontend
                         array(
                             'Name'  => 'Name',
                             'Description' => 'Beschreibung',
+                            'CostUnit' => 'Kostenstelle',
+                            'Price' => 'Preis',
                             'Option'  => 'Option'
                         )
                     )

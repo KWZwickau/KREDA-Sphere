@@ -110,6 +110,17 @@ class Commodity extends EntityAction
 
     /**
      * @param TblCommodity $tblCommodity
+     *
+     * @return float
+     */
+    public function sumPriceItemAllByCommodity(TblCommodity $tblCommodity)
+    {
+        return parent::sumPriceItemAllByCommodity($tblCommodity);
+    }
+
+
+    /**
+     * @param TblCommodity $tblCommodity
      * @param $Name
      * @param $Description
      *
