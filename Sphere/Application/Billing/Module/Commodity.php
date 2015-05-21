@@ -59,6 +59,10 @@ class Commodity extends Common
             '/Sphere/Billing/Commodity/Item/Select', __CLASS__.'::frontendItemSelect'
         )
             ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item/Remove', __CLASS__.'::frontendItemRemove'
+        )
+            ->setParameterDefault( 'Id', null );
     }
 
     /**
@@ -106,6 +110,18 @@ class Commodity extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendItemSelect( $Id);
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendItemRemove ( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendItemRemove( $Id);
     }
 
     /**

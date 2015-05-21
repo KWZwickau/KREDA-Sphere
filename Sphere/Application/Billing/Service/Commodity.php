@@ -6,8 +6,10 @@ use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\EntityAction;
+use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Frontend\Background\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
@@ -94,6 +96,16 @@ class Commodity extends EntityAction
     public function entityCommodityItemAllByCommodity(TblCommodity $tblCommodity)
     {
         return parent::entityCommodityItemAllByCommodity($tblCommodity);
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|\Doctrine\ORM\Mapping\Entity
+     */
+    public  function entityCommodityItemById($Id)
+    {
+        return parent::entityCommodityItemById($Id);
     }
 
     /**
@@ -251,5 +263,42 @@ class Commodity extends EntityAction
             .new Redirect( '/Sphere/Billing/Commodity', 2);
         }
         return $View;
+    }
+
+    /**
+     * @param AbstractType $View
+     * @param TblCommodityItem $tblCommodityItem
+     *
+     * @return string
+     */
+    public function executeRemoveCommodityItem(
+        //AbstractType &$View = null,
+        //TblCommodityItem $tblCommodityItem
+        &$View = null,
+        $tblCommodityItem
+    )
+    {
+        if ($this->actionRemoveCommodityItem($tblCommodityItem))
+        {
+            return new Success( 'Der Artikel ' . $tblCommodityItem->getTblItem()->getName(). ' wurde erfolgreich entfernt' )
+            .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodityItem->getTblCommodity()->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Der Artikel ' . $tblCommodityItem->getTblItem()->getName(). ' konnte nicht entfernt werden' )
+            .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodityItem->getTblCommodity()->getId()) );
+        }
+    }
+
+    /**
+     * @param TblCommodityItem $tblCommodityItem
+     *
+     * @return bool
+     */
+    public function actionRemoveCommodityItem(
+        TblCommodityItem $tblCommodityItem
+    )
+    {
+        return parent::actionRemoveCommodityItem($tblCommodityItem);
     }
 }

@@ -90,6 +90,12 @@ abstract class EntityAction extends EntitySchema
         return ( null === $EntityList ? false : $EntityList );
     }
 
+    protected function entityCommodityItemById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblCommodityItem', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
     /**
      * @param TblCommodity $tblCommodity
      *
@@ -187,5 +193,26 @@ abstract class EntityAction extends EntitySchema
         System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
 
         return $Entity;
+    }
+
+    /**
+     * @param TblCommodityItem $tblCommodityItem
+     *
+     * @return bool
+     */
+    protected function actionRemoveCommodityItem(
+        TblCommodityItem $tblCommodityItem
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        $Entity = $Manager->getEntity( 'tblCommodityItem' )->findOneBy( array('Id'=>$tblCommodityItem->getId() ) );
+        if (null !== $Entity) {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
     }
 }

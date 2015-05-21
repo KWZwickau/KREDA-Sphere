@@ -65,7 +65,7 @@ class Commodity extends AbstractFrontend
                 array(
                     'Name'  => 'Name',
                     'Description' => 'Beschreibung',
-                    'ItemCount' => 'Artikel',
+                    'ItemCount' => 'Artikelanzahl',
                     'Option'  => 'Option'
                 )
             )
@@ -152,6 +152,24 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
+    public static function frontendItemRemove ( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Artikel entfernen' );
+        $tblCommodityItem = Billing::serviceCommodity()->entityCommodityItemById( $Id );
+        if (!empty($tblCommodityItem))
+        {
+            $View ->setContent( Billing::serviceCommodity()->executeRemoveCommodityItem($View, $tblCommodityItem));
+        }
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
     public static function frontendItemSelect ( $Id )
     {
         $View = new Stage();
@@ -181,7 +199,7 @@ class Commodity extends AbstractFrontend
                                 new EditIcon(), array(
                                     'Id' => $tblCommodityItem->getId()
                                 ) ) )->__toString().
-                            (new Primary( 'Artikel entfernen', '/Sphere/Billing/Commodity/Item/UnSelect',
+                            (new Primary( 'Artikel entfernen', '/Sphere/Billing/Commodity/Item/Remove',
                                 new RemoveIcon(), array(
                                     'Id' => $tblCommodityItem->getId()
                                 ) ))->__toString();
