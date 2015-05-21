@@ -12,7 +12,7 @@ use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType as AbstractType;
 
 /**
  * Class Commodity
@@ -170,6 +170,37 @@ class Commodity extends EntityAction
     }
 
     /**
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
+     *
+     * @param Commodity\Entity\TblCommodity $tblCommodity
+     *
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
+     */
+    public function executeRemoveCommodity(
+        //AbstractType
+        &$View = null,
+        TblCommodity $tblCommodity
+    )
+    {
+        if (null === $tblCommodity)
+        {
+            return $View;
+        }
+
+        if ($this->actionRemoveCommodity($tblCommodity))
+        {
+            return new Success( 'Die Leistung wurde erfolgreich gelöscht')
+                .new Redirect( '/Sphere/Billing/Commodity', 2);
+        }
+        else
+        {
+            return new Danger( 'Die Leistung konnte nicht gelöscht werden' )
+                .new Redirect( '/Sphere/Billing/Commodity', 2);
+        }
+        //return $View;
+    }
+
+    /**
      * @param AbstractType $View
      * @param TblCommodity $tblCommodity
      * @param $Commodity
@@ -308,7 +339,7 @@ class Commodity extends EntityAction
     {
         if ($this->actionAddCommodityItem($tblCommodity, $tblItem, $Quantity))
         {
-            return new Success( 'Der Artikel ' . $tblItem->getName(). ' wurde erfolgreich hinzugefügt' )
+            return $Quantity . new Success( 'Der Artikel ' . $tblItem->getName(). ' wurde erfolgreich hinzugefügt' )
                 .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodity->getId()) );
         }
         else

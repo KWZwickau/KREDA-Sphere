@@ -54,6 +54,10 @@ class Commodity extends AbstractFrontend
                         new EditIcon(), array(
                             'Id' => $tblCommodity->getId()
                     ) ) )->__toString().
+                  (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Löschen', '/Sphere/Billing/Commodity/Delete',
+                      new RemoveIcon(), array(
+                          'Id' => $tblCommodity->getId()
+                      ) ) )->__toString().
                   (new Primary( 'Artikel auswählen', '/Sphere/Billing/Commodity/Item/Select',
                         new EditIcon(), array(
                             'Id' => $tblCommodity->getId()
@@ -102,6 +106,19 @@ class Commodity extends AbstractFrontend
 
         return $View;
     }
+
+    public static function frontendDelete( $Id)
+    {
+        $View = new Stage();
+        $View->setTitle( 'Leistung' );
+        $View->setDescription( 'Entfernen' );
+
+        $tblCommodity = Billing::serviceCommodity()->entityCommodityById($Id);
+        $View->setContent(Billing::serviceCommodity()->executeRemoveCommodity($View, $tblCommodity));
+
+        return $View;
+    }
+
 
     /**
      * @param $Id
@@ -193,7 +210,7 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function frontendItemSelect ( $Id )
+    public static function frontendItemSelect ( $Id)//, $Quantity = null )
     {
         $View = new Stage();
         $View->setTitle( 'Leistung' );
@@ -227,7 +244,7 @@ class Commodity extends AbstractFrontend
                                 new EditIcon(), array(
                                     'Id' => $tblCommodityItem->getId()
                                 ) ) )->__toString().
-                            (new Primary( 'Artikel entfernen', '/Sphere/Billing/Commodity/Item/Remove',
+                            (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Artikel entfernen', '/Sphere/Billing/Commodity/Item/Remove',
                                 new RemoveIcon(), array(
                                     'Id' => $tblCommodityItem->getId()
                                 ) ))->__toString();
@@ -245,7 +262,7 @@ class Commodity extends AbstractFrontend
                                 new ChildIcon(), array(
                                     'tblCommodityId' => $tblCommodity->getId(),
                                     'tblItemId' => $tblItem->getId(),
-                                    'Quantity'=> 'Quantity[Quantity]'
+                                    'Quantity'=> 1
                                 ) ))->__toString();
                     }
                 }
