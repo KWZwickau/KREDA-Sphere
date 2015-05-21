@@ -47,6 +47,15 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return bool|TblCommodityType[]
+     */
+    protected function entityCommodityTypeAll()
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblCommodityType' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param integer $Id
      *
      * @return bool|TblItem
@@ -134,14 +143,16 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param string              $Name
-     * @param string              $Description
+     * @param $Name
+     * @param $Description
+     * @param TblCommodityType $tblCommodityType
      *
      * @return TblCommodity
      */
     protected function actionCreateCommodity(
         $Name,
-        $Description
+        $Description,
+        TblCommodityType $tblCommodityType
     ) {
 
         $Manager = $this->getEntityManager();
@@ -149,6 +160,7 @@ abstract class EntityAction extends EntitySchema
         $Entity = new TblCommodity();
         $Entity->setName($Name);
         $Entity->setDescription( $Description );
+        $Entity->setTblCommodityType( $tblCommodityType );
 
         $Manager->saveEntity( $Entity );
 

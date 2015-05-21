@@ -16,6 +16,7 @@ use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
@@ -48,6 +49,7 @@ class Commodity extends AbstractFrontend
         {
             array_walk($tblCommodityAll, function (tblCommodity $tblCommodity)
             {
+              $tblCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
               $tblCommodity->ItemCount = Billing::serviceCommodity()->countItemAllByCommodity( $tblCommodity );
               $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity);
               $tblCommodity->Option =
@@ -71,6 +73,7 @@ class Commodity extends AbstractFrontend
                 array(
                     'Name'  => 'Name',
                     'Description' => 'Beschreibung',
+                    'Type' => 'Leistungsart',
                     'ItemCount' => 'Artikelanzahl',
                     'SumPriceItem' => 'Gesamtpreis',
                     'Option'  => 'Option'
@@ -92,6 +95,8 @@ class Commodity extends AbstractFrontend
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Hinzufügen' );
 
+        $tblCommodityType = Billing::serviceCommodity()->entityCommodityTypeAll();
+
         $View->setContent(Billing::serviceCommodity()->executeCreateCommodity(
             new Form( array(
                 new FormGroup( array(
@@ -100,10 +105,16 @@ class Commodity extends AbstractFrontend
                             new TextField( 'Commodity[Name]', 'Name', 'Name', new ConversationIcon()
                             ), 6 ),
                         new FormColumn(
+                            new SelectBox( 'Commodity[Type]', 'Leistungsart', array(
+                                'Name' => $tblCommodityType
+                            ) )
+                            , 6 )
+                    ) ),
+                    new FormRow( array(
+                        new FormColumn(
                             new TextField( 'Commodity[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                            ), 6 )
-                ) )
-
+                            ), 12 )
+                    ) )
         ))), new SubmitPrimary( 'Hinzufügen' )), $Commodity));
 
         return $View;

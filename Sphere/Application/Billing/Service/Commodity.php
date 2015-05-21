@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Billing\Service;
 
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityType;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\EntityAction;
@@ -61,6 +62,24 @@ class Commodity extends EntityAction
     public function entityCommodityAll()
     {
         return parent::entityCommodityAll();
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|TblCommodityType
+     */
+    public function entityCommodityTypeById($Id)
+    {
+        return parent::entityCommodityTypeById($Id);
+    }
+
+    /**
+     * @return bool|TblCommodityType[]
+     */
+    public function entityCommodityTypeAll()
+    {
+        return parent::entityCommodityTypeAll();
     }
 
     /**
@@ -181,10 +200,12 @@ class Commodity extends EntityAction
             $Error = true;
         }
 
-        if (!$Error) {
+        if (!$Error)
+        {
             $this->actionCreateCommodity(
                 $Commodity['Name'],
-                $Commodity['Description']
+                $Commodity['Description'],
+                $this->entityCommodityTypeById($Commodity['Type'])
             );
             return new Success( 'Die Leistung wurde erfolgreich angelegt' )
             .new Redirect( '/Sphere/Billing/Commodity', 2);
