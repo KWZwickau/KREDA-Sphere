@@ -3,30 +3,35 @@ namespace KREDA\Sphere\Application\Billing\Service\Account\Entity;
 
 use KREDA\Sphere\Common\AbstractEntity;
 
+/**
+ * @Entity
+ * @Table(name="tblDebitor")
+ * @Cache(usage="NONSTRICT_READ_WRITE")
+ */
 class TblDebitor extends AbstractEntity
 {
 
-    const ATTR_TBL_PERSON = 'tblPerson';
+//    const ATTR_TBL_PERSON = 'tblPerson';
 
     /**
      * @Column(type="string")
      */
     protected $DebitorNummer;
     /**
-     * @Column(type="date")
+     * @Column(type="integer")
      */
     protected $LeadTimeFirst;
     /**
-     * @Column(type="date")
+     * @Column(type="integer")
      */
     protected $LeadTimeFollow;
-    /**
-     * @Column(type="bigint")
-     */
-    protected $PersonId;
+//    /**
+//     * @Column(type="bigint")
+//     */
+//    protected $PersonId;
 
     /**
-     * @return $LeadTimeFirst
+     * @return integer $LeadTimeFirst
      */
     public function getLeadTimeFirst()
     {
@@ -34,7 +39,7 @@ class TblDebitor extends AbstractEntity
     }
 
     /**
-     * @param date $leadTimeFirst
+     * @param integer $leadTimeFirst
      */
     public function setLeadTimeFirst($leadTimeFirst)
     {
@@ -42,7 +47,7 @@ class TblDebitor extends AbstractEntity
     }
 
     /**
-     * @return $LeadTimeFollow
+     * @return integer $LeadTimeFollow
      */
     public function getLeadTimeFollow()
     {
@@ -50,7 +55,7 @@ class TblDebitor extends AbstractEntity
     }
 
     /**
-     * @param date $leadTimeFollow
+     * @param integer $leadTimeFollow
      */
     public function setLeadTimeFollow($leadTimeFollow)
     {
@@ -58,7 +63,7 @@ class TblDebitor extends AbstractEntity
     }
 
     /**
-     * @return $DebitorNummer
+     * @return string $DebitorNummer
      */
     public function getDebitorNummer()
     {
@@ -72,4 +77,5 @@ class TblDebitor extends AbstractEntity
     {
         $this->DebitorNummer = $debitorNummer;
     }
+
 }

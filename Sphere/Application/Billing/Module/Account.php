@@ -28,7 +28,13 @@ class Account extends Common
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Account/Create', __CLASS__.'::frontendAccountCreate'
-        );
+        )->setParameterDefault( 'Account', null );
+        //////////////////////////////
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Account/AddDebitor',__CLASS__.'::frontendAddDebitor'
+        )->setParameterDefault( 'Debitor', null );
+        //////////////////////////////
+
     }
 
     /**
@@ -43,14 +49,26 @@ class Account extends Common
     }
 
     /**
+     * @param $Account
      * @return Stage
      */
-    public static function frontendAccountCreate()
+    public static function frontendAccountCreate( $Account )
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::fontendCreateAccount();
+        return Frontend::fontendCreateAccount( $Account );
+    }
+
+    /**
+     * @param $Debitor
+     * @return Stage
+     */
+    public static function frontendAddDebitor( $Debitor )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendAddDebitor( $Debitor );
     }
 
     /**
@@ -61,6 +79,9 @@ class Account extends Common
 
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Billing/Account/Create', 'Anlegen', new PersonIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Account/AddDebitor', 'Debitor Anlegen', new PersonIcon()
         );
     }
 }

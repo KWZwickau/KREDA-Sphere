@@ -31,7 +31,7 @@ abstract class EntitySchema extends AbstractService
         $this->setTableAccount( $Schema, $tblAccountType, $tblAccountKey );
 
         $this->setTableDebitor( $Schema );
-        $this->setTableDebitorLeistung( $Schema );
+        $this->setTableDebitorCommodity( $Schema );
 
 
         /**
@@ -132,7 +132,11 @@ abstract class EntitySchema extends AbstractService
         return $Table;
     }
 
-    private function setTableDebitorLeistung( $Schema )
+    /**
+     * @param Schema $Schema
+     * @return Table tblDebitorCommodity
+     */
+    private function setTableDebitorCommodity( Schema &$Schema )
     {
         $Table = $this->schemaTableCreate( $Schema, 'tblDebitorLeistung');
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebitorLeistung', 'Commodity')){
@@ -144,17 +148,22 @@ abstract class EntitySchema extends AbstractService
         return $Table;
     }
 
-    private function setTableDebitor( $Schema )
+    /**
+     * @param Schema $Schema
+     * @return Table
+     */
+    private function setTableDebitor( Schema &$Schema )
     {
         $Table = $this->schemaTableCreate( $Schema, 'tblDebitor' );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebitor','DebitorNummer' )){
             $Table->addColumn( 'DebitorNummer', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebitor','LeadTimeFirst' )){
-            $Table->addColumn( 'LeadTimeFirst', 'date' );
+            $Table->addColumn( 'LeadTimeFirst', 'integer' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebitor','LeadTimeFollow' )){
-            $Table->addColumn( 'LeadTimeFollow', 'date' );
+            $Table->addColumn( 'LeadTimeFollow', 'integer' );
         }
+        return $Table;
     }
 }

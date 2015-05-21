@@ -88,4 +88,5 @@ class Billing extends Module\Commodity
             '/Sphere/Billing/Account', 'Account', new EditIcon()
         );
     }
+
 }

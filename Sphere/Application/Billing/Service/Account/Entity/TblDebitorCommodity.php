@@ -4,6 +4,11 @@ namespace KREDA\Sphere\Application\Billing\Service\Account\Entity;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Common\AbstractEntity;
 
+/**
+ * @Entity
+ * @Table(name="tblDebitorCommodity")
+ * @Cache(usage="NONSTRICT_READ_WRITE")
+ */
 class TblDebitorCommodity extends AbstractEntity
 {
 

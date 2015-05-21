@@ -15,6 +15,8 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblAccountType extends AbstractEntity
 {
 
+    const ATTR_TBL_ACCOUNT_TYPE = 'tblAccountType';
+
     /**
      * @Column(type="string")
      */

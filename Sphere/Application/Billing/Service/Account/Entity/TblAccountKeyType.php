@@ -3,6 +3,11 @@ namespace KREDA\Sphere\Application\Billing\Service\Account\Entity;
 
 use KREDA\Sphere\Common\AbstractEntity;
 
+/**
+ * @Entity
+ * @Table(name="tblAccountKeyType")
+ * @Cache(usage="NONSTRICT_READ_WRITE")
+ */
 class TblAccountKeyType extends AbstractEntity
 {
 
