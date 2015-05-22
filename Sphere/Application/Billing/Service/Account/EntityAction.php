@@ -152,6 +152,15 @@ abstract class EntityAction extends EntitySchema
         return $Entity;
     }
 
+    /**
+     * @param $ValidFrom
+     * @param $Value
+     * @param $ValidTo
+     * @param $Description
+     * @param $Code
+     * @param TblAccountKeyType $tblAccountKeyType
+     * @return TblAccountKey|null|object
+     */
     protected function actionCreateKey( $ValidFrom, $Value, $ValidTo, $Description, $Code, TblAccountKeyType $tblAccountKeyType)
     {
 
@@ -180,6 +189,11 @@ abstract class EntityAction extends EntitySchema
         return $Entity;
     }
 
+    /**
+     * @param $Name
+     * @param $Description
+     * @return TblAccountType|null|object
+     */
     protected function actionCreateType( $Name, $Description)
     {
 
@@ -212,6 +226,72 @@ abstract class EntityAction extends EntitySchema
     protected function entityAccountActiveAll()
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )->findBy(array('IsActive'=>1));
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @return array|bool|TblAccount[]
+     */
+    protected function entityAccountAll()
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblAccount $tblAccount
+     * @param $Description
+     * @param $Number
+     * @param $IsActive
+     * @param TblAccountKey $tblAccountKey
+     * @param TblAccountType $tblAccountType
+     * @return bool
+     */
+    protected function actionEditAccount(
+        TblAccount $tblAccount,
+        $Description,
+        $Number,
+        $IsActive,
+        TblAccountKey $tblAccountKey,
+        TblAccountType $tblAccountType
+    ) {
+
+        $Manager = $this->getEntityManager();
+
+        /** @var TblAccount $Entity */
+        $Entity = $Manager->getEntityById( 'TblAccount', $tblAccount->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setDescription( $Description );
+            $Entity->setNumber( $Number );
+            $Entity->setIsActive( $IsActive );
+            $Entity->setTblAccountKey( $tblAccountKey );
+            $Entity->setTblAccountType( $tblAccountType );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return array|bool|TblAccountKey[]
+     */
+    protected function entityAccountKeyAll()
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccountKey' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @return array|bool|TblAccountType[]
+     */
+    protected function entityAccountTypeAll()
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccountType' )->findAll();
         return ( null === $Entity ? false : $Entity );
     }
 }

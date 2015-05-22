@@ -8,6 +8,7 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Error;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Redirect;
+use KREDA\Sphere\Client\Frontend\Text\Type\Danger;
 use KREDA\Sphere\Common\Database\Handler;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKey;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountType;
@@ -44,9 +45,6 @@ class Account extends EntityAction
         $this->actionCreateKey( '01.01.2007', '19', '01.01.2030', 'Mehrwertsteuer', '3', $this->entityAccountKeyTypeById( '1' ) );
         $this->actionCreateType( 'Erlöskonto','Dient zum erfassen des Erlöses' );
         $this->actionCreateType( 'Umsatzsteuer','Dient zum erfassen der Umsatzsteuer' );
-
-
-
     }
 
     /**
@@ -145,6 +143,10 @@ class Account extends EntityAction
         return parent::entityTypeValueAll();
     }
 
+    /**
+     * @param $Id
+     * @return bool|TblAccountKeyType
+     */
     public function entityAccountKeyTypeById($Id)
     {
 
@@ -167,4 +169,127 @@ class Account extends EntityAction
     {
         return parent::entityAccountActiveAll();
     }
+
+    /**
+     * @return bool|TblAccount[]
+     */
+    public function entityAccountAll()
+    {
+        return parent::entityAccountAll();
+    }
+
+    /**
+     * @param $Id
+     * @return bool|TblAccountKey
+     */
+    public function entityAccountKeyById($Id)
+    {
+        return parent::entityAccountKeyById($Id);
+    }
+
+    /**
+     * @return array|bool|TblAccountKey[]
+     */
+    public function entityAccountKeyAll()
+    {
+        return parent::entityAccountKeyAll();
+    }
+
+    /**
+     * @return array|bool|TblAccountType[]
+     */
+    public function entityAccountTypeAll()
+    {
+        return parent::entityAccountTypeAll();
+    }
+
+    /**
+     * @param int $Id
+     * @return bool|TblAccountType
+     */
+    public function entityAccountTypeById( $Id )
+    {
+        return parent::entityAccountTypeById( $Id );
+    }
+
+    /**
+     * @param AbstractType $View
+     * @param TblAccount $tblAccount
+     * @param $Account
+     * @return AbstractType|string
+     */
+    public function executeEditAccount(
+        AbstractType &$View = null,
+        TblAccount $tblAccount,
+        $Account
+    ) {
+
+        /**
+         * Skip to Frontend
+         */
+        if (null === $Account
+        ) {
+            return $View;
+        }
+
+        $Error = false;
+
+        if (isset($Account['Description'] ) && empty( $Account['Description'] )) {
+            $View->setError( 'Account[Description]', 'Bitte geben Sie eine Refferenznummer an' );
+            $Error = true;
+        }
+        if (isset($Account['Number'] ) && empty( $Account['Number'] )) {
+            $View->setError( 'Account[Number]', 'Bitte geben Sie eine Refferenznummer an' );
+            $Error = true;
+        }
+        if (isset($Account['IsActive'] ) && empty( $Account['IsActive'] )) {
+            $View->setError( 'Account[IsActive]', 'Bitte geben sie an ob der Account Aktiv ist' );
+            $Error = true;
+        }
+
+        if (!$Error) {
+            if ($this->actionEditAccount(
+                $tblAccount,
+                $Account['Description'],
+                $Account['Number'],
+                $Account['IsActive'],
+                $this->entityAccountKeyById($Account['tblAccountKey']),
+                $this->entityAccountTypeById($Account['tblAccountType'])
+            )) {
+                $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
+                    .new Redirect( '/Sphere/Billing/Account', 2);
+            } else {
+                $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' );
+            };
+        }
+        return $View;
+    }
+
+    /**
+     * @param TblAccount $tblAccount
+     * @param $Description
+     * @param $Number
+     * @param $IsActive
+     * @param TblAccountKey $tblAccountKey
+     * @param TblAccountType $tblAccountType
+     * @return bool
+     */
+    public function actionEditAccount(
+        TblAccount $tblAccount,
+        $Description,
+        $Number,
+        $IsActive,
+        TblAccountKey $tblAccountKey,
+        TblAccountType $tblAccountType
+    ) {
+        return parent::actionEditAccount(
+            $tblAccount,
+            $Description,
+            $Number,
+            $IsActive,
+            $tblAccountKey,
+            $tblAccountType
+        );
+    }
+
 }
