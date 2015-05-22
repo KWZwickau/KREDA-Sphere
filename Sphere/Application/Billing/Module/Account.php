@@ -28,7 +28,14 @@ class Account extends Common
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Account/Create', __CLASS__.'::frontendAccountCreate'
-        )->setParameterDefault( 'Account', null );
+        )
+            ->setParameterDefault( 'Account', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Account/Edit', __CLASS__.'::frontendEdit'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Account', null );
+
         //////////////////////////////
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Account/AddDebitor',__CLASS__.'::frontendAddDebitor'
@@ -57,7 +64,7 @@ class Account extends Common
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::fontendCreateAccount( $Account );
+        return Frontend::frontendCreateAccount($Account);
     }
 
     /**
@@ -83,5 +90,17 @@ class Account extends Common
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Billing/Account/AddDebitor', 'Debitor Anlegen', new PersonIcon()
         );
+    }
+
+    /**
+     * @param $Id
+     * @param $Account
+     * @return mixed
+     */
+    public static function frontendEdit( $Id, $Account )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendEdit( $Id, $Account );
     }
 }
