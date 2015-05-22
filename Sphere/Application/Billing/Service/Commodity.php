@@ -337,7 +337,8 @@ class Commodity extends EntityAction
                 $Item['Name'],
                 $Item['Description'],
                 $Item['Price'],
-                $Item['CostUnit']
+                $Item['CostUnit'],
+                $Item['Account']
             );
             return new Success( 'Der Artikel wurde erfolgreich angelegt' )
             .new Redirect( '/Sphere/Billing/Commodity', 2);

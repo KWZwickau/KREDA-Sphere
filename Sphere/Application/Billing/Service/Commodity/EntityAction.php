@@ -209,6 +209,7 @@ abstract class EntityAction extends EntitySchema
      * @param $Description
      * @param $Price
      * @param $CostUnit
+     * @param $tblAccount
      *
      * @return TblItem
      */
@@ -216,7 +217,8 @@ abstract class EntityAction extends EntitySchema
         $Name,
         $Description,
         $Price,
-        $CostUnit
+        $CostUnit,
+        $tblAccount
     ) {
 
         $Manager = $this->getEntityManager();
@@ -224,8 +226,9 @@ abstract class EntityAction extends EntitySchema
         $Entity = new TblItem();
         $Entity->setName( $Name );
         $Entity->setDescription( $Description );
-        $Entity->setPrice( $Price );
+        $Entity->setPrice( str_replace(',','.', $Price) );
         $Entity->setCostUnit( $CostUnit );
+        $Entity->setTblAccount($tblAccount);
 
         $Manager->saveEntity( $Entity );
 
@@ -252,7 +255,7 @@ abstract class EntityAction extends EntitySchema
         $Entity = new TblCommodityItem();
         $Entity->setTblCommodity( $tblCommodity );
         $Entity->setTblItem( $tblItem );
-        $Entity->setQuantity( $Quantity );
+        $Entity->setQuantity( str_replace(',','.', $Quantity) );
 
         $Manager->saveEntity( $Entity );
 

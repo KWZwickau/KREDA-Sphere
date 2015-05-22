@@ -51,7 +51,7 @@ class Commodity extends AbstractFrontend
             {
               $tblCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
               $tblCommodity->ItemCount = Billing::serviceCommodity()->countItemAllByCommodity( $tblCommodity );
-              $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity);
+              $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity)." €";
               $tblCommodity->Option =
                   (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Edit',
                         new EditIcon(), array(
@@ -259,10 +259,22 @@ class Commodity extends AbstractFrontend
                     array_walk($tblCommodityItem, function (TblCommodityItem $tblCommodityItem)
                     {
                         $tblItem = $tblCommodityItem->getTblItem();
+
+                        $Account = Billing::serviceAccount()->entityAccountById($tblItem->getTblAccount());
+                        if (!empty($Account))
+                        {
+                            $Account = $Account->getDescription();
+                        }
+                        else
+                        {
+                            $Account = "";
+                        }
+
                         $tblCommodityItem->Name = $tblItem->getName();
                         $tblCommodityItem->Description = $tblItem->getDescription();
                         $tblCommodityItem->Price = $tblItem->getPrice();
                         $tblCommodityItem->CostUnit = $tblItem->getCostUnit();
+                        $tblCommodityItem->Account = $Account;
                         $tblCommodityItem->Option =
                             (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
                                 new EditIcon(), array(
@@ -279,6 +291,17 @@ class Commodity extends AbstractFrontend
                 {
                     foreach ($tblItemAll as $tblItem)
                     {
+                        $Account = Billing::serviceAccount()->entityAccountById($tblItem->getTblAccount());
+                        if (!empty($Account))
+                        {
+                            $Account = $Account->getDescription();
+                        }
+                        else
+                        {
+                            $Account = "";
+                        }
+
+                        $tblItem->Account = $Account;
                         $tblItem->Option=
                             (new TextField( 'Quantity[Quantity]', 'Menge', 'Menge', new ConversationIcon()
                             ))->__toString().
@@ -298,6 +321,7 @@ class Commodity extends AbstractFrontend
                             'Name'  => 'Name',
                             'Description' => 'Beschreibung',
                             'CostUnit' => 'Kostenstelle',
+                            'Account' => 'FIBU-Konto',
                             'Price' => 'Preis',
                             'Quantity' => 'Menge',
                             'Option'  => 'Option'
@@ -308,6 +332,7 @@ class Commodity extends AbstractFrontend
                             'Name'  => 'Name',
                             'Description' => 'Beschreibung',
                             'CostUnit' => 'Kostenstelle',
+                            'Account' => 'FIBU-Konto',
                             'Price' => 'Preis',
                             'Option'  => 'Option'
                         )
@@ -344,8 +369,12 @@ class Commodity extends AbstractFrontend
                     new FormRow( array(
                         new FormColumn(
                             new TextField( 'Item[CostUnit]', 'Kostenstelle', 'Kostenstelle', new ConversationIcon()
-                            ), 6)
-
+                            ), 6),
+                    new FormColumn(
+                        new SelectBox( 'Item[Account]', 'FIBU-Konto', array(
+                            'Description' => Billing::serviceAccount()->entityAccountActiveAll()
+                        ) )
+                        , 6 )
                     ) ),
                     new FormRow( array(
                         new FormColumn(

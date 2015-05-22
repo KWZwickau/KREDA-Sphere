@@ -140,8 +140,8 @@ class Account extends EntityAction
     /**
      * @return bool|TblAccount[]
      */
-    public function entityAccountAll()
+    public function entityAccountActiveAll()
     {
-        return parent::entityAccountAll();
+        return parent::entityAccountActiveAll();
     }
 }

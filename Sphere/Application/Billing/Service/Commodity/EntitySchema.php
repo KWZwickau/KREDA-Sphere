@@ -94,6 +94,10 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblItem', 'CostUnit' )) {
             $Table->addColumn( 'CostUnit', 'string' );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblItem', 'tblAccount' )) {
+            $Table->addColumn( 'tblAccount', 'bigint' );
+        }
+
         return $Table;
     }
 

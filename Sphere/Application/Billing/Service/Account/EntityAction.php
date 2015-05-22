@@ -144,9 +144,9 @@ abstract class EntityAction extends EntitySchema
     /**
      * @return bool|TblAccount[]
      */
-    protected function entityAccountAll()
+    protected function entityAccountActiveAll()
     {
-        $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )->findAll();
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )->findBy(array('IsActive'=>1));
         return ( null === $Entity ? false : $Entity );
     }
 }

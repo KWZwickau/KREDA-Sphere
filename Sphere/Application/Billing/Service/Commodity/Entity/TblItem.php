@@ -35,11 +35,15 @@ class TblItem extends AbstractEntity
     protected $CostUnit;
 
     /**
+     * @Column(type="bigint")
+     */
+    protected $tblAccount;
+
+    /**
      * @return string
      */
     public function getDescription()
     {
-
         return $this->Description;
     }
 
@@ -48,7 +52,6 @@ class TblItem extends AbstractEntity
      */
     public function setDescription( $Description )
     {
-
         $this->Description = $Description;
     }
 
@@ -57,7 +60,6 @@ class TblItem extends AbstractEntity
      */
     public function getPrice()
     {
-
         return $this->Price;
     }
 
@@ -74,7 +76,6 @@ class TblItem extends AbstractEntity
      */
     public function getName()
     {
-
         return $this->Name;
     }
 
@@ -83,7 +84,6 @@ class TblItem extends AbstractEntity
      */
     public function setName( $Name )
     {
-
         $this->Name = $Name;
     }
 
@@ -92,7 +92,6 @@ class TblItem extends AbstractEntity
      */
     public function getCostUnit()
     {
-
         return $this->CostUnit;
     }
 
@@ -101,7 +100,22 @@ class TblItem extends AbstractEntity
      */
     public function setCostUnit( $CostUnit )
     {
-
         $this->CostUnit = $CostUnit;
+    }
+
+    /**
+     * @return bigint
+     */
+    public function getTblAccount()
+    {
+        return $this->tblAccount;
+    }
+
+    /**
+     * @param bigint
+     */
+    public function setTblAccount( $tblAccount )
+    {
+        $this->tblAccount = $tblAccount;
     }
 }
