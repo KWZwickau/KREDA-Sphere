@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service;
 
+use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKeyType;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Billing\Service\Account\EntityAction;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Error;
@@ -29,6 +30,23 @@ class Account extends EntityAction
     {
 
         $this->setDatabaseHandler( 'Billing', 'Account', $this->getConsumerSuffix() );
+    }
+
+    /**
+     *
+     */
+    public function setupDatabaseContent()
+    {
+        /**
+         * CommodityType
+         */
+        $this->actionCreateKeyType('U','Umsatzsteuer');
+        $this->actionCreateKey( '01.01.2007', '19', '01.01.2030', 'Mehrwertsteuer', '3', $this->entityAccountKeyTypeById( '1' ) );
+        $this->actionCreateType( 'Erlöskonto','Dient zum erfassen des Erlöses' );
+        $this->actionCreateType( 'Umsatzsteuer','Dient zum erfassen der Umsatzsteuer' );
+
+
+
     }
 
     /**
@@ -62,7 +80,6 @@ class Account extends EntityAction
 //            $View->setError( '$Account[Type]', 'Bitte geben sie den Typ an' );
 //        }
 
-        print_r($Account['Description']);
         if (!$Error) {
             $this->actionAddAccount( $Account['Number'],$Account['Description'],$Account['IsActive'], $this->entityAccountKeyById( $Account['Key'] ), $this->entityAccountTypeById( $Account['Type'] ) );
             return new Success( 'Der Account ist erfasst worden' )
@@ -126,6 +143,12 @@ class Account extends EntityAction
     {
 
         return parent::entityTypeValueAll();
+    }
+
+    public function entityAccountKeyTypeById($Id)
+    {
+
+        return parent::entityAccountKeyTypeById($Id);
     }
 
     /**

@@ -1,8 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Account;
 
-use KREDA\Sphere\Application\Billing\Frontend\Account;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
+use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKeyType;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountType;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKey;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblDebitor;
@@ -129,6 +129,71 @@ abstract class EntityAction extends EntitySchema
 
         $Entity = $this->getEntityManager()->getEntity( 'tblAccountType' )->findAll();
         return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param $Name
+     * @param $Description
+     * @return TblAccountKeyType|null|object
+     */
+    protected function actionCreateKeyType( $Name, $Description)
+    {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAccountKeyType' )->findOneBy( array( 'Name' => $Name, 'Description' => $Description ) );
+        if (null === $Entity)
+        {
+            $Entity = new TblAccountKeyType();
+            $Entity->setName( $Name );
+            $Entity->setDescription( $Description );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+        return $Entity;
+    }
+
+    protected function actionCreateKey( $ValidFrom, $Value, $ValidTo, $Description, $Code, TblAccountKeyType $tblAccountKeyType)
+    {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAccountKey' )->findOneBy( array(
+            'ValidFrom' => new \DateTime( $ValidFrom ),
+            'Value' => $Value,
+            'ValidTo' => new \DateTime( $ValidTo ),
+            'Description' => $Description,
+            'Code' => $Code,
+            'tblAccountKeyType' => $tblAccountKeyType->getId() ));
+
+        if (null === $Entity)
+        {
+            $Entity = new TblAccountKey();
+            $Entity->setValidFrom( new \DateTime( $ValidFrom ) );
+            $Entity->setValue( $Value );
+            $Entity->setValidTo( new \DateTime( $ValidTo ) );
+            $Entity->setDescription( $Description );
+            $Entity->setCode( $Code );
+            $Entity->setTableAccountKeyType( $tblAccountKeyType );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+        return $Entity;
+    }
+
+    protected function actionCreateType( $Name, $Description)
+    {
+
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblAccountType' )->findOneBy( array( 'Name' => $Name, 'Description' => $Description ) );
+        if (null === $Entity)
+        {
+            $Entity = new TblAccountType();
+            $Entity->setName( $Name );
+            $Entity->setDescription( $Description );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+        return $Entity;
     }
 
     /**
