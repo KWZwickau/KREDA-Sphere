@@ -11,6 +11,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
@@ -18,6 +19,11 @@ use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
 use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
@@ -25,6 +31,7 @@ use KREDA\Sphere\Client\Frontend\Table\Type\Table;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use Nette\Forms\Controls\SubmitButton;
 
 /**
  * Class Commodity
@@ -134,7 +141,7 @@ class Commodity extends AbstractFrontend
         $View->setDescription( 'Entfernen' );
 
         $tblCommodity = Billing::serviceCommodity()->entityCommodityById($Id);
-        $View->setContent(Billing::serviceCommodity()->executeRemoveCommodity($View, $tblCommodity));
+        $View->setContent(Billing::serviceCommodity()->executeRemoveCommodity( $tblCommodity ));
 
         return $View;
     }
@@ -214,7 +221,7 @@ class Commodity extends AbstractFrontend
         $tblCommodityItem = Billing::serviceCommodity()->entityCommodityItemById( $Id );
         if (!empty($tblCommodityItem))
         {
-            $View ->setContent( Billing::serviceCommodity()->executeRemoveCommodityItem($View, $tblCommodityItem));
+            $View ->setContent( Billing::serviceCommodity()->executeRemoveCommodityItem( $tblCommodityItem ));
         }
 
         return $View;
@@ -223,10 +230,10 @@ class Commodity extends AbstractFrontend
     /**
      * @param $tblCommodityId
      * @param $tblItemId
-     * @param $Quantity
+     * @param $Item
      * @return Stage
      */
-    public static function frontendItemAdd ( $tblCommodityId, $tblItemId, $Quantity )
+    public static function frontendItemAdd ( $tblCommodityId, $tblItemId, $Item )
     {
         $View = new Stage();
         $View->setTitle( 'Artikel hinzufügen' );
@@ -235,7 +242,7 @@ class Commodity extends AbstractFrontend
 
         if (!empty($tblCommodityId) && !empty($tblItemId))
         {
-            $View ->setContent( Billing::serviceCommodity()->executeAddCommodityItem($View, $tblCommodity, $tblItem, $Quantity));
+            $View ->setContent( Billing::serviceCommodity()->executeAddCommodityItem( $tblCommodity, $tblItem, $Item ));
         }
 
         return $View;
@@ -318,19 +325,65 @@ class Commodity extends AbstractFrontend
 
                         $tblItem->Account = $Account;
                         $tblItem->Option=
-                            (new TextField( 'Quantity[Quantity]', 'Menge', 'Menge', new ConversationIcon()
-                            ))->__toString().
-                            (new Primary( 'Artikel hinzufügen', '/Sphere/Billing/Commodity/Item/Add',
-                                new ChildIcon(), array(
-                                    'tblCommodityId' => $tblCommodity->getId(),
-                                    'tblItemId' => $tblItem->getId(),
-                                    'Quantity'=> 1
-                                ) ))->__toString();
+                            ( new Form(
+                                new FormGroup(
+                                    new FormRow( array(
+                                        new FormColumn(
+                                            new TextField( 'Item[Quantity]', 'Menge', 'Menge', new ConversationIcon()
+                                            )
+                                            , 7 ),
+                                        new FormColumn(
+                                            new SubmitPrimary( 'Hinzufügen', new ShareIcon() )
+                                            , 5 )
+                                    ) )
+                                ), null,
+                                '/Sphere/Billing/Commodity/Item/Add', array(
+                                    'tblCommodityId'       => $tblCommodity->getId(),
+                                    'tblItemId' => $tblItem->getId()
+                                )
+                            ) )->__toString();
                     }
                 }
 
                 $View->setTitle( 'Leisung: '. $tblCommodity->getName());
                 $View->setContent(
+//                  new Layout(array(
+//                    new LayoutGroup( array(
+//                        new LayoutRow( array(
+//                            new LayoutColumn( array(
+//                                    new TableData( $tblCommodityItem, null,
+//                                        array(
+//                                            'Name'  => 'Name',
+//                                            'Description' => 'Beschreibung',
+//                                            'CostUnit' => 'Kostenstelle',
+//                                            'Account' => 'FIBU-Konto',
+//                                            'Price' => 'Preis',
+//                                            'Quantity' => 'Menge',
+//                                            'Option'  => 'Option'
+//                                        )
+//                                    )
+//                                )
+//                            )
+//                        ) ),
+//                    ), new LayoutTitle( 'vorhandene Artikel' ) ),
+//                    new LayoutGroup( array(
+//                        new LayoutRow( array(
+//                            new LayoutColumn( array(
+//                                    new TableData( $tblCommodityItem, null,
+//                                        array(
+//                                            'Name'  => 'Name',
+//                                            'Description' => 'Beschreibung',
+//                                            'CostUnit' => 'Kostenstelle',
+//                                            'Account' => 'FIBU-Konto',
+//                                            'Price' => 'Preis',
+//                                            'Quantity' => 'Menge',
+//                                            'Option'  => 'Option'
+//                                        )
+//                                    )
+//                                )
+//                            )
+//                        ) ),
+//                    ), new LayoutTitle( 'mögliche Artikel' ) ) ))
                     new TableData( $tblCommodityItem, null,
                         array(
                             'Name'  => 'Name',

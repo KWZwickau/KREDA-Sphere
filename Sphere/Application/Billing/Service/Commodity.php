@@ -213,22 +213,18 @@ class Commodity extends EntityAction
         return $View;
     }
 
+
     /**
-     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
-     *
-     * @param Commodity\Entity\TblCommodity $tblCommodity
-     *
-     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
+     * @param TblCommodity $tblCommodity
+     * @return string
      */
     public function executeRemoveCommodity(
-        //AbstractType
-        &$View = null,
         TblCommodity $tblCommodity
     )
     {
         if (null === $tblCommodity)
         {
-            return $View;
+            return;
         }
 
         if ($this->actionRemoveCommodity($tblCommodity))
@@ -241,7 +237,6 @@ class Commodity extends EntityAction
             return new Danger( 'Die Leistung konnte nicht gelöscht werden' )
                 .new Redirect( '/Sphere/Billing/Commodity', 2);
         }
-        //return $View;
     }
 
     /**
@@ -346,16 +341,11 @@ class Commodity extends EntityAction
     }
 
     /**
-     * @param AbstractType $View
      * @param TblCommodityItem $tblCommodityItem
-     *
      * @return string
      */
     public function executeRemoveCommodityItem(
-        //AbstractType &$View = null,
-        //TblCommodityItem $tblCommodityItem
-        &$View = null,
-        $tblCommodityItem
+        TblCommodityItem $tblCommodityItem
     )
     {
         if ($this->actionRemoveCommodityItem($tblCommodityItem))
@@ -371,24 +361,20 @@ class Commodity extends EntityAction
     }
 
     /**
-     * @param null $View
      * @param TblCommodity $tblCommodity
      * @param TblItem $tblItem
-     * @param $Quantity
-     *
+     * @param $Item
      * @return string
      */
     public function executeAddCommodityItem(
-        //AbstractType &$View = null,
-        &$View = null,
         TblCommodity $tblCommodity,
         TblItem $tblItem,
-        $Quantity
+        $Item
     )
     {
-        if ($this->actionAddCommodityItem($tblCommodity, $tblItem, $Quantity))
+        if ($this->actionAddCommodityItem($tblCommodity, $tblItem, $Item['Quantity']))
         {
-            return $Quantity . new Success( 'Der Artikel ' . $tblItem->getName(). ' wurde erfolgreich hinzugefügt' )
+            return new Success( 'Der Artikel ' . $tblItem->getName(). ' wurde erfolgreich hinzugefügt' )
                 .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodity->getId()) );
         }
         else
