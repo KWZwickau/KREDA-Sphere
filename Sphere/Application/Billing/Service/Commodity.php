@@ -7,6 +7,7 @@ use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityType;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\EntityAction;
+use KREDA\Sphere\Application\Billing\Service\Commodity\TblDebtorCommodity;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Frontend\Background\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
@@ -132,11 +133,29 @@ class Commodity extends EntityAction
     /**
      * @param $Id
      *
-     * @return bool|\Doctrine\ORM\Mapping\Entity
+     * @return bool|TblCommodityItem
      */
     public  function entityCommodityItemById($Id)
     {
         return parent::entityCommodityItemById($Id);
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|TblDebtorCommodity
+     */
+    public function entityDebtorCommodityById($Id)
+    {
+        return parent::entityDebtorCommodityById($Id);
+    }
+
+    /**
+     * @return bool|TblDebtorCommodity[]
+     */
+    public function entityDebtorCommodityAll()
+    {
+        return parent::entityDebtorCommodityAll();
     }
 
     /**

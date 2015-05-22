@@ -106,9 +106,34 @@ abstract class EntityAction extends EntitySchema
         return ( null === $EntityList ? false : $EntityList );
     }
 
+    /**
+     * @param $Id
+     *
+     * @return bool|TblCommodityItem
+     */
     protected function entityCommodityItemById( $Id )
     {
         $Entity = $this->getEntityManager()->getEntityById( 'TblCommodityItem', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|TblDebtorCommodity
+     */
+    protected function entityDebtorCommodityById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblDebtorCommodity', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @return bool|TblDebtorCommodity[]
+     */
+    protected function entityDebtorCommodityAll()
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblDebtorCommodity' )->findAll();
         return ( null === $Entity ? false : $Entity );
     }
 
