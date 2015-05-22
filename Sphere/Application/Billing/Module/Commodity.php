@@ -76,7 +76,7 @@ class Commodity extends Common
         )
             ->setParameterDefault( 'tblCommodityId', null )
             ->setParameterDefault( 'tblItemId', null )
-            ->setParameterDefault( 'Quantity', null );
+            ->setParameterDefault( 'Item', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Commodity/Debtor/Commodity/Create', __CLASS__.'::frontendDebtorCommodityCreate'
         )
@@ -106,8 +106,7 @@ class Commodity extends Common
     }
 
     /**
-     * @param $Commodity
-     *
+     * @param $Id
      * @return Stage
      */
     public static function frontendDelete( $Id )
@@ -145,15 +144,14 @@ class Commodity extends Common
     /**
      * @param $tblCommodityId
      * @param $tblItemId
-     * @param $Quantity
-     *
+     * @param $Item
      * @return Stage
      */
-    public static function frontendItemAdd ( $tblCommodityId, $tblItemId, $Quantity )
+    public static function frontendItemAdd ( $tblCommodityId, $tblItemId, $Item )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendItemAdd( $tblCommodityId, $tblItemId, $Quantity);
+        return Frontend::frontendItemAdd( $tblCommodityId, $tblItemId, $Item );
     }
 
     /**
