@@ -169,28 +169,6 @@ class Commodity extends EntityAction
     }
 
     /**
-     * @param TblCommodity $tblCommodity
-     * @param $Name
-     * @param $Description
-     * @param TblCommodityType $tblCommodityType
-     *
-     * @return bool
-     */
-    public function actionEditCommodity(
-        TblCommodity $tblCommodity,
-        $Name,
-        $Description,
-        TblCommodityType $tblCommodityType
-    ) {
-        return parent::actionEditCommodity(
-            $tblCommodity,
-            $Name,
-            $Description,
-            $tblCommodityType
-        );
-    }
-
-    /**
      * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      *
      * @param $Commodity
@@ -226,7 +204,8 @@ class Commodity extends EntityAction
             $this->actionCreateCommodity(
                 $Commodity['Name'],
                 $Commodity['Description'],
-                $this->entityCommodityTypeById($Commodity['Type'])
+                $this->entityCommodityTypeById($Commodity['Type']),
+                $this->entityDebtorCommodityById($Commodity['DebtorCommodity'])
             );
             return new Success( 'Die Leistung wurde erfolgreich angelegt' )
             .new Redirect( '/Sphere/Billing/Commodity', 2);
@@ -302,7 +281,8 @@ class Commodity extends EntityAction
                 $tblCommodity,
                 $Commodity['Name'],
                 $Commodity['Description'],
-                $this->entityCommodityTypeById($Commodity['Type'])
+                $this->entityCommodityTypeById( $Commodity['Type'] ),
+                $this->entityDebtorCommodityById( $Commodity['DebtorCommodity'] )
             )) {
                 $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
                     .new Redirect( '/Sphere/Billing/Commodity', 2);

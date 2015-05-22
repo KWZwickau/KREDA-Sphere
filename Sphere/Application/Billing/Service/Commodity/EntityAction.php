@@ -172,13 +172,14 @@ abstract class EntityAction extends EntitySchema
      * @param $Name
      * @param $Description
      * @param TblCommodityType $tblCommodityType
-     *
+     * @param Entity\TblDebtorCommodity $tblDebtorCommodity
      * @return TblCommodity
      */
     protected function actionCreateCommodity(
         $Name,
         $Description,
-        TblCommodityType $tblCommodityType
+        TblCommodityType $tblCommodityType,
+        TblDebtorCommodity $tblDebtorCommodity
     ) {
 
         $Manager = $this->getEntityManager();
@@ -187,6 +188,7 @@ abstract class EntityAction extends EntitySchema
         $Entity->setName($Name);
         $Entity->setDescription( $Description );
         $Entity->setTblCommodityType( $tblCommodityType );
+        $Entity->setTblDebtorCommodity( $tblDebtorCommodity );
 
         $Manager->saveEntity( $Entity );
 
@@ -200,14 +202,15 @@ abstract class EntityAction extends EntitySchema
      * @param $Name
      * @param $Description
      * @param Entity\TblCommodityType $tblCommodityType
-     *
+     * @param Entity\TblDebtorCommodity $tblDebtorCommodity
      * @return bool
      */
     protected function actionEditCommodity(
         TblCommodity $tblCommodity,
         $Name,
         $Description,
-        TblCommodityType $tblCommodityType
+        TblCommodityType $tblCommodityType,
+        TblDebtorCommodity $tblDebtorCommodity
     ) {
 
         $Manager = $this->getEntityManager();
@@ -219,6 +222,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setName( $Name );
             $Entity->setDescription( $Description );
             $Entity->setTblCommodityType( $tblCommodityType );
+            $Entity->setTblDebtorCommodity( $tblDebtorCommodity );
 
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),

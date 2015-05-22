@@ -49,6 +49,7 @@ class Commodity extends AbstractFrontend
         {
             array_walk($tblCommodityAll, function (tblCommodity $tblCommodity)
             {
+              $tblCommodity->DebtorCommodity = $tblCommodity->getTblDebtorCommodity()->getName();
               $tblCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
               $tblCommodity->ItemCount = Billing::serviceCommodity()->countItemAllByCommodity( $tblCommodity );
               $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity)." €";
@@ -73,6 +74,7 @@ class Commodity extends AbstractFrontend
                 array(
                     'Name'  => 'Name',
                     'Description' => 'Beschreibung',
+                    'DebtorCommodity' => 'Debitor-Leistung',
                     'Type' => 'Leistungsart',
                     'ItemCount' => 'Artikelanzahl',
                     'SumPriceItem' => 'Gesamtpreis',
@@ -95,25 +97,30 @@ class Commodity extends AbstractFrontend
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Hinzufügen' );
 
-        $tblCommodityType = Billing::serviceCommodity()->entityCommodityTypeAll();
-
         $View->setContent(Billing::serviceCommodity()->executeCreateCommodity(
             new Form( array(
                 new FormGroup( array(
                     new FormRow( array(
                         new FormColumn(
                             new TextField( 'Commodity[Name]', 'Name', 'Name', new ConversationIcon()
-                            ), 6 ),
-                        new FormColumn(
-                            new SelectBox( 'Commodity[Type]', 'Leistungsart', array(
-                                'Name' => $tblCommodityType
-                            ) )
-                            , 6 )
+                            ), 12 ),
                     ) ),
                     new FormRow( array(
                         new FormColumn(
                             new TextField( 'Commodity[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
                             ), 12 )
+                    ) ),
+                    new FormRow( array(
+                        new FormColumn(
+                            new SelectBox( 'Commodity[DebtorCommodity]', 'Debitor-Leistung', array(
+                                'Name' => Billing::serviceCommodity()->entityDebtorCommodityAll()
+                            ) )
+                            , 6 ),
+                        new FormColumn(
+                            new SelectBox( 'Commodity[Type]', 'Leistungsart', array(
+                                'Name' => Billing::serviceCommodity()->entityCommodityTypeAll()
+                            ) )
+                            , 6 )
                     ) )
         ))), new SubmitPrimary( 'Hinzufügen' )), $Commodity));
 
@@ -159,6 +166,7 @@ class Commodity extends AbstractFrontend
                 $Global->POST['Commodity']['Name'] = $tblCommodity->getName();
                 $Global->POST['Commodity']['Description'] = $tblCommodity->getDescription();
                 $Global->POST['Commodity']['Type'] = $tblCommodity->getTblCommodityType()->getId();
+                $Global->POST['Commodity']['DebtorCommodity'] = $tblCommodity->getTblDebtorCommodity()->getId();
                 $Global->savePost();
 
                 $View->setContent(Billing::serviceCommodity()->executeEditCommodity(
@@ -167,17 +175,24 @@ class Commodity extends AbstractFrontend
                                 new FormRow( array(
                                     new FormColumn(
                                         new TextField( 'Commodity[Name]', 'Name', 'Name', new ConversationIcon()
-                                        ), 6 ),
-                                    new FormColumn(
-                                        new SelectBox( 'Commodity[Type]', 'Leistungsart', array(
-                                            'Name' => $tblCommodityType
-                                        ) )
-                                        , 6 )
+                                        ), 12 ),
                                 ) ),
                                 new FormRow( array(
                                     new FormColumn(
                                         new TextField( 'Commodity[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
                                         ), 12 )
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new SelectBox( 'Commodity[DebtorCommodity]', 'Debitor-Leistung', array(
+                                            'Name' => Billing::serviceCommodity()->entityDebtorCommodityAll()
+                                        ) )
+                                        , 6 ),
+                                    new FormColumn(
+                                        new SelectBox( 'Commodity[Type]', 'Leistungsart', array(
+                                            'Name' => Billing::serviceCommodity()->entityCommodityTypeAll()
+                                        ) )
+                                        , 6 )
                                 ) )
                         ))), new SubmitPrimary( 'Änderungen speichern' )
                     ), $tblCommodity, $Commodity));
