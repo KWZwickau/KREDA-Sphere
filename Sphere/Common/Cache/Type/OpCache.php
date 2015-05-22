@@ -47,7 +47,10 @@ class OpCache implements ICacheInterface
     public function getCountHits()
     {
 
-        return $this->Status['opcache_statistics']['hits'];
+        if (!empty( $this->Status )) {
+            return $this->Status['opcache_statistics']['hits'];
+        }
+        return -1;
     }
 
     /**
@@ -55,8 +58,10 @@ class OpCache implements ICacheInterface
      */
     public function getCountMisses()
     {
-
-        return $this->Status['opcache_statistics']['misses'];
+        if (!empty( $this->Status )) {
+            return $this->Status['opcache_statistics']['misses'];
+        }
+        return -1;
     }
 
     /**
@@ -64,8 +69,10 @@ class OpCache implements ICacheInterface
      */
     public function getSizeUsed()
     {
-
-        return $this->Status['memory_usage']['used_memory'];
+        if (!empty( $this->Status )) {
+            return $this->Status['memory_usage']['used_memory'];
+        }
+        return -1;
     }
 
     /**
@@ -73,8 +80,10 @@ class OpCache implements ICacheInterface
      */
     public function getSizeAvailable()
     {
-
-        return $this->Config['directives']['opcache.memory_consumption'];
+        if (!empty( $this->Status )) {
+            return $this->Config['directives']['opcache.memory_consumption'];
+        }
+        return -1;
     }
 
     /**
@@ -82,8 +91,10 @@ class OpCache implements ICacheInterface
      */
     public function getSizeFree()
     {
-
-        return $this->Status['memory_usage']['free_memory'];
+        if (!empty( $this->Status )) {
+            return $this->Status['memory_usage']['free_memory'];
+        }
+        return -1;
     }
 
     /**
@@ -91,8 +102,10 @@ class OpCache implements ICacheInterface
      */
     public function getSizeWasted()
     {
-
-        return $this->Status['memory_usage']['wasted_memory'];
+        if (!empty( $this->Status )) {
+            return $this->Status['memory_usage']['wasted_memory'];
+        }
+        return -1;
     }
 
 }
