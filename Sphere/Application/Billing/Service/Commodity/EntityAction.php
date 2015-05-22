@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Billing\Service\Commodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityType;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
 use KREDA\Sphere\Application\System\System;
 
@@ -357,6 +358,26 @@ abstract class EntityAction extends EntitySchema
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
+        return $Entity;
+    }
+
+    /**
+     * @param $Name
+     * @param $Description
+     *
+     * @return TblDebtorCommodity
+     */
+    protected function actionCreateDebtorCommodity( $Name, $Description )
+    {
+        $Manager = $this->getEntityManager();
+
+        $Entity = new TblDebtorCommodity();
+        $Entity->setName( $Name );
+        $Entity->setDescription( $Description );
+
+        $Manager->saveEntity( $Entity );
+        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+
         return $Entity;
     }
 }

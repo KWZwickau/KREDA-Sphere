@@ -386,4 +386,33 @@ class Commodity extends AbstractFrontend
 
         return $View;
     }
+
+    /**
+     * @param $DebtorCommodity
+     *
+     * @return Stage
+     */
+    public static function frontendDebtorCommodityCreate( $DebtorCommodity )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Debitor-Leistung' );
+        $View->setDescription( 'Hinzufügen' );
+
+        $View->setContent(Billing::serviceCommodity()->executeCreateDebtorCommodity(
+            new Form( array(
+                new FormGroup( array(
+                    new FormRow( array(
+                        new FormColumn(
+                            new TextField( 'DebtorCommodity[Name]', 'Name', 'Name', new ConversationIcon()
+                            ), 12 )
+                    ) ),
+                    new FormRow( array(
+                        new FormColumn(
+                            new TextField( 'DebtorCommodity[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
+                            ), 12 )
+                    ) )
+                ))), new SubmitPrimary( 'Hinzufügen' )), $DebtorCommodity));
+
+        return $View;
+    }
 }

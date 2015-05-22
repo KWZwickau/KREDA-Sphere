@@ -10,7 +10,7 @@ use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
- * @Table(name="tblCommodity")
+ * @Table(name="tblDebtorCommodity")
  * @Cache(usage="NONSTRICT_READ_WRITE")
  */
 class TblDebtorCommodity extends AbstractEntity

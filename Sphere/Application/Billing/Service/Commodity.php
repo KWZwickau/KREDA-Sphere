@@ -417,4 +417,47 @@ class Commodity extends EntityAction
                 .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodity->getId()) );
         }
     }
+
+    /**
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
+     *
+     * @param $DebtorCommodity
+     *
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
+     */
+    public function executeCreateDebtorCommodity(
+        AbstractType &$View = null,
+        $DebtorCommodity
+    ) {
+
+        /**
+         * Skip to Frontend
+         */
+        if (null === $DebtorCommodity
+        ) {
+            return $View;
+        }
+
+        $Error = false;
+
+        if (isset($DebtorCommodity['Name'] ) && empty( $DebtorCommodity['Name'] )) {
+            $View->setError( 'DebtorCommodity[Name]', 'Bitte geben Sie einen Namen an' );
+            $Error = true;
+        }
+        if (isset( $DebtorCommodity['Description'] ) && empty(  $DebtorCommodity['Description'] )) {
+            $View->setError( 'DebtorCommodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
+            $Error = true;
+        }
+
+        if (!$Error)
+        {
+            $this->actionCreateDebtorCommodity(
+                $DebtorCommodity['Name'],
+                $DebtorCommodity['Description']
+            );
+            return new Success( 'Die Debitor-Leistung wurde erfolgreich angelegt' )
+            .new Redirect( '/Sphere/Billing/Commodity', 2);
+        }
+        return $View;
+    }
 }

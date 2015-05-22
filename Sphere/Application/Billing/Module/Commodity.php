@@ -30,6 +30,9 @@ class Commodity extends Common
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Billing/Commodity/Item/Create', 'Artikel anlegen', new PersonIcon()
         );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Commodity/Debtor/Commodity/Create', 'Debitor-Leistung anlegen', new PersonIcon()
+        );
     }
 
     /**
@@ -74,6 +77,10 @@ class Commodity extends Common
             ->setParameterDefault( 'tblCommodityId', null )
             ->setParameterDefault( 'tblItemId', null )
             ->setParameterDefault( 'Quantity', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity/Debtor/Commodity/Create', __CLASS__.'::frontendDebtorCommodityCreate'
+        )
+            ->setParameterDefault( 'DebtorCommodity', null );
     }
 
     /**
@@ -171,5 +178,17 @@ class Commodity extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendItemCreate( $Item );
+    }
+
+    /**
+     * @param $DebtorCommodity
+     *
+     * @return Stage
+     */
+    public static function frontendDebtorCommodityCreate( $DebtorCommodity )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendDebtorCommodityCreate( $DebtorCommodity );
     }
 }
