@@ -10,9 +10,9 @@ use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
 
 /**
- * Class Person
+ * Class Commodity
  *
- * @package KREDA\Sphere\Application\Management\Module
+ * @package KREDA\Sphere\Application\Billing\Module
  */
 class Commodity extends Common
 {

@@ -15,7 +15,7 @@ use KREDA\Sphere\Common\AbstractApplication;
 /**
  * Class Common
  *
- * @package KREDA\Sphere\Application\Management\Module
+ * @package KREDA\Sphere\Application\Billing\Module
  */
 class Common extends AbstractApplication
 {
@@ -41,6 +41,9 @@ class Common extends AbstractApplication
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Billing/Account', 'Account', new EditIcon()
+        );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Invoicing/Commodity/Select', 'Fakturieren', new EditIcon()
         );
     }
 }

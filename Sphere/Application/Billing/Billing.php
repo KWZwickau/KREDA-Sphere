@@ -42,6 +42,7 @@ class Billing extends Module\Commodity
         Module\Common::registerApplication( $Configuration );
         Module\Commodity::registerApplication( $Configuration );
         Module\Account::registerApplication( $Configuration );
+        Module\Invoicing::registerApplication( $Configuration );
     }
 
     /**
@@ -86,6 +87,10 @@ class Billing extends Module\Commodity
 
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Billing/Account', 'Account', new EditIcon()
+        );
+
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Invoicing/Commodity/Select', 'Fakturieren', new EditIcon()
         );
     }
 }
