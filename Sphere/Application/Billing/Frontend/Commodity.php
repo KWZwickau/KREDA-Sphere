@@ -347,64 +347,63 @@ class Commodity extends AbstractFrontend
 
                 $View->setTitle( 'Leisung: '. $tblCommodity->getName());
                 $View->setContent(
-//                  new Layout(array(
-//                    new LayoutGroup( array(
-//                        new LayoutRow( array(
-//                            new LayoutColumn( array(
-//                                    new TableData( $tblCommodityItem, null,
-//                                        array(
-//                                            'Name'  => 'Name',
-//                                            'Description' => 'Beschreibung',
-//                                            'CostUnit' => 'Kostenstelle',
-//                                            'Account' => 'FIBU-Konto',
-//                                            'Price' => 'Preis',
-//                                            'Quantity' => 'Menge',
-//                                            'Option'  => 'Option'
-//                                        )
-//                                    )
-//                                )
-//                            )
-//                        ) ),
-//                    ), new LayoutTitle( 'vorhandene Artikel' ) ),
-//                    new LayoutGroup( array(
-//                        new LayoutRow( array(
-//                            new LayoutColumn( array(
-//                                    new TableData( $tblCommodityItem, null,
-//                                        array(
-//                                            'Name'  => 'Name',
-//                                            'Description' => 'Beschreibung',
-//                                            'CostUnit' => 'Kostenstelle',
-//                                            'Account' => 'FIBU-Konto',
-//                                            'Price' => 'Preis',
-//                                            'Quantity' => 'Menge',
-//                                            'Option'  => 'Option'
-//                                        )
-//                                    )
-//                                )
-//                            )
-//                        ) ),
-//                    ), new LayoutTitle( 'mögliche Artikel' ) ) ))
-                    new TableData( $tblCommodityItem, null,
-                        array(
-                            'Name'  => 'Name',
-                            'Description' => 'Beschreibung',
-                            'CostUnit' => 'Kostenstelle',
-                            'Account' => 'FIBU-Konto',
-                            'Price' => 'Preis',
-                            'Quantity' => 'Menge',
-                            'Option'  => 'Option'
-                        )
-                    )
-                    . new TableData( $tblItemAll, null,
-                        array(
-                            'Name'  => 'Name',
-                            'Description' => 'Beschreibung',
-                            'CostUnit' => 'Kostenstelle',
-                            'Account' => 'FIBU-Konto',
-                            'Price' => 'Preis',
-                            'Option'  => 'Option'
-                        )
-                    )
+                  new Layout(array(
+                    new LayoutGroup( array(
+                        new LayoutRow( array(
+                            new LayoutColumn( array(
+                                    new TableData( $tblCommodityItem, null,
+                                        array(
+                                            'Name'  => 'Name',
+                                            'Description' => 'Beschreibung',
+                                            'CostUnit' => 'Kostenstelle',
+                                            'Account' => 'FIBU-Konto',
+                                            'Price' => 'Preis',
+                                            'Quantity' => 'Menge',
+                                            'Option'  => 'Option'
+                                        )
+                                    )
+                                )
+                            )
+                        ) ),
+                    ), new LayoutTitle( 'vorhandene Artikel' ) ),
+                    new LayoutGroup( array(
+                        new LayoutRow( array(
+                            new LayoutColumn( array(
+                                    new TableData( $tblItemAll, null,
+                                        array(
+                                            'Name'  => 'Name',
+                                            'Description' => 'Beschreibung',
+                                            'CostUnit' => 'Kostenstelle',
+                                            'Account' => 'FIBU-Konto',
+                                            'Price' => 'Preis',
+                                            'Option'  => 'Option'
+                                        )
+                                )
+                              )
+                            )
+                        ) ),
+                    ), new LayoutTitle( 'mögliche Artikel' ) ) ))
+//                    new TableData( $tblCommodityItem, null,
+//                        array(
+//                            'Name'  => 'Name',
+//                            'Description' => 'Beschreibung',
+//                            'CostUnit' => 'Kostenstelle',
+//                            'Account' => 'FIBU-Konto',
+//                            'Price' => 'Preis',
+//                            'Quantity' => 'Menge',
+//                            'Option'  => 'Option'
+//                        )
+//                    )
+//                    . new TableData( $tblItemAll, null,
+//                        array(
+//                            'Name'  => 'Name',
+//                            'Description' => 'Beschreibung',
+//                            'CostUnit' => 'Kostenstelle',
+//                            'Account' => 'FIBU-Konto',
+//                            'Price' => 'Preis',
+//                            'Option'  => 'Option'
+//                        )
+//                    )
                 );
             }
         }

@@ -77,6 +77,14 @@ class Billing extends Module\Commodity
     }
 
     /**
+     * @return Service\Invoicing
+     */
+    public static function serviceInvoicing()
+    {
+        return Service\Invoicing::getApi();
+    }
+
+    /**
      * @return void
      */
     protected static function setupModuleNavigation()

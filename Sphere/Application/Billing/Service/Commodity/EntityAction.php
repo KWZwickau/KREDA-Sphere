@@ -160,6 +160,7 @@ abstract class EntityAction extends EntitySchema
         //(type="decimal", precision=14, scale=4)
         $sum = 0.00;
         $tblCommodityItemByCommodity = $this->entityCommodityItemAllByCommodity( $tblCommodity);
+        /** @var TblCommodityItem $tblCommodityItem */
         foreach($tblCommodityItemByCommodity as $tblCommodityItem)
         {
             $sum += $tblCommodityItem->getTblItem()->getPrice() * $tblCommodityItem->getQuantity();
