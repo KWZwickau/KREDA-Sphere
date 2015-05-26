@@ -21,11 +21,6 @@ class TblCommodity extends AbstractEntity
     protected $tblCommodityType;
 
     /**
-     * @Column(type="bigint")
-     */
-    protected $tblDebtorCommodity;
-
-    /**
      * @Column(type="string")
      */
     protected $Name;
@@ -53,26 +48,6 @@ class TblCommodity extends AbstractEntity
     public function setTblCommodityType( TblCommodityType $tblCommodityType = null )
     {
         $this->tblCommodityType = ( null === $tblCommodityType ? null : $tblCommodityType->getId() );
-    }
-
-    /**
-     * @return bool|TblDebtorCommodity
-     */
-    public function getTblDebtorCommodity()
-    {
-        if (null === $this->tblDebtorCommodity) {
-            return false;
-        } else {
-            return Billing::serviceCommodity()->entityDebtorCommodityById( $this->tblDebtorCommodity );
-        }
-    }
-
-    /**
-     * @param null|TblDebtorCommodity $tblDebtorCommodity
-     */
-    public function setTblDebtorCommodity( TblDebtorCommodity $tblDebtorCommodity = null )
-    {
-        $this->tblDebtorCommodity = ( null === $tblDebtorCommodity ? null : $tblDebtorCommodity->getId() );
     }
 
     /**

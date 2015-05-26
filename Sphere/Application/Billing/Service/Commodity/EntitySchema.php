@@ -24,8 +24,7 @@ abstract class EntitySchema extends AbstractService
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
         $tblCommodityType = $this->setTableCommodityType( $Schema );
-        $tblDebtorCommodity = $this->setTableDebtorCommodity( $Schema );
-        $tblCommodity = $this->setTableCommodity( $Schema, $tblCommodityType, $tblDebtorCommodity );
+        $tblCommodity = $this->setTableCommodity( $Schema, $tblCommodityType);
         $tblItem = $this->setTableItem( $Schema );
         $this->setTableCommodityItem( $Schema, $tblCommodity, $tblItem);
         $this->setTableItemAccount( $Schema, $tblItem );
@@ -57,11 +56,10 @@ abstract class EntitySchema extends AbstractService
     /**
      * @param Schema $Schema
      * @param Table $tblCommodityType
-     * @param Table $tblDebtorCommodity
      *
      * @return Table
      */
-    private function setTableCommodity( Schema &$Schema, Table $tblCommodityType, Table $tblDebtorCommodity )
+    private function setTableCommodity( Schema &$Schema, Table $tblCommodityType)
     {
         $Table = $this->schemaTableCreate( $Schema, 'tblCommodity' );
 
@@ -73,7 +71,6 @@ abstract class EntitySchema extends AbstractService
         }
 
         $this->schemaTableAddForeignKey( $Table, $tblCommodityType );
-        $this->schemaTableAddForeignKey( $Table, $tblDebtorCommodity );
 
         return $Table;
     }
@@ -138,25 +135,6 @@ abstract class EntitySchema extends AbstractService
         }
 
         $this->schemaTableAddForeignKey( $Table, $tblItem );
-
-        return $Table;
-    }
-
-    /**
-     * @param Schema $Schema
-     *
-     * @return Table
-     */
-    private function setTableDebtorCommodity( Schema &$Schema )
-    {
-        $Table = $this->schemaTableCreate( $Schema, 'tblDebtorCommodity' );
-
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtorCommodity', 'Name' )) {
-            $Table->addColumn( 'Name', 'string' );
-        }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtorCommodity', 'Description' )) {
-            $Table->addColumn( 'Description', 'string' );
-        }
 
         return $Table;
     }

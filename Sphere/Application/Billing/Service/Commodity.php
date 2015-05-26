@@ -227,8 +227,7 @@ class Commodity extends EntityAction
             $this->actionCreateCommodity(
                 $Commodity['Name'],
                 $Commodity['Description'],
-                $this->entityCommodityTypeById($Commodity['Type']),
-                $this->entityDebtorCommodityById($Commodity['DebtorCommodity'])
+                $this->entityCommodityTypeById($Commodity['Type'])
             );
             return new Success( 'Die Leistung wurde erfolgreich angelegt' )
             .new Redirect( '/Sphere/Billing/Commodity', 2);
@@ -247,7 +246,7 @@ class Commodity extends EntityAction
     {
         if (null === $tblCommodity)
         {
-            return;
+            return '';
         }
 
         if ($this->actionRemoveCommodity($tblCommodity))
@@ -299,8 +298,7 @@ class Commodity extends EntityAction
                 $tblCommodity,
                 $Commodity['Name'],
                 $Commodity['Description'],
-                $this->entityCommodityTypeById( $Commodity['Type'] ),
-                $this->entityDebtorCommodityById( $Commodity['DebtorCommodity'] )
+                $this->entityCommodityTypeById( $Commodity['Type'] )
             )) {
                 $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
                     .new Redirect( '/Sphere/Billing/Commodity', 2);

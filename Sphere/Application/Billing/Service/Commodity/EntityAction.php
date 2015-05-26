@@ -197,14 +197,13 @@ abstract class EntityAction extends EntitySchema
      * @param $Name
      * @param $Description
      * @param TblCommodityType $tblCommodityType
-     * @param Entity\TblDebtorCommodity $tblDebtorCommodity
+     *
      * @return TblCommodity
      */
     protected function actionCreateCommodity(
         $Name,
         $Description,
-        TblCommodityType $tblCommodityType,
-        TblDebtorCommodity $tblDebtorCommodity
+        TblCommodityType $tblCommodityType
     ) {
 
         $Manager = $this->getEntityManager();
@@ -213,7 +212,6 @@ abstract class EntityAction extends EntitySchema
         $Entity->setName($Name);
         $Entity->setDescription( $Description );
         $Entity->setTblCommodityType( $tblCommodityType );
-        $Entity->setTblDebtorCommodity( $tblDebtorCommodity );
 
         $Manager->saveEntity( $Entity );
 
@@ -227,15 +225,14 @@ abstract class EntityAction extends EntitySchema
      * @param $Name
      * @param $Description
      * @param Entity\TblCommodityType $tblCommodityType
-     * @param Entity\TblDebtorCommodity $tblDebtorCommodity
+     *
      * @return bool
      */
     protected function actionEditCommodity(
         TblCommodity $tblCommodity,
         $Name,
         $Description,
-        TblCommodityType $tblCommodityType,
-        TblDebtorCommodity $tblDebtorCommodity
+        TblCommodityType $tblCommodityType
     ) {
 
         $Manager = $this->getEntityManager();
@@ -247,7 +244,6 @@ abstract class EntityAction extends EntitySchema
             $Entity->setName( $Name );
             $Entity->setDescription( $Description );
             $Entity->setTblCommodityType( $tblCommodityType );
-            $Entity->setTblDebtorCommodity( $tblDebtorCommodity );
 
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
@@ -437,26 +433,6 @@ abstract class EntityAction extends EntitySchema
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
-        return $Entity;
-    }
-
-    /**
-     * @param $Name
-     * @param $Description
-     *
-     * @return TblDebtorCommodity
-     */
-    protected function actionCreateDebtorCommodity( $Name, $Description )
-    {
-        $Manager = $this->getEntityManager();
-
-        $Entity = new TblDebtorCommodity();
-        $Entity->setName( $Name );
-        $Entity->setDescription( $Description );
-
-        $Manager->saveEntity( $Entity );
-        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
-
         return $Entity;
     }
 }
