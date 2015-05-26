@@ -1,10 +1,11 @@
 <?php
-namespace KREDA\Sphere\Application\Billing\Service\Invoicing\Entity;
+namespace KREDA\Sphere\Application\Billing\Service\Invoice\Entity;
 
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Billing\Service\Invoicing\Entity\date;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Common\AbstractEntity;

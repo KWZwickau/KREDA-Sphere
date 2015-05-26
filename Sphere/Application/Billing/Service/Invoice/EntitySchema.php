@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Billing\Service\Invoicing;
+namespace KREDA\Sphere\Application\Billing\Service\Invoice;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
@@ -8,7 +8,7 @@ use KREDA\Sphere\Common\AbstractService;
 /**
  * Class EntitySchema
  *
- * @package KREDA\Sphere\Application\Billing\Service\Invoicing
+ * @package KREDA\Sphere\Application\Billing\Service\Invoice
  */
 abstract class EntitySchema extends AbstractService
 {

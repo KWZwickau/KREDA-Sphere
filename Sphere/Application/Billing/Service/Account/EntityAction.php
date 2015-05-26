@@ -2,9 +2,9 @@
 namespace KREDA\Sphere\Application\Billing\Service\Account;
 
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
+use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKey;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKeyType;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountType;
-use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKey;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblDebitor;
 use KREDA\Sphere\Application\System\System;
 
@@ -221,11 +221,16 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param bool $IsActive
+     *
      * @return bool|TblAccount[]
      */
-    protected function entityAccountActiveAll()
+    protected function entityAccountAllByActiveState( $IsActive = true )
     {
-        $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )->findBy(array('IsActive'=>1));
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )->findBy( array(
+            TblAccount::ATTR_IS_ACTIVE => $IsActive
+        ) );
         return ( null === $Entity ? false : $Entity );
     }
 

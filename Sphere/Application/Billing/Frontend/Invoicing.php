@@ -5,24 +5,12 @@ use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
-use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
-use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
-use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
-use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
-use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
-use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
-use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
-use KREDA\Sphere\Client\Frontend\Message\Type\Success;
-use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
-use KREDA\Sphere\Client\Frontend\Table\Type\Table;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
-use KREDA\Sphere\Client\Frontend\Form\Type\Form;
 
 /**
- * Class Invoicing
+ * Class Invoice
  *
  * @package KREDA\Sphere\Application\Billing\Frontend
  */

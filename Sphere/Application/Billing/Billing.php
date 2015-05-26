@@ -4,10 +4,9 @@ namespace KREDA\Sphere\Application\Billing;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
-use KREDA\Sphere\Common\AbstractApplication;
 
 /**
  * Class Billing
@@ -59,6 +58,25 @@ class Billing extends Module\Commodity
     }
 
     /**
+     * @return void
+     */
+    protected static function setupModuleNavigation()
+    {
+
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Commodity', 'Leistungen', new GroupIcon()
+        );
+
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Account', 'Account', new EditIcon()
+        );
+
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Invoice/Commodity/Select', 'Fakturieren', new EditIcon()
+        );
+    }
+
+    /**
      * @return Service\Account
      */
     public static function serviceAccount()
@@ -77,28 +95,11 @@ class Billing extends Module\Commodity
     }
 
     /**
-     * @return Service\Invoicing
+     * @return Service\Invoice
      */
-    public static function serviceInvoicing()
+    public static function serviceInvoice()
     {
-        return Service\Invoicing::getApi();
-    }
 
-    /**
-     * @return void
-     */
-    protected static function setupModuleNavigation()
-    {
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Commodity', 'Leistungen', new GroupIcon()
-        );
-
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Account', 'Account', new EditIcon()
-        );
-
-        self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoicing/Commodity/Select', 'Fakturieren', new EditIcon()
-        );
+        return Service\Invoice::getApi();
     }
 }

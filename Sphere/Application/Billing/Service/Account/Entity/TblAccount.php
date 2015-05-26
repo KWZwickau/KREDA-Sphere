@@ -16,6 +16,7 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblAccount extends AbstractEntity
 {
 
+    const ATTR_IS_ACTIVE = 'IsActive';
     const ATTR_TBL_ACCOUNT_TYPE = 'tblAccountType';
     const ATTR_TBL_ACCOUNT_KEY = 'tblAccountKey';
 

@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Billing\Service\Invoicing\Entity;
+namespace KREDA\Sphere\Application\Billing\Service\Invoice\Entity;
 
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
@@ -154,7 +154,7 @@ class TblInvoiceItem extends AbstractEntity
         if (null === $this->tblInvoice) {
             return false;
         } else {
-            return Billing::serviceInvoicing()->entityInvoiceById( $this->tblInvoice );
+            return Billing::serviceInvoice()->entityInvoiceById( $this->tblInvoice );
         }
     }
 

@@ -1,14 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Module;
 
-use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ClusterIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonKeyIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
 
@@ -43,7 +37,7 @@ class Common extends AbstractApplication
             '/Sphere/Billing/Account', 'Account', new EditIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoicing/Commodity/Select', 'Fakturieren', new EditIcon()
+            '/Sphere/Billing/Invoice/Commodity/Select', 'Fakturieren', new EditIcon()
         );
     }
 }

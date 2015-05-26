@@ -2,12 +2,9 @@
 namespace KREDA\Sphere\Application\Billing\Module;
 
 use KREDA\Sphere\Application\Billing\Frontend\Invoicing as Frontend;
-use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Configuration;
-use KREDA\Sphere\Common\AbstractApplication;
 
 /**
  * Class Commodity
@@ -20,24 +17,15 @@ class Invoicing extends Common
     private static $Configuration = null;
 
     /**
-     * @return void
-     */
-    protected static function setupApplicationNavigation()
-    {
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoicing/Commodity/Select', 'Fakturierung anlegen', new PersonIcon()
-        );
-    }
-
-    /**
      * @param Configuration $Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
+
         self::$Configuration = $Configuration;
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoicing/Commodity/Select', __CLASS__.'::frontendCommoditySelect'
+            '/Sphere/Billing/Invoice/Commodity/Select', __CLASS__.'::frontendCommoditySelect'
         );
     }
 
@@ -46,8 +34,20 @@ class Invoicing extends Common
      */
     public static function frontendCommoditySelect()
     {
+
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendCommoditySelect();
+    }
+
+    /**
+     * @return void
+     */
+    protected static function setupApplicationNavigation()
+    {
+
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Invoice/Commodity/Select', 'Fakturierung anlegen', new PersonIcon()
+        );
     }
 }

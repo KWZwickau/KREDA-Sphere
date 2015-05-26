@@ -1,21 +1,16 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service;
 
-use KREDA\Sphere\Application\Billing\Service\Invoicing\Entity\TblInvoice;
-use KREDA\Sphere\Application\Billing\Service\Invoicing\EntityAction;
-use KREDA\Sphere\Client\Frontend\Background\Type\Danger;
-use KREDA\Sphere\Client\Frontend\Message\Type\Success;
-use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
-use KREDA\Sphere\Client\Frontend\Redirect;
+use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
+use KREDA\Sphere\Application\Billing\Service\Invoice\EntityAction;
 use KREDA\Sphere\Common\Database\Handler;
-use KREDA\Sphere\Client\Frontend\Form\AbstractType as AbstractType;
 
 /**
  * Class Commodity
  *
  * @package KREDA\Sphere\Application\Billing\Service
  */
-class Invoicing extends EntityAction
+class Invoice extends EntityAction
 {
 
     /** @var null|Handler $DatabaseHandler */
@@ -26,7 +21,8 @@ class Invoicing extends EntityAction
      */
     final public function __construct()
     {
-        $this->setDatabaseHandler( 'Billing', 'Invoicing', $this->getConsumerSuffix() );
+
+        $this->setDatabaseHandler( 'Billing', 'Invoice', $this->getConsumerSuffix() );
     }
 
     /**

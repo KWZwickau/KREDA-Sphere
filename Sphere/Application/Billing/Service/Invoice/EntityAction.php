@@ -1,13 +1,10 @@
 <?php
-namespace KREDA\Sphere\Application\Billing\Service\Invoicing;
-
-use KREDA\Sphere\Application\Billing\Service\Invoicing\Entity\TblInvoice;
-use KREDA\Sphere\Application\Billing\Service\Invoicing\Entity\TblInvoiceItem;
+namespace KREDA\Sphere\Application\Billing\Service\Invoice;
 
 /**
  * Class EntityAction
  *
- * @package KREDA\Sphere\Application\Billing\Service\Invoicing
+ * @package KREDA\Sphere\Application\Billing\Service\Invoice
  */
 abstract class EntityAction extends EntitySchema
 {
@@ -15,7 +12,7 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param integer $Id
      *
-     * @return bool|TblInvoice
+     * @return bool|\KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice
      */
     protected function entityInvoiceById( $Id )
     {
@@ -26,7 +23,7 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param integer $Id
      *
-     * @return bool|TblInvoiceItem
+     * @return bool|\KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem
      */
     protected function entityInvoiceItemById( $Id )
     {
