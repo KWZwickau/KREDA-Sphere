@@ -35,11 +35,6 @@ class TblItem extends AbstractEntity
     protected $CostUnit;
 
     /**
-     * @Column(type="bigint")
-     */
-    protected $tblAccount;
-
-    /**
      * @return string
      */
     public function getDescription()
@@ -101,21 +96,5 @@ class TblItem extends AbstractEntity
     public function setCostUnit( $CostUnit )
     {
         $this->CostUnit = $CostUnit;
-    }
-
-    /**
-     * @return bigint
-     */
-    public function getTblAccount()
-    {
-        return $this->tblAccount;
-    }
-
-    /**
-     * @param bigint
-     */
-    public function setTblAccount( $tblAccount )
-    {
-        $this->tblAccount = $tblAccount;
     }
 }

@@ -2,8 +2,11 @@
 namespace KREDA\Sphere\Application\Billing\Frontend;
 
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItemAccount;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
@@ -203,6 +206,53 @@ class Commodity extends AbstractFrontend
     }
 
     /**
+     * @return Stage
+     */
+    public static function frontendItemStatus()
+    {
+        $View = new Stage();
+        $View->setTitle( 'Artikel' );
+        $View->setDescription( 'Übersicht' );
+        $View->setMessage( 'Zeigt die verfügbaren Artikel' );
+
+        $tblItemAll = Billing::serviceCommodity()->entityItemAll();
+
+        if (!empty($tblItemAll))
+        {
+            array_walk($tblItemAll, function (TblItem $tblItem)
+            {
+                $tblItem->Option =
+                    (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
+                        new EditIcon(), array(
+                            'Id' => $tblItem->getId()
+                        ) ) )->__toString().
+                    (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Löschen', '/Sphere/Billing/Commodity/Item/Delete',
+                        new RemoveIcon(), array(
+                            'Id' => $tblItem->getId()
+                        ) ) )->__toString().
+                    (new Primary( 'FIBU-Konten auswählen', '/Sphere/Billing/Commodity/Item/Account/Select',
+                        new EditIcon(), array(
+                            'Id' => $tblItem->getId()
+                        ) ))->__toString();
+            });
+        }
+
+        $View->setContent(
+            new TableData( $tblItemAll, null,
+                array(
+                    'Name'  => 'Name',
+                    'Description' => 'Beschreibung',
+                    'Quantity' => 'Menge',
+                    'Price' => 'Preis',
+                    'Option'  => 'Option'
+                )
+            )
+        );
+
+        return $View;
+    }
+
+    /**
      * @param $Id
      *
      * @return Stage
@@ -247,7 +297,7 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function frontendItemSelect ( $Id )//, $Quantity = null )
+    public static function frontendItemSelect ( $Id )
     {
         $View = new Stage();
         $View->setTitle( 'Leistung' );
@@ -275,21 +325,10 @@ class Commodity extends AbstractFrontend
                     {
                         $tblItem = $tblCommodityItem->getTblItem();
 
-                        $Account = Billing::serviceAccount()->entityAccountById($tblItem->getTblAccount());
-                        if (!empty($Account))
-                        {
-                            $Account = $Account->getDescription();
-                        }
-                        else
-                        {
-                            $Account = "";
-                        }
-
                         $tblCommodityItem->Name = $tblItem->getName();
                         $tblCommodityItem->Description = $tblItem->getDescription();
                         $tblCommodityItem->Price = $tblItem->getPrice();
                         $tblCommodityItem->CostUnit = $tblItem->getCostUnit();
-                        $tblCommodityItem->Account = $Account;
                         $tblCommodityItem->Option =
                             (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
                                 new EditIcon(), array(
@@ -306,17 +345,6 @@ class Commodity extends AbstractFrontend
                 {
                     foreach ($tblItemAll as $tblItem)
                     {
-                        $Account = Billing::serviceAccount()->entityAccountById($tblItem->getTblAccount());
-                        if (!empty($Account))
-                        {
-                            $Account = $Account->getDescription();
-                        }
-                        else
-                        {
-                            $Account = "";
-                        }
-
-                        $tblItem->Account = $Account;
                         $tblItem->Option=
                             ( new Form(
                                 new FormGroup(
@@ -349,7 +377,6 @@ class Commodity extends AbstractFrontend
                                             'Name'  => 'Name',
                                             'Description' => 'Beschreibung',
                                             'CostUnit' => 'Kostenstelle',
-                                            'Account' => 'FIBU-Konto',
                                             'Price' => 'Preis',
                                             'Quantity' => 'Menge',
                                             'Option'  => 'Option'
@@ -367,7 +394,6 @@ class Commodity extends AbstractFrontend
                                             'Name'  => 'Name',
                                             'Description' => 'Beschreibung',
                                             'CostUnit' => 'Kostenstelle',
-                                            'Account' => 'FIBU-Konto',
                                             'Price' => 'Preis',
                                             'Option'  => 'Option'
                                         )
@@ -376,27 +402,6 @@ class Commodity extends AbstractFrontend
                             )
                         ) ),
                     ), new LayoutTitle( 'mögliche Artikel' ) ) ))
-//                    new TableData( $tblCommodityItem, null,
-//                        array(
-//                            'Name'  => 'Name',
-//                            'Description' => 'Beschreibung',
-//                            'CostUnit' => 'Kostenstelle',
-//                            'Account' => 'FIBU-Konto',
-//                            'Price' => 'Preis',
-//                            'Quantity' => 'Menge',
-//                            'Option'  => 'Option'
-//                        )
-//                    )
-//                    . new TableData( $tblItemAll, null,
-//                        array(
-//                            'Name'  => 'Name',
-//                            'Description' => 'Beschreibung',
-//                            'CostUnit' => 'Kostenstelle',
-//                            'Account' => 'FIBU-Konto',
-//                            'Price' => 'Preis',
-//                            'Option'  => 'Option'
-//                        )
-//                    )
                 );
             }
         }
@@ -429,12 +434,7 @@ class Commodity extends AbstractFrontend
                     new FormRow( array(
                         new FormColumn(
                             new TextField( 'Item[CostUnit]', 'Kostenstelle', 'Kostenstelle', new ConversationIcon()
-                            ), 6),
-                    new FormColumn(
-                        new SelectBox( 'Item[Account]', 'FIBU-Konto', array(
-                            'Description' => Billing::serviceAccount()->entityAccountAllByActiveState()
-                        ) )
-                        , 6 )
+                            ), 6)
                     ) ),
                     new FormRow( array(
                         new FormColumn(
@@ -443,6 +443,137 @@ class Commodity extends AbstractFrontend
 
                     ) )
                 ))), new SubmitPrimary( 'Hinzufügen' )), $Item));
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendItemAccountSelect ( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Artikel' );
+        $View->setDescription( 'FIBU-Konten auswählen' );
+
+        if (empty( $Id ))
+        {
+            $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
+        }
+        else
+        {
+            $tblItem = Billing::serviceCommodity()->entityItemById($Id);
+            if (empty( $tblItem ))
+            {
+                $View->setContent( new Warning( 'Der Artikel konnte nicht abgerufen werden' ) );
+            }
+            else
+            {
+                $tblItemAccountByItem = Billing::serviceCommodity()->entityItemAccountAllByItem($tblItem);
+                $tblAccountAllByActiveState = Billing::serviceAccount()->entityAccountAllByActiveState();
+
+                if (!empty($tblItemAccountByItem))
+                {
+                    array_walk($tblItemAccountByItem, function (TblItemAccount $tblItemAccountByItem)
+                    {
+                        $tblItemAccountByItem->Number = $tblItemAccountByItem->getServiceBilling_Account()->getNumber();
+                        $tblItemAccountByItem->Description = $tblItemAccountByItem->getServiceBilling_Account()->getDescription();
+                        $tblItemAccountByItem->Option =
+                            new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Entfernen', '/Sphere/Billing/Commodity/Item/Account/Remove',
+                                new RemoveIcon(), array(
+                                    'Id' => $tblItemAccountByItem->getId()
+                                ));
+                    });
+                }
+
+                if(!empty($tblAccountAllByActiveState))
+                {
+                    array_walk($tblAccountAllByActiveState, function (TblAccount $tblAccountAllByActiveState, $Index, TblItem $tblItem)
+                    {
+                        $tblAccountAllByActiveState->Option =
+                            new Primary( 'Hinzufügen', '/Sphere/Billing/Commodity/Item/Account/Add',
+                                new EditIcon(), array(
+                                    'tblAccountId' => $tblAccountAllByActiveState->getId(),
+                                    'tblItemId' => $tblItem->getId()
+                                ) );
+                    }, $tblItem);
+                }
+
+                $View->setTitle( 'Artikel: '. $tblItem->getName());
+                $View->setContent(
+                    new Layout(array(
+                        new LayoutGroup( array(
+                            new LayoutRow( array(
+                                new LayoutColumn( array(
+                                        new TableData( $tblItemAccountByItem, null,
+                                            array(
+                                                'Number' => 'Nummer',
+                                                'Description' => 'Beschreibung',
+                                                'Option'  => 'Option'
+                                            )
+                                        )
+                                    )
+                                )
+                            ) ),
+                        ), new LayoutTitle( 'zugewiesene FIBU-Konten' ) ),
+                        new LayoutGroup( array(
+                            new LayoutRow( array(
+                                new LayoutColumn( array(
+                                        new TableData( $tblAccountAllByActiveState, null,
+                                            array(
+                                                'Number'  => 'Nummer',
+                                                'Description' => 'Beschreibung',
+                                                'Option'  => 'Option'
+                                            )
+                                        )
+                                    )
+                                )
+                            ) ),
+                        ), new LayoutTitle( 'mögliche FIBU-Konten' ) ) ))
+                );
+            }
+        }
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendItemAccountRemove ( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle( 'FIBU-Konto entfernen' );
+        $tblItemAccount = Billing::serviceCommodity()->entityItemAccountById( $Id );
+        if (!empty($tblItemAccount))
+        {
+            $View ->setContent( Billing::serviceCommodity()->executeRemoveItemAccount( $tblItemAccount));
+        }
+
+        return $View;
+    }
+
+    /**
+     * @param $tblItemId
+     * @param $tblAccountId
+     *
+     * @return Stage
+     */
+    public static function frontendItemAccountAdd ( $tblItemId, $tblAccountId )
+    {
+        $View = new Stage();
+        $View->setTitle( 'FIBU-Konto hinzufügen' );
+        $tblItem = Billing::serviceCommodity()->entityItemById($tblItemId);
+        $tblAccount = Billing::serviceAccount()->entityAccountById( $tblAccountId);
+
+        if (!empty($tblItemId) && !empty($tblAccountId))
+        {
+            $View ->setContent( Billing::serviceCommodity()->executeAddItemAccount( $tblItem, $tblAccount ));
+        }
 
         return $View;
     }

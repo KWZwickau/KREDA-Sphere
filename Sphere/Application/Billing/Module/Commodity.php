@@ -31,6 +31,9 @@ class Commodity extends Common
             '/Sphere/Billing/Commodity/Item/Create', 'Artikel anlegen', new PersonIcon()
         );
         self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item', 'Artikel', new PersonIcon()
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Billing/Commodity/Debtor/Commodity/Create', 'Debitor-Leistung anlegen', new PersonIcon()
         );
     }
@@ -58,6 +61,10 @@ class Commodity extends Common
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Commodity', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item', __CLASS__.'::frontendItemStatus'
+        );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Commodity/Item/Create', __CLASS__.'::frontendItemCreate'
         )
@@ -66,7 +73,6 @@ class Commodity extends Common
             '/Sphere/Billing/Commodity/Item/Select', __CLASS__.'::frontendItemSelect'
         )
             ->setParameterDefault( 'Id', null );
-            //->setParameterDefault( 'Quantity', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Commodity/Item/Remove', __CLASS__.'::frontendItemRemove'
         )
@@ -77,6 +83,20 @@ class Commodity extends Common
             ->setParameterDefault( 'tblCommodityId', null )
             ->setParameterDefault( 'tblItemId', null )
             ->setParameterDefault( 'Item', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item/Account/Select', __CLASS__.'::frontendItemAccountSelect'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item/Account/Add', __CLASS__.'::frontendItemAccountAdd'
+        )
+            ->setParameterDefault( 'tblAccountId', null )
+            ->setParameterDefault( 'tblItemId', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item/Account/Remove', __CLASS__.'::frontendItemAccountRemove'
+        )
+            ->setParameterDefault( 'Id', null );
+
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Commodity/Debtor/Commodity/Create', __CLASS__.'::frontendDebtorCommodityCreate'
         )
@@ -127,6 +147,16 @@ class Commodity extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendEdit( $Id, $Commodity );
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendItemStatus()
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendItemStatus();
     }
 
     /**
@@ -188,5 +218,42 @@ class Commodity extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendDebtorCommodityCreate( $DebtorCommodity );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendItemAccountSelect( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendItemAccountSelect( $Id );
+    }
+
+    /**
+     * @param $tblItemId
+     * @param $tblAccountId
+     *
+     * @return Stage
+     */
+    public static function frontendItemAccountAdd( $tblItemId, $tblAccountId )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendItemAccountAdd( $tblItemId, $tblAccountId );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendItemAccountRemove( $Id)
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendItemAccountRemove( $Id );
     }
 }

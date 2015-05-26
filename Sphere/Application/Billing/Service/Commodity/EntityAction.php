@@ -1,17 +1,19 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Commodity;
 
+use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityType;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItemAccount;
 use KREDA\Sphere\Application\System\System;
 
 /**
  * Class EntityAction
  *
- * @package KREDA\Sphere\Application\Billing\Service\Account
+ * @package KREDA\Sphere\Application\Billing\Service\Commodity
  */
 abstract class EntityAction extends EntitySchema
 {
@@ -116,6 +118,28 @@ abstract class EntityAction extends EntitySchema
     {
         $Entity = $this->getEntityManager()->getEntityById( 'TblCommodityItem', $Id );
         return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param $Id
+     * @return bool|TblItemAccount
+     */
+    protected function entityItemAccountById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblItemAccount', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblItem $tblItem
+     *
+     * @return TblItemAccount[]|bool
+     */
+    protected function entityItemAccountAllByItem( TblItem $tblItem )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblItemAccount' )
+            ->findBy( array( TblItemAccount::ATTR_TBL_Item => $tblItem->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
     }
 
     /**
@@ -240,7 +264,6 @@ abstract class EntityAction extends EntitySchema
      * @param $Description
      * @param $Price
      * @param $CostUnit
-     * @param $tblAccount
      *
      * @return TblItem
      */
@@ -248,8 +271,7 @@ abstract class EntityAction extends EntitySchema
         $Name,
         $Description,
         $Price,
-        $CostUnit,
-        $tblAccount
+        $CostUnit
     ) {
 
         $Manager = $this->getEntityManager();
@@ -259,13 +281,65 @@ abstract class EntityAction extends EntitySchema
         $Entity->setDescription( $Description );
         $Entity->setPrice( str_replace(',','.', $Price) );
         $Entity->setCostUnit( $CostUnit );
-        $Entity->setTblAccount($tblAccount);
 
         $Manager->saveEntity( $Entity );
 
         System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
 
         return $Entity;
+    }
+
+    /**
+     * @param TblItem $tblItem
+     * @param TblAccount $tblAccount
+     *
+     * @return TblItemAccount|null
+     */
+    protected function actionAddItemAccount(
+        TblItem $tblItem,
+        TblAccount $tblAccount
+    ) {
+        $Manager = $this->getEntityManager();
+
+        $Entity = $Manager->getEntity( 'tblItemAccount' )->findOneBy(
+            array(
+                TblItemAccount::ATTR_TBL_Item => $tblItem->getId(),
+                TblItemAccount::ATTR_SERVICE_BILLING_ACCOUNT => $tblAccount->getId()
+            ) );
+        if (null === $Entity) {
+            $Entity = new TblItemAccount();
+            $Entity->setTblItem( $tblItem );
+            $Entity->setTblAccount( $tblAccount );
+
+            $Manager->saveEntity( $Entity );
+
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+
+        return $Entity;
+    }
+
+    /**
+     * @param TblItemAccount $tblItemAccount
+     *
+     * @return bool
+     */
+    protected function actionRemoveItemAccount(
+        TblItemAccount $tblItemAccount
+    ) {
+        $Manager = $this->getEntityManager();
+
+        $Entity = $Manager->getEntity( 'tblItemAccount' )->findOneBy(
+            array(
+               'Id' => $tblItemAccount->getId()
+            ) );
+        if (null !== $Entity)
+        {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
     }
 
     /**

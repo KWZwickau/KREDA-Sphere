@@ -1,11 +1,13 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service;
 
+use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityType;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItemAccount;
 use KREDA\Sphere\Application\Billing\Service\Commodity\EntityAction;
 use KREDA\Sphere\Application\Billing\Service\Commodity\TblDebtorCommodity;
 use KREDA\Sphere\Application\System\System;
@@ -138,6 +140,27 @@ class Commodity extends EntityAction
     public  function entityCommodityItemById($Id)
     {
         return parent::entityCommodityItemById($Id);
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|TblItemAccount
+     */
+    public function entityItemAccountById($Id)
+    {
+        return parent::entityItemAccountById($Id);
+    }
+
+
+    /**
+     * @param TblItem $tblItem
+     *
+     * @return bool|TblItemAccount
+     */
+    public function entityItemAccountAllByItem(TblItem $tblItem)
+    {
+        return parent::entityItemAccountAllByItem($tblItem);
     }
 
     /**
@@ -331,8 +354,7 @@ class Commodity extends EntityAction
                 $Item['Name'],
                 $Item['Description'],
                 $Item['Price'],
-                $Item['CostUnit'],
-                $Item['Account']
+                $Item['CostUnit']
             );
             return new Success( 'Der Artikel wurde erfolgreich angelegt' )
             .new Redirect( '/Sphere/Billing/Commodity', 2);
@@ -381,6 +403,50 @@ class Commodity extends EntityAction
         {
             return new Warning( 'Der Artikel ' .$tblItem->getName(). ' konnte nicht entfernt werden' )
                 .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodity->getId()) );
+        }
+    }
+
+    /**
+     * @param TblItem $tblItem
+     * @param TblAccount $tblAccount
+     *
+     * @return string
+     */
+    public function executeAddItemAccount(
+        TblItem $tblItem,
+        TblAccount $tblAccount
+    )
+    {
+        if ($this->actionAddItemAccount($tblItem, $tblAccount))
+        {
+            return new Success( 'Das FIBU-Konto ' . $tblAccount->getDescription(). ' wurde erfolgreich hinzugefügt' )
+            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 0, array( 'Id' => $tblItem->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Das FIBU-Konto ' .$tblAccount->getDescription(). ' konnte nicht entfernt werden' )
+            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 2, array( 'Id' => $tblItem->getId()) );
+        }
+    }
+
+    /**
+     * @param TblItemAccount $tblItemAccount
+     *
+     * @return string
+     */
+    public function executeRemoveItemAccount(
+        TblItemAccount $tblItemAccount
+    )
+    {
+        if ($this->actionRemoveItemAccount($tblItemAccount))
+        {
+            return new Success( 'Das FIBU-Konto ' . $tblItemAccount->getServiceBilling_Account()->getDescription(). ' wurde erfolgreich entfernt' )
+            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 0, array( 'Id' => $tblItemAccount->getTblItem()->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Das FIBU-Konto ' . $tblItemAccount->getServiceBilling_Account()->getDescription(). ' konnte nicht entfernt werden' )
+            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 2, array( 'Id' => $tblItemAccount->getTblItem()->getId()) );
         }
     }
 

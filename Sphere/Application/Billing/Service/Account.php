@@ -186,12 +186,13 @@ class Account extends EntityAction
     }
 
     /**
+     * @param bool $IsActive
+     *
      * @return bool|TblAccount[]
      */
-    public function entityAccountAllByActiveState()
+    public function entityAccountAllByActiveState( $IsActive = true)
     {
-
-        return parent::entityAccountAllByActiveState();
+        return parent::entityAccountAllByActiveState( $IsActive );
     }
 
     /**
