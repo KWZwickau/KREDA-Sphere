@@ -5,7 +5,6 @@ use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Frontend\Person;
 use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
@@ -374,93 +373,4 @@ class InputForm extends AbstractFrontend
         );
     }
 
-    /**
-     * @param TblPerson $tblPerson
-     *
-     * @return Form
-     */
-    public static function formAddress( TblPerson $tblPerson, $State, $City, $Street )
-    {
-
-        $tblAddressState = Management::serviceAddress()->entityAddressStateAll();
-
-        $tblAddressStreet = Management::serviceAddress()->entityAddressAll();
-        if (!empty( $tblAddressStreet )) {
-            array_walk( $tblAddressStreet, function ( TblAddress &$tblAddress ) {
-
-                $tblAddress = $tblAddress->getStreetName();
-            } );
-        }
-        $tblAddressStreet = array_unique( $tblAddressStreet );
-
-        $tblAddressCity = Management::serviceAddress()->entityAddressAll();
-        if (!empty( $tblAddressCity )) {
-            array_walk( $tblAddressCity, function ( TblAddress &$tblAddress ) {
-
-                $tblAddress = $tblAddress->getTblAddressCity()->getName();
-            } );
-        }
-        $tblAddressCity = array_unique( $tblAddressCity );
-
-        $tblPersonAddressList = Management::servicePerson()->entityAddressAllByPerson( $tblPerson );
-        if (!empty( $tblPersonAddressList )) {
-            array_walk( $tblPersonAddressList, function ( TblAddress &$tblPersonAddress ) {
-
-                $tblPersonAddress->Code = $tblPersonAddress->getTblAddressCity()->getCode();
-                $tblPersonAddress->Name = $tblPersonAddress->getTblAddressCity()->getName();
-                $tblPersonAddress->District = $tblPersonAddress->getTblAddressCity()->getDistrict();
-                $tblPersonAddress->State = $tblPersonAddress->getTblAddressState()->getName();
-
-            } );
-        }
-
-        return new Layout(
-            new LayoutGroup( array(
-                new LayoutRow( array(
-                    new LayoutColumn( array(
-                        new TableData( $tblPersonAddressList, null, array(
-                            'StreetName'   => 'Strasse',
-                            'StreetNumber' => 'Hausnummer',
-                            'Code'         => 'Postleitzahl',
-                            'Name'         => 'Ort',
-                            'District'     => 'Ortsteil',
-                            'State'        => 'Bundesland',
-                        ) ),
-                        Management::serviceAddress()->executeCreateFullAddress(
-                            new Form(
-                                new FormGroup( array(
-                                    new FormRow( array(
-                                        new FormColumn(
-                                            new AutoCompleter( 'Street[Name]', 'Strasse', 'Strasse', $tblAddressStreet )
-                                            , 5 ),
-                                        new FormColumn(
-                                            new NumberField( 'Street[Number]', 'Hausnummer', 'Hausnummer' )
-                                            , 2 ),
-                                    ) ),
-                                    new FormRow( array(
-                                        new FormColumn(
-                                            new TextField( 'City[Code]', 'Postleitzahl', 'Postleitzahl' )
-                                            , 2 ),
-                                        new FormColumn(
-                                            new AutoCompleter( 'City[Name]', 'Ort', 'Ort', $tblAddressCity )
-                                            , 5 ),
-                                        new FormColumn(
-                                            new TextField( 'City[District]', 'Ortsteil', 'Ortsteil' )
-                                            , 5 ),
-                                    ) ),
-                                    new FormRow( array(
-                                        new FormColumn(
-                                            new SelectBox( 'State', 'Bundesland', array(
-                                                'Name' => $tblAddressState
-                                            ) )
-                                            , 5 ),
-                                    ) ),
-                                ) ), new SubmitPrimary( 'Adresse hinzufügen' ) )
-                            , $State, $City, $Street )
-                    ) )
-                ) ),
-            ), new LayoutTitle( 'Adressdaten' ) )
-        );
-
-    }
 }
