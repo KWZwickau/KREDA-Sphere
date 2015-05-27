@@ -5,8 +5,10 @@ use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasketItem;
+use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasketPerson;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
 
 /**
@@ -68,6 +70,29 @@ abstract class EntityAction extends EntitySchema
     protected function entityBasketItemAllByBasket( TblBasket $tblBasket )
     {
         $EntityList = $this->getEntityManager()->getEntity( 'TblBasketItem' )
+            ->findBy( array( TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /***
+     * @param $Id
+     *
+     * @return bool|TblBasketPerson
+     */
+    protected function entityBasketPersonById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblBasketPerson', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     *
+     * @return bool|TblBasketPerson[]
+     */
+    protected function entityBasketPersonAllByBasket( TblBasket $tblBasket )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblBasketPerson' )
             ->findBy( array( TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId() ) );
         return ( null === $EntityList ? false : $EntityList );
     }
@@ -254,6 +279,52 @@ abstract class EntityAction extends EntitySchema
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Protocol,
                 $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @param TblPerson $tblPerson
+     *
+     * @return TblBasketPerson
+     */
+    protected function actionAddBasketPerson(
+        TblBasket $tblBasket,
+        TblPerson $tblPerson
+    ) {
+        $Manager = $this->getEntityManager();
+
+        $Entity = new TblBasketPerson();
+        $Entity->setTblBasket( $tblBasket );
+        $Entity->setServiceManagementPerson( $tblPerson );
+
+        $Manager->saveEntity( $Entity );
+        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+
+        return $Entity;
+    }
+
+    /**
+     * @param TblBasketPerson $tblBasketPerson
+     *
+     * @return bool
+     */
+    protected function actionRemoveBasketPerson(
+        TblBasketPerson $tblBasketPerson
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        $Entity = $Manager->getEntity( 'tblBasketPerson' )->findOneBy(
+            array(
+                'Id' => $tblBasketPerson->getId()
+            ) );
+        if (null !== $Entity)
+        {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            $Manager->killEntity( $Entity );
             return true;
         }
         return false;

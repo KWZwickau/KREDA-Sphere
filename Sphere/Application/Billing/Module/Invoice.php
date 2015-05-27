@@ -53,6 +53,20 @@ class Invoice extends Common
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'BasketItem', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Basket/Person/Select', __CLASS__.'::frontendBasketPersonSelect'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Basket/Person/Add', __CLASS__.'::frontendBasketPersonAdd'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'PersonId', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Basket/Person/Remove', __CLASS__.'::frontendBasketPersonRemove'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'PersonId', null );
     }
 
     /**
@@ -112,5 +126,42 @@ class Invoice extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketItemEdit( $Id, $BasketItem );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBasketPersonSelect( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketPersonSelect( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $PersonId
+     *
+     * @return Stage
+     */
+    public static function frontendBasketPersonAdd( $Id, $PersonId )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketPersonAdd( $Id, $PersonId );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBasketPersonRemove( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketPersonRemove( $Id );
     }
 }

@@ -5,19 +5,27 @@ use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasketItem;
+use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasketPerson;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Student\Entity\TblStudent;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -126,7 +134,7 @@ class Invoice extends AbstractFrontend
         }
 
         $View->setContent(
-            new TableData( $tblBasketItemAll, null,
+            (new TableData( $tblBasketItemAll, null,
                 array(
                     'CommodityName'  => 'Leistung',
                     'ItemName' => 'Artikel',
@@ -134,7 +142,11 @@ class Invoice extends AbstractFrontend
                     'Quantity' => 'Menge',
                     'Option'  => 'Option'
                 )
-            )
+            )) .
+            (new Primary( 'Weiter', '/Sphere/Billing/Invoice/Basket/Person/Select',
+                new EditIcon(), array(
+                    'Id' => $tblBasket->getId()
+                ) ) )->__toString()
         );
 
         return $View;
@@ -202,38 +214,119 @@ class Invoice extends AbstractFrontend
     }
 
     /**
+     * @param $Id
+     *
      * @return Stage
      */
-    public static function frontendStudentSelect()
+    public static function frontendBasketPersonSelect(
+        $Id
+    )
     {
         $View = new Stage();
         $View->setTitle( 'Schüler' );
         $View->setDescription( 'Auswählen' );
         $View->setMessage( 'Bitte wählen Sie Schüler zur Fakturierung aus' );
 
+        $tblBasket = Billing::serviceInvoice()->entityBasketById( $Id );
+        $tblBasketPersonList = Billing::serviceInvoice()->entityBasketPersonAllByBasket( $tblBasket );
         $tblStudentAll = Management::servicePerson()->entityPersonAllByType( Management::servicePerson()->entityPersonTypeByName('Schüler'));
 
-        if (!empty($tblStudentAll))
+        if (!empty($tblBasketPersonList))
         {
-            array_walk($tblStudentAll, function (TblPerson &$tblPerson)
+            array_walk($tblBasketPersonList, function (TblBasketPerson &$tblBasketPerson)
             {
-                $tblPerson->Option =
-                    (new Primary( 'Auswählen', '/Sphere/Billing/Invoice/Person/Select',
-                        new EditIcon(), array(
-                            'Id' => $tblPerson->getId()
+                $tblPerson = $tblBasketPerson->getServiceManagementPerson();
+                $tblBasketPerson->FirstName = $tblPerson->getFirstName();
+                $tblBasketPerson->LastName = $tblPerson->getLastName();
+                $tblBasketPerson->Option =
+                    (new Danger( 'Entfernen', '/Sphere/Billing/Invoice/Basket/Person/Remove',
+                        new RemoveIcon(), array(
+                            'Id' => $tblBasketPerson->getId()
                         ) ))->__toString();
             });
         }
 
+        if (!empty($tblStudentAll))
+        {
+            array_walk($tblStudentAll, function (TblPerson &$tblPerson, $Index, TblBasket $tblBasket)
+            {
+                $tblPerson->Option =
+                    (new Primary( 'Auswählen', '/Sphere/Billing/Invoice/Basket/Person/Add',
+                        new EditIcon(), array(
+                            'Id' => $tblBasket->getId(),
+                            'PersonId' => $tblPerson->getId()
+                        ) ))->__toString();
+            }, $tblBasket);
+        }
+
         $View->setContent(
-            new TableData( $tblStudentAll, null,
-                array(
-                    'FirstName'  => 'Vorname',
-                    'LastName' => 'Nachname',
-                    'Option'  => 'Option'
-                )
-            )
+            new Layout(array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                                new TableData( $tblBasketPersonList, null,
+                                    array(
+                                        'FirstName'  => 'Vorname',
+                                        'LastName' => 'Nachname',
+                                        'Option'  => 'Option'
+                                    )
+                                )
+                            )
+                        )
+                    ) ),
+                ), new LayoutTitle( 'zugewiesene Studenten' ) ),
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                                new TableData( $tblStudentAll, null,
+                                    array(
+                                        'FirstName'  => 'Vorname',
+                                        'LastName' => 'Nachname',
+                                        'Option'  => 'Option'
+                                    )
+                                )
+                            )
+                        )
+                    ) ),
+                ), new LayoutTitle( 'mögliche Studenten' ) )
+            ))
         );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @param $PersonId
+     *
+     * @return Stage
+     */
+    public static function frontendBasketPersonAdd( $Id, $PersonId)
+    {
+        $View = new Stage();
+        $View->setTitle( 'Person' );
+        $View->setDescription( 'Hinzufügen' );
+
+        $tblBasket = Billing::serviceInvoice()->entityBasketById( $Id );
+        $tblPerson = Management::servicePerson()->entityPersonById( $PersonId );
+        $View->setContent(Billing::serviceInvoice()->executeAddBasketPerson( $tblBasket, $tblPerson ));
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBasketPersonRemove( $Id)
+    {
+        $View = new Stage();
+        $View->setTitle( 'Person' );
+        $View->setDescription( 'Entfernen' );
+
+        $tblBasketPerson = Billing::serviceInvoice()->entityBasketPersonById( $Id );
+        $View->setContent(Billing::serviceInvoice()->executeRemoveBasketPerson( $tblBasketPerson ));
 
         return $View;
     }
