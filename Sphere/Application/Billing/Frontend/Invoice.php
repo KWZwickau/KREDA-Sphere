@@ -14,7 +14,7 @@ use KREDA\Sphere\Common\AbstractFrontend;
  *
  * @package KREDA\Sphere\Application\Billing\Frontend
  */
-class Invoicing extends AbstractFrontend
+class Invoice extends AbstractFrontend
 {
     /**
      * @return Stage
@@ -32,7 +32,6 @@ class Invoicing extends AbstractFrontend
         {
             array_walk($tblCommodityAll, function (TblCommodity $tblCommodity)
             {
-                $tblCommodity->DebtorCommodity = $tblCommodity->getTblDebtorCommodity()->getName();
                 $tblCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
                 $tblCommodity->ItemCount = Billing::serviceCommodity()->countItemAllByCommodity( $tblCommodity );
                 $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity)." €";
@@ -49,7 +48,6 @@ class Invoicing extends AbstractFrontend
                 array(
                     'Name'  => 'Name',
                     'Description' => 'Beschreibung',
-                    'DebtorCommodity' => 'Debitor-Leistung',
                     'Type' => 'Leistungsart',
                     'ItemCount' => 'Artikelanzahl',
                     'SumPriceItem' => 'Gesamtpreis',

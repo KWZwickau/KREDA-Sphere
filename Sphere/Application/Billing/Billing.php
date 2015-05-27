@@ -41,7 +41,7 @@ class Billing extends Module\Commodity
         Module\Common::registerApplication( $Configuration );
         Module\Commodity::registerApplication( $Configuration );
         Module\Account::registerApplication( $Configuration );
-        Module\Invoicing::registerApplication( $Configuration );
+        Module\Invoice::registerApplication( $Configuration );
     }
 
     /**

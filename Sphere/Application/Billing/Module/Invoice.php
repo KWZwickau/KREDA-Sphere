@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Module;
 
-use KREDA\Sphere\Application\Billing\Frontend\Invoicing as Frontend;
+use KREDA\Sphere\Application\Billing\Frontend\Invoice as Frontend;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Configuration;
@@ -11,7 +11,7 @@ use KREDA\Sphere\Client\Configuration;
  *
  * @package KREDA\Sphere\Application\Billing\Module
  */
-class Invoicing extends Common
+class Invoice extends Common
 {
     /** @var Configuration $Config */
     private static $Configuration = null;
