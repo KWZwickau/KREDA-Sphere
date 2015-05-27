@@ -1,5 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Invoice;
+use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Application\System\System;
@@ -31,6 +32,17 @@ abstract class EntityAction extends EntitySchema
     protected function entityInvoiceItemById( $Id )
     {
         $Entity = $this->getEntityManager()->getEntityById( 'TblInvoiceItem', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /***
+     * @param $Id
+     *
+     * @return bool|TblBasket
+     */
+    protected function entityBasketById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblBasket', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
