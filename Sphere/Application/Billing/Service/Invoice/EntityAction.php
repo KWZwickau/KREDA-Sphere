@@ -185,6 +185,38 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblCommodity $tblCommodity
+     *
+     * @return TblBasket
+     */
+    protected function actionCreateBasketItemsByCommodity(
+        TblCommodity $tblCommodity
+    ) {
+
+        $tblBasket = $this->actionCreateBasket();
+
+        $Manager = $this->getEntityManager();
+
+        $tblCommodityItemList = Billing::serviceCommodity()->entityCommodityItemAllByCommodity( $tblCommodity );
+
+        /** @var TblCommodityItem $tblCommodityItem */
+        foreach ($tblCommodityItemList as $tblCommodityItem) {
+            $Entity = new TblBasketItem();
+            $Entity->setPrice( $tblCommodityItem->getTblItem()->getPrice() );
+            $Entity->setQuantity( $tblCommodityItem->getQuantity() );
+            $Entity->setServiceBillingCommodityItem( $tblCommodityItem );
+            $Entity->setTblBasket( $tblBasket );
+
+            $Manager->bulkSaveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+        $Manager->flushCache();
+
+        return $tblBasket;
+    }
+
+    /**
      * @return TblBasket
      */
     protected function actionCreateBasket()
@@ -198,36 +230,6 @@ abstract class EntityAction extends EntitySchema
         System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
 
         return $Entity;
-    }
-
-    /**
-     * @param TblCommodity $tblCommodity
-     *
-     * @return TblBasket
-     */
-    protected function actionCreateBasketItemsByCommodity(
-        TblCommodity $tblCommodity
-    ) {
-        $tblBasket = $this->actionCreateBasket();
-
-        $Manager = $this->getEntityManager();
-
-        $tblCommodityItemList = Billing::serviceCommodity()->entityCommodityItemAllByCommodity( $tblCommodity );
-
-        /** @var TblCommodityItem $tblCommodityItem */
-        foreach ($tblCommodityItemList as $tblCommodityItem)
-        {
-            $Entity = new TblBasketItem();
-            $Entity->setPrice( $tblCommodityItem->getTblItem()->getPrice() );
-            $Entity->setQuantity( $tblCommodityItem->getQuantity() );
-            $Entity->setServiceBillingCommodityItem( $tblCommodityItem );
-            $Entity->setTblBasket( $tblBasket );
-
-            $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
-        }
-
-        return $tblBasket;
     }
 
     /**
