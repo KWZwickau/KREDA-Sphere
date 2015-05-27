@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Client;
 
 use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\ORMException;
 use KREDA\Sphere\Application\Assistance\Assistance;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
@@ -87,6 +88,14 @@ class Client
                      */
                     $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
                     $this->Display->addToContent( new Container( Database::stageRepair( $Exception ) ) );
+                } catch( ORMException $Exception ) {
+                    /**
+                     * Repair Database
+                     */
+                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
+                    /** @var Element $Route */
+                    $Route = $this->Configuration->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
+                    $this->Display->addToContent( new Container( $Route ) );
                 } catch( DatabaseException $Exception ) {
                     /**
                      * Error
