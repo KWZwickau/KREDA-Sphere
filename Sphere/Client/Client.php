@@ -89,10 +89,10 @@ class Client
                     $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
                     $this->Display->addToContent( new Container( Database::stageRepair( $Exception ) ) );
                 } catch( ORMException $Exception ) {
-                    $this->Display->extensionDebugger()->addProtocol( $Exception->getMessage(), 'warning-sign' );
-                    /** @var Element $Route */
-                    $Route = $this->Configuration->getClientRouter()->getRoute( '/Sphere/Assistance/Support/Application/Missing' );
-                    $this->Display->setContent( new Container( $Route ) );
+                    throw new \ErrorException(
+                        $Exception->getMessage(), 0, $Exception->getCode(),
+                        $Exception->getFile(), $Exception->getLine(), $Exception
+                    );
                 } catch( DatabaseException $Exception ) {
                     /**
                      * Error
