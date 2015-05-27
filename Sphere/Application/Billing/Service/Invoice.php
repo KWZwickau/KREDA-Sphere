@@ -104,6 +104,23 @@ class Invoice extends EntityAction
     }
 
     /**
+     * @param TblBasket $tblBasket
+     *
+     * @return null|TblPerson[]
+     */
+    public function entityPersonAllByBasket(TblBasket $tblBasket)
+    {
+        $tblBasketPersonList = $this->entityBasketPersonAllByBasket($tblBasket);
+        $tblPerson = array();
+        foreach($tblBasketPersonList as $tblBasketPerson)
+        {
+            array_push($tblPerson, $tblBasketPerson->getServiceManagementPerson());
+        }
+
+        return $tblPerson;
+    }
+
+    /**
      * @param TblCommodity $tblCommodity
      *
      * @return string

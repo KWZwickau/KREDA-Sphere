@@ -228,7 +228,18 @@ class Invoice extends AbstractFrontend
 
         $tblBasket = Billing::serviceInvoice()->entityBasketById( $Id );
         $tblBasketPersonList = Billing::serviceInvoice()->entityBasketPersonAllByBasket( $tblBasket );
+        $tblPersonByBasketList = Billing::serviceInvoice()->entityPersonAllByBasket( $tblBasket );
         $tblStudentAll = Management::servicePerson()->entityPersonAllByType( Management::servicePerson()->entityPersonTypeByName('Schüler'));
+
+        if (!empty( $tblPersonByBasketList ))
+        {
+            $tblStudentAll = array_udiff( $tblStudentAll, $tblPersonByBasketList,
+                function ( TblPerson $ObjectA, TblPerson $ObjectB ) {
+
+                    return $ObjectA->getId() - $ObjectB->getId();
+                }
+            );
+        }
 
         if (!empty($tblBasketPersonList))
         {
@@ -258,16 +269,6 @@ class Invoice extends AbstractFrontend
             }, $tblBasket);
         }
 
-        if (empty( $tblBasketPersonList )) {
-            $tblBasketPersonList = array();
-        }
-        $tblStudentAll = array_udiff( $tblStudentAll, $tblBasketPersonList,
-            function ( TblPerson $ObjectA, TblBasketPerson $ObjectB ) {
-
-                return $ObjectA->getId() - $ObjectB->getServiceManagementPerson()->getId();
-            }
-        );
-
         $View->setContent(
             new Layout(array(
                 new LayoutGroup( array(
@@ -277,7 +278,7 @@ class Invoice extends AbstractFrontend
                                     array(
                                         'FirstName'  => 'Vorname',
                                         'LastName' => 'Nachname',
-                                        'Option'  => 'Option'
+                                        'Option'  => 'Option '
                                     )
                                 )
                             )
