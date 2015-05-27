@@ -133,6 +133,16 @@ class Commodity extends EntityAction
     }
 
     /**
+     * @param TblItem $tblItem
+     *
+     * @return bool|TblItem[]
+     */
+    public  function entityCommodityItemAllByItem(TblItem $tblItem)
+    {
+        return parent::entityCommodityItemAllByItem($tblItem);
+    }
+
+    /**
      * @param $Id
      *
      * @return bool|TblCommodityItem
@@ -355,7 +365,90 @@ class Commodity extends EntityAction
                 $Item['CostUnit']
             );
             return new Success( 'Der Artikel wurde erfolgreich angelegt' )
-            .new Redirect( '/Sphere/Billing/Commodity', 2);
+            .new Redirect( '/Sphere/Billing/Commodity/Item', 2);
+        }
+        return $View;
+    }
+
+    /**
+     * @param TblItem $tblItem
+     *
+     * @return string
+     */
+    public function executeDeleteItem(
+        TblItem $tblItem
+    )
+    {
+        if (null === $tblItem)
+        {
+            return '';
+        }
+
+        if ($this->actionDestroyItem( $tblItem ))
+        {
+            return new Success( 'Der Artikel wurde erfolgreich gelöscht')
+            .new Redirect( '/Sphere/Billing/Commodity/Item', 2);
+        }
+        else
+        {
+            return new Danger( 'Der Artikel konnte nicht gelöscht werden. Überprüfen Sie ob er noch in einer Leistung verwendet wird.' )
+            .new Redirect( '/Sphere/Billing/Commodity/Item', 2);
+        }
+    }
+
+    /**
+     * @param AbstractType $View
+     * @param TblItem $tblItem
+     * @param $Item
+     *
+     * @return AbstractType|string
+     */
+    public function executeEditItem(
+        AbstractType &$View = null,
+        TblItem $tblItem,
+        $Item
+    ) {
+
+        /**
+         * Skip to Frontend
+         */
+        if (null === $Item
+        ) {
+            return $View;
+        }
+
+        $Error = false;
+
+        if (isset($Item['Name'] ) && empty( $Item['Name'] )) {
+            $View->setError( 'Item[Name]', 'Bitte geben Sie einen Namen an' );
+            $Error = true;
+        }
+        if (isset( $Item['Description'] ) && empty(  $Item['Description'] )) {
+            $View->setError( 'Item[Description]', 'Bitte geben Sie eine Beschreibung an' );
+            $Error = true;
+        }
+        if (isset( $Item['Price'] ) && empty(  $Item['Price'] )) {
+            $View->setError( 'Item[Price]', 'Bitte geben Sie einen Preis an' );
+            $Error = true;
+        }
+        if (isset( $Item['CostUnit'] ) && empty(  $Item['CostUnit'] )) {
+            $View->setError( 'Item[CostUnit]', 'Bitte geben Sie eine Kostenstelle an' );
+            $Error = true;
+        }
+
+        if (!$Error) {
+            if ($this->actionEditItem(
+                $tblItem,
+                $Item['Name'],
+                $Item['Description'],
+                $Item['Price'],
+                $Item['CostUnit']
+            )) {
+                $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
+                    .new Redirect( '/Sphere/Billing/Commodity/Item', 2);
+            } else {
+                $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' );
+            };
         }
         return $View;
     }

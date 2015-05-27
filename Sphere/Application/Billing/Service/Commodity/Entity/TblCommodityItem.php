@@ -16,6 +16,7 @@ use KREDA\Sphere\Application\Billing\Billing;
 class TblCommodityItem extends AbstractEntity
 {
     const ATTR_TBL_COMMODITY = 'tblCommodity';
+    const ATTR_TBL_ITEM = 'tblItem';
 
     /**
      * @Column(type="decimal", precision=14, scale=4)

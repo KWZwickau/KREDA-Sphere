@@ -103,9 +103,20 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityCommodityItemAllByCommodity( TblCommodity $tblCommodity )
     {
-
         $EntityList = $this->getEntityManager()->getEntity( 'TblCommodityItem' )
             ->findBy( array( TblCommodityItem::ATTR_TBL_COMMODITY => $tblCommodity->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
+     * @param TblItem $tblItem
+     *
+     * @return bool|TblItem[]
+     */
+    protected function entityCommodityItemAllByItem( TblItem $tblItem )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblCommodityItem' )
+            ->findBy( array( TblCommodityItem::ATTR_TBL_ITEM => $tblItem->getId() ) );
         return ( null === $EntityList ? false : $EntityList );
     }
 
@@ -283,6 +294,78 @@ abstract class EntityAction extends EntitySchema
         System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
 
         return $Entity;
+    }
+
+    /**
+     * @param TblItem $tblItem
+     * @param $Name
+     * @param $Description
+     * @param $Price
+     * @param $CostUnit
+     *
+     * @return bool
+     */
+    protected function actionEditItem(
+        TblItem $tblItem,
+        $Name,
+        $Description,
+        $Price,
+        $CostUnit
+    ) {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblItem $Entity */
+        $Entity = $Manager->getEntityById( 'TblItem', $tblItem->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setName( $Name );
+            $Entity->setDescription( $Description );
+            $Entity->setPrice( str_replace(',','.', $Price) );
+            $Entity->setCostUnit( $CostUnit );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblItem $tblItem
+     *
+     * @return bool
+     */
+    protected function actionDestroyItem(
+        TblItem $tblItem
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        $EntityList = $Manager->getEntity('tblCommodityItem')->findBy(array(TblCommodityItem::ATTR_TBL_ITEM => $tblItem->getId()));
+        if (empty($EntityList))
+        {
+            $EntityItems = $Manager->getEntity( 'tblItemAccount' )
+                ->findBy( array(TblItemAccount::ATTR_TBL_Item => $tblItem->getId() ) );
+            if (null !== $EntityItems)
+            {
+                foreach($EntityItems as $Entity)
+                {
+                    System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+                    $Manager->killEntity( $Entity );
+                }
+            }
+
+            $Entity = $Manager->getEntity('tblItem')->findOneBy( array('Id'=>$tblItem->getId() ) );
+            if (null !== $Entity)
+            {
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+                $Manager->killEntity( $Entity );
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -121,6 +121,11 @@ class Commodity extends AbstractFrontend
         return $View;
     }
 
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
     public static function frontendDelete( $Id)
     {
         $View = new Stage();
@@ -204,19 +209,34 @@ class Commodity extends AbstractFrontend
         {
             array_walk($tblItemAll, function (TblItem $tblItem)
             {
-                $tblItem->Option =
-                    (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
-                        new EditIcon(), array(
-                            'Id' => $tblItem->getId()
-                        ) ) )->__toString().
-                    (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Löschen', '/Sphere/Billing/Commodity/Item/Delete',
-                        new RemoveIcon(), array(
-                            'Id' => $tblItem->getId()
-                        ) ) )->__toString().
-                    (new Primary( 'FIBU-Konten auswählen', '/Sphere/Billing/Commodity/Item/Account/Select',
-                        new EditIcon(), array(
-                            'Id' => $tblItem->getId()
-                        ) ))->__toString();
+                if (Billing::serviceCommodity()->entityCommodityItemAllByItem($tblItem))
+                {
+                    $tblItem->Option =
+                        (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
+                            new EditIcon(), array(
+                                'Id' => $tblItem->getId()
+                            ) ) )->__toString().
+                        (new Primary( 'FIBU-Konten auswählen', '/Sphere/Billing/Commodity/Item/Account/Select',
+                            new EditIcon(), array(
+                                'Id' => $tblItem->getId()
+                            ) ))->__toString();
+                }
+                else
+                {
+                    $tblItem->Option =
+                        (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
+                            new EditIcon(), array(
+                                'Id' => $tblItem->getId()
+                            ) ) )->__toString().
+                        (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Löschen', '/Sphere/Billing/Commodity/Item/Delete',
+                            new RemoveIcon(), array(
+                                'Id' => $tblItem->getId()
+                            ) ) )->__toString().
+                        (new Primary( 'FIBU-Konten auswählen', '/Sphere/Billing/Commodity/Item/Account/Select',
+                            new EditIcon(), array(
+                                'Id' => $tblItem->getId()
+                            ) ))->__toString();
+                }
             });
         }
 
@@ -225,7 +245,6 @@ class Commodity extends AbstractFrontend
                 array(
                     'Name'  => 'Name',
                     'Description' => 'Beschreibung',
-                    'Quantity' => 'Menge',
                     'Price' => 'Preis',
                     'Option'  => 'Option'
                 )
@@ -313,10 +332,10 @@ class Commodity extends AbstractFrontend
                         $tblCommodityItem->Price = $tblItem->getPrice();
                         $tblCommodityItem->CostUnit = $tblItem->getCostUnit();
                         $tblCommodityItem->Option =
-                            (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
-                                new EditIcon(), array(
-                                    'Id' => $tblCommodityItem->getId()
-                                ) ) )->__toString().
+//                            (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
+//                                new EditIcon(), array(
+//                                    'Id' => $tblCommodityItem->getId()
+//                                ) ) )->__toString().
                             (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Artikel entfernen', '/Sphere/Billing/Commodity/Item/Remove',
                                 new RemoveIcon(), array(
                                     'Id' => $tblCommodityItem->getId()
@@ -423,9 +442,82 @@ class Commodity extends AbstractFrontend
                         new FormColumn(
                             new TextField( 'Item[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
                             ), 12)
-
                     ) )
                 ))), new SubmitPrimary( 'Hinzufügen' )), $Item));
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendItemDelete( $Id)
+    {
+        $View = new Stage();
+        $View->setTitle( 'Artikel' );
+        $View->setDescription( 'Entfernen' );
+
+        $tblItem = Billing::serviceCommodity()->entityItemById($Id);
+        $View->setContent(Billing::serviceCommodity()->executeDeleteItem($tblItem));
+
+        return $View;
+    }
+
+
+    /**
+     * @param $Id
+     * @param $Item
+     *
+     * @return Stage
+     */
+    public static function frontendItemEdit ( $Id, $Item )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Artikel' );
+        $View->setDescription( 'Bearbeiten' );
+
+        if (empty( $Id )) {
+            $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
+        } else {
+            $tblItem = Billing::serviceCommodity()->entityItemById($Id);
+            if (empty( $tblItem )) {
+                $View->setContent( new Warning( 'Der Artikel konnte nicht abgerufen werden' ) );
+            } else {
+
+                $Global = self::extensionSuperGlobal();
+                $Global->POST['Item']['Name'] = $tblItem->getName();
+                $Global->POST['Item']['Description'] = $tblItem->getDescription();
+                $Global->POST['Item']['Price'] = str_replace('.',',', $tblItem->getPrice());
+                $Global->POST['Item']['CostUnit'] = $tblItem->getCostUnit();
+                $Global->savePost();
+
+                $View->setContent(Billing::serviceCommodity()->executeEditItem(
+                    new Form( array(
+                            new FormGroup( array(
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Item[Name]', 'Name', 'Name', new ConversationIcon()
+                                        ), 6 ),
+                                    new FormColumn(
+                                        new TextField( 'Item[Price]', 'Preis in €', 'Preis', new ConversationIcon()
+                                        ), 6 )
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Item[CostUnit]', 'Kostenstelle', 'Kostenstelle', new ConversationIcon()
+                                        ), 6)
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Item[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
+                                        ), 12)
+                                ) )
+                            ))), new SubmitPrimary( 'Änderungen speichern' )
+                    ), $tblItem, $Item));
+            }
+        }
 
         return $View;
     }
@@ -508,7 +600,7 @@ class Commodity extends AbstractFrontend
                                             array(
                                                 'Number'  => 'Nummer',
                                                 'Description' => 'Beschreibung',
-                                                'Option'  => 'Option'
+                                                'Option'  => 'Option '
                                             )
                                         )
                                     )

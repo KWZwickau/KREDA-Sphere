@@ -52,7 +52,7 @@ class Commodity extends Common
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Commodity/Delete', __CLASS__.'::frontendDelete'
         )
-            ->setParameterDefault( 'Commodity', null );
+            ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Commodity/Edit', __CLASS__.'::frontendEdit'
         )
@@ -65,6 +65,15 @@ class Commodity extends Common
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Commodity/Item/Create', __CLASS__.'::frontendItemCreate'
         )
+            ->setParameterDefault( 'Item', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item/Delete', __CLASS__.'::frontendItemDelete'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item/Edit', __CLASS__.'::frontendItemEdit'
+        )
+            ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Item', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Commodity/Item/Select', __CLASS__.'::frontendItemSelect'
@@ -201,6 +210,30 @@ class Commodity extends Common
         return Frontend::frontendItemCreate( $Item );
     }
 
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendItemDelete( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendItemDelete( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $Item
+     *
+     * @return Stage
+     */
+    public static function frontendItemEdit( $Id, $Item )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendItemEdit( $Id, $Item );
+    }
 
     /**
      * @param $Id
