@@ -17,37 +17,66 @@ class Invoice extends Common
     private static $Configuration = null;
 
     /**
+     * @return void
+     */
+    protected static function setupApplicationNavigation()
+    {
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Invoice/Basket/Commodity/Select', 'Fakturierung anlegen', new PersonIcon()
+        );
+    }
+
+    /**
      * @param Configuration $Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
-
         self::$Configuration = $Configuration;
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Commodity/Select', __CLASS__.'::frontendCommoditySelect'
+            '/Sphere/Billing/Invoice/Basket/Commodity/Select', __CLASS__.'::frontendBasketCommoditySelect'
         );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Basket/Create', __CLASS__.'::frontendBasketCreate'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Basket/Item', __CLASS__.'::frontendBasketItemStatus'
+        )
+            ->setParameterDefault( 'Id', null );
     }
 
     /**
      * @return Stage
      */
-    public static function frontendCommoditySelect()
+    public static function frontendBasketCommoditySelect()
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendCommoditySelect();
+        return Frontend::frontendBasketCommoditySelect();
     }
 
     /**
-     * @return void
+     * @param $Id
+     *
+     * @return Stage
      */
-    protected static function setupApplicationNavigation()
+    public static function frontendBasketItemStatus( $Id)
     {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketItemStatus( $Id );
+    }
 
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoice/Commodity/Select', 'Fakturierung anlegen', new PersonIcon()
-        );
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBasketCreate( $Id)
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketCreate( $Id );
     }
 }

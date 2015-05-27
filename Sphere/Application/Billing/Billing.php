@@ -72,7 +72,7 @@ class Billing extends Module\Commodity
         );
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoice/Commodity/Select', 'Fakturieren', new EditIcon()
+            '/Sphere/Billing/Invoice/Basket/Commodity/Select', 'Fakturieren', new EditIcon()
         );
     }
 

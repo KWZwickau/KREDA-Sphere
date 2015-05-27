@@ -1,6 +1,10 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Invoice;
+use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasket;
+use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Application\System\System;
@@ -44,6 +48,18 @@ abstract class EntityAction extends EntitySchema
     {
         $Entity = $this->getEntityManager()->getEntityById( 'TblBasket', $Id );
         return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     *
+     * @return bool|TblBasketItem[]
+     */
+    protected function entityBasketItemAllByBasket( TblBasket $tblBasket )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblBasketItem' )
+            ->findBy( array( TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
     }
 
     /**
@@ -131,5 +147,51 @@ abstract class EntityAction extends EntitySchema
         System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
 
         return $Entity;
+    }
+
+    /**
+     * @return TblBasket
+     */
+    protected function actionCreateBasket()
+    {
+        $Manager = $this->getEntityManager();
+
+        $Entity = new TblBasket();
+
+        $Manager->saveEntity( $Entity );
+
+        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+
+        return $Entity;
+    }
+
+    /**
+     * @param TblCommodity $tblCommodity
+     *
+     * @return TblBasket
+     */
+    protected function actionCreateBasketItemsByCommodity(
+        TblCommodity $tblCommodity
+    ) {
+        $tblBasket = $this->actionCreateBasket();
+
+        $Manager = $this->getEntityManager();
+
+        $tblCommodityItemList = Billing::serviceCommodity()->entityCommodityItemAllByCommodity( $tblCommodity );
+
+        /** @var TblCommodityItem $tblCommodityItem */
+        foreach ($tblCommodityItemList as $tblCommodityItem)
+        {
+            $Entity = new TblBasketItem();
+            $Entity->setPrice( $tblCommodityItem->getTblItem()->getPrice() );
+            $Entity->setQuantity( $tblCommodityItem->getQuantity() );
+            $Entity->setServiceBillingCommodityItem( $tblCommodityItem );
+            $Entity->setTblBasket( $tblBasket );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+
+        return $tblBasket;
     }
 }
