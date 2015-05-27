@@ -45,6 +45,9 @@ class Commodity extends AbstractFrontend
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Übersicht' );
         $View->setMessage( 'Zeigt die verfügbaren Leistungen' );
+        $View->addButton(
+            new Primary( 'Leistung anlegen', '/Sphere/Billing/Commodity/Create' )
+        );
 
         $tblCommodityAll = Billing::serviceCommodity()->entityCommodityAll();
 
