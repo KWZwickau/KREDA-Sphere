@@ -8,7 +8,6 @@ use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasketPerson;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
-use KREDA\Sphere\Application\Management\Service\Student\Entity\TblStudent;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
@@ -258,6 +257,16 @@ class Invoice extends AbstractFrontend
                         ) ))->__toString();
             }, $tblBasket);
         }
+
+        if (empty( $tblBasketPersonList )) {
+            $tblBasketPersonList = array();
+        }
+        $tblStudentAll = array_udiff( $tblStudentAll, $tblBasketPersonList,
+            function ( TblPerson $ObjectA, TblBasketPerson $ObjectB ) {
+
+                return $ObjectA->getId() - $ObjectB->getServiceManagementPerson()->getId();
+            }
+        );
 
         $View->setContent(
             new Layout(array(
