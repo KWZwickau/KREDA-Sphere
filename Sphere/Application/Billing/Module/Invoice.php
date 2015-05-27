@@ -44,6 +44,15 @@ class Invoice extends Common
             '/Sphere/Billing/Invoice/Basket/Item', __CLASS__.'::frontendBasketItemStatus'
         )
             ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Basket/Item/Remove', __CLASS__.'::frontendBasketItemRemove'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Basket/Item/Edit', __CLASS__.'::frontendBasketItemEdit'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'BasketItem', null );
     }
 
     /**
@@ -78,5 +87,30 @@ class Invoice extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketCreate( $Id );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBasketItemRemove( $Id)
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketItemRemove( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $BasketItem
+     *
+     * @return Stage
+     */
+    public static function frontendBasketItemEdit( $Id, $BasketItem )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketItemEdit( $Id, $BasketItem );
     }
 }

@@ -8,9 +8,17 @@ use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Student\Entity\TblStudent;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
 
@@ -106,11 +114,11 @@ class Invoice extends AbstractFrontend
                 $tblBasketItem->CommodityName = $tblCommodity->getName();
                 $tblBasketItem->ItemName = $tblItem->getName();
                 $tblBasketItem->Option =
-                        (new Primary( 'Bearbeiten', '/Sphere/Billing/Basket/Item/Edit',
+                        (new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/Basket/Item/Edit',
                             new EditIcon(), array(
                                 'Id' => $tblBasketItem->getId()
                             ) ) )->__toString().
-                        (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Entfernen', '/Sphere/Billing/Basket/Item/Remove',
+                        (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Entfernen', '/Sphere/Billing/Invoice/Basket/Item/Remove',
                             new RemoveIcon(), array(
                                 'Id' => $tblBasketItem->getId()
                             ) ) )->__toString();
@@ -128,6 +136,67 @@ class Invoice extends AbstractFrontend
                 )
             )
         );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBasketItemRemove( $Id)
+    {
+        $View = new Stage();
+        $View->setTitle( 'Artikel' );
+        $View->setDescription( 'Entfernen' );
+
+        $tblBasketItem = Billing::serviceInvoice()->entityBasketItemById( $Id );
+        $View->setContent(Billing::serviceInvoice()->executeRemoveBasketItem( $tblBasketItem ));
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @param $BasketItem
+     *
+     * @return Stage
+     */
+    public static function frontendBasketItemEdit ( $Id, $BasketItem )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Artikel' );
+        $View->setDescription( 'Bearbeiten' );
+
+        if (empty( $Id )) {
+            $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
+        } else {
+            $tblBasketItem = Billing::serviceInvoice()->entityBasketItemById($Id);
+            if (empty( $tblBasketItem )) {
+                $View->setContent( new Warning( 'Der Artikel konnte nicht abgerufen werden' ) );
+            } else {
+
+                $Global = self::extensionSuperGlobal();
+                $Global->POST['BasketItem']['Price'] = str_replace('.',',', $tblBasketItem->getPrice());
+                $Global->POST['BasketItem']['Quantity'] = str_replace('.',',', $tblBasketItem->getQuantity());
+                $Global->savePost();
+
+                $View->setContent(Billing::serviceInvoice()->executeEditBasketItem(
+                    new Form( array(
+                            new FormGroup( array(
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'BasketItem[Price]', 'Preis in €', 'Preis', new ConversationIcon()
+                                        ), 6 ),
+                                    new FormColumn(
+                                        new TextField( 'BasketItem[Quantity]', 'Menge', 'Menge', new ConversationIcon()
+                                        ), 6 )
+                                ) )
+                            ))), new SubmitPrimary( 'Änderungen speichern' )
+                    ), $tblBasketItem, $BasketItem));
+            }
+        }
 
         return $View;
     }

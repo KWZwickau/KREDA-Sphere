@@ -51,6 +51,16 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param $Id
+     * @return bool|TblBasketItem
+     */
+    protected function entityBasketItemById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblBasketItem', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param TblBasket $tblBasket
      *
      * @return bool|TblBasketItem[]
@@ -193,5 +203,59 @@ abstract class EntityAction extends EntitySchema
         }
 
         return $tblBasket;
+    }
+
+    /**
+     * @param TblBasketItem $tblBasketItem
+     *
+     * @return bool
+     */
+    protected function actionRemoveBasketItem(
+        TblBasketItem $tblBasketItem
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        $Entity = $Manager->getEntity( 'tblBasketItem' )->findOneBy(
+            array(
+                'Id' => $tblBasketItem->getId()
+            ) );
+        if (null !== $Entity)
+        {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblBasketItem $tblBasketItem
+     * @param $Price
+     * @param $Quantity
+     *
+     * @return bool
+     */
+    protected function actionEditBasketItem(
+        TblBasketItem $tblBasketItem,
+        $Price,
+        $Quantity
+    ) {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblBasketItem $Entity */
+        $Entity = $Manager->getEntityById( 'TblBasketItem', $tblBasketItem->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setPrice( str_replace(',','.', $Price) );
+            $Entity->setQuantity( str_replace(',','.', $Quantity) );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
     }
 }
