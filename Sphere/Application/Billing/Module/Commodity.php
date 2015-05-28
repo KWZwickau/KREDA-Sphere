@@ -25,12 +25,6 @@ class Commodity extends Common
     protected static function setupApplicationNavigation()
     {
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Commodity/Create', 'Leistung anlegen', new PersonIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Commodity/Item/Create', 'Artikel anlegen', new PersonIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Billing/Commodity/Item', 'Artikel', new PersonIcon()
         );
     }

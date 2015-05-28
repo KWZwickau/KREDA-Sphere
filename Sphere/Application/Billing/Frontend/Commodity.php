@@ -205,6 +205,9 @@ class Commodity extends AbstractFrontend
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Übersicht' );
         $View->setMessage( 'Zeigt die verfügbaren Artikel' );
+        $View->addButton(
+            new Primary( 'Artikel anlegen', '/Sphere/Billing/Commodity/Item/Create' )
+        );
 
         $tblItemAll = Billing::serviceCommodity()->entityItemAll();
 
