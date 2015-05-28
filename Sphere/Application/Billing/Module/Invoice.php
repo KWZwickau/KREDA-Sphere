@@ -67,6 +67,10 @@ class Invoice extends Common
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'PersonId', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Basket/Summary', __CLASS__.'::frontendBasketSummary'
+        )
+            ->setParameterDefault( 'Id', null );
     }
 
     /**
@@ -163,5 +167,17 @@ class Invoice extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketPersonRemove( $Id );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBasketSummary( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketSummary( $Id );
     }
 }
