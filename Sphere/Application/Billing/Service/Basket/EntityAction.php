@@ -40,13 +40,18 @@ abstract class EntityAction extends EntitySchema
         return ( null === $Entity ? false : $Entity );
     }
 
+    /**
+     * @param TblBasket $tblBasket
+     *
+     * @return bool|TblCommodity[]
+     */
     protected function entityCommodityAllByBasket( TblBasket $tblBasket )
     {
-        $tblBasketItemAllByBasket = $this->entityBasketItemAllByBasket( $tblBasketItem );
+        $tblBasketItemAllByBasket = $this->entityBasketItemAllByBasket( $tblBasket );
         $EntityList = array();
         foreach ($tblBasketItemAllByBasket as $tblBasketItem)
         {
-
+            array_push($EntityList, $tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity() );
         }
         return ( null === $EntityList ? false : $EntityList );
     }
@@ -164,8 +169,8 @@ abstract class EntityAction extends EntitySchema
             if ($tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity()->getId() == $tblCommodity->getId())
             {
                 $Entity = $Manager->getEntity('tblBasketItem')->findOneBy(array('Id'=>$tblBasketItem->getId()));
-                $Manager->bulkSaveEntity( $Entity );
-                System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+                $Manager->bulkKillEntity( $Entity );
             }
         }
         $Manager->flushCache();

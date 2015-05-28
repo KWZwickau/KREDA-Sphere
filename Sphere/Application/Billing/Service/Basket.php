@@ -62,6 +62,16 @@ class Basket extends EntityAction
     }
 
     /**
+     * @param TblBasket $tblBasket
+     *
+     * @return bool|TblCommodity[]
+     */
+    public function entityCommodityAllByBasket(TblBasket $tblBasket)
+    {
+        return parent::entityCommodityAllByBasket($tblBasket);
+    }
+
+    /**
      * @param $Id
      *
      * @return bool|\KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem
@@ -341,7 +351,7 @@ class Basket extends EntityAction
         // TODO actionCreateInvoices
         $this->actionDestroyBasket( $tblBasket );
         $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
-                    .new Redirect( '/Sphere/Billing/Basket/Commodity/Select', 2 );
+                    .new Redirect( '/Sphere/Billing/Basket', 2 );
 
         return $View;
     }
