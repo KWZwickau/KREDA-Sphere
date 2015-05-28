@@ -3,6 +3,8 @@ namespace KREDA\Sphere\Application\Billing;
 
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BasketIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CommodityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
@@ -37,11 +39,12 @@ class Billing extends Module\Commodity
         if (Gatekeeper::serviceAccess()->checkIsValidAccess( 'Application:Billing' )) {
             self::addClientNavigationMain( self::$Configuration, '/Sphere/Billing', 'Fakturierung', new MoneyIcon() );
             self::registerClientRoute( self::$Configuration, '/Sphere/Billing', __CLASS__.'::frontendBilling' );
+
+            Module\Common::registerApplication( $Configuration );
+            Module\Commodity::registerApplication( $Configuration );
+            Module\Account::registerApplication( $Configuration );
+            Module\Basket::registerApplication( $Configuration );
         }
-        Module\Common::registerApplication( $Configuration );
-        Module\Commodity::registerApplication( $Configuration );
-        Module\Account::registerApplication( $Configuration );
-        Module\Invoice::registerApplication( $Configuration );
     }
 
     /**
@@ -64,7 +67,7 @@ class Billing extends Module\Commodity
     {
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Commodity', 'Leistungen', new GroupIcon()
+            '/Sphere/Billing/Commodity', 'Leistungen', new CommodityIcon()
         );
 
         self::addModuleNavigationMain( self::$Configuration,
@@ -72,7 +75,7 @@ class Billing extends Module\Commodity
         );
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Commodity/Select', 'Fakturieren', new EditIcon()
+            '/Sphere/Billing/Basket', 'Fakturieren', new BasketIcon()
         );
     }
 
@@ -95,11 +98,11 @@ class Billing extends Module\Commodity
     }
 
     /**
-     * @return Service\Invoice
+     * @return Service\Basket
      */
-    public static function serviceInvoice()
+    public static function serviceBasket()
     {
 
-        return Service\Invoice::getApi();
+        return Service\Basket::getApi();
     }
 }

@@ -2,11 +2,11 @@
 namespace KREDA\Sphere\Application\Billing\Service;
 
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
-use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasket;
-use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasketItem;
-use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblBasketPerson;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketPerson;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
-use KREDA\Sphere\Application\Billing\Service\Invoice\EntityAction;
+use KREDA\Sphere\Application\Billing\Service\Basket\EntityAction;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
@@ -20,7 +20,7 @@ use KREDA\Sphere\Common\Database\Handler;
  *
  * @package KREDA\Sphere\Application\Billing\Service
  */
-class Invoice extends EntityAction
+class Basket extends EntityAction
 {
 
     /** @var null|Handler $DatabaseHandler */
@@ -32,7 +32,7 @@ class Invoice extends EntityAction
     final public function __construct()
     {
 
-        $this->setDatabaseHandler( 'Billing', 'Invoice', $this->getConsumerSuffix() );
+        $this->setDatabaseHandler( 'Billing', 'Basket', $this->getConsumerSuffix() );
     }
 
     /**
@@ -41,16 +41,6 @@ class Invoice extends EntityAction
     public function setupDatabaseContent()
     {
 
-    }
-
-    /**
-     * @param int $Id
-     *
-     * @return bool|TblInvoice
-     */
-    public function entityInvoiceById($Id)
-    {
-        return parent::entityInvoiceById($Id);
     }
 
     /**
@@ -64,7 +54,7 @@ class Invoice extends EntityAction
     }
 
     /**
-     * @return bool|TblBasket[]
+     * @return bool|\KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket[]
      */
     public function entityBasketAll()
     {
@@ -74,7 +64,7 @@ class Invoice extends EntityAction
     /**
      * @param $Id
      *
-     * @return bool|TblBasketItem
+     * @return bool|\KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem
      */
     public function entityBasketItemById($Id)
     {
@@ -129,24 +119,89 @@ class Invoice extends EntityAction
     }
 
     /**
-     * @param TblCommodity $tblCommodity
-     *
      * @return string
      */
     public function executeCreateBasket(
-        TblCommodity $tblCommodity
     )
     {
-        $tblBasket = $this->actionCreateBasketItemsByCommodity($tblCommodity);
+        $tblBasket = $this->actionCreateBasket();
         if ($tblBasket)
         {
             return new Success( 'Der Warenkorb wurde erfolgreich erstellt' )
-                .new Redirect( '/Sphere/Billing/Invoice/Basket/Item', 1, array( 'Id' => $tblBasket->getId()) );
+                .new Redirect( '/Sphere/Billing/Basket/Commodity/Select', 1, array( 'Id' => $tblBasket->getId()) );
         }
         else
         {
             return new Warning( 'Der Warenkorb konnte nicht erstellt werden' )
-                .new Redirect( '/Sphere/Billing/Invoice/Basket/Commodity/Select', 1 );
+                .new Redirect( '/Sphere/Billing/Basket', 1 );
+        }
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     *
+     * @return string
+     */
+    public function executeDestroyBasket(
+        TblBasket $tblBasket
+    )
+    {
+        $tblBasket = $this->actionDestroyBasket($tblBasket);
+        if ($tblBasket)
+        {
+            return new Success( 'Der Warenkorb wurde erfolgreich gelöscht' )
+                .new Redirect( '/Sphere/Billing/Basket', 1 );
+        }
+        else
+        {
+            return new Warning( 'Der Warenkorb konnte nicht gelöscht werden' )
+                .new Redirect( '/Sphere/Billing/Basket', 1 );
+        }
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @param TblCommodity $tblCommodity
+     *
+     * @return string
+     */
+    public function executeAddBasketCommodity(
+        TblBasket $tblBasket,
+        TblCommodity $tblCommodity
+    )
+    {
+        if ($this->actionCreateBasketItemsByCommodity($tblBasket, $tblCommodity))
+        {
+            return new Success( 'Die Leistung ' . $tblCommodity->getName() . ' wurde erfolgreich hinzugefügt' )
+                .new Redirect( '/Sphere/Billing/Basket/Commodity/Select', 0, array( 'Id' => $tblBasket->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Die Leistung ' . $tblCommodity->getName() . ' konnte nicht hinzugefügt werden' )
+                .new Redirect( '/Sphere/Billing/Basket/Commodity/Select', 2, array( 'Id' => $tblBasket->getId()) );
+        }
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @param TblCommodity $tblCommodity
+     *
+     * @return string
+     */
+    public function executeRemoveBasketCommodity(
+        TblBasket $tblBasket,
+        TblCommodity $tblCommodity
+    )
+    {
+        if ($this->actionDestroyBasketItemsByCommodity($tblBasket, $tblCommodity))
+        {
+            return new Success( 'Die Leistung ' . $tblCommodity->getName() . ' wurde erfolgreich entfernt' )
+            .new Redirect( '/Sphere/Billing/Basket/Commodity/Select', 0, array( 'Id' => $tblBasket->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Die Leistung ' . $tblCommodity->getName() . ' konnte nicht entfernt werden' )
+            .new Redirect( '/Sphere/Billing/Basket/Commodity/Select', 2, array( 'Id' => $tblBasket->getId()) );
         }
     }
 
@@ -162,12 +217,12 @@ class Invoice extends EntityAction
         if ($this->actionRemoveBasketItem($tblBasketItem))
         {
             return new Success( 'Der Artikel ' . $tblBasketItem->getServiceBillingCommodityItem()->getTblItem()->getName() . ' wurde erfolgreich entfernt' )
-                .new Redirect( '/Sphere/Billing/Invoice/Basket/Item', 0, array( 'Id' => $tblBasketItem->getTblBasket()->getId()) );
+                .new Redirect( '/Sphere/Billing/Basket/Item', 0, array( 'Id' => $tblBasketItem->getTblBasket()->getId()) );
         }
         else
         {
             return new Warning( 'Der Artikel ' . $tblBasketItem->getServiceBillingCommodityItem()->getTblItem()->getName() . ' konnte nicht entfernt werden' )
-                .new Redirect( '/Sphere/Billing/Invoice/Basket/Item', 2, array( 'Id' => $tblBasketItem->getTblBasket()->getId()) );
+                .new Redirect( '/Sphere/Billing/Basket/Item', 2, array( 'Id' => $tblBasketItem->getTblBasket()->getId()) );
         }
     }
 
@@ -210,10 +265,10 @@ class Invoice extends EntityAction
                 $BasketItem['Quantity']
             )) {
                 $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
-                    .new Redirect( '/Sphere/Billing/Invoice/Basket/Item', 1, array( 'Id' => $tblBasketItem->getTblBasket()->getId()) );
+                    .new Redirect( '/Sphere/Billing/Basket/Item', 1, array( 'Id' => $tblBasketItem->getTblBasket()->getId()) );
             } else {
                 $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' )
-                    .new Redirect( '/Sphere/Billing/Invoice/Basket/Item', 2, array( 'Id' => $tblBasketItem->getTblBasket()->getId()) );
+                    .new Redirect( '/Sphere/Billing/Basket/Item', 2, array( 'Id' => $tblBasketItem->getTblBasket()->getId()) );
             };
         }
         return $View;
@@ -233,17 +288,17 @@ class Invoice extends EntityAction
         if ($this->actionAddBasketPerson($tblBasket, $tblPerson))
         {
             return new Success( 'Die Person ' . $tblPerson->getFullName() . ' wurde erfolgreich hinzugefügt' )
-                .new Redirect( '/Sphere/Billing/Invoice/Basket/Person/Select', 0, array( 'Id' => $tblBasket->getId()) );
+                .new Redirect( '/Sphere/Billing/Basket/Person/Select', 0, array( 'Id' => $tblBasket->getId()) );
         }
         else
         {
             return new Warning( 'Die Person ' . $tblPerson->getFullName() . ' konnte nicht hinzugefügt werden' )
-                .new Redirect( '/Sphere/Billing/Invoice/Basket/Person/Select', 2, array( 'Id' => $tblBasket->getId()) );
+                .new Redirect( '/Sphere/Billing/Basket/Person/Select', 2, array( 'Id' => $tblBasket->getId()) );
         }
     }
 
     /**
-     * @param TblBasketPerson $tblBasketPerson
+     * @param \KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketPerson $tblBasketPerson
      *
      * @return string
      */
@@ -254,12 +309,12 @@ class Invoice extends EntityAction
         if ($this->actionRemoveBasketPerson($tblBasketPerson))
         {
             return new Success( 'Die Person ' . $tblBasketPerson->getServiceManagementPerson()->getFullName() . ' wurde erfolgreich entfernt' )
-                .new Redirect( '/Sphere/Billing/Invoice/Basket/Person/Select', 0, array( 'Id' => $tblBasketPerson->getTblBasket()->getId()) );
+                .new Redirect( '/Sphere/Billing/Basket/Person/Select', 0, array( 'Id' => $tblBasketPerson->getTblBasket()->getId()) );
         }
         else
         {
             return new Warning( 'Die Person ' .$tblBasketPerson->getServiceManagementPerson()->getFullName() .  ' konnte nicht entfernt werden' )
-                .new Redirect( '/Sphere/Billing/Invoice/Basket/Person/Select', 2, array( 'Id' => $tblBasketPerson->getTblBasket()->getId()) );
+                .new Redirect( '/Sphere/Billing/Basket/Person/Select', 2, array( 'Id' => $tblBasketPerson->getTblBasket()->getId()) );
         }
     }
 
@@ -286,7 +341,7 @@ class Invoice extends EntityAction
         // TODO actionCreateInvoices
         $this->actionDestroyBasket( $tblBasket );
         $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
-                    .new Redirect( '/Sphere/Billing/Invoice/Basket/Commodity/Select', 2 );
+                    .new Redirect( '/Sphere/Billing/Basket/Commodity/Select', 2 );
 
         return $View;
     }

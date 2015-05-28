@@ -27,9 +27,6 @@ abstract class EntitySchema extends AbstractService
         $tblInvoiceItem = $this->setTableInvoiceItem( $Schema, $tblInvoice);
         $this->setTableInvoiceAccount( $Schema, $tblInvoiceItem );
 
-        $tblBasket = $this->setTableBasket( $Schema );
-        $this->setTableBasketPerson( $Schema, $tblBasket );
-        $this->setTableBasketItem( $Schema, $tblBasket );
         /**
          * Migration & Protocol
          */
@@ -144,64 +141,6 @@ abstract class EntitySchema extends AbstractService
         }
 
         $this->schemaTableAddForeignKey( $Table, $tblInvoiceItem );
-
-        return $Table;
-    }
-
-    /**
-     * @param Schema $Schema
-     *
-     * @return Table
-     */
-    private function setTableBasket( Schema &$Schema )
-    {
-        $Table = $this->schemaTableCreate( $Schema, 'tblBasket');
-
-        return $Table;
-    }
-
-    /**
-     * @param Schema $Schema
-     * @param Table $tblBasket
-     *
-     * @return Table
-     */
-    private function setTableBasketPerson( Schema &$Schema, Table $tblBasket )
-    {
-        $Table = $this->schemaTableCreate( $Schema, 'tblBasketPerson');
-
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblBasketPerson', 'serviceManagement_Person' ))
-        {
-            $Table->addColumn( 'serviceManagement_Person', 'bigint' );
-        }
-
-        $this->schemaTableAddForeignKey( $Table, $tblBasket );
-
-        return $Table;
-    }
-
-    /**
-     * @param Schema $Schema
-     * @param Table $tblBasket
-     *
-     * @return Table
-     */
-    private function setTableBasketItem( Schema &$Schema, Table $tblBasket )
-    {
-        $Table = $this->schemaTableCreate( $Schema, 'tblBasketItem');
-
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblBasketItem', 'serviceBilling_CommodityItem' ))
-        {
-            $Table->addColumn( 'serviceBilling_CommodityItem', 'bigint' );
-        }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblBasketItem', 'Price' )) {
-            $Table->addColumn( 'Price', 'decimal', array( 'precision' => 14 , 'scale' => 4) );
-        }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblBasketItem', 'Quantity' )) {
-            $Table->addColumn( 'Quantity', 'decimal', array( 'precision' => 14 , 'scale' => 4) );
-        }
-
-        $this->schemaTableAddForeignKey( $Table, $tblBasket );
 
         return $Table;
     }

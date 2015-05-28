@@ -1,11 +1,12 @@
 <?php
-namespace KREDA\Sphere\Application\Billing\Service\Invoice\Entity;
+namespace KREDA\Sphere\Application\Billing\Service\Basket\Entity;
 
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Common\AbstractEntity;
@@ -47,7 +48,7 @@ class TblBasketPerson extends AbstractEntity
         {
             return false;
         } else {
-            return Billing::serviceInvoice()->entityBasketById( $this->tblBasket );
+            return Billing::serviceBasket()->entityBasketById( $this->tblBasket );
         }
     }
 

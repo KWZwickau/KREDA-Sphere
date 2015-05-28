@@ -1,9 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Module;
 
-use KREDA\Sphere\Application\Billing\Frontend\Invoice as Frontend;
+use KREDA\Sphere\Application\Billing\Frontend\Basket as Frontend;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Configuration;
 
 /**
@@ -11,7 +10,7 @@ use KREDA\Sphere\Client\Configuration;
  *
  * @package KREDA\Sphere\Application\Billing\Module
  */
-class Invoice extends Common
+class Basket extends Common
 {
     /** @var Configuration $Config */
     private static $Configuration = null;
@@ -21,9 +20,7 @@ class Invoice extends Common
      */
     protected static function setupApplicationNavigation()
     {
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Commodity/Select', 'Fakturierung anlegen', new PersonIcon()
-        );
+
     }
 
     /**
@@ -34,41 +31,58 @@ class Invoice extends Common
         self::$Configuration = $Configuration;
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Commodity/Select', __CLASS__.'::frontendBasketCommoditySelect'
+            '/Sphere/Billing/Basket', __CLASS__.'::frontendBasketList'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Create', __CLASS__.'::frontendBasketCreate'
+            '/Sphere/Billing/Basket/Create', __CLASS__.'::frontendBasketCreate'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Basket/Delete', __CLASS__.'::frontendBasketDelete'
         )
             ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Item', __CLASS__.'::frontendBasketItemStatus'
+            '/Sphere/Billing/Basket/Commodity/Select', __CLASS__.'::frontendBasketCommoditySelect'
         )
             ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Item/Remove', __CLASS__.'::frontendBasketItemRemove'
+            '/Sphere/Billing/Basket/Commodity/Add', __CLASS__.'::frontendBasketCommodityAdd'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'CommodityId', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Basket/Commodity/Remove', __CLASS__.'::frontendBasketCommodityRemove'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'CommodityId', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Basket/Item', __CLASS__.'::frontendBasketItemStatus'
         )
             ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Item/Edit', __CLASS__.'::frontendBasketItemEdit'
+            '/Sphere/Billing/Basket/Item/Remove', __CLASS__.'::frontendBasketItemRemove'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Basket/Item/Edit', __CLASS__.'::frontendBasketItemEdit'
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'BasketItem', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Person/Select', __CLASS__.'::frontendBasketPersonSelect'
+            '/Sphere/Billing/Basket/Person/Select', __CLASS__.'::frontendBasketPersonSelect'
         )
             ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Person/Add', __CLASS__.'::frontendBasketPersonAdd'
+            '/Sphere/Billing/Basket/Person/Add', __CLASS__.'::frontendBasketPersonAdd'
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'PersonId', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Person/Remove', __CLASS__.'::frontendBasketPersonRemove'
+            '/Sphere/Billing/Basket/Person/Remove', __CLASS__.'::frontendBasketPersonRemove'
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'PersonId', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Summary', __CLASS__.'::frontendBasketSummary'
+            '/Sphere/Billing/Basket/Summary', __CLASS__.'::frontendBasketSummary'
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Basket', null );
@@ -77,11 +91,71 @@ class Invoice extends Common
     /**
      * @return Stage
      */
-    public static function frontendBasketCommoditySelect()
+    public static function frontendBasketList()
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBasketCommoditySelect();
+        return Frontend::frontendBasketList();
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendBasketCreate()
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketCreate();
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBasketDelete( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketDelete( $Id );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBasketCommoditySelect( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketCommoditySelect( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $CommodityId
+     *
+     * @return Stage
+     */
+    public static function frontendBasketCommodityAdd( $Id, $CommodityId )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketCommodityAdd( $Id, $CommodityId );
+    }
+
+    /**
+     * @param $Id
+     * @param $CommodityId
+     *
+     * @return Stage
+     */
+    public static function frontendBasketCommodityRemove( $Id, $CommodityId )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketCommodityRemove( $Id, $CommodityId );
     }
 
     /**
@@ -94,18 +168,6 @@ class Invoice extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketItemStatus( $Id );
-    }
-
-    /**
-     * @param $Id
-     *
-     * @return Stage
-     */
-    public static function frontendBasketCreate( $Id)
-    {
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::frontendBasketCreate( $Id );
     }
 
     /**

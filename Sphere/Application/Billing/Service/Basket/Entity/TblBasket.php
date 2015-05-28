@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Billing\Service\Invoice\Entity;
+namespace KREDA\Sphere\Application\Billing\Service\Basket\Entity;
 
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;

@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Module;
 
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BasketIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CommodityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
@@ -38,7 +39,7 @@ class Common extends AbstractApplication
             '/Sphere/Billing/Account', 'Account', new EditIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoice/Basket/Commodity/Select', 'Fakturieren', new EditIcon()
+            '/Sphere/Billing/Basket', 'Fakturieren', new BasketIcon()
         );
     }
 }
