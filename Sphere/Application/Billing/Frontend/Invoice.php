@@ -42,6 +42,46 @@ class Invoice extends AbstractFrontend
     /**
      * @return Stage
      */
+    public static function frontendBasketList()
+    {
+        $View = new Stage();
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Übersicht' );
+        $View->setMessage( 'Zeigt die vorhandenen Warenkörbe, welche noch nicht fakuriert wurden' );
+        $View->addButton(
+            new Primary( 'Warenkorb anlegen', '/Sphere/Billing/Invoice/Basket/Create' )
+        );
+
+        $tblBasketAll = Billing::serviceInvoice()->entityBasketAll();
+
+        if (!empty($tblBasketAll))
+        {
+            array_walk($tblBasketAll, function (TblBasket &$tblBasket)
+            {
+                $tblBasket->Number = $tblBasket->getId();
+                $tblBasket->Option =
+                    (new Primary( 'Auswählen', '/Sphere/Billing/Invoice/Basket/Create',
+                        new EditIcon(), array(
+                            'Id' => $tblCommodity->getId()
+                        ) ))->__toString();
+            });
+        }
+
+        $View->setContent(
+            new TableData( $tblBasketAll, null,
+                array(
+                    'Number'  => 'Nummer',
+                    'Option'  => 'Option'
+                )
+            )
+        );
+
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
     public static function frontendBasketCommoditySelect()
     {
         $View = new Stage();

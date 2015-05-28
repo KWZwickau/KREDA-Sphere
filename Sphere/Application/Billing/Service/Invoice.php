@@ -64,6 +64,14 @@ class Invoice extends EntityAction
     }
 
     /**
+     * @return bool|TblBasket[]
+     */
+    public function entityBasketAll()
+    {
+        return parent::entityBasketAll();
+    }
+
+    /**
      * @param $Id
      *
      * @return bool|TblBasketItem

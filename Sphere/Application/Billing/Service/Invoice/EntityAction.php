@@ -53,6 +53,15 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return bool|TblBasket[]
+     */
+    protected function entityBasketAll()
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblBasket' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param $Id
      * @return bool|TblBasketItem
      */
