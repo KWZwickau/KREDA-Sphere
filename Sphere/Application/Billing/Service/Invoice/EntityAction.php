@@ -331,4 +331,43 @@ abstract class EntityAction extends EntitySchema
         }
         return false;
     }
+
+    /**
+     * @param TblBasket $tblBasket
+     *
+     * @return bool
+     */
+    protected function actionDestroyBasket(
+        TblBasket $tblBasket
+    )
+    {
+        if ($tblBasket !== null)
+        {
+            $Manager = $this->getEntityManager();
+
+            $EntityList = $Manager->getEntity('tblBasketPerson')->findBy(array(TblBasketPerson::ATTR_TBL_Basket => $tblBasket->getId()) );
+            foreach ($EntityList as $Entity)
+            {
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+                $Manager->bulkKillEntity( $Entity );
+            }
+
+            $EntityList = $Manager->getEntity('tblBasketItem')->findBy(array(TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId()) );
+            foreach ($EntityList as $Entity)
+            {
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+                $Manager->bulkKillEntity( $Entity );
+            }
+
+            $Entity = $Manager->getEntity('tblBasket')->findOneBy(array('Id' => $tblBasket->getId()) );
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            $Manager->bulkKillEntity( $Entity );
+
+            $Manager->flushCache();
+
+            return true;
+        }
+
+        return false;
+    }
 }

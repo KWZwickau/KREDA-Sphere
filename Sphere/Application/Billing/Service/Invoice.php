@@ -254,4 +254,32 @@ class Invoice extends EntityAction
                 .new Redirect( '/Sphere/Billing/Invoice/Basket/Person/Select', 2, array( 'Id' => $tblBasketPerson->getTblBasket()->getId()) );
         }
     }
+
+    /**
+     * @param AbstractType $View
+     * @param TblBasket $tblBasket
+     * @param $Basket
+     *
+     * @return AbstractType
+     */
+    public function executeCreateInvoiceFromBasketList(
+        AbstractType &$View = null,
+        TblBasket $tblBasket,
+        $Basket
+    )
+    {
+        /**
+         * Skip to Frontend
+         */
+        if (null === $Basket
+        ) {
+            return $View;
+        }
+        // TODO actionCreateInvoices
+        $this->actionDestroyBasket( $tblBasket );
+        $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
+                    .new Redirect( '/Sphere/Billing/Invoice/Basket/Commodity/Select', 2 );
+
+        return $View;
+    }
 }

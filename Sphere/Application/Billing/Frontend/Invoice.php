@@ -19,6 +19,7 @@ use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
 use KREDA\Sphere\Client\Frontend\Input\Type\DatePicker;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
@@ -347,10 +348,11 @@ class Invoice extends AbstractFrontend
 
     /**
      * @param $Id
+     * @param $Basket
      *
      * @return Stage
      */
-    public static function frontendBasketSummary( $Id)
+    public static function frontendBasketSummary( $Id, $Basket = null)
     {
         $View = new Stage();
         $View->setTitle( 'Warenkorb' );
@@ -378,47 +380,43 @@ class Invoice extends AbstractFrontend
         $tblBasket = Billing::serviceInvoice()->entityBasketById( $Id );
         $tblPersonByBasketList = Billing::serviceInvoice()->entityPersonAllByBasket( $tblBasket );
 
-        $View->setContent(
-            (new Layout(array(
-                new LayoutGroup( array(
-                    new LayoutRow( array(
-                        new LayoutColumn( array(
-                                new TableData( $tblBasketItemAll, null,
+        $View->setContent(Billing::serviceInvoice()->executeCreateInvoiceFromBasketList(
+            new Form( array(
+                    new FormGroup( array(
+                        new FormRow( array(
+                             new FormColumn(
+                                 array(new TableData( $tblBasketItemAll, null,
                                     array(
                                         'CommodityName'  => 'Leistung',
                                         'ItemName' => 'Artikel',
                                         'Price' => 'Preis',
                                         'Quantity' => 'Menge',
                                     )
-                                )
+                                ) )
                             )
-                        )
-                    ) ),
-                ), new LayoutTitle( 'Artikel' ) ),
-                new LayoutGroup( array(
-                    new LayoutRow( array(
-                        new LayoutColumn( array(
-                                new TableData( $tblPersonByBasketList, null,
+                        ) )
+                    ), new FormTitle('Artikel')),
+                    new FormGroup( array(
+                        new FormRow( array(
+                            new FormColumn(
+                                array(new TableData( $tblPersonByBasketList, null,
                                     array(
                                         'FirstName'  => 'Vorname',
                                         'LastName' => 'Nachname'
                                     )
-                                )
-                            )
-                        )
-                    ) ),
-                ), new LayoutTitle( 'Studenten' ) )
-            ))
-            ).
-            (new Form( array(
+                                ) )
+                             )
+                        ) )
+                    ), new FormTitle('Studenten')),
                     new FormGroup( array(
                         new FormRow( array(
                             new FormColumn(
                                 new DatePicker( 'Basket[Date]', 'Fälligkeitsdatum', 'Fälligkeitsdatum', new TimeIcon() )
                                 , 3 )
-                        ) )
-                    ))), new SubmitPrimary( 'Warenkorb fakturieren (abschließen)' )
-            ))
+                        ) ),
+                    ), new FormTitle('Fälligkeit'))
+                ), new SubmitPrimary( 'Warenkorb fakturieren (abschließen)' )
+            ), $tblBasket, $Basket)
         );
 
         return $View;

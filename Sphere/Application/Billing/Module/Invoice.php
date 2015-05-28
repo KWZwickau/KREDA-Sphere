@@ -70,7 +70,8 @@ class Invoice extends Common
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Invoice/Basket/Summary', __CLASS__.'::frontendBasketSummary'
         )
-            ->setParameterDefault( 'Id', null );
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Basket', null );
     }
 
     /**
@@ -171,13 +172,14 @@ class Invoice extends Common
 
     /**
      * @param $Id
+     * @param $Basket
      *
      * @return Stage
      */
-    public static function frontendBasketSummary( $Id )
+    public static function frontendBasketSummary( $Id, $Basket )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBasketSummary( $Id );
+        return Frontend::frontendBasketSummary( $Id, $Basket );
     }
 }
