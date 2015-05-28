@@ -1,14 +1,12 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Basket;
+
 use KREDA\Sphere\Application\Billing\Billing;
-use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
-use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketPerson;
-use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
-use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
-use KREDA\Sphere\Application\Billing\Service\Basket\EntitySchema;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Invoice\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
@@ -20,6 +18,7 @@ use KREDA\Sphere\Application\System\System;
  */
 abstract class EntityAction extends EntitySchema
 {
+
     /***
      * @param $Id
      *
@@ -27,6 +26,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityBasketById( $Id )
     {
+
         $Entity = $this->getEntityManager()->getEntityById( 'TblBasket', $Id );
         return ( null === $Entity ? false : $Entity );
     }
@@ -36,6 +36,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityBasketAll()
     {
+
         $Entity = $this->getEntityManager()->getEntity( 'TblBasket' )->findAll();
         return ( null === $Entity ? false : $Entity );
     }
@@ -47,23 +48,16 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityCommodityAllByBasket( TblBasket $tblBasket )
     {
+
         $tblBasketItemAllByBasket = $this->entityBasketItemAllByBasket( $tblBasket );
         $EntityList = array();
-        foreach ($tblBasketItemAllByBasket as $tblBasketItem)
-        {
-            array_push($EntityList, $tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity() );
+        foreach ($tblBasketItemAllByBasket as $tblBasketItem) {
+            $tblCommodity = $tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity();
+            if (!array_key_exists( $tblCommodity->getId(), $EntityList )) {
+                $EntityList[$tblCommodity->getId()] = $tblCommodity;
+            }
         }
         return ( null === $EntityList ? false : $EntityList );
-    }
-
-    /**
-     * @param $Id
-     * @return bool|\KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem
-     */
-    protected function entityBasketItemById( $Id )
-    {
-        $Entity = $this->getEntityManager()->getEntityById( 'TblBasketItem', $Id );
-        return ( null === $Entity ? false : $Entity );
     }
 
     /**
@@ -73,9 +67,22 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityBasketItemAllByBasket( TblBasket $tblBasket )
     {
+
         $EntityList = $this->getEntityManager()->getEntity( 'TblBasketItem' )
             ->findBy( array( TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId() ) );
         return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|\KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem
+     */
+    protected function entityBasketItemById( $Id )
+    {
+
+        $Entity = $this->getEntityManager()->getEntityById( 'TblBasketItem', $Id );
+        return ( null === $Entity ? false : $Entity );
     }
 
     /***
@@ -85,6 +92,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityBasketPersonById( $Id )
     {
+
         $Entity = $this->getEntityManager()->getEntityById( 'TblBasketPerson', $Id );
         return ( null === $Entity ? false : $Entity );
     }
@@ -96,6 +104,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityBasketPersonAllByBasket( TblBasket $tblBasket )
     {
+
         $EntityList = $this->getEntityManager()->getEntity( 'TblBasketPerson' )
             ->findBy( array( TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId() ) );
         return ( null === $EntityList ? false : $EntityList );
@@ -107,6 +116,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function actionCreateBasket()
     {
+
         $Manager = $this->getEntityManager();
 
         $Entity = new TblBasket();
@@ -120,7 +130,7 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblCommodity $tblCommodity
-     * @param TblBasket $tblBasket
+     * @param TblBasket    $tblBasket
      *
      * @return TblBasket
      */
@@ -128,6 +138,7 @@ abstract class EntityAction extends EntitySchema
         TblBasket $tblBasket,
         TblCommodity $tblCommodity
     ) {
+
         $Manager = $this->getEntityManager();
 
         $tblCommodityItemList = Billing::serviceCommodity()->entityCommodityItemAllByCommodity( $tblCommodity );
@@ -151,7 +162,7 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblCommodity $tblCommodity
-     * @param TblBasket $tblBasket
+     * @param TblBasket    $tblBasket
      *
      * @return TblBasket
      */
@@ -159,17 +170,17 @@ abstract class EntityAction extends EntitySchema
         TblBasket $tblBasket,
         TblCommodity $tblCommodity
     ) {
+
         $Manager = $this->getEntityManager();
 
         $tblBasketItemAllByBasket = Billing::serviceBasket()->entityBasketItemAllByBasket( $tblBasket );
 
         /** @var TblBasketItem $tblBasketItem */
-        foreach ($tblBasketItemAllByBasket as $tblBasketItem)
-        {
-            if ($tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity()->getId() == $tblCommodity->getId())
-            {
-                $Entity = $Manager->getEntity('tblBasketItem')->findOneBy(array('Id'=>$tblBasketItem->getId()));
-                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        foreach ($tblBasketItemAllByBasket as $tblBasketItem) {
+            if ($tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity()->getId() == $tblCommodity->getId()) {
+                $Entity = $Manager->getEntity( 'tblBasketItem' )->findOneBy( array( 'Id' => $tblBasketItem->getId() ) );
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                    $Entity );
                 $Manager->bulkKillEntity( $Entity );
             }
         }
@@ -185,17 +196,17 @@ abstract class EntityAction extends EntitySchema
      */
     protected function actionRemoveBasketItem(
         TblBasketItem $tblBasketItem
-    )
-    {
+    ) {
+
         $Manager = $this->getEntityManager();
 
         $Entity = $Manager->getEntity( 'tblBasketItem' )->findOneBy(
             array(
                 'Id' => $tblBasketItem->getId()
             ) );
-        if (null !== $Entity)
-        {
-            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        if (null !== $Entity) {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }
@@ -204,8 +215,8 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblBasketItem $tblBasketItem
-     * @param $Price
-     * @param $Quantity
+     * @param               $Price
+     * @param               $Quantity
      *
      * @return bool
      */
@@ -214,14 +225,15 @@ abstract class EntityAction extends EntitySchema
         $Price,
         $Quantity
     ) {
+
         $Manager = $this->getEntityManager();
 
         /** @var TblBasketItem $Entity */
         $Entity = $Manager->getEntityById( 'TblBasketItem', $tblBasketItem->getId() );
         $Protocol = clone $Entity;
         if (null !== $Entity) {
-            $Entity->setPrice( str_replace(',','.', $Price) );
-            $Entity->setQuantity( str_replace(',','.', $Quantity) );
+            $Entity->setPrice( str_replace( ',', '.', $Price ) );
+            $Entity->setQuantity( str_replace( ',', '.', $Quantity ) );
 
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
@@ -234,7 +246,7 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param \KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket $tblBasket
-     * @param TblPerson $tblPerson
+     * @param TblPerson                                                         $tblPerson
      *
      * @return TblBasketPerson
      */
@@ -242,6 +254,7 @@ abstract class EntityAction extends EntitySchema
         TblBasket $tblBasket,
         TblPerson $tblPerson
     ) {
+
         $Manager = $this->getEntityManager();
 
         $Entity = new TblBasketPerson();
@@ -261,17 +274,17 @@ abstract class EntityAction extends EntitySchema
      */
     protected function actionRemoveBasketPerson(
         TblBasketPerson $tblBasketPerson
-    )
-    {
+    ) {
+
         $Manager = $this->getEntityManager();
 
         $Entity = $Manager->getEntity( 'tblBasketPerson' )->findOneBy(
             array(
                 'Id' => $tblBasketPerson->getId()
             ) );
-        if (null !== $Entity)
-        {
-            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        if (null !== $Entity) {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }
@@ -285,28 +298,28 @@ abstract class EntityAction extends EntitySchema
      */
     protected function actionDestroyBasket(
         TblBasket $tblBasket
-    )
-    {
-        if ($tblBasket !== null)
-        {
+    ) {
+
+        if ($tblBasket !== null) {
             $Manager = $this->getEntityManager();
 
-            $EntityList = $Manager->getEntity('tblBasketPerson')->findBy(array(TblBasketPerson::ATTR_TBL_Basket => $tblBasket->getId()) );
-            foreach ($EntityList as $Entity)
-            {
-                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            $EntityList = $Manager->getEntity( 'tblBasketPerson' )->findBy( array( TblBasketPerson::ATTR_TBL_Basket => $tblBasket->getId() ) );
+            foreach ($EntityList as $Entity) {
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                    $Entity );
                 $Manager->bulkKillEntity( $Entity );
             }
 
-            $EntityList = $Manager->getEntity('tblBasketItem')->findBy(array(TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId()) );
-            foreach ($EntityList as $Entity)
-            {
-                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            $EntityList = $Manager->getEntity( 'tblBasketItem' )->findBy( array( TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId() ) );
+            foreach ($EntityList as $Entity) {
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                    $Entity );
                 $Manager->bulkKillEntity( $Entity );
             }
 
-            $Entity = $Manager->getEntity('tblBasket')->findOneBy(array('Id' => $tblBasket->getId()) );
-            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            $Entity = $Manager->getEntity( 'tblBasket' )->findOneBy( array( 'Id' => $tblBasket->getId() ) );
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
             $Manager->bulkKillEntity( $Entity );
 
             $Manager->flushCache();
