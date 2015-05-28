@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Module;
 
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CommodityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Configuration;
@@ -31,7 +32,7 @@ class Common extends AbstractApplication
     protected static function setupModuleNavigation()
     {
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Commodity', 'Leistungen', new GroupIcon()
+            '/Sphere/Billing/Commodity', 'Leistungen', new CommodityIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Billing/Account', 'Account', new EditIcon()

@@ -77,6 +77,17 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
     const ICON_DOWNLOAD = 'glyphicons glyphicons-cloud-download';
     const ICON_UPLOAD = 'glyphicons glyphicons-cloud-upload';
 
+    const ICON_PLUS = 'glyphicon glyphicon-plus';
+    const ICON_MINUS = 'glyphicon glyphicon-minus';
+    const ICON_LIST = 'glyphicon glyphicon-list';
+    const ICON_CHEVRON_LEFT = 'glyphicon glyphicon-chevron-left';
+    const ICON_CHEVRON_RIGHT = 'glyphicon glyphicon-chevron-right';
+    const ICON_BASKET = 'glyphicon glyphicon-shopping-cart';
+    const ICON_SELECT = 'glyphicon glyphicon-screenshot';
+    const ICON_QUANTITY = 'glyphicon glyphicon-asterisk';
+    const ICON_COMMODITY = 'glyphicon glyphicon-inbox';
+    const ICON_COMMODITY_ITEM = 'glyphicon glyphicon-list-alt';
+
     /** @var string $Value */
     private $Value = '';
 

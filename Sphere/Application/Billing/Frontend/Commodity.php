@@ -10,9 +10,18 @@ use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItemAccount;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ListIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MinusIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyEuroIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PlusIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuantityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\SelectIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
@@ -46,7 +55,7 @@ class Commodity extends AbstractFrontend
         $View->setDescription( 'Übersicht' );
         $View->setMessage( 'Zeigt die verfügbaren Leistungen' );
         $View->addButton(
-            new Primary( 'Leistung anlegen', '/Sphere/Billing/Commodity/Create' )
+            new Primary( 'Leistung anlegen', '/Sphere/Billing/Commodity/Create', new PlusIcon() )
         );
 
         $tblCommodityAll = Billing::serviceCommodity()->entityCommodityAll();
@@ -68,7 +77,7 @@ class Commodity extends AbstractFrontend
                           'Id' => $tblCommodity->getId()
                       ) ) )->__toString().
                   (new Primary( 'Artikel auswählen', '/Sphere/Billing/Commodity/Item/Select',
-                        new EditIcon(), array(
+                        new ListIcon(), array(
                             'Id' => $tblCommodity->getId()
                     ) ))->__toString();
             });
@@ -154,8 +163,6 @@ class Commodity extends AbstractFrontend
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Bearbeiten' );
 
-        $tblCommodityType = Billing::serviceCommodity()->entityCommodityTypeAll();
-
         if (empty( $Id )) {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
         } else {
@@ -206,7 +213,7 @@ class Commodity extends AbstractFrontend
         $View->setDescription( 'Übersicht' );
         $View->setMessage( 'Zeigt die verfügbaren Artikel' );
         $View->addButton(
-            new Primary( 'Artikel anlegen', '/Sphere/Billing/Commodity/Item/Create' )
+            new Primary( 'Artikel anlegen', '/Sphere/Billing/Commodity/Item/Create', new PlusIcon() )
         );
 
         $tblItemAll = Billing::serviceCommodity()->entityItemAll();
@@ -223,7 +230,7 @@ class Commodity extends AbstractFrontend
                                 'Id' => $tblItem->getId()
                             ) ) )->__toString().
                         (new Primary( 'FIBU-Konten auswählen', '/Sphere/Billing/Commodity/Item/Account/Select',
-                            new EditIcon(), array(
+                            new ListIcon(), array(
                                 'Id' => $tblItem->getId()
                             ) ))->__toString();
                 }
@@ -239,7 +246,7 @@ class Commodity extends AbstractFrontend
                                 'Id' => $tblItem->getId()
                             ) ) )->__toString().
                         (new Primary( 'FIBU-Konten auswählen', '/Sphere/Billing/Commodity/Item/Account/Select',
-                            new EditIcon(), array(
+                            new ListIcon(), array(
                                 'Id' => $tblItem->getId()
                             ) ))->__toString();
                 }
@@ -338,12 +345,8 @@ class Commodity extends AbstractFrontend
                         $tblCommodityItem->Price = $tblItem->getPrice();
                         $tblCommodityItem->CostUnit = $tblItem->getCostUnit();
                         $tblCommodityItem->Option =
-//                            (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
-//                                new EditIcon(), array(
-//                                    'Id' => $tblCommodityItem->getId()
-//                                ) ) )->__toString().
-                            (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Artikel entfernen', '/Sphere/Billing/Commodity/Item/Remove',
-                                new RemoveIcon(), array(
+                            (new Danger( 'Entfernen', '/Sphere/Billing/Commodity/Item/Remove',
+                                new MinusIcon(), array(
                                     'Id' => $tblCommodityItem->getId()
                                 ) ))->__toString();
                     });
@@ -358,11 +361,11 @@ class Commodity extends AbstractFrontend
                                 new FormGroup(
                                     new FormRow( array(
                                         new FormColumn(
-                                            new TextField( 'Item[Quantity]', 'Menge', 'Menge', new ConversationIcon()
+                                            new TextField( 'Item[Quantity]', 'Menge', 'Menge', new QuantityIcon()
                                             )
                                             , 7 ),
                                         new FormColumn(
-                                            new SubmitPrimary( 'Hinzufügen', new ShareIcon() )
+                                            new SubmitPrimary( 'Hinzufügen', new PlusIcon() )
                                             , 5 )
                                     ) )
                                 ), null,
@@ -436,12 +439,12 @@ class Commodity extends AbstractFrontend
                             new TextField( 'Item[Name]', 'Name', 'Name', new ConversationIcon()
                             ), 6 ),
                         new FormColumn(
-                            new TextField( 'Item[Price]', 'Preis in €', 'Preis', new ConversationIcon()
+                            new TextField( 'Item[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
                             ), 6 )
                     ) ),
                     new FormRow( array(
                         new FormColumn(
-                            new TextField( 'Item[CostUnit]', 'Kostenstelle', 'Kostenstelle', new ConversationIcon()
+                            new TextField( 'Item[CostUnit]', 'Kostenstelle', 'Kostenstelle', new MoneyIcon()
                             ), 6)
                     ) ),
                     new FormRow( array(
@@ -507,12 +510,12 @@ class Commodity extends AbstractFrontend
                                         new TextField( 'Item[Name]', 'Name', 'Name', new ConversationIcon()
                                         ), 6 ),
                                     new FormColumn(
-                                        new TextField( 'Item[Price]', 'Preis in €', 'Preis', new ConversationIcon()
+                                        new TextField( 'Item[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
                                         ), 6 )
                                 ) ),
                                 new FormRow( array(
                                     new FormColumn(
-                                        new TextField( 'Item[CostUnit]', 'Kostenstelle', 'Kostenstelle', new ConversationIcon()
+                                        new TextField( 'Item[CostUnit]', 'Kostenstelle', 'Kostenstelle', new MoneyIcon()
                                         ), 6)
                                 ) ),
                                 new FormRow( array(
@@ -563,7 +566,7 @@ class Commodity extends AbstractFrontend
                         $tblItemAccountByItem->Description = $tblItemAccountByItem->getServiceBilling_Account()->getDescription();
                         $tblItemAccountByItem->Option =
                             new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Entfernen', '/Sphere/Billing/Commodity/Item/Account/Remove',
-                                new RemoveIcon(), array(
+                                new MinusIcon(), array(
                                     'Id' => $tblItemAccountByItem->getId()
                                 ));
                     });
@@ -575,7 +578,7 @@ class Commodity extends AbstractFrontend
                     {
                         $tblAccountAllByActiveState->Option =
                             new Primary( 'Hinzufügen', '/Sphere/Billing/Commodity/Item/Account/Add',
-                                new EditIcon(), array(
+                                new PlusIcon(), array(
                                     'tblAccountId' => $tblAccountAllByActiveState->getId(),
                                     'tblItemId' => $tblItem->getId()
                                 ) );

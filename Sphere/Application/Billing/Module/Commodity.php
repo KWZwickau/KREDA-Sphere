@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Billing\Module;
 use KREDA\Sphere\Application\Billing\Frontend\Commodity as Frontend;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CommodityItemIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Configuration;
@@ -25,7 +26,7 @@ class Commodity extends Common
     protected static function setupApplicationNavigation()
     {
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Commodity/Item', 'Artikel', new PersonIcon()
+            '/Sphere/Billing/Commodity/Item', 'Artikel', new CommodityItemIcon()
         );
     }
 
