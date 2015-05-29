@@ -97,11 +97,11 @@ abstract class EntitySchema extends AbstractService
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblItem', 'serviceManagement_Student_ChildRank' ))
         {
-            $Table->addColumn( 'serviceManagement_Student_ChildRank', 'bigint' );
+            $Table->addColumn( 'serviceManagement_Student_ChildRank', 'bigint', array( 'notnull' => false ) );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblItem', 'serviceManagement_Course' ))
         {
-            $Table->addColumn( 'serviceManagement_Course', 'bigint' );
+            $Table->addColumn( 'serviceManagement_Course', 'bigint', array( 'notnull' => false ) );
         }
 
         return $Table;

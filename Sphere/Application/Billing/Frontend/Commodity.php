@@ -17,12 +17,9 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ListIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MinusIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyEuroIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PlusIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuantityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\SelectIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
@@ -435,11 +432,9 @@ class Commodity extends AbstractFrontend
         $View->setDescription( 'Hinzufügen' );
 
         $tblCourseAll = Management::serviceCourse()->entityCourseAll();
-        $tblCourseAll[0] = new TblCourse("unabhängig");
+        array_unshift( $tblCourseAll, new TblCourse( '' ) );
         $tblChildRankAll = Management::serviceStudent()->entityChildRankAll();
-        $tblChildRank = new TblChildRank("0");
-        $tblChildRank->setDescription("unabhängig");
-        $tblChildRankAll[0] = $tblChildRank;
+        array_unshift( $tblChildRankAll, new TblChildRank( '' ) );
 
         $View->setContent(Billing::serviceCommodity()->executeCreateItem(
             new Form( array(
