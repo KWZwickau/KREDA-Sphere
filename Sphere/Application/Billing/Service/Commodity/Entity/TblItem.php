@@ -5,6 +5,9 @@ use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Course\Entity\TblCourse;
+use KREDA\Sphere\Application\Management\Service\Student\Entity\TblChildRank;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
@@ -14,6 +17,9 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblItem extends AbstractEntity
 {
+    const ATTR_SERVICE_MANAGEMENT_COURSE = 'serviceManagement_Course';
+    const ATTR_SERVICE_MANAGEMENT_STUDENT_CHILD_RANK = 'serviceManagement_Student_ChildRank';
+
     /**
      * @Column(type="string")
      */
@@ -33,6 +39,16 @@ class TblItem extends AbstractEntity
      * @Column(type="string")
      */
     protected $CostUnit;
+
+    /**
+     * @Column(type="bigint")
+     */
+    protected $serviceManagement_Course;
+
+    /**
+     * @Column(type="bigint")
+     */
+    protected $serviceManagement_Student_ChildRank;
 
     /**
      * @return string
@@ -96,5 +112,47 @@ class TblItem extends AbstractEntity
     public function setCostUnit( $CostUnit )
     {
         $this->CostUnit = $CostUnit;
+    }
+
+    /**
+     * @return bool|TblCourse
+     */
+    public function getServiceManagementCourse()
+    {
+
+        if (null === $this->serviceManagement_Course || 0 === $this->serviceManagement_Course) {
+            return false;
+        } else {
+            return Management::serviceCourse()->entityCourseById( $this->serviceManagement_Course );
+        }
+    }
+
+    /**
+     * @param null|TblCourse $tblCourse
+     */
+    public function setServiceManagementCourse( TblCourse $tblCourse = null )
+    {
+        $this->serviceManagement_Course = ( null === $tblCourse ? 0 : $tblCourse->getId() );
+    }
+
+    /**
+     * @return bool|TblChildRank
+     */
+    public function getServiceManagementStudentChildRank()
+    {
+
+        if (null === $this->serviceManagement_Student_ChildRank || 0 === $this->serviceManagement_Student_ChildRank) {
+            return false;
+        } else {
+            return Management::serviceStudent()->entityChildRankById( $this->serviceManagement_Student_ChildRank );
+        }
+    }
+
+    /**
+     * @param null|TblChildRank $tblChildRank
+     */
+    public function setServiceManagementStudentChildRank( TblChildRank $tblChildRank = null )
+    {
+        $this->serviceManagement_Student_ChildRank = ( null === $tblChildRank ? 0 : $tblChildRank->getId() );
     }
 }

@@ -30,7 +30,7 @@ class TblItemCondition extends AbstractEntity
     /**
      * @return bool|TblStudent
      */
-    public function getServiceManagement_Student()
+    public function getServiceManagementStudent()
     {
 
         if (null === $this->serviceManagement_Student) {
@@ -43,7 +43,7 @@ class TblItemCondition extends AbstractEntity
     /**
      * @param TblStudent $tblStudent
      */
-    public function setServiceManagement_Student( TblStudent $tblStudent = null )
+    public function setServiceManagementStudent( TblStudent $tblStudent = null )
     {
 
         $this->serviceManagement_Student = ( null === $tblStudent ? null : $tblStudent->getStudentNumber() );

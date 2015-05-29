@@ -7,6 +7,9 @@ use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItemAccount;
+use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Course\Entity\TblCourse;
+use KREDA\Sphere\Application\Management\Service\Student\Entity\TblChildRank;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
@@ -431,6 +434,13 @@ class Commodity extends AbstractFrontend
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Hinzufügen' );
 
+        $tblCourseAll = Management::serviceCourse()->entityCourseAll();
+        $tblCourseAll[0] = new TblCourse("unabhängig");
+        $tblChildRankAll = Management::serviceStudent()->entityChildRankAll();
+        $tblChildRank = new TblChildRank("0");
+        $tblChildRank->setDescription("unabhängig");
+        $tblChildRankAll[0] = $tblChildRank;
+
         $View->setContent(Billing::serviceCommodity()->executeCreateItem(
             new Form( array(
                 new FormGroup( array(
@@ -451,6 +461,18 @@ class Commodity extends AbstractFrontend
                         new FormColumn(
                             new TextField( 'Item[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
                             ), 12)
+                    ) ),
+                    new FormRow( array(
+                        new FormColumn(
+                            new SelectBox( 'Item[Course]', 'Bedingung Bildungsgang',
+                                array('Name' => $tblCourseAll
+                                ) )
+                            , 6 ),
+                        new FormColumn(
+                            new SelectBox( 'Item[ChildRank]', 'Bedingung Kind-Reihenfolge',
+                                array('Description' => $tblChildRankAll
+                                ) )
+                            , 6 )
                     ) )
                 ))), new SubmitPrimary( 'Hinzufügen' )), $Item));
 

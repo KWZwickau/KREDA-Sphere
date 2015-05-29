@@ -101,6 +101,16 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return bool|TblChildRank[]
+     */
+    protected function entityChildRankAll()
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblChildRank' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param TblPerson $tblPerson
      *
      * @return bool|TblStudent
