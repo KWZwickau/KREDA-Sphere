@@ -1,14 +1,12 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Invoice;
+
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
-use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
-use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketPerson;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
-use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
 
 /**
@@ -26,6 +24,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityInvoiceById( $Id )
     {
+
         $Entity = $this->getEntityManager()->getEntityById( 'TblInvoice', $Id );
         return ( null === $Entity ? false : $Entity );
     }
@@ -48,20 +47,21 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityInvoiceItemById( $Id )
     {
+
         $Entity = $this->getEntityManager()->getEntityById( 'TblInvoiceItem', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
     /**
-     * @param $IsPaid
-     * @param $Number
-     * @param $IsVoid
-     * @param $InvoiceDate
-     * @param $PaymentDate
-     * @param $Discount
-     * @param $PersonFirstName
-     * @param $PersonLastName
-     * @param $PersonSalutation
+     * @param            $IsPaid
+     * @param            $Number
+     * @param            $IsVoid
+     * @param            $InvoiceDate
+     * @param            $PaymentDate
+     * @param            $Discount
+     * @param            $PersonFirstName
+     * @param            $PersonLastName
+     * @param            $PersonSalutation
      * @param TblAddress $tblAddress
      *
      * @return TblInvoice
@@ -90,8 +90,8 @@ abstract class EntityAction extends EntitySchema
         $Entity->setDiscount( $Discount );
         $Entity->setPersonFirstName( $PersonFirstName );
         $Entity->setPersonLastName( $PersonLastName );
-        $Entity->setPersonSalutation( $PersonSalutation);
-        $Entity->setServiceManagement_Address( $tblAddress );
+        $Entity->setPersonSalutation( $PersonSalutation );
+        $Entity->setServiceManagementAddress( $tblAddress );
 
         $Manager->saveEntity( $Entity );
 
@@ -101,12 +101,12 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param $CommodityName
-     * @param $CommodityDescription
-     * @param $ItemName
-     * @param $ItemDescription
-     * @param $ItemPrice
-     * @param $ItemQuantity
+     * @param            $CommodityName
+     * @param            $CommodityDescription
+     * @param            $ItemName
+     * @param            $ItemDescription
+     * @param            $ItemPrice
+     * @param            $ItemQuantity
      * @param TblInvoice $tblInvoice
      *
      * @return TblInvoiceItem
@@ -150,6 +150,7 @@ abstract class EntityAction extends EntitySchema
         $Date
     )
     {
+
         $tblPersonAllByBasket = Billing::serviceBasket()->entityPersonAllByBasket( $tblBasket );
         $tblBasketItemAllByBasket = Billing::serviceBasket()->entityBasketItemAllByBasket( $tblBasket );
 
@@ -163,22 +164,21 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblInvoice();
             $Entity->setIsPaid( false );
             $Entity->setIsVoid( false );
-            $Entity->setNumber("23934093243920");
+            $Entity->setNumber( "23934093243920" );
             //$Entity->setPaymentDate( $Date->sub(new \DateInterval('P'. Billing::serviceAccount()->entityDebtorByPerson($tblPerson)->getLeadTimeFollow() .'D') ));
-            $Entity->setPaymentDate(new \DateTime( $Date ));// ->sub(new \DateInterval('P10D') ));
-            $Entity->setInvoiceDate(new \DateTime( $Date ));
+            $Entity->setPaymentDate( ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P10D' ) ) );// ->sub(new \DateInterval('P10D') ));
+            $Entity->setInvoiceDate( new \DateTime( $Date ) );
             $Entity->setDiscount( 0 );
             $Entity->setPersonFirstName( $tblPerson->getFirstName() );
             $Entity->setPersonLastName( $tblPerson->getLastName() );
             $Entity->setPersonSalutation( $tblPerson->getTblPersonSalutation()->getName() );
-            $Entity->setServiceManagement_Address( Management::serviceAddress()->entityAddressById(1));
+            $Entity->setServiceManagementAddress( Management::serviceAddress()->entityAddressById( 1 ) );
 
-            $Manager->SaveEntity($Entity);
+            $Manager->SaveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
 
-            foreach($tblBasketItemAllByBasket as $tblBasketItem)
-            {
+            foreach ($tblBasketItemAllByBasket as $tblBasketItem) {
                 $tblCommodity = $tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity();
                 $tblItem = $tblBasketItem->getServiceBillingCommodityItem()->getTblItem();
 
@@ -187,18 +187,15 @@ abstract class EntityAction extends EntitySchema
                 $EntityItem->setCommodityDescription( $tblCommodity->getDescription() );
                 $EntityItem->setItemName( $tblItem->getName() );
                 $EntityItem->setItemDescription( $tblItem->getDescription() );
-                if ($tblCommodity->getTblCommodityType()->getName() == 'Einzelleistung')
-                {
+                if ($tblCommodity->getTblCommodityType()->getName() == 'Einzelleistung') {
                     $EntityItem->setItemPrice( $tblBasketItem->getPrice() );
-                }
-                else
-                {
-                    $EntityItem->setItemPrice( $tblBasketItem->getPrice()/Billing::serviceBasket()->countPersonByBasket($tblBasket) );
+                } else {
+                    $EntityItem->setItemPrice( $tblBasketItem->getPrice() / Billing::serviceBasket()->countPersonByBasket( $tblBasket ) );
                 }
                 $EntityItem->setItemQuantity( $tblBasketItem->getQuantity() );
                 $EntityItem->setTblInvoice( $Entity );
 
-                $Manager->bulkSaveEntity($EntityItem);
+                $Manager->bulkSaveEntity( $EntityItem );
                 System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                     $EntityItem );
 

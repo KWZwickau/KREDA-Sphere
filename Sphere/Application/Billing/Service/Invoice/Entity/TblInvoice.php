@@ -245,7 +245,7 @@ class TblInvoice extends AbstractEntity
     /**
      * @param TblAddress $tblAddress
      */
-    public function setServiceManagement_Address( TblAddress $tblAddress = null )
+    public function setServiceManagementAddress( TblAddress $tblAddress = null )
     {
         $this->serviceManagement_Address = ( null === $tblAddress ? null : $tblAddress->getId() );
     }
