@@ -86,6 +86,11 @@ class Basket extends Common
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Basket', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Basket/Debtor/Select', __CLASS__.'::frontendBasketDebtorSelect'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Debtor', null );
     }
 
     /**
@@ -243,5 +248,18 @@ class Basket extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketSummary( $Id, $Basket );
+    }
+
+    /**
+     * @param $Id
+     * @param $Debtor
+     *
+     * @return Stage
+     */
+    public static function frontendBasketDebtorSelect( $Id, $Debtor )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketDebtorSelect( $Id, $Debtor );
     }
 }

@@ -519,6 +519,7 @@ class Basket extends AbstractFrontend
         return $View;
     }
 
+
     /**
      * @param $Id
      * @param $Basket
@@ -533,6 +534,10 @@ class Basket extends AbstractFrontend
         $View->setDescription( 'Zusammenfassung' );
         $View->setMessage( 'Schließen Sie den Warenkorb zur Fakturierung ab' );
         $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Basket/Person/Select',
+            new ChevronLeftIcon(), array(
+                'Id' => $Id
+            ) ) );
+        $View->addButton( new Primary( 'Debitor auswählen', '/Sphere/Billing/Basket/Debtor/Select',
             new ChevronLeftIcon(), array(
                 'Id' => $Id
             ) ) );
@@ -604,6 +609,40 @@ class Basket extends AbstractFrontend
                     ) )
                 ) )
             ) )
+        );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @param $Debtor
+     *
+     * @return Stage
+     */
+    public static function frontendBasketDebtorSelect( $Id, $Debtor = null )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Debitoren zuordnen' );
+        $View->setMessage( 'Weisen Sie die entsprechenden Debitoren zu' );
+
+        $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
+        $tblCommodityAllByBasket = Billing::serviceBasket()->entityCommodityAllByBasket( $tblBasket );
+        $tblBasketPersonAllByBasket = Billing::serviceBasket()->entityBasketPersonAllByBasket( $tblBasket );
+        $tblData= array();
+
+        foreach($tblBasketPersonAllByBasket as &$tblBasketPerson)
+        {
+            $tblBasketPerson->PersonName = $tblBasketPerson->getServiceManagementPerson()->getFullName();
+        }
+
+        $View->setContent(
+            new TableData( $tblBasketPersonAllByBasket, null,
+                array(
+                    'PersonName' => 'Schüler',
+                )
+            )
         );
 
         return $View;
