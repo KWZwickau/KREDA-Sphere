@@ -3,7 +3,12 @@ namespace KREDA\Sphere\Application\Billing\Service\Invoice;
 
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItemAccount;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
+use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceAccount;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
@@ -101,45 +106,6 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param            $CommodityName
-     * @param            $CommodityDescription
-     * @param            $ItemName
-     * @param            $ItemDescription
-     * @param            $ItemPrice
-     * @param            $ItemQuantity
-     * @param TblInvoice $tblInvoice
-     *
-     * @return TblInvoiceItem
-     */
-    protected function actionCreateInvoiceItem(
-        $CommodityName,
-        $CommodityDescription,
-        $ItemName,
-        $ItemDescription,
-        $ItemPrice,
-        $ItemQuantity,
-        TblInvoice $tblInvoice
-    ) {
-
-        $Manager = $this->getEntityManager();
-
-        $Entity = new TblInvoiceItem();
-        $Entity->setCommodityName( $CommodityName );
-        $Entity->setCommodityDescription( $CommodityDescription );
-        $Entity->setItemName( $ItemName );
-        $Entity->setItemDescription( $ItemDescription );
-        $Entity->setItemPrice( $ItemPrice );
-        $Entity->setItemQuantity( $ItemQuantity );
-        $Entity->setTblInvoice( $tblInvoice );
-
-        $Manager->saveEntity( $Entity );
-
-        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
-
-        return $Entity;
-    }
-
-    /**
      * @param TblBasket $tblBasket
      * @param \DateTime $Date
      *
@@ -150,7 +116,6 @@ abstract class EntityAction extends EntitySchema
         $Date
     )
     {
-
         $tblPersonAllByBasket = Billing::serviceBasket()->entityPersonAllByBasket( $tblBasket );
         $tblBasketItemAllByBasket = Billing::serviceBasket()->entityBasketItemAllByBasket( $tblBasket );
 
@@ -166,13 +131,13 @@ abstract class EntityAction extends EntitySchema
             $Entity->setIsVoid( false );
             $Entity->setNumber( "23934093243920" );
             //$Entity->setPaymentDate( $Date->sub(new \DateInterval('P'. Billing::serviceAccount()->entityDebtorByPerson($tblPerson)->getLeadTimeFollow() .'D') ));
-            $Entity->setPaymentDate( ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P10D' ) ) );// ->sub(new \DateInterval('P10D') ));
+            $Entity->setPaymentDate( ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P5D' ) ) );
             $Entity->setInvoiceDate( new \DateTime( $Date ) );
             $Entity->setDiscount( 0 );
             $Entity->setPersonFirstName( $tblPerson->getFirstName() );
             $Entity->setPersonLastName( $tblPerson->getLastName() );
             $Entity->setPersonSalutation( $tblPerson->getTblPersonSalutation()->getName() );
-            $Entity->setServiceManagementAddress( Management::serviceAddress()->entityAddressById( 1 ) );
+            $Entity->setServiceManagementPerson( $tblPerson );
 
             $Manager->SaveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
@@ -182,39 +147,81 @@ abstract class EntityAction extends EntitySchema
                 $tblCommodity = $tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity();
                 $tblItem = $tblBasketItem->getServiceBillingCommodityItem()->getTblItem();
 
-                $EntityItem = new TblInvoiceItem();
-                $EntityItem->setCommodityName( $tblCommodity->getName() );
-                $EntityItem->setCommodityDescription( $tblCommodity->getDescription() );
-                $EntityItem->setItemName( $tblItem->getName() );
-                $EntityItem->setItemDescription( $tblItem->getDescription() );
-                if ($tblCommodity->getTblCommodityType()->getName() == 'Einzelleistung') {
-                    $EntityItem->setItemPrice( $tblBasketItem->getPrice() );
-                } else {
-                    $EntityItem->setItemPrice( $tblBasketItem->getPrice() / Billing::serviceBasket()->countPersonByBasket( $tblBasket ) );
+                if (!($tblItem->getServiceManagementCourse()) && !($tblItem->getServiceManagementStudentChildRank()))
+                {
+                    $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
                 }
-                $EntityItem->setItemQuantity( $tblBasketItem->getQuantity() );
-                $EntityItem->setTblInvoice( $Entity );
-
-                $Manager->bulkSaveEntity( $EntityItem );
-                System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
-                    $EntityItem );
-
-//                $tblItemAccountList = Billing::serviceCommodity()->entityItemAccountAllByItem( $tblItem );
-//                /** @var TblItemAccount $tblItemAccount */
-//                foreach ($tblItemAccountList as $tblItemAccount)
-//                {
-//                    $EntityItemAccount = new TblInvoiceAccount();
-//                    $EntityItemAccount->setTblInvoiceItem( $EntityItem );
-//                    $EntityItemAccount->setServiceBilling_Account( $tblItemAccount->getServiceBilling_Account() );
-//
-//                    $Manager->bulkSaveEntity($EntityItemAccount);
-//                    System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
-//                        $EntityItemAccount );
-//                }
+                else if ($tblItem->getServiceManagementCourse() && !($tblItem->getServiceManagementStudentChildRank()))
+                {
+                    if ($tblItem->getServiceManagementCourse() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getServiceManagementCourse())
+                    {
+                        $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
+                    }
+                }
+                else if (!($tblItem->getServiceManagementCourse()) && $tblItem->getServiceManagementStudentChildRank())
+                {
+                    if ($tblItem->getServiceManagementStudentChildRank() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getTblChildRank())
+                    {
+                        $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
+                    }
+                }
+                else if ($tblItem->getServiceManagementCourse() && $tblItem->getServiceManagementStudentChildRank())
+                {
+                    if ($tblItem->getServiceManagementCourse() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getServiceManagementCourse()
+                            && $tblItem->getServiceManagementStudentChildRank() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getTblChildRank())
+                    {
+                        $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
+                    }
+                }
             }
         }
-        $Manager->flushCache();
 
         return true;
+    }
+
+    /**
+     * @param TblCommodity $tblCommodity
+     * @param TblItem $tblItem
+     * @param TblBasket $tblBasket
+     * @param TblBasketItem $tblBasketItem
+     * @param TblInvoice $tblInvoice
+     */
+    private function actionCreateInvoiceItem(
+        TblCommodity $tblCommodity,
+        TblItem $tblItem,
+        TblBasket $tblBasket,
+        TblBasketItem $tblBasketItem,
+        TblInvoice $tblInvoice
+    )
+    {
+        $Entity = new TblInvoiceItem();
+        $Entity->setCommodityName( $tblCommodity->getName() );
+        $Entity->setCommodityDescription( $tblCommodity->getDescription() );
+        $Entity->setItemName( $tblItem->getName() );
+        $Entity->setItemDescription( $tblItem->getDescription() );
+        if ($tblCommodity->getTblCommodityType()->getName() == 'Einzelleistung') {
+            $Entity->setItemPrice( $tblBasketItem->getPrice() );
+        } else {
+            $Entity->setItemPrice( $tblBasketItem->getPrice() / Billing::serviceBasket()->countPersonByBasket( $tblBasket ) );
+        }
+        $Entity->setItemQuantity( $tblBasketItem->getQuantity() );
+        $Entity->setTblInvoice( $tblInvoice );
+
+        $this->getEntityManager()->SaveEntity( $Entity );
+        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+            $Entity );
+
+        $tblItemAccountList = Billing::serviceCommodity()->entityItemAccountAllByItem( $tblItem );
+        /** @var TblItemAccount $tblItemAccount */
+        foreach ($tblItemAccountList as $tblItemAccount)
+        {
+            $EntityItemAccount = new TblInvoiceAccount();
+            $EntityItemAccount->setTblInvoiceItem( $Entity );
+            $EntityItemAccount->setServiceBilling_Account( $tblItemAccount->getServiceBilling_Account() );
+
+            $this->getEntityManager()->SaveEntity($EntityItemAccount);
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $EntityItemAccount );
+        }
     }
 }

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
@@ -65,6 +66,11 @@ class TblInvoice extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $serviceManagement_Address;
+
+    /**
+     * @Column(type="bigint")
+     */
+    protected $serviceManagement_Person;
 
     /**
      * @return boolean
@@ -233,7 +239,7 @@ class TblInvoice extends AbstractEntity
     /**
      * @return bool|TblAddress
      */
-    public function getServiceManagement_Address()
+    public function getServiceManagementAddress()
     {
         if (null === $this->serviceManagement_Address) {
             return false;
@@ -248,5 +254,25 @@ class TblInvoice extends AbstractEntity
     public function setServiceManagementAddress( TblAddress $tblAddress = null )
     {
         $this->serviceManagement_Address = ( null === $tblAddress ? null : $tblAddress->getId() );
+    }
+
+    /**
+     * @return bool|TblPerson
+     */
+    public function getServiceManagementPerson()
+    {
+        if (null === $this->serviceManagement_Person) {
+            return false;
+        } else {
+            return Management::servicePerson()->entityPersonById($this->serviceManagement_Person);
+        }
+    }
+
+    /**
+     * @param TblPerson $tblPerson
+     */
+    public function setServiceManagementPerson( TblPerson $tblPerson = null )
+    {
+        $this->serviceManagement_Person = ( null === $tblPerson ? null : $tblPerson->getId() );
     }
 }

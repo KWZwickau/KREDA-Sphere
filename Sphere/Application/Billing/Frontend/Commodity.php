@@ -72,7 +72,7 @@ class Commodity extends AbstractFrontend
                         new EditIcon(), array(
                             'Id' => $tblCommodity->getId()
                     ) ) )->__toString().
-                  (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Löschen', '/Sphere/Billing/Commodity/Delete',
+                  (new Danger( 'Löschen', '/Sphere/Billing/Commodity/Delete',
                       new RemoveIcon(), array(
                           'Id' => $tblCommodity->getId()
                       ) ) )->__toString().

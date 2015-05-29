@@ -81,7 +81,11 @@ abstract class EntitySchema extends AbstractService
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'serviceManagement_Address' ))
         {
-            $Table->addColumn( 'serviceManagement_Address', 'bigint');
+            $Table->addColumn( 'serviceManagement_Address', 'bigint', array( 'notnull' => false ));
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'serviceManagement_Person' ))
+        {
+            $Table->addColumn( 'serviceManagement_Person', 'bigint', array( 'notnull' => false ));
         }
 
         return $Table;
