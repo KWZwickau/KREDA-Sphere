@@ -9,6 +9,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
 use KREDA\Sphere\Client\Configuration;
+use MOC\V\TestSuite\Tests\Component\Documentation\ModuleTest;
 
 /**
  * Class Billing
@@ -44,6 +45,7 @@ class Billing extends Module\Commodity
             Module\Commodity::registerApplication( $Configuration );
             Module\Account::registerApplication( $Configuration );
             Module\Basket::registerApplication( $Configuration );
+            Module\Invoice::registerApplication( $Configuration );
         }
     }
 
@@ -77,6 +79,10 @@ class Billing extends Module\Commodity
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Billing/Basket', 'Fakturieren', new BasketIcon()
         );
+
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Invoice', 'Rechnungen', new BasketIcon()
+        );
     }
 
     /**
@@ -104,5 +110,14 @@ class Billing extends Module\Commodity
     {
 
         return Service\Basket::getApi();
+    }
+
+    /**
+     * @return Service\Invoice
+     */
+    public static function serviceInvoice()
+    {
+
+        return Service\Invoice::getApi();
     }
 }

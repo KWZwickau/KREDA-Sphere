@@ -1,7 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Invoice;
 use KREDA\Sphere\Application\Billing\Billing;
-use KREDA\Sphere\Application\Billing\Service\Basket\EntitySchema;
+use KREDA\Sphere\Application\Billing\Service\Invoice\EntitySchema;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
@@ -9,6 +9,7 @@ use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketPerson;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
 

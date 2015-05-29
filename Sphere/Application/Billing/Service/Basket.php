@@ -16,7 +16,7 @@ use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 
 /**
- * Class Commodity
+ * Class Basket
  *
  * @package KREDA\Sphere\Application\Billing\Service
  */
