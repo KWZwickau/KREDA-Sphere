@@ -504,6 +504,11 @@ class Commodity extends AbstractFrontend
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Bearbeiten' );
 
+        $tblCourseAll = Management::serviceCourse()->entityCourseAll();
+        array_unshift( $tblCourseAll, new TblCourse( '' ) );
+        $tblChildRankAll = Management::serviceStudent()->entityChildRankAll();
+        array_unshift( $tblChildRankAll, new TblChildRank( '' ) );
+
         if (empty( $Id )) {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
         } else {
@@ -517,6 +522,8 @@ class Commodity extends AbstractFrontend
                 $Global->POST['Item']['Description'] = $tblItem->getDescription();
                 $Global->POST['Item']['Price'] = str_replace('.',',', $tblItem->getPrice());
                 $Global->POST['Item']['CostUnit'] = $tblItem->getCostUnit();
+                $Global->POST['Item']['Course'] = $tblItem->getServiceManagementCourse()->getId();
+                $Global->POST['Item']['ChildRank'] = $tblItem->getServiceManagementStudentChildRank()->getId();
                 $Global->savePost();
 
                 $View->setContent(Billing::serviceCommodity()->executeEditItem(
@@ -539,6 +546,18 @@ class Commodity extends AbstractFrontend
                                     new FormColumn(
                                         new TextField( 'Item[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
                                         ), 12)
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new SelectBox( 'Item[Course]', 'Bedingung Bildungsgang',
+                                            array('Name' => $tblCourseAll
+                                            ) )
+                                        , 6 ),
+                                    new FormColumn(
+                                        new SelectBox( 'Item[ChildRank]', 'Bedingung Kind-Reihenfolge',
+                                            array('Description' => $tblChildRankAll
+                                            ) )
+                                        , 6 )
                                 ) )
                             ))), new SubmitPrimary( 'Änderungen speichern' )
                     ), $tblItem, $Item));

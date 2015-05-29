@@ -362,7 +362,9 @@ class Commodity extends EntityAction
                 $Item['Name'],
                 $Item['Description'],
                 $Item['Price'],
-                $Item['CostUnit']
+                $Item['CostUnit'],
+                $Item['Course'],
+                $Item['ChildRank']
             );
             return new Success( 'Der Artikel wurde erfolgreich angelegt' )
             .new Redirect( '/Sphere/Billing/Commodity/Item', 2);
@@ -442,7 +444,9 @@ class Commodity extends EntityAction
                 $Item['Name'],
                 $Item['Description'],
                 $Item['Price'],
-                $Item['CostUnit']
+                $Item['CostUnit'],
+                $Item['Course'],
+                $Item['ChildRank']
             )) {
                 $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
                     .new Redirect( '/Sphere/Billing/Commodity/Item', 2);

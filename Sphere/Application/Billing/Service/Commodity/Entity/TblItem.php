@@ -120,7 +120,7 @@ class TblItem extends AbstractEntity
     public function getServiceManagementCourse()
     {
 
-        if (null === $this->serviceManagement_Course || 0 === $this->serviceManagement_Course) {
+        if (null === $this->serviceManagement_Course) {
             return false;
         } else {
             return Management::serviceCourse()->entityCourseById( $this->serviceManagement_Course );
@@ -132,7 +132,7 @@ class TblItem extends AbstractEntity
      */
     public function setServiceManagementCourse( TblCourse $tblCourse = null )
     {
-        $this->serviceManagement_Course = ( null === $tblCourse ? 0 : $tblCourse->getId() );
+        $this->serviceManagement_Course = ( null === $tblCourse ? null : $tblCourse->getId() );
     }
 
     /**
@@ -141,7 +141,7 @@ class TblItem extends AbstractEntity
     public function getServiceManagementStudentChildRank()
     {
 
-        if (null === $this->serviceManagement_Student_ChildRank || 0 === $this->serviceManagement_Student_ChildRank) {
+        if (null === $this->serviceManagement_Student_ChildRank) {
             return false;
         } else {
             return Management::serviceStudent()->entityChildRankById( $this->serviceManagement_Student_ChildRank );
@@ -153,6 +153,6 @@ class TblItem extends AbstractEntity
      */
     public function setServiceManagementStudentChildRank( TblChildRank $tblChildRank = null )
     {
-        $this->serviceManagement_Student_ChildRank = ( null === $tblChildRank ? 0 : $tblChildRank->getId() );
+        $this->serviceManagement_Student_ChildRank = ( null === $tblChildRank ? null : $tblChildRank->getId() );
     }
 }

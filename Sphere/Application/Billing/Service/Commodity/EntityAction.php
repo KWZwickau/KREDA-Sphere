@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Commodity;
 
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
@@ -8,6 +9,7 @@ use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityType;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItemAccount;
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\System\System;
 
 /**
@@ -265,20 +267,22 @@ abstract class EntityAction extends EntitySchema
         return false;
     }
 
-
     /**
      * @param $Name
      * @param $Description
      * @param $Price
      * @param $CostUnit
-     *
+     * @param $Course
+     * @param $ChildRank
      * @return TblItem
      */
     protected function actionCreateItem(
         $Name,
         $Description,
         $Price,
-        $CostUnit
+        $CostUnit,
+        $Course,
+        $ChildRank
     ) {
 
         $Manager = $this->getEntityManager();
@@ -288,7 +292,14 @@ abstract class EntityAction extends EntitySchema
         $Entity->setDescription( $Description );
         $Entity->setPrice( str_replace(',','.', $Price) );
         $Entity->setCostUnit( $CostUnit );
-
+        if (Management::serviceCourse()->entityCourseById($Course))
+        {
+            $Entity->setServiceManagementCourse(Management::serviceCourse()->entityCourseById($Course));
+        }
+        if (Management::serviceStudent()->entityChildRankById($ChildRank))
+        {
+            $Entity->setServiceManagementStudentChildRank(Management::serviceStudent()->entityChildRankById($ChildRank));
+        }
         $Manager->saveEntity( $Entity );
 
         System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
@@ -302,7 +313,8 @@ abstract class EntityAction extends EntitySchema
      * @param $Description
      * @param $Price
      * @param $CostUnit
-     *
+     * @param $Course
+     * @param $ChildRank
      * @return bool
      */
     protected function actionEditItem(
@@ -310,7 +322,9 @@ abstract class EntityAction extends EntitySchema
         $Name,
         $Description,
         $Price,
-        $CostUnit
+        $CostUnit,
+        $Course,
+        $ChildRank
     ) {
         $Manager = $this->getEntityManager();
 
@@ -322,6 +336,14 @@ abstract class EntityAction extends EntitySchema
             $Entity->setDescription( $Description );
             $Entity->setPrice( str_replace(',','.', $Price) );
             $Entity->setCostUnit( $CostUnit );
+            if (Management::serviceCourse()->entityCourseById($Course))
+            {
+                $Entity->setServiceManagementCourse(Management::serviceCourse()->entityCourseById($Course));
+            }
+            if (Management::serviceStudent()->entityChildRankById($ChildRank))
+            {
+                $Entity->setServiceManagementStudentChildRank(Management::serviceStudent()->entityChildRankById($ChildRank));
+            }
 
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
