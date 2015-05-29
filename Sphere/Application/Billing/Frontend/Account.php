@@ -6,10 +6,14 @@ use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BarCodeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PlusIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Success;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
@@ -34,7 +38,23 @@ class Account extends AbstractFrontend
     public static function frontendAccount()
     {
         $View = new Stage();
-        $View->setTitle( 'Account' );
+        $View->setTitle( 'Konto' );
+        $View->setMessage( 'Bitte wählen Sie ein Thema' );
+
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendAccountFibu()
+    {
+        $View = new Stage();
+        $View->setTitle( 'FIBU' );
+        $View->setDescription( 'Konten' );
+        $View->addButton(
+            new Primary( 'FIBU Konto Anlegen', '/Sphere/Billing/Account/Fibu/Create', new PlusIcon() )
+        );
 
         $tblAccountAll = Billing::serviceAccount()->entityAccountAll();
 
@@ -44,11 +64,33 @@ class Account extends AbstractFrontend
                 $tblAccount->Taxes = $tblAccount->getTblAccountKey()->getValue();
                 $tblAccount->Code = $tblAccount->getTblAccountKey()->getCode();
                 $tblAccount->Typ = $tblAccount->getTblAccountType()->getName();
-                $tblAccount->Option =
-                    (new Primary( 'Bearbeiten', '/Sphere/Billing/Account/Edit',
-                        new EditIcon(), array(
-                            'Id' => $tblAccount->getId()
-                        ) ) )->__toString();
+                if( $tblAccount->getIsActive()=== true )
+                {
+                    $tblAccount->Activity = 'Ja';
+                }
+                else
+                {
+                    $tblAccount->Activity = 'Nein';
+                }
+
+
+                if($tblAccount->getIsActive() === false)
+                {
+                    $tblAccount->Option =
+                        (new Success( 'Aktivieren', '/Sphere/Billing/Account/Fibu/Activate',
+                            new OkIcon(), array(
+                                'Id' => $tblAccount->getId()
+                            ) ) )->__toString();
+                }
+                else
+                {
+                    $tblAccount->Option =
+                        (new Danger( 'Deaktivieren', '/Sphere/Billing/Account/Fibu/Deactivate',
+                            new DisableIcon(), array(
+                                'Id' => $tblAccount->getId()
+                            ) ) )->__toString();
+                }
+
 
             });
         }
@@ -60,13 +102,47 @@ class Account extends AbstractFrontend
                     'Taxes' => 'Mehrwertsteuer',
                     'Code' => 'Code',
                     'Typ' => 'Konto',
-                    'Option' => 'Bearbeitung'
+                    'Activity' => 'Aktiv',
+                    'Option' => 'Aktivität ändern'
                 )
             )
         );
 
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @return Stage
+     */
+    public static function frontendAccountFibuActivate( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle('Aktivierung');
+
+        $View->setContent(Billing::serviceAccount()->setFibuActivate( $Id ));
+
+
 
         return $View;
+
+    }
+
+    /**
+     * @param $Id
+     * @return Stage
+     */
+    public static function frontendAccountFibuDeactivate( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle('Deaktivierung');
+
+        $View->setContent(Billing::serviceAccount()->setFibuDeactivate( $Id ));
+
+
+
+        return $View;
+
     }
 
     /**
@@ -76,7 +152,7 @@ class Account extends AbstractFrontend
     public static function frontendCreateAccount( $Account )
     {
         $View = new Stage();
-        $View->setTitle( 'Account' );
+        $View->setTitle( 'FIBU Konto' );
         $View->setDescription( 'hinzufügen' );
 
         $tblAccountKey = Billing::serviceAccount()->entityKeyValueAll();
@@ -88,26 +164,23 @@ class Account extends AbstractFrontend
                     new FormRow( array(
 
                         new FormColumn(
-                            new TextField( 'Account[Number]', 'Nummer', 'Nummer', new ConversationIcon()
-                            ), 6),
+                            new TextField( 'Account[Number]', 'Kennziffer', 'Kennziffer', new ConversationIcon()
+                            ), 5),
                         new FormColumn(
                             new TextField( 'Account[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                            ), 6),
-                        new FormColumn(
-                            new TextField( 'Account[IsActive]', 'Aktiv', 'Aktiv', new ConversationIcon()
-                            ), 6),
+                            ), 5),
                         )),
                     new FormRow( array(
                         new FormColumn(
                             new SelectBox( 'Account[Key]', 'Mehrwertsteuer',
                                 array('Value' => $tblAccountKey
                             ) )
-                            , 6 ),
+                            , 2 ),
                         new FormColumn(
                             new SelectBox( 'Account[Type]', 'Typ',
                                 array('Name' => $tblAccountType
                             ) )
-                            , 6 )
+                            , 2 )
                     ) )
                 ))),  new SubmitPrimary( 'Hinzufügen' )), $Account ));
 
@@ -163,7 +236,7 @@ class Account extends AbstractFrontend
                                         new SelectBox( 'Account[tblAccountKey]', 'Schlüssel', array(
                                             'Value' => Billing::serviceAccount()->entityAccountKeyAll()
                                         ) )
-                                        , 1 ),
+                                        , 2 ),
                                     new FormColumn(
                                         new SelectBox( 'Account[tblAccountType]', 'Kontoart', array(
                                             'Name' => Billing::serviceAccount()->entityAccountTypeAll()
@@ -179,32 +252,57 @@ class Account extends AbstractFrontend
         return $View;
     }
 
+    public static function frontendDebtor()
+    {
+        $View = new Stage();
+        $View->setTitle( 'Debitoren' );
+        $View->setDescription( 'Konten' );
+        $View->addButton(
+            new Primary( 'Debitor Anlegen', '/Sphere/Billing/Account/Debtor/Create', new PlusIcon() )
+        );
+
+        $tblDebtorAll = Billing::serviceAccount()->entityDebtorAll();
+
+        $View->setContent(
+            new TableData( $tblDebtorAll, null,
+                array(
+                    'LeadTimeFirst' => 'Ersteinzug',
+                    'LeadTimeFollow' => 'Folgeeinzug',
+                    'DebtorNumber' => 'Debitorennummer'
+                )
+            )
+        );
+
+        return $View;
+
+    }
+
     /**
-     * @param $Debitor
+     * @param $Debtor
      * @return Stage
      */
-    public static function frontendAddDebitor( $Debitor )
+    public static function frontendCreateDebtor( $Debtor )
     {
 
         $View = new Stage();
         $View->setTitle( 'Debitoren' );
         $View->setDescription( 'Anlegen' );
 
-        $View->setContent(Billing::serviceAccount()->executeAddDebitor(
+        $View->setContent(Billing::serviceAccount()->executeAddDebtor(
             new Form( array(
                 new FormGroup( array(
                     new FormRow( array(
                         new FormColumn(
-                            new TextField( 'Debitor[First]', 'erste Vorlaufzeit', 'erste Vorlaufzeit', new TimeIcon()
+                            new TextField( 'Debtor[First]', 'Vorlaufzeit in Tagen', 'Ersteinzug', new TimeIcon()
                             ), 6 ),
                         new FormColumn(
-                            new TextField( 'Debitor[Second]', 'folgende Vorlaufzeit', 'folgende Vorlaufzeit', new TimeIcon()
+                            new TextField( 'Debtor[Second]', 'Vorlaufzeit in Tagen', 'Folgeeinzug', new TimeIcon()
                             ), 6 ),
                         new FormColumn(
-                            new TextField( 'Debitor[Number]', 'Debitoren Nummer', 'Debitoren Nummer', new BarCodeIcon()
+                            new TextField( 'Debtor[Number]', 'Nummer', 'Debitoren Nummer', new BarCodeIcon()
                             ), 12 )
                         ))
-                ))), new SubmitPrimary( 'Hinzufügen' )), $Debitor ));
+                ))), new SubmitPrimary( 'Hinzufügen' )), $Debtor ));
 
         return $View;
     }

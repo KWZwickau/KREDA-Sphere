@@ -74,7 +74,7 @@ class Billing extends Module\Commodity
         );
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Account', 'Account', new EditIcon()
+            '/Sphere/Billing/Account', 'Konto', new EditIcon()
         );
 
         self::addModuleNavigationMain( self::$Configuration,

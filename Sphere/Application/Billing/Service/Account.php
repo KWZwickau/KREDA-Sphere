@@ -74,24 +74,16 @@ class Account extends EntityAction
             $View->setError( '$Account[Description]', 'Bitte geben sie eine Beschreibung an' );
             $Error = true;
         }
-        if (isset($Account['IsActive']) && empty( $Account['IsActive'])) {
-            $View->setError( '$Account[IsActive]', 'Bitte geben sie die Aktivität an' ); //// spätere Kontrolle
-        }
         if (isset($Account['Number']) && empty( $Account['Number'])) {
             $View->setError( '$Account[Number]', 'Bitte geben sie die Nummer an' );
             $Error = true;
         }
-//        if (isset($Account['Key']) && empty( $Account['Key'])) {
-//            $View->setError( '$Account[Key]', 'Bitte geben sie den Schlüssel an' );
-//        }
-//        if (isset($Account['Type']) && empty( $Account['Type'])) {
-//            $View->setError( '$Account[Type]', 'Bitte geben sie den Typ an' );
-//        }
+        $Account['IsActive'] = 1;
 
         if (!$Error) {
             $this->actionAddAccount( $Account['Number'],$Account['Description'],$Account['IsActive'], $this->entityAccountKeyById( $Account['Key'] ), $this->entityAccountTypeById( $Account['Type'] ) );
-            return new Success( 'Der Account ist erfasst worden' )
-                .new Redirect( '/Sphere/Billing/Account', 2 );
+            return new Success( 'Das Konto ist erfasst worden' )
+                .new Redirect( '/Sphere/Billing/Account/Fibu', 2 );
         }
 
         return $View;
@@ -122,39 +114,67 @@ class Account extends EntityAction
 
     /**
      * @param AbstractType $View
-     * @param              $Debitor
+     * @param              $Debtor
      * @return AbstractType|string
      */
-    public function executeAddDebitor(
+    public function executeAddDebtor(
         AbstractType &$View = null,
-        $Debitor )
+        $Debtor )
     {
 
         /**
          * Skip to Frontend
          */
-        if (null === $Debitor) {
+        if (null === $Debtor) {
             return $View;
         }
         $Error = false;
-        if (isset( $Debitor['ZeitEins'] ) && empty( $Debitor['ZeitEins'] )) {
-            $View->setError( 'Debitor[ZeitEins]', 'Bitte geben sie die erste Vorlaufzeit an' );
+        if (isset( $Debtor['ZeitEins'] ) && empty( $Debtor['ZeitEins'] )) {
+            $View->setError( 'Debtor[ZeitEins]', 'Bitte geben sie die erste Vorlaufzeit an' );
             $Error = true;
         }
-        if (isset( $Debitor['ZeitZwei'] ) && empty( $Debitor['ZeitZwei'] )) {
-            $View->setError( 'Debitor[ZeitZwei]', 'Bitte geben sie die folge Vorlaufzeit an' );
+        if (isset( $Debtor['ZeitZwei'] ) && empty( $Debtor['ZeitZwei'] )) {
+            $View->setError( 'Debtor[ZeitZwei]', 'Bitte geben sie die folge Vorlaufzeit an' );
             $Error = true;
         }
-        if (isset( $Debitor['Nummer'] ) && empty( $Debitor['Nummer'] )) {
-            $View->setError( 'Debitor[Nummer]', 'Bitte geben sie die Debitorennummer an' );
+        if (isset( $Debtor['Nummer'] ) && empty( $Debtor['Nummer'] )) {
+            $View->setError( 'Debtor[Nummer]', 'Bitte geben sie die Debitorennummer an' );
             $Error = true;
         }
 
         if (!$Error) {
-            $this->actionAddDebitor( $Debitor['First'], $Debitor['Second'], $Debitor['Number'] );
+            $this->actionAddDebtor( $Debtor['First'], $Debtor['Second'], $Debtor['Number'] );
             return new Success( 'Der Debitor ist erfasst worden' )
-            .new Redirect( '/Sphere/Billing/Account', 2 );
+            .new Redirect( '/Sphere/Billing/Account/Debtor', 2 );
         }
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @return string
+     */
+    public function setFibuActivate( $Id )
+    {
+
+        $this->actionActivateAccount( $Id );
+        return new Success( 'Die Aktivierung ist erfasst worden' )
+        .new Redirect( '/Sphere/Billing/Account/Fibu', 2 );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @return string
+     */
+    public function setFibuDeactivate( $Id )
+    {
+
+        $this->actionDeactivateAccount( $Id );
+        return new Success( 'Die Deaktivierung ist erfasst worden' )
+        .new Redirect( '/Sphere/Billing/Account/Fibu', 2 );
+
         return $View;
     }
 
@@ -202,6 +222,15 @@ class Account extends EntityAction
     {
 
         return parent::entityAccountAll();
+    }
+
+    /**
+     * @return bool|TblDebtor[]
+     */
+    public function entityDebtorAll()
+    {
+
+        return parent::entityDebtorAll();
     }
 
     /**

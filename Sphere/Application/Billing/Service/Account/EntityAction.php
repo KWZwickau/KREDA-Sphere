@@ -5,7 +5,7 @@ use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKey;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKeyType;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountType;
-use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblDebitor;
+use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblDebtor;
 use KREDA\Sphere\Application\System\System;
 
 /**
@@ -52,11 +52,11 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param $Id
-     * @return bool|TblDebitor
+     * @return bool|TblDebtor
      */
-    protected function entityDebitorById( $Id )
+    protected function entityDebtorById( $Id )
     {
-        $Entity = $this->getEntityManager()->getEntityById( 'TblDebitor', $Id );
+        $Entity = $this->getEntityManager()->getEntityById( 'TblDebtor', $Id );
         return (null === $Entity ? false : $Entity);
     }
 
@@ -92,17 +92,17 @@ abstract class EntityAction extends EntitySchema
      * @param $First
      * @param $Second
      * @param $Number
-     * @return TblDebitor
+     * @return TblDebtor
      */
-    protected function actionAddDebitor($First, $Second, $Number )
+    protected function actionAddDebtor($First, $Second, $Number )
     {
 
         $Manager = $this->getEntityManager();
 
-        $Entity = new TblDebitor();
+        $Entity = new TblDebtor();
         $Entity->setLeadTimeFirst($First);
         $Entity->setLeadTimeFollow($Second);
-        $Entity->setDebitorNummer($Number);
+        $Entity->setDebtorNumber($Number);
 
         $Manager->saveEntity( $Entity );
 
@@ -244,6 +244,15 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return array|bool|TblAccount[]
+     */
+    protected function entityDebtorAll()
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblDebtor' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param TblAccount $tblAccount
      * @param $Description
      * @param $Number
@@ -272,6 +281,54 @@ abstract class EntityAction extends EntitySchema
             $Entity->setIsActive( $IsActive );
             $Entity->setTblAccountKey( $tblAccountKey );
             $Entity->setTblAccountType( $tblAccountType );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $Id
+     * @return bool
+     */
+    protected function actionActivateAccount( $Id )
+    {
+
+        $Manager = $this->getEntityManager();
+
+        /** @var TblAccount $Entity */
+        $Entity = $Manager->getEntityById( 'TblAccount', $Id );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setIsActive( '1' );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $Id
+     * @return bool
+     */
+    protected function actionDeactivateAccount( $Id )
+    {
+
+        $Manager = $this->getEntityManager();
+
+        /** @var TblAccount $Entity */
+        $Entity = $Manager->getEntityById( 'TblAccount', $Id );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setIsActive( '0' );
 
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),

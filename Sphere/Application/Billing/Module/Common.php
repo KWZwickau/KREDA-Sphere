@@ -37,7 +37,7 @@ class Common extends AbstractApplication
             '/Sphere/Billing/Commodity', 'Leistungen', new CommodityIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Account', 'Account', new EditIcon()
+            '/Sphere/Billing/Account', 'Konto', new EditIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Billing/Basket', 'Fakturieren', new BasketIcon()

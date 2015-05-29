@@ -5,10 +5,10 @@ use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
- * @Table(name="tblDebitor")
+ * @Table(name="tblDebtor")
  * @Cache(usage="NONSTRICT_READ_WRITE")
  */
-class TblDebitor extends AbstractEntity
+class TblDebtor extends AbstractEntity
 {
 
 //    const ATTR_TBL_PERSON = 'tblPerson';
@@ -16,7 +16,7 @@ class TblDebitor extends AbstractEntity
     /**
      * @Column(type="string")
      */
-    protected $DebitorNummer;
+    protected $DebtorNumber;
     /**
      * @Column(type="integer")
      */
@@ -63,19 +63,19 @@ class TblDebitor extends AbstractEntity
     }
 
     /**
-     * @return string $DebitorNummer
+     * @return string $DebtorNumber
      */
-    public function getDebitorNummer()
+    public function getDebtorNumber()
     {
-        return $this->DebitorNummer;
+        return $this->DebtorNumber;
     }
 
     /**
-     * @param string $debitorNummer
+     * @param string $debtorNumber
      */
-    public function setDebitorNummer($debitorNummer)
+    public function setDebtorNumber($debtorNumber)
     {
-        $this->DebitorNummer = $debitorNummer;
+        $this->DebtorNumber = $debtorNumber;
     }
 
 }
