@@ -41,7 +41,7 @@ class TblInvoiceAccount extends AbstractEntity
     /**
      * @param null|TblInvoiceItem $tblInvoiceItem
      */
-    public function setTblInvoice( TblInvoiceItem $tblInvoiceItem = null )
+    public function setTblInvoiceItem ( TblInvoiceItem $tblInvoiceItem = null )
     {
         $this->tblInvoiceItem = ( null === $tblInvoiceItem ? null : $tblInvoiceItem->getId() );
     }

@@ -87,6 +87,7 @@ abstract class AbstractIcon extends AbstractParameter implements IParameterInter
     const ICON_QUANTITY = 'glyphicon glyphicon-asterisk';
     const ICON_COMMODITY = 'glyphicon glyphicon-inbox';
     const ICON_COMMODITY_ITEM = 'glyphicon glyphicon-list-alt';
+    const ICON_DOCUMENT = 'glyphicon glyphicon-file';
 
     /** @var string $Value */
     private $Value = '';

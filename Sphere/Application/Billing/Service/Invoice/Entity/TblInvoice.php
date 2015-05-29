@@ -115,33 +115,53 @@ class TblInvoice extends AbstractEntity
     }
 
     /**
-     * @return date
+     * @return string
      */
     public function getInvoiceDate()
     {
-        return $this->InvoiceDate;
+
+        if (null === $this->InvoiceDate) {
+            return false;
+        }
+        /** @var \DateTime $InvoiceDate */
+        $InvoiceDate = $this->InvoiceDate;
+        if ($InvoiceDate instanceof \DateTime) {
+            return $InvoiceDate->format( 'd.m.Y' );
+        } else {
+            return (string)$InvoiceDate;
+        }
     }
 
     /**
-     * @param date $InvoiceDate
+     * @param \DateTime $InvoiceDate
      */
-    public function setInvoiceDate( $InvoiceDate )
+    public function setInvoiceDate(\DateTime $InvoiceDate )
     {
         $this->InvoiceDate = $InvoiceDate;
     }
 
     /**
-     * @return date
+     * @return string
      */
     public function getPaymentDate()
     {
-        return $this->PaymentDate;
+
+        if (null === $this->PaymentDate) {
+            return false;
+        }
+        /** @var \DateTime $PaymentDate */
+        $PaymentDate = $this->PaymentDate;
+        if ($PaymentDate instanceof \DateTime) {
+            return $PaymentDate->format( 'd.m.Y' );
+        } else {
+            return (string)$PaymentDate;
+        }
     }
 
     /**
-     * @param date $PaymentDate
+     * @param \DateTime $PaymentDate
      */
-    public function setPaymentDate( $PaymentDate )
+    public function setPaymentDate(\DateTime $PaymentDate )
     {
         $this->PaymentDate = $PaymentDate;
     }

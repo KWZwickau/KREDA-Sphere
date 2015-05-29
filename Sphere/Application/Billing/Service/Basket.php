@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service;
 
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
@@ -126,6 +127,15 @@ class Basket extends EntityAction
         }
 
         return $tblPerson;
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @return int
+     */
+    public function countPersonByBasket(TblBasket $tblBasket)
+    {
+        return parent::countPersonByBasket($tblBasket);
     }
 
     /**
@@ -348,10 +358,18 @@ class Basket extends EntityAction
         ) {
             return $View;
         }
-        // TODO actionCreateInvoices
-        $this->actionDestroyBasket( $tblBasket );
-        $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
+
+        if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date']))
+        {
+            $this->actionDestroyBasket( $tblBasket );
+            $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
                     .new Redirect( '/Sphere/Billing/Basket', 2 );
+        }
+        else
+        {
+            $View.= new Success( 'Die Rechnungen konnten nicht erstellt werden' )
+                .new Redirect( '/Sphere/Billing/Basket', 2 );
+        }
 
         return $View;
     }

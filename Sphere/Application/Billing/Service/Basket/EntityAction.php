@@ -98,7 +98,7 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param \KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket $tblBasket
+     * @param TblBasket $tblBasket
      *
      * @return bool|TblBasketPerson[]
      */
@@ -110,6 +110,16 @@ abstract class EntityAction extends EntitySchema
         return ( null === $EntityList ? false : $EntityList );
     }
 
+    /**
+     * @param TblBasket $tblBasket
+     * @return int
+     */
+    protected function countPersonByBasket( TblBasket $tblBasket)
+    {
+        return (int)$this->getEntityManager()->getEntity( 'TblBasketPerson' )->countBy( array(
+            TblBasketPerson::ATTR_TBL_Basket => $tblBasket ->getId()
+        ) );
+    }
 
     /**
      * @return TblBasket

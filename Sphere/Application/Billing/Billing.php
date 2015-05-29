@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BasketIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CommodityIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DocumentIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
@@ -81,7 +82,7 @@ class Billing extends Module\Commodity
         );
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoice', 'Rechnungen', new BasketIcon()
+            '/Sphere/Billing/Invoice', 'Rechnungen', new DocumentIcon()
         );
     }
 
