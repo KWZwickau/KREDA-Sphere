@@ -61,7 +61,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityInvoiceAllByIsPaidState( $IsPaid )
     {
         $EntityList = $this->getEntityManager()->getEntity( 'TblInvoice' )
-            ->findBy( array( TblInvoice::ATTR_IS_PAID => $IsPaid, TblInvoice::ATTR_IS_VOID => false ) );
+            ->findBy( array( TblInvoice::ATTR_IS_PAID => $IsPaid ) );
         return ( null === $EntityList ? false : $EntityList );
     }
 

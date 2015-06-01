@@ -135,24 +135,29 @@ class Invoice extends EntityAction
 
     /**
      * @param TblInvoice $tblInvoice
-     * @param string $Route
      *
      * @return string
      */
     public function executeCancelInvoice(
-        TblInvoice $tblInvoice,
-        $Route
+        TblInvoice $tblInvoice
     )
     {
-        if ($this->actionCancelInvoice($tblInvoice))
+        if (!$tblInvoice->getIsConfirmed())
         {
-            return new Success( 'Die Rechnung wurde erfolgreich storniert' )
-                .new Redirect( '/Sphere/Billing/Invoice/'.$Route, 0 );
+            if ($this->actionCancelInvoice($tblInvoice))
+            {
+                return new Success( 'Die Rechnung wurde erfolgreich storniert' )
+                    .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 0 );
+            }
+            else
+            {
+                return new Warning( 'Die Rechnung konnte nicht storniert werden' )
+                    .new Redirect( '/Sphere/Billing/Invoice/Edit', 2, array('Id'=>$tblInvoice->getId()) );
+            }
         }
         else
         {
-            return new Warning( 'Die Rechnung konnte nicht storniert werden' )
-                .new Redirect( '/Sphere/Billing/Invoice/'.$Route, 2 );
+            //TODO cancel confirmed invoice
         }
     }
 }

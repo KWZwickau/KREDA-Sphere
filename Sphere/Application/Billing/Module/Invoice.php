@@ -22,7 +22,10 @@ class Invoice extends Common
     protected static function setupApplicationNavigation()
     {
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoice/IsNotConfirmed', 'Freigeben', new OkIcon()
+            '/Sphere/Billing/Invoice/List', 'Alle'
+        );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed', 'Offene'
         );
     }
 
@@ -34,7 +37,10 @@ class Invoice extends Common
         self::$Configuration = $Configuration;
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice', __CLASS__.'::frontendInvoiceList'
+            '/Sphere/Billing/Invoice', __CLASS__.'::frontendInvoiceStatus'
+        );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/List', __CLASS__.'::frontendInvoiceList'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Invoice/IsNotConfirmed', __CLASS__.'::frontendInvoiceIsNotConfirmedList'
@@ -52,6 +58,16 @@ class Invoice extends Common
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Route', null );
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendInvoiceStatus()
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoiceStatus();
     }
 
     /**

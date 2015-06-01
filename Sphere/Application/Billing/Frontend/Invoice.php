@@ -26,6 +26,19 @@ class Invoice extends AbstractFrontend
     /**
      * @return Stage
      */
+    public static function frontendInvoiceStatus()
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Rechnungen' );
+        $View->setDescription( 'Übersicht' );
+
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
     public static function frontendInvoiceList()
     {
 
@@ -34,7 +47,7 @@ class Invoice extends AbstractFrontend
         $View->setDescription( 'Übersicht' );
         $View->setMessage( 'Zeigt alle vorhandenen Rechnungen an' );
 
-        $tblInvoiceAll = Billing::serviceInvoice()->entityInvoiceAllByIsVoidState( false );
+        $tblInvoiceAll = Billing::serviceInvoice()->entityInvoiceAll();
 
         if (!empty( $tblInvoiceAll )) {
             array_walk( $tblInvoiceAll, function ( TblInvoice &$tblInvoice ) {
@@ -47,8 +60,7 @@ class Invoice extends AbstractFrontend
                             ) ) )->__toString().
                         ( new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
                             new RemoveIcon(), array(
-                                'Id' => $tblInvoice->getId(),
-                                'Route' => ""
+                                'Id' => $tblInvoice->getId()
                             ) ) )->__toString();
                 }
                 else
@@ -96,8 +108,7 @@ class Invoice extends AbstractFrontend
                         ) ) )->__toString().
                     ( new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
                         new RemoveIcon(), array(
-                            'Id' => $tblInvoice->getId(),
-                            'Route' => "IsNotConfirmed"
+                            'Id' => $tblInvoice->getId()
                         ) ) )->__toString();
             } );
         }

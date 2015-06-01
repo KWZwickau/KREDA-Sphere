@@ -359,16 +359,25 @@ class Basket extends EntityAction
             return $View;
         }
 
-        if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date']))
-        {
-            $this->actionDestroyBasket( $tblBasket );
-            $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
-                    .new Redirect( '/Sphere/Billing/Basket', 2 );
+        $Error = false;
+
+        if (isset( $Basket['Date'] ) && empty(  $Basket['Date'] )) {
+            $View->setError( 'Basket[Date]', 'Bitte geben Sie ein Fälligkeitsdatum an' );
+            $Error = true;
         }
-        else
-        {
-            $View.= new Success( 'Die Rechnungen konnten nicht erstellt werden' )
-                .new Redirect( '/Sphere/Billing/Basket', 2 );
+
+        if (!$Error) {
+            if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date']))
+            {
+                $this->actionDestroyBasket( $tblBasket );
+                $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
+                        .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 2 );
+            }
+            else
+            {
+                $View.= new Success( 'Die Rechnungen konnten nicht erstellt werden' )
+                    .new Redirect( '/Sphere/Billing/Basket', 2 );
+            }
         }
 
         return $View;
