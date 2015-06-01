@@ -336,9 +336,17 @@ abstract class EntityAction extends EntitySchema
             {
                 $Entity->setServiceManagementCourse(Management::serviceCourse()->entityCourseById($Course));
             }
+            else
+            {
+                $Entity->setServiceManagementCourse(null);
+            }
             if (Management::serviceStudent()->entityChildRankById($ChildRank))
             {
                 $Entity->setServiceManagementStudentChildRank(Management::serviceStudent()->entityChildRankById($ChildRank));
+            }
+            else
+            {
+                $Entity->setServiceManagementStudentChildRank(null);
             }
 
             $Manager->saveEntity( $Entity );
