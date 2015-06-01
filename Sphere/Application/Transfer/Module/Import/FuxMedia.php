@@ -238,7 +238,7 @@ class FuxMedia extends AbstractApplication
                                     $AddressNumber = '';
                                 }
                                 if (strlen( trim( $AddressStreet ) ) > 0) {
-                                    $tblAddress = Management::serviceAddress()->actionCreateAddress(
+                                    $tblAddress = Management::serviceAddress()->importCreateAddress(
                                         $tblAddressState, $tblAddressCity, $AddressStreet, $AddressNumber
                                     );
                                     Management::servicePerson()->executeAddAddress( $tblPersonStudent->getId(),
@@ -308,7 +308,7 @@ class FuxMedia extends AbstractApplication
                                     $AddressNumber = '';
                                 }
                                 if (strlen( trim( $AddressStreet ) ) > 0) {
-                                    $tblAddress = Management::serviceAddress()->actionCreateAddress(
+                                    $tblAddress = Management::serviceAddress()->importCreateAddress(
                                         $tblAddressState, $tblAddressCity, $AddressStreet, $AddressNumber
                                     );
                                 }
@@ -343,7 +343,7 @@ class FuxMedia extends AbstractApplication
                                     $AddressNumber = '';
                                 }
                                 if (strlen( trim( $AddressStreet ) ) > 0) {
-                                    $tblAddress = Management::serviceAddress()->actionCreateAddress(
+                                    $tblAddress = Management::serviceAddress()->importCreateAddress(
                                         $tblAddressState, $tblAddressCity, $AddressStreet, $AddressNumber
                                     );
                                 }
@@ -378,7 +378,7 @@ class FuxMedia extends AbstractApplication
                                     $AddressNumber = '';
                                 }
                                 if (strlen( trim( $AddressStreet ) ) > 0) {
-                                    $tblAddress = Management::serviceAddress()->actionCreateAddress(
+                                    $tblAddress = Management::serviceAddress()->importCreateAddress(
                                         $tblAddressState, $tblAddressCity, $AddressStreet, $AddressNumber
                                     );
                                 }

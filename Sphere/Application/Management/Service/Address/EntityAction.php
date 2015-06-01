@@ -95,32 +95,6 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param      $StateName
-     * @param      $CityCode
-     * @param      $CityName
-     * @param      $CityDistrict
-     * @param      $StreetName
-     * @param      $StreetNumber
-     * @param null $PostOfficeBox
-     *
-     * @return TblAddress
-     */
-    protected function actionCreateFullAddress(
-        $StateName,
-        $CityCode,
-        $CityName,
-        $CityDistrict,
-        $StreetName,
-        $StreetNumber,
-        $PostOfficeBox = null
-    ) {
-
-        $tblState = $this->actionCreateAddressState( $StateName );
-        $tblCity = $this->actionCreateAddressCity( $CityCode, $CityName, $CityDistrict );
-        return $this->actionCreateAddress( $tblState, $tblCity, $StreetName, $StreetNumber, $PostOfficeBox );
-    }
-
-    /**
      * @param string $Name
      *
      * @return TblAddressState
@@ -170,17 +144,17 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param null|TblAddressState $TblAddressState
-     * @param null|TblAddressCity  $TblAddressCity
-     * @param null|string          $StreetName
-     * @param null|string          $StreetNumber
-     * @param null|string          $PostOfficeBox
+     * @param TblAddressState $TblAddressState
+     * @param TblAddressCity  $TblAddressCity
+     * @param null|string     $StreetName
+     * @param null|string     $StreetNumber
+     * @param null|string     $PostOfficeBox
      *
      * @return TblAddress
      */
     protected function actionCreateAddress(
-        TblAddressState $TblAddressState = null,
-        TblAddressCity $TblAddressCity = null,
+        TblAddressState $TblAddressState,
+        TblAddressCity $TblAddressCity,
         $StreetName = null,
         $StreetNumber = null,
         $PostOfficeBox = null

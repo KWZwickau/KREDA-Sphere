@@ -316,12 +316,6 @@ class Person extends \Faker\Provider\Person
         return static::titleMale();
     }
 
-    public function title( $gender = null )
-    {
-
-        return static::titleMale();
-    }
-
     /**
      * replaced by specific unisex Turkish title
      */
@@ -329,5 +323,11 @@ class Person extends \Faker\Provider\Person
     {
 
         return static::randomElement( static::$title );
+    }
+
+    public function title( $gender = null )
+    {
+
+        return static::titleMale();
     }
 }

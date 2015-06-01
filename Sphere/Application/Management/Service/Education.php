@@ -226,15 +226,19 @@ class Education extends EntityAction
             return $View;
         }
 
+        $tblCourse = Management::serviceCourse()->entityCourseById( $Course );
+
         $Error = false;
         if (isset( $Name ) && empty( $Name )) {
             $View->setError( 'Name', 'Bitte geben Sie einen Namen für das Schuljahr an' );
             $Error = true;
         }
         if (isset( $Name ) && !empty( $Name )) {
-            if ($this->entityTermByName( $Name )) {
-                $View->setError( 'Name', 'Bitte geben Sie einen eindeutigen Namen für das Schuljahr ein' );
-                $Error = true;
+            if (( $tblTerm = $this->entityTermByName( $Name ) )) {
+                if ($tblTerm->getServiceManagementCourse()->getId() == $tblCourse->getId()) {
+                    $View->setError( 'Name', 'Bitte geben Sie einen eindeutigen Namen für das Schuljahr ein' );
+                    $Error = true;
+                }
             }
         }
         if (isset( $FirstTerm['DateFrom'] ) && empty( $FirstTerm['DateFrom'] )) {
@@ -254,7 +258,7 @@ class Education extends EntityAction
             $Error = true;
         }
         if (isset( $Course ) && !empty( $Course )) {
-            if (!Management::serviceCourse()->entityCourseById( $Course )) {
+            if (!$tblCourse) {
                 $View->setError( 'Course', 'Bitte wählen Sie einen verfügbaren Bildungsgang' );
                 $Error = true;
             }
@@ -264,13 +268,14 @@ class Education extends EntityAction
             return $View;
         } else {
             $this->actionCreateTerm( $Name, $FirstTerm['DateFrom'], $FirstTerm['DateTo'], $SecondTerm['DateFrom'],
-                $SecondTerm['DateTo'], Management::serviceCourse()->entityCourseById( $Course ) );
+                $SecondTerm['DateTo'], $tblCourse );
             return new Redirect( '/Sphere/Management/Period/SchoolYear', 0 );
         }
     }
 
     /**
      * @param AbstractType $View
+     * @param int          $Id
      * @param array        $Name
      * @param array        $FirstTerm
      * @param array        $SecondTerm

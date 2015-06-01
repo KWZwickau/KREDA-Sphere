@@ -257,6 +257,15 @@ class Person extends \Faker\Provider\Person
     }
 
     /**
+     * replaced by specific unisex hungarian title
+     */
+    public static function titleMale()
+    {
+
+        return static::randomElement( static::$title );
+    }
+
+    /**
      * @example 'PhD'
      */
     public static function suffix()
@@ -269,14 +278,5 @@ class Person extends \Faker\Provider\Person
     {
 
         return static::titleMale();
-    }
-
-    /**
-     * replaced by specific unisex hungarian title
-     */
-    public static function titleMale()
-    {
-
-        return static::randomElement( static::$title );
     }
 }
