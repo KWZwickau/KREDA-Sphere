@@ -66,7 +66,7 @@ class Commodity extends AbstractFrontend
             {
               $tblCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
               $tblCommodity->ItemCount = Billing::serviceCommodity()->countItemAllByCommodity( $tblCommodity );
-              $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity)." €";
+              $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity);
               $tblCommodity->Option =
                   (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Edit',
                         new EditIcon(), array(

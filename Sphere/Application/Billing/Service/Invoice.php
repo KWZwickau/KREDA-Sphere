@@ -112,7 +112,7 @@ class Invoice extends EntityAction
     /**
      * @param TblInvoice $tblInvoice
      *
-     * @return float
+     * @return string
      */
     public  function sumPriceItemAllByInvoice(TblInvoice $tblInvoice)
     {

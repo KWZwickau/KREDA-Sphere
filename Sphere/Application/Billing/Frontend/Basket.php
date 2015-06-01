@@ -158,7 +158,7 @@ class Basket extends AbstractFrontend
 
                     $tblCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
                     $tblCommodity->ItemCount = Billing::serviceCommodity()->countItemAllByCommodity( $tblCommodity );
-                    $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity )." €";
+                    $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity );
                     $tblCommodity->Option =
                         ( new Danger( 'Entfernen', '/Sphere/Billing/Basket/Commodity/Remove',
                             new MinusIcon(), array(
@@ -173,7 +173,7 @@ class Basket extends AbstractFrontend
 
                 $tblCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
                 $tblCommodity->ItemCount = Billing::serviceCommodity()->countItemAllByCommodity( $tblCommodity );
-                $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity )." €";
+                $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity );
                 $tblCommodity->Option =
                     ( new Primary( 'Hinzufügen', '/Sphere/Billing/Basket/Commodity/Add',
                         new PlusIcon(), array(
@@ -542,10 +542,6 @@ class Basket extends AbstractFrontend
             new ChevronLeftIcon(), array(
                 'Id' => $Id
             ) ) );
-        $View->addButton( new Primary( 'Debitor auswählen', '/Sphere/Billing/Basket/Debtor/Select',
-            new ChevronLeftIcon(), array(
-                'Id' => $Id
-            ) ) );
 
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
         $tblBasketItemAll = Billing::serviceBasket()->entityBasketItemAllByBasket( $tblBasket );
@@ -608,7 +604,7 @@ class Basket extends AbstractFrontend
                                                 , 3 )
                                         ) ),
                                     ), new FormTitle( 'Fälligkeit' ) )
-                                    , new SubmitPrimary( 'Warenkorb fakturieren (abschließen)' )
+                                    , new SubmitPrimary( 'Warenkorb fakturieren (prüfen)' )
                                 ), $tblBasket, $Basket )
                         )
                     ) )

@@ -101,12 +101,10 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblInvoice $tblInvoice
-     *
-     * @return float (type="decimal", precision=14, scale=4)
+     * @return string
      */
     protected function sumPriceItemAllByInvoice( TblInvoice $tblInvoice)
     {
-        //(type="decimal", precision=14, scale=4)
         $sum = 0.00;
         $tblInvoiceItemByInvoice = $this->entityInvoiceItemAllByInvoice( $tblInvoice);
         /** @var TblInvoiceItem $tblInvoiceItem */
@@ -115,7 +113,7 @@ abstract class EntityAction extends EntitySchema
             $sum += $tblInvoiceItem->getItemPrice() * $tblInvoiceItem->getItemQuantity();
         }
 
-        return $sum;
+        return str_replace('.', ',', round($sum, 2)) . " €";
     }
 
     /**

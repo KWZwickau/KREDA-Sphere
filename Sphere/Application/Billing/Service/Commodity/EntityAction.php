@@ -186,11 +186,10 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param TblCommodity $tblCommodity
      *
-     * @return float (type="decimal", precision=14, scale=4)
+     * @return string
      */
     protected function sumPriceItemAllByCommodity( TblCommodity $tblCommodity)
     {
-        //(type="decimal", precision=14, scale=4)
         $sum = 0.00;
         $tblCommodityItemByCommodity = $this->entityCommodityItemAllByCommodity( $tblCommodity);
         /** @var TblCommodityItem $tblCommodityItem */
@@ -199,7 +198,7 @@ abstract class EntityAction extends EntitySchema
             $sum += $tblCommodityItem->getTblItem()->getPrice() * $tblCommodityItem->getQuantity();
         }
 
-        return $sum;
+        return str_replace('.', ',', round($sum, 2)) . " €";
     }
 
     /**

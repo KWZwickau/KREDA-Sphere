@@ -187,7 +187,7 @@ class Commodity extends EntityAction
     /**
      * @param TblCommodity $tblCommodity
      *
-     * @return float
+     * @return string
      */
     public function sumPriceItemAllByCommodity(TblCommodity $tblCommodity)
     {

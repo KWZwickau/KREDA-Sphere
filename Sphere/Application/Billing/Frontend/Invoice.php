@@ -67,25 +67,29 @@ class Invoice extends AbstractFrontend
 
         if (!empty( $tblInvoiceAll )) {
             array_walk( $tblInvoiceAll, function ( TblInvoice &$tblInvoice ) {
-                if (!($tblInvoice->getIsConfirmed()))
-                {
-                    $tblInvoice->Option =
-                        ( new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/Edit',
-                            new EditIcon(), array(
-                                'Id' => $tblInvoice->getId()
-                            ) ) )->__toString().
-                        ( new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
-                            new RemoveIcon(), array(
-                                'Id' => $tblInvoice->getId()
-                            ) ) )->__toString();
+                $tblInvoice->Student = $tblInvoice->getServiceManagementPerson()->getFullName();
+                $tblInvoice->Debtor = $tblInvoice->getDebtorFullName();
+                $tblInvoice->TotalPrice = Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice );
+                if ($tblInvoice->getIsPaid()) {
+                    $tblInvoice->IsPaidString = "Bezahlt";
                 }
                 else
                 {
-                    $tblInvoice->Option =
-                        ( new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
-                            new RemoveIcon(), array(
-                                'Id' => $tblInvoice->getId()
-                            ) ) )->__toString();
+                    $tblInvoice->IsPaidString = "";
+                }
+                if ($tblInvoice->getIsVoid()) {
+                    $tblInvoice->IsVoidString = "Storniert";
+                }
+                else
+                {
+                    $tblInvoice->IsVoidString = "";
+                }
+                if ($tblInvoice->getIsConfirmed()) {
+                    $tblInvoice->IsConfirmedString = "Bestätigt";
+                }
+                else
+                {
+                    $tblInvoice->IsConfirmedString = "";
                 }
             });
         }
@@ -94,7 +98,15 @@ class Invoice extends AbstractFrontend
             new TableData( $tblInvoiceAll, null,
                 array(
                     'Number' => 'Nummer',
-                    'Option' => 'Option'
+                    'InvoiceDate' => 'Datum',
+                    'Student' => 'Student',
+                    'Debtor' => 'Debitor',
+                    'DebtorNumber' => 'Debitorennummer',
+                    'TotalPrice' => 'Gesamtpreis',
+                    'IsConfirmedString' => 'Bestätigt',
+                    'IsPaidString' => 'Bezahlt',
+                    'IsVoidString' => 'Storniert',
+                    //'Option' => 'Option'
                 )
             )
         );
@@ -131,6 +143,7 @@ class Invoice extends AbstractFrontend
             new TableData( $tblInvoiceAllByIsConfirmedState, null,
                 array(
                     'Number' => 'Nummer',
+                    'InvoiceDate' => 'Datum',
                     'Student' => 'Student',
                     'Debtor' => 'Debitor',
                     'DebtorNumber' => 'Debitorennummer',
