@@ -59,17 +59,22 @@ class TblInvoice extends AbstractEntity
     /**
      * @Column(type="string")
      */
-    protected $PersonFirstName;
+    protected $DebtorFirstName;
 
     /**
      * @Column(type="string")
      */
-    protected $PersonLastName;
+    protected $DebtorLastName;
 
     /**
      * @Column(type="string")
      */
-    protected $PersonSalutation;
+    protected $DebtorSalutation;
+
+    /**
+     * @Column(type="string")
+     */
+    protected $DebtorNumber;
 
     /**
      * @Column(type="bigint")
@@ -216,49 +221,73 @@ class TblInvoice extends AbstractEntity
     /**
      * @return string
      */
-    public function getPersonFirstName()
+    public function getDebtorFirstName()
     {
-        return $this->PersonFirstName;
+        return $this->DebtorFirstName;
     }
 
     /**
      * @param string $PersonFirstName
      */
-    public function setPersonFirstName( $PersonFirstName )
+    public function setDebtorFirstName( $PersonFirstName )
     {
-        $this->PersonFirstName = $PersonFirstName;
+        $this->DebtorFirstName = $PersonFirstName;
     }
 
     /**
      * @return string
      */
-    public function getPersonLastName()
+    public function getDebtorLastName()
     {
-        return $this->PersonLastName;
+        return $this->DebtorLastName;
     }
 
     /**
      * @param string $PersonLastName
      */
-    public function setPersonLastName( $PersonLastName )
+    public function setDebtorLastName( $PersonLastName )
     {
-        $this->PersonLastName = $PersonLastName;
+        $this->DebtorLastName = $PersonLastName;
     }
 
     /**
      * @return string
      */
-    public function getPersonSalutation()
+    public function getDebtorSalutation()
     {
-        return $this->PersonSalutation;
+        return $this->DebtorSalutation;
     }
 
     /**
      * @param string $PersonSalutation
      */
-    public function setPersonSalutation( $PersonSalutation )
+    public function setDebtorSalutation( $PersonSalutation )
     {
-        $this->PersonSalutation = $PersonSalutation;
+        $this->DebtorSalutation = $PersonSalutation;
+    }
+
+    /**
+     * @param string $DebtorNumber
+     */
+    public function setDebtorNumber($DebtorNumber)
+    {
+        $this->DebtorNumber = $DebtorNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDebtorNumber()
+    {
+        return $this->DebtorNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDebtorFullName()
+    {
+        return $this->DebtorFirstName . " " . $this->DebtorLastName;
     }
 
     /**

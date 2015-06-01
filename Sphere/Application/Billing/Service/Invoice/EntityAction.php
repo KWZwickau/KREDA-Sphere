@@ -50,7 +50,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityInvoiceAllByIsConfirmedState( $IsConfirmed )
     {
         $EntityList = $this->getEntityManager()->getEntity( 'TblInvoice' )
-            ->findBy( array( TblInvoice::ATTR_IS_CONFIRMED => $IsConfirmed ) );
+            ->findBy( array( TblInvoice::ATTR_IS_CONFIRMED => $IsConfirmed, TblInvoice::ATTR_IS_VOID => false ) );
         return ( null === $EntityList ? false : $EntityList );
     }
 
@@ -61,7 +61,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityInvoiceAllByIsPaidState( $IsPaid )
     {
         $EntityList = $this->getEntityManager()->getEntity( 'TblInvoice' )
-            ->findBy( array( TblInvoice::ATTR_IS_PAID => $IsPaid ) );
+            ->findBy( array( TblInvoice::ATTR_IS_PAID => $IsPaid, TblInvoice::ATTR_IS_VOID => false ) );
         return ( null === $EntityList ? false : $EntityList );
     }
 
@@ -72,7 +72,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityInvoiceAllByIsVoidState( $IsVoid )
     {
         $EntityList = $this->getEntityManager()->getEntity( 'TblInvoice' )
-            ->findBy( array( TblInvoice::ATTR_IS_PAID => $IsVoid ) );
+            ->findBy( array( TblInvoice::ATTR_IS_VOID => $IsVoid ) );
         return ( null === $EntityList ? false : $EntityList );
     }
 
@@ -83,9 +83,20 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityInvoiceItemById( $Id )
     {
-
         $Entity = $this->getEntityManager()->getEntityById( 'TblInvoiceItem', $Id );
         return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblInvoice $tblInvoice
+     *
+     * @return TblInvoiceItem[]|bool
+     */
+    protected function entityInvoiceItemAllByInvoice( TblInvoice $tblInvoice )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblInvoiceItem' )
+            ->findBy( array( TblInvoiceItem::ATTR_TBL_INVOICE => $tblInvoice->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
     }
 
     /**
@@ -104,7 +115,7 @@ abstract class EntityAction extends EntitySchema
 
         $Manager = $this->getEntityManager();
 
-        // TODO Debtor select, Vorlaufzeit
+        // TODO Debtor select, Vorlaufzeit, DebtorNumber
         // TODO InvoiceNumber create
         // TODO tblAddress
 
@@ -118,9 +129,10 @@ abstract class EntityAction extends EntitySchema
             $Entity->setPaymentDate( ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P5D' ) ) );
             $Entity->setInvoiceDate( new \DateTime( $Date ) );
             $Entity->setDiscount( 0 );
-            $Entity->setPersonFirstName( $tblPerson->getFirstName() );
-            $Entity->setPersonLastName( $tblPerson->getLastName() );
-            $Entity->setPersonSalutation( $tblPerson->getTblPersonSalutation()->getName() );
+            $Entity->setDebtorFirstName( $tblPerson->getFirstName() );
+            $Entity->setDebtorLastName( $tblPerson->getLastName() );
+            $Entity->setDebtorSalutation( $tblPerson->getTblPersonSalutation()->getName() );
+            $Entity->setDebtorNumber("1234245");
             $Entity->setServiceManagementPerson( $tblPerson );
 
             $Manager->SaveEntity( $Entity );
@@ -212,4 +224,111 @@ abstract class EntityAction extends EntitySchema
                 $EntityItemAccount );
         }
     }
+
+    /**
+     * @param TblInvoice $tblInvoice
+     *
+     * @return bool
+     */
+    protected function actionConfirmInvoice(
+        TblInvoice $tblInvoice
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblInvoice $Entity */
+        $Entity = $Manager->getEntityById( 'TblInvoice', $tblInvoice->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setIsConfirmed( true );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblInvoice $tblInvoice
+     *
+     * @return bool
+     */
+    protected function actionCancelInvoice(
+        TblInvoice $tblInvoice
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblInvoice $Entity */
+        $Entity = $Manager->getEntityById( 'TblInvoice', $tblInvoice->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setIsVoid( true );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblInvoiceItem $tblInvoiceItem
+     * @param $Price
+     * @param $Quantity
+     *
+     * @return bool
+     */
+    protected function actionEditInvoiceItem(
+        TblInvoiceItem $tblInvoiceItem,
+        $Price,
+        $Quantity
+    ) {
+
+        $Manager = $this->getEntityManager();
+
+        /** @var TblInvoiceItem $Entity */
+        $Entity = $Manager->getEntityById( 'TblInvoiceItem', $tblInvoiceItem->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setItemPrice( str_replace( ',', '.', $Price ) );
+            $Entity->setItemQuantity( str_replace( ',', '.', $Quantity ) );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblInvoiceItem $tblInvoiceItem
+     *
+     * @return bool
+     */
+    protected function actionRemoveInvoiceItem(
+        TblInvoiceItem $tblInvoiceItem
+    ) {
+
+        $Manager = $this->getEntityManager();
+
+        $Entity = $Manager->getEntity( 'tblInvoiceItem' )->findOneBy(
+            array(
+                'Id' => $tblInvoiceItem->getId()
+            ) );
+        if (null !== $Entity) {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
+
+
 }

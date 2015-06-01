@@ -71,17 +71,21 @@ abstract class EntitySchema extends AbstractService
         {
             $Table->addColumn( 'Discount', 'decimal' , array( 'precision' => 14 , 'scale' => 4) );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'PersonFirstName' ))
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'DebtorFirstName' ))
         {
-            $Table->addColumn( 'PersonFirstName', 'string' );
+            $Table->addColumn( 'DebtorFirstName', 'string' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'PersonLastName' ))
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'DebtorLastName' ))
         {
-            $Table->addColumn( 'PersonLastName', 'string' );
+            $Table->addColumn( 'DebtorLastName', 'string' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'PersonSalutation' ))
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'DebtorSalutation' ))
         {
-            $Table->addColumn( 'PersonSalutation', 'string' );
+            $Table->addColumn( 'DebtorSalutation', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'DebtorNumber' ))
+        {
+            $Table->addColumn( 'DebtorNumber', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'serviceManagement_Address' ))
         {

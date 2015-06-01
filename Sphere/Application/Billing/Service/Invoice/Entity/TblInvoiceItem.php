@@ -15,6 +15,8 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblInvoiceItem extends AbstractEntity
 {
+    const ATTR_TBL_INVOICE = 'tblInvoice';
+
     /**
      * @Column(type="string")
      */
