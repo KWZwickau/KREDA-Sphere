@@ -62,6 +62,7 @@ class Person extends EntityAction
         $this->actionCreateType( 'Schüler' );
         $this->actionCreateType( 'Sorgeberechtigter' );
         $this->actionCreateType( 'Lehrer' );
+        $this->actionCreateType( 'Verwaltungspersonal' );
         /**
          * Relationship Type
          */

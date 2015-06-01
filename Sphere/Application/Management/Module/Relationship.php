@@ -25,6 +25,14 @@ class Relationship extends Person
         )
             ->setParameterDefault( 'tblRelationship', null )
             ->setParameterDefault( 'tblRelationshipType', null );
+
+        self::registerClientRoute( $Configuration,
+            '/Sphere/Management/Person/Relationship/Destroy', __CLASS__.'::frontendRelationshipDestroy'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Link', null )
+            ->setParameterDefault( 'Confirm', false );
+
         /**
          * REST Service
          */
@@ -57,5 +65,20 @@ class Relationship extends Person
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::stageRelationship( $tblPerson, $tblRelationship, $tblRelationshipType, $Remove );
+    }
+
+    /**
+     * @param null|int $Id
+     * @param null|int $Link
+     * @param bool     $Confirm
+     *
+     * @return Stage
+     */
+    public static function frontendRelationshipDestroy( $Id, $Link, $Confirm )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return \KREDA\Sphere\Application\Management\Frontend\Person\Relationship::stageDestroy( $Id, $Link, $Confirm );
     }
 }

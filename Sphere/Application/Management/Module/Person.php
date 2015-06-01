@@ -54,6 +54,11 @@ class Person extends Account
             ->setParameterDefault( 'Id', null );
 
         self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/Address', __CLASS__.'::frontendAddressCreate'
+        )
+            ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/List/Student', __CLASS__.'::frontendListStudent'
         );
         self::registerClientRoute( self::$Configuration,
@@ -183,6 +188,22 @@ class Person extends Account
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::stageDestroy( $Id );
+    }
+
+    /**
+     * @param int|null       $Id
+     * @param array|int|null $State
+     * @param array|null     $City
+     * @param array|null     $Street
+     *
+     * @return Stage
+     */
+    public static function frontendAddressCreate( $Id, $State, $City, $Street )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend\Address::stageCreate( $Id, $State, $City, $Street );
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Frontend;
 
+use KREDA\Sphere\Application\Management\Frontend\Person\Address;
+use KREDA\Sphere\Application\Management\Frontend\Person\Relationship;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
@@ -153,28 +155,28 @@ class Person extends AbstractFrontend
                 switch ($tblPerson->getTblPersonType()->getId()) {
                     case Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId():
                         $FormStudent = '';
-                        $FormRelationship = '';
-                        $FormAddress = Person\InputForm::formAddress( $tblPerson, $State, $City, $Street );
+                        $LayoutRelationship = '';
+                        $LayoutAddress = Address::layoutAddress( $tblPerson );
                         break;
                     case Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId():
                         $FormStudent = Person\InputForm::formStudent( $tblPerson );
-                        $FormRelationship = Person\InputForm::formRelationship( $tblPerson );
-                        $FormAddress = Person\InputForm::formAddress( $tblPerson, $State, $City, $Street );
+                        $LayoutRelationship = Relationship::layoutRelationship( $tblPerson );
+                        $LayoutAddress = Address::layoutAddress( $tblPerson );
                         break;
                     case Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId():
                         $FormStudent = '';
-                        $FormRelationship = Person\InputForm::formRelationship( $tblPerson );
-                        $FormAddress = Person\InputForm::formAddress( $tblPerson, $State, $City, $Street );
+                        $LayoutRelationship = Relationship::layoutRelationship( $tblPerson );
+                        $LayoutAddress = Address::layoutAddress( $tblPerson );
                         break;
                     case Management::servicePerson()->entityPersonTypeByName( 'Lehrer' )->getId():
                         $FormStudent = '';
-                        $FormRelationship = Person\InputForm::formRelationship( $tblPerson );
-                        $FormAddress = Person\InputForm::formAddress( $tblPerson, $State, $City, $Street );
+                        $LayoutRelationship = Relationship::layoutRelationship( $tblPerson );
+                        $LayoutAddress = Address::layoutAddress( $tblPerson );
                         break;
                     default:
                         $FormStudent = '';
-                        $FormRelationship = '';
-                        $FormAddress = '';
+                        $LayoutRelationship = '';
+                        $LayoutAddress = '';
                 }
 
                 $View->setContent(
@@ -183,8 +185,8 @@ class Person extends AbstractFrontend
                         $FormBasic, $tblPerson, $PersonName, $PersonInformation, $BirthDetail
                     )
                     .$FormStudent
-                    .$FormAddress
-                    .$FormRelationship
+                    .$LayoutAddress
+                    .$LayoutRelationship
                 );
             }
         }

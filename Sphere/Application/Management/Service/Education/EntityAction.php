@@ -63,7 +63,10 @@ abstract class EntityAction extends EntitySchema
 
         $Manager = $this->getEntityManager();
         $Entity = $Manager->getEntity( 'TblTerm' )
-            ->findOneBy( array( TblTerm::ATTR_NAME => $Name ) );
+            ->findOneBy( array(
+                TblTerm::ATTR_NAME                      => $Name,
+                TblTerm::ATTR_SERVICE_MANAGEMENT_COURSE => $tblCourse->getId()
+            ) );
         if (null === $Entity) {
             $Entity = new TblTerm( $Name );
             $Entity->setFirstDateFrom( new \DateTime( $FirstDateFrom ) );

@@ -6,7 +6,6 @@ use KREDA\Sphere\Client\Component\IElementInterface;
 use KREDA\Sphere\Client\Frontend\Button\AbstractType;
 use KREDA\Sphere\Client\Frontend\Text\Type\Muted;
 use MOC\V\Component\Template\Component\IBridgeInterface;
-use MOC\V\Component\Template\Exception\TemplateTypeException;
 
 /**
  * Class Stage
@@ -31,12 +30,18 @@ class Stage extends AbstractContent implements IElementInterface
     private $Menu = array();
 
     /**
-     * @throws TemplateTypeException
+     * @param null|string $Title
+     * @param null|string $Description
      */
-    function __construct()
+    function __construct( $Title = null, $Description = null )
     {
-
         $this->Template = $this->extensionTemplate( __DIR__.'/Stage.twig' );
+        if (null !== $Title) {
+            $this->setTitle( $Title );
+        }
+        if (null !== $Description) {
+            $this->setDescription( $Description );
+        }
     }
 
     /**

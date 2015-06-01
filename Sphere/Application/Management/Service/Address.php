@@ -178,7 +178,7 @@ class Address extends EntityAction
      *
      * @return AbstractType|Redirect
      */
-    public function executeCreateFullAddress( AbstractType &$Form, $State, $City, $Street, TblPerson $tblPerson = null )
+    public function executeCreatePersonAddress( AbstractType &$Form, $State, $City, $Street, TblPerson $tblPerson )
     {
 
         if (null === $State
@@ -221,13 +221,11 @@ class Address extends EntityAction
         }
 
         if (!$Error) {
-            $tblAddress = $this->actionCreateFullAddress(
-                $State['Name'],
-                $City['Code'], $City['Name'], $City['District'],
-                $Street['Name'], $Street['Number'],
-                $Street['Box']
-            );
-            var_dump( $tblAddress );
+
+            $tblState = $this->actionCreateAddressState( $State['Name'] );
+            $tblCity = $this->actionCreateAddressCity( $City['Code'], $City['Name'], $City['District'] );
+            $tblAddress = $this->actionCreateAddress( $tblState, $tblCity, $Street['Name'], $Street['Number'],
+                $Street['Box'] );
             if (null !== $tblPerson) {
                 Management::servicePerson()->executeAddAddress( $tblPerson->getId(), $tblAddress->getId() );
             }
@@ -250,22 +248,32 @@ class Address extends EntityAction
     /**
      * @param TblAddressState $TblAddressState
      * @param TblAddressCity  $TblAddressCity
-     * @param null            $StreetName
-     * @param null            $StreetNumber
-     * @param null            $PostOfficeBox
+     * @param null|string     $StreetName
+     * @param null|string     $StreetNumber
+     * @param null|string     $PostOfficeBox
      *
      * @return TblAddress
      */
-    public function actionCreateAddress(
-        TblAddressState $TblAddressState = null,
-        TblAddressCity $TblAddressCity = null,
+    public function importCreateAddress(
+        TblAddressState $TblAddressState,
+        TblAddressCity $TblAddressCity,
         $StreetName = null,
         $StreetNumber = null,
         $PostOfficeBox = null
     ) {
 
-        return parent::actionCreateAddress( $TblAddressState, $TblAddressCity, $StreetName, $StreetNumber,
-            $PostOfficeBox );
+        if (!null == $StreetName && !null == $StreetNumber) {
+            $PostOfficeBox = null;
+        }
+
+        if (!null == $PostOfficeBox) {
+            $StreetName = null;
+            $StreetNumber = null;
+        }
+
+        return parent::actionCreateAddress(
+            $TblAddressState, $TblAddressCity, $StreetName, $StreetNumber, $PostOfficeBox
+        );
     }
 
 }

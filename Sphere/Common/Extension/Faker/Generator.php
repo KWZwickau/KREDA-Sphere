@@ -167,18 +167,6 @@ class Generator
         return $this->format( $attribute );
     }
 
-    public function __call( $method, $attributes )
-    {
-
-        return $this->format( $method, $attributes );
-    }
-
-    protected function callFormatWithMatches( $matches )
-    {
-
-        return $this->format( $matches[1] );
-    }
-
     public function format( $formatter, $arguments = array() )
     {
 
@@ -202,5 +190,17 @@ class Generator
             }
         }
         throw new \InvalidArgumentException( sprintf( 'Unknown formatter "%s"', $formatter ) );
+    }
+
+    public function __call( $method, $attributes )
+    {
+
+        return $this->format( $method, $attributes );
+    }
+
+    protected function callFormatWithMatches( $matches )
+    {
+
+        return $this->format( $matches[1] );
     }
 }
