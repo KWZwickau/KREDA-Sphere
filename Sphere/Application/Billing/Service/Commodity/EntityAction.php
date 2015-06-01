@@ -156,23 +156,19 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param $Id
-     *
-     * @return bool|TblDebtorCommodity
+     * @param TblItem $tblItem
+     * @return TblAccount[]
      */
-    protected function entityDebtorCommodityById( $Id )
+    protected function entityAccountAllByItem(TblItem $tblItem)
     {
-        $Entity = $this->getEntityManager()->getEntityById( 'TblDebtorCommodity', $Id );
-        return ( null === $Entity ? false : $Entity );
-    }
+        $tblItemAccountAllByItem = $this->entityItemAccountAllByItem($tblItem);
+        $tblAccount = array();
+        foreach($tblItemAccountAllByItem as $tblItemAccount)
+        {
+            array_push($tblAccount, $tblItemAccount->getServiceBilling_Account());
+        }
 
-    /**
-     * @return bool|TblDebtorCommodity[]
-     */
-    protected function entityDebtorCommodityAll()
-    {
-        $Entity = $this->getEntityManager()->getEntity( 'TblDebtorCommodity' )->findAll();
-        return ( null === $Entity ? false : $Entity );
+        return $tblAccount;
     }
 
     /**

@@ -174,22 +174,15 @@ class Commodity extends EntityAction
     }
 
     /**
-     * @param $Id
+     * @param TblItem $tblItem
      *
-     * @return bool|TblDebtorCommodity
+     * @return Account\Entity\TblAccount[]
      */
-    public function entityDebtorCommodityById($Id)
+    public function entityAccountAllByItem(TblItem $tblItem)
     {
-        return parent::entityDebtorCommodityById($Id);
+        return parent::entityAccountAllByItem($tblItem);
     }
 
-    /**
-     * @return bool|TblDebtorCommodity[]
-     */
-    public function entityDebtorCommodityAll()
-    {
-        return parent::entityDebtorCommodityAll();
-    }
 
     /**
      * @param TblCommodity $tblCommodity

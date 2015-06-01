@@ -522,8 +522,14 @@ class Commodity extends AbstractFrontend
                 $Global->POST['Item']['Description'] = $tblItem->getDescription();
                 $Global->POST['Item']['Price'] = str_replace('.',',', $tblItem->getPrice());
                 $Global->POST['Item']['CostUnit'] = $tblItem->getCostUnit();
-                $Global->POST['Item']['Course'] = $tblItem->getServiceManagementCourse()->getId();
-                $Global->POST['Item']['ChildRank'] = $tblItem->getServiceManagementStudentChildRank()->getId();
+                if ($tblItem->getServiceManagementCourse())
+                {
+                    $Global->POST['Item']['Course'] = $tblItem->getServiceManagementCourse()->getId();
+                }
+                if ($tblItem->getServiceManagementStudentChildRank())
+                {
+                    $Global->POST['Item']['ChildRank'] = $tblItem->getServiceManagementStudentChildRank()->getId();
+                }
                 $Global->savePost();
 
                 $View->setContent(Billing::serviceCommodity()->executeEditItem(
@@ -592,7 +598,16 @@ class Commodity extends AbstractFrontend
             else
             {
                 $tblItemAccountByItem = Billing::serviceCommodity()->entityItemAccountAllByItem($tblItem);
+                $tblAccountByItem = Billing::serviceCommodity()->entityAccountAllByItem($tblItem);
                 $tblAccountAllByActiveState = Billing::serviceAccount()->entityAccountAllByActiveState();
+
+                if (!empty( $tblAccountAllByActiveState ) ) {
+                    $tblAccountAllByActiveState = array_udiff( $tblAccountAllByActiveState, $tblAccountByItem,
+                        function ( TblAccount $ObjectA, TblAccount $ObjectB ) {
+                            return $ObjectA->getId() - $ObjectB->getId();
+                        }
+                    );
+                }
 
                 if (!empty($tblItemAccountByItem))
                 {
