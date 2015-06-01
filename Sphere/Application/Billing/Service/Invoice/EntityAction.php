@@ -11,7 +11,6 @@ use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceAccount;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\System\System;
 
 /**
@@ -138,8 +137,9 @@ abstract class EntityAction extends EntitySchema
                 }
                 else if ($tblItem->getServiceManagementCourse() && !($tblItem->getServiceManagementStudentChildRank()))
                 {
-                    if (Management::serviceStudent()->entityStudentByPerson($tblPerson)
-                        && $tblItem->getServiceManagementCourse() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getServiceManagementCourse())
+                    if (( $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson ) )
+                        && $tblItem->getServiceManagementCourse()->getId() == $tblStudent->getServiceManagementCourse()->getId()
+                    )
                     {
                         $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
                     }
