@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BarCodeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MinusIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyEuroIcon;
@@ -19,6 +20,12 @@ use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
+use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Message\Type\Info;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Redirect;
@@ -102,7 +109,7 @@ class Invoice extends AbstractFrontend
     {
         $View = new Stage();
         $View->setTitle( 'Rechnungen' );
-        $View->setDescription( 'Übersicht' );
+        $View->setDescription( 'Offene' );
         $View->setMessage( 'Zeigt alle noch nicht bestätigten Rechnungen an' );
 
         $tblInvoiceAllByIsConfirmedState = Billing::serviceInvoice()->entityInvoiceAllByIsConfirmedState(false);
@@ -111,6 +118,7 @@ class Invoice extends AbstractFrontend
             array_walk( $tblInvoiceAllByIsConfirmedState, function ( TblInvoice &$tblInvoice ) {
                 $tblInvoice->Student = $tblInvoice->getServiceManagementPerson()->getFullName();
                 $tblInvoice->Debtor = $tblInvoice->getDebtorFullName();
+                $tblInvoice->TotalPrice = Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice );
                 $tblInvoice->Option =
                     ( new Primary( 'Bearbeiten und Freigeben', '/Sphere/Billing/Invoice/Edit',
                         new EditIcon(), array(
@@ -125,6 +133,8 @@ class Invoice extends AbstractFrontend
                     'Number' => 'Nummer',
                     'Student' => 'Student',
                     'Debtor' => 'Debitor',
+                    'DebtorNumber' => 'Debitorennummer',
+                    'TotalPrice' => 'Gesamtpreis',
                     'Option' => 'Option'
                 )
             )
@@ -179,15 +189,73 @@ class Invoice extends AbstractFrontend
             }
 
             $View->setContent(
-                new TableData( $tblInvoiceItemAll, null,
-                    array(
-                        'CommodityName' => 'Leistung',
-                        'ItemName'      => 'Artikel',
-                        'ItemPrice'         => 'Preis',
-                        'ItemQuantity'      => 'Menge',
-                        'Option'        => 'Option'
-                    )
-                )
+                new Layout( array(
+                    new LayoutGroup( array(
+                        new LayoutRow( array(
+                            new LayoutColumn(
+                                new Info("Rechnungsnummer: " . $tblInvoice->getNumber()
+                                ), 4
+                            ),
+                            new LayoutColumn(
+                                new Info("Rechnungsdatum: " . $tblInvoice->getInvoiceDate()
+                                ), 4
+                            ),
+                            new LayoutColumn(
+                                new Info("Zahlungsdatum: " . $tblInvoice->getPaymentDate()
+                                ), 4
+                            ),
+                        ) ),
+                        new LayoutRow( array(
+                            new LayoutColumn(
+                                new Info("Schüler: " . $tblInvoice->getServiceManagementPerson()->getFullName()
+                                ), 4
+                            ),
+                            new LayoutColumn(
+                                new Info("Debitor: " .  $tblInvoice->getDebtorSalutation() . " " . $tblInvoice->getDebtorFullName()
+                                ), 4
+                            ),
+                            new LayoutColumn(
+                                new Info("Debitorennummer: " . $tblInvoice->getDebtorNumber()
+                                ), 4
+                            ),
+                        ) ),
+                        new LayoutRow( array(
+                            new LayoutColumn(
+                                new Info("Gesamtpreis: " . Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice )
+                                ), 4
+                            )
+                        ) ),
+                        // TODO select invoice address
+//                            new LayoutColumn( array(
+//                                    new Form( array(
+//                                            new FormGroup( array(
+//                                                new FormRow( array(
+//                                                    new FormColumn(
+//                                                        new TextField( 'BasketItem[Quantity]', 'Menge', 'Menge', new QuantityIcon()
+//                                                        ), 6 )
+//                                                ) )
+//                                            ) )
+//                                        ), new SubmitPrimary( 'Änderungen speichern'
+//                                    ) )
+//                            ))
+                    )),
+                    new LayoutGroup( array(
+                        new LayoutRow( array(
+                            new LayoutColumn( array(
+                                    new TableData( $tblInvoiceItemAll, null,
+                                        array(
+                                            'CommodityName' => 'Leistung',
+                                            'ItemName'      => 'Artikel',
+                                            'ItemPrice'         => 'Preis',
+                                            'ItemQuantity'      => 'Menge',
+                                            'Option'        => 'Option'
+                                        )
+                                    )
+                                )
+                            )
+                        ) ),
+                    ), new LayoutTitle( 'Positionen' ) )
+                ) )
             );
         }
 

@@ -100,6 +100,25 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblInvoice $tblInvoice
+     *
+     * @return float (type="decimal", precision=14, scale=4)
+     */
+    protected function sumPriceItemAllByInvoice( TblInvoice $tblInvoice)
+    {
+        //(type="decimal", precision=14, scale=4)
+        $sum = 0.00;
+        $tblInvoiceItemByInvoice = $this->entityInvoiceItemAllByInvoice( $tblInvoice);
+        /** @var TblInvoiceItem $tblInvoiceItem */
+        foreach($tblInvoiceItemByInvoice as $tblInvoiceItem)
+        {
+            $sum += $tblInvoiceItem->getItemPrice() * $tblInvoiceItem->getItemQuantity();
+        }
+
+        return $sum;
+    }
+
+    /**
      * @param TblBasket $tblBasket
      * @param \DateTime $Date
      *

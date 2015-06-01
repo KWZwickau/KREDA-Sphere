@@ -110,6 +110,17 @@ class Invoice extends EntityAction
     }
 
     /**
+     * @param TblInvoice $tblInvoice
+     *
+     * @return float
+     */
+    public  function sumPriceItemAllByInvoice(TblInvoice $tblInvoice)
+    {
+        return parent::sumPriceItemAllByInvoice($tblInvoice);
+    }
+
+
+    /**
      * @param TblBasket $tblBasket
      * @param \DateTime $Date
      *
