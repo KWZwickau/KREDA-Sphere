@@ -44,6 +44,38 @@ abstract class EntityAction extends EntitySchema
         return ( null === $Entity ? false : $Entity );
     }
 
+    /**
+     * @param $IsConfirmed
+     * @return TblInvoice[]|bool
+     */
+    protected function entityInvoiceAllByIsConfirmedState( $IsConfirmed )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblInvoice' )
+            ->findBy( array( TblInvoice::ATTR_IS_CONFIRMED => $IsConfirmed ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
+     * @param $IsPaid
+     * @return TblInvoice[]|bool
+     */
+    protected function entityInvoiceAllByIsPaidState( $IsPaid )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblInvoice' )
+            ->findBy( array( TblInvoice::ATTR_IS_PAID => $IsPaid ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
+     * @param $IsVoid
+     * @return TblInvoice[]|bool
+     */
+    protected function entityInvoiceAllByIsVoidState( $IsVoid )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblInvoice' )
+            ->findBy( array( TblInvoice::ATTR_IS_PAID => $IsVoid ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
 
     /**
      * @param integer $Id
@@ -55,54 +87,6 @@ abstract class EntityAction extends EntitySchema
 
         $Entity = $this->getEntityManager()->getEntityById( 'TblInvoiceItem', $Id );
         return ( null === $Entity ? false : $Entity );
-    }
-
-    /**
-     * @param            $IsPaid
-     * @param            $Number
-     * @param            $IsVoid
-     * @param            $InvoiceDate
-     * @param            $PaymentDate
-     * @param            $Discount
-     * @param            $PersonFirstName
-     * @param            $PersonLastName
-     * @param            $PersonSalutation
-     * @param TblAddress $tblAddress
-     *
-     * @return TblInvoice
-     */
-    protected function actionCreateInvoice(
-        $IsPaid,
-        $Number,
-        $IsVoid,
-        $InvoiceDate,
-        $PaymentDate,
-        $Discount,
-        $PersonFirstName,
-        $PersonLastName,
-        $PersonSalutation,
-        TblAddress $tblAddress
-    ) {
-
-        $Manager = $this->getEntityManager();
-
-        $Entity = new TblInvoice();
-        $Entity->setIsPaid( $IsPaid );
-        $Entity->setNumber( $Number );
-        $Entity->setIsVoid( $IsVoid );
-        $Entity->setInvoiceDate( $InvoiceDate );
-        $Entity->setPaymentDate( $PaymentDate );
-        $Entity->setDiscount( $Discount );
-        $Entity->setPersonFirstName( $PersonFirstName );
-        $Entity->setPersonLastName( $PersonLastName );
-        $Entity->setPersonSalutation( $PersonSalutation );
-        $Entity->setServiceManagementAddress( $tblAddress );
-
-        $Manager->saveEntity( $Entity );
-
-        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
-
-        return $Entity;
     }
 
     /**
@@ -121,12 +105,13 @@ abstract class EntityAction extends EntitySchema
 
         $Manager = $this->getEntityManager();
 
-        // TODO Debtor select
+        // TODO Debtor select, Vorlaufzeit
         // TODO InvoiceNumber create
         // TODO tblAddress
 
         foreach ($tblPersonAllByBasket as $tblPerson) {
             $Entity = new TblInvoice();
+            $Entity->setIsConfirmed( false );
             $Entity->setIsPaid( false );
             $Entity->setIsVoid( false );
             $Entity->setNumber( "23934093243920" );
@@ -153,21 +138,24 @@ abstract class EntityAction extends EntitySchema
                 }
                 else if ($tblItem->getServiceManagementCourse() && !($tblItem->getServiceManagementStudentChildRank()))
                 {
-                    if ($tblItem->getServiceManagementCourse() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getServiceManagementCourse())
+                    if (Management::serviceStudent()->entityStudentByPerson($tblPerson)
+                        && $tblItem->getServiceManagementCourse() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getServiceManagementCourse())
                     {
                         $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
                     }
                 }
                 else if (!($tblItem->getServiceManagementCourse()) && $tblItem->getServiceManagementStudentChildRank())
                 {
-                    if ($tblItem->getServiceManagementStudentChildRank() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getTblChildRank())
+                    if (Management::serviceStudent()->entityStudentByPerson($tblPerson)
+                        && $tblItem->getServiceManagementStudentChildRank() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getTblChildRank())
                     {
                         $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
                     }
                 }
                 else if ($tblItem->getServiceManagementCourse() && $tblItem->getServiceManagementStudentChildRank())
                 {
-                    if ($tblItem->getServiceManagementCourse() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getServiceManagementCourse()
+                    if (Management::serviceStudent()->entityStudentByPerson($tblPerson)
+                        && $tblItem->getServiceManagementCourse() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getServiceManagementCourse()
                             && $tblItem->getServiceManagementStudentChildRank() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getTblChildRank())
                     {
                         $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);

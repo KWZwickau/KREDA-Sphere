@@ -57,6 +57,33 @@ class Invoice extends EntityAction
     }
 
     /**
+     * @param $IsConfirmed
+     * @return bool|Invoice\Entity\TblInvoice[]
+     */
+    public  function entityInvoiceAllByIsConfirmedState($IsConfirmed)
+    {
+        return parent::entityInvoiceAllByIsConfirmedState($IsConfirmed);
+    }
+
+    /**
+     * @param $IsPaid
+     * @return bool|Invoice\Entity\TblInvoice[]
+     */
+    public function entityInvoiceAllByIsPaidState($IsPaid)
+    {
+        return parent::entityInvoiceAllByIsPaidState($IsPaid);
+    }
+
+    /**
+     * @param $IsVoid
+     * @return bool|Invoice\Entity\TblInvoice[]
+     */
+    public  function entityInvoiceAllByIsVoidState($IsVoid)
+    {
+        return parent::entityInvoiceAllByIsVoidState($IsVoid);
+    }
+
+    /**
      * @param TblBasket $tblBasket
      * @param \DateTime $Date
      *

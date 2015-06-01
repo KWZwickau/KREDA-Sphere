@@ -17,6 +17,15 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblInvoice extends AbstractEntity
 {
+    const ATTR_IS_CONFIRMED = 'IsConfirmed';
+    const ATTR_IS_PAID = 'IsPaid';
+    const ATTR_IS_VOID = 'IsVoid';
+
+    /**
+     * @Column(type="boolean")
+     */
+    protected $IsConfirmed;
+
     /**
      * @Column(type="boolean")
      */
@@ -71,6 +80,22 @@ class TblInvoice extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $serviceManagement_Person;
+
+    /**
+     * @return boolean
+     */
+    public function getIsConfirmed()
+    {
+        return $this->IsConfirmed;
+    }
+
+    /**
+     * @param boolean $IsConfirmed
+     */
+    public function setIsConfirmed( $IsConfirmed )
+    {
+        $this->IsConfirmed = $IsConfirmed;
+    }
 
     /**
      * @return boolean
