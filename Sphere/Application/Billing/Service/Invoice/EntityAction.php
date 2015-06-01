@@ -146,17 +146,17 @@ abstract class EntityAction extends EntitySchema
                 }
                 else if (!($tblItem->getServiceManagementCourse()) && $tblItem->getServiceManagementStudentChildRank())
                 {
-                    if (Management::serviceStudent()->entityStudentByPerson($tblPerson)
-                        && $tblItem->getServiceManagementStudentChildRank() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getTblChildRank())
+                    if (( $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson ) )
+                        && $tblItem->getServiceManagementStudentChildRank()->getId() == $tblStudent->getTblChildRank()->getId())
                     {
                         $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
                     }
                 }
                 else if ($tblItem->getServiceManagementCourse() && $tblItem->getServiceManagementStudentChildRank())
                 {
-                    if (Management::serviceStudent()->entityStudentByPerson($tblPerson)
-                        && $tblItem->getServiceManagementCourse() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getServiceManagementCourse()
-                            && $tblItem->getServiceManagementStudentChildRank() === Management::serviceStudent()->entityStudentByPerson($tblPerson)->getTblChildRank())
+                    if (( $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson ) )
+                        && $tblItem->getServiceManagementCourse()->getId() == $tblStudent->getServiceManagementCourse()->getId()
+                            && $tblItem->getServiceManagementStudentChildRank()->getId() == $tblStudent->getTblChildRank()->getId())
                     {
                         $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
                     }
