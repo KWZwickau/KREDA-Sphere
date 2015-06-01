@@ -33,6 +33,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -367,20 +368,24 @@ class Basket extends AbstractFrontend
                 $Global->POST['BasketItem']['Quantity'] = str_replace( '.', ',', $tblBasketItem->getQuantity() );
                 $Global->savePost();
 
-                $View->setContent( Billing::serviceBasket()->executeEditBasketItem(
-                    new Form( array(
-                        new FormGroup( array(
-                            new FormRow( array(
-                                new FormColumn(
-                                    new TextField( 'BasketItem[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
-                                    ), 6 ),
-                                new FormColumn(
-                                    new TextField( 'BasketItem[Quantity]', 'Menge', 'Menge', new QuantityIcon()
-                                    ), 6 )
+                $View->setContent(
+                    new Success($tblBasketItem->getServiceBillingCommodityItem()->getTblItem()->getName())
+                    .Billing::serviceBasket()->executeEditBasketItem(
+                        new Form( array(
+                            new FormGroup( array(
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'BasketItem[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
+                                        ), 6 ),
+                                    new FormColumn(
+                                        new TextField( 'BasketItem[Quantity]', 'Menge', 'Menge', new QuantityIcon()
+                                        ), 6 )
+                                ) )
                             ) )
-                        ) )
-                    ), new SubmitPrimary( 'Änderungen speichern' )
-                    ), $tblBasketItem, $BasketItem ) );
+                        ), new SubmitPrimary( 'Änderungen speichern' )
+                        ), $tblBasketItem, $BasketItem
+                    )
+                );
             }
         }
 

@@ -7,10 +7,19 @@ use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MinusIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyEuroIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuantityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
+use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
+use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
@@ -101,13 +110,10 @@ class Invoice extends AbstractFrontend
         if (!empty( $tblInvoiceAllByIsConfirmedState )) {
             array_walk( $tblInvoiceAllByIsConfirmedState, function ( TblInvoice &$tblInvoice ) {
                 $tblInvoice->Student = $tblInvoice->getServiceManagementPerson()->getFullName();
+                $tblInvoice->Debtor = $tblInvoice->getDebtorFullName();
                 $tblInvoice->Option =
                     ( new Primary( 'Bearbeiten und Freigeben', '/Sphere/Billing/Invoice/Edit',
                         new EditIcon(), array(
-                            'Id' => $tblInvoice->getId()
-                        ) ) )->__toString().
-                    ( new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
-                        new RemoveIcon(), array(
                             'Id' => $tblInvoice->getId()
                         ) ) )->__toString();
             } );
@@ -118,6 +124,7 @@ class Invoice extends AbstractFrontend
                 array(
                     'Number' => 'Nummer',
                     'Student' => 'Student',
+                    'Debtor' => 'Debitor',
                     'Option' => 'Option'
                 )
             )
@@ -139,6 +146,10 @@ class Invoice extends AbstractFrontend
         $View->setMessage( 'Hier können Sie die Rechnung bearbeiten' );
         $View->addButton( new Primary( 'Geprüft und Freigeben', '/Sphere/Billing/Invoice/Confirm',
             new OkIcon(), array(
+                'Id' => $Id
+            ) ) );
+        $View->addButton( new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
+            new RemoveIcon(), array(
                 'Id' => $Id
             ) ) );
 
@@ -204,11 +215,10 @@ class Invoice extends AbstractFrontend
 
     /**
      * @param $Id
-     * @param $Route
      *
      * @return Stage
      */
-    public static function frontendInvoiceCancel( $Id, $Route )
+    public static function frontendInvoiceCancel( $Id )
     {
 
         $View = new Stage();
@@ -216,7 +226,74 @@ class Invoice extends AbstractFrontend
         $View->setDescription( 'Stornieren' );
 
         $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
-        $View->setContent( Billing::serviceInvoice()->executeCancelInvoice( $tblInvoice, $Route ) );
+        $View->setContent( Billing::serviceInvoice()->executeCancelInvoice( $tblInvoice ) );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @param $InvoiceItem
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceItemEdit( $Id, $InvoiceItem )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Artikel' );
+        $View->setDescription( 'Bearbeiten' );
+
+        if (empty( $Id )) {
+            $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
+        } else {
+            $tblInvoiceItem = Billing::serviceInvoice()->entityInvoiceItemById( $Id );
+            if (empty( $tblInvoiceItem )) {
+                $View->setContent( new Warning( 'Der Artikel konnte nicht abgerufen werden' ) );
+            } else {
+
+                $Global = self::extensionSuperGlobal();
+                $Global->POST['InvoiceItem']['Price'] = str_replace( '.', ',', $tblInvoiceItem->getItemPrice() );
+                $Global->POST['InvoiceItem']['Quantity'] = str_replace( '.', ',', $tblInvoiceItem->getItemQuantity() );
+                $Global->savePost();
+
+                $View->setContent(
+                    new Success($tblInvoiceItem->getItemName())
+                    .Billing::serviceInvoice()->executeEditInvoiceItem(
+                        new Form( array(
+                                new FormGroup( array(
+                                    new FormRow( array(
+                                        new FormColumn(
+                                            new TextField( 'InvoiceItem[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
+                                            ), 6 ),
+                                        new FormColumn(
+                                            new TextField( 'InvoiceItem[Quantity]', 'Menge', 'Menge', new QuantityIcon()
+                                            ), 6 )
+                                    ) )
+                                ) )
+                            ), new SubmitPrimary( 'Änderungen speichern' )
+                        ), $tblInvoiceItem, $InvoiceItem
+                    )
+                );
+            }
+        }
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceItemRemove( $Id )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Artikel' );
+        $View->setDescription( 'Entfernen' );
+
+        $tblInvoiceItem = Billing::serviceInvoice()->entityInvoiceItemById( $Id );
+        $View->setContent( Billing::serviceInvoice()->executeRemoveInvoiceItem( $tblInvoiceItem ) );
 
         return $View;
     }

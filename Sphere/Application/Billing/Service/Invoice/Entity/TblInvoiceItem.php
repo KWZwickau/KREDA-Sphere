@@ -156,7 +156,7 @@ class TblInvoiceItem extends AbstractEntity
         if (null === $this->tblInvoice) {
             return false;
         } else {
-            return Billing::serviceBasket()->entityInvoiceById( $this->tblInvoice );
+            return Billing::serviceInvoice()->entityInvoiceById( $this->tblInvoice );
         }
     }
 

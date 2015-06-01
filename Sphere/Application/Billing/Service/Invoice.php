@@ -9,6 +9,7 @@ use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Application\Billing\Service\Invoice\EntityAction;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Redirect;
@@ -80,11 +81,22 @@ class Invoice extends EntityAction
 
     /**
      * @param $IsVoid
+     *
      * @return bool|Invoice\Entity\TblInvoice[]
      */
     public  function entityInvoiceAllByIsVoidState($IsVoid)
     {
         return parent::entityInvoiceAllByIsVoidState($IsVoid);
+    }
+
+    /**
+     * @param int $Id
+     *
+     * @return bool|TblInvoiceItem
+     */
+    public  function entityInvoiceItemById($Id)
+    {
+        return parent::entityInvoiceItemById($Id);
     }
 
     /**
@@ -158,6 +170,75 @@ class Invoice extends EntityAction
         else
         {
             //TODO cancel confirmed invoice
+        }
+    }
+
+    /**
+     * @param AbstractType $View
+     * @param TblInvoiceItem $tblInvoiceItem
+     * @param $InvoiceItem
+     *
+     * @return AbstractType|string
+     */
+    public function executeEditInvoiceItem(
+        AbstractType &$View = null,
+        TblInvoiceItem $tblInvoiceItem,
+        $InvoiceItem
+    ) {
+
+        /**
+         * Skip to Frontend
+         */
+        if (null === $InvoiceItem
+        ) {
+            return $View;
+        }
+
+        $Error = false;
+
+        if (isset( $InvoiceItem['Price'] ) && empty(  $InvoiceItem['Price'] )) {
+            $View->setError( 'InvoiceItem[Price]', 'Bitte geben Sie einen Preis an' );
+            $Error = true;
+        }
+        if (isset( $InvoiceItem['Quantity'] ) && empty(  $InvoiceItem['Quantity'] )) {
+            $View->setError( 'InvoiceItem[Quantity]', 'Bitte geben Sie eine Menge an' );
+            $Error = true;
+        }
+
+        if (!$Error) {
+            if ($this->actionEditInvoiceItem(
+                $tblInvoiceItem,
+                $InvoiceItem['Price'],
+                $InvoiceItem['Quantity']
+            )) {
+                $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
+                    .new Redirect( '/Sphere/Billing/Invoice/Edit', 1, array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId()) );
+            } else {
+                $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' )
+                    .new Redirect( '/Sphere/Billing/Invoice/Edit', 2, array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId()) );
+            };
+        }
+        return $View;
+    }
+
+    /**
+     * @param TblInvoiceItem $tblInvoiceItem
+     *
+     * @return string
+     */
+    public function executeRemoveInvoiceItem(
+        TblInvoiceItem $tblInvoiceItem
+    )
+    {
+        if ($this->actionRemoveInvoiceItem($tblInvoiceItem))
+        {
+            return new Success( 'Der Artikel ' . $tblInvoiceItem->getItemName() . ' wurde erfolgreich entfernt' )
+            .new Redirect( '/Sphere/Billing/Invoice/Edit', 0, array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Der Artikel ' . $tblInvoiceItem->getItemName() . ' konnte nicht entfernt werden' )
+            .new Redirect( '/Sphere/Billing/Invoice/Edit', 2, array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId()) );
         }
     }
 }

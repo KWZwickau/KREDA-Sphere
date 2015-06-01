@@ -56,8 +56,16 @@ class Invoice extends Common
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Invoice/Cancel', __CLASS__.'::frontendInvoiceCancel'
         )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Item/Edit', __CLASS__.'::frontendInvoiceItemEdit'
+        )
             ->setParameterDefault( 'Id', null )
-            ->setParameterDefault( 'Route', null );
+            ->setParameterDefault( 'InvoiceItem', null);
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Item/Remove', __CLASS__.'::frontendInvoiceItemRemove'
+        )
+            ->setParameterDefault( 'Id', null );
     }
 
     /**
@@ -104,14 +112,50 @@ class Invoice extends Common
 
     /**
      * @param $Id
-     * @param $Route
      *
      * @return Stage
      */
-    public static function frontendInvoiceCancel( $Id, $Route )
+    public static function frontendInvoiceConfirm( $Id )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendInvoiceCancel( $Id, $Route );
+        return Frontend::frontendInvoiceConfirm( $Id );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceCancel( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoiceCancel( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $InvoiceItem
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceItemEdit( $Id, $InvoiceItem )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoiceItemEdit( $Id, $InvoiceItem );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceItemRemove( $Id)
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoiceItemRemove( $Id );
     }
 }
