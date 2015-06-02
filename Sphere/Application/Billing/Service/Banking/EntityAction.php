@@ -58,6 +58,18 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblDebtor $tblDebtor
+     * @return bool|TblDebtorCommodity[]
+     */
+    protected function entityCommodityDebtorAllByDebtor( TblDebtor $tblDebtor )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblDebtorCommodity' )
+            ->findBy( array( TblDebtorCommodity::ATTR_TBL_DEBTOR => $tblDebtor->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
      * @return bool
      */
     protected function actionRemoveBanking(

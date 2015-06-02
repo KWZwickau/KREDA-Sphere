@@ -111,6 +111,17 @@ class Banking extends AbstractFrontend
         $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
         $tblCommodityAll = Billing::serviceCommodity()->entityCommodityAll();
 
+        $tblDebtorCommodityList = Billing::serviceBanking()->entityCommodityDebtorAllByDebtor( $tblDebtor );
+        $tblPersonByBasketList = Billing::serviceBanking()->entityCommodityAllByDebtor( $tblDebtor );
+
+//        echo "<pre>";
+//        print_r($tblDebtorCommodityList);
+//        echo "</pre>";
+//        echo "<pre>";
+//        print_r($tblPersonByBasketList);
+//        echo "</pre>";
+
+
         $IdPerson = Billing::serviceBanking()->entityDebtorById( $Id )->getServiceManagement_Person();
         $Person = Management::servicePerson()->entityPersonById( $IdPerson )->getFullName();
         $View->setMessage('Name: '.$Person.'<br /> Debitorennummer: '.Billing::serviceBanking()->entityDebtorById( $Id )->getDebtorNumber());

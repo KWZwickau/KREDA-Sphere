@@ -11,6 +11,7 @@ use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Redirect;
+use KREDA\Sphere\Common\Database\Handler;
 
 /**
  * Class Banking
@@ -49,6 +50,29 @@ class Banking extends EntityAction
     public  function entityDebtorAllByPerson(TblPerson $tblPerson)
     {
         return parent::entityDebtorAllByPerson($tblPerson);
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     * @return bool|TblDebtorCommodity[]
+     */
+    public function entityCommodityDebtorAllByDebtor( TblDebtor $tblDebtor )
+    {
+
+        return parent::entityCommodityDebtorAllByDebtor( $tblDebtor );
+    }
+
+    public function entityCommodityAllByDebtor( TblDebtor $tblDebtor )
+    {
+
+        $tblDebtorCommodityList = $this->entityCommodityDebtorAllByDebtor($tblDebtor);
+        $tblCommodity = array();
+        foreach($tblDebtorCommodityList as $tblDebtorCommodity)
+        {
+            array_push($tblCommodity, $tblDebtorCommodity->getServiceBillingCommodity());
+        }
+
+        return $tblCommodity;
     }
 
     /**
