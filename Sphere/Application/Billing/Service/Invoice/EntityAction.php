@@ -134,8 +134,8 @@ abstract class EntityAction extends EntitySchema
 
         $Manager = $this->getEntityManager();
 
-        // TODO Debtor select, Vorlaufzeit, DebtorNumber
-        // TODO InvoiceNumber create
+        // TODO Commodity
+        // TODO LeadTimeFirst or LeadTimeFollow select
         // TODO tblAddress
 
         foreach ($TempTblInvoiceList as $TempTblInvoice)
@@ -159,7 +159,7 @@ abstract class EntityAction extends EntitySchema
 
             $Manager->SaveEntity( $Entity );
 
-            $Entity->setDebtorNumber( (int)$Entity->getNumber() + $Entity->getId() );
+            $Entity->setNumber( (int)$Entity->getNumber() + $Entity->getId() );
             $Manager->SaveEntity( $Entity );
 
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
