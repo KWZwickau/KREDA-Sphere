@@ -7,8 +7,11 @@ use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ListIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PlusIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
@@ -46,6 +49,15 @@ class Banking extends AbstractFrontend
             array_walk( $tblDebtorAll, function ( TblDebtor &$tblDebtor ) {
 
                 $tblDebtor->Person = Management::servicePerson()->entityPersonById($tblDebtor->getServiceManagement_Person())->getFullName();
+                $tblDebtor->Option =
+                    (new Danger( 'Löschen', '/Sphere/Billing/Banking/Delete',
+                        new RemoveIcon(), array(
+                            'Id' => $tblDebtor->getId()
+                        ) ) )->__toString().
+                    (new Primary( 'Leistung auswählen', '/Sphere/Billing/Banking/Select/Commodity',
+                        new ListIcon(), array(
+                            'Id' => $tblDebtor->getId()
+                        ) ))->__toString();
             } );
         }
 
@@ -59,13 +71,28 @@ class Banking extends AbstractFrontend
                                     'DebtorNumber' => 'Debitorennummer',
                                     'LeadTimeFirst' => 'Ersteinzug',
                                     'LeadTimeFollow' => 'Folgeeinzug',
-                                    'Person' => 'Person'
+                                    'Person' => 'Person',
+                                    'Option' => 'Bearbeiten'
                                 )),
                         ))
                     )),
                 )))));
 
+        return $View;
+    }
 
+    /**
+     * @param $Id
+     * @return Stage
+     */
+    public static function frontendBankingDelete( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Debitor' );
+        $View->setDescription( 'Entfernen' );
+
+        $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
+        $View->setContent(Billing::serviceBanking()->executeBankingDelete( $tblDebtor ));
 
         return $View;
     }

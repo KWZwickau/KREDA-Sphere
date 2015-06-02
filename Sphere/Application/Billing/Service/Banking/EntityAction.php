@@ -41,7 +41,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityDebtorByServiceManagement_Person( $ServiceManagement_Person )
     {
-        $Entity = $this->getEntityManager()->getEntity('tblDebtor')->findBy( array(TblDebtor::ATTR_DEBTOR_SERVICE_MANAGEMENT_PERSON => $ServiceManagement_Person) );
+        $Entity = $this->getEntityManager()->getEntity('tblDebtor')->findBy( array(TblDebtor::ATTR_SERVICE_MANAGEMENT_PERSON => $ServiceManagement_Person) );
         return (null === $Entity ? false : $Entity);
     }
 
@@ -54,6 +54,37 @@ abstract class EntityAction extends EntitySchema
         $EntityList = $this->getEntityManager()->getEntity( 'TblDebtor' )
             ->findBy( array( TblDebtor::ATTR_SERVICE_MANAGEMENT_PERSON => $tblPerson->getId() ) );
         return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     * @return bool
+     */
+    protected function actionRemoveBanking(
+        TblDebtor $tblDebtor
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        $EntityItems = $Manager->getEntity( 'tblDebtor' )
+            ->findBy( array(TblDebtor::ATTR_DEBTOR_NUMBER => $tblDebtor->getId() ) );
+        if (null !== $EntityItems)
+        {
+            foreach($EntityItems as $Entity)
+            {
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+                $Manager->killEntity( $Entity );
+            }
+        }
+
+        $Entity = $Manager->getEntity('tblDebtor')->findOneBy( array('Id'=>$tblDebtor->getId() ) );
+        if (null !== $Entity)
+        {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
     }
 
     /**
