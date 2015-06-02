@@ -13,7 +13,7 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblDebtor extends AbstractEntity
 {
 
-//    const ATTR_TBL_PERSON = 'tblPerson';
+    const ATTR_DEBTOR_NUMBER = 'DebtorNumber';
 
     /**
      * @Column(type="string")

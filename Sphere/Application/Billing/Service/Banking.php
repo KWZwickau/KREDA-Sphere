@@ -1,5 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service;
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\EntityAction;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
@@ -51,6 +52,10 @@ class Banking extends EntityAction
         $Error = false;
         if (isset($Debtor['DebtorNumber']) && empty( $Debtor['DebtorNumber'])) {
             $View->setError( '$Debtor[DebtorNumber]', 'Bitte geben sie die Debitorennummer an' );
+            $Error = true;
+        }
+        if (isset($Debtor['DebtorNumber']) && Billing::serviceBanking()->entityDebtorByDebtorNumber( $Debtor['DebtorNumber'])) {
+            $View->setError( '$Debtor[DebtorNumber]', 'Die Debitorennummer exisitiert bereits. Bitte geben Sie eine andere Debitorennummer an' );
             $Error = true;
         }
         if (isset($Debtor['LeadTimeFirst']) && empty( $Debtor['LeadTimeFirst'])) {
