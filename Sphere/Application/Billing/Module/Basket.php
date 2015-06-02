@@ -90,7 +90,9 @@ class Basket extends Common
             '/Sphere/Billing/Basket/Debtor/Select', __CLASS__.'::frontendBasketDebtorSelect'
         )
             ->setParameterDefault( 'Id', null )
-            ->setParameterDefault( 'Debtor', null );
+            ->setParameterDefault( 'Date', null )
+            ->setParameterDefault( 'TempTblInvoiceList', null )
+            ->setParameterDefault( 'SelectList', null );
     }
 
     /**
@@ -252,14 +254,16 @@ class Basket extends Common
 
     /**
      * @param $Id
-     * @param $Debtor
+     * @param $Date
+     * @param $TempTblInvoiceList
+     * @param $SelectList
      *
      * @return Stage
      */
-    public static function frontendBasketDebtorSelect( $Id, $Debtor )
+    public static function frontendBasketDebtorSelect( $Id, $Date, $TempTblInvoiceList, $SelectList )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBasketDebtorSelect( $Id, $Debtor );
+        return Frontend::frontendBasketDebtorSelect( $Id, $Date, $TempTblInvoiceList, $SelectList );
     }
 }

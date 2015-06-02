@@ -2,12 +2,15 @@
 namespace KREDA\Sphere\Application\Billing\Service\Basket;
 
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketPerson;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Invoice\TblAddress;
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
 
@@ -119,6 +122,85 @@ abstract class EntityAction extends EntitySchema
         return (int)$this->getEntityManager()->getEntity( 'TblBasketPerson' )->countBy( array(
             TblBasketPerson::ATTR_TBL_Basket => $tblBasket ->getId()
         ) );
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @param $Date
+     * @param $TempTblInvoiceList
+     * @param $SelectList
+     *
+     * @return bool
+     */
+    protected function checkDebtorsByBasket(
+        TblBasket $tblBasket,
+        $Date,
+        &$TempTblInvoiceList,
+        &$SelectList)
+    {
+        $tblCommodityAllByBasket = Billing::serviceBasket()->entityCommodityAllByBasket( $tblBasket );
+        $tblBasketPersonAllByBasket = Billing::serviceBasket()->entityBasketPersonAllByBasket( $tblBasket );
+
+        foreach($tblBasketPersonAllByBasket as &$tblBasketPerson)
+        {
+            $tblPerson = Management::servicePerson()->entityPersonById( $tblBasketPerson->getServiceManagementPerson());
+            foreach($tblCommodityAllByBasket as &$tblCommodity)
+            {
+                /** @var TblDebtorCommodity[] $tblDebtorCommodityListByPersonAndCommodity */
+                $tblDebtorCommodityListByPersonAndCommodity = array();
+                /** @var TblDebtor[] $tblDebtorListByPerson */
+                $tblDebtorListByPerson = array();
+
+                $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson($tblPerson);
+                foreach($tblPersonRelationshipList as $tblPersonRelationship)
+                {
+                    $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson(
+                        Management::servicePerson()->entityPersonById($tblPersonRelationship->getTblPersonA()));
+                    foreach($tblDebtorList as $tblDebtor)
+                    {
+                        $tblDebtorCommodityList = Billing::serviceBanking()->entityDebtorCommodityAllByDebtorAndCommodity( $tblDebtor, $tblCommodity );
+                        foreach ($tblDebtorCommodityList as $tblDebtorCommodity)
+                        {
+                            $tblDebtorCommodityListByPersonAndCommodity[] = $tblDebtorCommodity;
+                        }
+                        $tblDebtorListByPerson[]=$tblDebtor;
+                    }
+                }
+
+                if (empty($tblDebtorCommodityListByPersonAndCommodity))
+                {
+                    foreach($tblDebtorListByPerson as $tblDebtor)
+                    {
+                        $SelectList[] = array(
+                            'tblPerson' => $tblPerson->getId(),
+                            'tblCommodity' => $tblCommodity->getId(),
+                            'tblDebtor' => $tblDebtor->getId()
+                        );
+                    }
+                }
+                else if (count($tblDebtorCommodityListByPersonAndCommodity) == 1)
+                {
+                    $TempTblInvoiceList[] = array(
+                        'tblPerson' => $tblPerson->getId(),
+                        'tblCommodity' => $tblCommodity->getId(),
+                        'tblDebtor' => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId()
+                    );
+                }
+                else
+                {
+                    foreach ($tblDebtorCommodityListByPersonAndCommodity as $tblDebtorCommodityByPersonAndCommodity)
+                    {
+                        $SelectList[] = array(
+                            'tblPerson' => $tblPerson->getId(),
+                            'tblCommodity' => $tblCommodity->getId(),
+                            'tblDebtor' => $tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId()
+                        );
+                    }
+                }
+            }
+        }
+
+        return empty($SelectList);
     }
 
     /**

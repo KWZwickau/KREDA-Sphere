@@ -345,7 +345,7 @@ class Basket extends EntityAction
      *
      * @return AbstractType
      */
-    public function executeCreateInvoiceFromBasketList(
+    public function executeCheckBasket(
         AbstractType &$View = null,
         TblBasket $tblBasket,
         $Basket
@@ -367,16 +367,30 @@ class Basket extends EntityAction
         }
 
         if (!$Error) {
-            if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date']))
+            $TempTblInvoiceList = array();
+            $SelectList = array();
+            if ($this->checkDebtorsByBasket( $tblBasket, $Basket['Date'], $TempTblInvoiceList, $SelectList))
             {
-                $this->actionDestroyBasket( $tblBasket );
-                $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
-                        .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 2 );
+                if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date'], $TempTblInvoiceList))
+                {
+                    $this->actionDestroyBasket( $tblBasket );
+                    $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
+                            .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 2 );
+                }
+                else
+                {
+                    $View.= new Success( 'Die Rechnungen konnten nicht erstellt werden' )
+                        .new Redirect( '/Sphere/Billing/Basket', 2 );
+                }
             }
             else
             {
-                $View.= new Success( 'Die Rechnungen konnten nicht erstellt werden' )
-                    .new Redirect( '/Sphere/Billing/Basket', 2 );
+                $View.= new Redirect( '/Sphere/Billing/Basket/Debtor/Select', 0, array(
+                    'Id' => $tblBasket->getId(),
+                    'Date' => $Basket['Date'],
+                    'TempTblInvoiceList' => $TempTblInvoiceList,
+                    'SelectList' => $SelectList
+                ));
             }
         }
 

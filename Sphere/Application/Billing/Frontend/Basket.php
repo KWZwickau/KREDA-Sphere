@@ -544,10 +544,10 @@ class Basket extends AbstractFrontend
             new ChevronLeftIcon(), array(
                 'Id' => $Id
             ) ) );
-        $View->addButton( new Primary( 'Prüfen', '/Sphere/Billing/Basket/Debtor/Select',
-            new ChevronRightIcon(), array(
-                'Id' => $Id
-            ) ) );
+//        $View->addButton( new Primary( 'Prüfen', '/Sphere/Billing/Basket/Debtor/Select',
+//            new ChevronRightIcon(), array(
+//                'Id' => $Id
+//            ) ) );
 
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
         $tblBasketItemAll = Billing::serviceBasket()->entityBasketItemAllByBasket( $tblBasket );
@@ -600,7 +600,7 @@ class Basket extends AbstractFrontend
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn(
-                            Billing::serviceBasket()->executeCreateInvoiceFromBasketList(
+                            Billing::serviceBasket()->executeCheckBasket(
                                 new Form(
                                     new FormGroup( array(
                                         new FormRow( array(
@@ -623,11 +623,13 @@ class Basket extends AbstractFrontend
 
     /**
      * @param $Id
-     * @param $Data
+     * @param $Date
+     * @param $TempTblInvoiceList
+     * @param $SelectList
      *
      * @return Stage
      */
-    public static function frontendBasketDebtorSelect( $Id, $Data = null )
+    public static function frontendBasketDebtorSelect( $Id, $Date, $TempTblInvoiceList, $SelectList )
     {
         $View = new Stage();
         $View->setTitle( 'Warenkorb' );
@@ -635,69 +637,7 @@ class Basket extends AbstractFrontend
         $View->setMessage( 'Weisen Sie die entsprechenden Debitoren zu' );
 
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
-        $tblCommodityAllByBasket = Billing::serviceBasket()->entityCommodityAllByBasket( $tblBasket );
-        $tblBasketPersonAllByBasket = Billing::serviceBasket()->entityBasketPersonAllByBasket( $tblBasket );
 
-        $TempTblInvoiceList = array();
-        $SelectList = array();
-        foreach($tblBasketPersonAllByBasket as &$tblBasketPerson)
-        {
-            $tblPerson = Management::servicePerson()->entityPersonById( $tblBasketPerson->getServiceManagementPerson());
-            foreach($tblCommodityAllByBasket as &$tblCommodity)
-            {
-                /** @var TblDebtorCommodity[] $tblDebtorCommodityListByPersonAndCommodity */
-                $tblDebtorCommodityListByPersonAndCommodity = array();
-                /** @var TblDebtor[] $tblDebtorListByPerson */
-                $tblDebtorListByPerson = array();
-
-                $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson($tblPerson);
-                foreach($tblPersonRelationshipList as $tblPersonRelationship)
-                {
-                    $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson(
-                    Management::servicePerson()->entityPersonById($tblPersonRelationship->getTblPersonA()));
-                    foreach($tblDebtorList as $tblDebtor)
-                    {
-                        $tblDebtorCommodityList = Billing::serviceBanking()->entityDebtorCommodityAllByDebtorAndCommodity( $tblDebtor, $tblCommodity );
-                        foreach ($tblDebtorCommodityList as $tblDebtorCommodity)
-                        {
-                            $tblDebtorCommodityListByPersonAndCommodity[] = $tblDebtorCommodity;
-                        }
-                        $tblDebtorListByPerson[]=$tblDebtor;
-                    }
-                }
-
-                if (empty($tblDebtorCommodityListByPersonAndCommodity))
-                {
-                    foreach($tblDebtorListByPerson as $tblDebtor)
-                    {
-                        $SelectList[] = array(
-                            'tblPerson' => $tblPerson->getId(),
-                            'tblCommodity' => $tblCommodity->getId(),
-                            'tblDebtor' => $tblDebtor->getId()
-                        );
-                    }
-                }
-                else if (count($tblDebtorCommodityListByPersonAndCommodity) == 1)
-                {
-                    $TempTblInvoiceList[] = array(
-                        'tblPerson' => $tblPerson->getId(),
-                        'tblCommodity' => $tblCommodity->getId(),
-                        'tblDebtor' => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId()
-                    );
-                }
-                else
-                {
-                    foreach ($tblDebtorCommodityListByPersonAndCommodity as $tblDebtorCommodityByPersonAndCommodity)
-                    {
-                        $SelectList[] = array(
-                            'tblPerson' => $tblPerson->getId(),
-                            'tblCommodity' => $tblCommodity->getId(),
-                            'tblDebtor' => $tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId()
-                        );
-                    }
-                }
-            }
-        }
 
         print_r($TempTblInvoiceList);
         print_r($SelectList);
