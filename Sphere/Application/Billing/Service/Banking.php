@@ -159,4 +159,15 @@ class Banking extends EntityAction
         return parent::entityDebtorByServiceManagement_Person( $ServiceManagement_Person );
     }
 
+    /**
+     * @param $Id
+     *
+     * @return bool|TblDebtor
+     */
+    public function  entityDebtorById($Id)
+    {
+        return parent::entityDebtorById($Id);
+    }
+
+
 }

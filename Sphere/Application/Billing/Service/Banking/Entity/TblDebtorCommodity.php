@@ -53,7 +53,7 @@ class TblDebtorCommodity extends AbstractEntity
         if (null === $this->tblDebtor) {
             return false;
         } else {
-            return Billing::serviceAccount()->entityDebtorById( $this->tblDebtor );
+            return Billing::serviceBanking()->entityDebtorById( $this->tblDebtor );
         }
     }
 
