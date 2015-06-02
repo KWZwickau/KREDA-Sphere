@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Billing\Service\Banking;
 
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Common\AbstractService;
 
 /**
@@ -25,8 +26,8 @@ abstract class EntitySchema extends AbstractService
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
 
-        $this->setTableDebtor( $Schema );
-        $this->setTableDebtorCommodity( $Schema );
+        $tblDebtor=$this->setTableDebtor( $Schema );
+        $this->setTableDebtorCommodity( $Schema, $tblDebtor );
 
 
         /**
@@ -39,6 +40,7 @@ abstract class EntitySchema extends AbstractService
 
     /**
      * @param Schema $Schema
+     *
      * @return Table tblDebtorCommodity
      */
     private function setTableDebtor( Schema &$Schema )
@@ -61,17 +63,19 @@ abstract class EntitySchema extends AbstractService
 
     /**
      * @param Schema $Schema
-     * @return Table tblDebtorCommodity
+     * @param Table $tblDebtor
+     *
+     * @return Table
      */
-    private function setTableDebtorCommodity( Schema &$Schema )
+    private function setTableDebtorCommodity( Schema &$Schema, Table $tblDebtor )
     {
         $Table = $this->schemaTableCreate( $Schema, 'tblDebtorCommodity');
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtorCommodity', 'Commodity')){
-            $Table->addColumn( 'Commodity', 'bigint' );
+
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtorCommodity', 'serviceBilling_Commodity')){
+            $Table->addColumn( 'serviceBilling_Commodity', 'bigint' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtorCommodity', 'Debtor')){
-            $Table->addColumn( 'Debtor', 'bigint' );
-        }
+
+        $this->schemaTableAddForeignKey( $Table, $tblDebtor );
         return $Table;
     }
 }

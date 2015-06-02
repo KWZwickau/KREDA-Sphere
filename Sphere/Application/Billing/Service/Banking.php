@@ -2,8 +2,11 @@
 namespace KREDA\Sphere\Application\Billing\Service;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Banking\EntityAction;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Redirect;
@@ -35,6 +38,27 @@ class Banking extends EntityAction
         /**
          * CommodityType
          */
+    }
+
+    /**
+     * @param TblPerson $tblPerson
+     *
+     * @return bool|Banking\Entity\TblDebtor[]
+     */
+    public  function entityDebtorAllByPerson(TblPerson $tblPerson)
+    {
+        return parent::entityDebtorAllByPerson($tblPerson);
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     * @param TblCommodity $tblCommodity
+     *
+     * @return bool|Banking\Entity\TblDebtorCommodity[]
+     */
+    public  function entityDebtorCommodityAllByDebtorAndCommodity(TblDebtor $tblDebtor, TblCommodity $tblCommodity)
+    {
+        return parent::entityDebtorCommodityAllByDebtorAndCommodity($tblDebtor, $tblCommodity);
     }
 
     /**

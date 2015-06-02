@@ -6,7 +6,7 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Configuration;
 
 /**
- * Class Commodity
+ * Class Basket
  *
  * @package KREDA\Sphere\Application\Billing\Module
  */

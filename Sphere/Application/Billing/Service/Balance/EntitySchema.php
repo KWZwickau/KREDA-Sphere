@@ -72,7 +72,7 @@ abstract class EntitySchema extends AbstractService
         {
             $Table->addColumn( 'Value', 'decimal' , array( 'precision' => 14 , 'scale' => 4) );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblBalance', 'Date' ))
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblPayment', 'Date' ))
         {
             $Table->addColumn( 'Date', 'date' );
         }

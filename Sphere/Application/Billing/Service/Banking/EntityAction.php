@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Billing\Service\Banking;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
 
@@ -43,6 +44,31 @@ abstract class EntityAction extends EntitySchema
         $Entity = $this->getEntityManager()->getEntity('tblDebtor')->findBy( array(TblDebtor::ATTR_DEBTOR_SERVICE_MANAGEMENT_PERSON => $ServiceManagement_Person) );
         return (null === $Entity ? false : $Entity);
     }
+
+    /**
+     * @param TblPerson $tblPerson
+     * @return TblDebtor[]|bool
+     */
+    protected function entityDebtorAllByPerson( TblPerson $tblPerson )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblDebtor' )
+            ->findBy( array( TblDebtor::ATTR_SERVICE_MANAGEMENT_PERSON => $tblPerson->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     * @param TblCommodity $tblCommodity
+     *
+     * @return TblDebtorCommodity[]|bool
+     */
+    protected function entityDebtorCommodityAllByDebtorAndCommodity( TblDebtor $tblDebtor, TblCommodity $tblCommodity )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblDebtorCommodity' )
+            ->findBy( array( TblDebtorCommodity::ATTR_TBL_DEBTOR => $tblDebtor->getId(), TblDebtorCommodity::ATTR_SERVICE_BILLING_COMMODITY => $tblCommodity->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
 
     /**
      * @param $LeadTimeFollow

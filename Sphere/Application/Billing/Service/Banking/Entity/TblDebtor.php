@@ -14,7 +14,7 @@ class TblDebtor extends AbstractEntity
 {
 
     const ATTR_DEBTOR_NUMBER = 'DebtorNumber';
-    const ATTR_DEBTOR_SERVICE_MANAGEMENT_PERSON = 'ServiceManagement_Person';
+    const ATTR_SERVICE_MANAGEMENT_PERSON = 'ServiceManagement_Person';
 
     /**
      * @Column(type="string")
