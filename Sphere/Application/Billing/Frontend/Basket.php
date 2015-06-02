@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Billing\Frontend;
 
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Module\Commodity;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
@@ -638,17 +639,27 @@ class Basket extends AbstractFrontend
 
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
 
+        //print_r($SelectList);
+        $Data = array();
+        foreach($SelectList as $Select)
+        {
+            print_r(array_search(array('tblPerson'=>$Select['tblPerson'],'tblCommodity'=>$Select['tblCommodity']), $SelectList, false));
+            $Data[] = array(
+                'PersonName' => Management::servicePerson()->entityPersonById($Select['tblPerson'])->getFullName(),
+                'CommodityName' => Billing::serviceCommodity()->entityCommodityById($Select['tblCommodity'])->getName(),
+                'DebtorName' => Billing::serviceBanking()->entityDebtorById($Select['tblDebtor'])->getServiceManagement_Person()->getFullName()
+            );
+        }
 
-        print_r($TempTblInvoiceList);
-        print_r($SelectList);
-
-//        $View->setContent(
-//            new TableData( $tblBasketPersonAllByBasket, null,
-//                array(
-//                    'PersonName' => 'Schüler',
-//                )
-//            )
-//        );
+        $View->setContent(
+            new TableData( $Data, null,
+                array(
+                    'PersonName' => 'Schüler',
+                    'CommodityName' => 'Leistung',
+                    'DebtorName' => 'Debitor'
+                )
+            )
+        );
 
         return $View;
     }

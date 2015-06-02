@@ -171,6 +171,7 @@ abstract class EntityAction extends EntitySchema
                 {
                     foreach($tblDebtorListByPerson as $tblDebtor)
                     {
+                        if (!in_array(array('tblPerson' => $tblPerson->getId(), 'tblCommodity'=> $tblCommodity->getId()), $SelectList))
                         $SelectList[] = array(
                             'tblPerson' => $tblPerson->getId(),
                             'tblCommodity' => $tblCommodity->getId(),

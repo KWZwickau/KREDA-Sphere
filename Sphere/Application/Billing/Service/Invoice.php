@@ -122,18 +122,19 @@ class Invoice extends EntityAction
 
     /**
      * @param TblBasket $tblBasket
-     * @param \DateTime $Date
+     * @param $Date
+     * @param $TempTblInvoiceList
      *
      * @return bool
      */
     public function executeCreateInvoiceListFromBasket(
         TblBasket $tblBasket,
-        $Date
+        $Date,
+        $TempTblInvoiceList
     )
     {
-        return $this->actionCreateInvoiceListFromBasket($tblBasket, $Date);
+        return $this->actionCreateInvoiceListFromBasket($tblBasket, $Date, $TempTblInvoiceList);
     }
-
 
     /**
      * @param TblInvoice $tblInvoice

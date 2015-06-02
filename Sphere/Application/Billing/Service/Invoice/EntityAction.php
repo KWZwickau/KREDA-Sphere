@@ -118,13 +118,15 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblBasket $tblBasket
-     * @param \DateTime $Date
+     * @param $Date
+     * @param $TempTblInvoiceList
      *
      * @return bool
      */
     protected function actionCreateInvoiceListFromBasket(
         TblBasket $tblBasket,
-        $Date
+        $Date,
+        $TempTblInvoiceList
     )
     {
         $tblPersonAllByBasket = Billing::serviceBasket()->entityPersonAllByBasket( $tblBasket );
@@ -136,23 +138,30 @@ abstract class EntityAction extends EntitySchema
         // TODO InvoiceNumber create
         // TODO tblAddress
 
-        foreach ($tblPersonAllByBasket as $tblPerson) {
+        foreach ($TempTblInvoiceList as $TempTblInvoice)
+        {
+            $tblDebtor = Billing::serviceBanking()->entityDebtorById($TempTblInvoice['tblDebtor']);
+            $tblPersonDebtor = Management::servicePerson()->entityPersonById($tblDebtor->getServiceManagement_Person());
+            $tblPerson = Management::servicePerson()->entityPersonById($TempTblInvoice['tblPerson']);
             $Entity = new TblInvoice();
             $Entity->setIsConfirmed( false );
             $Entity->setIsPaid( false );
             $Entity->setIsVoid( false );
-            $Entity->setNumber( "23934093243920" );
-            //$Entity->setPaymentDate( $Date->sub(new \DateInterval('P'. Billing::serviceAccount()->entityDebtorByPerson($tblPerson)->getLeadTimeFollow() .'D') ));
-            $Entity->setPaymentDate( ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P5D' ) ) );
+            $Entity->setNumber( "40000000" );
+            $Entity->setPaymentDate( ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P' . $tblDebtor->getLeadTimeFirst() .'D' ) ) );
             $Entity->setInvoiceDate( new \DateTime( $Date ) );
             $Entity->setDiscount( 0 );
-            $Entity->setDebtorFirstName( $tblPerson->getFirstName() );
-            $Entity->setDebtorLastName( $tblPerson->getLastName() );
-            $Entity->setDebtorSalutation( $tblPerson->getTblPersonSalutation()->getName() );
-            $Entity->setDebtorNumber("1234245");
+            $Entity->setDebtorFirstName( $tblPersonDebtor->getFirstName() );
+            $Entity->setDebtorLastName( $tblPersonDebtor->getLastName() );
+            $Entity->setDebtorSalutation( $tblPersonDebtor->getTblPersonSalutation()->getName() );
+            $Entity->setDebtorNumber($tblDebtor->getDebtorNumber());
             $Entity->setServiceManagementPerson( $tblPerson );
 
             $Manager->SaveEntity( $Entity );
+
+            $Entity->setDebtorNumber( (int)$Entity->getNumber() + $Entity->getId() );
+            $Manager->SaveEntity( $Entity );
+
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
 
@@ -185,7 +194,7 @@ abstract class EntityAction extends EntitySchema
                 {
                     if (( $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson ) )
                         && $tblItem->getServiceManagementCourse()->getId() == $tblStudent->getServiceManagementCourse()->getId()
-                            && $tblItem->getServiceManagementStudentChildRank()->getId() == $tblStudent->getTblChildRank()->getId())
+                        && $tblItem->getServiceManagementStudentChildRank()->getId() == $tblStudent->getTblChildRank()->getId())
                     {
                         $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
                     }
@@ -346,6 +355,4 @@ abstract class EntityAction extends EntitySchema
         }
         return false;
     }
-
-
 }
