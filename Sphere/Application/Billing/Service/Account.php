@@ -47,30 +47,39 @@ class Account extends EntityAction
     }
 
     /**
-     * @param AbstractType $View
+     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      * @param $Account
-     * @return AbstractType|string
+     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
      */
     public function executeAddAccount(
         AbstractType &$View = null,
         $Account )
     {
+
+        /**
+         * Skip to Frontend
+         */
         if ( null === $Account){
             return $View;
         }
         $Error = false;
         if (isset($Account['Description']) && empty( $Account['Description'])) {
-            $View->setError( '$Account[Description]', 'Bitte geben sie eine Beschreibung an' );
+            $View->setError( 'Account[Description]', 'Bitte geben sie eine Beschreibung an' );
             $Error = true;
         }
         if (isset($Account['Number']) && empty( $Account['Number'])) {
-            $View->setError( '$Account[Number]', 'Bitte geben sie die Nummer an' );
+            $View->setError( 'Account[Number]', 'Bitte geben sie die Nummer an' );
             $Error = true;
         }
         $Account['IsActive'] = 1;
 
         if (!$Error) {
-            $this->actionAddAccount( $Account['Number'],$Account['Description'],$Account['IsActive'], $this->entityAccountKeyById( $Account['Key'] ), $this->entityAccountTypeById( $Account['Type'] ) );
+            $this->actionAddAccount(
+                $Account['Number'],
+                $Account['Description'],
+                $Account['IsActive'],
+                $this->entityAccountKeyById( $Account['Key'] ),
+                $this->entityAccountTypeById( $Account['Type'] ) );
             return new Success( 'Das Konto ist erfasst worden' )
                 .new Redirect( '/Sphere/Billing/Account', 2 );
         }

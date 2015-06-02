@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Billing\Frontend;
 
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
@@ -11,7 +12,6 @@ use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
-use KREDA\Sphere\Client\Frontend\Input\Type\HiddenField;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
@@ -39,6 +39,31 @@ class Banking extends AbstractFrontend
         $View->addButton(
             new Primary( 'Debitor Anlegen', '/Sphere/Billing/Banking/Person', new PlusIcon() )
         );
+
+        $tblDebtorAll = Billing::serviceBanking()->entityDebtorAll();
+
+        if (!empty( $tblDebtorAll )) {
+            array_walk( $tblDebtorAll, function ( TblDebtor &$tblDebtor ) {
+
+                $tblDebtor->Person = Management::servicePerson()->entityPersonById($tblDebtor->getServiceManagement_Person())->getFullName();
+            } );
+        }
+
+        $View->setContent(
+            new Layout(array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            new TableData( $tblDebtorAll, null,
+                                array(
+                                    'DebtorNumber' => 'Debitorennummer',
+                                    'LeadTimeFirst' => 'Ersteinzug',
+                                    'LeadTimeFollow' => 'Folgeeinzug',
+                                    'Person' => 'Person'
+                                )),
+                        ))
+                    )),
+                )))));
 
 
 
@@ -80,47 +105,81 @@ class Banking extends AbstractFrontend
                                         'MiddleName' => 'Zweitname',
                                         'LastName' => 'Nachname',
                                         'Option' => 'Debitor hinzufügen'
-                                    )
-                                ),
-                            )
-                        )
-                    ) ),
+                                    )),
+                            ))
+                    )),
                 )))));
         return $View;
     }
 
+    /**
+     * @param $Debtor
+     * @param $Id
+     * @return Stage
+     */
     public static function frontendBankingPersonSelect( $Debtor, $Id )
     {
 
         $View = new Stage();
         $View->setTitle( 'Debitoreninformationen' );
 
+        $Person = Management::servicePerson()->entityPersonById( $Id )->getFullName();
+        $View->setMessage( $Person );
 
+        if ( Billing::serviceBanking()->entityDebtorByServiceManagement_Person( $Id ) == false )
+        {
+            $View->setContent(
+                Billing::serviceBanking()->executeAddDebtor(
+                    new Form( array(
+                        new FormGroup( array(
+                            new FormRow( array(
 
+                                new FormColumn(
+                                    new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new ConversationIcon()
+                                    ), 12),
+                                new FormColumn(
+                                    new TextField( 'Debtor[LeadTimeFirst]', 'Vorlaufzeit in Tagen', 'Ersteinzug', new ConversationIcon()
+                                    ), 6),
+                                new FormColumn(
+                                    new TextField( 'Debtor[LeadTimeFollow]', 'Vorlaufzeit in Tagen', 'Folgeeinzug', new ConversationIcon()
+                                    ), 6),
+                )),
+            ))),  new SubmitPrimary( 'Hinzufügen' )), $Debtor, $Id ));
+        }
+        else{
 
-        $View->setContent(Billing::serviceBanking()->executeAddDebtor(
-            new Form( array(
-                new FormGroup( array(
-                    new FormRow( array(
+            $tblDebtor = Billing::serviceBanking()->entityDebtorByServiceManagement_Person( $Id );
 
-                        new FormColumn(
-                            new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new ConversationIcon()
-                            ), 6),
-                        new FormColumn(
-                            new TextField( 'Debtor[LeadTimeFirst]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                            ), 6),
-                    )),
-                    new FormRow( array(
-                        new FormColumn(
-                            new TextField( 'Debtor[LeadTimeFollow]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                                ) )
-                            , 12 ),
-                        new FormColumn(
-                            new HiddenField( 'Debtor[ServiceManagement_Person]', 'Beschreibung', 'Beschreibung'
-                                ) )
-                            , 6 )
+            $View->setContent(
+                Billing::serviceBanking()->executeAddDebtor(
+                    new Form( array(
+                        new FormGroup( array(
+                            new FormRow( array(
 
-                ))),  new SubmitPrimary( 'Hinzufügen' )), $Debtor, $Id ));
+                                new FormColumn(
+                                    new TableData( $tblDebtor, null,
+                                    array( 'DebtorNumber' => 'Debitorennummer',
+                                           'LeadTimeFirst' => 'Ersteinzug',
+                                           'LeadTimeFollow' => 'Folgeeinzug'
+                                    )
+                                )))))),
+                        new FormGroup( array(
+                            new FormRow( array(
+
+                                new FormColumn(
+                                    new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new ConversationIcon()
+                                    ), 12),
+                                new FormColumn(
+                                    new TextField( 'Debtor[LeadTimeFirst]', 'Vorlaufzeit in Tagen', 'Ersteinzug', new ConversationIcon()
+                                    ), 6),
+                                new FormColumn(
+                                    new TextField( 'Debtor[LeadTimeFollow]', 'Vorlaufzeit in Tagen', 'Folgeeinzug', new ConversationIcon()
+                                    ), 6),
+                            )),
+                        )),
+
+                    ),  new SubmitPrimary( 'Hinzufügen' )), $Debtor, $Id ));
+        }
 
         return $View;
     }

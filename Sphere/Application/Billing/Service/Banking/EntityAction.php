@@ -35,6 +35,16 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param $ServiceManagement_Person
+     * @return TblDebtor[]|bool
+     */
+    protected function entityDebtorByServiceManagement_Person( $ServiceManagement_Person )
+    {
+        $Entity = $this->getEntityManager()->getEntity('tblDebtor')->findBy( array(TblDebtor::ATTR_DEBTOR_SERVICE_MANAGEMENT_PERSON => $ServiceManagement_Person) );
+        return (null === $Entity ? false : $Entity);
+    }
+
+    /**
      * @param $LeadTimeFollow
      * @param $LeadTimeFirst
      * @param $DebtorNumber

@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Module;
 
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Application\Billing\Frontend\Banking as Frontend;
@@ -24,6 +23,9 @@ class Banking extends Common
 
     }
 
+    /**
+     * @param Configuration $Configuration
+     */
     public static function registerApplication( Configuration $Configuration )
     {
         self::$Configuration = $Configuration;
@@ -66,6 +68,7 @@ class Banking extends Common
 
     /**
      * @param $Id
+     * @param $Debtor
      * @return Stage
      */
     public static function frontendBankingPersonSelect( $Debtor, $Id )
