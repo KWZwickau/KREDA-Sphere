@@ -38,11 +38,15 @@ class AutoCompleter extends AbstractType
             $Convert = array();
             /** @var AbstractEntity $Entity */
             foreach ((array)$Data[$Attribute] as $Entity) {
-                $Convert[$Entity->getId()] = $Entity->{'get'.$Attribute}();
+                if ($Entity) {
+                    $Convert[$Entity->getId()] = $Entity->{'get'.$Attribute}();
+                }
             }
+            $Convert = array_unique( $Convert );
             asort( $Convert );
             $this->Template->setVariable( 'ElementData', $Convert );
         } else {
+            $Data = array_unique( $Data );
             asort( $Data );
             $this->Template->setVariable( 'ElementData', $Data );
         }

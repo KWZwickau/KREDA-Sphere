@@ -2,7 +2,9 @@
 namespace KREDA\Sphere\Application\Management\Frontend;
 
 use KREDA\Sphere\Application\Management\Frontend\Person\Address;
+use KREDA\Sphere\Application\Management\Frontend\Person\Basic;
 use KREDA\Sphere\Application\Management\Frontend\Person\Relationship;
+use KREDA\Sphere\Application\Management\Frontend\Person\Student;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
@@ -67,7 +69,7 @@ class Person extends AbstractFrontend
         $View->setTitle( 'Person' );
         $View->setDescription( 'Hinzufügen' );
 
-        $FormBasic = Person\InputForm::formBasic();
+        $FormBasic = Basic::formBasic();
         $FormBasic->appendFormButton( new SubmitPrimary( 'Anlegen' ) );
 
         $View->setContent( Management::servicePerson()->executeCreatePerson(
@@ -131,22 +133,7 @@ class Person extends AbstractFrontend
                 $View->setContent( new Warning( 'Die Person konnte nicht abgerufen werden' ) );
             } else {
 
-                $Global = self::extensionSuperGlobal();
-                $Global->POST['PersonName']['Salutation'] = $tblPerson->getTblPersonSalutation()->getId();
-                $Global->POST['PersonName']['Title'] = $tblPerson->getTitle();
-                $Global->POST['PersonName']['First'] = $tblPerson->getFirstName();
-                $Global->POST['PersonName']['Middle'] = $tblPerson->getMiddleName();
-                $Global->POST['PersonName']['Last'] = $tblPerson->getLastName();
-                $Global->POST['BirthDetail']['Gender'] = $tblPerson->getTblPersonGender()->getId();
-                $Global->POST['BirthDetail']['Date'] = $tblPerson->getBirthday();
-                $Global->POST['BirthDetail']['Place'] = $tblPerson->getBirthplace();
-                $Global->POST['PersonInformation']['Nationality'] = $tblPerson->getNationality();
-                $Global->POST['PersonInformation']['Type'] = $tblPerson->getTblPersonType()->getId();
-                $Global->POST['PersonInformation']['Remark'] = $tblPerson->getRemark();
-                $Global->POST['PersonInformation']['Denomination'] = $tblPerson->getDenomination();
-                $Global->savePost();
-
-                $FormBasic = Person\InputForm::formBasic();
+                $FormBasic = Basic::formBasic( $tblPerson );
                 $FormBasic->appendFormButton( new SubmitPrimary( 'Änderungen speichern' ) );
 
                 /**
@@ -154,27 +141,27 @@ class Person extends AbstractFrontend
                  */
                 switch ($tblPerson->getTblPersonType()->getId()) {
                     case Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId():
-                        $FormStudent = '';
+                        $LayoutStudent = '';
                         $LayoutRelationship = '';
                         $LayoutAddress = Address::layoutAddress( $tblPerson );
                         break;
                     case Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId():
-                        $FormStudent = Person\InputForm::formStudent( $tblPerson );
+                        $LayoutStudent = Student::layoutStudent( $tblPerson );
                         $LayoutRelationship = Relationship::layoutRelationship( $tblPerson );
                         $LayoutAddress = Address::layoutAddress( $tblPerson );
                         break;
                     case Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId():
-                        $FormStudent = '';
+                        $LayoutStudent = '';
                         $LayoutRelationship = Relationship::layoutRelationship( $tblPerson );
                         $LayoutAddress = Address::layoutAddress( $tblPerson );
                         break;
                     case Management::servicePerson()->entityPersonTypeByName( 'Lehrer' )->getId():
-                        $FormStudent = '';
+                        $LayoutStudent = '';
                         $LayoutRelationship = Relationship::layoutRelationship( $tblPerson );
                         $LayoutAddress = Address::layoutAddress( $tblPerson );
                         break;
                     default:
-                        $FormStudent = '';
+                        $LayoutStudent = '';
                         $LayoutRelationship = '';
                         $LayoutAddress = '';
                 }
@@ -184,7 +171,7 @@ class Person extends AbstractFrontend
                     .Management::servicePerson()->executeChangePerson(
                         $FormBasic, $tblPerson, $PersonName, $PersonInformation, $BirthDetail
                     )
-                    .$FormStudent
+                    .$LayoutStudent
                     .$LayoutAddress
                     .$LayoutRelationship
                 );

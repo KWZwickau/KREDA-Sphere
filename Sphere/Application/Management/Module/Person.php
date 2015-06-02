@@ -74,26 +74,26 @@ class Person extends Account
         /**
          * REST Service
          */
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonInterest',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId()
-            );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonStudent',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId()
-            );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonGuardian',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId()
-            );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonTeacher',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Lehrer' )->getId()
-            );
+        if (( $tblPersonType = Management::servicePerson()->entityPersonTypeByName( 'Interessent' ) )) {
+            self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonInterest',
+                __CLASS__.'::restPersonListByType' )
+                ->setParameterDefault( 'tblPersonType', $tblPersonType->getId() );
+        }
+        if (( $tblPersonType = Management::servicePerson()->entityPersonTypeByName( 'Schüler' ) )) {
+            self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonStudent',
+                __CLASS__.'::restPersonListByType' )
+                ->setParameterDefault( 'tblPersonType', $tblPersonType->getId() );
+        }
+        if (( $tblPersonType = Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' ) )) {
+            self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonGuardian',
+                __CLASS__.'::restPersonListByType' )
+                ->setParameterDefault( 'tblPersonType', $tblPersonType->getId() );
+        }
+        if (( $tblPersonType = Management::servicePerson()->entityPersonTypeByName( 'Lehrer' ) )) {
+            self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonTeacher',
+                __CLASS__.'::restPersonListByType' )
+                ->setParameterDefault( 'tblPersonType', $tblPersonType->getId() );
+        }
     }
 
     /**
