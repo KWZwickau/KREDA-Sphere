@@ -649,50 +649,51 @@ class Basket extends AbstractFrontend
                 $tblDebtorCommodityListByPersonAndCommodity = array();
                 /** @var TblDebtor[] $tblDebtorListByPerson */
                 $tblDebtorListByPerson = array();
+
                 $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson($tblPerson);
                 foreach($tblPersonRelationshipList as $tblPersonRelationship)
                 {
                     $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson(
-                        Management::servicePerson()->entityPersonById($tblPersonRelationship->getTblPersonA()));
+                    Management::servicePerson()->entityPersonById($tblPersonRelationship->getTblPersonA()));
                     foreach($tblDebtorList as $tblDebtor)
                     {
                         $tblDebtorCommodityList = Billing::serviceBanking()->entityDebtorCommodityAllByDebtorAndCommodity( $tblDebtor, $tblCommodity );
                         foreach ($tblDebtorCommodityList as $tblDebtorCommodity)
                         {
-                            $tblDebtorCommodityListByPersonAndCommodity = array_push($tblDebtorCommodityListByPersonAndCommodity, $tblDebtorCommodity);
+                            $tblDebtorCommodityListByPersonAndCommodity[] = $tblDebtorCommodity;
                         }
-                        $tblDebtorListByPerson = array_push($tblDebtorListByPerson, $tblDebtor);
+                        $tblDebtorListByPerson[]=$tblDebtor;
                     }
                 }
 
-                if (array_count_values($tblDebtorCommodityListByPersonAndCommodity) == 1)
-                {
-                    $TempTblInvoiceList = array_push($TempTblInvoiceList, array(
-                        'tblPerson' => $tblPerson->getId(),
-                        'tblCommodity' => $tblCommodity->getId(),
-                        'tblDebtor' => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId()
-                    ));
-                }
-                else if (array_count_values($tblDebtorCommodityListByPersonAndCommodity) == 0)
+                if (empty($tblDebtorCommodityListByPersonAndCommodity))
                 {
                     foreach($tblDebtorListByPerson as $tblDebtor)
                     {
-                        $SelectList = array_push($SelectList, array(
+                        $SelectList[] = array(
                             'tblPerson' => $tblPerson->getId(),
                             'tblCommodity' => $tblCommodity->getId(),
                             'tblDebtor' => $tblDebtor->getId()
-                        ));
+                        );
                     }
+                }
+                else if (count($tblDebtorCommodityListByPersonAndCommodity) == 1)
+                {
+                    $TempTblInvoiceList[] = array(
+                        'tblPerson' => $tblPerson->getId(),
+                        'tblCommodity' => $tblCommodity->getId(),
+                        'tblDebtor' => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId()
+                    );
                 }
                 else
                 {
                     foreach ($tblDebtorCommodityListByPersonAndCommodity as $tblDebtorCommodityByPersonAndCommodity)
                     {
-                        $SelectList = array_push($SelectList, array(
+                        $SelectList[] = array(
                             'tblPerson' => $tblPerson->getId(),
                             'tblCommodity' => $tblCommodity->getId(),
                             'tblDebtor' => $tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId()
-                        ));
+                        );
                     }
                 }
             }
