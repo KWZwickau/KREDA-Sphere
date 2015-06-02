@@ -135,4 +135,13 @@ class Billing extends Module\Commodity
 
         return Service\Invoice::getApi();
     }
+
+    /**
+     * @return Service\Balance
+     */
+    public static function serviceBalance()
+    {
+
+        return Service\Balance::getApi();
+    }
 }

@@ -50,6 +50,7 @@ class Update extends AbstractService
         $Protocol[] = Billing::serviceCommodity()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Billing::serviceBasket()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Billing::serviceInvoice()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Billing::serviceBalance()->setupDatabaseSchema( $Simulate );
 
         if (!$Simulate) {
             /**
@@ -78,6 +79,7 @@ class Update extends AbstractService
             Billing::serviceCommodity()->setupDatabaseContent();
             Billing::serviceBasket()->setupDatabaseContent();
             Billing::serviceInvoice()->setupDatabaseContent();
+            Billing::serviceBalance()->setupDatabaseContent();
 
         }
 
