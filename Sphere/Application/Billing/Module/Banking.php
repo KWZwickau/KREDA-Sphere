@@ -43,6 +43,14 @@ class Banking extends Common
         )   ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Debtor', null );
 
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Delete', __CLASS__.'::frontendBankingDelete'
+        )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Select/Commodity', __CLASS__.'::frontendBankingAddCommodity'
+        )   ->setParameterDefault( 'Id', null );
+
 
     }
 
@@ -76,6 +84,28 @@ class Banking extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBankingPersonSelect( $Debtor, $Id );
+    }
+
+    /**
+     * @param $Id
+     * @return Stage
+     */
+    public static function frontendBankingDelete ( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingDelete( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @return mixed
+     */
+    public static function frontendBankingAddCommodity ( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingAddCommodity( $Id );
     }
 
 }

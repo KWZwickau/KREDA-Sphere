@@ -8,6 +8,7 @@ use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Redirect;
 
@@ -109,12 +110,43 @@ class Banking extends EntityAction
     }
 
     /**
+     * @param TblDebtor $tblDebtor
+     * @return string
+     */
+    public function executeBankingDelete(
+        TblDebtor $tblDebtor
+    )
+    {
+        if (null === $tblDebtor)
+        {
+            return '';
+        }
+
+        if ($this->actionRemoveBanking($tblDebtor))
+        {
+            return new Success( 'Die Leistung wurde erfolgreich gelöscht')
+            .new Redirect( '/Sphere/Billing/Banking', 2);
+        }
+        else
+        {
+            return new Danger( 'Die Leistung konnte nicht gelöscht werden' )
+            .new Redirect( '/Sphere/Billing/Banking', 2);
+        }
+    }
+
+    /**
      * @return array|bool|TblDebtor[]
      */
     public function entityDebtorAll()
     {
 
         return parent::entityDebtorAll();
+    }
+
+    public function entityDebtorById( $Id )
+    {
+
+        return parent::entityDebtorById( $Id );
     }
 
     /**
