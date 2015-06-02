@@ -47,17 +47,6 @@ class Account extends EntityAction
     }
 
     /**
-     * @param $Id
-     *
-     * @return bool|TblAccountKeyType
-     */
-    public function entityAccountKeyTypeById( $Id )
-    {
-
-        return parent::entityAccountKeyTypeById( $Id );
-    }
-
-    /**
      * @param AbstractType $View
      * @param $Account
      * @return AbstractType|string
@@ -83,11 +72,103 @@ class Account extends EntityAction
         if (!$Error) {
             $this->actionAddAccount( $Account['Number'],$Account['Description'],$Account['IsActive'], $this->entityAccountKeyById( $Account['Key'] ), $this->entityAccountTypeById( $Account['Type'] ) );
             return new Success( 'Das Konto ist erfasst worden' )
-                .new Redirect( '/Sphere/Billing/Account/Fibu', 2 );
+                .new Redirect( '/Sphere/Billing/Account', 2 );
         }
 
         return $View;
 
+    }
+
+    /**
+     * @param AbstractType $View
+     * @param TblAccount $tblAccount
+     * @param $Account
+     * @return AbstractType|string
+     */
+    public function executeEditAccount(
+        AbstractType &$View = null,
+        TblAccount $tblAccount,
+        $Account
+    ) {
+
+        /**
+         * Skip to Frontend
+         */
+        if (null === $Account
+        ) {
+            return $View;
+        }
+
+        $Error = false;
+
+        if (isset($Account['Description'] ) && empty( $Account['Description'] )) {
+            $View->setError( 'Account[Description]', 'Bitte geben Sie eine Refferenznummer an' );
+            $Error = true;
+        }
+        if (isset($Account['Number'] ) && empty( $Account['Number'] )) {
+            $View->setError( 'Account[Number]', 'Bitte geben Sie eine Refferenznummer an' );
+            $Error = true;
+        }
+        if (isset($Account['IsActive'] ) && empty( $Account['IsActive'] )) {
+            $View->setError( 'Account[IsActive]', 'Bitte geben sie an ob der Account Aktiv ist' );
+            $Error = true;
+        }
+
+        if (!$Error) {
+            if ($this->actionEditAccount(
+                $tblAccount,
+                $Account['Description'],
+                $Account['Number'],
+                $Account['IsActive'],
+                $this->entityAccountKeyById($Account['tblAccountKey']),
+                $this->entityAccountTypeById($Account['tblAccountType'])
+            )) {
+                $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
+                    .new Redirect( '/Sphere/Billing/Account', 2);
+            } else {
+                $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' );
+            };
+        }
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @return string
+     */
+    public function setFibuActivate( $Id )
+    {
+
+        $this->actionActivateAccount( $Id );
+        return new Success( 'Die Aktivierung ist erfasst worden' )
+        .new Redirect( '/Sphere/Billing/Account', 2 );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @return string
+     */
+    public function setFibuDeactivate( $Id )
+    {
+
+        $this->actionDeactivateAccount( $Id );
+        return new Success( 'Die Deaktivierung ist erfasst worden' )
+        .new Redirect( '/Sphere/Billing/Account', 2 );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|TblAccountKeyType
+     */
+    public function entityAccountKeyTypeById( $Id )
+    {
+
+        return parent::entityAccountKeyTypeById( $Id );
     }
 
     /**
@@ -110,72 +191,6 @@ class Account extends EntityAction
     {
 
         return parent::entityAccountTypeById( $Id );
-    }
-
-    /**
-     * @param AbstractType $View
-     * @param              $Debtor
-     * @return AbstractType|string
-     */
-    public function executeAddDebtor(
-        AbstractType &$View = null,
-        $Debtor )
-    {
-
-        /**
-         * Skip to Frontend
-         */
-        if (null === $Debtor) {
-            return $View;
-        }
-        $Error = false;
-        if (isset( $Debtor['ZeitEins'] ) && empty( $Debtor['ZeitEins'] )) {
-            $View->setError( 'Debtor[ZeitEins]', 'Bitte geben sie die erste Vorlaufzeit an' );
-            $Error = true;
-        }
-        if (isset( $Debtor['ZeitZwei'] ) && empty( $Debtor['ZeitZwei'] )) {
-            $View->setError( 'Debtor[ZeitZwei]', 'Bitte geben sie die folge Vorlaufzeit an' );
-            $Error = true;
-        }
-        if (isset( $Debtor['Nummer'] ) && empty( $Debtor['Nummer'] )) {
-            $View->setError( 'Debtor[Nummer]', 'Bitte geben sie die Debitorennummer an' );
-            $Error = true;
-        }
-
-        if (!$Error) {
-            $this->actionAddDebtor( $Debtor['First'], $Debtor['Second'], $Debtor['Number'] );
-            return new Success( 'Der Debitor ist erfasst worden' )
-            .new Redirect( '/Sphere/Billing/Account/Debtor', 2 );
-        }
-        return $View;
-    }
-
-    /**
-     * @param $Id
-     * @return string
-     */
-    public function setFibuActivate( $Id )
-    {
-
-        $this->actionActivateAccount( $Id );
-        return new Success( 'Die Aktivierung ist erfasst worden' )
-        .new Redirect( '/Sphere/Billing/Account/Fibu', 2 );
-
-        return $View;
-    }
-
-    /**
-     * @param $Id
-     * @return string
-     */
-    public function setFibuDeactivate( $Id )
-    {
-
-        $this->actionDeactivateAccount( $Id );
-        return new Success( 'Die Deaktivierung ist erfasst worden' )
-        .new Redirect( '/Sphere/Billing/Account/Fibu', 2 );
-
-        return $View;
     }
 
     /**
@@ -234,6 +249,15 @@ class Account extends EntityAction
     }
 
     /**
+     * @return bool|TblDebtor
+     */
+    public function entityDebtorById( $Id )
+    {
+
+        return parent::entityDebtorById( $Id );
+    }
+
+    /**
      * @return array|bool|TblAccountKey[]
      */
     public function entityAccountKeyAll()
@@ -251,56 +275,4 @@ class Account extends EntityAction
         return parent::entityAccountTypeAll();
     }
 
-    /**
-     * @param AbstractType $View
-     * @param TblAccount $tblAccount
-     * @param $Account
-     * @return AbstractType|string
-     */
-    public function executeEditAccount(
-        AbstractType &$View = null,
-        TblAccount $tblAccount,
-        $Account
-    ) {
-
-        /**
-         * Skip to Frontend
-         */
-        if (null === $Account
-        ) {
-            return $View;
-        }
-
-        $Error = false;
-
-        if (isset($Account['Description'] ) && empty( $Account['Description'] )) {
-            $View->setError( 'Account[Description]', 'Bitte geben Sie eine Refferenznummer an' );
-            $Error = true;
-        }
-        if (isset($Account['Number'] ) && empty( $Account['Number'] )) {
-            $View->setError( 'Account[Number]', 'Bitte geben Sie eine Refferenznummer an' );
-            $Error = true;
-        }
-        if (isset($Account['IsActive'] ) && empty( $Account['IsActive'] )) {
-            $View->setError( 'Account[IsActive]', 'Bitte geben sie an ob der Account Aktiv ist' );
-            $Error = true;
-        }
-
-        if (!$Error) {
-            if ($this->actionEditAccount(
-                $tblAccount,
-                $Account['Description'],
-                $Account['Number'],
-                $Account['IsActive'],
-                $this->entityAccountKeyById($Account['tblAccountKey']),
-                $this->entityAccountTypeById($Account['tblAccountType'])
-            )) {
-                $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
-                    .new Redirect( '/Sphere/Billing/Account', 2);
-            } else {
-                $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' );
-            };
-        }
-        return $View;
-    }
 }

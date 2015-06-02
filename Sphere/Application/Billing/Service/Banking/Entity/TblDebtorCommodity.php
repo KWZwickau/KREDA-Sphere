@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Billing\Service\Account\Entity;
+namespace KREDA\Sphere\Application\Billing\Service\Banking\Entity;
 
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Common\AbstractEntity;

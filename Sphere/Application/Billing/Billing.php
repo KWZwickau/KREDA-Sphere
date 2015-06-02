@@ -45,6 +45,7 @@ class Billing extends Module\Commodity
             Module\Common::registerApplication( $Configuration );
             Module\Commodity::registerApplication( $Configuration );
             Module\Account::registerApplication( $Configuration );
+            Module\Banking::registerApplication( $Configuration );
             Module\Basket::registerApplication( $Configuration );
             Module\Invoice::registerApplication( $Configuration );
         }
@@ -74,7 +75,11 @@ class Billing extends Module\Commodity
         );
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Account', 'Konto', new EditIcon()
+            '/Sphere/Billing/Account', 'FIBU', new EditIcon()
+        );
+
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Banking', 'Debitor', new EditIcon()
         );
 
         self::addModuleNavigationMain( self::$Configuration,
@@ -93,6 +98,15 @@ class Billing extends Module\Commodity
     {
 
         return Service\Account::getApi();
+    }
+
+    /**
+     * @return Service\Banking
+     */
+    public static function serviceBanking()
+    {
+
+        return Service\Banking::getApi();
     }
 
     /**

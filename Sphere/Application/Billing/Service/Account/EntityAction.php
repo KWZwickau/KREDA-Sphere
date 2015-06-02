@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKey;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKeyType;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountType;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblDebtor;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
 
 /**
@@ -51,16 +52,6 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param $Id
-     * @return bool|TblDebtor
-     */
-    protected function entityDebtorById( $Id )
-    {
-        $Entity = $this->getEntityManager()->getEntityById( 'TblDebtor', $Id );
-        return (null === $Entity ? false : $Entity);
-    }
-
-    /**
      * @param $Number
      * @param $Description
      * @param $isActive
@@ -84,29 +75,6 @@ abstract class EntityAction extends EntitySchema
         $Manager->saveEntity($Entity);
 
         System::serviceProtocol()->executeCreateInsertEntry($this->getDatabaseHandler()->getDatabaseName(), $Entity);
-
-        return $Entity;
-    }
-
-    /**
-     * @param $First
-     * @param $Second
-     * @param $Number
-     * @return TblDebtor
-     */
-    protected function actionAddDebtor($First, $Second, $Number )
-    {
-
-        $Manager = $this->getEntityManager();
-
-        $Entity = new TblDebtor();
-        $Entity->setLeadTimeFirst($First);
-        $Entity->setLeadTimeFollow($Second);
-        $Entity->setDebtorNumber($Number);
-
-        $Manager->saveEntity( $Entity );
-
-        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
 
         return $Entity;
     }
@@ -240,15 +208,6 @@ abstract class EntityAction extends EntitySchema
     protected function entityAccountAll()
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )->findAll();
-        return ( null === $Entity ? false : $Entity );
-    }
-
-    /**
-     * @return array|bool|TblAccount[]
-     */
-    protected function entityDebtorAll()
-    {
-        $Entity = $this->getEntityManager()->getEntity( 'TblDebtor' )->findAll();
         return ( null === $Entity ? false : $Entity );
     }
 

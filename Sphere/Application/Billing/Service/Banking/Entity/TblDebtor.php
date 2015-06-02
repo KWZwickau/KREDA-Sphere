@@ -1,6 +1,8 @@
 <?php
-namespace KREDA\Sphere\Application\Billing\Service\Account\Entity;
+namespace KREDA\Sphere\Application\Billing\Service\Banking\Entity;
 
+use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
@@ -25,10 +27,10 @@ class TblDebtor extends AbstractEntity
      * @Column(type="integer")
      */
     protected $LeadTimeFollow;
-//    /**
-//     * @Column(type="bigint")
-//     */
-//    protected $PersonId;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $ServiceManagement_Person;
 
     /**
      * @return integer $LeadTimeFirst
@@ -76,6 +78,26 @@ class TblDebtor extends AbstractEntity
     public function setDebtorNumber($debtorNumber)
     {
         $this->DebtorNumber = $debtorNumber;
+    }
+
+    /**
+     * @return bool|TblPerson $ServiceManagement_Person
+     */
+    public function getServiceManagement_Person()
+    {
+        if (null === $this->ServiceManagement_Person) {
+            return false;
+        } else {
+            return Management::servicePerson()->entityPersonById( $this->ServiceManagement_Person );
+        }
+    }
+
+    /**
+     * @param null|TblPerson $serviceManagement_Person
+     */
+    public function setServiceManagement_Person( TblPerson $serviceManagement_Person )
+    {
+        $this->ServiceManagement_Person = ( null === $serviceManagement_Person ? null : $serviceManagement_Person->getId() );
     }
 
 }

@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Module;
 
-use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Configuration;
@@ -25,47 +24,24 @@ class Account extends Common
         self::$Configuration = $Configuration;
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Account', __CLASS__.'::frontendAccount'
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Account/Fibu/Create', __CLASS__.'::frontendAccountCreate'
+            '/Sphere/Billing/Account/Create', __CLASS__.'::frontendAccountCreate'
         )
             ->setParameterDefault( 'Account', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Account/Fibu', __CLASS__.'::frontendAccountFibu'
+            '/Sphere/Billing/Account', __CLASS__.'::frontendAccountFibu'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Account/Edit', __CLASS__.'::frontendEdit'
+            '/Sphere/Billing/Account/Edit', __CLASS__.'::frontendEditAccountFibu'
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Account', null );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Account/Fibu/Activate', __CLASS__.'::frontendAccountFibuActivate'
+            '/Sphere/Billing/Account/Activate', __CLASS__.'::frontendAccountFibuActivate'
         )   ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Account/Fibu/Deactivate', __CLASS__.'::frontendAccountFibuDeactivate'
+            '/Sphere/Billing/Account/Deactivate', __CLASS__.'::frontendAccountFibuDeactivate'
         )   ->setParameterDefault( 'Id', null );
-
-        //////////////////////////////
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Account/Debtor',__CLASS__.'::frontendDebtor'
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Account/Debtor/Create',__CLASS__.'::frontendCreateDebtor'
-        )->setParameterDefault( 'Debtor', null );
-        //////////////////////////////
-
-    }
-
-    /**
-     * @return Stage
-     */
-    public static function frontendAccount()
-    {
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::frontendAccount();
 
     }
 
@@ -77,6 +53,7 @@ class Account extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendAccountFibu();
+
     }
 
     /**
@@ -89,16 +66,6 @@ class Account extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendCreateAccount($Account);
-    }
-
-    /**
-     * @return Stage
-     */
-    public static function frontendDebtor()
-    {
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::frontendDebtor();
     }
 
     /**
@@ -124,14 +91,15 @@ class Account extends Common
     }
 
     /**
-     * @param $Debtor
-     * @return Stage
+     * @param $Id
+     * @param $Account
+     * @return mixed
      */
-    public static function frontendCreateDebtor( $Debtor )
+    public static function frontendEditAccountFibu( $Id, $Account )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendCreateDebtor( $Debtor );
+        return Frontend::frontendEditAccountFibu( $Id, $Account );
     }
 
     /**
@@ -140,23 +108,6 @@ class Account extends Common
     protected static function setupApplicationNavigation()
     {
 
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Account/Fibu', 'FIBU Konto', new PersonIcon()
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Account/Debtor', 'Debitoren Konto', new PersonIcon()
-        );
     }
 
-    /**
-     * @param $Id
-     * @param $Account
-     * @return mixed
-     */
-    public static function frontendEdit( $Id, $Account )
-    {
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::frontendEdit( $Id, $Account );
-    }
 }
