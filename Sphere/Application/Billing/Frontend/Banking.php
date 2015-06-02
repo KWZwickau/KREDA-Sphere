@@ -19,6 +19,7 @@ use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
+use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -93,6 +94,60 @@ class Banking extends AbstractFrontend
 
         $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
         $View->setContent(Billing::serviceBanking()->executeBankingDelete( $tblDebtor ));
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @return Stage
+     */
+    public static function frontendBankingAddCommodity( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Leistungen' );
+        $View->setDescription( 'Hinzufügen' );
+
+        $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
+        $tblCommodityAll = Billing::serviceCommodity()->entityCommodityAll();
+
+        $IdPerson = Billing::serviceBanking()->entityDebtorById( $Id )->getServiceManagement_Person();
+        $Person = Management::servicePerson()->entityPersonById( $IdPerson )->getFullName();
+        $View->setMessage('Name: '.$Person.'<br /> Debitorennummer: '.Billing::serviceBanking()->entityDebtorById( $Id )->getDebtorNumber());
+
+
+        $View->setContent(
+            new Layout( array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                                new TableData( $tblDebtor, null,
+                                    array(
+                                        'DebtorNumber'   => 'Debitorennummer',
+                                        'LeadTimeFirst'  => 'Ersteinzug',
+                                        'LeadTimeFollow' => 'Folgeeinzug'
+                                    )
+                                )
+                            )
+                        )
+                    ) ),
+                ), new LayoutTitle( 'zugewiesene Leistungen' ) ),
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                                new TableData( $tblCommodityAll, null,
+                                    array(
+                                        'Name'        => 'Name',
+                                        'Description' => 'Beschreibung',
+                                        'Type'        => 'Leistungsart'
+                                    )
+                                )
+                            )
+                        )
+                    ) ),
+                ), new LayoutTitle( 'mögliche Leistungen' ) )
+            ) )
+        );
 
         return $View;
     }
