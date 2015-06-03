@@ -191,23 +191,18 @@ abstract class EntityAction extends EntitySchema
                 {
                     foreach($tblDebtorListByPerson as $tblDebtor)
                     {
-//                        $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
-//                        if ($index === false) {
-//                            $SelectList[] = array(
-//                                'tblPerson' => $tblPerson->getId(),
-//                                'tblCommodity' => $tblCommodity->getId(),
-//                                'Debtors' => array($tblDebtor->getId())
-//                            );
-//                        }
-//                        else
-//                        {
-//                            $SelectList[$index]['Debtors'][]= $tblDebtor->getId();
-//                        }
-                        $SelectList[] = array(
-                            'tblPerson' => $tblPerson->getId(),
-                            'tblCommodity' => $tblCommodity->getId(),
-                            'tblDebtor' => $tblDebtor->getId()
-                        );
+                        $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
+                        if ($index === false) {
+                            $SelectList[] = array(
+                                'tblPerson' => $tblPerson->getId(),
+                                'tblCommodity' => $tblCommodity->getId(),
+                                'Debtors' => array($tblDebtor->getId())
+                            );
+                        }
+                        else
+                        {
+                            $SelectList[$index]['Debtors'][]= $tblDebtor->getId();
+                        }
                     }
                 }
                 else if (count($tblDebtorCommodityListByPersonAndCommodity) == 1)
@@ -225,38 +220,65 @@ abstract class EntityAction extends EntitySchema
                     {
                         $TempTblInvoiceList[$index]['Commodities'][]= $tblCommodity->getId();
                     }
-//                    $TempTblInvoiceList[] = array(
-//                        'tblPerson' => $tblPerson->getId(),
-//                        'tblCommodity' => $tblCommodity->getId(),
-//                        'tblDebtor' => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId()
-//                    );
                 }
                 else
                 {
                     foreach ($tblDebtorCommodityListByPersonAndCommodity as $tblDebtorCommodityByPersonAndCommodity)
                     {
-//                        $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
-//                        if ($index === false) {
-//                            $SelectList[] = array(
-//                                'tblPerson' => $tblPerson->getId(),
-//                                'tblCommodity' => $tblCommodity->getId(),
-//                                'Debtors' => array($tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId())
-//                            );
-//                        }
-//                        else
-//                        {
-//                            $SelectList[$index]['Debtors'][]= $tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId();
-//                        }
-                        $SelectList[] = array(
-                            'tblPerson' => $tblPerson->getId(),
-                            'tblCommodity' => $tblCommodity->getId(),
-                            'tblDebtor' => $tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId()
-                        );
+                        $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
+                        if ($index === false) {
+                            $SelectList[] = array(
+                                'tblPerson' => $tblPerson->getId(),
+                                'tblCommodity' => $tblCommodity->getId(),
+                                'Debtors' => array($tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId())
+                            );
+                        }
+                        else
+                        {
+                            $SelectList[$index]['Debtors'][]= $tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId();
+                        }
                     }
                 }
             }
         }
 
+        return empty($SelectList);
+    }
+
+    /**
+     * @param $Date
+     * @param $TempTblInvoiceList
+     * @param $SelectList
+     * @param $Data
+     *
+     * @return bool
+     */
+    protected function checkDebtors(
+        $Date,
+        $Data,
+        &$TempTblInvoiceList,
+        &$SelectList
+    )
+    {
+//        print_r($SelectList);print_r('<br>');
+//        print_r($Data);print_r('<br>');
+        foreach ($Data as $Key => $Value)
+        {
+            $index = $this->searchArray($TempTblInvoiceList, "tblPerson", $SelectList[$Key]['tblPerson'],
+                "tblDebtor", $Value );
+            if ($index === false) {
+                $TempTblInvoiceList[] = array(
+                    'tblPerson' => $SelectList[$Key]['tblPerson'],
+                    'tblDebtor' => $Value,
+                    'Commodities' => array($SelectList[$Key]['tblCommodity'])
+                );
+            }
+            else
+            {
+                $TempTblInvoiceList[$index]['Commodities'][]= $SelectList[$Key]['tblCommodity'];
+            }
+            unset($SelectList[$Key]);
+        }
         return empty($SelectList);
     }
 
@@ -271,14 +293,12 @@ abstract class EntityAction extends EntitySchema
      */
     private function searchArray(array $Array, $Key1, $Value1, $Key2, $Value2)
     {
-        $count = 0;
-        foreach ($Array as $Item)
+        foreach ($Array as $Key => $Value)
         {
-            if ($Item[$Key1] == $Value1 && $Item[$Key2] == $Value2)
+            if ($Value[$Key1] == $Value1 && $Value[$Key2] == $Value2)
             {
-                return $count;
+                return $Key;
             }
-            $count += 1;
         }
 
         return false;

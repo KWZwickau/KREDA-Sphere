@@ -30,6 +30,7 @@ use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
 use KREDA\Sphere\Client\Frontend\Input\Type\DatePicker;
+use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
@@ -608,7 +609,8 @@ class Basket extends AbstractFrontend
                                         ) ),
                                     ), new FormTitle( 'Fälligkeit' ) )
                                     , new SubmitPrimary( 'Warenkorb fakturieren (prüfen)' )
-                                ), $tblBasket, $Basket )
+                                ), $tblBasket, $Basket
+                            )
                         )
                     ) )
                 ) )
@@ -621,60 +623,54 @@ class Basket extends AbstractFrontend
     /**
      * @param $Id
      * @param $Date
-     * @param $TempTblInvoiceList
+     * @param $Data
      * @param $SelectList
+     * @param $TempTblInvoiceList
      *
      * @return Stage
      */
-    public static function frontendBasketDebtorSelect( $Id, $Date, $TempTblInvoiceList, $SelectList )
+    public static function frontendBasketDebtorSelect( $Id, $Date, $Data, $SelectList, $TempTblInvoiceList )
     {
         $View = new Stage();
         $View->setTitle( 'Warenkorb' );
         $View->setDescription( 'Debitoren zuordnen' );
         $View->setMessage( 'Weisen Sie die entsprechenden Debitoren zu' );
 
-        $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
-
-        print_r($SelectList);
-        $Data = array();
-        foreach($SelectList as $Select)
+        $TableData = array();
+        foreach ($SelectList as $Key => $Select)
         {
-//            $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
-//            if ($index === false) {
-//                $SelectList[] = array(
-//                    'tblPerson' => $tblPerson->getId(),
-//                    'tblCommodity' => $tblCommodity->getId(),
-//                    'Debtors' => array($tblDebtor->getId())
-//                );
-//            }
-//                        else
-//                        {
-//                            $SelectList[$index]['Debtors'][]= $tblDebtor->getId();
-//                        }
-//            print_r($Data);
-//            if (!empty($Data))
-//            {
-//                print_r("Item: " . self::searchArray($Data, "PersonName", $Select['tblPerson'], "CommodityName", $Select['tblCommodity']));
-//            }
-//            print_r('<br>');
-//            $Data[] = array(
-//                'PersonName' => $Select['tblPerson'],
-//                'CommodityName' => $Select['tblCommodity'],
-//                'DebtorName' => $Select['tblDebtor']
-//                'PersonName' => Management::servicePerson()->entityPersonById($Select['tblPerson'])->getFullName(),
-//                'CommodityName' => Billing::serviceCommodity()->entityCommodityById($Select['tblCommodity'])->getName(),
-//                'DebtorName' => Billing::serviceBanking()->entityDebtorById($Select['tblDebtor'])->getServiceManagement_Person()->getFullName()
-//            );
-            //print_r(self::searchArray($Data, 'tblPerson', $Select['tblPerson'], 'tblCommodity', $Select['tblCommodity']));
+            $Debtors = array();
+            foreach ($Select['Debtors'] as $Debtor)
+            {
+                $tblDebtor = Billing::serviceBanking()->entityDebtorById($Debtor);
+                array_push($Debtors, $tblDebtor);
+            }
+
+            $TableData[]=array(
+              'Person' => Management::servicePerson()->entityPersonById($Select['tblPerson'])->getFullName(),
+              'Commodity' => Billing::serviceCommodity()->entityCommodityById($Select['tblCommodity'])->getName(),
+              'Debtors' =>  (new SelectBox( 'Data['. $Key .']', null, array( 'DebtorNumber' => $Debtors )))->__toString()
+            );
         }
 
         $View->setContent(
-            new TableData( $Data, null,
-                array(
-                    'PersonName' => 'Schüler',
-                    'CommodityName' => 'Leistung',
-                    'DebtorName' => 'Debitor'
-                )
+            Billing::serviceBasket()->executeCheckDebtors(
+                new Form(
+                    new FormGroup( array(
+                        new FormRow( array(
+                            new FormColumn(
+                                new TableData( $TableData, null,
+                                    array(
+                                        'Person' => 'Student',
+                                        'Commodity'  => 'Leistung',
+                                        'Debtors' => 'DebitorenNummer'
+                                    )
+                                )
+                            )
+                        ) )
+                    ), new FormTitle( 'Debitoren' ) )
+                    , new SubmitPrimary( 'Debitoren zuordnen (prüfen)' )
+                ), $Id, $Date, $Data, $SelectList, $TempTblInvoiceList
             )
         );
 
