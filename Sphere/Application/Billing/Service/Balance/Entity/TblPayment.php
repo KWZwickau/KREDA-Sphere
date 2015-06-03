@@ -1,10 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Balance\Entity;
 
-use Doctrine\ORM\Mapping\Cache;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -13,7 +9,7 @@ use KREDA\Sphere\Common\AbstractEntity;
  * @Table(name="tblPayment")
  * @Cache(usage="NONSTRICT_READ_WRITE")
  */
-class TblBalance extends AbstractEntity
+class TblPayment extends AbstractEntity
 {
     const ATTR_TBL_BANKING = 'tblBalance';
 

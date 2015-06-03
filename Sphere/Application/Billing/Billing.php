@@ -7,10 +7,8 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BasketIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CommodityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DocumentIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
 use KREDA\Sphere\Client\Configuration;
-use MOC\V\TestSuite\Tests\Component\Documentation\ModuleTest;
 
 /**
  * Class Billing
@@ -48,6 +46,7 @@ class Billing extends Module\Commodity
             Module\Banking::registerApplication( $Configuration );
             Module\Basket::registerApplication( $Configuration );
             Module\Invoice::registerApplication( $Configuration );
+            Module\Balance::registerApplication( $Configuration );
         }
     }
 
@@ -88,6 +87,9 @@ class Billing extends Module\Commodity
 
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Billing/Invoice', 'Rechnungen', new DocumentIcon()
+        );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Balance', 'Offene Posten', new DocumentIcon()
         );
     }
 

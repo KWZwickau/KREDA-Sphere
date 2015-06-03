@@ -5,7 +5,6 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BasketIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CommodityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DocumentIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Configuration;
 use KREDA\Sphere\Common\AbstractApplication;
 
@@ -47,6 +46,9 @@ class Common extends AbstractApplication
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Billing/Invoice', 'Rechnungen', new DocumentIcon()
+        );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Balance', 'Offene Posten', new DocumentIcon()
         );
     }
 }
