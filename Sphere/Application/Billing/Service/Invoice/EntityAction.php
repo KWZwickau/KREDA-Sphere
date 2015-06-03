@@ -129,12 +129,8 @@ abstract class EntityAction extends EntitySchema
         $TempTblInvoiceList
     )
     {
-        $tblPersonAllByBasket = Billing::serviceBasket()->entityPersonAllByBasket( $tblBasket );
-        $tblBasketItemAllByBasket = Billing::serviceBasket()->entityBasketItemAllByBasket( $tblBasket );
-
         $Manager = $this->getEntityManager();
 
-        // TODO Commodity
         // TODO LeadTimeFirst or LeadTimeFollow select
         // TODO tblAddress
 
