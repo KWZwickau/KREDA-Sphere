@@ -136,6 +136,7 @@ class Banking extends AbstractFrontend
                 $tblCommodity = $tblDebtorCommodity->getServiceBillingCommodity();
                 $tblDebtorCommodity->Name = $tblCommodity->getName();
                 $tblDebtorCommodity->Description = $tblCommodity->getDescription();
+                $tblDebtorCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
                 $tblDebtorCommodity->Option =
                     ( new Danger( 'Entfernen', '/Sphere/Billing/Banking/Commodity/Remove',
                         new MinusIcon(), array(
@@ -146,7 +147,7 @@ class Banking extends AbstractFrontend
 
         if (!empty( $tblCommodityAll )) {
             array_walk( $tblCommodityAll, function ( TblCommodity &$tblCommodity, $Index, TblDebtor $tblDebtor ) {
-
+                $tblCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
                 $tblCommodity->Option =
                     ( new Primary( 'Hinzufügen', '/Sphere/Billing/Banking/Commodity/Add',
                         new PlusIcon(), array(
