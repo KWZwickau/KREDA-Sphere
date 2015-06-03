@@ -406,11 +406,12 @@ abstract class EntityAction extends EntitySchema
         $Manager = $this->getEntityManager();
 
         $Entity = $Manager->getEntity( 'tblItemAccount' )->findOneBy(
-            array(
-                TblItemAccount::ATTR_TBL_Item => $tblItem->getId(),
-                TblItemAccount::ATTR_SERVICE_BILLING_ACCOUNT => $tblAccount->getId()
-            ) );
-        if (null === $Entity) {
+        array(
+            TblItemAccount::ATTR_TBL_Item => $tblItem->getId(),
+            TblItemAccount::ATTR_SERVICE_BILLING_ACCOUNT => $tblAccount->getId()
+        ));
+        if (null === $Entity)
+        {
             $Entity = new TblItemAccount();
             $Entity->setTblItem( $tblItem );
             $Entity->setTblAccount( $tblAccount );

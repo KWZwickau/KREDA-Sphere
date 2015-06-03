@@ -119,14 +119,20 @@ abstract class EntityAction extends EntitySchema
         TblCommodity $tblCommodity
     ) {
         $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'tblDebtorCommodity' )->findOneBy(
+            array(
+                TblDebtorCommodity::ATTR_TBL_DEBTOR => $tblDebtor->getId(),
+                TblDebtorCommodity::ATTR_SERVICE_BILLING_COMMODITY => $tblCommodity->getId()
+            ));
+        if (null === $Entity)
+        {
+            $Entity = new TblDebtorCommodity();
+            $Entity->setTblDebtor( $tblDebtor );
+            $Entity->setServiceBillingCommodity( $tblCommodity );
 
-        $Entity = new TblDebtorCommodity();
-        $Entity->setTblDebtor( $tblDebtor );
-        $Entity->setServiceBillingCommodity( $tblCommodity );
-
-        $Manager->saveEntity( $Entity );
-        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
-
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
         return $Entity;
     }
 

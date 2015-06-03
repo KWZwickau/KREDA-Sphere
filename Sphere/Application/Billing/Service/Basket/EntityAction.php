@@ -317,16 +317,24 @@ abstract class EntityAction extends EntitySchema
         $tblCommodityItemList = Billing::serviceCommodity()->entityCommodityItemAllByCommodity( $tblCommodity );
 
         /** @var TblCommodityItem $tblCommodityItem */
-        foreach ($tblCommodityItemList as $tblCommodityItem) {
-            $Entity = new TblBasketItem();
-            $Entity->setPrice( $tblCommodityItem->getTblItem()->getPrice() );
-            $Entity->setQuantity( $tblCommodityItem->getQuantity() );
-            $Entity->setServiceBillingCommodityItem( $tblCommodityItem );
-            $Entity->setTblBasket( $tblBasket );
+        foreach ($tblCommodityItemList as $tblCommodityItem)
+        {
+            $Entity = $Manager->getEntity( 'tblBasketItem' )->findOneBy(array(
+                    TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId(),
+                    TblBasketItem::ATTR_SERVICE_BILLING_COMMODITY_ITEM => $tblCommodityItem->getId()
+            ));
+            if (null === $Entity)
+            {
+                $Entity = new TblBasketItem();
+                $Entity->setPrice( $tblCommodityItem->getTblItem()->getPrice() );
+                $Entity->setQuantity( $tblCommodityItem->getQuantity() );
+                $Entity->setServiceBillingCommodityItem( $tblCommodityItem );
+                $Entity->setTblBasket( $tblBasket );
 
-            $Manager->bulkSaveEntity( $Entity );
-            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
-                $Entity );
+                $Manager->bulkSaveEntity( $Entity );
+                System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                    $Entity );
+            }
         }
         $Manager->flushCache();
 
@@ -429,14 +437,19 @@ abstract class EntityAction extends EntitySchema
     ) {
 
         $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'tblBasketPerson' )->findOneBy(array(
+                TblBasketPerson::ATTR_TBL_Basket => $tblBasket->getId(),
+                TblBasketPerson::ATTR_SERVICE_MANAGEMENT_PERSON => $tblPerson->getId()
+        ));
+        if (null === $Entity)
+        {
+            $Entity = new TblBasketPerson();
+            $Entity->setTblBasket( $tblBasket );
+            $Entity->setServiceManagementPerson( $tblPerson );
 
-        $Entity = new TblBasketPerson();
-        $Entity->setTblBasket( $tblBasket );
-        $Entity->setServiceManagementPerson( $tblPerson );
-
-        $Manager->saveEntity( $Entity );
-        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
-
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
         return $Entity;
     }
 
