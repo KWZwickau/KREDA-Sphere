@@ -332,7 +332,18 @@ class Commodity extends AbstractFrontend
             else
             {
                 $tblCommodityItem = Billing::serviceCommodity()->entityCommodityItemAllByCommodity($tblCommodity);
+                $tblItemAllByCommodity = Billing::serviceCommodity()->entityItemAllByCommodity($tblCommodity);
                 $tblItemAll = Billing::serviceCommodity()->entityItemAll();
+
+                if (!empty($tblItemAllByCommodity))
+                {
+                    $tblItemAll = array_udiff( $tblItemAll, $tblItemAllByCommodity,
+                        function ( TblItem $ObjectA, TblItem $ObjectB ) {
+
+                            return $ObjectA->getId() - $ObjectB->getId();
+                        }
+                    );
+                }
 
                 if (!empty($tblCommodityItem))
                 {

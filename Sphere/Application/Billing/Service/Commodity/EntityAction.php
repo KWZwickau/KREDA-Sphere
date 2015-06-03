@@ -461,16 +461,21 @@ abstract class EntityAction extends EntitySchema
     )
     {
         $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'tblCommodityItem' )->findOneBy(array(
+            TblCommodityItem::ATTR_TBL_COMMODITY => $tblCommodity->getId(),
+            TblCommodityItem::ATTR_TBL_ITEM => $tblItem->getId()
+        ));
+        if (null === $Entity)
+        {
+            $Entity = new TblCommodityItem();
+            $Entity->setTblCommodity( $tblCommodity );
+            $Entity->setTblItem( $tblItem );
+            $Entity->setQuantity( str_replace(',','.', $Quantity) );
 
-        $Entity = new TblCommodityItem();
-        $Entity->setTblCommodity( $tblCommodity );
-        $Entity->setTblItem( $tblItem );
-        $Entity->setQuantity( str_replace(',','.', $Quantity) );
+            $Manager->saveEntity( $Entity );
 
-        $Manager->saveEntity( $Entity );
-
-        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
-
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
         return $Entity;
     }
 
