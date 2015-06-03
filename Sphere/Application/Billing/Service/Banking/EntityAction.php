@@ -147,6 +147,17 @@ abstract class EntityAction extends EntitySchema
     {
         $Manager = $this->getEntityManager();
 
+        $EntityItemsDebtorCommodity = $Manager->getEntity( 'tblDebtorCommodity' )
+            ->findBy( array(TblDebtorCommodity::ATTR_TBL_DEBTOR => $tblDebtor->getId() ) );
+        if (null !== $EntityItemsDebtorCommodity)
+        {
+            foreach($EntityItemsDebtorCommodity as $Entity)
+            {
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+                $Manager->killEntity( $Entity );
+            }
+        }
+
         $EntityItems = $Manager->getEntity( 'tblDebtor' )
             ->findBy( array(TblDebtor::ATTR_DEBTOR_NUMBER => $tblDebtor->getId() ) );
         if (null !== $EntityItems)

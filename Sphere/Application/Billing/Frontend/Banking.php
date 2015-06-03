@@ -87,6 +87,7 @@ class Banking extends AbstractFrontend
 
     /**
      * @param $Id
+     *
      * @return Stage
      */
     public static function frontendBankingDelete( $Id )
@@ -103,6 +104,7 @@ class Banking extends AbstractFrontend
 
     /**
      * @param $Id
+     *
      * @return Stage
      */
     public static function frontendBankingSelectCommodity( $Id )
@@ -214,6 +216,7 @@ class Banking extends AbstractFrontend
     /**
      * @param $Id
      * @param $CommodityId
+     *
      * @return Stage
      */
     public static function frontendBankingAddCommodity( $Id, $CommodityId )
@@ -275,6 +278,7 @@ class Banking extends AbstractFrontend
     /**
      * @param $Debtor
      * @param $Id
+     *
      * @return Stage
      */
     public static function frontendBankingPersonSelect( $Debtor, $Id )

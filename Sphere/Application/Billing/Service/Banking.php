@@ -105,12 +105,12 @@ class Banking extends EntityAction
     {
         if ($this->actionAddDebtorCommodity($tblDebtor, $tblCommodity))
         {
-            return new Success( 'Die Leistung ' . $tblCommodity->getName() . ' wurde erfolgreich hinzugefügt' )
+            return new Success( 'Die Leistung ' . $tblCommodity->getName() . ' wurde erfolgreich hinzugefügt.' )
             .new Redirect( '/Sphere/Billing/Banking/Select/Commodity', 0, array( 'Id' => $tblDebtor->getId()) );
         }
         else
         {
-            return new Warning( 'Die Leistung ' . $tblCommodity->getName() . ' konnte nicht hinzugefügt werden' )
+            return new Warning( 'Die Leistung ' . $tblCommodity->getName() . ' konnte nicht hinzugefügt werden.' )
             .new Redirect( '/Sphere/Billing/Banking/Select/Commodity', 2, array( 'Id' => $tblDebtor->getId()) );
         }
     }
@@ -126,12 +126,12 @@ class Banking extends EntityAction
     {
         if ($this->actionRemoveDebtorCommodity($tblDebtorCommodity))
         {
-            return new Success( 'Die Leistung ' . $tblDebtorCommodity->getServiceBillingCommodity()->getName() . ' wurde erfolgreich entfernt' )
+            return new Success( 'Die Leistung ' . $tblDebtorCommodity->getServiceBillingCommodity()->getName() . ' wurde erfolgreich entfernt.' )
             .new Redirect( '/Sphere/Billing/Banking/Select/Commodity', 0, array( 'Id' => $tblDebtorCommodity->getTblDebtor()->getId()) );
         }
         else
         {
-            return new Warning( 'Die Leistung ' .$tblDebtorCommodity->getServiceBillingCommodity()->getName() .  ' konnte nicht entfernt werden' )
+            return new Warning( 'Die Leistung ' .$tblDebtorCommodity->getServiceBillingCommodity()->getName() .  ' konnte nicht entfernt werden.' )
             .new Redirect( '/Sphere/Billing/Banking/Select/Commodity', 2, array( 'Id' => $tblDebtorCommodity->getTblDebtor()->getId()) );
         }
     }
@@ -168,26 +168,34 @@ class Banking extends EntityAction
         }
         $Error = false;
         if (isset($Debtor['DebtorNumber']) && empty( $Debtor['DebtorNumber'])) {
-            $View->setError( 'Debtor[DebtorNumber]', 'Bitte geben sie die Debitorennummer an' );
+            $View->setError( 'Debtor[DebtorNumber]', 'Bitte geben sie die Debitorennummer an.' );
             $Error = true;
         }
         if (isset($Debtor['DebtorNumber']) && Billing::serviceBanking()->entityDebtorByDebtorNumber( $Debtor['DebtorNumber'])) {
-            $View->setError( 'Debtor[DebtorNumber]', 'Die Debitorennummer exisitiert bereits. Bitte geben Sie eine andere Debitorennummer an' );
+            $View->setError( 'Debtor[DebtorNumber]', 'Die Debitorennummer exisitiert bereits. Bitte geben Sie eine andere Debitorennummer an.' );
             $Error = true;
         }
         if (isset($Debtor['LeadTimeFirst']) && empty( $Debtor['LeadTimeFirst'])) {
-            $View->setError( 'Debtor[LeadTimeFirst]', 'Bitte geben sie den Ersteinzug an' );
+            $View->setError( 'Debtor[LeadTimeFirst]', 'Bitte geben sie den Ersteinzug an.' );
+            $Error = true;
+        }
+        if (isset($Debtor['LeadTimeFirst']) &&  !is_numeric($Debtor['LeadTimeFirst'])) {
+            $View->setError('Debtor[LeadTimeFirst]', 'Bitte geben sie eine Zahl an.');
             $Error = true;
         }
         if (isset($Debtor['LeadTimeFollow']) && empty( $Debtor['LeadTimeFollow'])) {
-            $View->setError( 'Debtor[LeadTimeFollow]', 'Bitte geben sie den Folgeeinzug an' );
+            $View->setError( 'Debtor[LeadTimeFollow]', 'Bitte geben sie den Folgeeinzug an.' );
+            $Error = true;
+        }
+        if (isset($Debtor['LeadTimeFollow']) &&  !is_numeric($Debtor['LeadTimeFollow'])) {
+            $View->setError('Debtor[LeadTimeFollow]', 'Bitte geben sie eine Zahl an.');
             $Error = true;
         }
 
         if (!$Error) {
 
             $this->actionAddDebtor( $Debtor['DebtorNumber'], $Debtor['LeadTimeFirst'], $Debtor['LeadTimeFollow'], Management::servicePerson()->entityPersonById( $Id) );
-            return new Success( 'Der Debitor ist erfasst worden' )
+            return new Success( 'Der Debitor ist erfasst worden.' )
             .new Redirect( '/Sphere/Billing/Banking', 2 );
         }
 
@@ -211,12 +219,12 @@ class Banking extends EntityAction
 
         if ($this->actionRemoveBanking($tblDebtor))
         {
-            return new Success( 'Die Leistung wurde erfolgreich gelöscht')
+            return new Success( 'Die Leistung wurde erfolgreich gelöscht.')
             .new Redirect( '/Sphere/Billing/Banking', 2);
         }
         else
         {
-            return new Danger( 'Die Leistung konnte nicht gelöscht werden' )
+            return new Danger( 'Die Leistung konnte nicht gelöscht werden.' )
             .new Redirect( '/Sphere/Billing/Banking', 2);
         }
     }
