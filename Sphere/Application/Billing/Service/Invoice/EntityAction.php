@@ -165,38 +165,43 @@ abstract class EntityAction extends EntitySchema
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
 
-            foreach ($tblBasketItemAllByBasket as $tblBasketItem) {
-                $tblCommodity = $tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity();
-                $tblItem = $tblBasketItem->getServiceBillingCommodityItem()->getTblItem();
+            foreach ($TempTblInvoice['Commodities'] as $CommodityId)
+            {
+                $tblCommodity = Billing::serviceCommodity()->entityCommodityById($CommodityId);
+                $tblBasketItemAllByBasketAndCommodity = Billing::serviceBasket()->entityBasketItemAllByBasketAndCommodity($tblBasket, $tblCommodity);
+                foreach ($tblBasketItemAllByBasketAndCommodity as $tblBasketItem)
+                {
+                    $tblItem = $tblBasketItem->getServiceBillingCommodityItem()->getTblItem();
 
-                if (!($tblItem->getServiceManagementCourse()) && !($tblItem->getServiceManagementStudentChildRank()))
-                {
-                    $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
-                }
-                else if ($tblItem->getServiceManagementCourse() && !($tblItem->getServiceManagementStudentChildRank()))
-                {
-                    if (( $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson ) )
-                        && $tblItem->getServiceManagementCourse()->getId() == $tblStudent->getServiceManagementCourse()->getId()
-                    )
+                    if (!($tblItem->getServiceManagementCourse()) && !($tblItem->getServiceManagementStudentChildRank()))
                     {
                         $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
                     }
-                }
-                else if (!($tblItem->getServiceManagementCourse()) && $tblItem->getServiceManagementStudentChildRank())
-                {
-                    if (( $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson ) )
-                        && $tblItem->getServiceManagementStudentChildRank()->getId() == $tblStudent->getTblChildRank()->getId())
+                    else if ($tblItem->getServiceManagementCourse() && !($tblItem->getServiceManagementStudentChildRank()))
                     {
-                        $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
+                        if (( $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson ) )
+                            && $tblItem->getServiceManagementCourse()->getId() == $tblStudent->getServiceManagementCourse()->getId()
+                        )
+                        {
+                            $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
+                        }
                     }
-                }
-                else if ($tblItem->getServiceManagementCourse() && $tblItem->getServiceManagementStudentChildRank())
-                {
-                    if (( $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson ) )
-                        && $tblItem->getServiceManagementCourse()->getId() == $tblStudent->getServiceManagementCourse()->getId()
-                        && $tblItem->getServiceManagementStudentChildRank()->getId() == $tblStudent->getTblChildRank()->getId())
+                    else if (!($tblItem->getServiceManagementCourse()) && $tblItem->getServiceManagementStudentChildRank())
                     {
-                        $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
+                        if (( $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson ) )
+                            && $tblItem->getServiceManagementStudentChildRank()->getId() == $tblStudent->getTblChildRank()->getId())
+                        {
+                            $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
+                        }
+                    }
+                    else if ($tblItem->getServiceManagementCourse() && $tblItem->getServiceManagementStudentChildRank())
+                    {
+                        if (( $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson ) )
+                            && $tblItem->getServiceManagementCourse()->getId() == $tblStudent->getServiceManagementCourse()->getId()
+                            && $tblItem->getServiceManagementStudentChildRank()->getId() == $tblStudent->getTblChildRank()->getId())
+                        {
+                            $this->actionCreateInvoiceItem($tblCommodity,$tblItem, $tblBasket, $tblBasketItem, $Entity);
+                        }
                     }
                 }
             }

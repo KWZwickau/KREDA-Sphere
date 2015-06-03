@@ -93,6 +93,17 @@ class Basket extends EntityAction
     }
 
     /**
+     * @param TblBasket $tblBasket
+     * @param TblCommodity $tblCommodity
+     *
+     * @return bool|Basket\Entity\TblBasketItem[]
+     */
+    public function entityBasketItemAllByBasketAndCommodity(TblBasket $tblBasket, TblCommodity $tblCommodity)
+    {
+        return parent::entityBasketItemAllByBasketAndCommodity($tblBasket, $tblCommodity);
+    }
+
+    /**
      * @param $Id
      *
      * @return bool|TblBasketPerson
@@ -375,7 +386,7 @@ class Basket extends EntityAction
                 {
                     $this->actionDestroyBasket( $tblBasket );
                     $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
-                            .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 2 );
+                        .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 2 );
                 }
                 else
                 {

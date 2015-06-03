@@ -77,6 +77,26 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblBasket $tblBasket
+     * @param TblCommodity $tblCommodity
+     *
+     * @return TblBasketItem[]|bool
+     */
+    protected function entityBasketItemAllByBasketAndCommodity( TblBasket $tblBasket, TblCommodity $tblCommodity )
+    {
+        $tblBasketItemAllByBasket = $this->entityBasketItemAllByBasket( $tblBasket );
+        $EntityList = array();
+        foreach ($tblBasketItemAllByBasket as $tblBasketItem)
+        {
+            if ($tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity()->getId() == $tblCommodity->getId())
+            {
+                $EntityList[$tblBasketItem->getId()] = $tblBasketItem;
+            }
+        }
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
      * @param $Id
      *
      * @return bool|\KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem
@@ -141,10 +161,10 @@ abstract class EntityAction extends EntitySchema
         $tblCommodityAllByBasket = Billing::serviceBasket()->entityCommodityAllByBasket( $tblBasket );
         $tblBasketPersonAllByBasket = Billing::serviceBasket()->entityBasketPersonAllByBasket( $tblBasket );
 
-        foreach($tblBasketPersonAllByBasket as &$tblBasketPerson)
+        foreach($tblBasketPersonAllByBasket as $tblBasketPerson)
         {
             $tblPerson = Management::servicePerson()->entityPersonById( $tblBasketPerson->getServiceManagementPerson());
-            foreach($tblCommodityAllByBasket as &$tblCommodity)
+            foreach($tblCommodityAllByBasket as $tblCommodity)
             {
                 /** @var TblDebtorCommodity[] $tblDebtorCommodityListByPersonAndCommodity */
                 $tblDebtorCommodityListByPersonAndCommodity = array();
@@ -171,39 +191,45 @@ abstract class EntityAction extends EntitySchema
                 {
                     foreach($tblDebtorListByPerson as $tblDebtor)
                     {
-                        $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
-                        if ($index === false) {
-                            $SelectList[] = array(
-                                'tblPerson' => $tblPerson->getId(),
-                                'tblCommodity' => $tblCommodity->getId(),
-                                'Debtors' => array($tblDebtor->getId())
-                            );
-                        }
-                        else
-                        {
-                            $SelectList[$index]['Debtors'][]= $tblDebtor->getId();
-                        }
+//                        $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
+//                        if ($index === false) {
+//                            $SelectList[] = array(
+//                                'tblPerson' => $tblPerson->getId(),
+//                                'tblCommodity' => $tblCommodity->getId(),
+//                                'Debtors' => array($tblDebtor->getId())
+//                            );
+//                        }
+//                        else
+//                        {
+//                            $SelectList[$index]['Debtors'][]= $tblDebtor->getId();
+//                        }
+                        $SelectList[] = array(
+                            'tblPerson' => $tblPerson->getId(),
+                            'tblCommodity' => $tblCommodity->getId(),
+                            'tblDebtor' => $tblDebtor->getId()
+                        );
                     }
                 }
                 else if (count($tblDebtorCommodityListByPersonAndCommodity) == 1)
                 {
-//                    $index = $this->searchArray($TempTblInvoiceList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
-//                    if ($index === false) {
-//                        $TempTblInvoiceList[] = array(
-//                            'tblPerson' => $tblPerson->getId(),
-//                            'tblCommodity' => $tblCommodity->getId(),
-//                            'Debtors' => array($tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId())
-//                        );
-//                    }
-//                    else
-//                    {
-//                        $TempTblInvoiceList[$index]['Debtors'][]= $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId();
-//                    }
-                    $TempTblInvoiceList[] = array(
-                        'tblPerson' => $tblPerson->getId(),
-                        'tblCommodity' => $tblCommodity->getId(),
-                        'tblDebtor' => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId()
-                    );
+                    $index = $this->searchArray($TempTblInvoiceList, "tblPerson", $tblPerson->getId(),
+                        "tblDebtor", $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId());
+                    if ($index === false) {
+                        $TempTblInvoiceList[] = array(
+                            'tblPerson' => $tblPerson->getId(),
+                            'tblDebtor' => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId(),
+                            'Commodities' => array($tblCommodity->getId())
+                        );
+                    }
+                    else
+                    {
+                        $TempTblInvoiceList[$index]['Commodities'][]= $tblCommodity->getId();
+                    }
+//                    $TempTblInvoiceList[] = array(
+//                        'tblPerson' => $tblPerson->getId(),
+//                        'tblCommodity' => $tblCommodity->getId(),
+//                        'tblDebtor' => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId()
+//                    );
                 }
                 else
                 {
@@ -234,6 +260,15 @@ abstract class EntityAction extends EntitySchema
         return empty($SelectList);
     }
 
+    /**
+     * @param array $Array
+     * @param $Key1
+     * @param $Value1
+     * @param $Key2
+     * @param $Value2
+     *
+     * @return bool|int
+     */
     private function searchArray(array $Array, $Key1, $Value1, $Key2, $Value2)
     {
         $count = 0;
