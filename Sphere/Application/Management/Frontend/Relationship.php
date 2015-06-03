@@ -99,7 +99,9 @@ class Relationship extends AbstractFrontend
                                 new LayoutColumn( array(
                                     new Success(
                                         $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName()
-                                    )
+                                    ),
+                                    new Primary( 'Zurück zur Person', '/Sphere/Management/Person/Edit', null,
+                                        array( 'Id' => $tblPerson->getId() ) )
                                 ) )
                             ) ),
                             new LayoutRow( array(

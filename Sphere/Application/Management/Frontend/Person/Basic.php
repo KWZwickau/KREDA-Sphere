@@ -13,6 +13,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormAspect;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
@@ -30,6 +31,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Text\Type\Muted;
 use KREDA\Sphere\Common\AbstractFrontend;
 
@@ -84,7 +86,7 @@ class Basic extends AbstractFrontend
                                 ? nl2br( $tblPerson->getRemark() )
                                 : new Muted( '<small>Keine Bemerkungen</small>' )
                             )
-                            , LayoutPanel::PANEL_TYPE_INFO )
+                            , LayoutPanel::PANEL_TYPE_DEFAULT )
                     ),
                 ) ),
             ), new LayoutTitle( 'Grunddaten' ) )
@@ -111,7 +113,15 @@ class Basic extends AbstractFrontend
         $FormBasic = Basic::formBasic( $tblPerson );
         $FormBasic->appendFormButton( new SubmitPrimary( 'Änderungen speichern' ) );
 
-        $View->setContent( Management::servicePerson()->executeChangePerson(
+        $View->setContent(
+
+            new Success(
+                $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName()
+            )
+            .new Primary( 'Zurück zur Person', '/Sphere/Management/Person/Edit', null,
+                array( 'Id' => $tblPerson->getId() ) )
+
+            .Management::servicePerson()->executeChangePerson(
             $FormBasic, $tblPerson, $PersonName, $PersonInformation, $BirthDetail )
         );
         return $View;
