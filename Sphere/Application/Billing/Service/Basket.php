@@ -400,10 +400,68 @@ class Basket extends EntityAction
                     .new Redirect( '/Sphere/Billing/Basket/Debtor/Select', 2, array(
                         'Id' => $tblBasket->getId(),
                         'Date' => $Basket['Date'],
-                        'TempTblInvoiceList' => $TempTblInvoiceList,
-                        'SelectList' => $SelectList
+                        'SelectList' => $SelectList,
+                        'TempTblInvoiceList' => $TempTblInvoiceList
                     ));
             }
+        }
+
+        return $View;
+    }
+
+    /**
+     * @param AbstractType $View
+     * @param $Id
+     * @param $Date
+     * @param $SelectList
+     * @param $TempTblInvoiceList
+     * @param $Data
+     *
+     * @return AbstractType|string
+     */
+    public function executeCheckDebtors(
+        AbstractType &$View = null,
+        $Id,
+        $Date,
+        $Data,
+        $SelectList,
+        $TempTblInvoiceList
+    )
+    {
+        /**
+         * Skip to Frontend
+         */
+        if (null === $Data)
+        {
+            return $View;
+        }
+
+        $tblBasket = Billing::serviceBasket()->entityBasketById($Id);
+
+        if ($this->checkDebtors( $Date, $Data, $TempTblInvoiceList, $SelectList))
+        {
+            if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Date, $TempTblInvoiceList))
+            {
+                $this->actionDestroyBasket( $tblBasket );
+                $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
+                    .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 2 );
+            }
+            else
+            {
+                $View.= new Success( 'Die Rechnungen konnten nicht erstellt werden' )
+                    .new Redirect( '/Sphere/Billing/Basket', 2 );
+            }
+        }
+        else
+        {
+            $View.= new Warning( 'Es konnten nicht alle Debitoren eindeutig zugeordnet werden' )
+                .new Redirect( '/Sphere/Billing/Basket/Debtor/Select', 2, array(
+                    'Id' => $tblBasket->getId(),
+                    'Date' => $Date,
+                    'Data' => $Data,
+                    'SelectList' => $SelectList,
+                    'TempTblInvoiceList' => $TempTblInvoiceList
+                ));
         }
 
         return $View;
