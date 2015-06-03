@@ -476,4 +476,15 @@ class Education extends EntityAction
         return parent::entitySubjectGroupAll();
     }
 
+    /**
+     * @param TblSubject $tblSubject
+     *
+     * @return bool|TblCategory[]
+     */
+    public function entityCategoryAllBySubject( TblSubject $tblSubject )
+    {
+
+        return parent::entityCategoryAllBySubject( $tblSubject );
+    }
+
 }

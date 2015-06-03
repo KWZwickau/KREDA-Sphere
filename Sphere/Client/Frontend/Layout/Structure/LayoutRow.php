@@ -27,6 +27,18 @@ class LayoutRow extends AbstractType
     }
 
     /**
+     * @param LayoutColumn $layoutColumn
+     *
+     * @return LayoutRow
+     */
+    public function addColumn( LayoutColumn $layoutColumn )
+    {
+
+        array_push( $this->LayoutColumn, $layoutColumn );
+        return $this;
+    }
+
+    /**
      * @return LayoutColumn[]
      */
     public function getLayoutColumn()

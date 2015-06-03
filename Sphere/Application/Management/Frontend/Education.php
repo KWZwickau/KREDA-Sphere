@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Frontend;
 
+use KREDA\Sphere\Application\Management\Frontend\Education\Subject;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubjectGroup;
@@ -13,7 +14,6 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\StatisticIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
-use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Success;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
@@ -62,9 +62,8 @@ class Education extends AbstractFrontend
     public static function stageSubject( $Subject )
     {
 
-        $View = new Stage();
-        $View->setTitle( 'Fächer' );
-        $View->addButton( new Primary( 'Fach-Kategorien', '/Sphere/Management/Education/Subject/Category' ) );
+        $View = new Stage( 'Fächer', 'Bearbeiten' );
+//        $View->addButton( new Primary( 'Fach-Kategorien', '/Sphere/Management/Education/Subject/Category' ) );
 
         $tblSubject = Management::serviceEducation()->entitySubjectAll();
         if (!empty( $tblSubject )) {
@@ -92,12 +91,13 @@ class Education extends AbstractFrontend
             new LayoutGroup( array(
                 new LayoutRow(
                     new LayoutColumn( array(
-                        new LayoutTitle( 'Fächer', 'Hinzufügen/Deaktivieren' ),
-                        new TableData( $tblSubject, null, array(
-                            'Acronym' => 'Kürzel',
-                            'Name'    => 'Name',
-                            'Option'  => 'Option'
-                        ) ),
+                        Subject::layoutSubject(),
+                        new LayoutTitle( 'Fach hinzufügen' ),
+//                        new TableData( $tblSubject, null, array(
+//                            'Acronym' => 'Kürzel',
+//                            'Name'    => 'Name',
+//                            'Option'  => 'Option'
+//                        ) ),
                         Management::serviceEducation()->executeCreateSubject(
                             new Form(
                                 new FormGroup( array(
