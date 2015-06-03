@@ -3,11 +3,14 @@ namespace KREDA\Sphere\Application\Billing\Frontend;
 
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ListIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MinusIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PlusIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
@@ -102,41 +105,68 @@ class Banking extends AbstractFrontend
      * @param $Id
      * @return Stage
      */
-    public static function frontendBankingAddCommodity( $Id )
+    public static function frontendBankingSelectCommodity( $Id )
     {
         $View = new Stage();
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Hinzufügen' );
 
+        $IdPerson = Billing::serviceBanking()->entityDebtorById( $Id )->getServiceManagement_Person();
+        $Person = Management::servicePerson()->entityPersonById( $IdPerson )->getFullName();
+        $View->setMessage('Name: '.$Person.'<br/> Debitorennummer: '.Billing::serviceBanking()->entityDebtorById( $Id )->getDebtorNumber());
+
         $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
         $tblCommodityAll = Billing::serviceCommodity()->entityCommodityAll();
 
         $tblDebtorCommodityList = Billing::serviceBanking()->entityCommodityDebtorAllByDebtor( $tblDebtor );
-        $tblPersonByBasketList = Billing::serviceBanking()->entityCommodityAllByDebtor( $tblDebtor );
+        $tblCommodityByDebtorList = Billing::serviceBanking()->entityCommodityAllByDebtor( $tblDebtor );
 
-//        echo "<pre>";
-//        print_r($tblDebtorCommodityList);
-//        echo "</pre>";
-//        echo "<pre>";
-//        print_r($tblPersonByBasketList);
-//        echo "</pre>";
+        if (!empty( $tblCommodityByDebtorList )) {
+            $tblCommodityAll = array_udiff( $tblCommodityAll, $tblCommodityByDebtorList,
+                function ( TblCommodity $ObjectA, TblCommodity $ObjectB ) {
 
+                    return $ObjectA->getId() - $ObjectB->getId();
+                }
+            );
+        }
 
-        $IdPerson = Billing::serviceBanking()->entityDebtorById( $Id )->getServiceManagement_Person();
-        $Person = Management::servicePerson()->entityPersonById( $IdPerson )->getFullName();
-        $View->setMessage('Name: '.$Person.'<br /> Debitorennummer: '.Billing::serviceBanking()->entityDebtorById( $Id )->getDebtorNumber());
+        if (!empty( $tblDebtorCommodityList )) {
+            array_walk( $tblDebtorCommodityList, function ( TblDebtorCommodity &$tblDebtorCommodity ) {
 
+                $tblCommodity = $tblDebtorCommodity->getServiceBillingCommodity();
+                $tblDebtorCommodity->Name = $tblCommodity->getName();
+                $tblDebtorCommodity->Description = $tblCommodity->getDescription();
+                $tblDebtorCommodity->Option =
+                    ( new Danger( 'Entfernen', '/Sphere/Billing/Banking/Commodity/Remove',
+                        new MinusIcon(), array(
+                            'Id' => $tblDebtorCommodity->getId()
+                        ) ) )->__toString();
+            } );
+        }
+
+        if (!empty( $tblCommodityAll )) {
+            array_walk( $tblCommodityAll, function ( TblCommodity &$tblCommodity, $Index, TblDebtor $tblDebtor ) {
+
+                $tblCommodity->Option =
+                    ( new Primary( 'Hinzufügen', '/Sphere/Billing/Banking/Commodity/Add',
+                        new PlusIcon(), array(
+                            'Id' => $tblDebtor->getId(),
+                            'CommodityId' => $tblCommodity->getId()
+                        ) ) )->__toString();
+            }, $tblDebtor );
+        }
 
         $View->setContent(
             new Layout( array(
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn( array(
-                                new TableData( $tblDebtor, null,
+                                new TableData( $tblDebtorCommodityList, null,
                                     array(
-                                        'DebtorNumber'   => 'Debitorennummer',
-                                        'LeadTimeFirst'  => 'Ersteinzug',
-                                        'LeadTimeFollow' => 'Folgeeinzug'
+                                        'Name'        => 'Name',
+                                        'Description' => 'Beschreibung',
+                                        'Type'        => 'Leistungsart',
+                                        'Option' => 'Option'
                                     )
                                 )
                             )
@@ -150,7 +180,8 @@ class Banking extends AbstractFrontend
                                     array(
                                         'Name'        => 'Name',
                                         'Description' => 'Beschreibung',
-                                        'Type'        => 'Leistungsart'
+                                        'Type'        => 'Leistungsart',
+                                        'Option' => 'Option'
                                     )
                                 )
                             )
@@ -159,6 +190,41 @@ class Banking extends AbstractFrontend
                 ), new LayoutTitle( 'mögliche Leistungen' ) )
             ) )
         );
+
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendBankingRemoveCommodity( $Id )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Leistung' );
+        $View->setDescription( 'Entfernen' );
+
+        $tblDebtorCommodity = Billing::serviceBanking()->entityDebtorCommodityById( $Id );
+        $View->setContent( Billing::serviceBanking()->executeRemoveDebtorCommodity( $tblDebtorCommodity ) );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @param $CommodityId
+     * @return Stage
+     */
+    public static function frontendBankingAddCommodity( $Id, $CommodityId )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Leistung' );
+        $View->setDescription( 'Hinzufügen' );
+
+        $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
+        $tblCommodity = Billing::serviceCommodity()->entityCommodityById( $CommodityId );
+        $View->setContent( Billing::serviceBanking()->executeAddDebtorCommodity( $tblDebtor, $tblCommodity ) );
 
         return $View;
     }

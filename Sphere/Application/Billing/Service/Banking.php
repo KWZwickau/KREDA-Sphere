@@ -10,6 +10,7 @@ use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 
@@ -54,6 +55,7 @@ class Banking extends EntityAction
 
     /**
      * @param TblDebtor $tblDebtor
+     *
      * @return bool|TblDebtorCommodity[]
      */
     public function entityCommodityDebtorAllByDebtor( TblDebtor $tblDebtor )
@@ -62,6 +64,11 @@ class Banking extends EntityAction
         return parent::entityCommodityDebtorAllByDebtor( $tblDebtor );
     }
 
+    /**
+     * @param TblDebtor $tblDebtor
+     *
+     * @return array
+     */
     public function entityCommodityAllByDebtor( TblDebtor $tblDebtor )
     {
 
@@ -73,6 +80,60 @@ class Banking extends EntityAction
         }
 
         return $tblCommodity;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|TblDebtorCommodity
+     */
+    public function entityDebtorCommodityById( $Id )
+    {
+        return parent::entityDebtorCommodityById( $Id );
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     * @param TblCommodity $tblCommodity
+     *
+     * @return string
+     */
+    public function executeAddDebtorCommodity(
+        TblDebtor $tblDebtor,
+        TblCommodity $tblCommodity
+    )
+    {
+        if ($this->actionAddDebtorCommodity($tblDebtor, $tblCommodity))
+        {
+            return new Success( 'Die Leistung ' . $tblCommodity->getName() . ' wurde erfolgreich hinzugefügt' )
+            .new Redirect( '/Sphere/Billing/Banking/Select/Commodity', 0, array( 'Id' => $tblDebtor->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Die Leistung ' . $tblCommodity->getName() . ' konnte nicht hinzugefügt werden' )
+            .new Redirect( '/Sphere/Billing/Banking/Select/Commodity', 2, array( 'Id' => $tblDebtor->getId()) );
+        }
+    }
+
+    /**
+     * @param TblDebtorCommodity $tblDebtorCommodity
+     *
+     * @return string
+     */
+    public function executeRemoveDebtorCommodity(
+        TblDebtorCommodity $tblDebtorCommodity
+    )
+    {
+        if ($this->actionRemoveDebtorCommodity($tblDebtorCommodity))
+        {
+            return new Success( 'Die Leistung ' . $tblDebtorCommodity->getServiceBillingCommodity()->getName() . ' wurde erfolgreich entfernt' )
+            .new Redirect( '/Sphere/Billing/Banking/Select/Commodity', 0, array( 'Id' => $tblDebtorCommodity->getTblDebtor()->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Die Leistung ' .$tblDebtorCommodity->getServiceBillingCommodity()->getName() .  ' konnte nicht entfernt werden' )
+            .new Redirect( '/Sphere/Billing/Banking/Select/Commodity', 2, array( 'Id' => $tblDebtorCommodity->getTblDebtor()->getId()) );
+        }
     }
 
     /**
@@ -90,6 +151,7 @@ class Banking extends EntityAction
      * @param AbstractType $View
      * @param $Debtor
      * @param $Id
+     *
      * @return AbstractType|string
      */
     public function executeAddDebtor(
@@ -135,6 +197,7 @@ class Banking extends EntityAction
 
     /**
      * @param TblDebtor $tblDebtor
+     *
      * @return string
      */
     public function executeBankingDelete(
@@ -180,6 +243,7 @@ class Banking extends EntityAction
 
     /**
      * @param $ServiceManagement_Person
+     *
      * @return bool|Banking\Entity\TblDebtor[]
      */
     public function entityDebtorByServiceManagement_Person( $ServiceManagement_Person )

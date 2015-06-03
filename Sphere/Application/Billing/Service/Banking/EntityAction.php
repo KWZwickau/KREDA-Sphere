@@ -17,6 +17,7 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param $Id
+     *
      * @return bool|TblDebtor
      */
     protected function entityDebtorById( $Id )
@@ -27,6 +28,7 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param $DebtorNumber
+     *
      * @return TblDebtor[]|bool
      */
     protected function entityDebtorByDebtorNumber( $DebtorNumber )
@@ -37,6 +39,7 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param $ServiceManagement_Person
+     *
      * @return TblDebtor[]|bool
      */
     protected function entityDebtorByServiceManagement_Person( $ServiceManagement_Person )
@@ -47,6 +50,7 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblPerson $tblPerson
+     *
      * @return TblDebtor[]|bool
      */
     protected function entityDebtorAllByPerson( TblPerson $tblPerson )
@@ -58,6 +62,7 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblDebtor $tblDebtor
+     *
      * @return bool|TblDebtorCommodity[]
      */
     protected function entityCommodityDebtorAllByDebtor( TblDebtor $tblDebtor )
@@ -69,7 +74,65 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param $Id
+     *
+     * @return bool|\Doctrine\ORM\Mapping\Entity
+     */
+    protected function entityDebtorCommodityById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblDebtorCommodity', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblDebtorCommodity $tblDebtorCommodity
+     *
+     * @return bool
+     */
+    protected function actionRemoveDebtorCommodity(
+        TblDebtorCommodity $tblDebtorCommodity
+    ) {
+
+        $Manager = $this->getEntityManager();
+
+        $Entity = $Manager->getEntity( 'tblDebtorCommodity' )->findOneBy(
+            array(
+                'Id' => $tblDebtorCommodity->getId()
+            ) );
+        if (null !== $Entity) {
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+            $Manager->killEntity( $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @param TblDebtor $tblDebtor
+     * @param TblCommodity $tblCommodity
+     *
+     * @return TblDebtorCommodity
+     */
+    protected function actionAddDebtorCommodity(
+        TblDebtor $tblDebtor,
+        TblCommodity $tblCommodity
+    ) {
+        $Manager = $this->getEntityManager();
+
+        $Entity = new TblDebtorCommodity();
+        $Entity->setTblDebtor( $tblDebtor );
+        $Entity->setServiceBillingCommodity( $tblCommodity );
+
+        $Manager->saveEntity( $Entity );
+        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+
+        return $Entity;
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     *
      * @return bool
      */
     protected function actionRemoveBanking(
@@ -118,6 +181,7 @@ abstract class EntityAction extends EntitySchema
      * @param $LeadTimeFirst
      * @param $DebtorNumber
      * @param $ServiceManagement_Person
+     *
      * @return TblDebtor
      */
     protected function actionAddDebtor($DebtorNumber, $LeadTimeFirst, $LeadTimeFollow, $ServiceManagement_Person )

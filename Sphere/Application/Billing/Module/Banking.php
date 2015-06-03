@@ -48,8 +48,19 @@ class Banking extends Common
         )   ->setParameterDefault( 'Id', null );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Banking/Select/Commodity', __CLASS__.'::frontendBankingAddCommodity'
+            '/Sphere/Billing/Banking/Select/Commodity', __CLASS__.'::frontendBankingSelectCommodity'
         )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Commodity/Remove', __CLASS__.'::frontendBankingRemoveCommodity'
+        )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Commodity/Add', __CLASS__.'::frontendBankingAddCommodity'
+        )   ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'CommodityId', null );
+
+
 
 
     }
@@ -77,6 +88,7 @@ class Banking extends Common
     /**
      * @param $Id
      * @param $Debtor
+     *
      * @return Stage
      */
     public static function frontendBankingPersonSelect( $Debtor, $Id )
@@ -88,6 +100,7 @@ class Banking extends Common
 
     /**
      * @param $Id
+     *
      * @return Stage
      */
     public static function frontendBankingDelete ( $Id )
@@ -99,13 +112,39 @@ class Banking extends Common
 
     /**
      * @param $Id
+     *
      * @return mixed
      */
-    public static function frontendBankingAddCommodity ( $Id )
+    public static function frontendBankingSelectCommodity ( $Id )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBankingAddCommodity( $Id );
+        return Frontend::frontendBankingSelectCommodity( $Id );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBankingRemoveCommodity( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingRemoveCommodity( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $CommodityId
+     *
+     * @return Stage
+     */
+    public static function frontendBankingAddCommodity( $Id, $CommodityId )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingAddCommodity( $Id, $CommodityId );
     }
 
 }
