@@ -171,16 +171,34 @@ abstract class EntityAction extends EntitySchema
                 {
                     foreach($tblDebtorListByPerson as $tblDebtor)
                     {
-                        if (!in_array(array('tblPerson' => $tblPerson->getId(), 'tblCommodity'=> $tblCommodity->getId()), $SelectList))
-                        $SelectList[] = array(
-                            'tblPerson' => $tblPerson->getId(),
-                            'tblCommodity' => $tblCommodity->getId(),
-                            'tblDebtor' => $tblDebtor->getId()
-                        );
+                        $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
+                        if ($index === false) {
+                            $SelectList[] = array(
+                                'tblPerson' => $tblPerson->getId(),
+                                'tblCommodity' => $tblCommodity->getId(),
+                                'Debtors' => array($tblDebtor->getId())
+                            );
+                        }
+                        else
+                        {
+                            $SelectList[$index]['Debtors'][]= $tblDebtor->getId();
+                        }
                     }
                 }
                 else if (count($tblDebtorCommodityListByPersonAndCommodity) == 1)
                 {
+//                    $index = $this->searchArray($TempTblInvoiceList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
+//                    if ($index === false) {
+//                        $TempTblInvoiceList[] = array(
+//                            'tblPerson' => $tblPerson->getId(),
+//                            'tblCommodity' => $tblCommodity->getId(),
+//                            'Debtors' => array($tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId())
+//                        );
+//                    }
+//                    else
+//                    {
+//                        $TempTblInvoiceList[$index]['Debtors'][]= $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId();
+//                    }
                     $TempTblInvoiceList[] = array(
                         'tblPerson' => $tblPerson->getId(),
                         'tblCommodity' => $tblCommodity->getId(),
@@ -191,6 +209,18 @@ abstract class EntityAction extends EntitySchema
                 {
                     foreach ($tblDebtorCommodityListByPersonAndCommodity as $tblDebtorCommodityByPersonAndCommodity)
                     {
+//                        $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
+//                        if ($index === false) {
+//                            $SelectList[] = array(
+//                                'tblPerson' => $tblPerson->getId(),
+//                                'tblCommodity' => $tblCommodity->getId(),
+//                                'Debtors' => array($tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId())
+//                            );
+//                        }
+//                        else
+//                        {
+//                            $SelectList[$index]['Debtors'][]= $tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId();
+//                        }
                         $SelectList[] = array(
                             'tblPerson' => $tblPerson->getId(),
                             'tblCommodity' => $tblCommodity->getId(),
@@ -202,6 +232,21 @@ abstract class EntityAction extends EntitySchema
         }
 
         return empty($SelectList);
+    }
+
+    private function searchArray(array $Array, $Key1, $Value1, $Key2, $Value2)
+    {
+        $count = 0;
+        foreach ($Array as $Item)
+        {
+            if ($Item[$Key1] == $Value1 && $Item[$Key2] == $Value2)
+            {
+                return $count;
+            }
+            $count += 1;
+        }
+
+        return false;
     }
 
     /**

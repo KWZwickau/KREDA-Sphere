@@ -545,10 +545,6 @@ class Basket extends AbstractFrontend
             new ChevronLeftIcon(), array(
                 'Id' => $Id
             ) ) );
-//        $View->addButton( new Primary( 'Prüfen', '/Sphere/Billing/Basket/Debtor/Select',
-//            new ChevronRightIcon(), array(
-//                'Id' => $Id
-//            ) ) );
 
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
         $tblBasketItemAll = Billing::serviceBasket()->entityBasketItemAllByBasket( $tblBasket );
@@ -639,16 +635,37 @@ class Basket extends AbstractFrontend
 
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
 
-        //print_r($SelectList);
+        print_r($SelectList);
         $Data = array();
         foreach($SelectList as $Select)
         {
-            print_r(array_search(array('tblPerson'=>$Select['tblPerson'],'tblCommodity'=>$Select['tblCommodity']), $SelectList, false));
-            $Data[] = array(
-                'PersonName' => Management::servicePerson()->entityPersonById($Select['tblPerson'])->getFullName(),
-                'CommodityName' => Billing::serviceCommodity()->entityCommodityById($Select['tblCommodity'])->getName(),
-                'DebtorName' => Billing::serviceBanking()->entityDebtorById($Select['tblDebtor'])->getServiceManagement_Person()->getFullName()
-            );
+//            $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
+//            if ($index === false) {
+//                $SelectList[] = array(
+//                    'tblPerson' => $tblPerson->getId(),
+//                    'tblCommodity' => $tblCommodity->getId(),
+//                    'Debtors' => array($tblDebtor->getId())
+//                );
+//            }
+//                        else
+//                        {
+//                            $SelectList[$index]['Debtors'][]= $tblDebtor->getId();
+//                        }
+//            print_r($Data);
+//            if (!empty($Data))
+//            {
+//                print_r("Item: " . self::searchArray($Data, "PersonName", $Select['tblPerson'], "CommodityName", $Select['tblCommodity']));
+//            }
+//            print_r('<br>');
+//            $Data[] = array(
+//                'PersonName' => $Select['tblPerson'],
+//                'CommodityName' => $Select['tblCommodity'],
+//                'DebtorName' => $Select['tblDebtor']
+//                'PersonName' => Management::servicePerson()->entityPersonById($Select['tblPerson'])->getFullName(),
+//                'CommodityName' => Billing::serviceCommodity()->entityCommodityById($Select['tblCommodity'])->getName(),
+//                'DebtorName' => Billing::serviceBanking()->entityDebtorById($Select['tblDebtor'])->getServiceManagement_Person()->getFullName()
+//            );
+            //print_r(self::searchArray($Data, 'tblPerson', $Select['tblPerson'], 'tblCommodity', $Select['tblCommodity']));
         }
 
         $View->setContent(

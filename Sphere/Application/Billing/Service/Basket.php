@@ -385,12 +385,13 @@ class Basket extends EntityAction
             }
             else
             {
-                $View.= new Redirect( '/Sphere/Billing/Basket/Debtor/Select', 0, array(
-                    'Id' => $tblBasket->getId(),
-                    'Date' => $Basket['Date'],
-                    'TempTblInvoiceList' => $TempTblInvoiceList,
-                    'SelectList' => $SelectList
-                ));
+                $View.= new Warning( 'Es konnten nicht alle Debitoren eindeutig zugeordnet werden' )
+                    .new Redirect( '/Sphere/Billing/Basket/Debtor/Select', 2, array(
+                        'Id' => $tblBasket->getId(),
+                        'Date' => $Basket['Date'],
+                        'TempTblInvoiceList' => $TempTblInvoiceList,
+                        'SelectList' => $SelectList
+                    ));
             }
         }
 
