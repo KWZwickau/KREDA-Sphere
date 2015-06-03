@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Management\Service;
 
 use Doctrine\DBAL\Schema\Table;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonGender;
@@ -222,7 +223,7 @@ class Person extends EntityAction
             )
             ) {
                 $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
-                    .new Redirect( '/Sphere/Management/Person/Edit', 3, array( 'Id' => $tblPerson->getId() ) );
+                    .new Redirect( '/Sphere/Management/Person/Edit', 1, array( 'Id' => $tblPerson->getId() ) );
             } else {
                 $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' );
             };
@@ -363,8 +364,9 @@ class Person extends EntityAction
         }
 
         if (isset( $BirthDetail['Date'] ) && empty( $BirthDetail['Date'] )) {
-            $View->setError( 'BirthDetail[Date]', 'Bitte geben Sie ein Gebursdatum ein' );
-            $Error = true;
+//            $View->setError( 'BirthDetail[Date]', 'Bitte geben Sie ein Gebursdatum ein' );
+//            $Error = true;
+            $BirthDetail['Date'] = null;
         }
 
         if (isset( $PersonInformation['Nationality'] ) && empty( $PersonInformation['Nationality'] )) {
@@ -400,15 +402,19 @@ class Person extends EntityAction
      * @param string              $FirstName
      * @param string              $MiddleName
      * @param string              $LastName
-     * @param string              $Birthday
+     *
+     * @param string|null         $Birthday
      * @param string              $Birthplace
+     *
      * @param string              $Nationality
+     *
      * @param TblPersonSalutation $tblPersonSalutation
      * @param TblPersonGender     $tblPersonGender
      * @param TblPersonType       $tblPersonType
-     * @param null                $Remark
      *
-     * @param null                $Denomination
+     * @param string|null         $Remark
+     *
+     * @param string|null         $Denomination
      *
      * @return TblPerson
      */
@@ -698,6 +704,29 @@ class Person extends EntityAction
     {
 
         return parent::entityAddressAllByPerson( $tblPerson );
+    }
+
+    /**
+     * @param int $Id
+     *
+     * @return bool|TblPersonAddress
+     */
+    public function entityPersonAddressById( $Id )
+    {
+
+        return parent::entityPersonAddressById( $Id );
+    }
+
+    /**
+     * @param TblPerson  $tblPerson
+     * @param TblAddress $tblAddress
+     *
+     * @return bool|TblPersonAddress
+     */
+    public function entityPersonAddressByPersonAndAddress( TblPerson $tblPerson, TblAddress $tblAddress )
+    {
+
+        return parent::entityPersonAddressByPersonAndAddress( $tblPerson, $tblAddress );
     }
 
 }

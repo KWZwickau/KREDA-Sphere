@@ -126,6 +126,7 @@ abstract class EntityAction extends Destroy
                         ) )
                     ), null,
                     '/Sphere/Management/Person/Relationship/Edit', array(
+                        'Id' => $Person[0],
                         'tblPerson'       => $Person[0],
                         'tblRelationship' => $Entity->getId()
                     )

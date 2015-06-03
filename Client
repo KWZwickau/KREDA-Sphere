@@ -84,6 +84,11 @@ if (false) {
     $Less->parse( '@table-cell-padding: 6px;' );
     $Less->parse( '@table-condensed-cell-padding: 5px;' );
 
+// Panel
+
+    $Less->parse( '@panel-heading-padding: 7px 10px;' );
+    $Less->parse( '@panel-body-padding: 5px 10px;' );
+
 // Thumbnail
 
     $Less->parse( '@thumbnail-padding: 6px;' );

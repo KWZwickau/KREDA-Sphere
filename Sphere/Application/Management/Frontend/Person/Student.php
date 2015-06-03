@@ -12,6 +12,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EducationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TempleChurchIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
@@ -28,8 +29,9 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutAspect;
-use KREDA\Sphere\Client\Frontend\Message\Type\Success;
-use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutBadge;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Text\Type\Muted;
 use KREDA\Sphere\Common\AbstractExtension;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -56,109 +58,81 @@ class Student extends AbstractFrontend
             new LayoutGroup( array(
                 new LayoutRow( array(
                     new LayoutColumn( array(
-                        new LayoutAspect( 'Schülernummer' ),
-                        new Success( $tblStudent->getStudentNumber() )
+                        new LayoutPanel( 'Schülernummer',
+                            ( $tblStudent
+                                ? $tblStudent->getStudentNumber()
+                                : new Danger( 'Nicht vergeben', new WarningIcon() )
+                            ), LayoutPanel::PANEL_TYPE_DANGER )
                     ), 3 ),
                     new LayoutColumn( array(
-                        new LayoutAspect( 'Bildungsgang' ),
-                        new Warning(
-                            $tblStudent->getServiceManagementCourse()->getName().
-                            new Muted( $tblStudent->getServiceManagementCourse()->getDescription() )
+                        new LayoutPanel( 'Bildungsgang',
+                            ( $tblStudent
+                                ? $tblStudent->getServiceManagementCourse()->getName().
+                                new Muted( $tblStudent->getServiceManagementCourse()->getDescription() )
+                                : new Danger( 'Nicht angegeben', new WarningIcon() )
+                            ), LayoutPanel::PANEL_TYPE_WARNING
                         )
                     ), 9 ),
                 ) ),
+                new LayoutRow(
+                    new LayoutColumn(
+                        new LayoutAspect( 'Schülertransfer' )
+                    )
+                ),
                 new LayoutRow( array(
                     new LayoutColumn( array(
-                        new LayoutAspect( 'Aufnahmedatum' ),
-                        $tblStudent->getTransferFromDate()
-                    ), 3 ),
+                        new LayoutPanel( 'Aufnahme des Schülers', array(
+                                '',
+                                ( $tblStudent
+                                    ? $tblStudent->getTransferFromDate()
+                                    : new Danger( 'Nicht angegeben', new WarningIcon() )
+                                ),
+                                'Name der abgebenden Schule',
+                            )
+                        ),
+                    ), 6 ),
                     new LayoutColumn( array(
-                        new LayoutAspect( 'Abgebende Schule' ),
-                        '&nbsp;'
-                    ), 9 ),
+                        new LayoutPanel( 'Abgabe des Schülers', array(
+                                '',
+                                ( $tblStudent && $tblStudent->getTransferToDate()
+                                    ? $tblStudent->getTransferToDate()
+                                    : 'Nicht angegeben'
+                                ),
+                                'Name der aufnehmenden Schule',
+                            )
+                        ),
+                    ), 6 ),
                 ) ),
+                new LayoutRow(
+                    new LayoutColumn(
+                        new LayoutAspect( 'Unterrichtsfächer' )
+                    )
+                ),
                 new LayoutRow( array(
                     new LayoutColumn( array(
-                        new LayoutAspect( 'Abgabedatum' ),
-                        $tblStudent->getTransferToDate()
+                        new LayoutPanel( 'Religionsunterricht', array( '', 'Ethik'.new LayoutBadge( '2 Jahre' ) )
+                        )
                     ), 3 ),
                     new LayoutColumn( array(
-                        new LayoutAspect( 'Aufnehmende Schule' ),
-                        '&nbsp;'
-                    ), 9 ),
-                ) ),
-                new LayoutRow( array(
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Religionsunterricht' ),
-                        '&nbsp;'
+                        new LayoutPanel( 'Fremdsprachen', array(
+                            '',
+                            '1. Englisch'.new LayoutBadge( '3 Jahre' ),
+                            '2. Russisch'.new LayoutBadge( '2 Jahre' )
+                        ) )
                     ), 3 ),
                     new LayoutColumn( array(
-                        new LayoutAspect( 'Jahre' ),
-                        '&nbsp;'
-                    ), 3 ),
-                ) ),
-                new LayoutRow( array(
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Fremdsprache 1' ),
-                        '&nbsp;'
+                        new LayoutPanel( 'Profil', array(
+                            '',
+                            '1. Profil'.new LayoutBadge( 'x Jahre' ),
+                            '2. Name'.new LayoutBadge( 'x Jahre' ),
+                        ) )
                     ), 3 ),
                     new LayoutColumn( array(
-                        new LayoutAspect( 'Jahre' ),
-                        '&nbsp;'
-                    ), 3 ),
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Fremdsprache 2' ),
-                        '&nbsp;'
-                    ), 3 ),
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Jahre' ),
-                        '&nbsp;'
-                    ), 3 ),
-                ) ),
-                new LayoutRow( array(
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Fremdsprache 3' ),
-                        '&nbsp;'
-                    ), 3 ),
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Jahre' ),
-                        '&nbsp;'
-                    ), 3 ),
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Fremdsprache 4' ),
-                        '&nbsp;'
-                    ), 3 ),
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Jahre' ),
-                        '&nbsp;'
-                    ), 3 ),
-                ) ),
-                new LayoutRow( array(
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Profil 1' ),
-                        '&nbsp;'
-                    ), 3 ),
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Jahre' ),
-                        '&nbsp;'
-                    ), 3 ),
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Profil 2' ),
-                        '&nbsp;'
-                    ), 3 ),
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Jahre' ),
-                        '&nbsp;'
-                    ), 3 ),
-                ) ),
-                new LayoutRow( array(
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Neigungskurs' ),
-                        '&nbsp;'
-                    ), 3 ),
-                    new LayoutColumn( array(
-                        new LayoutAspect( 'Jahre' ),
-                        '&nbsp;'
+                        new LayoutPanel( 'Neigungskurs', array(
+                            '',
+                            '1. Name'.new LayoutBadge( 'x Jahre' ),
+                            '2. Name'.new LayoutBadge( 'x Jahre' ),
+                        ) )
                     ), 3 ),
                 ) ),
                 new LayoutRow( array(
