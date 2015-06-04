@@ -7,11 +7,13 @@ use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BarCodeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EyeOpenIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MinusIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyEuroIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuantityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\SelectIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
@@ -70,21 +72,28 @@ class Invoice extends AbstractFrontend
                 $tblInvoice->Student = $tblInvoice->getServiceManagementPerson()->getFullName();
                 $tblInvoice->Debtor = $tblInvoice->getDebtorFullName();
                 $tblInvoice->TotalPrice = Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice );
-                if ($tblInvoice->getIsPaid()) {
+                $tblInvoice->Option = (new Primary( 'Anzeigen', '/Sphere/Billing/Invoice/Show',
+                    new EyeOpenIcon(), array('Id' => $tblInvoice->getId())))->__toString();;
+                if ($tblInvoice->getIsPaid())
+                {
                     $tblInvoice->IsPaidString = "Bezahlt";
                 }
                 else
                 {
                     $tblInvoice->IsPaidString = "";
                 }
-                if ($tblInvoice->getIsVoid()) {
+                if ($tblInvoice->getIsVoid())
+                {
                     $tblInvoice->IsVoidString = "Storniert";
                 }
                 else
                 {
                     $tblInvoice->IsVoidString = "";
+                    $tblInvoice->Option .= (new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
+                        new RemoveIcon(), array('Id' => $tblInvoice->getId())))->__toString();
                 }
-                if ($tblInvoice->getIsConfirmed()) {
+                if ($tblInvoice->getIsConfirmed())
+                {
                     $tblInvoice->IsConfirmedString = "Bestätigt";
                 }
                 else
@@ -106,7 +115,7 @@ class Invoice extends AbstractFrontend
                     'IsConfirmedString' => 'Bestätigt',
                     'IsPaidString' => 'Bezahlt',
                     'IsVoidString' => 'Storniert',
-                    //'Option' => 'Option'
+                    'Option' => 'Option'
                 )
             )
         );
@@ -271,6 +280,81 @@ class Invoice extends AbstractFrontend
                 ) )
             );
         }
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceShow( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Rechnung' );
+        $View->setDescription( 'Anzeigen' );
+
+        $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
+
+        $tblInvoiceItemAll = Billing::serviceInvoice()->entityInvoiceItemAllByInvoice( $tblInvoice );
+
+        $View->setContent(
+            new Layout( array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new Info("Rechnungsnummer: " . $tblInvoice->getNumber()
+                            ), 4
+                        ),
+                        new LayoutColumn(
+                            new Info("Rechnungsdatum: " . $tblInvoice->getInvoiceDate()
+                            ), 4
+                        ),
+                        new LayoutColumn(
+                            new Info("Zahlungsdatum: " . $tblInvoice->getPaymentDate()
+                            ), 4
+                        ),
+                    ) ),
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new Info("Schüler: " . $tblInvoice->getServiceManagementPerson()->getFullName()
+                            ), 4
+                        ),
+                        new LayoutColumn(
+                            new Info("Debitor: " .  $tblInvoice->getDebtorSalutation() . " " . $tblInvoice->getDebtorFullName()
+                            ), 4
+                        ),
+                        new LayoutColumn(
+                            new Info("Debitorennummer: " . $tblInvoice->getDebtorNumber()
+                            ), 4
+                        ),
+                    ) ),
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new Info("Gesamtpreis: " . Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice )
+                            ), 4
+                        )
+                    ) ),
+                    // TODO show invoice address
+                )),
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                                new TableData( $tblInvoiceItemAll, null,
+                                    array(
+                                        'CommodityName' => 'Leistung',
+                                        'ItemName'      => 'Artikel',
+                                        'ItemPrice'         => 'Preis',
+                                        'ItemQuantity'      => 'Menge'
+                                    )
+                                )
+                            )
+                        )
+                    ) ),
+                ), new LayoutTitle( 'Positionen' ) )
+            ) )
+        );
 
         return $View;
     }

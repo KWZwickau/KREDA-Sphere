@@ -22,9 +22,6 @@ class Invoice extends Common
     protected static function setupApplicationNavigation()
     {
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoice/List', 'Alle'
-        );
-        self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Billing/Invoice/IsNotConfirmed', 'Offene'
         );
     }
@@ -37,16 +34,17 @@ class Invoice extends Common
         self::$Configuration = $Configuration;
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice', __CLASS__.'::frontendInvoiceStatus'
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/List', __CLASS__.'::frontendInvoiceList'
+            '/Sphere/Billing/Invoice', __CLASS__.'::frontendInvoiceList'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Invoice/IsNotConfirmed', __CLASS__.'::frontendInvoiceIsNotConfirmedList'
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Invoice/Edit', __CLASS__.'::frontendInvoiceEdit'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Show', __CLASS__.'::frontendInvoiceShow'
         )
             ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
@@ -66,16 +64,6 @@ class Invoice extends Common
             '/Sphere/Billing/Invoice/Item/Remove', __CLASS__.'::frontendInvoiceItemRemove'
         )
             ->setParameterDefault( 'Id', null );
-    }
-
-    /**
-     * @return Stage
-     */
-    public static function frontendInvoiceStatus()
-    {
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::frontendInvoiceStatus();
     }
 
     /**
@@ -108,6 +96,18 @@ class Invoice extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendInvoiceEdit( $Id );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceShow( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoiceShow( $Id );
     }
 
     /**

@@ -227,6 +227,16 @@ class Invoice extends EntityAction
         else
         {
             //TODO cancel confirmed invoice
+            if ($this->actionCancelInvoice($tblInvoice))
+            {
+                return new Success( 'Die Rechnung wurde erfolgreich storniert' )
+                .new Redirect( '/Sphere/Billing/Invoice', 0 );
+            }
+            else
+            {
+                return new Warning( 'Die Rechnung konnte nicht storniert werden' )
+                .new Redirect( '/Sphere/Billing/Invoice', 2 );
+            }
         }
     }
 
