@@ -162,87 +162,115 @@ abstract class EntityAction extends EntitySchema
         $tblCommodityAllByBasket = Billing::serviceBasket()->entityCommodityAllByBasket( $tblBasket );
         $tblBasketPersonAllByBasket = Billing::serviceBasket()->entityBasketPersonAllByBasket( $tblBasket );
 
-        foreach($tblBasketPersonAllByBasket as $tblBasketPerson)
+        if(!empty($tblBasketPersonAllByBasket))
         {
-            $tblPerson = Management::servicePerson()->entityPersonById( $tblBasketPerson->getServiceManagementPerson());
-            foreach($tblCommodityAllByBasket as $tblCommodity)
+            foreach($tblBasketPersonAllByBasket as $tblBasketPerson)
             {
-                /** @var TblDebtorCommodity[] $tblDebtorCommodityListByPersonAndCommodity */
-                $tblDebtorCommodityListByPersonAndCommodity = array();
-                /** @var TblDebtor[] $tblDebtorListByPerson */
-                $tblDebtorListByPerson = array();
-
-                $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson($tblPerson);
-                foreach($tblPersonRelationshipList as $tblPersonRelationship)
+                $tblPerson = $tblBasketPerson->getServiceManagementPerson();
+                foreach($tblCommodityAllByBasket as $tblCommodity)
                 {
-                    $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson(
-                        Management::servicePerson()->entityPersonById($tblPersonRelationship->getTblPersonA()));
-                    foreach($tblDebtorList as $tblDebtor)
+                    /** @var TblDebtorCommodity[] $tblDebtorCommodityListByPersonAndCommodity */
+                    $tblDebtorCommodityListByPersonAndCommodity = array();
+                    /** @var TblDebtor[] $tblDebtorListByPerson */
+                    $tblDebtorListByPerson = array();
+
+                    $debtorPersonAll = Billing::serviceBanking()->entityDebtorAllByPerson($tblPerson);
+                    if (!empty($debtorPersonAll))
                     {
-                        $tblDebtorCommodityList = Billing::serviceBanking()->entityDebtorCommodityAllByDebtorAndCommodity( $tblDebtor, $tblCommodity );
-                        foreach ($tblDebtorCommodityList as $tblDebtorCommodity)
+                        foreach($debtorPersonAll as $tblDebtor)
                         {
-                            $tblDebtorCommodityListByPersonAndCommodity[] = $tblDebtorCommodity;
+                            $tblDebtorCommodityList = Billing::serviceBanking()->entityDebtorCommodityAllByDebtorAndCommodity( $tblDebtor, $tblCommodity );
+                            if (!empty($tblDebtorCommodityList))
+                            {
+                                foreach ($tblDebtorCommodityList as $tblDebtorCommodity)
+                                {
+                                    $tblDebtorCommodityListByPersonAndCommodity[] = $tblDebtorCommodity;
+                                }
+                            }
+                            $tblDebtorListByPerson[]=$tblDebtor;
                         }
-                        $tblDebtorListByPerson[]=$tblDebtor;
                     }
-                }
 
-                if (empty($tblDebtorCommodityListByPersonAndCommodity))
-                {
-                    foreach($tblDebtorListByPerson as $tblDebtor)
+                    $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson($tblPerson);
+                    if (!empty($tblPersonRelationshipList))
                     {
-                        $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
+                        foreach($tblPersonRelationshipList as $tblPersonRelationship)
+                        {
+                            $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson(
+                                Management::servicePerson()->entityPersonById($tblPersonRelationship->getTblPersonA()));
+                            if (!empty($tblDebtorList))
+                            {
+                                foreach($tblDebtorList as $tblDebtor)
+                                {
+                                    $tblDebtorCommodityList = Billing::serviceBanking()->entityDebtorCommodityAllByDebtorAndCommodity( $tblDebtor, $tblCommodity );
+                                    if (!empty($tblDebtorCommodityList))
+                                    {
+                                        foreach ($tblDebtorCommodityList as $tblDebtorCommodity)
+                                        {
+                                            $tblDebtorCommodityListByPersonAndCommodity[] = $tblDebtorCommodity;
+                                        }
+                                    }
+                                    $tblDebtorListByPerson[]=$tblDebtor;
+                                }
+                            }
+                        }
+                    }
+
+                    if (empty($tblDebtorCommodityListByPersonAndCommodity))
+                    {
+                        foreach($tblDebtorListByPerson as $tblDebtor)
+                        {
+                            $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
+                            if ($index === false) {
+                                $SelectList[] = array(
+                                    'tblPerson' => $tblPerson->getId(),
+                                    'tblCommodity' => $tblCommodity->getId(),
+                                    'Debtors' => array($tblDebtor->getId())
+                                );
+                            }
+                            else
+                            {
+                                $SelectList[$index]['Debtors'][]= $tblDebtor->getId();
+                            }
+                        }
+                    }
+                    else if (count($tblDebtorCommodityListByPersonAndCommodity) == 1)
+                    {
+                        $index = $this->searchArray($TempTblInvoiceList, "tblPerson", $tblPerson->getId(),
+                            "tblDebtor", $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId());
                         if ($index === false) {
-                            $SelectList[] = array(
+                            $TempTblInvoiceList[] = array(
                                 'tblPerson' => $tblPerson->getId(),
-                                'tblCommodity' => $tblCommodity->getId(),
-                                'Debtors' => array($tblDebtor->getId())
+                                'tblDebtor' => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId(),
+                                'Commodities' => array($tblCommodity->getId())
                             );
                         }
                         else
                         {
-                            $SelectList[$index]['Debtors'][]= $tblDebtor->getId();
+                            $TempTblInvoiceList[$index]['Commodities'][]= $tblCommodity->getId();
                         }
-                    }
-                }
-                else if (count($tblDebtorCommodityListByPersonAndCommodity) == 1)
-                {
-                    $index = $this->searchArray($TempTblInvoiceList, "tblPerson", $tblPerson->getId(),
-                        "tblDebtor", $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId());
-                    if ($index === false) {
-                        $TempTblInvoiceList[] = array(
-                            'tblPerson' => $tblPerson->getId(),
-                            'tblDebtor' => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId(),
-                            'Commodities' => array($tblCommodity->getId())
-                        );
                     }
                     else
                     {
-                        $TempTblInvoiceList[$index]['Commodities'][]= $tblCommodity->getId();
-                    }
-                }
-                else
-                {
-                    foreach ($tblDebtorCommodityListByPersonAndCommodity as $tblDebtorCommodityByPersonAndCommodity)
-                    {
-                        $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
-                        if ($index === false) {
-                            $SelectList[] = array(
-                                'tblPerson' => $tblPerson->getId(),
-                                'tblCommodity' => $tblCommodity->getId(),
-                                'Debtors' => array($tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId())
-                            );
-                        }
-                        else
+                        foreach ($tblDebtorCommodityListByPersonAndCommodity as $tblDebtorCommodityByPersonAndCommodity)
                         {
-                            $SelectList[$index]['Debtors'][]= $tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId();
+                            $index = $this->searchArray($SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity", $tblCommodity->getId());
+                            if ($index === false) {
+                                $SelectList[] = array(
+                                    'tblPerson' => $tblPerson->getId(),
+                                    'tblCommodity' => $tblCommodity->getId(),
+                                    'Debtors' => array($tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId())
+                                );
+                            }
+                            else
+                            {
+                                $SelectList[$index]['Debtors'][]= $tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId();
+                            }
                         }
                     }
                 }
             }
         }
-
 //        if (empty($TempTblInvoiceList))
 //        {
 //            $TempTblInvoiceList = null;
@@ -296,13 +324,22 @@ abstract class EntityAction extends EntitySchema
     )
     {
         $tblDebtorAllList = array();
+
+        $debtorPersonAll = Billing::serviceBanking()->entityDebtorAllByPerson($tblPerson);
+        if (!empty($debtorPersonAll))
+        {
+            foreach ($debtorPersonAll as $debtor)
+            {
+                array_push($tblDebtorAllList, $debtor);
+            }
+        }
+
         $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson($tblPerson);
         if (!empty($tblPersonRelationshipList))
         {
             foreach($tblPersonRelationshipList as $tblPersonRelationship)
             {
-                $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson(
-                    Management::servicePerson()->entityPersonById($tblPersonRelationship->getTblPersonA()));
+                $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson($tblPersonRelationship->getTblPersonA());
                 if (!empty($tblDebtorList))
                 {
                     foreach($tblDebtorList as $tblDebtor)
@@ -312,6 +349,7 @@ abstract class EntityAction extends EntitySchema
                 }
             }
         }
+
         if (empty($tblDebtorAllList))
         {
             return false;
