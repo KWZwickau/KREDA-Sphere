@@ -22,7 +22,7 @@ class Invoice extends Common
     protected static function setupApplicationNavigation()
     {
         self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoice/IsNotConfirmed', 'Nicht Bestätigt'
+            '/Sphere/Billing/Invoice/IsNotConfirmed', 'Freigeben',  new OkIcon()
         );
     }
 

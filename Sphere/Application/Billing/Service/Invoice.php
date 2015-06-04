@@ -240,6 +240,11 @@ class Invoice extends EntityAction
         }
     }
 
+    /**
+     * @param TblInvoice $tblInvoice
+     *
+     * @return string
+     */
     public function executePayInvoice(
         TblInvoice $tblInvoice
     )
