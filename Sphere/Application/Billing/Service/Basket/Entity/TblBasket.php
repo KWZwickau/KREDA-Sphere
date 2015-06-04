@@ -14,5 +14,34 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblBasket extends AbstractEntity
 {
+    /**
+     * @Column(type="date")
+     */
+    protected $CreateDate;
 
+    /**
+     * @return string
+     */
+    public function getCreateDate()
+    {
+
+        if (null === $this->CreateDate) {
+            return false;
+        }
+        /** @var \DateTime $CreateDate */
+        $CreateDate = $this->CreateDate;
+        if ($CreateDate instanceof \DateTime) {
+            return $CreateDate->format( 'd.m.Y H:i:s' );
+        } else {
+            return (string)$CreateDate;
+        }
+    }
+
+    /**
+     * @param \DateTime $CreateDate
+     */
+    public function setCreateDate(\DateTime $CreateDate )
+    {
+        $this->CreateDate = $CreateDate;
+    }
 }

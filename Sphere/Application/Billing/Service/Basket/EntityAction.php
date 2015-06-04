@@ -386,6 +386,8 @@ abstract class EntityAction extends EntitySchema
         $Manager = $this->getEntityManager();
 
         $Entity = new TblBasket();
+        date_default_timezone_set('Europe/Berlin');
+        $Entity->setCreateDate( new \DateTime( 'now'));
 
         $Manager->saveEntity( $Entity );
 

@@ -86,6 +86,7 @@ class Basket extends AbstractFrontend
             new TableData( $tblBasketAll, null,
                 array(
                     'Number' => 'Nummer',
+                    'CreateDate' => 'Erstellt am',
                     'Option' => 'Option'
                 )
             )

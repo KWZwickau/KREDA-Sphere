@@ -131,8 +131,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setIsPaid( false );
             $Entity->setIsVoid( false );
             $Entity->setNumber( "40000000" );
-            $Entity->setPaymentDate( ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P' . $tblDebtor->getLeadTimeFirst() .'D' ) ) );
-            $Entity->setInvoiceDate( new \DateTime( $Date ) );
+            $Entity->setInvoiceDate( ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P' . $tblDebtor->getLeadTimeFirst() .'D' ) ) );
+            $Entity->setPaymentDate( new \DateTime( $Date ) );
             $Entity->setDiscount( 0 );
             $Entity->setDebtorFirstName( $tblPersonDebtor->getFirstName() );
             $Entity->setDebtorLastName( $tblPersonDebtor->getLastName() );

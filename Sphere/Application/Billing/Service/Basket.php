@@ -406,6 +406,7 @@ class Basket extends EntityAction
 
         if ($ErrorMissing)
         {
+            $View .= new Warning( "Ihre Warenkorbnummer: " . $tblBasket->getId());
             return $View;
         }
 
