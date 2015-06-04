@@ -99,7 +99,7 @@ abstract class EntityAction extends EntitySchema
 
         $Manager = $this->getEntityManager();
 
-        $Entity = $Manager->getEntity( 'tblBalance' )->findOneBy(
+        $Entity = $Manager->getEntity( 'TblBalance' )->findOneBy(
             array(
                 'Id' => $tblBalance->getId()
             ) );
@@ -152,7 +152,7 @@ abstract class EntityAction extends EntitySchema
 
         $Manager = $this->getEntityManager();
 
-        $Entity = $Manager->getEntity( 'tblPayment' )->findOneBy(
+        $Entity = $Manager->getEntity( 'TblPayment' )->findOneBy(
             array(
                 'Id' => $tblPayment->getId()
             ) );

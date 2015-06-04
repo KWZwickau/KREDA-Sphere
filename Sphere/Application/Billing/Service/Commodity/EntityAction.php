@@ -1,7 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Commodity;
 
-use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
@@ -99,18 +98,6 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param Entity\TblCommodity $tblCommodity
-     *
-     * @return bool|TblItem[]
-     */
-    protected function entityCommodityItemAllByCommodity( TblCommodity $tblCommodity )
-    {
-        $EntityList = $this->getEntityManager()->getEntity( 'TblCommodityItem' )
-            ->findBy( array( TblCommodityItem::ATTR_TBL_COMMODITY => $tblCommodity->getId() ) );
-        return ( null === $EntityList ? false : $EntityList );
-    }
-
-    /**
      * @param TblItem $tblItem
      *
      * @return bool|TblItem[]
@@ -145,18 +132,6 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblItem $tblItem
-     *
-     * @return TblItemAccount[]|bool
-     */
-    protected function entityItemAccountAllByItem( TblItem $tblItem )
-    {
-        $EntityList = $this->getEntityManager()->getEntity( 'TblItemAccount' )
-            ->findBy( array( TblItemAccount::ATTR_TBL_Item => $tblItem->getId() ) );
-        return ( null === $EntityList ? false : $EntityList );
-    }
-
-    /**
-     * @param TblItem $tblItem
      * @return TblAccount[]
      */
     protected function entityAccountAllByItem(TblItem $tblItem)
@@ -169,6 +144,19 @@ abstract class EntityAction extends EntitySchema
         }
 
         return $tblAccount;
+    }
+
+    /**
+     * @param TblItem $tblItem
+     *
+     * @return TblItemAccount[]|bool
+     */
+    protected function entityItemAccountAllByItem( TblItem $tblItem )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblItemAccount' )
+            ->findBy( array( TblItemAccount::ATTR_TBL_Item => $tblItem->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
     }
 
     /**
@@ -199,6 +187,19 @@ abstract class EntityAction extends EntitySchema
         }
 
         return str_replace('.', ',', round($sum, 2)) . " €";
+    }
+
+    /**
+     * @param Entity\TblCommodity $tblCommodity
+     *
+     * @return bool|TblItem[]
+     */
+    protected function entityCommodityItemAllByCommodity( TblCommodity $tblCommodity )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblCommodityItem' )
+            ->findBy( array( TblCommodityItem::ATTR_TBL_COMMODITY => $tblCommodity->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
     }
 
     /**
@@ -368,10 +369,10 @@ abstract class EntityAction extends EntitySchema
     {
         $Manager = $this->getEntityManager();
 
-        $EntityList = $Manager->getEntity('tblCommodityItem')->findBy(array(TblCommodityItem::ATTR_TBL_ITEM => $tblItem->getId()));
+        $EntityList = $Manager->getEntity( 'TblCommodityItem' )->findBy( array( TblCommodityItem::ATTR_TBL_ITEM => $tblItem->getId() ) );
         if (empty($EntityList))
         {
-            $EntityItems = $Manager->getEntity( 'tblItemAccount' )
+            $EntityItems = $Manager->getEntity( 'TblItemAccount' )
                 ->findBy( array(TblItemAccount::ATTR_TBL_Item => $tblItem->getId() ) );
             if (null !== $EntityItems)
             {
@@ -382,7 +383,7 @@ abstract class EntityAction extends EntitySchema
                 }
             }
 
-            $Entity = $Manager->getEntity('tblItem')->findOneBy( array('Id'=>$tblItem->getId() ) );
+            $Entity = $Manager->getEntity( 'TblItem' )->findOneBy( array( 'Id' => $tblItem->getId() ) );
             if (null !== $Entity)
             {
                 System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
@@ -405,7 +406,7 @@ abstract class EntityAction extends EntitySchema
     ) {
         $Manager = $this->getEntityManager();
 
-        $Entity = $Manager->getEntity( 'tblItemAccount' )->findOneBy(
+        $Entity = $Manager->getEntity( 'TblItemAccount' )->findOneBy(
         array(
             TblItemAccount::ATTR_TBL_Item => $tblItem->getId(),
             TblItemAccount::ATTR_SERVICE_BILLING_ACCOUNT => $tblAccount->getId()
@@ -434,7 +435,7 @@ abstract class EntityAction extends EntitySchema
     ) {
         $Manager = $this->getEntityManager();
 
-        $Entity = $Manager->getEntity( 'tblItemAccount' )->findOneBy(
+        $Entity = $Manager->getEntity( 'TblItemAccount' )->findOneBy(
             array(
                'Id' => $tblItemAccount->getId()
             ) );
@@ -461,7 +462,7 @@ abstract class EntityAction extends EntitySchema
     )
     {
         $Manager = $this->getEntityManager();
-        $Entity = $Manager->getEntity( 'tblCommodityItem' )->findOneBy(array(
+        $Entity = $Manager->getEntity( 'TblCommodityItem' )->findOneBy( array(
             TblCommodityItem::ATTR_TBL_COMMODITY => $tblCommodity->getId(),
             TblCommodityItem::ATTR_TBL_ITEM => $tblItem->getId()
         ));
@@ -490,7 +491,7 @@ abstract class EntityAction extends EntitySchema
     {
         $Manager = $this->getEntityManager();
 
-        $Entity = $Manager->getEntity( 'tblCommodityItem' )->findOneBy( array('Id'=>$tblCommodityItem->getId() ) );
+        $Entity = $Manager->getEntity( 'TblCommodityItem' )->findOneBy( array( 'Id' => $tblCommodityItem->getId() ) );
         if (null !== $Entity) {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
             $Manager->killEntity( $Entity );
@@ -510,7 +511,7 @@ abstract class EntityAction extends EntitySchema
     {
         $Manager = $this->getEntityManager();
 
-        $EntityItems = $Manager->getEntity( 'tblCommodityItem' )
+        $EntityItems = $Manager->getEntity( 'TblCommodityItem' )
             ->findBy( array(TblCommodityItem::ATTR_TBL_COMMODITY => $tblCommodity->getId() ) );
         if (null !== $EntityItems)
         {
@@ -521,7 +522,7 @@ abstract class EntityAction extends EntitySchema
             }
         }
 
-        $Entity = $Manager->getEntity('tblCommodity')->findOneBy( array('Id'=>$tblCommodity->getId() ) );
+        $Entity = $Manager->getEntity( 'TblCommodity' )->findOneBy( array( 'Id' => $tblCommodity->getId() ) );
         if (null !== $Entity)
         {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );

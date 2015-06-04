@@ -1,11 +1,10 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Banking;
-use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
-
 
 /**
  * Class EntityAction
@@ -33,7 +32,8 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityDebtorByDebtorNumber( $DebtorNumber )
     {
-        $Entity = $this->getEntityManager()->getEntity('tblDebtor')->findBy( array(TblDebtor::ATTR_DEBTOR_NUMBER => $DebtorNumber) );
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblDebtor' )->findBy( array( TblDebtor::ATTR_DEBTOR_NUMBER => $DebtorNumber ) );
         return (null === $Entity ? false : $Entity);
     }
 
@@ -44,7 +44,8 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityDebtorByServiceManagement_Person( $ServiceManagement_Person )
     {
-        $Entity = $this->getEntityManager()->getEntity('tblDebtor')->findBy( array(TblDebtor::ATTR_SERVICE_MANAGEMENT_PERSON => $ServiceManagement_Person) );
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblDebtor' )->findBy( array( TblDebtor::ATTR_SERVICE_MANAGEMENT_PERSON => $ServiceManagement_Person ) );
         return (null === $Entity ? false : $Entity);
     }
 
@@ -95,7 +96,7 @@ abstract class EntityAction extends EntitySchema
 
         $Manager = $this->getEntityManager();
 
-        $Entity = $Manager->getEntity( 'tblDebtorCommodity' )->findOneBy(
+        $Entity = $Manager->getEntity( 'TblDebtorCommodity' )->findOneBy(
             array(
                 'Id' => $tblDebtorCommodity->getId()
             ) );
@@ -119,7 +120,7 @@ abstract class EntityAction extends EntitySchema
         TblCommodity $tblCommodity
     ) {
         $Manager = $this->getEntityManager();
-        $Entity = $Manager->getEntity( 'tblDebtorCommodity' )->findOneBy(
+        $Entity = $Manager->getEntity( 'TblDebtorCommodity' )->findOneBy(
             array(
                 TblDebtorCommodity::ATTR_TBL_DEBTOR => $tblDebtor->getId(),
                 TblDebtorCommodity::ATTR_SERVICE_BILLING_COMMODITY => $tblCommodity->getId()
@@ -147,7 +148,7 @@ abstract class EntityAction extends EntitySchema
     {
         $Manager = $this->getEntityManager();
 
-        $EntityItemsDebtorCommodity = $Manager->getEntity( 'tblDebtorCommodity' )
+        $EntityItemsDebtorCommodity = $Manager->getEntity( 'TblDebtorCommodity' )
             ->findBy( array(TblDebtorCommodity::ATTR_TBL_DEBTOR => $tblDebtor->getId() ) );
         if (null !== $EntityItemsDebtorCommodity)
         {
@@ -158,7 +159,7 @@ abstract class EntityAction extends EntitySchema
             }
         }
 
-        $EntityItems = $Manager->getEntity( 'tblDebtor' )
+        $EntityItems = $Manager->getEntity( 'TblDebtor' )
             ->findBy( array(TblDebtor::ATTR_DEBTOR_NUMBER => $tblDebtor->getId() ) );
         if (null !== $EntityItems)
         {
@@ -169,7 +170,7 @@ abstract class EntityAction extends EntitySchema
             }
         }
 
-        $Entity = $Manager->getEntity('tblDebtor')->findOneBy( array('Id'=>$tblDebtor->getId() ) );
+        $Entity = $Manager->getEntity( 'TblDebtor' )->findOneBy( array( 'Id' => $tblDebtor->getId() ) );
         if (null !== $Entity)
         {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );

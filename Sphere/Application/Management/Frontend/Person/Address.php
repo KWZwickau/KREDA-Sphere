@@ -5,9 +5,18 @@ use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
+use KREDA\Sphere\Client\Component\Element\Repository\Content\Wire;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MapMarkerIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TransferIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
+use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Button\Structure\ButtonGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
@@ -15,14 +24,16 @@ use KREDA\Sphere\Client\Frontend\Form\Type\Form;
 use KREDA\Sphere\Client\Frontend\Input\Type\AutoCompleter;
 use KREDA\Sphere\Client\Frontend\Input\Type\NumberField;
 use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
-use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutAddress;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
-use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\AbstractFrontend;
 
 /**
@@ -34,206 +45,210 @@ class Address extends AbstractFrontend
 {
 
     /**
-     * @param TblPerson $tblPerson
+     * @param $Id
+     * @param $State
+     * @param $City
+     * @param $Street
      *
-     * @return Layout
+     * @return Stage
      */
-    public static function layoutAddress( TblPerson $tblPerson )
+    public static function stageEdit( $Id, $State, $City, $Street )
     {
 
-        $tblAddressList = Management::servicePerson()->entityAddressAllByPerson( $tblPerson );
-        if (!empty( $tblAddressList )) {
-            array_walk( $tblAddressList, function ( TblAddress &$tblAddress ) {
-
-                $tblAddress->Code = $tblAddress->getTblAddressCity()->getCode();
-                $tblAddress->Name = $tblAddress->getTblAddressCity()->getName();
-                $tblAddress->District = $tblAddress->getTblAddressCity()->getDistrict();
-                $tblAddress->State = $tblAddress->getTblAddressState()->getName();
-            } );
-        }
-        return new Layout(
-            new LayoutGroup(
-                new LayoutRow(
-                    new LayoutColumn( array(
-                        new TableData( $tblAddressList, null, array(
-                            'StreetName'   => 'Strasse',
-                            'StreetNumber' => 'Hausnummer',
-                            'Code'         => 'Postleitzahl',
-                            'Name'         => 'Ort',
-                            'District'     => 'Ortsteil',
-                            'State'        => 'Bundesland',
-                        ) ),
-                        new Primary( 'Bearbeiten', '/Sphere/Management/Person/Address/Edit', new PencilIcon(),
-                            array( 'Id' => $tblPerson->getId() )
-                        )
-                    ) )
-                ), new LayoutTitle( 'Adressen' )
-            )
-        );
-    }
-
-    public static function stageCreate( $Id, $State, $City, $Street )
-    {
+        $View = new Stage( 'Adressen', 'Bearbeiten' );
 
         $tblPerson = Management::servicePerson()->entityPersonById( $Id );
 
-        $View = new Stage( 'Person', 'Bearbeiten - Adresse' );
-
-        $tblAddressList = Management::servicePerson()->entityAddressAllByPerson( $tblPerson );
-        if (!empty( $tblAddressList )) {
-            array_walk( $tblAddressList, function ( TblAddress &$tblAddress ) {
-
-                $tblAddress->Code = $tblAddress->getTblAddressCity()->getCode();
-                $tblAddress->Name = $tblAddress->getTblAddressCity()->getName();
-                $tblAddress->District = $tblAddress->getTblAddressCity()->getDistrict();
-                $tblAddress->State = $tblAddress->getTblAddressState()->getName();
-            } );
-        }
+        $Form = self::formAddress();
+        $Form->appendFormButton( new SubmitPrimary( 'Adresse hinzufügen' ) );
 
         $View->setContent(
-            new LayoutGroup( array(
-                new LayoutRow( array(
-                    new LayoutColumn( array(
-                        new Success( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() ),
-                        new TableData( $tblAddressList, null, array(
-                            'StreetName'   => 'Strasse',
-                            'StreetNumber' => 'Hausnummer',
-                            'Code'         => 'Postleitzahl',
-                            'Name'         => 'Ort',
-                            'District'     => 'Ortsteil',
-                            'State'        => 'Bundesland',
-                        ) ),
-                        Management::serviceAddress()->executeCreatePersonAddress(
-                            new Form(
-                                new FormGroup( array(
-                                    new FormRow( array(
-                                        new FormColumn(
-                                            new AutoCompleter( 'Street[Name]', 'Strasse', 'Strasse',
-                                                array( 'StreetName' => Management::serviceAddress()->entityAddressAll() )
-                                            )
-                                            , 5 ),
-                                        new FormColumn(
-                                            new NumberField( 'Street[Number]', 'Hausnummer', 'Hausnummer' )
-                                            , 2 ),
-                                    ) ),
-                                    new FormRow( array(
-                                        new FormColumn(
-                                            new TextField( 'City[Code]', 'Postleitzahl', 'Postleitzahl' )
-                                            , 2 ),
-                                        new FormColumn(
-                                            new AutoCompleter( 'City[Name]', 'Ort', 'Ort',
-                                                array( 'Name' => Management::serviceAddress()->entityAddressCityAll() )
-                                            )
-                                            , 5 ),
-                                        new FormColumn(
-                                            new TextField( 'City[District]', 'Ortsteil', 'Ortsteil' )
-                                            , 5 ),
-                                    ) ),
-                                    new FormRow( array(
-                                        new FormColumn(
-                                            new SelectBox( 'State', 'Bundesland',
-                                                array( 'Name' => Management::serviceAddress()->entityAddressStateAll() )
-                                            )
-                                            , 5 ),
-                                    ) ),
-                                ) ), new SubmitPrimary( 'Adresse hinzufügen' )
-                            ), $State, $City, $Street, $tblPerson )
-                    ) )
-                ) )
-            ) )
+            new Success( $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName() )
+            .new Primary( 'Zurück zur Person', '/Sphere/Management/Person/Edit', null, array( 'Id' => $Id ) )
+            .self::layoutAddress( $tblPerson, true )
+            .new Layout(
+                new LayoutGroup(
+                    new LayoutRow(
+                        new LayoutColumn(
+                            Management::serviceAddress()->executeCreatePersonAddress(
+                                $Form, $State, $City, $Street, $tblPerson
+                            )
+                        )
+                    ), new LayoutTitle( 'Adresse hinzufügen' )
+                )
+            )
         );
+
         return $View;
     }
 
     /**
-     * @param TblPerson $tblPerson
-     *
      * @return Form
      */
-    public static function formAddress( TblPerson $tblPerson, $State, $City, $Street )
+    public static function formAddress()
     {
 
+        $tblAddress = Management::serviceAddress()->entityAddressAll();
+        $tblAddressCity = Management::serviceAddress()->entityAddressCityAll();
         $tblAddressState = Management::serviceAddress()->entityAddressStateAll();
 
-        $tblAddressStreet = Management::serviceAddress()->entityAddressAll();
-        if (!empty( $tblAddressStreet )) {
-            array_walk( $tblAddressStreet, function ( TblAddress &$tblAddress ) {
+        return new Form(
+            new FormGroup( array(
+                new FormRow( array(
+                    new FormColumn(
+                        new AutoCompleter( 'Street[Name]', 'Strasse', 'Strasse',
+                            array( 'StreetName' => $tblAddress ) )
+                        , 5 ),
+                    new FormColumn(
+                        new NumberField( 'Street[Number]', 'Hausnummer', 'Hausnummer' )
+                        , 2 ),
+                ) ),
+                new FormRow( array(
+                    new FormColumn(
+                        new AutoCompleter( 'City[Code]', 'Postleitzahl', 'Postleitzahl',
+                            array( 'Code' => $tblAddressCity ) )
+                        , 2 ),
+                    new FormColumn(
+                        new AutoCompleter( 'City[Name]', 'Ort', 'Ort',
+                            array( 'Name' => $tblAddressCity ) )
+                        , 5 ),
+                    new FormColumn(
+                        new AutoCompleter( 'City[District]', 'Ortsteil', 'Ortsteil',
+                            array( 'District' => $tblAddressCity ) )
+                        , 5 ),
+                ) ),
+                new FormRow( array(
+                    new FormColumn(
+                        new SelectBox( 'State', 'Bundesland', array( 'Name' => $tblAddressState ) )
+                        , 5 ),
+                ) ),
+            ) )
+        );
+    }
 
-                $tblAddress = $tblAddress->getStreetName();
-            } );
-        }
-        $tblAddressStreet = array_unique( $tblAddressStreet );
+    /**
+     * @param TblPerson $tblPerson
+     * @param bool      $hasRemove
+     *
+     * @return Layout
+     */
+    public static function layoutAddress( TblPerson $tblPerson, $hasRemove = false )
+    {
 
-        $tblAddressCity = Management::serviceAddress()->entityAddressAll();
-        if (!empty( $tblAddressCity )) {
-            array_walk( $tblAddressCity, function ( TblAddress &$tblAddress ) {
+        $tblAddressList = Management::servicePerson()->entityAddressAllByPerson( $tblPerson );
 
-                $tblAddress = $tblAddress->getTblAddressCity()->getName();
-            } );
-        }
-        $tblAddressCity = array_unique( $tblAddressCity );
+        if (!empty( $tblAddressList )) {
+            /** @noinspection PhpUnusedParameterInspection */
+            array_walk( $tblAddressList, function ( TblAddress &$tblAddress, $Index, $Data ) {
 
-        $tblPersonAddressList = Management::servicePerson()->entityAddressAllByPerson( $tblPerson );
-        if (!empty( $tblPersonAddressList )) {
-            array_walk( $tblPersonAddressList, function ( TblAddress &$tblPersonAddress ) {
+                if ($Index == 0) {
+                    $AddressType = new MapMarkerIcon().' Hauptadresse';
+                    $PanelType = LayoutPanel::PANEL_TYPE_WARNING;
+                } else {
+                    $AddressType = new MapMarkerIcon().' Adresse';
+                    $PanelType = LayoutPanel::PANEL_TYPE_DEFAULT;
+                }
 
-                $tblPersonAddress->Code = $tblPersonAddress->getTblAddressCity()->getCode();
-                $tblPersonAddress->Name = $tblPersonAddress->getTblAddressCity()->getName();
-                $tblPersonAddress->District = $tblPersonAddress->getTblAddressCity()->getDistrict();
-                $tblPersonAddress->State = $tblPersonAddress->getTblAddressState()->getName();
-
-            } );
+                /** @var bool[]|TblPerson[] $Data */
+                $tblAddress = new LayoutColumn(
+                    new LayoutPanel(
+                        $AddressType, new LayoutAddress( $tblAddress ), $PanelType,
+                        ( $Data[0]
+                            ? new ButtonGroup( array(
+                                ( $PanelType != LayoutPanel::PANEL_TYPE_PRIMARY
+                                    ? new Primary(
+                                        'Hauptadresse', '/Sphere/Management/Person/Address/Type', new TransferIcon(),
+                                        array( 'Id' => $Data[1]->getId(), 'Address' => $tblAddress->getId() )
+                                    )
+                                    : ''
+                                ),
+                                new Danger(
+                                    'Löschen', '/Sphere/Management/Person/Address/Destroy', new RemoveIcon(),
+                                    array( 'Id' => $Data[1]->getId(), 'Address' => $tblAddress->getId() )
+                                ),
+                            ) )
+                            : null
+                        )
+                    ), 4 );
+            }, array( $hasRemove, $tblPerson ) );
+        } else {
+            $tblAddressList = array(
+                new LayoutColumn(
+                    new Warning( 'Keine Adressen hinterlegt', new WarningIcon() )
+                )
+            );
         }
 
         return new Layout(
-            new LayoutGroup( array(
-                new LayoutRow( array(
-                    new LayoutColumn( array(
-                        new TableData( $tblPersonAddressList, null, array(
-                            'StreetName'   => 'Strasse',
-                            'StreetNumber' => 'Hausnummer',
-                            'Code'         => 'Postleitzahl',
-                            'Name'         => 'Ort',
-                            'District'     => 'Ortsteil',
-                            'State'        => 'Bundesland',
-                        ) ),
-                        Management::serviceAddress()->executeCreatePersonAddress(
-                            new Form(
-                                new FormGroup( array(
-                                    new FormRow( array(
-                                        new FormColumn(
-                                            new AutoCompleter( 'Street[Name]', 'Strasse', 'Strasse', $tblAddressStreet )
-                                            , 5 ),
-                                        new FormColumn(
-                                            new NumberField( 'Street[Number]', 'Hausnummer', 'Hausnummer' )
-                                            , 2 ),
-                                    ) ),
-                                    new FormRow( array(
-                                        new FormColumn(
-                                            new TextField( 'City[Code]', 'Postleitzahl', 'Postleitzahl' )
-                                            , 2 ),
-                                        new FormColumn(
-                                            new AutoCompleter( 'City[Name]', 'Ort', 'Ort', $tblAddressCity )
-                                            , 5 ),
-                                        new FormColumn(
-                                            new TextField( 'City[District]', 'Ortsteil', 'Ortsteil' )
-                                            , 5 ),
-                                    ) ),
-                                    new FormRow( array(
-                                        new FormColumn(
-                                            new SelectBox( 'State', 'Bundesland', array(
-                                                'Name' => $tblAddressState
-                                            ) )
-                                            , 5 ),
-                                    ) ),
-                                ) ), new SubmitPrimary( 'Adresse hinzufügen' ) )
-                            , $State, $City, $Street, $tblPerson )
-                    ) )
-                ) ),
-            ), new LayoutTitle( 'Adressdaten' ) )
+            new LayoutGroup( new LayoutRow( $tblAddressList ), new LayoutTitle( 'Adressen' ) )
         );
-
     }
+
+    /**
+     * @param int  $Id
+     * @param int  $Address
+     * @param bool $Confirm
+     *
+     * @return Stage
+     */
+    public static function stageDestroy( $Id, $Address, $Confirm = false )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Adressen' );
+        $View->setDescription( 'Löschen' );
+
+        $tblPerson = Management::servicePerson()->entityPersonById( $Id );
+        $tblAddress = Management::serviceAddress()->entityAddressById( $Address );
+        $tblPersonAddress = Management::servicePerson()->entityPersonAddressByPersonAndAddress( $tblPerson,
+            $tblAddress );
+        if (!$Confirm) {
+            $View->setContent(
+                new Layout(
+                    new LayoutGroup( array(
+                        new LayoutRow(
+                            new LayoutColumn( array(
+                                new Warning( new LayoutAddress( $tblPersonAddress->getTblAddress() ) ),
+                                new Warning( 'Wollen Sie die Addresse wirklich löschen?', new QuestionIcon() ),
+                            ) )
+                        ),
+                        new LayoutRow(
+                            new LayoutColumn( array(
+                                new Danger(
+                                    'Ja', '/Sphere/Management/Person/Address/Destroy', new OkIcon(),
+                                    array( 'Id' => $Id, 'Address' => $Address, 'Confirm' => true )
+                                ),
+                                new Primary(
+                                    'Nein', '/Sphere/Management/Person/Address/Edit', new DisableIcon(),
+                                    array( 'Id' => $Id )
+                                )
+                            ) )
+                        )
+                    ) )
+                )
+            );
+        } else {
+            if (true !== ( $Wire = Management::servicePerson()->executeRemoveAddress( $Id, $Address ) )) {
+                return new Wire( $Wire );
+            }
+            $View->setContent(
+                new Layout( new LayoutGroup( array(
+                    new LayoutRow(
+                        new LayoutColumn( array(
+                            new Success( new LayoutAddress( $tblPersonAddress->getTblAddress() ) ),
+                            new Success( 'Die Adresse wurde erfolgreich gelöscht' ),
+                        ) )
+                    ),
+                    new LayoutRow(
+                        new LayoutColumn( array(
+                            new Redirect( '/Sphere/Management/Person/Address/Edit', 1, array( 'Id' => $Id ) )
+                        ) )
+                    )
+                ) ) ) );
+        }
+        return $View;
+    }
+
 }
 
 

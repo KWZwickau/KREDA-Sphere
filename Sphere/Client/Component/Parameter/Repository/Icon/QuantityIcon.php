@@ -18,6 +18,6 @@ class QuantityIcon extends AbstractIcon implements IParameterInterface
     public function __construct()
     {
 
-        $this->setValue( AbstractIcon::ICON_QUANTITY);
+        $this->setValue( AbstractIcon::ICON_QUANTITY );
     }
 }

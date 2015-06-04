@@ -280,6 +280,29 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param array $Array
+     * @param       $Key1
+     * @param       $Value1
+     * @param       $Key2
+     * @param       $Value2
+     *
+     * @return bool|int
+     */
+    private function searchArray( array $Array, $Key1, $Value1, $Key2, $Value2 )
+    {
+
+        foreach ($Array as $Key => $Value)
+        {
+            if ($Value[$Key1] == $Value1 && $Value[$Key2] == $Value2)
+            {
+                return $Key;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param $Date
      * @param $TempTblInvoiceList
      * @param $SelectList
@@ -294,24 +317,24 @@ abstract class EntityAction extends EntitySchema
         &$SelectList
     )
     {
+
         foreach ($Data as $Key => $Value)
         {
-            $index = $this->searchArray($TempTblInvoiceList, "tblPerson", $SelectList[$Key]['tblPerson'],
+            $index = $this->searchArray( $TempTblInvoiceList, "tblPerson", $SelectList[$Key]['tblPerson'],
                 "tblDebtor", $Value );
             if ($index === false) {
                 $TempTblInvoiceList[] = array(
-                    'tblPerson' => $SelectList[$Key]['tblPerson'],
-                    'tblDebtor' => $Value,
-                    'Commodities' => array($SelectList[$Key]['tblCommodity'])
+                    'tblPerson'   => $SelectList[$Key]['tblPerson'],
+                    'tblDebtor'   => $Value,
+                    'Commodities' => array( $SelectList[$Key]['tblCommodity'] )
                 );
-            }
-            else
+            } else
             {
-                $TempTblInvoiceList[$index]['Commodities'][]= $SelectList[$Key]['tblCommodity'];
+                $TempTblInvoiceList[$index]['Commodities'][] = $SelectList[$Key]['tblCommodity'];
             }
-            unset($SelectList[$Key]);
+            unset( $SelectList[$Key] );
         }
-        return empty($SelectList);
+        return empty( $SelectList );
     }
 
     /**
@@ -323,63 +346,35 @@ abstract class EntityAction extends EntitySchema
         TblPerson $tblPerson
     )
     {
+
         $tblDebtorAllList = array();
 
-        $debtorPersonAll = Billing::serviceBanking()->entityDebtorAllByPerson($tblPerson);
-        if (!empty($debtorPersonAll))
+        $debtorPersonAll = Billing::serviceBanking()->entityDebtorAllByPerson( $tblPerson );
+        if (!empty( $debtorPersonAll ))
         {
             foreach ($debtorPersonAll as $debtor)
             {
-                array_push($tblDebtorAllList, $debtor);
+                array_push( $tblDebtorAllList, $debtor );
             }
         }
 
-        $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson($tblPerson);
-        if (!empty($tblPersonRelationshipList))
-        {
-            foreach($tblPersonRelationshipList as $tblPersonRelationship)
-            {
-                $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson($tblPersonRelationship->getTblPersonA());
-                if (!empty($tblDebtorList))
-                {
-                    foreach($tblDebtorList as $tblDebtor)
-                    {
-                        array_push($tblDebtorAllList, $tblDebtor);
+        $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson( $tblPerson );
+        if (!empty( $tblPersonRelationshipList )) {
+            foreach ($tblPersonRelationshipList as $tblPersonRelationship) {
+                $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson( $tblPersonRelationship->getTblPersonA() );
+                if (!empty( $tblDebtorList )) {
+                    foreach ($tblDebtorList as $tblDebtor) {
+                        array_push( $tblDebtorAllList, $tblDebtor );
                     }
                 }
             }
         }
 
-        if (empty($tblDebtorAllList))
-        {
+        if (empty( $tblDebtorAllList )) {
             return false;
-        }
-        else
-        {
+        } else {
             return $tblDebtorAllList;
         }
-    }
-
-    /**
-     * @param array $Array
-     * @param $Key1
-     * @param $Value1
-     * @param $Key2
-     * @param $Value2
-     *
-     * @return bool|int
-     */
-    private function searchArray(array $Array, $Key1, $Value1, $Key2, $Value2)
-    {
-        foreach ($Array as $Key => $Value)
-        {
-            if ($Value[$Key1] == $Value1 && $Value[$Key2] == $Value2)
-            {
-                return $Key;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -417,7 +412,7 @@ abstract class EntityAction extends EntitySchema
         /** @var TblCommodityItem $tblCommodityItem */
         foreach ($tblCommodityItemList as $tblCommodityItem)
         {
-            $Entity = $Manager->getEntity( 'tblBasketItem' )->findOneBy(array(
+            $Entity = $Manager->getEntity( 'TblBasketItem' )->findOneBy( array(
                     TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId(),
                     TblBasketItem::ATTR_SERVICE_BILLING_COMMODITY_ITEM => $tblCommodityItem->getId()
             ));
@@ -457,7 +452,7 @@ abstract class EntityAction extends EntitySchema
         /** @var TblBasketItem $tblBasketItem */
         foreach ($tblBasketItemAllByBasket as $tblBasketItem) {
             if ($tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity()->getId() == $tblCommodity->getId()) {
-                $Entity = $Manager->getEntity( 'tblBasketItem' )->findOneBy( array( 'Id' => $tblBasketItem->getId() ) );
+                $Entity = $Manager->getEntity( 'TblBasketItem' )->findOneBy( array( 'Id' => $tblBasketItem->getId() ) );
                 System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
                     $Entity );
                 $Manager->bulkKillEntity( $Entity );
@@ -479,7 +474,7 @@ abstract class EntityAction extends EntitySchema
 
         $Manager = $this->getEntityManager();
 
-        $Entity = $Manager->getEntity( 'tblBasketItem' )->findOneBy(
+        $Entity = $Manager->getEntity( 'TblBasketItem' )->findOneBy(
             array(
                 'Id' => $tblBasketItem->getId()
             ) );
@@ -535,7 +530,7 @@ abstract class EntityAction extends EntitySchema
     ) {
 
         $Manager = $this->getEntityManager();
-        $Entity = $Manager->getEntity( 'tblBasketPerson' )->findOneBy(array(
+        $Entity = $Manager->getEntity( 'TblBasketPerson' )->findOneBy( array(
                 TblBasketPerson::ATTR_TBL_Basket => $tblBasket->getId(),
                 TblBasketPerson::ATTR_SERVICE_MANAGEMENT_PERSON => $tblPerson->getId()
         ));
@@ -562,7 +557,7 @@ abstract class EntityAction extends EntitySchema
 
         $Manager = $this->getEntityManager();
 
-        $Entity = $Manager->getEntity( 'tblBasketPerson' )->findOneBy(
+        $Entity = $Manager->getEntity( 'TblBasketPerson' )->findOneBy(
             array(
                 'Id' => $tblBasketPerson->getId()
             ) );
@@ -587,21 +582,21 @@ abstract class EntityAction extends EntitySchema
         if ($tblBasket !== null) {
             $Manager = $this->getEntityManager();
 
-            $EntityList = $Manager->getEntity( 'tblBasketPerson' )->findBy( array( TblBasketPerson::ATTR_TBL_Basket => $tblBasket->getId() ) );
+            $EntityList = $Manager->getEntity( 'TblBasketPerson' )->findBy( array( TblBasketPerson::ATTR_TBL_Basket => $tblBasket->getId() ) );
             foreach ($EntityList as $Entity) {
                 System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
                     $Entity );
                 $Manager->bulkKillEntity( $Entity );
             }
 
-            $EntityList = $Manager->getEntity( 'tblBasketItem' )->findBy( array( TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId() ) );
+            $EntityList = $Manager->getEntity( 'TblBasketItem' )->findBy( array( TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId() ) );
             foreach ($EntityList as $Entity) {
                 System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
                     $Entity );
                 $Manager->bulkKillEntity( $Entity );
             }
 
-            $Entity = $Manager->getEntity( 'tblBasket' )->findOneBy( array( 'Id' => $tblBasket->getId() ) );
+            $Entity = $Manager->getEntity( 'TblBasket' )->findOneBy( array( 'Id' => $tblBasket->getId() ) );
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
             $Manager->bulkKillEntity( $Entity );

@@ -249,4 +249,32 @@ abstract class Entity extends EntitySchema
 
         return ( empty( $EntityList ) ? false : $EntityList );
     }
+
+    /**
+     * @param int $Id
+     *
+     * @return bool|TblPersonAddress
+     */
+    protected function entityPersonAddressById( $Id )
+    {
+
+        $Entity = $this->getEntityManager()->getEntityById( 'TblPersonAddress', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblPerson  $tblPerson
+     * @param TblAddress $tblAddress
+     *
+     * @return bool|TblPersonAddress
+     */
+    protected function entityPersonAddressByPersonAndAddress( TblPerson $tblPerson, TblAddress $tblAddress )
+    {
+
+        $Entity = $this->getEntityManager()->getEntity( 'TblPersonAddress' )->findOneBy( array(
+            TblPersonAddress::ATTR_TBL_PERSON                 => $tblPerson->getId(),
+            TblPersonAddress::ATTR_SERVICE_MANAGEMENT_ADDRESS => $tblAddress->getId()
+        ) );
+        return ( null === $Entity ? false : $Entity );
+    }
 }

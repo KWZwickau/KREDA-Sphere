@@ -18,6 +18,6 @@ class CommodityItemIcon extends AbstractIcon implements IParameterInterface
     public function __construct()
     {
 
-        $this->setValue( AbstractIcon::ICON_COMMODITY_ITEM);
+        $this->setValue( AbstractIcon::ICON_COMMODITY_ITEM );
     }
 }

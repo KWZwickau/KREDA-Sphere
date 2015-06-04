@@ -89,18 +89,6 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblInvoice $tblInvoice
-     *
-     * @return TblInvoiceItem[]|bool
-     */
-    protected function entityInvoiceItemAllByInvoice( TblInvoice $tblInvoice )
-    {
-        $EntityList = $this->getEntityManager()->getEntity( 'TblInvoiceItem' )
-            ->findBy( array( TblInvoiceItem::ATTR_TBL_INVOICE => $tblInvoice->getId() ) );
-        return ( null === $EntityList ? false : $EntityList );
-    }
-
-    /**
-     * @param TblInvoice $tblInvoice
      * @return string
      */
     protected function sumPriceItemAllByInvoice( TblInvoice $tblInvoice)
@@ -114,6 +102,19 @@ abstract class EntityAction extends EntitySchema
         }
 
         return str_replace('.', ',', round($sum, 2)) . " €";
+    }
+
+    /**
+     * @param TblInvoice $tblInvoice
+     *
+     * @return TblInvoiceItem[]|bool
+     */
+    protected function entityInvoiceItemAllByInvoice( TblInvoice $tblInvoice )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblInvoiceItem' )
+            ->findBy( array( TblInvoiceItem::ATTR_TBL_INVOICE => $tblInvoice->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
     }
 
     /**
@@ -344,7 +345,7 @@ abstract class EntityAction extends EntitySchema
 
         $Manager = $this->getEntityManager();
 
-        $Entity = $Manager->getEntity( 'tblInvoiceItem' )->findOneBy(
+        $Entity = $Manager->getEntity( 'TblInvoiceItem' )->findOneBy(
             array(
                 'Id' => $tblInvoiceItem->getId()
             ) );

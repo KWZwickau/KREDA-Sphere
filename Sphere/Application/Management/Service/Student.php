@@ -71,9 +71,10 @@ class Student extends EntityAction
      *
      * @return bool|TblChildRank
      */
-    public function entityChildRankById($Id)
+    public function entityChildRankById( $Id )
     {
-        return parent::entityChildRankById($Id);
+
+        return parent::entityChildRankById( $Id );
     }
 
     /**
@@ -81,6 +82,7 @@ class Student extends EntityAction
      */
     public function entityChildRankAll()
     {
+
         return parent::entityChildRankAll();
     }
 

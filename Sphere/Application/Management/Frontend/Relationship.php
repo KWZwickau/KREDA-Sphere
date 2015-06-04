@@ -74,8 +74,8 @@ class Relationship extends AbstractFrontend
                                 'Person'       => $tblPersonRelationship->getTblPersonB()->getFullName(),
                                 'Relationship' => $tblPersonRelationship->getTblPersonRelationshipType()->getName(),
                                 'Option' => new Danger( 'Entfernen',
-                                    '/Sphere/Management/Person/Relationship', new ShareIcon(), array(
-                                        'tblPerson' => $tblPerson->getId(),
+                                    '/Sphere/Management/Person/Relationship/Edit', new ShareIcon(), array(
+                                        'Id' => $tblPerson->getId(),
                                         'Remove'    => $tblPersonRelationship->getId()
                                     ) )
                             );
@@ -84,8 +84,8 @@ class Relationship extends AbstractFrontend
                                 'Person'       => $tblPersonRelationship->getTblPersonA()->getFullName(),
                                 'Relationship' => $tblPersonRelationship->getTblPersonRelationshipType()->getName(),
                                 'Option' => new Danger( 'Entfernen',
-                                    '/Sphere/Management/Person/Relationship', new ShareIcon(), array(
-                                        'tblPerson' => $tblPerson->getId(),
+                                    '/Sphere/Management/Person/Relationship/Edit', new ShareIcon(), array(
+                                        'Id' => $tblPerson->getId(),
                                         'Remove'    => $tblPersonRelationship->getId()
                                     ) )
                             );
@@ -99,7 +99,9 @@ class Relationship extends AbstractFrontend
                                 new LayoutColumn( array(
                                     new Success(
                                         $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName()
-                                    )
+                                    ),
+                                    new Primary( 'Zurück zur Person', '/Sphere/Management/Person/Edit', null,
+                                        array( 'Id' => $tblPerson->getId() ) )
                                 ) )
                             ) ),
                             new LayoutRow( array(

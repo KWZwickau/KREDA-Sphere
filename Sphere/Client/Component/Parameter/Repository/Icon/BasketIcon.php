@@ -18,6 +18,6 @@ class BasketIcon extends AbstractIcon implements IParameterInterface
     public function __construct()
     {
 
-        $this->setValue( AbstractIcon::ICON_BASKET);
+        $this->setValue( AbstractIcon::ICON_BASKET );
     }
 }

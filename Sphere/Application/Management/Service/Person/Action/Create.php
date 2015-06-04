@@ -103,7 +103,7 @@ abstract class Create extends Entity
      * @param string              $MiddleName
      * @param string              $LastName
      *
-     * @param string              $Birthday
+     * @param string|null $Birthday
      * @param string              $Birthplace
      *
      * @param string              $Nationality
@@ -112,9 +112,9 @@ abstract class Create extends Entity
      * @param TblPersonGender     $tblPersonGender
      * @param TblPersonType       $tblPersonType
      *
-     * @param null $Remark
+     * @param string|null $Remark
      *
-     * @param null $Denomination
+     * @param string|null $Denomination
      *
      * @return TblPerson
      */
@@ -142,7 +142,7 @@ abstract class Create extends Entity
         $Entity->setMiddleName( $MiddleName );
         $Entity->setLastName( $LastName );
         $Entity->setTblPersonGender( $tblPersonGender );
-        $Entity->setBirthday( new \DateTime( $Birthday ) );
+        $Entity->setBirthday( ( $Birthday ? new \DateTime( $Birthday ) : null ) );
         $Entity->setBirthplace( $Birthplace );
         $Entity->setNationality( $Nationality );
         $Entity->setTblPersonType( $tblPersonType );

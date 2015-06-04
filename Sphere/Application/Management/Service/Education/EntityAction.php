@@ -443,4 +443,24 @@ abstract class EntityAction extends EntitySchema
             ->findOneBy( array( TblCategory::ATTR_NAME => $Name ) );
         return ( null === $Entity ? false : $Entity );
     }
+
+    /**
+     * @param TblSubject $tblSubject
+     *
+     * @return bool|TblCategory[]
+     */
+    protected function entityCategoryAllBySubject( TblSubject $tblSubject )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblSubjectCategory' )
+            ->findBy( array( TblSubjectCategory::ATTR_TBL_SUBJECT => $tblSubject->getId() ) );
+        if (!empty( $EntityList )) {
+            array_walk( $EntityList, function ( TblSubjectCategory &$tblSubjectCategory ) {
+
+                $tblSubjectCategory = $tblSubjectCategory->getTblCategory();
+            } );
+        }
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
 }

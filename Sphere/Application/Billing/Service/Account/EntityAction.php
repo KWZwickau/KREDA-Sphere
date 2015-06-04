@@ -6,7 +6,6 @@ use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKey;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountKeyType;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccountType;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblDebtor;
-use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
 
 /**
@@ -85,7 +84,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityKeyValueAll()
     {
 
-        $Entity = $this->getEntityManager()->getEntity( 'tblAccountKey' )->findAll();
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccountKey' )->findAll();
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -95,7 +94,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityTypeValueAll()
     {
 
-        $Entity = $this->getEntityManager()->getEntity( 'tblAccountType' )->findAll();
+        $Entity = $this->getEntityManager()->getEntity( 'TblAccountType' )->findAll();
         return ( null === $Entity ? false : $Entity );
     }
 

@@ -137,7 +137,7 @@ abstract class EntitySchema extends AbstractService
             $Table->addIndex( array( 'LastName' ) );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'Birthday' )) {
-            $Table->addColumn( 'Birthday', 'date' );
+            $Table->addColumn( 'Birthday', 'date', array( 'notnull' => false ) );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPerson', 'Birthplace' )) {
             $Table->addColumn( 'Birthplace', 'string' );

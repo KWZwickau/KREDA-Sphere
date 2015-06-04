@@ -31,6 +31,9 @@ class Redirect extends Element
             $Data = '';
         }
 
+        // Trim /Client
+        $Route = str_replace( '/Client', '', $Route );
+
         $this->Template = $this->extensionTemplate( __DIR__.'/Redirect.twig' );
         $this->Template->setVariable( 'Route', '/'.trim( $Route, '/' ).$Data );
         $this->Template->setVariable( 'Timeout', $Timeout );

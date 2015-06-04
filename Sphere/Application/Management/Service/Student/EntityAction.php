@@ -107,7 +107,7 @@ abstract class EntityAction extends EntitySchema
     {
 
         $Entity = $this->getEntityManager()->getEntity( 'TblChildRank' )->findAll();
-        return ( null === $Entity ? false : $Entity );
+        return ( empty( $Entity ) ? false : $Entity );
     }
 
     /**
