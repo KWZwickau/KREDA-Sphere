@@ -39,10 +39,10 @@ class Common extends AbstractApplication
             '/Sphere/Billing/Commodity', 'Leistungen', new CommodityIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Account', 'FIBU', new FolderOpenIcon()
+            '/Sphere/Billing/Account', 'FIBU-Konten', new FolderOpenIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Banking', 'Debitor', new MoneyIcon()
+            '/Sphere/Billing/Banking', 'Debitoren', new MoneyIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Billing/Basket', 'Fakturieren', new BasketIcon()

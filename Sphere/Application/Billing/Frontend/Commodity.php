@@ -53,7 +53,7 @@ class Commodity extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Übersicht' );
-        $View->setMessage( 'Zeigt die verfügbaren Leistungen' );
+        $View->setMessage( 'Zeigt die verfügbaren Leistungen an' );
         $View->addButton(
             new Primary( 'Leistung anlegen', '/Sphere/Billing/Commodity/Create', new PlusIcon() )
         );
@@ -211,7 +211,7 @@ class Commodity extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Übersicht' );
-        $View->setMessage( 'Zeigt die verfügbaren Artikel' );
+        $View->setMessage( 'Zeigt die verfügbaren Artikel an' );
         $View->addButton(
             new Primary( 'Artikel anlegen', '/Sphere/Billing/Commodity/Item/Create', new PlusIcon() )
         );

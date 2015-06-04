@@ -36,10 +36,11 @@ class Account extends AbstractFrontend
     public static function frontendAccountFibu()
     {
         $View = new Stage();
-        $View->setTitle( 'FIBU' );
-        $View->setDescription( 'Konten' );
+        $View->setTitle( 'FIBU-Konten' );
+        $View->setDescription( 'Übersicht' );
+        $View->setMessage( 'Zeigt die verfügbaren Finanzbuchhaltungskonten an' );
         $View->addButton(
-            new Primary( 'FIBU Konto Anlegen', '/Sphere/Billing/Account/Create', new PlusIcon() )
+            new Primary( 'FIBU-Konto Anlegen', '/Sphere/Billing/Account/Create', new PlusIcon() )
         );
 
         $tblAccountAll = Billing::serviceAccount()->entityAccountAll();
@@ -88,8 +89,8 @@ class Account extends AbstractFrontend
                     'Taxes' => 'Mehrwertsteuer',
                     'Code' => 'Code',
                     'Typ' => 'Konto',
-                    'Activity' => 'Aktiv',
-                    'Option' => 'Aktivität ändern'
+                    'Activity' => 'Status',
+                    'Option' => 'Optionen'
                 )
             )
         );
@@ -108,10 +109,7 @@ class Account extends AbstractFrontend
 
         $View->setContent(Billing::serviceAccount()->setFibuActivate( $Id ));
 
-
-
         return $View;
-
     }
 
     /**
@@ -125,10 +123,7 @@ class Account extends AbstractFrontend
 
         $View->setContent(Billing::serviceAccount()->setFibuDeactivate( $Id ));
 
-
-
         return $View;
-
     }
 
     /**
@@ -138,8 +133,8 @@ class Account extends AbstractFrontend
     public static function frontendCreateAccount( $Account )
     {
         $View = new Stage();
-        $View->setTitle( 'FIBU Konto' );
-        $View->setDescription( 'hinzufügen' );
+        $View->setTitle( 'FIBU-Konto' );
+        $View->setDescription( 'Hinzufügen' );
 
         $tblAccountKey = Billing::serviceAccount()->entityKeyValueAll();
         $tblAccountType = Billing::serviceAccount()->entityTypeValueAll();

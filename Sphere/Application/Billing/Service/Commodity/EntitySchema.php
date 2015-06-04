@@ -28,7 +28,6 @@ abstract class EntitySchema extends AbstractService
         $tblItem = $this->setTableItem( $Schema );
         $this->setTableCommodityItem( $Schema, $tblCommodity, $tblItem);
         $this->setTableItemAccount( $Schema, $tblItem );
-        $this->setTableItemCondition( $Schema, $tblItem );
 
         /**
          * Migration & Protocol
@@ -140,26 +139,6 @@ abstract class EntitySchema extends AbstractService
 
         if (!$this->getDatabaseHandler()->hasColumn( 'tblItemAccount', 'serviceBilling_Account' )) {
             $Table->addColumn( 'serviceBilling_Account', 'bigint');
-        }
-
-        $this->schemaTableAddForeignKey( $Table, $tblItem );
-
-        return $Table;
-    }
-
-    /**
-     * @param Schema $Schema
-     * @param Table $tblItem
-     *
-     * @return Table
-     */
-    private function setTableItemCondition( Schema &$Schema, Table $tblItem)
-    {
-        $Table = $this->schemaTableCreate( $Schema, 'tblItemCondition' );
-
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblItemCondition', 'serviceManagement_Student' ))
-        {
-            $Table->addColumn( 'serviceManagement_Student', 'bigint');
         }
 
         $this->schemaTableAddForeignKey( $Table, $tblItem );

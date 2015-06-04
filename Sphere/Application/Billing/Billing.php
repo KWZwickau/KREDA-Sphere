@@ -76,11 +76,11 @@ class Billing extends Module\Commodity
         );
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Account', 'FIBU', new FolderOpenIcon()
+            '/Sphere/Billing/Account', 'FIBU-Konten', new FolderOpenIcon()
         );
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Banking', 'Debitor', new MoneyIcon()
+            '/Sphere/Billing/Banking', 'Debitoren', new MoneyIcon()
         );
 
         self::addModuleNavigationMain( self::$Configuration,
