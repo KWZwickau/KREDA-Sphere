@@ -59,10 +59,6 @@ class Banking extends Common
             '/Sphere/Billing/Banking/Commodity/Add', __CLASS__.'::frontendBankingAddCommodity'
         )   ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'CommodityId', null );
-
-
-
-
     }
 
     /**
