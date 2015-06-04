@@ -3,18 +3,11 @@ namespace KREDA\Sphere\Application\Billing\Frontend;
 
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
-use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblDebtor;
-use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BarCodeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PlusIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
@@ -25,11 +18,6 @@ use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
-use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
-use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
-use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
-use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
-use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -64,11 +52,11 @@ class Account extends AbstractFrontend
                 $tblAccount->Typ = $tblAccount->getTblAccountType()->getName();
                 if( $tblAccount->getIsActive()=== true )
                 {
-                    $tblAccount->Activity = 'Ja';
+                    $tblAccount->Activity = new \KREDA\Sphere\Client\Frontend\Message\Type\Success( 'Aktiviert' );
                 }
                 else
                 {
-                    $tblAccount->Activity = 'Nein';
+                    $tblAccount->Activity = new \KREDA\Sphere\Client\Frontend\Message\Type\Danger( 'Deaktiviert' );
                 }
 
 

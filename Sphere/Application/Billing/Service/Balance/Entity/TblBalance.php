@@ -1,11 +1,8 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Balance\Entity;
 
-use Doctrine\ORM\Mapping\Cache;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -35,29 +32,29 @@ class TblBalance extends AbstractEntity
     protected $ExportDate;
 
     /**
-     * @param null|TblBanking $serviceBilling_Banking
+     * @param TblDebtor $serviceBilling_Banking
      */
-    public function setServiceBillingBanking($serviceBilling_Banking = null)
+    public function setServiceBillingBanking( TblDebtor $serviceBilling_Banking = null)
     {
         $this->serviceBilling_Banking = ( null === $serviceBilling_Banking ? null : $serviceBilling_Banking->getId() );
     }
 
     /**
-     * @return bool|TblBanking
+     * @return bool|TblDebtor
      */
     public function getServiceBillingBilling()
     {
         if (null === $this->serviceBilling_Banking) {
             return false;
         } else {
-            return Billing::serviceBanking()->entityBankingById( $this->serviceBilling_Banking );
+            return Billing::serviceBanking()->entityDebtorById( $this->serviceBilling_Banking );
         }
     }
 
     /**
      * @param null|TblInvoice $serviceBilling_Invoice
      */
-    public function setServiceBillingInvoice($serviceBilling_Invoice = null)
+    public function setServiceBillingInvoice( TblInvoice $serviceBilling_Invoice = null)
     {
         $this->serviceBilling_Invoice = ( null === $serviceBilling_Invoice ? null : $serviceBilling_Invoice->getId() );
     }

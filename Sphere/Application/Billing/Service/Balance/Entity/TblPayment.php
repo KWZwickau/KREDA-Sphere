@@ -73,4 +73,17 @@ class TblPayment extends AbstractEntity
     {
         $this->Date = $Date;
     }
+
+    /**
+     * @param $value
+     */
+    public function setValue( $value )
+    {
+        $this->Value = $value;
+    }
+
+    public function getValue()
+    {
+        return $this->Value;
+    }
 }
