@@ -52,7 +52,7 @@ abstract class EntitySchema extends AbstractService
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblBalance', 'ExportDate' ))
         {
-            $Table->addColumn( 'ExportDate', 'date' );
+            $Table->addColumn( 'ExportDate', 'date', array( 'notnull' => false ) );
         }
 
         return $Table;

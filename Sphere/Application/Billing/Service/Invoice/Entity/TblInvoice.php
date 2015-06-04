@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
@@ -17,14 +18,8 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblInvoice extends AbstractEntity
 {
-    const ATTR_IS_CONFIRMED = 'IsConfirmed';
     const ATTR_IS_PAID = 'IsPaid';
     const ATTR_IS_VOID = 'IsVoid';
-
-    /**
-     * @Column(type="boolean")
-     */
-    protected $IsConfirmed;
 
     /**
      * @Column(type="boolean")
@@ -91,15 +86,7 @@ class TblInvoice extends AbstractEntity
      */
     public function getIsConfirmed()
     {
-        return $this->IsConfirmed;
-    }
-
-    /**
-     * @param boolean $IsConfirmed
-     */
-    public function setIsConfirmed( $IsConfirmed )
-    {
-        $this->IsConfirmed = $IsConfirmed;
+        return (Billing::serviceBalance()->entityBalanceByInvoice( $this ) === false ? false : true);
     }
 
     /**

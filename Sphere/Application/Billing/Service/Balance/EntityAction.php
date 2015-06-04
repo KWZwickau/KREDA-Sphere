@@ -28,6 +28,17 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblInvoice $tblInvoice
+     *
+     * @return bool|TblBalance
+     */
+    protected function entityBalanceByInvoice(TblInvoice $tblInvoice )
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblBalance')->findOneBy(array(TblBalance::ATTR_SERVICE_BILLING_INVOICE => $tblInvoice->getId()));
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @return bool|TblBalance[]
      */
     protected function entityBalanceAll()
@@ -64,28 +75,31 @@ abstract class EntityAction extends EntitySchema
      * @param TblInvoice $serviceBilling_Invoice
      * @param $ExportDate
      *
-     * @return TblBalance|null|object
+     * @return bool
      */
     protected function actionCreateBalance( TblDebtor $serviceBilling_Banking, TblInvoice $serviceBilling_Invoice, $ExportDate)
     {
-
         $Manager = $this->getEntityManager();
-        $Entity = $Manager->getEntity( 'TblAccountKey' )->findOneBy( array(
-            'serviceBilling_Banking' => $serviceBilling_Banking->getId(),
-            'serviceBilling_Invoice' => $serviceBilling_Invoice->getId(),
-            'ExportDate' => $ExportDate ));
-
+        $Entity = $Manager->getEntity( 'TblBalance' )->findOneBy( array(
+            TblBalance::ATTR_SERVICE_BILLING_BANKING => $serviceBilling_Banking->getId(),
+            TblBalance::ATTR_SERVICE_BILLING_INVOICE => $serviceBilling_Invoice->getId()
+        ));
         if (null === $Entity)
         {
             $Entity = new TblBalance();
             $Entity->setServiceBillingBanking( $serviceBilling_Banking );
             $Entity->setServiceBillingInvoice( $serviceBilling_Invoice );
-            $Entity->setExportDate( $ExportDate );
-
+            if ($ExportDate !== null)
+            {
+                $Entity->setExportDate( $ExportDate );
+            }
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+
+            return true;
         }
-        return $Entity;
+
+        return false;
     }
 
     /**

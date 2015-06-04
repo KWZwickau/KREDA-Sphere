@@ -28,7 +28,6 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityInvoiceById( $Id )
     {
-
         $Entity = $this->getEntityManager()->getEntityById( 'TblInvoice', $Id );
         return ( null === $Entity ? false : $Entity );
     }
@@ -38,20 +37,8 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityInvoiceAll()
     {
-
         $Entity = $this->getEntityManager()->getEntity( 'TblInvoice' )->findAll();
         return ( null === $Entity ? false : $Entity );
-    }
-
-    /**
-     * @param $IsConfirmed
-     * @return TblInvoice[]|bool
-     */
-    protected function entityInvoiceAllByIsConfirmedState( $IsConfirmed )
-    {
-        $EntityList = $this->getEntityManager()->getEntity( 'TblInvoice' )
-            ->findBy( array( TblInvoice::ATTR_IS_CONFIRMED => $IsConfirmed, TblInvoice::ATTR_IS_VOID => false ) );
-        return ( null === $EntityList ? false : $EntityList );
     }
 
     /**
@@ -141,7 +128,6 @@ abstract class EntityAction extends EntitySchema
             $tblPersonDebtor = Management::servicePerson()->entityPersonById($tblDebtor->getServiceManagement_Person());
             $tblPerson = Management::servicePerson()->entityPersonById($TempTblInvoice['tblPerson']);
             $Entity = new TblInvoice();
-            $Entity->setIsConfirmed( false );
             $Entity->setIsPaid( false );
             $Entity->setIsVoid( false );
             $Entity->setNumber( "40000000" );
@@ -251,31 +237,6 @@ abstract class EntityAction extends EntitySchema
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $EntityItemAccount );
         }
-    }
-
-    /**
-     * @param TblInvoice $tblInvoice
-     *
-     * @return bool
-     */
-    protected function actionConfirmInvoice(
-        TblInvoice $tblInvoice
-    )
-    {
-        $Manager = $this->getEntityManager();
-
-        /** @var TblInvoice $Entity */
-        $Entity = $Manager->getEntityById( 'TblInvoice', $tblInvoice->getId() );
-        $Protocol = clone $Entity;
-        if (null !== $Entity) {
-            $Entity->setIsConfirmed( true );
-            $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
-                $Protocol,
-                $Entity );
-            return true;
-        }
-        return false;
     }
 
     /**

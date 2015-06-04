@@ -62,12 +62,53 @@ class Invoice extends EntityAction
     }
 
     /**
-     * @param $IsConfirmed
-     * @return bool|Invoice\Entity\TblInvoice[]
+     * @param $isConfirmed
+     *
+     * @return TblInvoice[]|bool
      */
-    public  function entityInvoiceAllByIsConfirmedState($IsConfirmed)
+    public  function entityInvoiceAllByIsConfirmedState( $isConfirmed )
     {
-        return parent::entityInvoiceAllByIsConfirmedState($IsConfirmed);
+        $invoiceAllByConfirmed = array();
+        $invoiceAllByNotConfirmed = array();
+        $tblInvoiceAll = $this->entityInvoiceAll();
+
+        if ($tblInvoiceAll)
+        {
+            foreach($tblInvoiceAll as $tblInvoice)
+            {
+                if ($tblInvoice->getIsConfirmed())
+                {
+                    $invoiceAllByConfirmed[] = $tblInvoice;
+                }
+                else
+                {
+                    $invoiceAllByNotConfirmed[] = $tblInvoice;
+                }
+            }
+        }
+
+        if ( $isConfirmed )
+        {
+            if (!empty($invoiceAllByConfirmed))
+            {
+                return $invoiceAllByConfirmed;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (!empty($invoiceAllByNotConfirmed))
+            {
+                return $invoiceAllByNotConfirmed;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     /**
@@ -145,7 +186,11 @@ class Invoice extends EntityAction
         TblInvoice $tblInvoice
     )
     {
-        if ($this->actionConfirmInvoice($tblInvoice))
+        if (Billing::serviceBalance()->actionCreateBalance(
+            Billing::serviceBanking()->entityDebtorByDebtorNumber( $tblInvoice->getDebtorNumber()),
+            $tblInvoice,
+            null
+        ))
         {
             return new Success( 'Die Rechnung wurde erfolgreich bestätigt und freigegeben' )
                 .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 0 );

@@ -250,6 +250,16 @@ class Banking extends EntityAction
     }
 
     /**
+     * @param $DebtorNumber
+     *
+     * @return bool|TblDebtor
+     */
+    public function entityDebtorByDebtorNumber($DebtorNumber)
+    {
+        return parent::entityDebtorByDebtorNumber($DebtorNumber);
+    }
+
+    /**
      * @param $ServiceManagement_Person
      *
      * @return bool|Banking\Entity\TblDebtor[]

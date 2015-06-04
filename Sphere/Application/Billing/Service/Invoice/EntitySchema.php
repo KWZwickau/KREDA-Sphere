@@ -43,10 +43,6 @@ abstract class EntitySchema extends AbstractService
     private function setTableInvoice( Schema &$Schema )
     {
         $Table = $this->schemaTableCreate( $Schema, 'tblInvoice');
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'IsConfirmed' ))
-        {
-            $Table->addColumn( 'IsConfirmed', 'boolean' );
-        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'IsPaid' ))
         {
             $Table->addColumn( 'IsPaid', 'boolean' );
