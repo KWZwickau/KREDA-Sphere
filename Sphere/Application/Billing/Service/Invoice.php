@@ -240,6 +240,22 @@ class Invoice extends EntityAction
         }
     }
 
+    public function executePayInvoice(
+        TblInvoice $tblInvoice
+    )
+    {
+        if ($this->actionPayInvoice($tblInvoice))
+        {
+            return new Success( 'Die Rechnung wurde erfolgreich bezahlt' )
+            .new Redirect( '/Sphere/Billing/Balance', 0 );
+        }
+        else
+        {
+            return new Warning( 'Die Rechnung konnte nicht bezahlt werden' )
+            .new Redirect( '/Sphere/Billing/Balance', 2 );
+        }
+    }
+
     /**
      * @param AbstractType $View
      * @param TblInvoiceItem $tblInvoiceItem

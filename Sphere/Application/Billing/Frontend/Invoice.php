@@ -130,7 +130,7 @@ class Invoice extends AbstractFrontend
     {
         $View = new Stage();
         $View->setTitle( 'Rechnungen' );
-        $View->setDescription( 'Offene' );
+        $View->setDescription( 'Nicht Bestätigt' );
         $View->setMessage( 'Zeigt alle noch nicht bestätigten Rechnungen an' );
 
         $tblInvoiceAllByIsConfirmedState = Billing::serviceInvoice()->entityInvoiceAllByIsConfirmedState(false);

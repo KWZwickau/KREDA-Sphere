@@ -265,6 +265,31 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblInvoice $tblInvoice
+     *
+     * @return bool
+     */
+    protected function actionPayInvoice(
+        TblInvoice $tblInvoice
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblInvoice $Entity */
+        $Entity = $Manager->getEntityById( 'TblInvoice', $tblInvoice->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setIsPaid( true );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @param TblInvoiceItem $tblInvoiceItem
      * @param $Price
      * @param $Quantity
