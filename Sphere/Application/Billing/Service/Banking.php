@@ -270,4 +270,21 @@ class Banking extends EntityAction
         return parent::entityDebtorByServiceManagement_Person( $ServiceManagement_Person );
     }
 
+    /**
+     * @param TblDebtor $tblDebtor
+     *
+     * @return int
+     */
+    public function entityLeadTimeByDebtor(TblDebtor $tblDebtor)
+    {
+        if (Billing::serviceInvoice()->checkInvoiceFromDebtorIsPaidByDebtor( $tblDebtor ) || Billing::serviceBalance()->checkPaymentFromDebtorExistsByDebtor( $tblDebtor ))
+        {
+            return $tblDebtor->getLeadTimeFollow();
+        }
+        else
+        {
+            return $tblDebtor->getLeadTimeFollow();
+        }
+    }
+
 }

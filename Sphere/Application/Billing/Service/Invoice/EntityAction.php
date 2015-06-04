@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Billing\Service\Invoice;
 
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
@@ -105,6 +106,16 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblDebtor $tblDebtor
+     * @return bool
+     */
+    protected function checkInvoiceFromDebtorIsPaidByDebtor( TblDebtor $tblDebtor )
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblInvoice' )->findOneBy(array(TblInvoice::ATTR_IS_PAID => $tblDebtor->getId()));
+        return ( null === $Entity ? false : true );
+    }
+
+    /**
      * @param TblBasket $tblBasket
      * @param $Date
      * @param $TempTblInvoiceList
@@ -119,7 +130,6 @@ abstract class EntityAction extends EntitySchema
     {
         $Manager = $this->getEntityManager();
 
-        // TODO LeadTimeFirst or LeadTimeFollow select
         // TODO tblAddress
 
         foreach ($TempTblInvoiceList as $TempTblInvoice)
@@ -131,7 +141,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setIsPaid( false );
             $Entity->setIsVoid( false );
             $Entity->setNumber( "40000000" );
-            $Entity->setInvoiceDate( ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P' . $tblDebtor->getLeadTimeFirst() .'D' ) ) );
+            $Entity->setInvoiceDate( ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P' . Billing::serviceBanking()->entityLeadTimeByDebtor( $tblDebtor ) .'D' ) ) );
             $Entity->setPaymentDate( new \DateTime( $Date ) );
             $Entity->setDiscount( 0 );
             $Entity->setDebtorFirstName( $tblPersonDebtor->getFirstName() );

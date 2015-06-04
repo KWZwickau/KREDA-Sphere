@@ -42,7 +42,9 @@ class Banking extends AbstractFrontend
     public static function frontendBanking()
     {
         $View = new Stage();
-        $View->setTitle( 'Debitoren Übersicht' );
+        $View->setTitle( 'Debitoren' );
+        $View->setDescription( 'Übersicht' );
+        $View->setMessage( 'Zeigt die verfügbaren Debitoren an' );
         $View->addButton(
             new Primary( 'Debitor Anlegen', '/Sphere/Billing/Banking/Person', new PlusIcon() )
         );
@@ -198,6 +200,8 @@ class Banking extends AbstractFrontend
     }
 
     /**
+     * @param $Id
+     *
      * @return Stage
      */
     public static function frontendBankingRemoveCommodity( $Id )

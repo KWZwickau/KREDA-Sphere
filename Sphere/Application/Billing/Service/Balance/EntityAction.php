@@ -71,6 +71,17 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblDebtor $tblDebtor
+     * @return bool
+     */
+    protected function checkPaymentFromDebtorExistsByDebtor( TblDebtor $tblDebtor )
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblPayment' )->findOneBy(array(TblPayment::ATTR_TBL_BANKING => $tblDebtor->getId()));
+        return ( null === $Entity ? false : true );
+    }
+
+
+    /**
      * @param TblDebtor $serviceBilling_Banking
      * @param TblInvoice $serviceBilling_Invoice
      * @param $ExportDate

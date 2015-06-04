@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Billing\Service;
 
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceAccount;
@@ -160,6 +161,15 @@ class Invoice extends EntityAction
         return parent::sumPriceItemAllByInvoice($tblInvoice);
     }
 
+    /**
+     * @param TblDebtor $tblDebtor
+     *
+     * @return bool
+     */
+    public function checkInvoiceFromDebtorIsPaidByDebtor(TblDebtor $tblDebtor)
+    {
+        return parent::checkInvoiceFromDebtorIsPaidByDebtor($tblDebtor);
+    }
 
     /**
      * @param TblBasket $tblBasket

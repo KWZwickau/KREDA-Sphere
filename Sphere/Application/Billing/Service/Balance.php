@@ -73,6 +73,16 @@ class Balance extends EntityAction
     }
 
     /**
+     * @param TblDebtor $tblDebtor
+     *
+     * @return bool
+     */
+    public function checkPaymentFromDebtorExistsByDebtor(TblDebtor $tblDebtor)
+    {
+        return parent::checkPaymentFromDebtorExistsByDebtor($tblDebtor);
+    }
+
+    /**
      * @param TblDebtor $serviceBilling_Banking
      * @param TblInvoice $serviceBilling_Invoice
      * @param $ExportDate
