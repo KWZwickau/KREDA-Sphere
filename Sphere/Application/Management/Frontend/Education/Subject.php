@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Management\Frontend\Education;
 
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Education\Entity\TblSubject;
+use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EnableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
@@ -18,6 +19,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\AbstractFrontend;
 
 /**
@@ -113,5 +115,49 @@ class Subject extends AbstractFrontend
         return new Layout(
             new LayoutGroup( $LayoutRowList, new LayoutTitle( 'Verfügbare Fächer' ) )
         );
+    }
+
+    /**
+     * @param int|null $Id
+     *
+     * @return Stage
+     */
+    public static function stageDisable( $Id )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Fächer' );
+        $View->setDescription( 'Deaktivieren' );
+
+        $tblSubject = Management::serviceEducation()->entitySubjectById( $Id );
+        Management::serviceEducation()->executeDisableSubject( $tblSubject );
+        $View->setContent(
+            new \KREDA\Sphere\Client\Frontend\Message\Type\Success( 'Das Fach '.$tblSubject->getName().' wird deaktiviert' )
+            .new Redirect( '/Sphere/Management/Education/Subject', 1 )
+        );
+
+        return $View;
+    }
+
+    /**
+     * @param int|null $Id
+     *
+     * @return Stage
+     */
+    public static function stageEnable( $Id )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Fächer' );
+        $View->setDescription( 'Aktivieren' );
+
+        $tblSubject = Management::serviceEducation()->entitySubjectById( $Id );
+        Management::serviceEducation()->executeEnableSubject( $tblSubject );
+        $View->setContent(
+            new \KREDA\Sphere\Client\Frontend\Message\Type\Success( 'Das Fach '.$tblSubject->getName().' wird deaktiviert' )
+            .new Redirect( '/Sphere/Management/Education/Subject', 1 )
+        );
+
+        return $View;
     }
 }
