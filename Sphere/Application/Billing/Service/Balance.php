@@ -1,17 +1,11 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service;
 
-use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Balance\Entity\TblBalance;
+use KREDA\Sphere\Application\Billing\Service\Balance\Entity\TblPayment;
 use KREDA\Sphere\Application\Billing\Service\Balance\EntityAction;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
-use KREDA\Sphere\Application\System\System;
-use KREDA\Sphere\Client\Frontend\Form\AbstractType;
-use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
-use KREDA\Sphere\Client\Frontend\Message\Type\Success;
-use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
-use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 
 /**
@@ -35,6 +29,32 @@ class Balance extends EntityAction
     }
 
     /**
+     * @return bool|TblBalance[]
+     */
+    public function entityBalanceAll()
+    {
+        return parent::entityBalanceAll();
+    }
+
+    /**
+     * @return bool|TblPayment[]
+     */
+    public function entityPaymentAll()
+    {
+        return parent::entityPaymentAll();
+    }
+
+    /**
+     * @param int $Id
+     *
+     * @return bool|TblPayment
+     */
+    public function entityPaymentById( $Id )
+    {
+        return parent::entityPaymentById( $Id );
+    }
+
+    /**
      *
      */
     public function setupDatabaseContent()
@@ -50,14 +70,6 @@ class Balance extends EntityAction
     public function entityBalanceByInvoice(TblInvoice $tblInvoice)
     {
         return parent::entityBalanceByInvoice($tblInvoice);
-    }
-
-    /**
-     * @return bool|Balance\Entity\TblBalance[]
-     */
-    public function entityBalanceAll()
-    {
-        return parent::entityBalanceAll();
     }
 
     /**
