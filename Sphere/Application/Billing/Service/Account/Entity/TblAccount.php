@@ -16,7 +16,9 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblAccount extends AbstractEntity
 {
 
+    const ATTR_IS_ACTIVE = 'IsActive';
     const ATTR_TBL_ACCOUNT_TYPE = 'tblAccountType';
+    const ATTR_TBL_ACCOUNT_KEY = 'tblAccountKey';
 
     /**
      * @Column(type="string")
@@ -27,13 +29,17 @@ class TblAccount extends AbstractEntity
      */
     protected $Description;
     /**
-     * @Column(type="float")
+     * @Column(type="boolean")
      */
-    protected $Value;
+    protected $IsActive;
     /**
      * @Column(type="bigint")
      */
     protected $tblAccountType;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $tblAccountKey;
 
     /**
      * @return string
@@ -72,21 +78,21 @@ class TblAccount extends AbstractEntity
     }
 
     /**
-     * @return float
+     * @return boolean $IsActive
      */
-    public function getValue()
+    public function getIsActive()
     {
 
-        return $this->Value;
+        return $this->IsActive;
     }
 
     /**
-     * @param float $Value
+     * @param boolean $IsActive
      */
-    public function setValue( $Value )
+    public function setIsActive( $IsActive )
     {
 
-        $this->Value = $Value;
+        $this->IsActive = $IsActive;
     }
 
     /**
@@ -110,4 +116,27 @@ class TblAccount extends AbstractEntity
 
         $this->tblAccountType = ( null === $tblAccountType ? null : $tblAccountType->getId() );
     }
+
+    /**
+     * @return bool|TblAccountKey
+     */
+    public function getTblAccountKey()
+    {
+
+        if (null === $this->tblAccountKey) {
+            return false;
+        } else {
+            return Billing::serviceAccount()->entityAccountKeyById( $this->tblAccountKey );
+        }
+    }
+
+    /**
+     * @param null|TblAccountKey $tblAccountKey
+     */
+    public function setTblAccountKey( tblAccountKey $tblAccountKey = null )
+    {
+
+        $this->tblAccountKey = ( null === $tblAccountKey ? null : $tblAccountKey->getId() );
+    }
+
 }

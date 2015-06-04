@@ -91,13 +91,7 @@ class Education extends AbstractFrontend
             new LayoutGroup( array(
                 new LayoutRow(
                     new LayoutColumn( array(
-                        Subject::layoutSubject(),
                         new LayoutTitle( 'Fach hinzufügen' ),
-//                        new TableData( $tblSubject, null, array(
-//                            'Acronym' => 'Kürzel',
-//                            'Name'    => 'Name',
-//                            'Option'  => 'Option'
-//                        ) ),
                         Management::serviceEducation()->executeCreateSubject(
                             new Form(
                                 new FormGroup( array(
@@ -111,7 +105,8 @@ class Education extends AbstractFrontend
                                     ) ),
 
                                 ) ), new SubmitPrimary( 'Hinzufügen' )
-                            ), $Subject )
+                            ), $Subject ),
+                        Subject::layoutSubject(),
                     ) )
                 )
             ) )

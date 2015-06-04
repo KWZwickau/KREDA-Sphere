@@ -1,33 +1,28 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Account\Entity;
 
-use Doctrine\ORM\Mapping\Cache;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
- * @Table(name="tblAccountType")
+ * @Table(name="tblAccountKeyType")
  * @Cache(usage="NONSTRICT_READ_WRITE")
  */
-class TblAccountType extends AbstractEntity
+class TblAccountKeyType extends AbstractEntity
 {
-
-    const ATTR_TBL_ACCOUNT_TYPE = 'tblAccountType';
 
     /**
      * @Column(type="string")
      */
     protected $Name;
+
     /**
      * @Column(type="string")
      */
     protected $Description;
 
     /**
-     * @return string
+     * @return string $name
      */
     public function getName()
     {
@@ -36,16 +31,16 @@ class TblAccountType extends AbstractEntity
     }
 
     /**
-     * @param string $Name
+     * @param string $name
      */
-    public function setName( $Name )
+    public function setName( $name )
     {
 
-        $this->Name = $Name;
+        $this->Name = $name;
     }
 
     /**
-     * @return string
+     * @return string $description
      */
     public function getDescription()
     {
@@ -54,11 +49,12 @@ class TblAccountType extends AbstractEntity
     }
 
     /**
-     * @param string $Description
+     * @param string $description
      */
-    public function setDescription( $Description )
+    public function setDescription( $description )
     {
 
-        $this->Description = $Description;
+        $this->Description = $description;
     }
+
 }

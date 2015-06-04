@@ -58,12 +58,15 @@ class Subject extends AbstractFrontend
 
                 $tblSubject = new LayoutColumn(
                     new LayoutPanel(
-                        $tblSubject->getAcronym(),
+                        ( $tblSubject->getActiveState()
+                            ? new EnableIcon().' '.$tblSubject->getAcronym()
+                            : new DisableIcon().' '.$tblSubject->getAcronym()
+                        ),
                         array_merge( array(
                             preg_replace( '!^(.*?)\s*/\s*(.*?)$!is', '${1} / ${2}', $tblSubject->getName() )
                         ), $tblCategoryList ),
                         ( $tblSubject->getActiveState()
-                            ? LayoutPanel::PANEL_TYPE_SUCCESS
+                            ? LayoutPanel::PANEL_TYPE_INFO
                             : LayoutPanel::PANEL_TYPE_DANGER
                         ),
                         new ButtonGroup( array(

@@ -14,9 +14,9 @@ class ServiceTest extends AbstractServiceTest
     public function testCodeStyle()
     {
 
-//        $Namespace = '\Billing\Service';
-//        $this->checkMethodName( $Namespace.'\Account' );
-//        $this->checkMethodName( $Namespace.'\Commodity' );
-//        $this->checkMethodName( $Namespace.'\Invoice' );
+        $Namespace = '\Billing\Service';
+        $this->checkMethodName( $Namespace.'\Account' );
+        $this->checkMethodName( $Namespace.'\Commodity' );
+        $this->checkMethodName( $Namespace.'\Invoice' );
     }
 }
