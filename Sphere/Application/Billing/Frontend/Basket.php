@@ -643,6 +643,7 @@ class Basket extends AbstractFrontend
             foreach ($Select['Debtors'] as $Debtor)
             {
                 $tblDebtor = Billing::serviceBanking()->entityDebtorById($Debtor);
+                $tblDebtor->setDebtorNumber($tblDebtor->getDebtorNumber() . " - " . $tblDebtor->getServiceManagement_Person()->getFullName());
                 array_push($Debtors, $tblDebtor);
             }
 

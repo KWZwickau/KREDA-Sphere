@@ -8,6 +8,7 @@ use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketPerson;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Basket\EntityAction;
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
@@ -377,10 +378,41 @@ class Basket extends EntityAction
             $Error = true;
         }
 
+        $ErrorMissing = false;
+        if (!$this->entityBasketItemAllByBasket( $tblBasket ))
+        {
+            $View.= new Danger( "Im Warenkorb befinden sich keine Artikel. Bitte gehen Sie zurück und wählen welche aus");
+            $ErrorMissing = true;
+        }
+
+        $tblBasketPersonAllByBasket = $this->entityBasketPersonAllByBasket( $tblBasket );
+        if (!$tblBasketPersonAllByBasket)
+        {
+            $View.= new Danger( "Im Warenkorb befinden sich keine Schüler. Bitte gehen Sie zurück und wählen welche aus");
+            $ErrorMissing = true;
+        }
+        else
+        {
+            foreach ($tblBasketPersonAllByBasket as $tblBasketPerson)
+            {
+                if (!$this->checkDebtorExistsByPerson( $tblBasketPerson->getServiceManagementPerson() ))
+                {
+                    $View.= new Danger( "Für den Schüler " . $tblBasketPerson->getServiceManagementPerson()->getFullName()
+                        . " gibt es noch keinen relevanten Debitoren. Bitte legen Sie diese zunächst einen an");
+                    $ErrorMissing = true;
+                }
+            }
+        }
+
+        if ($ErrorMissing)
+        {
+            return $View;
+        }
+
         if (!$Error) {
             $TempTblInvoiceList = array();
             $SelectList = array();
-            if ($this->checkDebtorsByBasket( $tblBasket, $Basket['Date'], $TempTblInvoiceList, $SelectList))
+            if ($this->checkDebtorsByBasket( $tblBasket, $Basket['Date'], $SelectList, $TempTblInvoiceList))
             {
                 if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date'], $TempTblInvoiceList))
                 {

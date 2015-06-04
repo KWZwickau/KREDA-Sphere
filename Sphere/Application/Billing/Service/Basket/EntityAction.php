@@ -155,8 +155,9 @@ abstract class EntityAction extends EntitySchema
     protected function checkDebtorsByBasket(
         TblBasket $tblBasket,
         $Date,
-        &$TempTblInvoiceList,
-        &$SelectList)
+        &$SelectList,
+        &$TempTblInvoiceList
+    )
     {
         $tblCommodityAllByBasket = Billing::serviceBasket()->entityCommodityAllByBasket( $tblBasket );
         $tblBasketPersonAllByBasket = Billing::serviceBasket()->entityBasketPersonAllByBasket( $tblBasket );
@@ -242,6 +243,11 @@ abstract class EntityAction extends EntitySchema
             }
         }
 
+//        if (empty($TempTblInvoiceList))
+//        {
+//            $TempTblInvoiceList = null;
+//        }
+
         return empty($SelectList);
     }
 
@@ -260,8 +266,6 @@ abstract class EntityAction extends EntitySchema
         &$SelectList
     )
     {
-//        print_r($SelectList);print_r('<br>');
-//        print_r($Data);print_r('<br>');
         foreach ($Data as $Key => $Value)
         {
             $index = $this->searchArray($TempTblInvoiceList, "tblPerson", $SelectList[$Key]['tblPerson'],
@@ -280,6 +284,42 @@ abstract class EntityAction extends EntitySchema
             unset($SelectList[$Key]);
         }
         return empty($SelectList);
+    }
+
+    /**
+     * @param TblPerson $tblPerson
+     *
+     * @return TblDebtor[]|bool
+     */
+    protected function checkDebtorExistsByPerson(
+        TblPerson $tblPerson
+    )
+    {
+        $tblDebtorAllList = array();
+        $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson($tblPerson);
+        if (!empty($tblPersonRelationshipList))
+        {
+            foreach($tblPersonRelationshipList as $tblPersonRelationship)
+            {
+                $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson(
+                    Management::servicePerson()->entityPersonById($tblPersonRelationship->getTblPersonA()));
+                if (!empty($tblDebtorList))
+                {
+                    foreach($tblDebtorList as $tblDebtor)
+                    {
+                        array_push($tblDebtorAllList, $tblDebtor);
+                    }
+                }
+            }
+        }
+        if (empty($tblDebtorAllList))
+        {
+            return false;
+        }
+        else
+        {
+            return $tblDebtorAllList;
+        }
     }
 
     /**
