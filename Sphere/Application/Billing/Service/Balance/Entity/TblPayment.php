@@ -11,7 +11,7 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblPayment extends AbstractEntity
 {
-    const ATTR_TBL_BANKING = 'tblBalance';
+    const ATTR_TBL_BALANCE = 'tblBalance';
 
     /**
      * @Column(type="bigint")

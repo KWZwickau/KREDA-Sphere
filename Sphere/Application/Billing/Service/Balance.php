@@ -55,6 +55,16 @@ class Balance extends EntityAction
     }
 
     /**
+     * @param int $Id
+     *
+     * @return bool|TblBalance
+     */
+    public function entityBalanceById( $Id )
+    {
+        return parent::entityBalanceById( $Id );
+    }
+
+    /**
      *
      */
     public function setupDatabaseContent()
@@ -70,6 +80,16 @@ class Balance extends EntityAction
     public function entityBalanceByInvoice(TblInvoice $tblInvoice)
     {
         return parent::entityBalanceByInvoice($tblInvoice);
+    }
+
+    /**
+     * @param TblBalance $Balance
+     *
+     * @return bool|TblPayment[]
+     */
+    public function entityPaymentByBalance( TblBalance $Balance )
+    {
+        return parent::entityPaymentByBalance( $Balance );
     }
 
     /**

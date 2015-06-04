@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Balance\Entity;
 
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Common\AbstractEntity;
@@ -39,11 +40,15 @@ class TblBalance extends AbstractEntity
     }
 
     /**
-     * @return integer
+     * @return bool|TblDebtor
      */
-    public function getServiceBillingBanking()
+    public function getServiceBillingBilling()
     {
-            return $this->serviceBilling_Banking;
+        if (null === $this->serviceBilling_Banking) {
+            return false;
+        } else {
+            return Billing::serviceBanking()->entityDebtorById( $this->serviceBilling_Banking );
+        }
     }
 
     /**
@@ -55,12 +60,15 @@ class TblBalance extends AbstractEntity
     }
 
     /**
-     * @return integer
+     * @return bool|TblInvoice
      */
     public function getServiceBillingInvoice()
     {
-
-            return $this->serviceBilling_Invoice;
+        if (null === $this->serviceBilling_Invoice) {
+            return false;
+        } else {
+            return Billing::serviceInvoice()->entityInvoiceById( $this->serviceBilling_Invoice );
+        }
     }
 
     /**

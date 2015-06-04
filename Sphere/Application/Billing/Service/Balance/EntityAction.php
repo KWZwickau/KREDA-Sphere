@@ -39,6 +39,17 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblBalance $tblBalance
+     *
+     * @return bool|TblPayment[]
+     */
+    protected function entityPaymentByBalance (TblBalance $tblBalance)
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblPayment')->findBy(array(TblPayment::ATTR_TBL_BALANCE => $tblBalance->getId()));
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @return bool|TblBalance[]
      */
     protected function entityBalanceAll()
