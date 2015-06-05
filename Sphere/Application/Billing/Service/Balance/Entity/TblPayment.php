@@ -82,6 +82,9 @@ class TblPayment extends AbstractEntity
         $this->Value = $value;
     }
 
+    /**
+     * @return string
+     */
     public function getValue()
     {
         return $this->Value;

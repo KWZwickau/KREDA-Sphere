@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Balance;
 
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Balance\Entity\TblBalance;
 use KREDA\Sphere\Application\Billing\Service\Balance\Entity\TblPayment;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
@@ -36,6 +37,64 @@ abstract class EntityAction extends EntitySchema
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblBalance')->findOneBy(array(TblBalance::ATTR_SERVICE_BILLING_INVOICE => $tblInvoice->getId()));
         return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblBalance $tblBalance
+     * @return string
+     */
+    protected function sumPriceItemByBalance( TblBalance $tblBalance)
+    {
+        $sum = 0.00;
+        $tblPaymentList = $this->entityPaymentByBalance( $tblBalance);
+        foreach($tblPaymentList as $tblPayment)
+        {
+            $sum += $tblPayment->getValue();
+        }
+
+        return str_replace('.', ',', round($sum, 2)) . " €";
+    }
+
+    /**
+     * @param TblInvoice $tblInvoice
+     * @param TblBalance $tblBalance
+     *
+     * @return bool|\KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem[]
+     */
+    protected function entityInvoiceLikePayment( TblInvoice $tblInvoice, TblBalance $tblBalance )
+    {
+        $EntityListInvoice = Billing::serviceInvoice()->entityInvoiceItemAllByInvoice( $tblInvoice );
+        $sumInvoice = 0.00;
+        if(!empty($EntityListInvoice))
+        {
+            foreach ($EntityListInvoice as $EntityInvoice)
+            {
+                $sumInvoice +=  $EntityInvoice->getItemPrice() * $EntityInvoice->getItemQuantity();
+            }
+        }
+        $sumInvoice = round($sumInvoice,2);
+        $EntityListPayment = $this->getEntityManager()->getEntity( 'TblPayment' )
+            ->findBy(array(TblPayment::ATTR_TBL_BALANCE => $tblBalance->getId()));
+        $sumPayment = 0.00;
+        if(!empty($EntityListPayment))
+        {
+            foreach ($EntityListPayment as $EntityPayment)
+            {
+                $sumPayment += $EntityPayment->getValue();
+            }
+        }
+        $sumPayment = round($sumPayment,2);
+
+        if( $sumInvoice == $sumPayment )
+        {
+            return ( null === $EntityListPayment ? false : $EntityListPayment );
+        }
+        else
+        {
+            return false;
+        }
+
+
     }
 
     /**
