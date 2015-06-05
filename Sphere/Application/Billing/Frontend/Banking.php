@@ -24,6 +24,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
@@ -117,7 +118,8 @@ class Banking extends AbstractFrontend
 
         $IdPerson = Billing::serviceBanking()->entityDebtorById( $Id )->getServiceManagement_Person();
         $Person = Management::servicePerson()->entityPersonById( $IdPerson )->getFullName();
-        $View->setMessage('Name: '.$Person.'<br/> Debitorennummer: '.Billing::serviceBanking()->entityDebtorById( $Id )->getDebtorNumber());
+        $DebtorNumber = Billing::serviceBanking()->entityDebtorById( $Id )->getDebtorNumber();
+//        $View->setMessage('Name: '.$Person.'<br/> Debitorennummer: '.Billing::serviceBanking()->entityDebtorById( $Id )->getDebtorNumber());
 
         $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
         $tblCommodityAll = Billing::serviceCommodity()->entityCommodityAll();
@@ -163,6 +165,20 @@ class Banking extends AbstractFrontend
 
         $View->setContent(
             new Layout( array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                                new LayoutPanel( 'Debitor', $Person, LayoutPanel::PANEL_TYPE_SUCCESS
+                                    )
+                                ),6),
+                            new LayoutColumn( array(
+                                new LayoutPanel( 'Debitornummer', $DebtorNumber, LayoutPanel::PANEL_TYPE_SUCCESS
+                                    )
+                                ),6
+                            )
+                        )
+                    )
+                ) /*, new LayoutTitle( 'Debitor' )*/ ),
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn( array(

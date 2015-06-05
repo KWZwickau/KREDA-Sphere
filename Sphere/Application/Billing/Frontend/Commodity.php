@@ -34,6 +34,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -388,9 +389,14 @@ class Commodity extends AbstractFrontend
                     }
                 }
 
-                $View->setTitle( 'Leisung: '. $tblCommodity->getName());
                 $View->setContent(
                   new Layout(array(
+                      new LayoutGroup( array(
+                          new LayoutRow( array(
+                              new LayoutColumn( array(
+                                  new LayoutPanel($tblCommodity->getName(),'', LayoutPanel::PANEL_TYPE_SUCCESS )
+                              ))
+                          )))),
                     new LayoutGroup( array(
                         new LayoutRow( array(
                             new LayoutColumn( array(
@@ -647,9 +653,16 @@ class Commodity extends AbstractFrontend
                     }, $tblItem);
                 }
 
-                $View->setTitle( 'Artikel: '. $tblItem->getName());
                 $View->setContent(
                     new Layout(array(
+                        new LayoutGroup( array(
+                            new LayoutRow( array(
+                                new LayoutColumn( array(
+                                        new LayoutPanel($tblItem->getName(),'', LayoutPanel::PANEL_TYPE_SUCCESS)
+                                    )
+                                )
+                            ) ),
+                        )),
                         new LayoutGroup( array(
                             new LayoutRow( array(
                                 new LayoutColumn( array(
