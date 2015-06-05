@@ -79,6 +79,15 @@ abstract class EntityAction extends EntitySchema
      * @param TblInvoice $tblInvoice
      * @return string
      */
+    protected function sumPriceItemAllStringByInvoice( TblInvoice $tblInvoice)
+    {
+        return str_replace('.', ',', round($this->sumPriceItemAllByInvoice( $tblInvoice), 2)) . " €";
+    }
+
+    /**
+     * @param TblInvoice $tblInvoice
+     * @return float
+     */
     protected function sumPriceItemAllByInvoice( TblInvoice $tblInvoice)
     {
         $sum = 0.00;
@@ -89,7 +98,7 @@ abstract class EntityAction extends EntitySchema
             $sum += $tblInvoiceItem->getItemPrice() * $tblInvoiceItem->getItemQuantity();
         }
 
-        return str_replace('.', ',', round($sum, 2)) . " €";
+        return $sum;
     }
 
     /**

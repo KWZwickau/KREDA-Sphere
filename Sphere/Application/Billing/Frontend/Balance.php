@@ -25,13 +25,7 @@ class Balance extends AbstractFrontend
         $invoiceAllByIsConfirmedState = Billing::serviceInvoice()->entityInvoiceAllByIsConfirmedState(true);
         $invoiceAllByIsVoidState = Billing::serviceInvoice()->entityInvoiceAllByIsVoidState(true);
         $invoiceAllByIsPaidState = Billing::serviceInvoice()->entityInvoiceAllByIsPaidState(true);
-        $invoiceLikePaymentList[] = new TblInvoice;
-        foreach ($invoiceAllByIsConfirmedState as $invoiceByIsConfirmedState)
-        {
-            $tblBalance = Billing::serviceBalance()->entityBalanceByInvoice( $invoiceByIsConfirmedState );
-            $invoiceLikePaymentList[] = Billing::serviceBalance()->entityInvoiceLikePayment( $invoiceByIsConfirmedState, $tblBalance );
-
-        }
+        $invoiceHasFullPaymentAll = Billing::serviceBalance()->entityInvoiceHasFullPaymentAll();
 
         if ($invoiceAllByIsConfirmedState && $invoiceAllByIsVoidState)
         {
@@ -47,15 +41,22 @@ class Balance extends AbstractFrontend
                 return $invoiceA->getId() - $invoiceB->getId();
             });
         }
+        if ($invoiceAllByIsConfirmedState && $invoiceHasFullPaymentAll)
+        {
+            $invoiceAllByIsConfirmedState = array_udiff($invoiceAllByIsConfirmedState, $invoiceHasFullPaymentAll,
+                function(TblInvoice $invoiceA, TblInvoice $invoiceB){
+                    return $invoiceA->getId() - $invoiceB->getId();
+                });
+        }
 
         foreach($invoiceAllByIsConfirmedState as $invoiceByIsConfirmedState)
         {
 
             $tblBalance = Billing::serviceBalance()->entityBalanceByInvoice( $invoiceByIsConfirmedState );
             $tblPaymentList = Billing::serviceBalance()->entityPaymentByBalance( $tblBalance );
-            $AdditionInvoice = Billing::serviceInvoice()->sumPriceItemAllByInvoice( $invoiceByIsConfirmedState );
+            $AdditionInvoice = Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $invoiceByIsConfirmedState );
             $tblBalance = Billing::serviceBalance()->entityBalanceByInvoice( $invoiceByIsConfirmedState );
-            $AdditionPayment = Billing::serviceBalance()->sumPriceItemByBalance( $tblBalance );
+            $AdditionPayment = Billing::serviceBalance()->sumPriceItemStringByBalance( $tblBalance );
 
             $invoiceByIsConfirmedState->FullName = $invoiceByIsConfirmedState->getDebtorFullName();
             $invoiceByIsConfirmedState->PaidPayment = $AdditionPayment;

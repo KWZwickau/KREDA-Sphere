@@ -43,6 +43,15 @@ abstract class EntityAction extends EntitySchema
      * @param TblBalance $tblBalance
      * @return string
      */
+    protected function sumPriceItemStringByBalance( TblBalance $tblBalance)
+    {
+        return str_replace('.', ',', round($this->sumPriceItemByBalance( $tblBalance ), 2)) . " €";
+    }
+
+    /**
+     * @param TblBalance $tblBalance
+     * @return float
+     */
     protected function sumPriceItemByBalance( TblBalance $tblBalance)
     {
         $sum = 0.00;
@@ -52,49 +61,36 @@ abstract class EntityAction extends EntitySchema
             $sum += $tblPayment->getValue();
         }
 
-        return str_replace('.', ',', round($sum, 2)) . " €";
+        return $sum;
     }
 
     /**
-     * @param TblInvoice $tblInvoice
-     * @param TblBalance $tblBalance
      *
-     * @return bool|\KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem[]
+     * @return bool|\KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice[]
      */
-    protected function entityInvoiceLikePayment( TblInvoice $tblInvoice, TblBalance $tblBalance )
+    protected function entityInvoiceHasFullPaymentAll()
     {
-        $EntityListInvoice = Billing::serviceInvoice()->entityInvoiceItemAllByInvoice( $tblInvoice );
-        $sumInvoice = 0.00;
-        if(!empty($EntityListInvoice))
+        $invoiceHasFullPaymentAll = array();
+        $balanceAll = $this->entityBalanceAll();
+        if ($balanceAll)
         {
-            foreach ($EntityListInvoice as $EntityInvoice)
+            foreach ($balanceAll as $balance)
             {
-                $sumInvoice +=  $EntityInvoice->getItemPrice() * $EntityInvoice->getItemQuantity();
+                $invoice =$balance->getServiceBillingInvoice();
+                $sumInvoicePrice = Billing::serviceInvoice()->sumPriceItemAllByInvoice( $invoice );
+                $sumPaymentPrice = $this->sumPriceItemByBalance( $balance );
+
+                $sumInvoicePrice = round($sumInvoicePrice,2);
+                $sumPaymentPrice = round($sumPaymentPrice,2);
+
+                if( $sumInvoicePrice <= $sumPaymentPrice )
+                {
+                    $invoiceHasFullPaymentAll[] = $invoice;
+                }
             }
         }
-        $sumInvoice = round($sumInvoice,2);
-        $EntityListPayment = $this->getEntityManager()->getEntity( 'TblPayment' )
-            ->findBy(array(TblPayment::ATTR_TBL_BALANCE => $tblBalance->getId()));
-        $sumPayment = 0.00;
-        if(!empty($EntityListPayment))
-        {
-            foreach ($EntityListPayment as $EntityPayment)
-            {
-                $sumPayment += $EntityPayment->getValue();
-            }
-        }
-        $sumPayment = round($sumPayment,2);
 
-        if( $sumInvoice == $sumPayment )
-        {
-            return ( null === $EntityListPayment ? false : $EntityListPayment );
-        }
-        else
-        {
-            return false;
-        }
-
-
+        return ( empty( $invoiceHasFullPaymentAll ) ? false : $invoiceHasFullPaymentAll );
     }
 
     /**

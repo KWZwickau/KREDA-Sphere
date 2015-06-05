@@ -156,10 +156,21 @@ class Invoice extends EntityAction
      *
      * @return string
      */
-    public  function sumPriceItemAllByInvoice(TblInvoice $tblInvoice)
+    public  function sumPriceItemAllStringByInvoice(TblInvoice $tblInvoice)
+    {
+        return parent::sumPriceItemAllStringByInvoice($tblInvoice);
+    }
+
+    /**
+     * @param TblInvoice $tblInvoice
+     *
+     * @return float
+     */
+    public function sumPriceItemAllByInvoice(TblInvoice $tblInvoice)
     {
         return parent::sumPriceItemAllByInvoice($tblInvoice);
     }
+
 
     /**
      * @param TblDebtor $tblDebtor

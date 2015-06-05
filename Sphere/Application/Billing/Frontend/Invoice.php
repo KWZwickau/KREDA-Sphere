@@ -71,7 +71,7 @@ class Invoice extends AbstractFrontend
             array_walk( $tblInvoiceAll, function ( TblInvoice &$tblInvoice ) {
                 $tblInvoice->Student = $tblInvoice->getServiceManagementPerson()->getFullName();
                 $tblInvoice->Debtor = $tblInvoice->getDebtorFullName();
-                $tblInvoice->TotalPrice = Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice );
+                $tblInvoice->TotalPrice = Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice );
                 $tblInvoice->Option = (new Primary( 'Anzeigen', '/Sphere/Billing/Invoice/Show',
                     new EyeOpenIcon(), array('Id' => $tblInvoice->getId())))->__toString();;
                 if ($tblInvoice->getIsPaid())
@@ -139,7 +139,7 @@ class Invoice extends AbstractFrontend
             array_walk( $tblInvoiceAllByIsConfirmedState, function ( TblInvoice &$tblInvoice ) {
                 $tblInvoice->Student = $tblInvoice->getServiceManagementPerson()->getFullName();
                 $tblInvoice->Debtor = $tblInvoice->getDebtorFullName();
-                $tblInvoice->TotalPrice = Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice );
+                $tblInvoice->TotalPrice = Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice );
                 $tblInvoice->Option =
                     ( new Primary( 'Bearbeiten und Freigeben', '/Sphere/Billing/Invoice/Edit',
                         new EditIcon(), array(
@@ -243,7 +243,7 @@ class Invoice extends AbstractFrontend
                         ) ),
                         new LayoutRow( array(
                             new LayoutColumn(
-                                new Info("Gesamtpreis: " . Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice )
+                                new Info("Gesamtpreis: " . Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice )
                                 ), 4
                             )
                         ) ),
@@ -332,7 +332,7 @@ class Invoice extends AbstractFrontend
                     ) ),
                     new LayoutRow( array(
                         new LayoutColumn(
-                            new Info("Gesamtpreis: " . Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice )
+                            new Info("Gesamtpreis: " . Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice )
                             ), 4
                         )
                     ) ),

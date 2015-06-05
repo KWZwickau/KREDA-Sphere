@@ -83,7 +83,7 @@ class TblPayment extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @return (type="decimal", precision=14, scale=4)
      */
     public function getValue()
     {
