@@ -4,6 +4,8 @@ namespace KREDA\Sphere\Application\Billing\Frontend;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
+use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BarCodeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
@@ -21,12 +23,16 @@ use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
+use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutAddress;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutAspect;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Info;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
@@ -167,10 +173,11 @@ class Invoice extends AbstractFrontend
 
     /**
      * @param $Id
+     * @param $Data
      *
      * @return Stage
      */
-    public static function frontendInvoiceEdit( $Id )
+    public static function frontendInvoiceEdit( $Id , $Data )
     {
         $View = new Stage();
         $View->setTitle( 'Rechnung' );
@@ -179,6 +186,8 @@ class Invoice extends AbstractFrontend
         $View->addButton( new Primary( 'Geprüft und Freigeben', '/Sphere/Billing/Invoice/Confirm',
             new OkIcon(), array(
                 'Id' => $Id
+                // TODO address
+               //, 'Data' => $Data
             ) ) );
         $View->addButton( new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
             new RemoveIcon(), array(
@@ -193,8 +202,33 @@ class Invoice extends AbstractFrontend
         }
         else
         {
-            $tblInvoiceItemAll = Billing::serviceInvoice()->entityInvoiceItemAllByInvoice( $tblInvoice );
+            $addressAll = Management::servicePerson()->entityAddressAllByPerson(
+                Billing::serviceBanking()->entityDebtorByDebtorNumber( $tblInvoice->getDebtorNumber())->getServiceManagement_Person());
 
+            if ($tblInvoice->getServiceManagementAddress())
+            {
+                $Global = self::extensionSuperGlobal();
+                $Global->POST ['Data']['Address'] = $tblInvoice->getServiceManagementAddress()->getId();
+                $Global->savePost();
+            }
+
+            if (!empty( $addressAll )) {
+                array_walk( $addressAll, function ( TblAddress &$address ) {
+                    $address->setStreetName(
+                        $address->getStreetName() . " " .
+                        $address->getStreetNumber() . "     " .
+                        $address->getPostOfficeBox() . "     " .
+                        $address->getTblAddressCity()->getCode() . " " .
+                        $address->getTblAddressCity()->getName() . " "
+                    );
+                } );
+            }
+            else
+            {
+                $View->setMessage(new Warning("Keine Adresse für den Empfänger verfügbar"));
+            }
+
+            $tblInvoiceItemAll = Billing::serviceInvoice()->entityInvoiceItemAllByInvoice( $tblInvoice );
             if (!empty( $tblInvoiceItemAll )) {
                 array_walk( $tblInvoiceItemAll, function ( TblInvoiceItem &$tblInvoiceItem ) {
                     $tblInvoiceItem->Option =
@@ -215,52 +249,64 @@ class Invoice extends AbstractFrontend
                     new LayoutGroup( array(
                         new LayoutRow( array(
                             new LayoutColumn(
-                                new Info("Rechnungsnummer: " . $tblInvoice->getNumber()
-                                ), 4
+                                new LayoutPanel( 'Rechnungsnummer' , $tblInvoice->getNumber(), LayoutPanel::PANEL_TYPE_PRIMARY ), 4
                             ),
                             new LayoutColumn(
-                                new Info("Rechnungsdatum: " . $tblInvoice->getInvoiceDate()
-                                ), 4
+                                new LayoutPanel( 'Rechnungsdatum' , $tblInvoice->getInvoiceDate() ), 4
                             ),
                             new LayoutColumn(
-                                new Info("Zahlungsdatum: " . $tblInvoice->getPaymentDate()
-                                ), 4
+                                new LayoutPanel( 'Zahlungsdatum' , $tblInvoice->getPaymentDate() ), 4
                             ),
                         ) ),
+                        new LayoutRow(
+                            new LayoutColumn(
+                                new LayoutAspect( 'Empfänger' )
+                            )
+                        ),
                         new LayoutRow( array(
                             new LayoutColumn(
-                                new Info("Schüler: " . $tblInvoice->getServiceManagementPerson()->getFullName()
-                                ), 4
+                                new LayoutPanel( 'Debitor' , $tblInvoice->getDebtorSalutation() . " " . $tblInvoice->getDebtorFullName() ), 4
                             ),
                             new LayoutColumn(
-                                new Info("Debitor: " .  $tblInvoice->getDebtorSalutation() . " " . $tblInvoice->getDebtorFullName()
-                                ), 4
+                                new LayoutPanel( 'Debitorennummer' , $tblInvoice->getDebtorNumber() ), 4
                             ),
                             new LayoutColumn(
-                                new Info("Debitorennummer: " . $tblInvoice->getDebtorNumber()
-                                ), 4
-                            ),
-                        ) ),
-                        new LayoutRow( array(
-                            new LayoutColumn(
-                                new Info("Gesamtpreis: " . Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice )
-                                ), 4
+                                new LayoutPanel( 'Schüler' , $tblInvoice->getServiceManagementPerson()->getFullName() ), 4
                             )
                         ) ),
-                        // TODO select invoice address
-//                            new LayoutColumn( array(
-//                                    new Form( array(
-//                                            new FormGroup( array(
-//                                                new FormRow( array(
+                        new LayoutRow(
+                            new LayoutColumn(
+                                new LayoutAspect( 'Rechnungsadresse' )
+                            )
+                        ),
+                        new LayoutRow(
+                            new LayoutColumn( array(
+                                    new Form( array(
+                                            new FormGroup( array(
+                                                new FormRow( array(
+                                                    new FormColumn(
+                                                        new SelectBox( 'Data[Address]', null, array( TblAddress::ATTR_STREET_NAME => $addressAll )), 12
+                                                    ),
 //                                                    new FormColumn(
-//                                                        new TextField( 'BasketItem[Quantity]', 'Menge', 'Menge', new QuantityIcon()
-//                                                        ), 6 )
-//                                                ) )
-//                                            ) )
-//                                        ), new SubmitPrimary( 'Änderungen speichern'
-//                                    ) )
-//                            ))
-                    )),
+//                                                        new SubmitPrimary( 'Änderungen speichern'), 3
+//                                                    )
+                                                ) )
+                                            ) )
+                                        )
+                                    )
+                            ))
+                        ),
+                        new LayoutRow(
+                            new LayoutColumn(
+                                new LayoutAspect( 'Betrag' )
+                            )
+                        ),
+                        new LayoutRow( array(
+                            new LayoutColumn(
+                                new LayoutPanel( 'Rechnungsbetrag' , Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice ) ), 4
+                            )
+                        ) )
+                    ), new LayoutTitle( 'Kopf' )),
                     new LayoutGroup( array(
                         new LayoutRow( array(
                             new LayoutColumn( array(
@@ -299,45 +345,71 @@ class Invoice extends AbstractFrontend
 
         $tblInvoiceItemAll = Billing::serviceInvoice()->entityInvoiceItemAllByInvoice( $tblInvoice );
 
+        $address = "";
+        if ($tblInvoice->getServiceManagementAddress())
+        {
+            $address = $tblInvoice->getServiceManagementAddress()->getStreetName() . " " .
+                $tblInvoice->getServiceManagementAddress()->getStreetNumber() . "     " .
+                $tblInvoice->getServiceManagementAddress()->getPostOfficeBox() . "     " .
+                $tblInvoice->getServiceManagementAddress()->getTblAddressCity()->getCode() . " " .
+                $tblInvoice->getServiceManagementAddress()->getTblAddressCity()->getName() . " ";
+        }
+        else
+        {
+            $View->setMessage(new Warning("Keine Rechungsadresse verfügbar"));
+        }
+
         $View->setContent(
             new Layout( array(
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn(
-                            new Info("Rechnungsnummer: " . $tblInvoice->getNumber()
-                            ), 4
+                            new LayoutPanel( 'Rechnungsnummer' , $tblInvoice->getNumber(), LayoutPanel::PANEL_TYPE_PRIMARY ), 4
                         ),
                         new LayoutColumn(
-                            new Info("Rechnungsdatum: " . $tblInvoice->getInvoiceDate()
-                            ), 4
+                            new LayoutPanel( 'Rechnungsdatum' , $tblInvoice->getInvoiceDate() ), 4
                         ),
                         new LayoutColumn(
-                            new Info("Zahlungsdatum: " . $tblInvoice->getPaymentDate()
-                            ), 4
+                            new LayoutPanel( 'Zahlungsdatum' , $tblInvoice->getPaymentDate() ), 4
                         ),
                     ) ),
+                    new LayoutRow(
+                        new LayoutColumn(
+                            new LayoutAspect( 'Empfänger' )
+                        )
+                    ),
                     new LayoutRow( array(
                         new LayoutColumn(
-                            new Info("Schüler: " . $tblInvoice->getServiceManagementPerson()->getFullName()
-                            ), 4
+                            new LayoutPanel( 'Debitor' , $tblInvoice->getDebtorSalutation() . " " . $tblInvoice->getDebtorFullName() ), 4
                         ),
                         new LayoutColumn(
-                            new Info("Debitor: " .  $tblInvoice->getDebtorSalutation() . " " . $tblInvoice->getDebtorFullName()
-                            ), 4
+                            new LayoutPanel( 'Debitorennummer' , $tblInvoice->getDebtorNumber() ), 4
                         ),
                         new LayoutColumn(
-                            new Info("Debitorennummer: " . $tblInvoice->getDebtorNumber()
-                            ), 4
-                        ),
-                    ) ),
-                    new LayoutRow( array(
-                        new LayoutColumn(
-                            new Info("Gesamtpreis: " . Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice )
-                            ), 4
+                            new LayoutPanel( 'Schüler' , $tblInvoice->getServiceManagementPerson()->getFullName() ), 4
                         )
                     ) ),
-                    // TODO show invoice address
-                )),
+                    new LayoutRow(
+                        new LayoutColumn(
+                            new LayoutAspect( 'Adresse' )
+                        )
+                    ),
+                    new LayoutRow(
+                        new LayoutColumn(
+                            new LayoutPanel( 'Rechnungsadresse' , $address )
+                            , 4)
+                    ),
+                    new LayoutRow(
+                        new LayoutColumn(
+                            new LayoutAspect( 'Betrag' )
+                        )
+                    ),
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new LayoutPanel( 'Rechnungsbetrag' , Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice ) ), 4
+                        )
+                    ) )
+                ), new LayoutTitle( 'Kopf' )),
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn( array(
@@ -361,10 +433,11 @@ class Invoice extends AbstractFrontend
 
     /**
      * @param $Id
+     * @param $Data
      *
      * @return Stage
      */
-    public static function frontendInvoiceConfirm( $Id )
+    public static function frontendInvoiceConfirm( $Id, $Data )
     {
 
         $View = new Stage();
@@ -372,7 +445,7 @@ class Invoice extends AbstractFrontend
         $View->setDescription( 'Bestätigen' );
 
         $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
-        $View->setContent( Billing::serviceInvoice()->executeConfirmInvoice( $tblInvoice ) );
+        $View->setContent( Billing::serviceInvoice()->executeConfirmInvoice( $tblInvoice, $Data ) );
 
         return $View;
     }

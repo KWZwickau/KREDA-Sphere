@@ -200,11 +200,13 @@ class Invoice extends EntityAction
 
     /**
      * @param TblInvoice $tblInvoice
+     * @param $Data
      *
-     * @return string
+     * @return Success|string
      */
     public function executeConfirmInvoice(
-        TblInvoice $tblInvoice
+        TblInvoice $tblInvoice,
+        $Data
     )
     {
         if (Billing::serviceBalance()->actionCreateBalance(

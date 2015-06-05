@@ -42,7 +42,8 @@ class Invoice extends Common
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Invoice/Edit', __CLASS__.'::frontendInvoiceEdit'
         )
-            ->setParameterDefault( 'Id', null );
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Data', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Invoice/Show', __CLASS__.'::frontendInvoiceShow'
         )
@@ -50,7 +51,8 @@ class Invoice extends Common
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Invoice/Confirm', __CLASS__.'::frontendInvoiceConfirm'
         )
-            ->setParameterDefault( 'Id', null );
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Data', null ) ;
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Invoice/Cancel', __CLASS__.'::frontendInvoiceCancel'
         )
@@ -92,14 +94,15 @@ class Invoice extends Common
 
     /**
      * @param $Id
+     * @param $Data
      *
      * @return Stage
      */
-    public static function frontendInvoiceEdit( $Id )
+    public static function frontendInvoiceEdit( $Id, $Data )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendInvoiceEdit( $Id );
+        return Frontend::frontendInvoiceEdit( $Id, $Data );
     }
 
     /**
@@ -116,14 +119,15 @@ class Invoice extends Common
 
     /**
      * @param $Id
+     * @param $Data
      *
      * @return Stage
      */
-    public static function frontendInvoiceConfirm( $Id )
+    public static function frontendInvoiceConfirm( $Id, $Data )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendInvoiceConfirm( $Id );
+        return Frontend::frontendInvoiceConfirm( $Id, $Data );
     }
 
     /**

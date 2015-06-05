@@ -139,8 +139,6 @@ abstract class EntityAction extends EntitySchema
     {
         $Manager = $this->getEntityManager();
 
-        // TODO tblAddress
-
         foreach ($TempTblInvoiceList as $TempTblInvoice)
         {
             $tblDebtor = Billing::serviceBanking()->entityDebtorById($TempTblInvoice['tblDebtor']);
@@ -158,6 +156,12 @@ abstract class EntityAction extends EntitySchema
             $Entity->setDebtorSalutation( $tblPersonDebtor->getTblPersonSalutation()->getName() );
             $Entity->setDebtorNumber($tblDebtor->getDebtorNumber());
             $Entity->setServiceManagementPerson( $tblPerson );
+            print_r(Management::servicePerson()->entityAddressAllByPerson( $tblPersonDebtor));
+            if (($address = Management::servicePerson()->entityAddressAllByPerson( $tblPersonDebtor)))
+            {
+                // TODO address type invoice
+                $Entity->setServiceManagementAddress( $address[0] );
+            }
 
             $Manager->SaveEntity( $Entity );
 
