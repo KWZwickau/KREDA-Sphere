@@ -415,15 +415,17 @@ class Invoice extends AbstractFrontend
                             new LayoutPanel( 'Rechnungsbetrag' , Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice ) ), 4
                         ),
                         new LayoutColumn(
-                            $tblInvoice->getIsPaid()
-                                ?  new Success("Bezahlt")
-                                :   (round(Billing::serviceBalance()->sumPriceItemByBalance(Billing::serviceBalance()->entityBalanceByInvoice( $tblInvoice )),2)
-                                    >= round(Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice),2)
-                                        ?  new LayoutPanel( 'Bezahlbetrag' , Billing::serviceBalance()->sumPriceItemStringByBalance(
-                                                Billing::serviceBalance()->entityBalanceByInvoice( $tblInvoice ) ), LayoutPanel::PANEL_TYPE_SUCCESS )
-                                        :  new LayoutPanel( 'Bezahlbetrag' , Billing::serviceBalance()->sumPriceItemStringByBalance(
-                                                Billing::serviceBalance()->entityBalanceByInvoice( $tblInvoice ) ), LayoutPanel::PANEL_TYPE_DANGER ))
-                            , 4)
+                            $tblInvoice->getIsConfirmed() ?
+                                ($tblInvoice->getIsPaid()
+                                    ?  new Success("Bezahlt")
+                                    :   (round(Billing::serviceBalance()->sumPriceItemByBalance(Billing::serviceBalance()->entityBalanceByInvoice( $tblInvoice )),2)
+                                        >= round(Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice),2)
+                                            ?  new LayoutPanel( 'Bezahlbetrag' , Billing::serviceBalance()->sumPriceItemStringByBalance(
+                                                    Billing::serviceBalance()->entityBalanceByInvoice( $tblInvoice ) ), LayoutPanel::PANEL_TYPE_SUCCESS )
+                                            :  new LayoutPanel( 'Bezahlbetrag' , Billing::serviceBalance()->sumPriceItemStringByBalance(
+                                                    Billing::serviceBalance()->entityBalanceByInvoice( $tblInvoice ) ), LayoutPanel::PANEL_TYPE_DANGER )))
+                                : new \KREDA\Sphere\Client\Frontend\Text\Type\Primary("")
+                                , 4)
                     ) ),
                 ), new LayoutTitle( 'Kopf' )),
                 new LayoutGroup( array(
