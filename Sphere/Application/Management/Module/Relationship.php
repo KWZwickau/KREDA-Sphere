@@ -21,7 +21,7 @@ class Relationship extends Person
     {
 
         self::registerClientRoute( $Configuration,
-            '/Sphere/Management/Person/Relationship', __CLASS__.'::frontendRelationship'
+            '/Sphere/Management/Person/Relationship/Edit', __CLASS__.'::frontendRelationshipEdit'
         )
             ->setParameterDefault( 'tblRelationship', null )
             ->setParameterDefault( 'tblRelationshipType', null );
@@ -52,19 +52,19 @@ class Relationship extends Person
     }
 
     /**
-     * @param int      $tblPerson
+     * @param int $Id
      * @param null|int $tblRelationship
      * @param null|int $tblRelationshipType
      * @param bool|int $Remove
      *
      * @return Stage
      */
-    public static function frontendRelationship( $tblPerson, $tblRelationship, $tblRelationshipType, $Remove = false )
+    public static function frontendRelationshipEdit( $Id, $tblRelationship, $tblRelationshipType, $Remove = false )
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageRelationship( $tblPerson, $tblRelationship, $tblRelationshipType, $Remove );
+        return Frontend::stageRelationship( $Id, $tblRelationship, $tblRelationshipType, $Remove );
     }
 
     /**

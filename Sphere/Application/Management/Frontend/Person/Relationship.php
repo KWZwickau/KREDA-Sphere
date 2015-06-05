@@ -7,20 +7,23 @@ use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonRelations
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuestionIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TransferIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Button\Structure\ButtonGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Redirect;
-use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
 
 /**
@@ -33,70 +36,69 @@ class Relationship extends AbstractFrontend
 
     /**
      * @param TblPerson $tblPerson
-     * @param bool      $hasOption
+     * @param bool      $hasRemove
      *
      * @return Layout
      */
-    public static function layoutRelationship( TblPerson $tblPerson, $hasOption = true )
+    public static function layoutRelationship( TblPerson $tblPerson, $hasRemove = false )
     {
 
-        $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson( $tblPerson );
-        if (!empty( $tblPersonRelationshipList )) {
-            array_walk( $tblPersonRelationshipList,
-                function ( TblPersonRelationshipList &$tblPersonRelationship, $Index, TblPerson $tblPerson ) {
+        $tblRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson( $tblPerson );
 
-                    if ($tblPersonRelationship->getTblPersonA()->getId() == $tblPerson->getId()) {
-                        $tblPersonRelationship->Person = $tblPersonRelationship->getTblPersonB()->getFullName().' ('.$tblPersonRelationship->getTblPersonB()->getTblPersonType()->getName().')';
-                        $tblPersonRelationship->Relationship = $tblPersonRelationship->getTblPersonRelationshipType()->getName();
-                    } else {
-                        $tblPersonRelationship->Person = $tblPersonRelationship->getTblPersonA()->getFullName().' ('.$tblPersonRelationship->getTblPersonB()->getTblPersonType()->getName().')';
-                        $tblPersonRelationship->Relationship = $tblPersonRelationship->getTblPersonRelationshipType()->getName();
-                    }
-                }, $tblPerson );
+        if (!empty( $tblRelationshipList )) {
+            /** @noinspection PhpUnusedParameterInspection */
+            array_walk( $tblRelationshipList, function ( TblPersonRelationshipList &$tblRelationship, $Index, $Data ) {
 
-            if ($hasOption) {
-                array_walk( $tblPersonRelationshipList,
-                    function ( TblPersonRelationshipList &$tblPersonRelationship, $Index, TblPerson $tblPerson ) {
+                /** @noinspection PhpUndefinedMethodInspection */
+                if ($tblRelationship->getTblPersonA()->getId() == $Data[1]->getId()) {
+                    $tblPerson = $tblRelationship->getTblPersonB();
+                } else {
+                    $tblPerson = $tblRelationship->getTblPersonA();
+                }
 
-                        $tblPersonRelationship->Option = new Danger( 'Entfernen',
-                            '/Sphere/Management/Person/Relationship/Destroy', new RemoveIcon(), array(
-                                'Id'   => $tblPerson->getId(),
-                                'Link' => $tblPersonRelationship->getId()
-                            ) );
-                    }, $tblPerson );
-            }
-        }
-        return new Layout(
-            new LayoutGroup(
-                new LayoutRow(
-                    new LayoutColumn( array(
-                        ( $hasOption
-                            ? new TableData( $tblPersonRelationshipList, null, array(
-                                'Relationship' => 'Beziehung',
-                                'Person'       => 'Person',
-                                'Option'       => 'Optionen',
-                            ) )
+                if ($tblRelationship->getTblPersonRelationshipType()->getName() == 'Sorgeberechtigt') {
+                    $PanelType = LayoutPanel::PANEL_TYPE_WARNING;
+                } else {
+                    $PanelType = LayoutPanel::PANEL_TYPE_DEFAULT;
+                }
 
-                            : new TableData( $tblPersonRelationshipList, null, array(
-                                'Relationship' => 'Beziehung',
-                                'Person'       => 'Person'
-                            ) )
-                        ),
-                        new Primary( 'Bearbeiten', '/Sphere/Management/Person/Relationship/Edit', new PencilIcon(),
-                            array( 'Id' => $tblPerson->getId() )
+
+                /** @var bool[]|TblPerson[] $Data */
+                $tblRelationship = new LayoutColumn(
+                    new LayoutPanel(
+                        new TransferIcon().' Beziehung',
+                        array(
+                            $tblPerson->getTblPersonSalutation()->getName().' '.$tblPerson->getFullName(),
+                            'Personentyp: '.$tblPerson->getTblPersonType()->getName(),
+                            'Beziehungstyp: '.$tblRelationship->getTblPersonRelationshipType()->getName(),
                         )
-                    ) )
-                ), new LayoutTitle( 'Beziehungen' )
-            )
+                        , $PanelType,
+                        new ButtonGroup( array(
+                            new Primary(
+                                'Öffnen', '/Sphere/Management/Person/Edit', new PersonIcon(),
+                                array( 'Id' => $tblPerson->getId() )
+                            ),
+                            ( $Data[0]
+                                ? new Danger(
+                                    'Löschen', '/Sphere/Management/Person/Relationship/Destroy', new RemoveIcon(),
+                                    array( 'Id' => $Data[1]->getId(), 'Relationship' => $tblRelationship->getId() )
+                                )
+                                : null
+                            )
+                        ) )
+                    ), 3 );
+            }, array( $hasRemove, $tblPerson ) );
+        } else {
+            $tblRelationshipList = array(
+                new LayoutColumn(
+                    new Warning( 'Keine Beziehungen hinterlegt', new WarningIcon() )
+                )
+            );
+        }
+
+        return new Layout(
+            new LayoutGroup( new LayoutRow( $tblRelationshipList ), new LayoutTitle( 'Beziehungen' ) )
         );
-    }
-
-    public static function stageCreate( $Id, $Relationship )
-    {
-
-        $View = new Stage( 'Beziehung', 'Hinzufügen' );
-        $View->setContent( '' );
-        return $View;
     }
 
     /**

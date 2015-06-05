@@ -20,6 +20,52 @@ abstract class EntityAction extends EntitySchema
 {
 
     /**
+     * @param TblSubject $tblSubject
+     *
+     * @return bool
+     */
+    protected function actionDisableSubject( TblSubject $tblSubject )
+    {
+
+        $Manager = $this->getEntityManager();
+        /** @var TblSubject $Entity */
+        $Entity = $Manager->getEntityById( 'TblSubject', $tblSubject->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setActiveState( false );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblSubject $tblSubject
+     *
+     * @return bool
+     */
+    protected function actionEnableSubject( TblSubject $tblSubject )
+    {
+
+        $Manager = $this->getEntityManager();
+        /** @var TblSubject $Entity */
+        $Entity = $Manager->getEntityById( 'TblSubject', $tblSubject->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setActiveState( true );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @param string $Acronym
      * @param string $Name
      *
@@ -443,4 +489,24 @@ abstract class EntityAction extends EntitySchema
             ->findOneBy( array( TblCategory::ATTR_NAME => $Name ) );
         return ( null === $Entity ? false : $Entity );
     }
+
+    /**
+     * @param TblSubject $tblSubject
+     *
+     * @return bool|TblCategory[]
+     */
+    protected function entityCategoryAllBySubject( TblSubject $tblSubject )
+    {
+
+        $EntityList = $this->getEntityManager()->getEntity( 'TblSubjectCategory' )
+            ->findBy( array( TblSubjectCategory::ATTR_TBL_SUBJECT => $tblSubject->getId() ) );
+        if (!empty( $EntityList )) {
+            array_walk( $EntityList, function ( TblSubjectCategory &$tblSubjectCategory ) {
+
+                $tblSubjectCategory = $tblSubjectCategory->getTblCategory();
+            } );
+        }
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
 }

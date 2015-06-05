@@ -8,6 +8,7 @@ use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressState;
 use KREDA\Sphere\Application\Management\Service\Address\EntityAction;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 use MOC\V\Core\HttpKernel\HttpKernel;
@@ -229,7 +230,7 @@ class Address extends EntityAction
             if (null !== $tblPerson) {
                 Management::servicePerson()->executeAddAddress( $tblPerson->getId(), $tblAddress->getId() );
             }
-            return new Redirect( HttpKernel::getRequest()->getUrl(), 2 );
+            return new Success( 'Adresse erfolgreich angelegt' ).new Redirect( HttpKernel::getRequest()->getUrl(), 1 );
         }
         return $Form;
     }

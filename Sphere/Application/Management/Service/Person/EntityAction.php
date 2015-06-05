@@ -6,10 +6,8 @@ use KREDA\Sphere\Application\Management\Service\Person\Action\Destroy;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPersonType;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PencilIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ShareIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
-use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
@@ -127,7 +125,8 @@ abstract class EntityAction extends Destroy
                                 , 5 )
                         ) )
                     ), null,
-                    '/Sphere/Management/Person/Relationship', array(
+                    '/Sphere/Management/Person/Relationship/Edit', array(
+                        'Id' => $Person[0],
                         'tblPerson'       => $Person[0],
                         'tblRelationship' => $Entity->getId()
                     )
@@ -158,10 +157,10 @@ abstract class EntityAction extends Destroy
                 $V->Option =
                     ( new Primary( 'Bearbeiten', '/Sphere/Management/Person/Edit', new PencilIcon(),
                         array( 'Id' => $V->getId() )
-                    ) )->__toString()
-                    .( new Danger( 'Löschen', '/Sphere/Management/Person/Destroy', new RemoveIcon(),
-                        array( 'Id' => $V->getId() )
                     ) )->__toString();
+//                    .( new Danger( 'Löschen', '/Sphere/Management/Person/Destroy', new RemoveIcon(),
+//                        array( 'Id' => $V->getId() )
+//                    ) )->__toString();
                 return $V;
             } )
             ->getResult();

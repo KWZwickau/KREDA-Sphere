@@ -537,6 +537,17 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
+     * Returns a string representation of the test suite.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+
+        return $this->getName();
+    }
+
+    /**
      * Returns the name of the suite.
      *
      * @return string
@@ -556,17 +567,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     {
 
         $this->name = $name;
-    }
-
-    /**
-     * Returns a string representation of the test suite.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-
-        return $this->getName();
     }
 
     /**

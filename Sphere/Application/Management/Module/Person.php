@@ -40,6 +40,16 @@ class Person extends Account
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/Edit', __CLASS__.'::frontendEdit'
         )
+            ->setParameterDefault( 'Id', null );
+
+//        self::registerClientRoute( self::$Configuration,
+//            '/Sphere/Management/Person/Destroy', __CLASS__.'::frontendDestroy'
+//        )
+//            ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/Basic/Edit', __CLASS__.'::frontendBasicEdit'
+        )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'PersonName', null )
             ->setParameterDefault( 'BirthDetail', null )
@@ -48,15 +58,23 @@ class Person extends Account
             ->setParameterDefault( 'City', null )
             ->setParameterDefault( 'Street', null );
 
+        /**
+         * Address
+         */
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Destroy', __CLASS__.'::frontendDestroy'
+            '/Sphere/Management/Person/Address/Edit', __CLASS__.'::frontendAddressEdit'
         )
-            ->setParameterDefault( 'Id', null );
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'City', null )
+            ->setParameterDefault( 'State', null )
+            ->setParameterDefault( 'Street', null );
 
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Management/Person/Address', __CLASS__.'::frontendAddressCreate'
+            '/Sphere/Management/Person/Address/Destroy', __CLASS__.'::frontendAddressDestroy'
         )
-            ->setParameterDefault( 'Id', null );
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Address', null )
+            ->setParameterDefault( 'Confirm', false );
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/List/Student', __CLASS__.'::frontendListStudent'
@@ -70,30 +88,38 @@ class Person extends Account
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/List/Teacher', __CLASS__.'::frontendListTeacher'
         );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/List/Staff', __CLASS__.'::frontendListStaff'
+        );
 
         /**
          * REST Service
          */
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonInterest',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Interessent' )->getId()
-            );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonStudent',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Schüler' )->getId()
-            );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonGuardian',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' )->getId()
-            );
-        self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonTeacher',
-            __CLASS__.'::restPersonListByType' )
-            ->setParameterDefault( 'tblPersonType',
-                Management::servicePerson()->entityPersonTypeByName( 'Lehrer' )->getId()
-            );
+        if (( $tblPersonType = Management::servicePerson()->entityPersonTypeByName( 'Interessent' ) )) {
+            self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonInterest',
+                __CLASS__.'::restPersonListByType' )
+                ->setParameterDefault( 'tblPersonType', $tblPersonType->getId() );
+        }
+        if (( $tblPersonType = Management::servicePerson()->entityPersonTypeByName( 'Schüler' ) )) {
+            self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonStudent',
+                __CLASS__.'::restPersonListByType' )
+                ->setParameterDefault( 'tblPersonType', $tblPersonType->getId() );
+        }
+        if (( $tblPersonType = Management::servicePerson()->entityPersonTypeByName( 'Sorgeberechtigter' ) )) {
+            self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonGuardian',
+                __CLASS__.'::restPersonListByType' )
+                ->setParameterDefault( 'tblPersonType', $tblPersonType->getId() );
+        }
+        if (( $tblPersonType = Management::servicePerson()->entityPersonTypeByName( 'Lehrer' ) )) {
+            self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonTeacher',
+                __CLASS__.'::restPersonListByType' )
+                ->setParameterDefault( 'tblPersonType', $tblPersonType->getId() );
+        }
+        if (( $tblPersonType = Management::servicePerson()->entityPersonTypeByName( 'Verwaltungspersonal' ) )) {
+            self::registerClientRoute( self::$Configuration, '/Sphere/Management/Table/PersonStaff',
+                __CLASS__.'::restPersonListByType' )
+                ->setParameterDefault( 'tblPersonType', $tblPersonType->getId() );
+        }
     }
 
     /**
@@ -139,6 +165,9 @@ class Person extends Account
         self::addApplicationNavigationMain( self::$Configuration,
             '/Sphere/Management/Person/List/Teacher', 'Lehrer', new GroupIcon()
         );
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Management/Person/List/Staff', 'Verwaltungspersonal', new GroupIcon()
+        );
     }
 
     /**
@@ -157,6 +186,19 @@ class Person extends Account
     }
 
     /**
+     * @param null|int $Id
+     *
+     * @return Stage
+     */
+    public static function frontendEdit( $Id )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::stageEdit( $Id );
+    }
+
+    /**
      * @param null|integer   $Id
      * @param null|array     $PersonName
      * @param null|array     $PersonInformation
@@ -169,41 +211,64 @@ class Person extends Account
      *
      * @return Stage
      */
-    public static function frontendEdit( $Id, $PersonName, $PersonInformation, $BirthDetail, $State, $City, $Street )
-    {
+    public static function frontendBasicEdit(
+        $Id,
+        $PersonName,
+        $PersonInformation,
+        $BirthDetail,
+        $State,
+        $City,
+        $Street
+    ) {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::stageEdit( $Id, $PersonName, $PersonInformation, $BirthDetail, $State, $City, $Street );
+        return Frontend\Basic::stageEdit( $Id, $PersonName, $PersonInformation, $BirthDetail, $State, $City, $Street );
     }
 
-    /**
-     * @param null|integer $Id
-     *
-     * @return Stage
-     */
-    public static function frontendDestroy( $Id )
-    {
-
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::stageDestroy( $Id );
-    }
+//    /**
+//     * @param null|integer $Id
+//     *
+//     * @return Stage
+//     */
+//    public static function frontendDestroy( $Id )
+//    {
+//
+//        self::setupModuleNavigation();
+//        self::setupApplicationNavigation();
+//        return Frontend::stageDestroy( $Id );
+//    }
 
     /**
      * @param int|null       $Id
-     * @param array|int|null $State
-     * @param array|null     $City
-     * @param array|null     $Street
+     *
+     * @param null|array|int $State
+     * @param null|array     $City
+     * @param null|array     $Street
      *
      * @return Stage
      */
-    public static function frontendAddressCreate( $Id, $State, $City, $Street )
+    public static function frontendAddressEdit( $Id, $State, $City, $Street )
     {
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend\Address::stageCreate( $Id, $State, $City, $Street );
+        return Frontend\Address::stageEdit( $Id, $State, $City, $Street );
+    }
+
+    /**
+     * @param int|null $Id
+     * @param int|null $Address
+     * @param bool     $Confirm
+     *
+     * @return Stage
+     */
+    public static function frontendAddressDestroy( $Id, $Address, $Confirm )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend\Address::stageDestroy( $Id, $Address, $Confirm );
     }
 
     /**
@@ -248,5 +313,16 @@ class Person extends Account
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend\ListTable::stageListTeacher();
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendListStaff()
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend\ListTable::stageListStaff();
     }
 }

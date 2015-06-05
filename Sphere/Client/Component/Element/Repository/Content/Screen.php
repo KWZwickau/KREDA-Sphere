@@ -81,14 +81,14 @@ class Screen extends AbstractContent implements IElementInterface
 
         $TraceList = '';
         foreach ((array)$Exception->getTrace() as $Index => $Trace) {
-            $TraceList .= '<br/><samp class="text-info">'
+            $TraceList .= nl2br( '<br/><samp class="text-info">'
                 .( isset( $Trace['type'] ) && isset( $Trace['function'] ) ? '<br/>Method: '.$Trace['type'].$Trace['function'] : '<br/>Method: ' )
                 .( isset( $Trace['class'] ) ? '<br/>Class: '.$Trace['class'] : '<br/>Class: ' )
                 .( isset( $Trace['file'] ) ? '<br/>File: '.$Trace['file'] : '<br/>File: ' )
                 .( isset( $Trace['line'] ) ? '<br/>Line: '.$Trace['line'] : '<br/>Line: ' )
-                .'</samp>';
+                .'</samp>' );
         }
-        $Hit = '<samp class="text-danger"><p class="h6">'.$Exception->getMessage().'</p><br/>File: '.$Exception->getFile().'<br/>Line: '.$Exception->getLine().'</samp>'.$TraceList;
+        $Hit = '<samp class="text-danger"><p class="h6">'.nl2br( $Exception->getMessage() ).'</p><br/>File: '.$Exception->getFile().'<br/>Line: '.$Exception->getLine().'</samp>'.$TraceList;
         $this->addToContent( new Container( new Error(
             $Exception->getCode() == 0 ? $Name : $Exception->getCode(), $Hit
         ) ) );

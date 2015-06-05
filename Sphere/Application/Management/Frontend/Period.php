@@ -7,6 +7,7 @@ use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EducationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
@@ -17,6 +18,7 @@ use KREDA\Sphere\Client\Frontend\Form\Type\Form;
 use KREDA\Sphere\Client\Frontend\Input\Type\DatePicker;
 use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
+use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Message\Type\Info;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
@@ -52,9 +54,12 @@ class Period extends AbstractFrontend
         if (!empty( $tblTerm )) {
             array_walk( $tblTerm, function ( TblTerm $tblTerm ) {
 
-                $tblTerm->Course = $tblTerm->getServiceManagementCourse()->getName()
-                    .' '.new Muted( $tblTerm->getServiceManagementCourse()->getDescription() );
-
+                if ($tblTerm->getServiceManagementCourse()) {
+                    $tblTerm->Course = $tblTerm->getServiceManagementCourse()->getName()
+                        .' '.new Muted( $tblTerm->getServiceManagementCourse()->getDescription() );
+                } else {
+                    $tblTerm->Course = new Danger( 'Keine Bildungsrichtung angegeben', new WarningIcon() );
+                }
                 $tblTerm->Option = new Primary( 'Bearbeiten', '/Sphere/Management/Period/SchoolYear/Edit',
                     new EditIcon(), array(
                         'Id' => $tblTerm->getId()

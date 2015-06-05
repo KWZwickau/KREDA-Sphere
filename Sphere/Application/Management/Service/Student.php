@@ -66,6 +66,25 @@ class Student extends EntityAction
         return parent::entityStudentByNumber( $StudentNumber );
     }
 
+    /**
+     * @param int $Id
+     *
+     * @return bool|TblChildRank
+     */
+    public function entityChildRankById( $Id )
+    {
+
+        return parent::entityChildRankById( $Id );
+    }
+
+    /**
+     * @return bool|TblChildRank[]
+     */
+    public function entityChildRankAll()
+    {
+
+        return parent::entityChildRankAll();
+    }
 
     /**
      * @param string $Name

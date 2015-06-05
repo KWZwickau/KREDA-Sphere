@@ -59,7 +59,7 @@ class Youtrack extends AbstractService
              */
             try {
                 $Youtrack = new \KREDA\Sphere\Common\Youtrack\Youtrack();
-                $Youtrack->ticketCreate( $TicketSubject, $TicketMessage );
+                $Youtrack->ticketCreate( urldecode( $TicketSubject ), urldecode( $TicketMessage ) );
                 return new Success( 'Das Problem wurde erfolgreich dem Support mitgeteilt' );
             } catch( \Exception $E ) {
                 return new Danger( 'Das Problem konnte nicht übertragen werden' );

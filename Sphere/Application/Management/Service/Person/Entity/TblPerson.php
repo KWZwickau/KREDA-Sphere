@@ -283,7 +283,7 @@ class TblPerson extends AbstractEntity
     /**
      * @param \DateTime $Birthday
      */
-    public function setBirthday( \DateTime $Birthday )
+    public function setBirthday( \DateTime $Birthday = null )
     {
 
         $this->Birthday = $Birthday;

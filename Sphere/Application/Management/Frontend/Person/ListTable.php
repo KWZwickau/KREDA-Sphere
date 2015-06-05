@@ -77,4 +77,13 @@ class ListTable extends AbstractFrontend
         return self::listPersonTable( 'Lehrer', '/Sphere/Management/Table/PersonTeacher' );
     }
 
+    /**
+     * @return Stage
+     */
+    public static function stageListStaff()
+    {
+
+        return self::listPersonTable( 'Verwaltungspersonal', '/Sphere/Management/Table/PersonStaff' );
+    }
+
 }
