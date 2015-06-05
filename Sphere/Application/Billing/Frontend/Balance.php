@@ -5,6 +5,8 @@ use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Balance\Entity\TblBalance;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
+use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
 
@@ -51,17 +53,17 @@ class Balance extends AbstractFrontend
 
         foreach($invoiceAllByIsConfirmedState as $invoiceByIsConfirmedState)
         {
-
             $tblBalance = Billing::serviceBalance()->entityBalanceByInvoice( $invoiceByIsConfirmedState );
-            $tblPaymentList = Billing::serviceBalance()->entityPaymentByBalance( $tblBalance );
             $AdditionInvoice = Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $invoiceByIsConfirmedState );
-            $tblBalance = Billing::serviceBalance()->entityBalanceByInvoice( $invoiceByIsConfirmedState );
             $AdditionPayment = Billing::serviceBalance()->sumPriceItemStringByBalance( $tblBalance );
 
             $invoiceByIsConfirmedState->FullName = $invoiceByIsConfirmedState->getDebtorFullName();
             $invoiceByIsConfirmedState->PaidPayment = $AdditionPayment;
             $invoiceByIsConfirmedState->PaidInvoice = $AdditionInvoice;
-
+            $invoiceByIsConfirmedState->Option = new Primary( 'Bezahlt', '/Sphere/Billing/Invoice/Pay',
+                                                    new OkIcon(), array(
+                                                        'Id' => $invoiceByIsConfirmedState->getId()
+                                                    ) );
         }
 
         $View->setContent(
@@ -73,7 +75,8 @@ class Balance extends AbstractFrontend
                 'FullName' => 'Debitor',
                 'DebtorNumber' => 'Debitorennummer',
                 'PaidPayment' => 'Bezahlt',
-                'PaidInvoice' => 'Gesamt'
+                'PaidInvoice' => 'Gesamt',
+                'Option' => 'Option'
                     )
                 )
             );

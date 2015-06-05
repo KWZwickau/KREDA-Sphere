@@ -56,6 +56,10 @@ class Invoice extends Common
         )
             ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Pay', __CLASS__.'::frontendInvoicePay'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Invoice/Item/Edit', __CLASS__.'::frontendInvoiceItemEdit'
         )
             ->setParameterDefault( 'Id', null )
@@ -120,6 +124,18 @@ class Invoice extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendInvoiceConfirm( $Id );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoicePay( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoicePay( $Id );
     }
 
     /**

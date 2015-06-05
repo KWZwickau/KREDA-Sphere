@@ -398,6 +398,24 @@ class Invoice extends AbstractFrontend
 
     /**
      * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoicePay( $Id )
+    {
+
+        $View = new Stage();
+        $View->setTitle( 'Rechnung' );
+        $View->setDescription( 'Bezahlen' );
+
+        $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
+        $View->setContent( Billing::serviceInvoice()->executePayInvoice( $tblInvoice ) );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
      * @param $InvoiceItem
      *
      * @return Stage
