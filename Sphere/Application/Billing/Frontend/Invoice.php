@@ -82,6 +82,12 @@ class Invoice extends AbstractFrontend
                     new EyeOpenIcon(), array('Id' => $tblInvoice->getId())))->__toString();;
                 if ($tblInvoice->getIsPaid())
                 {
+                    $tblInvoice->IsPaidString = "Bezahlt (manuell)";
+                }
+                else if (Billing::serviceBalance()->entityBalanceByInvoice($tblInvoice)
+                    && (Billing::serviceBalance()->sumPriceItemByBalance(Billing::serviceBalance()->entityBalanceByInvoice($tblInvoice))
+                            >= Billing::serviceInvoice()->sumPriceItemAllByInvoice($tblInvoice)))
+                {
                     $tblInvoice->IsPaidString = "Bezahlt";
                 }
                 else
@@ -407,8 +413,18 @@ class Invoice extends AbstractFrontend
                     new LayoutRow( array(
                         new LayoutColumn(
                             new LayoutPanel( 'Rechnungsbetrag' , Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice ) ), 4
-                        )
-                    ) )
+                        ),
+                        new LayoutColumn(
+                            $tblInvoice->getIsPaid()
+                                ?  new Success("Bezahlt")
+                                :   (round(Billing::serviceBalance()->sumPriceItemByBalance(Billing::serviceBalance()->entityBalanceByInvoice( $tblInvoice )),2)
+                                    >= round(Billing::serviceInvoice()->sumPriceItemAllByInvoice( $tblInvoice),2)
+                                        ?  new LayoutPanel( 'Bezahlbetrag' , Billing::serviceBalance()->sumPriceItemStringByBalance(
+                                                Billing::serviceBalance()->entityBalanceByInvoice( $tblInvoice ) ), LayoutPanel::PANEL_TYPE_SUCCESS )
+                                        :  new LayoutPanel( 'Bezahlbetrag' , Billing::serviceBalance()->sumPriceItemStringByBalance(
+                                                Billing::serviceBalance()->entityBalanceByInvoice( $tblInvoice ) ), LayoutPanel::PANEL_TYPE_DANGER ))
+                            , 4)
+                    ) ),
                 ), new LayoutTitle( 'Kopf' )),
                 new LayoutGroup( array(
                     new LayoutRow( array(

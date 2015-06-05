@@ -54,6 +54,11 @@ class Balance extends EntityAction
         return parent::sumPriceItemStringByBalance( $tblBalance );
     }
 
+    public function sumPriceItemByBalance(TblBalance $tblBalance)
+    {
+        return parent::sumPriceItemByBalance($tblBalance);
+    }
+
     /**
      * @return bool|Invoice\Entity\TblInvoice[]
      */
