@@ -411,11 +411,11 @@ class Basket extends EntityAction
         }
 
         if (!$Error) {
-            $TempTblInvoiceList = array();
+            $TempInvoiceList = array();
             $SelectList = array();
-            if ($this->checkDebtorsByBasket( $tblBasket, $Basket['Date'], $SelectList, $TempTblInvoiceList))
+            if ($this->checkDebtorsByBasket( $tblBasket, $Basket['Date'], $SelectList, $TempInvoiceList))
             {
-                if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date'], $TempTblInvoiceList))
+                if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date'], $TempInvoiceList))
                 {
                     $this->actionDestroyBasket( $tblBasket );
                     $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
@@ -434,7 +434,7 @@ class Basket extends EntityAction
                         'Id' => $tblBasket->getId(),
                         'Date' => $Basket['Date'],
                         'SelectList' => $SelectList,
-                        'TempTblInvoiceList' => $TempTblInvoiceList
+                        'TempInvoiceList' => $TempInvoiceList
                     ));
             }
         }

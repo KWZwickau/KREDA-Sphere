@@ -147,7 +147,7 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param TblBasket $tblBasket
      * @param $Date
-     * @param $TempTblInvoiceList
+     * @param $TempInvoiceList
      * @param $SelectList
      *
      * @return bool
@@ -156,7 +156,7 @@ abstract class EntityAction extends EntitySchema
         TblBasket $tblBasket,
         $Date,
         &$SelectList,
-        &$TempTblInvoiceList
+        &$TempInvoiceList
     )
     {
         $tblCommodityAllByBasket = Billing::serviceBasket()->entityCommodityAllByBasket( $tblBasket );
@@ -236,10 +236,10 @@ abstract class EntityAction extends EntitySchema
                     }
                     else if (count($tblDebtorCommodityListByPersonAndCommodity) == 1)
                     {
-                        $index = $this->searchArray($TempTblInvoiceList, "tblPerson", $tblPerson->getId(),
+                        $index = $this->searchArray($TempInvoiceList, "tblPerson", $tblPerson->getId(),
                             "tblDebtor", $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId());
                         if ($index === false) {
-                            $TempTblInvoiceList[] = array(
+                            $TempInvoiceList[] = array(
                                 'tblPerson' => $tblPerson->getId(),
                                 'tblDebtor' => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId(),
                                 'Commodities' => array($tblCommodity->getId())
@@ -247,7 +247,7 @@ abstract class EntityAction extends EntitySchema
                         }
                         else
                         {
-                            $TempTblInvoiceList[$index]['Commodities'][]= $tblCommodity->getId();
+                            $TempInvoiceList[$index]['Commodities'][]= $tblCommodity->getId();
                         }
                     }
                     else
@@ -271,10 +271,15 @@ abstract class EntityAction extends EntitySchema
                 }
             }
         }
-//        if (empty($TempTblInvoiceList))
+
+//        if (empty($TempInvoiceList))
 //        {
-//            $TempTblInvoiceList = null;
+//            $TempInvoiceList[0] = array('tblPerson' => 0, 'tblDebtor' => 0, 'Commodities' => array(0));
 //        }
+//
+//        print_r($SelectList);
+//        print_r('<br>');
+//        print_r($TempInvoiceList);
 
         return empty($SelectList);
     }

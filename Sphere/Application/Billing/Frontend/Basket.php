@@ -626,11 +626,11 @@ class Basket extends AbstractFrontend
      * @param $Date
      * @param $Data
      * @param $SelectList
-     * @param $TempTblInvoiceList
+     * @param $TempInvoiceList
      *
      * @return Stage
      */
-    public static function frontendBasketDebtorSelect( $Id, $Date, $Data, $SelectList, $TempTblInvoiceList )
+    public static function frontendBasketDebtorSelect( $Id, $Date, $Data, $SelectList, $TempInvoiceList )
     {
         $View = new Stage();
         $View->setTitle( 'Warenkorb' );
@@ -672,7 +672,7 @@ class Basket extends AbstractFrontend
                         ) )
                     ), new FormTitle( 'Debitoren' ) )
                     , new SubmitPrimary( 'Debitoren zuordnen (prüfen)' )
-                ), $Id, $Date, $Data, $SelectList, $TempTblInvoiceList
+                ), $Id, $Date, $Data, $SelectList, $TempInvoiceList
             )
         );
 

@@ -93,7 +93,7 @@ class Basket extends Common
             ->setParameterDefault( 'Date', null )
             ->setParameterDefault( 'Data', null )
             ->setParameterDefault( 'SelectList', null )
-            ->setParameterDefault( 'TempTblInvoiceList', null );
+            ->setParameterDefault( 'TempInvoiceList', null );
     }
 
     /**
@@ -258,14 +258,14 @@ class Basket extends Common
      * @param $Date
      * @param $Data
      * @param $SelectList
-     * @param $TempTblInvoiceList
+     * @param $TempInvoiceList
      *
      * @return Stage
      */
-    public static function frontendBasketDebtorSelect( $Id, $Date, $Data, $SelectList, $TempTblInvoiceList )
+    public static function frontendBasketDebtorSelect( $Id, $Date, $Data, $SelectList, $TempInvoiceList )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBasketDebtorSelect( $Id, $Date, $Data, $SelectList, $TempTblInvoiceList );
+        return Frontend::frontendBasketDebtorSelect( $Id, $Date, $Data, $SelectList, $TempInvoiceList );
     }
 }
