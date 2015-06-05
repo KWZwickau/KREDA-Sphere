@@ -142,7 +142,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function checkPaymentFromDebtorExistsByDebtor( TblDebtor $tblDebtor )
     {
-        $Entity = $this->getEntityManager()->getEntity( 'TblPayment' )->findOneBy(array(TblPayment::ATTR_TBL_BANKING => $tblDebtor->getId()));
+        $Entity = $this->getEntityManager()->getEntity( 'TblPayment' )->findOneBy(array(TblPayment::ATTR_TBL_BALANCE => $tblDebtor->getId()));
         return ( null === $Entity ? false : true );
     }
 
