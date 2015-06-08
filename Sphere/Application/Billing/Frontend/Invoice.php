@@ -7,7 +7,6 @@ use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BarCodeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EyeOpenIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MinusIcon;
@@ -15,7 +14,6 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyEuroIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuantityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\SelectIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
@@ -30,10 +28,8 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
-use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutAddress;
 use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutAspect;
 use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
-use KREDA\Sphere\Client\Frontend\Message\Type\Info;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Redirect;
@@ -219,7 +215,7 @@ class Invoice extends AbstractFrontend
         }
         else
         {
-            $addressAll = Management::servicePerson()->entityAddressAllByPerson(
+            $addressAll = $TblAddress = Management::servicePerson()->entityAddressAllByPerson(
                 Billing::serviceBanking()->entityDebtorByDebtorNumber( $tblInvoice->getDebtorNumber())->getServiceManagement_Person());
 
             if ($tblInvoice->getServiceManagementAddress())
@@ -228,6 +224,18 @@ class Invoice extends AbstractFrontend
                 $Global->POST ['Data']['Address'] = $tblInvoice->getServiceManagementAddress()->getId();
                 $Global->savePost();
             }
+
+//            $TblAddressSelect = array();
+//            /** @var TblAddress $TblAddress */
+//            foreach( (array)$addressAll as $TblAddress ) {
+//                array_push( $TblAddressSelect, array( $TblAddress->getId() =>
+//                      $TblAddress->getStreetName() . " " .
+//                      $TblAddress->getStreetNumber() . "     " .
+//                      $TblAddress->getPostOfficeBox() . "     " .
+//                      $TblAddress->getTblAddressCity()->getCode() . " " .
+//                      $TblAddress->getTblAddressCity()->getName() . " "
+//                ) );
+//            }
 
             if (!empty( $addressAll )) {
                 array_walk( $addressAll, function ( TblAddress &$address ) {
@@ -304,7 +312,9 @@ class Invoice extends AbstractFrontend
                                             new FormGroup( array(
                                                 new FormRow( array(
                                                     new FormColumn(
-                                                        new SelectBox( 'Data[Address]', null, array( TblAddress::ATTR_STREET_NAME => $addressAll )), 12
+                                                        new SelectBox( 'Data[Address]', null, array(
+                                                            '{{ StreetName }} {{ StreetNumber }}' => $TblAddress
+                                                        ) ), 12
                                                     ),
 //                                                    new FormColumn(
 //                                                        new SubmitPrimary( 'Änderungen speichern'), 3

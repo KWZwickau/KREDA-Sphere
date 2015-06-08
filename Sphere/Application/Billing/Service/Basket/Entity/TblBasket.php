@@ -15,7 +15,7 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblBasket extends AbstractEntity
 {
     /**
-     * @Column(type="date")
+     * @Column(type="datetime")
      */
     protected $CreateDate;
 
