@@ -470,7 +470,7 @@ class Basket extends AbstractFrontend
                             )
                         )
                     ) ),
-                ), new LayoutTitle( 'zugewiesene Studenten' ) ),
+                ), new LayoutTitle( 'zugewiesene Schüler' ) ),
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn( array(
@@ -484,7 +484,7 @@ class Basket extends AbstractFrontend
                             )
                         )
                     ) ),
-                ), new LayoutTitle( 'mögliche Studenten' ) )
+                ), new LayoutTitle( 'mögliche Schüler' ) )
             ) )
         );
 
@@ -501,7 +501,7 @@ class Basket extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Student' );
+        $View->setTitle( 'Schüler' );
         $View->setDescription( 'Hinzufügen' );
 
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
@@ -520,7 +520,7 @@ class Basket extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Student' );
+        $View->setTitle( 'Schüler' );
         $View->setDescription( 'Entfernen' );
 
         $tblBasketPerson = Billing::serviceBasket()->entityBasketPersonById( $Id );
@@ -595,7 +595,7 @@ class Basket extends AbstractFrontend
                             )
                         )
                     ) )
-                ), new LayoutTitle( 'Studenten' ) ),
+                ), new LayoutTitle( 'Schüler' ) ),
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn(
@@ -604,11 +604,11 @@ class Basket extends AbstractFrontend
                                     new FormGroup( array(
                                         new FormRow( array(
                                             new FormColumn(
-                                                new DatePicker( 'Basket[Date]', 'Fälligkeitsdatum', 'Fälligkeitsdatum',
+                                                new DatePicker( 'Basket[Date]', 'Zahlungsdatum (Fälligkeit)', 'Zahlungsdatum (Fälligkeit)',
                                                     new TimeIcon() )
                                                 , 3 )
                                         ) ),
-                                    ), new FormTitle( 'Fälligkeit' ) )
+                                    ), new FormTitle( 'Zahlungsdatum' ) )
                                     , new SubmitPrimary( 'Warenkorb fakturieren (prüfen)' )
                                 ), $tblBasket, $Basket
                             )
@@ -663,7 +663,7 @@ class Basket extends AbstractFrontend
                             new FormColumn(
                                 new TableData( $TableData, null,
                                     array(
-                                        'Person' => 'Student',
+                                        'Person' => 'Schüler',
                                         'Commodity'  => 'Leistung',
                                         'Debtors' => 'DebitorenNummer'
                                     )

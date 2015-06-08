@@ -216,7 +216,23 @@ abstract class EntityAction extends EntitySchema
                         }
                     }
 
-                    if (empty($tblDebtorCommodityListByPersonAndCommodity))
+                    if (count($tblDebtorListByPerson) == 1)
+                    {
+                        $index = $this->searchArray($TempInvoiceList, "tblPerson", $tblPerson->getId(),
+                            "tblDebtor", $tblDebtorListByPerson[0]->getId());
+                        if ($index === false) {
+                            $TempInvoiceList[] = array(
+                                'tblPerson' => $tblPerson->getId(),
+                                'tblDebtor' => $tblDebtorListByPerson[0]->getId(),
+                                'Commodities' => array($tblCommodity->getId())
+                            );
+                        }
+                        else
+                        {
+                            $TempInvoiceList[$index]['Commodities'][]= $tblCommodity->getId();
+                        }
+                    }
+                    else if (empty($tblDebtorCommodityListByPersonAndCommodity))
                     {
                         foreach($tblDebtorListByPerson as $tblDebtor)
                         {
