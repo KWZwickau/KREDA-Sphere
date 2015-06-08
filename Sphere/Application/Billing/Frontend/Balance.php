@@ -2,7 +2,6 @@
 namespace KREDA\Sphere\Application\Billing\Frontend;
 
 use KREDA\Sphere\Application\Billing\Billing;
-use KREDA\Sphere\Application\Billing\Service\Balance\Entity\TblBalance;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
@@ -50,20 +49,22 @@ class Balance extends AbstractFrontend
                     return $invoiceA->getId() - $invoiceB->getId();
                 });
         }
-
-        foreach($invoiceAllByIsConfirmedState as $invoiceByIsConfirmedState)
+        if (!empty($invoiceAllByIsConfirmedState))
         {
-            $tblBalance = Billing::serviceBalance()->entityBalanceByInvoice( $invoiceByIsConfirmedState );
-            $AdditionInvoice = Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $invoiceByIsConfirmedState );
-            $AdditionPayment = Billing::serviceBalance()->sumPriceItemStringByBalance( $tblBalance );
+            foreach($invoiceAllByIsConfirmedState as $invoiceByIsConfirmedState)
+            {
+                $tblBalance = Billing::serviceBalance()->entityBalanceByInvoice( $invoiceByIsConfirmedState );
+                $AdditionInvoice = Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $invoiceByIsConfirmedState );
+                $AdditionPayment = Billing::serviceBalance()->sumPriceItemStringByBalance( $tblBalance );
 
-            $invoiceByIsConfirmedState->FullName = $invoiceByIsConfirmedState->getDebtorFullName();
-            $invoiceByIsConfirmedState->PaidPayment = $AdditionPayment;
-            $invoiceByIsConfirmedState->PaidInvoice = $AdditionInvoice;
-            $invoiceByIsConfirmedState->Option = new Primary( 'Bezahlt', '/Sphere/Billing/Invoice/Pay',
-                                                    new OkIcon(), array(
-                                                        'Id' => $invoiceByIsConfirmedState->getId()
-                                                    ) );
+                $invoiceByIsConfirmedState->FullName = $invoiceByIsConfirmedState->getDebtorFullName();
+                $invoiceByIsConfirmedState->PaidPayment = $AdditionPayment;
+                $invoiceByIsConfirmedState->PaidInvoice = $AdditionInvoice;
+                $invoiceByIsConfirmedState->Option = new Primary( 'Bezahlt', '/Sphere/Billing/Invoice/Pay',
+                    new OkIcon(), array(
+                        'Id' => $invoiceByIsConfirmedState->getId()
+                    ) );
+            }
         }
 
         $View->setContent(
