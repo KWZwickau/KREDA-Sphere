@@ -32,7 +32,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityDebtorByDebtorNumber( $DebtorNumber )
     {
-        $Entity = $this->getEntityManager()->getEntity('tblDebtor')->findOneBy( array(TblDebtor::ATTR_DEBTOR_NUMBER => $DebtorNumber) );
+        $Entity = $this->getEntityManager()->getEntity('TblDebtor')->findOneBy( array(TblDebtor::ATTR_DEBTOR_NUMBER => $DebtorNumber) );
         return (null === $Entity ? false : $Entity);
     }
 
@@ -43,7 +43,7 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityDebtorByServiceManagement_Person( $ServiceManagement_Person )
     {
-        $Entity = $this->getEntityManager()->getEntity('tblDebtor')->findBy( array(TblDebtor::ATTR_SERVICE_MANAGEMENT_PERSON => $ServiceManagement_Person) );
+        $Entity = $this->getEntityManager()->getEntity('TblDebtor')->findBy( array(TblDebtor::ATTR_SERVICE_MANAGEMENT_PERSON => $ServiceManagement_Person) );
         return (null === $Entity ? false : $Entity);
     }
 
