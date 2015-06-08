@@ -31,6 +31,10 @@ class Script extends AbstractExtension
             "'undefined' !== typeof jQuery"
         );
         $this->setSource(
+            'jQuery.Ui', '/Library/jQuery.Ui/1.11.4/jquery-ui.min.js',
+            "'undefined' !== typeof jQuery.ui"
+        );
+        $this->setSource(
             'Moment.js', '/Library/Moment.Js/2.8.4/min/moment-with-locales.min.js',
             "'undefined' !== typeof moment"
         );
@@ -97,7 +101,7 @@ class Script extends AbstractExtension
          */
 
         $this->setModule(
-            'ModAlways', array( 'Bootstrap', 'jQuery' )
+            'ModAlways', array( 'Bootstrap', 'jQuery.Ui', 'jQuery' )
         );
         $this->setModule(
             'ModTable',
@@ -132,6 +136,9 @@ class Script extends AbstractExtension
         );
         $this->setModule(
             'ModProgress', array( 'jQuery' )
+        );
+        $this->setModule(
+            'ModSortable', array( 'jQuery.Ui', 'jQuery' )
         );
     }
 

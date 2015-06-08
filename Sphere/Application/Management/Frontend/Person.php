@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Management\Frontend;
 
 use KREDA\Sphere\Application\Management\Frontend\Person\Address;
 use KREDA\Sphere\Application\Management\Frontend\Person\Basic;
+use KREDA\Sphere\Application\Management\Frontend\Person\Contact;
 use KREDA\Sphere\Application\Management\Frontend\Person\Relationship;
 use KREDA\Sphere\Application\Management\Frontend\Person\Student;
 use KREDA\Sphere\Application\Management\Management;
@@ -168,6 +169,10 @@ class Person extends AbstractFrontend
                     .$LayoutStudent
                     .Address::layoutAddress( $tblPerson )
                     .new Primary( 'Bearbeiten', '/Sphere/Management/Person/Address/Edit', new PencilIcon(),
+                        array( 'Id' => $tblPerson->getId() )
+                    )
+                    .Contact::layoutContact( $tblPerson )
+                    .new Primary( 'Bearbeiten', '/Sphere/Management/Person/Contact/Edit', new PencilIcon(),
                         array( 'Id' => $tblPerson->getId() )
                     )
                     .$LayoutRelationship

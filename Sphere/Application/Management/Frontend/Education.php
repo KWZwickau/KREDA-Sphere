@@ -141,7 +141,7 @@ class Education extends AbstractFrontend
                             new TableData( Management::serviceEducation()->entityLevelAll(), null, array(
                                 'Name'        => 'Klassenstufe',
                                 'Description' => 'Beschreibung',
-                            ) ),
+                            ), false ),
                             Management::serviceEducation()->executeCreateLevel(
                                 new Form(
                                     new FormGroup( array(
@@ -166,7 +166,7 @@ class Education extends AbstractFrontend
                             new TableData( Management::serviceEducation()->entityGroupAll(), null, array(
                                 'Name'        => 'Klassengruppe',
                                 'Description' => 'Beschreibung',
-                            ) ),
+                            ), false ),
                             Management::serviceEducation()->executeCreateGroup(
                                 new Form(
                                     new FormGroup( array(

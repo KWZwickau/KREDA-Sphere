@@ -3,7 +3,7 @@
         {{ LayoutGroup.getLayoutTitle }}
     {% endif %}
     {% for LayoutRow in LayoutGroup.getLayoutRow %}
-        <div class="row">
+        <div class="row{% if(LayoutRow.IsSortable) %} {{ LayoutRow.IsSortable }}{% endif %}">
             {% for LayoutColumn in LayoutRow.getLayoutColumn %}
                 <div class="col-md-{{ LayoutColumn.getSize }}">
                     {% for AbstractFrontend in LayoutColumn.getAbstractFrontend %}
@@ -12,5 +12,21 @@
                 </div>
             {% endfor %}
         </div>
+        {% if(LayoutRow.IsSortable) %}
+            <script>
+                Client.Use( 'ModSortable', function()
+                {
+                    jQuery( 'div.row.{{ LayoutRow.IsSortable }}' ).ModSortable( {
+                        containment: "parent",
+                        cursor: "move",
+                        forceHelperSize: true,
+                        forcePlaceholderSize: true,
+                        opacity: 0.5,
+                        tolerance: "pointer",
+                        cursorAt: {left: 5}
+                    } );
+                } );
+            </script>
+        {% endif %}
     {% endfor %}
 {% endfor %}

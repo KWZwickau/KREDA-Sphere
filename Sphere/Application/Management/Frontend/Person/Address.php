@@ -180,7 +180,8 @@ class Address extends AbstractFrontend
         }
 
         return new Layout(
-            new LayoutGroup( new LayoutRow( $tblAddressList ), new LayoutTitle( 'Adressen' ) )
+            new LayoutGroup( new LayoutRow( $tblAddressList,
+                ( count( $tblAddressList ) > 1 ? 'AddressSortable' : false ) ), new LayoutTitle( 'Adressen' ) )
         );
     }
 
@@ -209,7 +210,7 @@ class Address extends AbstractFrontend
                         new LayoutRow(
                             new LayoutColumn( array(
                                 new Warning( new LayoutAddress( $tblPersonAddress->getTblAddress() ) ),
-                                new Warning( 'Wollen Sie die Addresse wirklich löschen?', new QuestionIcon() ),
+                                new Warning( 'Wollen Sie die Adresse wirklich löschen?', new QuestionIcon() ),
                             ) )
                         ),
                         new LayoutRow(

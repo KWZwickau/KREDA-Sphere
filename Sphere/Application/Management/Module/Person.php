@@ -76,6 +76,21 @@ class Person extends Account
             ->setParameterDefault( 'Address', null )
             ->setParameterDefault( 'Confirm', false );
 
+        /**
+         * Contact
+         */
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/Contact/Edit', __CLASS__.'::frontendContactEdit'
+        )
+            ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Person/Contact/Destroy', __CLASS__.'::frontendContactDestroy'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Contact', null )
+            ->setParameterDefault( 'Confirm', false );
+
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Person/List/Student', __CLASS__.'::frontendListStudent'
         );
@@ -269,6 +284,35 @@ class Person extends Account
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend\Address::stageDestroy( $Id, $Address, $Confirm );
+    }
+
+    /**
+     * @param int|null $Id
+     *
+     * @return Stage
+     */
+    public static function frontendContactEdit( $Id )
+    {
+
+        // TODO:
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend\Contact::stageEdit( $Id, null, null );
+    }
+
+    /**
+     * @param int|null $Id
+     * @param int|null $Contact
+     * @param bool     $Confirm
+     *
+     * @return Stage
+     */
+    public static function frontendContactDestroy( $Id, $Contact, $Confirm )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend\Contact::stageDestroy( $Id, $Contact, $Confirm );
     }
 
     /**

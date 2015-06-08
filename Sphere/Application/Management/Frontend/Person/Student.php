@@ -134,7 +134,7 @@ class Student extends AbstractFrontend
                             '2. Name'.new LayoutBadge( 'x Jahre' ),
                         ) )
                     ), 3 ),
-                ) ),
+                ), 'Sortable1' ),
                 new LayoutRow( array(
                     new LayoutColumn( array(
                         new Primary( 'Bearbeiten', '/Sphere/Management/Person/Student/Edit', new PencilIcon(),
