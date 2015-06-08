@@ -82,6 +82,27 @@ class TblInvoice extends AbstractEntity
     protected $serviceManagement_Person;
 
     /**
+     * @Column(type="boolean")
+     */
+    protected $IsPaymentDateModified;
+
+    /**
+     * @param boolean $IsPaymentDateModified
+     */
+    public function setIsPaymentDateModified($IsPaymentDateModified)
+    {
+        $this->IsPaymentDateModified = $IsPaymentDateModified;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPaymentDateModified()
+    {
+        return $this->IsPaymentDateModified;
+    }
+
+    /**
      * @return boolean
      */
     public function getIsConfirmed()

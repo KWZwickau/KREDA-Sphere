@@ -148,8 +148,23 @@ abstract class EntityAction extends EntitySchema
             $Entity->setIsPaid( false );
             $Entity->setIsVoid( false );
             $Entity->setNumber( "40000000" );
-            $Entity->setInvoiceDate( ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P' . Billing::serviceBanking()->entityLeadTimeByDebtor( $tblDebtor ) .'D' ) ) );
-            $Entity->setPaymentDate( new \DateTime( $Date ) );
+
+            $leadTimeByDebtor = Billing::serviceBanking()->entityLeadTimeByDebtor( $tblDebtor );
+            $invoiceDate = ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P' . $leadTimeByDebtor .'D' ) );
+            $now = new \DateTime('now');
+            if ($invoiceDate >= $now)
+            {
+                $Entity->setInvoiceDate( $invoiceDate );
+                $Entity->setPaymentDate( new \DateTime( $Date ) );
+                $Entity->setIsPaymentDateModified( false );
+            }
+            else
+            {
+                $Entity->setInvoiceDate( new \DateTime('now') );
+                $Entity->setPaymentDate( $now->add( new \DateInterval( 'P' . $leadTimeByDebtor .'D' ) ));
+                $Entity->setIsPaymentDateModified( true );
+            }
+
             $Entity->setDiscount( 0 );
             $Entity->setDebtorFirstName( $tblPersonDebtor->getFirstName() );
             $Entity->setDebtorLastName( $tblPersonDebtor->getLastName() );

@@ -91,6 +91,10 @@ abstract class EntitySchema extends AbstractService
         {
             $Table->addColumn( 'serviceManagement_Person', 'bigint', array( 'notnull' => false ));
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'IsPaymentDateModified' ))
+        {
+            $Table->addColumn( 'IsPaymentDateModified', 'boolean' );
+        }
 
         return $Table;
     }

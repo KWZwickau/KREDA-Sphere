@@ -149,6 +149,16 @@ class Invoice extends AbstractFrontend
 
         if (!empty( $tblInvoiceAllByIsConfirmedState )) {
             array_walk( $tblInvoiceAllByIsConfirmedState, function ( TblInvoice &$tblInvoice ) {
+                if ($tblInvoice->getIsPaymentDateModified())
+                {
+                    $tblInvoice->InvoiceDateString = new \KREDA\Sphere\Client\Frontend\Text\Type\Warning( $tblInvoice->getInvoiceDate());
+                    $tblInvoice->PaymentDateString = new \KREDA\Sphere\Client\Frontend\Text\Type\Warning( $tblInvoice->getPaymentDate());
+                }
+                else
+                {
+                    $tblInvoice->InvoiceDateString = $tblInvoice->getInvoiceDate();
+                    $tblInvoice->PaymentDateString = $tblInvoice->getPaymentDate();
+                }
                 $tblInvoice->Student = $tblInvoice->getServiceManagementPerson()->getFullName();
                 $tblInvoice->Debtor = $tblInvoice->getDebtorFullName();
                 $tblInvoice->TotalPrice = Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice );
@@ -164,7 +174,8 @@ class Invoice extends AbstractFrontend
             new TableData( $tblInvoiceAllByIsConfirmedState, null,
                 array(
                     'Number' => 'Nummer',
-                    'InvoiceDate' => 'Datum',
+                    'InvoiceDateString' => 'Rechnungsdatum',
+                    'PaymentDateString' => 'Zahlungsdatum',
                     'Student' => 'Student',
                     'Debtor' => 'Debitor',
                     'DebtorNumber' => 'Debitorennummer',
@@ -258,10 +269,12 @@ class Invoice extends AbstractFrontend
                                 new LayoutPanel( 'Rechnungsnummer' , $tblInvoice->getNumber(), LayoutPanel::PANEL_TYPE_PRIMARY ), 4
                             ),
                             new LayoutColumn(
-                                new LayoutPanel( 'Rechnungsdatum' , $tblInvoice->getInvoiceDate() ), 4
+                                new LayoutPanel( 'Rechnungsdatum' , $tblInvoice->getInvoiceDate(),
+                                    $tblInvoice->getIsPaymentDateModified() ? LayoutPanel::PANEL_TYPE_WARNING : LayoutPanel::PANEL_TYPE_DEFAULT), 4
                             ),
                             new LayoutColumn(
-                                new LayoutPanel( 'Zahlungsdatum' , $tblInvoice->getPaymentDate() ), 4
+                                new LayoutPanel( 'Zahlungsdatum' , $tblInvoice->getPaymentDate(),
+                                    $tblInvoice->getIsPaymentDateModified() ? LayoutPanel::PANEL_TYPE_WARNING : LayoutPanel::PANEL_TYPE_DEFAULT), 4
                             ),
                         ) ),
                         new LayoutRow(
@@ -336,6 +349,7 @@ class Invoice extends AbstractFrontend
         return $View;
     }
 
+
     /**
      * @param $Id
      *
@@ -362,7 +376,17 @@ class Invoice extends AbstractFrontend
         }
         else
         {
-            $View->setMessage(new Warning("Keine Rechungsadresse verfügbar"));
+            if ($tblInvoice->getIsVoid())
+            {
+                $View->setMessage(
+                    new Warning("Keine Rechungsadresse verfügbar") .
+                    new \KREDA\Sphere\Client\Frontend\Message\Type\Danger("Diese Rechnung wurde storniert")
+                );
+            }
+            else
+            {
+                $View->setMessage(new Warning("Keine Rechungsadresse verfügbar"));
+            }
         }
 
         $View->setContent(
