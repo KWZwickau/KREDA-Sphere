@@ -33,6 +33,16 @@ class Education extends Campus
             '/Sphere/Management/Education/Subject', __CLASS__.'::frontendEducationSubject'
         )
             ->setParameterDefault( 'Subject', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Education/Subject/Disable', __CLASS__.'::frontendEducationSubjectDisable'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Education/Subject/Enable', __CLASS__.'::frontendEducationSubjectEnable'
+        )
+            ->setParameterDefault( 'Id', null );
+
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Management/Education/Subject/Category', __CLASS__.'::frontendEducationSubjectCategory'
         );
@@ -99,6 +109,32 @@ class Education extends Campus
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::stageSubject( $Subject );
+    }
+
+    /**
+     * @param int|null $Id
+     *
+     * @return Stage
+     */
+    public static function frontendEducationSubjectDisable( $Id )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend\Subject::stageDisable( $Id );
+    }
+
+    /**
+     * @param int|null $Id
+     *
+     * @return Stage
+     */
+    public static function frontendEducationSubjectEnable( $Id )
+    {
+
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend\Subject::stageEnable( $Id );
     }
 
     /**

@@ -122,7 +122,7 @@ class Basic extends AbstractFrontend
                 array( 'Id' => $tblPerson->getId() ) )
 
             .Management::servicePerson()->executeChangePerson(
-                $FormBasic, $tblPerson, $PersonName, $PersonInformation, $BirthDetail )
+            $FormBasic, $tblPerson, $PersonName, $PersonInformation, $BirthDetail )
         );
         return $View;
     }

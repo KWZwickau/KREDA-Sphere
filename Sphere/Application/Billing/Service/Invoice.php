@@ -5,7 +5,6 @@ use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
-use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceAccount;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Application\Billing\Service\Invoice\EntityAction;
 use KREDA\Sphere\Application\System\System;
@@ -193,9 +192,9 @@ class Invoice extends EntityAction
         TblBasket $tblBasket,
         $Date,
         $TempTblInvoiceList
-    )
-    {
-        return $this->actionCreateInvoiceListFromBasket($tblBasket, $Date, $TempTblInvoiceList);
+    ) {
+
+        return $this->actionCreateInvoiceListFromBasket( $tblBasket, $Date, $TempTblInvoiceList );
     }
 
     /**
@@ -285,9 +284,9 @@ class Invoice extends EntityAction
     }
 
     /**
-     * @param AbstractType $View
+     * @param AbstractType   $View
      * @param TblInvoiceItem $tblInvoiceItem
-     * @param $InvoiceItem
+     * @param                $InvoiceItem
      *
      * @return AbstractType|string
      */
@@ -307,11 +306,11 @@ class Invoice extends EntityAction
 
         $Error = false;
 
-        if (isset( $InvoiceItem['Price'] ) && empty(  $InvoiceItem['Price'] )) {
+        if (isset( $InvoiceItem['Price'] ) && empty( $InvoiceItem['Price'] )) {
             $View->setError( 'InvoiceItem[Price]', 'Bitte geben Sie einen Preis an' );
             $Error = true;
         }
-        if (isset( $InvoiceItem['Quantity'] ) && empty(  $InvoiceItem['Quantity'] )) {
+        if (isset( $InvoiceItem['Quantity'] ) && empty( $InvoiceItem['Quantity'] )) {
             $View->setError( 'InvoiceItem[Quantity]', 'Bitte geben Sie eine Menge an' );
             $Error = true;
         }
@@ -321,12 +320,15 @@ class Invoice extends EntityAction
                 $tblInvoiceItem,
                 $InvoiceItem['Price'],
                 $InvoiceItem['Quantity']
-            )) {
+            )
+            ) {
                 $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
-                    .new Redirect( '/Sphere/Billing/Invoice/Edit', 1, array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId()) );
+                    .new Redirect( '/Sphere/Billing/Invoice/Edit', 1,
+                        array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId() ) );
             } else {
                 $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' )
-                    .new Redirect( '/Sphere/Billing/Invoice/Edit', 2, array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId()) );
+                    .new Redirect( '/Sphere/Billing/Invoice/Edit', 2,
+                        array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId() ) );
             };
         }
         return $View;
@@ -339,17 +341,16 @@ class Invoice extends EntityAction
      */
     public function executeRemoveInvoiceItem(
         TblInvoiceItem $tblInvoiceItem
-    )
-    {
-        if ($this->actionRemoveInvoiceItem($tblInvoiceItem))
-        {
-            return new Success( 'Der Artikel ' . $tblInvoiceItem->getItemName() . ' wurde erfolgreich entfernt' )
-            .new Redirect( '/Sphere/Billing/Invoice/Edit', 0, array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId()) );
-        }
-        else
-        {
-            return new Warning( 'Der Artikel ' . $tblInvoiceItem->getItemName() . ' konnte nicht entfernt werden' )
-            .new Redirect( '/Sphere/Billing/Invoice/Edit', 2, array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId()) );
+    ) {
+
+        if ($this->actionRemoveInvoiceItem( $tblInvoiceItem )) {
+            return new Success( 'Der Artikel '.$tblInvoiceItem->getItemName().' wurde erfolgreich entfernt' )
+            .new Redirect( '/Sphere/Billing/Invoice/Edit', 0,
+                array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId() ) );
+        } else {
+            return new Warning( 'Der Artikel '.$tblInvoiceItem->getItemName().' konnte nicht entfernt werden' )
+            .new Redirect( '/Sphere/Billing/Invoice/Edit', 2,
+                array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId() ) );
         }
     }
 }

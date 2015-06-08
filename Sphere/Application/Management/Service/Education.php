@@ -487,4 +487,26 @@ class Education extends EntityAction
         return parent::entityCategoryAllBySubject( $tblSubject );
     }
 
+    /**
+     * @param TblSubject $tblSubject
+     *
+     * @return bool
+     */
+    public function executeDisableSubject( TblSubject $tblSubject )
+    {
+
+        return parent::actionDisableSubject( $tblSubject );
+    }
+
+    /**
+     * @param TblSubject $tblSubject
+     *
+     * @return bool
+     */
+    public function executeEnableSubject( TblSubject $tblSubject )
+    {
+
+        return parent::actionEnableSubject( $tblSubject );
+    }
+
 }

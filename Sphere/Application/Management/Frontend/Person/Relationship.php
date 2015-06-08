@@ -62,6 +62,7 @@ class Relationship extends AbstractFrontend
                     $PanelType = LayoutPanel::PANEL_TYPE_DEFAULT;
                 }
 
+
                 /** @var bool[]|TblPerson[] $Data */
                 $tblRelationship = new LayoutColumn(
                     new LayoutPanel(
