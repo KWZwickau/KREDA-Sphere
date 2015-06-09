@@ -9,11 +9,13 @@ use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EyeOpenIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MapMarkerIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MinusIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyEuroIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuantityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
@@ -28,6 +30,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutAddress;
 use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutAspect;
 use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
@@ -215,44 +218,6 @@ class Invoice extends AbstractFrontend
         }
         else
         {
-            $addressAll = $TblAddress = Management::servicePerson()->entityAddressAllByPerson(
-                Billing::serviceBanking()->entityDebtorByDebtorNumber( $tblInvoice->getDebtorNumber())->getServiceManagement_Person());
-
-            if ($tblInvoice->getServiceManagementAddress())
-            {
-                $Global = self::extensionSuperGlobal();
-                $Global->POST ['Data']['Address'] = $tblInvoice->getServiceManagementAddress()->getId();
-                $Global->savePost();
-            }
-
-//            $TblAddressSelect = array();
-//            /** @var TblAddress $TblAddress */
-//            foreach( (array)$addressAll as $TblAddress ) {
-//                array_push( $TblAddressSelect, array( $TblAddress->getId() =>
-//                      $TblAddress->getStreetName() . " " .
-//                      $TblAddress->getStreetNumber() . "     " .
-//                      $TblAddress->getPostOfficeBox() . "     " .
-//                      $TblAddress->getTblAddressCity()->getCode() . " " .
-//                      $TblAddress->getTblAddressCity()->getName() . " "
-//                ) );
-//            }
-
-            if (!empty( $addressAll )) {
-                array_walk( $addressAll, function ( TblAddress &$address ) {
-                    $address->setStreetName(
-                        $address->getStreetName() . " " .
-                        $address->getStreetNumber() . "     " .
-                        $address->getPostOfficeBox() . "     " .
-                        $address->getTblAddressCity()->getCode() . " " .
-                        $address->getTblAddressCity()->getName() . " "
-                    );
-                } );
-            }
-            else
-            {
-                $View->setMessage(new Warning("Keine Adresse für den Empfänger verfügbar"));
-            }
-
             $tblInvoiceItemAll = Billing::serviceInvoice()->entityInvoiceItemAllByInvoice( $tblInvoice );
             if (!empty( $tblInvoiceItemAll )) {
                 array_walk( $tblInvoiceItemAll, function ( TblInvoiceItem &$tblInvoiceItem ) {
@@ -303,27 +268,24 @@ class Invoice extends AbstractFrontend
                         ) ),
                         new LayoutRow(
                             new LayoutColumn(
-                                new LayoutAspect( 'Rechnungsadresse' )
+                                new LayoutAspect( 'Adresse' )
                             )
                         ),
                         new LayoutRow(
-                            new LayoutColumn( array(
-                                    new Form( array(
-                                            new FormGroup( array(
-                                                new FormRow( array(
-                                                    new FormColumn(
-                                                        new SelectBox( 'Data[Address]', null, array(
-                                                            '{{ StreetName }} {{ StreetNumber }}' => $TblAddress
-                                                        ) ), 12
-                                                    ),
-//                                                    new FormColumn(
-//                                                        new SubmitPrimary( 'Änderungen speichern'), 3
-//                                                    )
-                                                ) )
-                                            ) )
-                                        )
+                            new LayoutColumn(
+                                $tblInvoice->getServiceManagementAddress()
+                                    ? new LayoutPanel(
+                                        new MapMarkerIcon() . 'Rechnungsadresse' ,
+                                        new LayoutAddress( $tblInvoice->getServiceManagementAddress()),
+                                        LayoutPanel::PANEL_TYPE_DEFAULT,
+                                        new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/Address/Edit',
+                                                new EditIcon(), array(
+                                                    'Id' => $tblInvoice->getId()
+                                                )
+                                        ), 4
                                     )
-                            ))
+                                    : new \KREDA\Sphere\Client\Frontend\Message\Type\Warning("Keine Rechnungsadresse verfügbar")
+                            )
                         ),
                         new LayoutRow(
                             new LayoutColumn(
@@ -375,28 +337,9 @@ class Invoice extends AbstractFrontend
 
         $tblInvoiceItemAll = Billing::serviceInvoice()->entityInvoiceItemAllByInvoice( $tblInvoice );
 
-        $address = "";
-        if ($tblInvoice->getServiceManagementAddress())
+        if ($tblInvoice->getIsVoid())
         {
-            $address = $tblInvoice->getServiceManagementAddress()->getStreetName() . " " .
-                $tblInvoice->getServiceManagementAddress()->getStreetNumber() . "     " .
-                $tblInvoice->getServiceManagementAddress()->getPostOfficeBox() . "     " .
-                $tblInvoice->getServiceManagementAddress()->getTblAddressCity()->getCode() . " " .
-                $tblInvoice->getServiceManagementAddress()->getTblAddressCity()->getName() . " ";
-        }
-        else
-        {
-            if ($tblInvoice->getIsVoid())
-            {
-                $View->setMessage(
-                    new Warning("Keine Rechungsadresse verfügbar") .
-                    new \KREDA\Sphere\Client\Frontend\Message\Type\Danger("Diese Rechnung wurde storniert")
-                );
-            }
-            else
-            {
-                $View->setMessage(new Warning("Keine Rechungsadresse verfügbar"));
-            }
+            $View->setMessage(new \KREDA\Sphere\Client\Frontend\Message\Type\Danger("Diese Rechnung wurde storniert"));
         }
 
         $View->setContent(
@@ -436,8 +379,15 @@ class Invoice extends AbstractFrontend
                     ),
                     new LayoutRow(
                         new LayoutColumn(
-                            new LayoutPanel( 'Rechnungsadresse' , $address )
-                            , 4)
+                            $tblInvoice->getServiceManagementAddress()
+                                ? new LayoutPanel(
+                                    new MapMarkerIcon() . 'Rechnungsadresse' ,
+                                    new LayoutAddress( $tblInvoice->getServiceManagementAddress()),
+                                    LayoutPanel::PANEL_TYPE_DEFAULT,
+                                    null
+                                )
+                                : new \KREDA\Sphere\Client\Frontend\Message\Type\Warning("Keine Rechnungsadresse verfügbar")
+                        )
                     ),
                     new LayoutRow(
                         new LayoutColumn(

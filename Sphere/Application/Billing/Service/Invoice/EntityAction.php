@@ -156,7 +156,10 @@ abstract class EntityAction extends EntitySchema
      */
     protected function checkInvoiceFromDebtorIsPaidByDebtor( TblDebtor $tblDebtor )
     {
-        $Entity = $this->getEntityManager()->getEntity( 'TblInvoice' )->findOneBy(array(TblInvoice::ATTR_IS_PAID => $tblDebtor->getId()));
+        $Entity = $this->getEntityManager()->getEntity( 'TblInvoice' )->findOneBy(array(
+            TblInvoice::ATTR_IS_PAID => true,
+            TblInvoice::ATTR_DEBTOR_NUMBER => $tblDebtor->getDebtorNumber()
+        ));
         return ( null === $Entity ? false : true );
     }
 
@@ -186,7 +189,7 @@ abstract class EntityAction extends EntitySchema
 
             $leadTimeByDebtor = Billing::serviceBanking()->entityLeadTimeByDebtor( $tblDebtor );
             $invoiceDate = ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P' . $leadTimeByDebtor .'D' ) );
-            $now = new \DateTime('now');
+            $now = new \DateTime();
             if ($invoiceDate >= $now)
             {
                 $Entity->setInvoiceDate( $invoiceDate );
@@ -206,7 +209,6 @@ abstract class EntityAction extends EntitySchema
             $Entity->setDebtorSalutation( $tblPersonDebtor->getTblPersonSalutation()->getName() );
             $Entity->setDebtorNumber($tblDebtor->getDebtorNumber());
             $Entity->setServiceManagementPerson( $tblPerson );
-            print_r(Management::servicePerson()->entityAddressAllByPerson( $tblPersonDebtor));
             if (($address = Management::servicePerson()->entityAddressAllByPerson( $tblPersonDebtor)))
             {
                 // TODO address type invoice

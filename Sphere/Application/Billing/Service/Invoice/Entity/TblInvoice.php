@@ -20,6 +20,7 @@ class TblInvoice extends AbstractEntity
 {
     const ATTR_IS_PAID = 'IsPaid';
     const ATTR_IS_VOID = 'IsVoid';
+    const ATTR_DEBTOR_NUMBER = 'DebtorNumber';
 
     /**
      * @Column(type="boolean")

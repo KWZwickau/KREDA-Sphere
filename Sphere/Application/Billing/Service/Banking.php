@@ -406,7 +406,7 @@ class Banking extends EntityAction
         }
         else
         {
-            return $tblDebtor->getLeadTimeFollow();
+            return $tblDebtor->getLeadTimeFirst();
         }
     }
 
