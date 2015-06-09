@@ -27,6 +27,9 @@ abstract class EntitySchema extends AbstractService
         $tblInvoiceItem = $this->setTableInvoiceItem( $Schema, $tblInvoice);
         $this->setTableInvoiceAccount( $Schema, $tblInvoiceItem );
 
+        $tblTempInvoice = $this->setTableTempInvoice( $Schema );
+        $this->setTableTempInvoiceCommodity( $Schema, $tblTempInvoice );
+
         /**
          * Migration & Protocol
          */
@@ -153,6 +156,47 @@ abstract class EntitySchema extends AbstractService
         }
 
         $this->schemaTableAddForeignKey( $Table, $tblInvoiceItem );
+
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     *
+     * @return Table
+     */
+    private function setTableTempInvoice( Schema &$Schema )
+    {
+        $Table = $this->schemaTableCreate( $Schema, 'tblTempInvoice');
+
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblTempInvoice', 'serviceManagement_Person' ))
+        {
+            $Table->addColumn( 'serviceManagement_Person', 'bigint');
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblTempInvoice', 'serviceBilling_Debtor' ))
+        {
+            $Table->addColumn( 'serviceBilling_Debtor', 'bigint');
+        }
+
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table $tblTempInvoice
+     *
+     * @return Table
+     */
+    private function setTableTempInvoiceCommodity( Schema &$Schema, Table $tblTempInvoice )
+    {
+        $Table = $this->schemaTableCreate( $Schema, 'tblTempInvoiceCommodity');
+
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblTempInvoiceCommodity', 'serviceBilling_Commodity' ))
+        {
+            $Table->addColumn( 'serviceBilling_Commodity', 'bigint' );
+        }
+
+        $this->schemaTableAddForeignKey( $Table, $tblTempInvoice );
 
         return $Table;
     }
