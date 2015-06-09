@@ -58,8 +58,11 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','IBAN' )){
             $Table->addColumn( 'IBAN', 'string' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','SWIFT' )){
-            $Table->addColumn( 'SWIFT', 'string' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','BIC' )){
+            $Table->addColumn( 'BIC', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','Owner' )){
+            $Table->addColumn( 'Owner', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','Description' )){
             $Table->addColumn( 'Description', 'string' );

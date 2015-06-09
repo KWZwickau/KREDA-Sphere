@@ -263,7 +263,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return TblDebtor
      */
-    protected function actionAddDebtor($DebtorNumber, $LeadTimeFirst, $LeadTimeFollow, $IBAN, $SWIFT, $Description, $ServiceManagement_Person )
+    protected function actionAddDebtor($DebtorNumber, $LeadTimeFirst, $LeadTimeFollow, $IBAN, $BIC, $Owner, $Description, $ServiceManagement_Person )
     {
 
         $Manager = $this->getEntityManager();
@@ -273,7 +273,8 @@ abstract class EntityAction extends EntitySchema
         $Entity->setLeadTimeFollow( $LeadTimeFollow );
         $Entity->setDebtorNumber( $DebtorNumber );
         $Entity->setIBAN( $IBAN );
-        $Entity->setSWIFT( $SWIFT );
+        $Entity->setBIC( $BIC );
+        $Entity->setOwner( $Owner );
         $Entity->setDescription( $Description );
         $Entity->setServiceManagement_Person( $ServiceManagement_Person );
 

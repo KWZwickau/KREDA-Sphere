@@ -192,14 +192,14 @@ class Banking extends EntityAction
             $View->setError('Debtor[LeadTimeFollow]', 'Bitte geben sie eine Zahl an.');
             $Error = true;
         }
-        if (isset($Debtor['IBAN']) && empty($Debtor['IBAN'])) {
-            $View->setError('Debtor[IBAN]', 'Bitte geben sie eine IBAN an.');
-            $Error = true;
-        }
-        if (isset($Debtor['SWIFT']) && empty($Debtor['SWIFT'])) {
-            $View->setError('Debtor[SWIFT]', 'Bitte geben sie eine SWIFT an.');
-            $Error = true;
-        }
+//        if (isset($Debtor['IBAN']) && empty($Debtor['IBAN'])) {
+//            $View->setError('Debtor[IBAN]', 'Bitte geben sie eine IBAN an.');
+//            $Error = true;
+//        }
+//        if (isset($Debtor['BIC']) && empty($Debtor['BIC'])) {
+//            $View->setError('Debtor[BIC]', 'Bitte geben sie eine SWIFT an.');
+//            $Error = true;
+//        }
 //        if (isset($Debtor['Description']) && empty($Debtor['Description'])) {
 //            $View->setError('Debtor[Description]', 'Bitte geben sie eine Beschreibung an.');
 //            $Error = true;
@@ -211,7 +211,8 @@ class Banking extends EntityAction
                 $Debtor['LeadTimeFirst'],
                 $Debtor['LeadTimeFollow'],
                 $Debtor['IBAN'],
-                $Debtor['SWIFT'],
+                $Debtor['BIC'],
+                $Debtor['Owner'],
                 $Debtor['Description'],
                 Management::servicePerson()->entityPersonById( $Id) );
             if(!empty($Debtor['Reference']))

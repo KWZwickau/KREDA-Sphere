@@ -452,11 +452,14 @@ class Banking extends AbstractFrontend
                                                 new TextField( 'Debtor[IBAN]', 'XX XX XXXXXXXX XXXXXXXXXX', 'IBAN', new ConversationIcon()
                                                 ), 6),
                                             new FormColumn(
-                                                new TextField( 'Debtor[SWIFT]', 'XXXX XX XX XXX', 'SWIFT', new ConversationIcon()
+                                                new TextField( 'Debtor[BIC]', 'XXXX XX XX XXX', 'BIC', new ConversationIcon()
+                                                ), 6),
+                                            new FormColumn(
+                                                new TextField( 'Debtor[Owner]', 'Vorname Nachname', 'Inhaber', new ConversationIcon()
                                                 ), 6),
                                             new FormColumn(
                                                 new TextField( 'Debtor[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                                                ), 12),
+                                                ), 6),
                                             new FormColumn(
                                                 new TextField( 'Debtor[Reference]', 'Referenznummer', 'Referenz', new ConversationIcon()
                                                 ), 12),
@@ -507,11 +510,14 @@ class Banking extends AbstractFrontend
                                                 new TextField( 'Debtor[IBAN]', 'XX XX XXXXXXXX XXXXXXXXXX', 'IBAN', new ConversationIcon()
                                                 ), 6),
                                             new FormColumn(
-                                                new TextField( 'Debtor[SWIFT]', 'XXXX XX XX XXX', 'SWIFT', new ConversationIcon()
+                                                new TextField( 'Debtor[BIC]', 'XXXX XX XX XXX', 'BIC', new ConversationIcon()
+                                                ), 6),
+                                            new FormColumn(
+                                                new TextField( 'Debtor[Owner]', 'Vorname Nachname', 'Inhaber', new ConversationIcon()
                                                 ), 6),
                                             new FormColumn(
                                                 new TextField( 'Debtor[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                                                ), 12),
+                                                ), 6),
                                             new FormColumn(
                                                 new TextField( 'Debtor[Reference]', 'Reference', 'Reference', new ConversationIcon()
                                                 ), 12),
@@ -530,8 +536,9 @@ class Banking extends AbstractFrontend
                                             new FormColumn( array(
                                                 new TableData( $tblDebtor, null, array(
                                                     'DebtorNumber' => 'Debitorennummer',
-                                                    'LeadTimeFirst' => 'Ersteinzug',
-                                                    'LeadTimeFollow' => 'Folgeeinzug'
+                                                    'IBAN' => 'International Bank Account Number (IBAN)',
+                                                    'BIC' => 'Bank Identifier Code (BIC)',
+                                                    'Owner' => 'Inhaber'
                                                 ))
                                             ))
                                         ))

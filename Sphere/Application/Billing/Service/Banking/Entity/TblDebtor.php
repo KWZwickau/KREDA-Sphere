@@ -39,7 +39,11 @@ class TblDebtor extends AbstractEntity
     /**
      * @Column(type="string")
      */
-    protected $SWIFT;
+    protected $BIC;
+    /**
+     * @Column(type="string")
+     */
+    protected $Owner;
     /**
      * @Column(type="string")
      */
@@ -130,19 +134,35 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @return string $SWIFT
+     * @return string $bIC
      */
-    public function getSWIFT()
+    public function getBIC()
     {
-        return $this->getSWIFT();
+        return $this->BIC;
     }
 
     /**
-     * @param string $sWIFT
+     * @param string $bIC
      */
-    public function setSWIFT( $sWIFT )
+    public function setBIC( $bIC )
     {
-        $this->SWIFT = $sWIFT;
+        $this->BIC = $bIC;
+    }
+
+    /**
+     * @return string $owner
+     */
+    public function getOwner()
+    {
+        return $this->Owner;
+    }
+
+    /**
+     * @param string $owner
+     */
+    public function setOwner( $owner )
+    {
+        $this->Owner = $owner;
     }
 
     /**
@@ -154,11 +174,11 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @param string $sWIFT
+     * @param string $description
      */
-    public function setDescription($sWIFT)
+    public function setDescription($description)
     {
-        $this->Description = $sWIFT;
+        $this->Description = $description;
     }
 
 }
