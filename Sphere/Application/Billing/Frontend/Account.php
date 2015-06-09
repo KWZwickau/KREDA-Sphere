@@ -40,7 +40,7 @@ class Account extends AbstractFrontend
         $View->setDescription( 'Übersicht' );
         $View->setMessage( 'Zeigt die verfügbaren Finanzbuchhaltungskonten an' );
         $View->addButton(
-            new Primary( 'FIBU-Konto Anlegen', '/Sphere/Billing/Account/Create', new PlusIcon() )
+            new Primary( 'FIBU-Konto anlegen', '/Sphere/Billing/Account/Create', new PlusIcon() )
         );
 
         $tblAccountAll = Billing::serviceAccount()->entityAccountAll();
@@ -54,31 +54,21 @@ class Account extends AbstractFrontend
                 if( $tblAccount->getIsActive()=== true )
                 {
                     $tblAccount->Activity = new \KREDA\Sphere\Client\Frontend\Message\Type\Success( 'Aktiviert' );
-                }
-                else
-                {
-                    $tblAccount->Activity = new \KREDA\Sphere\Client\Frontend\Message\Type\Danger( 'Deaktiviert' );
-                }
-
-
-                if($tblAccount->getIsActive() === false)
-                {
-                    $tblAccount->Option =
-                        (new Success( 'Aktivieren', '/Sphere/Billing/Account/Activate',
-                            new OkIcon(), array(
-                                'Id' => $tblAccount->getId()
-                            ) ) )->__toString();
-                }
-                else
-                {
                     $tblAccount->Option =
                         (new Danger( 'Deaktivieren', '/Sphere/Billing/Account/Deactivate',
                             new DisableIcon(), array(
                                 'Id' => $tblAccount->getId()
                             ) ) )->__toString();
                 }
-
-
+                else
+                {
+                    $tblAccount->Activity = new \KREDA\Sphere\Client\Frontend\Message\Type\Danger( 'Deaktiviert' );
+                    $tblAccount->Option =
+                        (new Success( 'Aktivieren', '/Sphere/Billing/Account/Activate',
+                            new OkIcon(), array(
+                                'Id' => $tblAccount->getId()
+                            ) ) )->__toString();
+                }
             });
         }
         $View->setContent(
@@ -86,9 +76,9 @@ class Account extends AbstractFrontend
                 array(
                     'Number' => 'Kennziffer',
                     'Description' => 'Beschreibung',
-                    'Taxes' => 'Mehrwertsteuer',
-                    'Code' => 'Code',
                     'Typ' => 'Konto',
+                    'Taxes' => 'MwSt.',
+                    'Code' => 'Code',
                     'Activity' => 'Status',
                     'Option' => 'Optionen'
                 )
@@ -143,27 +133,29 @@ class Account extends AbstractFrontend
             new Form( array(
                 new FormGroup( array(
                     new FormRow( array(
-
                         new FormColumn(
                             new TextField( 'Account[Number]', 'Kennziffer', 'Kennziffer', new ConversationIcon()
                             ), 6),
                         new FormColumn(
                             new TextField( 'Account[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                            ), 6),
-                        )),
+                            ), 6
+                        )
+                    )),
                     new FormRow( array(
                         new FormColumn(
                             new SelectBox( 'Account[Key]', 'Mehrwertsteuer',
-                                array('Value' => $tblAccountKey
-                            ) )
-                            , 6 ),
+                                array( 'Value' => $tblAccountKey )
+                            ), 6
+                        ),
                         new FormColumn(
                             new SelectBox( 'Account[Type]', 'Typ',
-                                array('Name' => $tblAccountType
-                            ) )
-                            , 6 )
-                    ) )
-                ))),  new SubmitPrimary( 'Hinzufügen' )), $Account ));
+                                array( 'Name' => $tblAccountType )
+                            ), 6
+                        )
+                    ))
+                ))
+            ),  new SubmitPrimary( 'Hinzufügen' )), $Account )
+        );
 
         return $View;
     }
@@ -178,9 +170,6 @@ class Account extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Account' );
         $View->setDescription( 'Bearbeiten' );
-
-        $tblAccountKey = Billing::serviceAccount()->entityAccountKeyAll();
-        $tblAccountType = Billing::serviceAccount()->entityAccountTypeAll();
 
         if (empty( $Id )) {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
@@ -204,29 +193,34 @@ class Account extends AbstractFrontend
                             new FormRow( array(
                                 new FormColumn(
                                     new TextField( 'Account[Number]', 'Kennziffer', 'Kennziffer', new ConversationIcon()
-                                    ), 5 ),
+                                    ), 5
+                                ),
                                 new FormColumn(
                                     new TextField( 'Account[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                                    ), 5 ),
+                                    ), 5
+                                ),
                                 new FormColumn(
                                     new TextField( 'Account[IsActive]', 'Aktiv', 'Aktiv', new ConversationIcon()
-                                    ), 2 )
-                            ) ),
-                                new FormRow( array(
-                                    new FormColumn(
-                                        new SelectBox( 'Account[tblAccountKey]', 'Schlüssel', array(
-                                            'Value' => Billing::serviceAccount()->entityAccountKeyAll()
-                                        ) )
-                                        , 2 ),
-                                    new FormColumn(
-                                        new SelectBox( 'Account[tblAccountType]', 'Kontoart', array(
-                                            'Name' => Billing::serviceAccount()->entityAccountTypeAll()
-                                        ) )
-                                        , 2 )
-                            ) ),
-
-                        ))), new SubmitPrimary( 'Änderungen speichern' )
-                    ), $tblAccount, $Account));
+                                    ), 2
+                                )
+                            )),
+                            new FormRow( array(
+                                new FormColumn(
+                                    new SelectBox( 'Account[tblAccountKey]', 'Schlüssel',
+                                        array( 'Value' => Billing::serviceAccount()->entityAccountKeyAll()
+                                        )
+                                    ), 2
+                                ),
+                                new FormColumn(
+                                    new SelectBox( 'Account[tblAccountType]', 'Kontoart',
+                                        array('Name' => Billing::serviceAccount()->entityAccountTypeAll()
+                                        )
+                                    ), 2
+                                )
+                            )),
+                        ))
+                    ), new SubmitPrimary( 'Änderungen speichern' )), $tblAccount, $Account)
+                );
             }
         }
 
