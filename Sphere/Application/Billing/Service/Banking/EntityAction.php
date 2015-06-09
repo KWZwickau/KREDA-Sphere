@@ -1,7 +1,9 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Banking;
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblReference;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
@@ -146,6 +148,17 @@ abstract class EntityAction extends EntitySchema
     {
         $Manager = $this->getEntityManager();
 
+        $EntityReferenceList = $Manager->getEntity( 'TblReference' )
+            ->findBy( array(TblReference::ATTR_TBL_DEBTOR => $tblDebtor->getId() ) );
+        if (null !== $EntityReferenceList)
+        {
+            foreach($EntityReferenceList as $EntityReference)
+            {
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $EntityReference );
+                $Manager->killEntity( $EntityReference );
+            }
+        }
+
         $EntityItemsDebtorCommodity = $Manager->getEntity( 'TblDebtorCommodity' )
             ->findBy( array(TblDebtorCommodity::ATTR_TBL_DEBTOR => $tblDebtor->getId() ) );
         if (null !== $EntityItemsDebtorCommodity)
@@ -180,6 +193,53 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblDebtor $tblDebtor
+     *
+     * @return bool
+     */
+    protected function actionRemoveReference( TblDebtor $tblDebtor )
+    {
+        $Manager = $this->getEntityManager();
+        $EntityList = $Manager->getEntity( 'TblReference' )->findBy( array( TblReference::ATTR_TBL_DEBTOR => $tblDebtor->getId() ) );
+
+        if (null !== $EntityList)
+        {
+            foreach ($EntityList as $Entity)
+            {
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+                $Manager->killEntity( $Entity );
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     *
+     * @return bool
+     */
+    protected function actionDeactivateReference( TblDebtor $tblDebtor )
+    {
+        $Manager = $this->getEntityManager();
+        $Reference = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
+        /** @var TblReference $Entity */
+        $Entity = $Manager->getEntityById( 'TblReference', $Reference->getId() );
+        print_r( $Entity );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setIsVoid( false );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
      * @param TblCommodity $tblCommodity
      *
      * @return TblDebtorCommodity[]|bool
@@ -196,11 +256,14 @@ abstract class EntityAction extends EntitySchema
      * @param $LeadTimeFollow
      * @param $LeadTimeFirst
      * @param $DebtorNumber
+     * @param $IBAN
+     * @param $SWIFT
+     * @param $Description
      * @param $ServiceManagement_Person
      *
      * @return TblDebtor
      */
-    protected function actionAddDebtor($DebtorNumber, $LeadTimeFirst, $LeadTimeFollow, $ServiceManagement_Person )
+    protected function actionAddDebtor($DebtorNumber, $LeadTimeFirst, $LeadTimeFollow, $IBAN, $SWIFT, $Description, $ServiceManagement_Person )
     {
 
         $Manager = $this->getEntityManager();
@@ -209,6 +272,9 @@ abstract class EntityAction extends EntitySchema
         $Entity->setLeadTimeFirst( $LeadTimeFirst );
         $Entity->setLeadTimeFollow( $LeadTimeFollow );
         $Entity->setDebtorNumber( $DebtorNumber );
+        $Entity->setIBAN( $IBAN );
+        $Entity->setSWIFT( $SWIFT );
+        $Entity->setDescription( $Description );
         $Entity->setServiceManagement_Person( $ServiceManagement_Person );
 
         $Manager->saveEntity( $Entity );
@@ -224,6 +290,33 @@ abstract class EntityAction extends EntitySchema
     protected function entityDebtorAll()
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblDebtor' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    protected function actionAddReference( $Reference, $DebtorNumber  )
+    {
+        $Manager = $this->getEntityManager();
+
+        $Entity = new TblReference();
+        $Entity->setReference( $Reference );
+        $Entity->setIsVoid( true );
+        $Entity->setServiceTblDebtor( Billing::serviceBanking()->entityDebtorByDebtorNumber( $DebtorNumber ) );
+        $Manager->saveEntity( $Entity );
+
+        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+
+        return $Entity;
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     *
+     * @return bool|TblReference
+     */
+    protected function entityReferenceByDebtor( TblDebtor $tblDebtor )
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblReference' )
+            ->findOneBy( array( TblReference::ATTR_TBL_DEBTOR => $tblDebtor->getId(), TblReference::ATTR_IS_VOID => true ) );
         return ( null === $Entity ? false : $Entity );
     }
 

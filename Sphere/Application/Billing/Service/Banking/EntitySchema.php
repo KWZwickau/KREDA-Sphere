@@ -28,7 +28,7 @@ abstract class EntitySchema extends AbstractService
 
         $tblDebtor=$this->setTableDebtor( $Schema );
         $this->setTableDebtorCommodity( $Schema, $tblDebtor );
-
+        $this->setTableReference( $Schema, $tblDebtor );
 
         /**
          * Migration & Protocol
@@ -55,6 +55,15 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','LeadTimeFollow' )){
             $Table->addColumn( 'LeadTimeFollow', 'integer' );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','IBAN' )){
+            $Table->addColumn( 'IBAN', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','SWIFT' )){
+            $Table->addColumn( 'SWIFT', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','Description' )){
+            $Table->addColumn( 'Description', 'string' );
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','ServiceManagement_Person' )){
             $Table->addColumn( 'ServiceManagement_Person', 'bigint', array('notnull' => false) );
         }
@@ -75,6 +84,26 @@ abstract class EntitySchema extends AbstractService
             $Table->addColumn( 'serviceBilling_Commodity', 'bigint' );
         }
 
+        $this->schemaTableAddForeignKey( $Table, $tblDebtor );
+        return $Table;
+    }
+
+    /**
+     * @param Schema $Schema
+     * @param Table $tblDebtor
+     *
+     * @return Table
+     */
+    private function setTableReference( Schema &$Schema, Table $tblDebtor )
+    {
+        $Table = $this->schemaTableCreate( $Schema, 'tblReference');
+
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblReference', 'Reference')){
+            $Table->addColumn( 'Reference', 'string' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblReference', 'isVoid')){
+            $Table->addColumn( 'isVoid', 'boolean' );
+        }
         $this->schemaTableAddForeignKey( $Table, $tblDebtor );
         return $Table;
     }

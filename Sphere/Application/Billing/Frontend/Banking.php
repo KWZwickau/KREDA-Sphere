@@ -54,17 +54,41 @@ class Banking extends AbstractFrontend
 
         if (!empty( $tblDebtorAll )) {
             array_walk( $tblDebtorAll, function ( TblDebtor &$tblDebtor ) {
-
+                $Reference = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
                 $tblDebtor->Person = Management::servicePerson()->entityPersonById($tblDebtor->getServiceManagement_Person())->getFullName();
-                $tblDebtor->Option =
-                    (new Danger( 'Löschen', '/Sphere/Billing/Banking/Delete',
-                        new RemoveIcon(), array(
-                            'Id' => $tblDebtor->getId()
-                        ) ) )->__toString().
-                    (new Primary( 'Leistung auswählen', '/Sphere/Billing/Banking/Select/Commodity',
-                        new ListIcon(), array(
-                            'Id' => $tblDebtor->getId()
-                        ) ))->__toString();
+                if (!empty($Reference))
+                {
+                    $tblDebtor->Reference = $Reference->getReference() ;
+                    $tblDebtor->Option =
+                        (new Danger( 'Löschen', '/Sphere/Billing/Banking/Delete',
+                            new RemoveIcon(), array(
+                                'Id' => $tblDebtor->getId()
+                            ) ) )->__toString().
+                        (new Primary( 'Leistung auswählen', '/Sphere/Billing/Banking/Select/Commodity',
+                            new ListIcon(), array(
+                                'Id' => $tblDebtor->getId()
+                            ) ))->__toString().
+                        (new Danger( 'Referenz deaktivieren', '/Sphere/Billing/Banking/Select/Reference/Deactivate',
+                            new RemoveIcon(), array(
+                                'Id' => $tblDebtor->getId()
+                            ) ))->__toString();
+                }
+                else{
+                    $tblDebtor->Reference = '';
+                    $tblDebtor->Option =
+                        (new Danger( 'Löschen', '/Sphere/Billing/Banking/Delete',
+                            new RemoveIcon(), array(
+                                'Id' => $tblDebtor->getId()
+                            ) ) )->__toString().
+                        (new Primary( 'Leistung auswählen', '/Sphere/Billing/Banking/Select/Commodity',
+                            new ListIcon(), array(
+                                'Id' => $tblDebtor->getId()
+                            ) ))->__toString().
+                        (new Primary( 'Referenz hinzufügen', '/Sphere/Billing/Banking/Select/Reference',
+                            new ListIcon(), array(
+                                'Id' => $tblDebtor->getId()
+                            ) ))->__toString();
+                }
             } );
         }
 
@@ -79,11 +103,14 @@ class Banking extends AbstractFrontend
                                     'LeadTimeFirst' => 'Ersteinzug',
                                     'LeadTimeFollow' => 'Folgeeinzug',
                                     'Person' => 'Person',
+                                    'Reference' => 'Referenz',
                                     'Option' => 'Bearbeiten'
-                                )),
+                                ))
+                            ))
                         ))
-                    )),
-                )))));
+                    ))
+                ))
+            );
 
         return $View;
     }
@@ -296,6 +323,87 @@ class Banking extends AbstractFrontend
     }
 
     /**
+     * @param $Id
+     * @param $Reference
+     *
+     * @return Stage
+     */
+    public static function frontendBankingSelectReference( $Id, $Reference )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Referenz' );
+        $View->setDescription( 'hinzufügen' );
+        $Debtor = Billing::serviceBanking()->entityDebtorById( $Id );
+        $Person = Management::servicePerson()->entityPersonById( $Debtor->getServiceManagement_Person()->getId() )->getFullName();
+        $DebtorNumber = $Debtor->getDebtorNumber();
+        $View->setMessage( $Person );
+        $View->setContent(
+            new Layout( array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'Debitor', $Person, LayoutPanel::PANEL_TYPE_PRIMARY
+                            )),6),
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'Debitornummer', $DebtorNumber, LayoutPanel::PANEL_TYPE_PRIMARY
+                            )),6),
+                    ))
+                )),
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                                Billing::serviceBanking()->executeAddReference(
+                                    new Form( array(
+                                        new FormGroup( array(
+                                            new FormRow( array(
+                                                new FormColumn(
+                                                    new TextField( 'Reference[Reference]', 'Referenznummer', 'Referenz', new ConversationIcon()
+                                                    ), 12),
+                                            )),
+                                        ))),  new SubmitPrimary( 'Hinzufügen' )), $Debtor, $Reference ))
+                        )
+                    ))
+                ))
+            )) );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBankingSelectReferenceDelete( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Referenz' );
+        $View->setDescription( 'entfernt' );
+        $Debtor = Billing::serviceBanking()->entityDebtorById( $Id );
+        $View->setContent(
+            Billing::serviceBanking()->executeDeleteReference( $Debtor ) );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBankingReferenceDeactivate( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Referenz' );
+        $View->setDescription( 'deaktiviert' );
+
+        $tblReference = Billing::serviceBanking()->entityDebtorById( $Id );
+        $View->setContent(Billing::serviceBanking()->setBankingReferenceDeactivate( $tblReference ));
+
+        return $View;
+    }
+
+    /**
      * @param $Debtor
      * @param $Id
      *
@@ -313,56 +421,101 @@ class Banking extends AbstractFrontend
         if ( Billing::serviceBanking()->entityDebtorByServiceManagement_Person( $Id ) == false )
         {
             $View->setContent(
-                Billing::serviceBanking()->executeAddDebtor(
-                    new Form( array(
-                        new FormGroup( array(
-                            new FormRow( array(
+                new Layout( array(
+                    new LayoutGroup( array(
+                        new LayoutRow( array(
+                            new LayoutColumn( array(
+                                new LayoutPanel( 'Debitor', $Person, LayoutPanel::PANEL_TYPE_PRIMARY
+                                )),12)
+                        ))
+                    )),
+                    new LayoutGroup( array(
+                        new LayoutRow( array(
+                            new LayoutColumn( array(
+                            Billing::serviceBanking()->executeAddDebtor(
+                            new Form( array(
+                                new FormGroup( array(
+                                    new FormRow( array(
 
-                                new FormColumn(
-                                    new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new ConversationIcon()
-                                    ), 12),
-                                new FormColumn(
-                                    new TextField( 'Debtor[LeadTimeFirst]', 'Vorlaufzeit in Tagen', 'Ersteinzug', new ConversationIcon()
-                                    ), 6),
-                                new FormColumn(
-                                    new TextField( 'Debtor[LeadTimeFollow]', 'Vorlaufzeit in Tagen', 'Folgeeinzug', new ConversationIcon()
-                                    ), 6),
-                )),
-            ))),  new SubmitPrimary( 'Hinzufügen' )), $Debtor, $Id ));
+                                        new FormColumn(
+                                            new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new ConversationIcon()
+                                            ), 12),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[LeadTimeFirst]', 'Vorlaufzeit in Tagen', 'Ersteinzug', new ConversationIcon()
+                                            ), 6),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[LeadTimeFollow]', 'Vorlaufzeit in Tagen', 'Folgeeinzug', new ConversationIcon()
+                                            ), 6),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[IBAN]', 'XX XX XXXXXXXX XXXXXXXXXX', 'IBAN', new ConversationIcon()
+                                            ), 6),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[SWIFT]', 'XXXX XX XX XXX', 'SWIFT', new ConversationIcon()
+                                            ), 6),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
+                                            ), 12),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[Reference]', 'Referenznummer', 'Referenz', new ConversationIcon()
+                                            ), 12),
+                                        )),
+                                    ))),
+                                new SubmitPrimary( 'Hinzufügen' )),
+                            $Debtor, $Id )
+                            ))
+                        ))
+                    ))
+                ))
+            );
         }
         else{
 
-            $tblDebtor = Billing::serviceBanking()->entityDebtorByServiceManagement_Person( $Id );
-
             $View->setContent(
-                Billing::serviceBanking()->executeAddDebtor(
-                    new Form( array(
-                        new FormGroup( array(
-                            new FormRow( array(
+                new Layout( array(
+                    new LayoutGroup( array(
+                        new LayoutRow( array(
+                            new LayoutColumn( array(
+                                new LayoutPanel( 'Debitor', $Person, LayoutPanel::PANEL_TYPE_PRIMARY
+                                )),12),
+                        ))
+                    )),
+                    new LayoutGroup( array(
+                        new LayoutRow( array(
+                            new LayoutColumn( array(
+                        Billing::serviceBanking()->executeAddDebtor(
+                            new Form( array(
+                                new FormGroup( array(
+                                    new FormRow( array(
 
-                                new FormColumn(
-                                    new TableData( $tblDebtor, null,
-                                    array( 'DebtorNumber' => 'Debitorennummer',
-                                           'LeadTimeFirst' => 'Ersteinzug',
-                                           'LeadTimeFollow' => 'Folgeeinzug'
-                                    )
-                                )))))),
-                        new FormGroup( array(
-                            new FormRow( array(
-
-                                new FormColumn(
-                                    new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new ConversationIcon()
-                                    ), 12),
-                                new FormColumn(
-                                    new TextField( 'Debtor[LeadTimeFirst]', 'Vorlaufzeit in Tagen', 'Ersteinzug', new ConversationIcon()
-                                    ), 6),
-                                new FormColumn(
-                                    new TextField( 'Debtor[LeadTimeFollow]', 'Vorlaufzeit in Tagen', 'Folgeeinzug', new ConversationIcon()
-                                    ), 6),
-                            )),
-                        )),
-
-                    ),  new SubmitPrimary( 'Hinzufügen' )), $Debtor, $Id ));
+                                        new FormColumn(
+                                            new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new ConversationIcon()
+                                            ), 12),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[LeadTimeFirst]', 'Vorlaufzeit in Tagen', 'Ersteinzug', new ConversationIcon()
+                                            ), 6),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[LeadTimeFollow]', 'Vorlaufzeit in Tagen', 'Folgeeinzug', new ConversationIcon()
+                                            ), 6),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[IBAN]', 'XX XX XXXXXXXX XXXXXXXXXX', 'IBAN', new ConversationIcon()
+                                            ), 6),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[SWIFT]', 'XXXX XX XX XXX', 'SWIFT', new ConversationIcon()
+                                            ), 6),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
+                                            ), 12),
+                                        new FormColumn(
+                                            new TextField( 'Debtor[Reference]', 'Reference', 'Reference', new ConversationIcon()
+                                            ), 12),
+                                    )),
+                                )),
+                            ),  new SubmitPrimary( 'Hinzufügen' )), $Debtor, $Id )
+                                ))
+                        ))
+                    ))
+                ))
+            );
         }
 
         return $View;

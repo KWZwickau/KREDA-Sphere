@@ -32,6 +32,18 @@ class TblDebtor extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $ServiceManagement_Person;
+    /**
+     * @Column(type="string")
+     */
+    protected $IBAN;
+    /**
+     * @Column(type="string")
+     */
+    protected $SWIFT;
+    /**
+     * @Column(type="string")
+     */
+    protected $Description;
 
     /**
      * @return integer $LeadTimeFirst
@@ -99,6 +111,54 @@ class TblDebtor extends AbstractEntity
     public function setServiceManagement_Person( TblPerson $serviceManagement_Person )
     {
         $this->ServiceManagement_Person = ( null === $serviceManagement_Person ? null : $serviceManagement_Person->getId() );
+    }
+
+    /**
+     * @return string $IBAN
+     */
+    public function getIBAN()
+    {
+        return $this->IBAN;
+    }
+
+    /**
+     * @param string $iBAN
+     */
+    public function setIBAN($iBAN)
+    {
+        $this->IBAN = $iBAN;
+    }
+
+    /**
+     * @return string $SWIFT
+     */
+    public function getSWIFT()
+    {
+        return $this->getSWIFT();
+    }
+
+    /**
+     * @param string $sWIFT
+     */
+    public function setSWIFT( $sWIFT )
+    {
+        $this->SWIFT = $sWIFT;
+    }
+
+    /**
+     * @return string $Description
+     */
+    public function getDescription()
+    {
+        return $this->Description;
+    }
+
+    /**
+     * @param string $sWIFT
+     */
+    public function setDescription($sWIFT)
+    {
+        $this->Description = $sWIFT;
     }
 
 }

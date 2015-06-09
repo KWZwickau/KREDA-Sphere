@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Billing\Service;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblReference;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Banking\EntityAction;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
@@ -191,16 +192,128 @@ class Banking extends EntityAction
             $View->setError('Debtor[LeadTimeFollow]', 'Bitte geben sie eine Zahl an.');
             $Error = true;
         }
+        if (isset($Debtor['IBAN']) && empty($Debtor['IBAN'])) {
+            $View->setError('Debtor[IBAN]', 'Bitte geben sie eine IBAN an.');
+            $Error = true;
+        }
+        if (isset($Debtor['SWIFT']) && empty($Debtor['SWIFT'])) {
+            $View->setError('Debtor[SWIFT]', 'Bitte geben sie eine SWIFT an.');
+            $Error = true;
+        }
+//        if (isset($Debtor['Description']) && empty($Debtor['Description'])) {
+//            $View->setError('Debtor[Description]', 'Bitte geben sie eine Beschreibung an.');
+//            $Error = true;
+//        }
 
         if (!$Error) {
 
-            $this->actionAddDebtor( $Debtor['DebtorNumber'], $Debtor['LeadTimeFirst'], $Debtor['LeadTimeFollow'], Management::servicePerson()->entityPersonById( $Id) );
+            $this->actionAddDebtor( $Debtor['DebtorNumber'],
+                $Debtor['LeadTimeFirst'],
+                $Debtor['LeadTimeFollow'],
+                $Debtor['IBAN'],
+                $Debtor['SWIFT'],
+                $Debtor['Description'],
+                Management::servicePerson()->entityPersonById( $Id) );
+            if(!empty($Debtor['Reference']))
+            {
+                $this->actionAddReference( $Debtor['Reference'], $Debtor['DebtorNumber'] );
+            }
             return new Success( 'Der Debitor ist erfasst worden.' )
             .new Redirect( '/Sphere/Billing/Banking', 2 );
         }
 
         return $View;
 
+    }
+
+    /**
+     * @param AbstractType $View
+     * @param TblDebtor $Debtor
+     * @param $Reference
+     * @return AbstractType|string
+     */
+    public function executeAddReference(
+        AbstractType &$View = null,
+        TblDebtor $Debtor,
+        $Reference )
+    {
+
+        /**
+         * Skip to Frontend
+         */
+        if ( null === $Reference){
+            return $View;
+        }
+
+        $Error = false;
+        if( Billing::serviceBanking()->entityReferenceByDebtor( $Debtor ) ){
+            $View->setError( 'Reference[Reference]', 'Der Debitor besitzt eine gültige Referenz.' );
+            $Error = true;
+        }
+        if (isset($Reference['Reference']) && empty( $Reference['Reference'])) {
+            $View->setError( 'Reference[Reference]', 'Bitte geben sie eine Referenznummer an.' );
+            $Error = true;
+        }
+
+        if (!$Error) {
+
+            $this->actionAddReference( $Reference['Reference'],
+                $Debtor->getDebtorNumber() );
+
+            return new Success( 'Die Referenz ist erfasst worden.' )
+            .new Redirect( '/Sphere/Billing/Banking', 2 );
+        }
+
+        return $View;
+
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     *
+     * @return string
+     */
+    public function executeDeleteReference( TblDebtor $tblDebtor )
+    {
+        if (null === $tblDebtor)
+        {
+            return '';
+        }
+
+        if ($this->actionRemoveReference( $tblDebtor ))
+        {
+            return new Success( 'Die Referenz wurde erfolgreich entfernt.')
+            .new Redirect( '/Sphere/Billing/Banking', 2);
+        }
+        else
+        {
+            return new Danger( 'Die Referenz konnte nicht entfernt werden.' )
+            .new Redirect( '/Sphere/Billing/Banking', 2);
+        }
+
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     *
+     * @return string
+     */
+    public function setBankingReferenceDeactivate( TblDebtor $tblDebtor )
+    {
+
+        if (null === $tblDebtor)
+        {
+            return '';
+        }
+        if ($this->actionDeactivateReference( $tblDebtor )) {
+            return new Success('Die Deaktivierung ist erfasst worden')
+            . new Redirect('/Sphere/Billing/Banking', 2);
+        }
+        else
+        {
+            return new Danger( 'Die Referenz konnte nicht deaktiviert werden.' )
+            .new Redirect( '/Sphere/Billing/Banking', 2);
+        }
     }
 
     /**
@@ -236,6 +349,16 @@ class Banking extends EntityAction
     {
 
         return parent::entityDebtorAll();
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     *
+     * @return bool|TblReference
+     */
+    public function entityReferenceByDebtor ( TblDebtor $tblDebtor )
+    {
+        return parent::entityReferenceByDebtor( $tblDebtor );
     }
 
     /**

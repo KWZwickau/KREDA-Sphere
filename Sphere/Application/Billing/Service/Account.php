@@ -148,11 +148,17 @@ class Account extends EntityAction
     public function setFibuActivate( $Id )
     {
 
-        $this->actionActivateAccount( $Id );
-        return new Success( 'Die Aktivierung ist erfasst worden' )
-        .new Redirect( '/Sphere/Billing/Account', 2 );
+        if($this->actionActivateAccount( $Id ))
+        {
+            return new Success( 'Die Aktivierung ist erfasst worden.' )
+            .new Redirect( '/Sphere/Billing/Account', 2 );
+        }
+        else
+        {
+            return new Danger( 'Die Aktivierung konnte nicht erfasst werden.' )
+            .new Redirect( '/Sphere/Billing/Account', 2 );
+        }
 
-        return $View;
     }
 
     /**
@@ -162,11 +168,17 @@ class Account extends EntityAction
     public function setFibuDeactivate( $Id )
     {
 
-        $this->actionDeactivateAccount( $Id );
-        return new Success( 'Die Deaktivierung ist erfasst worden' )
-        .new Redirect( '/Sphere/Billing/Account', 2 );
+        if($this->actionDeactivateAccount( $Id ))
+        {
+            return new Success( 'Die Deaktivierung ist erfasst worden.' )
+            .new Redirect( '/Sphere/Billing/Account', 2 );
+        }
+        else
+        {
+            return ( 'Die Deaktivierung konnte nicht erfasst werden.' )
+            .new Danger( '/Sphere/Billing/Account', 2 );
+        }
 
-        return $View;
     }
 
     /**
@@ -246,24 +258,6 @@ class Account extends EntityAction
     {
 
         return parent::entityAccountAll();
-    }
-
-    /**
-     * @return bool|TblDebtor[]
-     */
-    public function entityDebtorAll()
-    {
-
-        return parent::entityDebtorAll();
-    }
-
-    /**
-     * @return bool|TblDebtor
-     */
-    public function entityDebtorById( $Id )
-    {
-
-        return parent::entityDebtorById( $Id );
     }
 
     /**

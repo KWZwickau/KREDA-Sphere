@@ -59,6 +59,19 @@ class Banking extends Common
             '/Sphere/Billing/Banking/Commodity/Add', __CLASS__.'::frontendBankingAddCommodity'
         )   ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'CommodityId', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Select/Reference', __CLASS__.'::frontendBankingSelectReference'
+        )   ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Reference', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Select/Reference/Delete', __CLASS__.'::frontendBankingSelectReferenceDelete'
+        )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Select/Reference/Deactivate', __CLASS__.'::frontendBankingReferenceDeactivate'
+        )   ->setParameterDefault( 'Id', null );
     }
 
     /**
@@ -141,6 +154,42 @@ class Banking extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBankingAddCommodity( $Id, $CommodityId );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBankingSelectReference( $Id, $Reference )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingSelectReference( $Id, $Reference );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBankingSelectReferenceDelete( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingSelectReferenceDelete( $Id );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBankingReferenceDeactivate( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingReferenceDeactivate( $Id );
     }
 
 }
