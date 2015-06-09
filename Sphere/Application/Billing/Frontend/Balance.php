@@ -68,8 +68,8 @@ class Balance extends AbstractFrontend
         }
 
         $View->setContent(
-        new TableData( $invoiceAllByIsConfirmedState, null,
-            array(
+            new TableData( $invoiceAllByIsConfirmedState, null,
+                array(
                 'Number'  => 'Nummer',
                 'InvoiceDate' => 'Rechnungsdatum',
                 'PaymentDate' => 'Zahlungsdatum',
@@ -78,9 +78,9 @@ class Balance extends AbstractFrontend
                 'PaidPayment' => 'Bezahlt',
                 'PaidInvoice' => 'Gesamt',
                 'Option' => 'Option'
-                    )
                 )
-            );
+            )
+        );
 
         return $View;
     }
