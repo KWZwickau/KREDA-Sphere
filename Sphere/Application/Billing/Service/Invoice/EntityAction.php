@@ -90,6 +90,17 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblTempInvoice $tblTempInvoice
+     * @return TblTempInvoiceCommodity[]|bool
+     */
+    protected function entityTempInvoiceCommodityAllByTempInvoice( TblTempInvoice $tblTempInvoice )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblTempInvoiceCommodity' )
+            ->findBy( array( TblTempInvoiceCommodity::ATTR_TBL_TEMP_INVOICE => $tblTempInvoice->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
      * @param TblInvoice $tblInvoice
      * @return string
      */
@@ -152,23 +163,22 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param TblBasket $tblBasket
      * @param $Date
-     * @param $TempTblInvoiceList
      *
      * @return bool
      */
     protected function actionCreateInvoiceListFromBasket(
         TblBasket $tblBasket,
-        $Date,
-        $TempTblInvoiceList
+        $Date
     )
     {
         $Manager = $this->getEntityManager();
+        $tblTempInvoiceList = $this->entityTempInvoiceAllByBasket( $tblBasket );
 
-        foreach ($TempTblInvoiceList as $TempTblInvoice)
+        foreach ($tblTempInvoiceList as $tblTempInvoice)
         {
-            $tblDebtor = Billing::serviceBanking()->entityDebtorById($TempTblInvoice['tblDebtor']);
+            $tblDebtor = $tblTempInvoice->getServiceBillingDebtor();
             $tblPersonDebtor = Management::servicePerson()->entityPersonById($tblDebtor->getServiceManagement_Person());
-            $tblPerson = Management::servicePerson()->entityPersonById($TempTblInvoice['tblPerson']);
+            $tblPerson = $tblTempInvoice->getServiceManagementPerson();
             $Entity = new TblInvoice();
             $Entity->setIsPaid( false );
             $Entity->setIsVoid( false );
@@ -211,9 +221,10 @@ abstract class EntityAction extends EntitySchema
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
 
-            foreach ($TempTblInvoice['Commodities'] as $CommodityId)
+            $tblTempInvoiceCommodityList = $this->entityTempInvoiceCommodityAllByTempInvoice( $tblTempInvoice );
+            foreach ($tblTempInvoiceCommodityList as $tblTempInvoiceCommodity)
             {
-                $tblCommodity = Billing::serviceCommodity()->entityCommodityById($CommodityId);
+                $tblCommodity = $tblTempInvoiceCommodity->getServiceBillingCommodity();
                 $tblBasketItemAllByBasketAndCommodity = Billing::serviceBasket()->entityBasketItemAllByBasketAndCommodity($tblBasket, $tblCommodity);
                 foreach ($tblBasketItemAllByBasketAndCommodity as $tblBasketItem)
                 {

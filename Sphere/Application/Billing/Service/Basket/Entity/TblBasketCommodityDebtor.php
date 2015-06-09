@@ -33,11 +33,11 @@ class TblBasketCommodityDebtor extends AbstractEntity
     protected $serviceBilling_Debtor;
 
     /**
-     * @param null|TblBasketCommodity $tblBasketCommodity
+     * @param TblBasketCommodity $tblBasketCommodity
      */
-    public function setTblBasketCommodity($tblBasketCommodity = null)
+    public function setTblBasketCommodity(TblBasketCommodity $tblBasketCommodity = null)
     {
-        $this->$tblBasketCommodity = ( null === $tblBasketCommodity ? null : $tblBasketCommodity->getId() );
+        $this->tblBasketCommodity = ( null === $tblBasketCommodity ? null : $tblBasketCommodity->getId() );
     }
 
     /**
@@ -56,7 +56,7 @@ class TblBasketCommodityDebtor extends AbstractEntity
     /**
      * @param null|TblDebtor $tblDebtor
      */
-    public function setServiceBillingDebtor($tblDebtor = null)
+    public function setServiceBillingDebtor(TblDebtor $tblDebtor = null)
     {
         $this->serviceBilling_Debtor = ( null === $tblDebtor ? null : $tblDebtor->getId() );
     }

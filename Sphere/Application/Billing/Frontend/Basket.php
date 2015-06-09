@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Billing\Module\Commodity;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketCommodityDebtor;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketPerson;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
@@ -642,13 +643,19 @@ class Basket extends AbstractFrontend
         {
             foreach ($tblBasketCommodityList as $tblBasketCommodity)
             {
+                /** @var  TblBasketCommodityDebtor[] $tblBasketCommodityDebtorList */
                 $tblBasketCommodityDebtorList = Billing::serviceBasket()->entityBasketCommodityDebtorAllByBasketCommodity( $tblBasketCommodity );
+                foreach($tblBasketCommodityDebtorList as &$tblBasketCommodityDebtor)
+                {
+                    $tblBasketCommodityDebtor->Name = $tblBasketCommodityDebtor->getServiceBillingDebtor()->getDebtorNumber() . " - " .
+                        $tblBasketCommodityDebtor->getServiceBillingDebtor()->getServiceManagement_Person()->getFullName();
+                }
 
                 $TableData[]=array(
                   'Person' => $tblBasketCommodity->getServiceManagementPerson()->getFullName(),
                   'Commodity' => $tblBasketCommodity->getServiceBillingCommodity()->getName(),
                   'Debtors' =>  (new SelectBox( 'Data['. $tblBasketCommodity->getId() .']', null,
-                          array( 'DebtorNumber' => $tblBasketCommodityDebtorList )))->__toString()
+                          array('Name'  => $tblBasketCommodityDebtorList )))->__toString()
                 );
             }
         }

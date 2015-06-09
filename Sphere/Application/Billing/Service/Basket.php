@@ -432,12 +432,30 @@ class Basket extends EntityAction
             return $View;
         }
 
-        if (!$Error) {
-            $View.= new Warning( 'Debitoren werden geprüft ...' )
-                .new Redirect( '/Sphere/Billing/Basket/Debtor/Select', 0, array(
-                    'Id' => $tblBasket->getId(),
-                    'Date' => $Basket['Date'],
+        if (!$Error)
+        {
+            if ($this->checkDebtors( $tblBasket, null))
+            {
+                if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date']))
+                {
+                    $this->actionDestroyBasket( $tblBasket );
+                    $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
+                        .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 2 );
+                }
+                else
+                {
+                    $View.= new Success( 'Die Rechnungen konnten nicht erstellt werden' )
+                        .new Redirect( '/Sphere/Billing/Basket', 2 );
+                }
+            }
+            else
+            {
+                $View.= new Warning( 'Es konnten nicht alle Debitoren eindeutig zugeordnet werden' )
+                    .new Redirect( '/Sphere/Billing/Basket/Debtor/Select', 2, array(
+                        'Id' => $tblBasket->getId(),
+                        'Date' => $Basket['Date'],
                 ));
+            }
         }
 
         return $View;
@@ -458,6 +476,14 @@ class Basket extends EntityAction
         $Data
     )
     {
+        /**
+         * Skip to Frontend
+         */
+        if (null === $Data
+        ) {
+            return $View;
+        }
+
         $tblBasket = Billing::serviceBasket()->entityBasketById($Id);
 
         if ($this->checkDebtors( $tblBasket, $Data))
@@ -473,10 +499,6 @@ class Basket extends EntityAction
                 $View.= new Success( 'Die Rechnungen konnten nicht erstellt werden' )
                     .new Redirect( '/Sphere/Billing/Basket', 2 );
             }
-        }
-        else
-        {
-            $View.= new Warning( 'Es konnten nicht alle Debitoren eindeutig zugeordnet werden' );
         }
 
         return $View;
