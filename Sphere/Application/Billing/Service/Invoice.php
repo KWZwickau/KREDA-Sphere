@@ -4,9 +4,12 @@ namespace KREDA\Sphere\Application\Billing\Service;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
+use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblTempInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\EntityAction;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
@@ -148,6 +151,16 @@ class Invoice extends EntityAction
     public  function entityInvoiceItemAllByInvoice(TblInvoice $tblInvoice)
     {
         return parent::entityInvoiceItemAllByInvoice($tblInvoice);
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     *
+     * @return bool|Invoice\Entity\TblTempInvoice[]
+     */
+    public function entityTempInvoiceAllByBasket(TblBasket $tblBasket)
+    {
+        return parent::entityTempInvoiceAllByBasket($tblBasket);
     }
 
     /**
@@ -352,5 +365,33 @@ class Invoice extends EntityAction
             .new Redirect( '/Sphere/Billing/Invoice/Edit', 2,
                 array( 'Id' => $tblInvoiceItem->getTblInvoice()->getId() ) );
         }
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @param TblPerson $tblPerson
+     * @param TblDebtor $tblDebtor
+     *
+     * @return Invoice\Entity\TblTempInvoice|null
+     */
+    public function executeCreateTempInvoice(
+        TblBasket $tblBasket,
+        TblPerson $tblPerson,
+        TblDebtor $tblDebtor
+    ) {
+        return $this->actionCreateTempInvoice( $tblBasket, $tblPerson, $tblDebtor );
+    }
+
+    /**
+     * @param TblTempInvoice $tblTempInvoice
+     * @param TblCommodity $tblCommodity
+     *
+     * @return Invoice\Entity\TblTempInvoiceCommodity|null
+     */
+    public function executeCreateTempInvoiceCommodity(
+        TblTempInvoice $tblTempInvoice,
+        TblCommodity $tblCommodity
+    ) {
+        return $this->actionCreateTempInvoiceCommodity( $tblTempInvoice, $tblCommodity );
     }
 }

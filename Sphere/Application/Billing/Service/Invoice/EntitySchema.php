@@ -169,6 +169,10 @@ abstract class EntitySchema extends AbstractService
     {
         $Table = $this->schemaTableCreate( $Schema, 'tblTempInvoice');
 
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblTempInvoice', 'serviceBilling_Basket' ))
+        {
+            $Table->addColumn( 'serviceBilling_Basket', 'bigint');
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblTempInvoice', 'serviceManagement_Person' ))
         {
             $Table->addColumn( 'serviceManagement_Person', 'bigint');

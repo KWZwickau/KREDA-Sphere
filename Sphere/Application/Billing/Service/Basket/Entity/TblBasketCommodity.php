@@ -1,5 +1,5 @@
 <?php
-namespace KREDA\Sphere\Application\Billing\Service\Invoice\Entity;
+namespace KREDA\Sphere\Application\Billing\Service\Basket\Entity;
 
 use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
@@ -8,26 +8,27 @@ use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Management\Management;
-use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
  * @Entity
- * @Table(name="tblTempInvoice")
+ * @Table(name="tblBasketCommodity")
  * @Cache(usage="NONSTRICT_READ_WRITE")
  */
-class TblTempInvoice extends AbstractEntity
+class TblBasketCommodity extends AbstractEntity
 {
-    const ATTR_SERVICE_BILLING_BASKET = 'serviceBilling_Basket';
+    const ATTR_TBL_BASKET = 'tblBasket';
     const ATTR_SERVICE_MANAGEMENT_PERSON = 'serviceManagement_Person';
-    const ATTR_SERVICE_BILLING_DEBTOR = 'serviceBilling_Debtor';
+    const ATTR_SERVICE_BILLING_COMMODITY = 'serviceBilling_Commodity';
 
     /**
      * @Column(type="bigint")
      */
-    protected $serviceBilling_Basket;
+    protected $tblBasket;
 
     /**
      * @Column(type="bigint")
@@ -37,26 +38,27 @@ class TblTempInvoice extends AbstractEntity
     /**
      * @Column(type="bigint")
      */
-    protected $serviceBilling_Debtor;
+    protected $serviceBilling_Commodity;
+
+    /**
+     * @param null|TblBasket $tblBasket
+     */
+    public function setTblBasket($tblBasket = null)
+    {
+        $this->tblBasket = ( null === $tblBasket ? null : $tblBasket->getId() );
+    }
 
     /**
      * @return bool|TblBasket
      */
-    public function getServiceBillingBasket()
+    public function getTblBasket()
     {
-        if (null === $this->serviceBilling_Basket) {
+        if (null === $this->tblBasket)
+        {
             return false;
         } else {
-            return Billing::serviceBasket()->entityBasketById($this->serviceBilling_Basket);
+            return Billing::serviceBasket()->entityBasketById( $this->tblBasket );
         }
-    }
-
-    /**
-     * @param TblBasket $tblBasket
-     */
-    public function setServiceBillingBasket( TblBasket $tblBasket = null )
-    {
-        $this->serviceBilling_Basket = ( null === $tblBasket ? null : $tblBasket->getId() );
     }
 
     /**
@@ -80,22 +82,22 @@ class TblTempInvoice extends AbstractEntity
     }
 
     /**
-     * @return bool|TblDebtor
+     * @param null|TblCommodity $tblCommodity
      */
-    public function getServiceBillingDebtor()
+    public function setServiceBillingCommodity($tblCommodity = null)
     {
-        if (null === $this->serviceBilling_Debtor) {
-            return false;
-        } else {
-            return Billing::serviceBanking()->entityDebtorById($this->serviceBilling_Debtor);
-        }
+        $this->serviceBilling_Commodity = ( null === $tblCommodity ? null : $tblCommodity->getId() );
     }
 
     /**
-     * @param TblDebtor $tblDebtor
+     * @return bool|TblCommodity
      */
-    public function setServiceBillingDebtor( TblDebtor $tblDebtor = null )
+    public function getServiceBillingCommodity()
     {
-        $this->serviceBilling_Debtor = ( null === $tblDebtor ? null : $tblDebtor->getId() );
+        if (null === $this->serviceBilling_Commodity) {
+            return false;
+        } else {
+            return Billing::serviceCommodity()->entityCommodityById( $this->serviceBilling_Commodity );
+        }
     }
 }

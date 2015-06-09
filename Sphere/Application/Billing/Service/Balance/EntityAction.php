@@ -194,6 +194,32 @@ abstract class EntityAction extends EntitySchema
      *
      * @return bool
      */
+    protected function actionSetExportDateBalance(
+        TblBalance $tblBalance
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblBalance $Entity */
+        $Entity = $Manager->getEntityById( 'TblInvoice', $tblBalance->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setExportDate( new \DateTime('now') );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * @param TblBalance $tblBalance
+     *
+     * @return bool
+     */
     protected function actionRemoveBalance(
         TblBalance $tblBalance
     ) {
@@ -205,8 +231,7 @@ abstract class EntityAction extends EntitySchema
                 'Id' => $tblBalance->getId()
             ) );
         if (null !== $Entity) {
-            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
-                $Entity );
+            System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
             $Manager->killEntity( $Entity );
             return true;
         }

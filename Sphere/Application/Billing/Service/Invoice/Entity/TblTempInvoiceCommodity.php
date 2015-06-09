@@ -33,6 +33,26 @@ class TblTempInvoiceCommodity extends AbstractEntity
     protected $serviceBilling_Commodity;
 
     /**
+     * @return bool|TblTempInvoice
+     */
+    public function getTblTempInvoice()
+    {
+        if (null === $this->tblTempInvoice) {
+            return false;
+        } else {
+            return Billing::serviceInvoice()->entityTempInvoiceById($this->tblTempInvoice);
+        }
+    }
+
+    /**
+     * @param TblTempInvoice $tblTempInvoice
+     */
+    public function setTblTempInvoice( TblTempInvoice $tblTempInvoice = null )
+    {
+        $this->tblTempInvoice = ( null === $tblTempInvoice ? null : $tblTempInvoice->getId() );
+    }
+
+    /**
      * @return bool|TblCommodity
      */
     public function getServiceBillingCommodity()

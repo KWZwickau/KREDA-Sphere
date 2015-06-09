@@ -2,6 +2,8 @@
 namespace KREDA\Sphere\Application\Billing\Service;
 
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketCommodity;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketCommodityDebtor;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
@@ -139,6 +141,26 @@ class Basket extends EntityAction
         }
 
         return $tblPerson;
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     *
+     * @return bool|Basket\Entity\TblBasketCommodity[]
+     */
+    public function entityBasketCommodityAllByBasket(TblBasket $tblBasket)
+    {
+        return parent::entityBasketCommodityAllByBasket($tblBasket);
+    }
+
+    /**
+     * @param TblBasketCommodity $tblBasketCommodity
+     *
+     * @return bool|TblBasketCommodityDebtor
+     */
+    public function entityBasketCommodityDebtorAllByBasketCommodity(TblBasketCommodity $tblBasketCommodity)
+    {
+        return parent::entityBasketCommodityDebtorAllByBasketCommodity($tblBasketCommodity);
     }
 
     /**
@@ -411,32 +433,11 @@ class Basket extends EntityAction
         }
 
         if (!$Error) {
-            $TempInvoiceList = array();
-            $SelectList = array();
-            if ($this->checkDebtorsByBasket( $tblBasket, $Basket['Date'], $SelectList, $TempInvoiceList))
-            {
-                if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date'], $TempInvoiceList))
-                {
-                    $this->actionDestroyBasket( $tblBasket );
-                    $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
-                        .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 2 );
-                }
-                else
-                {
-                    $View.= new Success( 'Die Rechnungen konnten nicht erstellt werden' )
-                        .new Redirect( '/Sphere/Billing/Basket', 2 );
-                }
-            }
-            else
-            {
-                $View.= new Warning( 'Es konnten nicht alle Debitoren eindeutig zugeordnet werden' )
-                    .new Redirect( '/Sphere/Billing/Basket/Debtor/Select', 2, array(
-                        'Id' => $tblBasket->getId(),
-                        'Date' => $Basket['Date'],
-                        'SelectList' => $SelectList,
-                        'TempInvoiceList' => $TempInvoiceList
-                    ));
-            }
+            $View.= new Warning( 'Debitoren werden geprüft ...' )
+                .new Redirect( '/Sphere/Billing/Basket/Debtor/Select', 0, array(
+                    'Id' => $tblBasket->getId(),
+                    'Date' => $Basket['Date'],
+                ));
         }
 
         return $View;
@@ -446,8 +447,6 @@ class Basket extends EntityAction
      * @param AbstractType $View
      * @param $Id
      * @param $Date
-     * @param $SelectList
-     * @param $TempTblInvoiceList
      * @param $Data
      *
      * @return AbstractType|string
@@ -456,24 +455,14 @@ class Basket extends EntityAction
         AbstractType &$View = null,
         $Id,
         $Date,
-        $Data,
-        $SelectList,
-        $TempTblInvoiceList
+        $Data
     )
     {
-        /**
-         * Skip to Frontend
-         */
-        if (null === $Data)
-        {
-            return $View;
-        }
-
         $tblBasket = Billing::serviceBasket()->entityBasketById($Id);
 
-        if ($this->checkDebtors( $Date, $Data, $TempTblInvoiceList, $SelectList))
+        if ($this->checkDebtors( $tblBasket, $Data))
         {
-            if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Date, $TempTblInvoiceList))
+            if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Date))
             {
                 $this->actionDestroyBasket( $tblBasket );
                 $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
@@ -487,14 +476,7 @@ class Basket extends EntityAction
         }
         else
         {
-            $View.= new Warning( 'Es konnten nicht alle Debitoren eindeutig zugeordnet werden' )
-                .new Redirect( '/Sphere/Billing/Basket/Debtor/Select', 2, array(
-                    'Id' => $tblBasket->getId(),
-                    'Date' => $Date,
-                    'Data' => $Data,
-                    'SelectList' => $SelectList,
-                    'TempTblInvoiceList' => $TempTblInvoiceList
-                ));
+            $View.= new Warning( 'Es konnten nicht alle Debitoren eindeutig zugeordnet werden' );
         }
 
         return $View;

@@ -11,7 +11,10 @@ use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItemAccount;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceAccount;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
+use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblTempInvoice;
+use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblTempInvoiceCommodity;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
 
 /**
@@ -30,6 +33,17 @@ abstract class EntityAction extends EntitySchema
     protected function entityInvoiceById( $Id )
     {
         $Entity = $this->getEntityManager()->getEntityById( 'TblInvoice', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblTempInvoice
+     */
+    protected function entityTempInvoiceById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblTempInvoice', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -111,6 +125,17 @@ abstract class EntityAction extends EntitySchema
 
         $EntityList = $this->getEntityManager()->getEntity( 'TblInvoiceItem' )
             ->findBy( array( TblInvoiceItem::ATTR_TBL_INVOICE => $tblInvoice->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @return TblTempInvoice[]|bool
+     */
+    protected function entityTempInvoiceAllByBasket( TblBasket $tblBasket )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblTempInvoice' )
+            ->findBy( array( TblTempInvoice::ATTR_SERVICE_BILLING_BASKET => $tblBasket->getId() ) );
         return ( null === $EntityList ? false : $EntityList );
     }
 
@@ -380,5 +405,71 @@ abstract class EntityAction extends EntitySchema
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @param TblPerson $tblPerson
+     * @param TblDebtor $tblDebtor
+     *
+     * @return TblTempInvoice|null
+     */
+    protected function actionCreateTempInvoice(
+        TblBasket $tblBasket,
+        TblPerson $tblPerson,
+        TblDebtor $tblDebtor
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        $Entity = $Manager->getEntity( 'TblTempInvoice' )->findOneBy( array(
+            TblTempInvoice::ATTR_SERVICE_BILLING_BASKET => $tblBasket->getId(),
+            TblTempInvoice::ATTR_SERVICE_MANAGEMENT_PERSON => $tblPerson->getId(),
+            TblTempInvoice::ATTR_SERVICE_BILLING_DEBTOR => $tblDebtor ->getId()
+        ));
+        if (null === $Entity)
+        {
+            $Entity = new TblTempInvoice();
+            $Entity->setServiceBillingBasket( $tblBasket );
+            $Entity->setServiceManagementPerson( $tblPerson );
+            $Entity->setServiceBillingDebtor( $tblDebtor );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+
+        return $Entity;
+    }
+
+    /**
+     * @param TblTempInvoice $tblTempInvoice
+     * @param TblCommodity $tblCommodity
+     *
+     * @return TblTempInvoiceCommodity|null
+     */
+    protected function actionCreateTempInvoiceCommodity(
+        TblTempInvoice $tblTempInvoice,
+        TblCommodity $tblCommodity
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        $Entity = $Manager->getEntity( 'TblTempInvoiceCommodity' )->findOneBy( array(
+            TblTempInvoiceCommodity::ATTR_TBL_TEMP_INVOICE => $tblTempInvoice->getId(),
+            TblTempInvoiceCommodity::ATTR_SERVICE_BILLING_COMMODITY => $tblCommodity->getId()
+        ));
+        if (null === $Entity)
+        {
+            $Entity = new TblTempInvoiceCommodity();
+            $Entity->setTblTempInvoice( $tblTempInvoice );
+            $Entity->setServiceBillingCommodity( $tblCommodity );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+
+        return $Entity;
     }
 }

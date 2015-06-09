@@ -625,12 +625,10 @@ class Basket extends AbstractFrontend
      * @param $Id
      * @param $Date
      * @param $Data
-     * @param $SelectList
-     * @param $TempInvoiceList
      *
      * @return Stage
      */
-    public static function frontendBasketDebtorSelect( $Id, $Date, $Data, $SelectList, $TempInvoiceList )
+    public static function frontendBasketDebtorSelect( $Id, $Date, $Data )
     {
         $View = new Stage();
         $View->setTitle( 'Warenkorb' );
@@ -638,21 +636,21 @@ class Basket extends AbstractFrontend
         $View->setMessage( 'Weisen Sie die entsprechenden Debitoren zu' );
 
         $TableData = array();
-        foreach ($SelectList as $Key => $Select)
+        $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
+        $tblBasketCommodityList = Billing::serviceBasket()->entityBasketCommodityAllByBasket( $tblBasket );
+        if (!empty($tblBasketCommodityList))
         {
-            $Debtors = array();
-            foreach ($Select['Debtors'] as $Debtor)
+            foreach ($tblBasketCommodityList as $tblBasketCommodity)
             {
-                $tblDebtor = Billing::serviceBanking()->entityDebtorById($Debtor);
-                $tblDebtor->setDebtorNumber($tblDebtor->getDebtorNumber() . " - " . $tblDebtor->getServiceManagement_Person()->getFullName());
-                array_push($Debtors, $tblDebtor);
-            }
+                $tblBasketCommodityDebtorList = Billing::serviceBasket()->entityBasketCommodityDebtorAllByBasketCommodity( $tblBasketCommodity );
 
-            $TableData[]=array(
-              'Person' => Management::servicePerson()->entityPersonById($Select['tblPerson'])->getFullName(),
-              'Commodity' => Billing::serviceCommodity()->entityCommodityById($Select['tblCommodity'])->getName(),
-              'Debtors' =>  (new SelectBox( 'Data['. $Key .']', null, array( 'DebtorNumber' => $Debtors )))->__toString()
-            );
+                $TableData[]=array(
+                  'Person' => $tblBasketCommodity->getServiceManagementPerson()->getFullName(),
+                  'Commodity' => $tblBasketCommodity->getServiceBillingCommodity()->getName(),
+                  'Debtors' =>  (new SelectBox( 'Data['. $tblBasketCommodity->getId() .']', null,
+                          array( 'DebtorNumber' => $tblBasketCommodityDebtorList )))->__toString()
+                );
+            }
         }
 
         $View->setContent(
@@ -672,7 +670,7 @@ class Basket extends AbstractFrontend
                         ) )
                     ), new FormTitle( 'Debitoren' ) )
                     , new SubmitPrimary( 'Debitoren zuordnen (prüfen)' )
-                ), $Id, $Date, $Data, $SelectList, $TempInvoiceList
+                ), $Id, $Date, $Data
             )
         );
 

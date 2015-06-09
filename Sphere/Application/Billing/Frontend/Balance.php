@@ -71,8 +71,8 @@ class Balance extends AbstractFrontend
         new TableData( $invoiceAllByIsConfirmedState, null,
             array(
                 'Number'  => 'Nummer',
-                'InvoiceDate' => 'Erstellungsdatum',
-                'PaymentDate' => 'Bezahlungsdatum',
+                'InvoiceDate' => 'Rechnungsdatum',
+                'PaymentDate' => 'Zahlungsdatum',
                 'FullName' => 'Debitor',
                 'DebtorNumber' => 'Debitorennummer',
                 'PaidPayment' => 'Bezahlt',
