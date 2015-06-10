@@ -43,7 +43,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return TblDebtor[]|bool
      */
-    protected function entityDebtorByServiceManagement_Person( $ServiceManagement_Person )
+    protected function entityDebtorByServiceManagementPerson( $ServiceManagement_Person )
     {
         $Entity = $this->getEntityManager()->getEntity('TblDebtor')->findBy( array(TblDebtor::ATTR_SERVICE_MANAGEMENT_PERSON => $ServiceManagement_Person) );
         return (null === $Entity ? false : $Entity);
@@ -256,14 +256,16 @@ abstract class EntityAction extends EntitySchema
      * @param $LeadTimeFollow
      * @param $LeadTimeFirst
      * @param $DebtorNumber
+     * @param $BankName
+     * @param $Owner
      * @param $IBAN
-     * @param $SWIFT
+     * @param $BIC
      * @param $Description
      * @param $ServiceManagement_Person
      *
      * @return TblDebtor
      */
-    protected function actionAddDebtor($DebtorNumber, $LeadTimeFirst, $LeadTimeFollow, $IBAN, $BIC, $Owner, $Description, $ServiceManagement_Person )
+    protected function actionAddDebtor($DebtorNumber, $LeadTimeFirst, $LeadTimeFollow, $BankName, $Owner, $IBAN, $BIC, $Description, $ServiceManagement_Person )
     {
 
         $Manager = $this->getEntityManager();
@@ -272,11 +274,12 @@ abstract class EntityAction extends EntitySchema
         $Entity->setLeadTimeFirst( $LeadTimeFirst );
         $Entity->setLeadTimeFollow( $LeadTimeFollow );
         $Entity->setDebtorNumber( $DebtorNumber );
+        $Entity->setBankName( $BankName );
+        $Entity->setOwner( $Owner );
         $Entity->setIBAN( $IBAN );
         $Entity->setBIC( $BIC );
-        $Entity->setOwner( $Owner );
         $Entity->setDescription( $Description );
-        $Entity->setServiceManagement_Person( $ServiceManagement_Person );
+        $Entity->setServiceManagementPerson( $ServiceManagement_Person );
 
         $Manager->saveEntity( $Entity );
 

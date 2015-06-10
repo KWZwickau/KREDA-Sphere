@@ -14,7 +14,7 @@ class TblDebtor extends AbstractEntity
 {
 
     const ATTR_DEBTOR_NUMBER = 'DebtorNumber';
-    const ATTR_SERVICE_MANAGEMENT_PERSON = 'ServiceManagement_Person';
+    const ATTR_SERVICE_MANAGEMENT_PERSON = 'ServiceManagementPerson';
 
     /**
      * @Column(type="string")
@@ -31,7 +31,11 @@ class TblDebtor extends AbstractEntity
     /**
      * @Column(type="bigint")
      */
-    protected $ServiceManagement_Person;
+    protected $ServiceManagementPerson;
+    /**
+     * @Column(type="string")
+     */
+    protected $BankName;
     /**
      * @Column(type="string")
      */
@@ -98,23 +102,39 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @return bool|TblPerson $ServiceManagement_Person
+     * @return bool|TblPerson $ServiceManagementPerson
      */
-    public function getServiceManagement_Person()
+    public function getServiceManagementPerson()
     {
-        if (null === $this->ServiceManagement_Person) {
+        if (null === $this->ServiceManagementPerson) {
             return false;
         } else {
-            return Management::servicePerson()->entityPersonById( $this->ServiceManagement_Person );
+            return Management::servicePerson()->entityPersonById( $this->ServiceManagementPerson );
         }
     }
 
     /**
-     * @param null|TblPerson $serviceManagement_Person
+     * @param null|TblPerson $serviceManagementPerson
      */
-    public function setServiceManagement_Person( TblPerson $serviceManagement_Person )
+    public function setServiceManagementPerson( TblPerson $serviceManagementPerson )
     {
-        $this->ServiceManagement_Person = ( null === $serviceManagement_Person ? null : $serviceManagement_Person->getId() );
+        $this->ServiceManagementPerson = ( null === $serviceManagementPerson ? null : $serviceManagementPerson->getId() );
+    }
+
+    /**
+     * @return string $BankName
+     */
+    public function getBankName()
+    {
+        return $this->BankName;
+    }
+
+    /**
+     * @param string $bankName
+     */
+    public function setBankName( $bankName )
+    {
+        $this->BankName = $bankName;
     }
 
     /**

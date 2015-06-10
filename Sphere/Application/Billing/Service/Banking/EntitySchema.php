@@ -55,6 +55,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','LeadTimeFollow' )){
             $Table->addColumn( 'LeadTimeFollow', 'integer' );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','BankName' )){
+            $Table->addColumn( 'BankName', 'string' );
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','IBAN' )){
             $Table->addColumn( 'IBAN', 'string' );
         }
@@ -67,8 +70,8 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','Description' )){
             $Table->addColumn( 'Description', 'string' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','ServiceManagement_Person' )){
-            $Table->addColumn( 'ServiceManagement_Person', 'bigint', array('notnull' => false) );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','ServiceManagementPerson' )){
+            $Table->addColumn( 'ServiceManagementPerson', 'bigint', array('notnull' => false) );
         }
         return $Table;
     }

@@ -55,7 +55,7 @@ class Banking extends AbstractFrontend
         if (!empty( $tblDebtorAll )) {
             array_walk( $tblDebtorAll, function ( TblDebtor &$tblDebtor ) {
                 $Reference = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
-                $tblDebtor->Person = Management::servicePerson()->entityPersonById($tblDebtor->getServiceManagement_Person())->getFullName();
+                $tblDebtor->Person = Management::servicePerson()->entityPersonById($tblDebtor->getServiceManagementPerson())->getFullName();
                 $tblDebtor->Commodity =
                     (new Primary( 'Leistung auswählen', '/Sphere/Billing/Banking/Select/Commodity',
                         new ListIcon(), array(
@@ -141,7 +141,7 @@ class Banking extends AbstractFrontend
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Hinzufügen' );
 
-        $IdPerson = Billing::serviceBanking()->entityDebtorById( $Id )->getServiceManagement_Person();
+        $IdPerson = Billing::serviceBanking()->entityDebtorById( $Id )->getServiceManagementPerson();
         $Person = Management::servicePerson()->entityPersonById( $IdPerson )->getFullName();
         $DebtorNumber = Billing::serviceBanking()->entityDebtorById( $Id )->getDebtorNumber();
 //        $View->setMessage('Name: '.$Person.'<br/> Debitorennummer: '.Billing::serviceBanking()->entityDebtorById( $Id )->getDebtorNumber());
@@ -331,7 +331,7 @@ class Banking extends AbstractFrontend
         $View->setTitle( 'Referenz' );
         $View->setDescription( 'hinzufügen' );
         $Debtor = Billing::serviceBanking()->entityDebtorById( $Id );
-        $Person = Management::servicePerson()->entityPersonById( $Debtor->getServiceManagement_Person()->getId() )->getFullName();
+        $Person = Management::servicePerson()->entityPersonById( $Debtor->getServiceManagementPerson()->getId() )->getFullName();
         $DebtorNumber = $Debtor->getDebtorNumber();
         $View->setMessage( $Person );
         $View->setContent(
@@ -418,7 +418,7 @@ class Banking extends AbstractFrontend
         $Person = Management::servicePerson()->entityPersonById( $Id )->getFullName();
         $PersonType = Management::servicePerson()->entityPersonById( $Id )->getTblPersonType();
 
-        if ( Billing::serviceBanking()->entityDebtorByServiceManagement_Person( $Id ) == false )
+        if ( Billing::serviceBanking()->entityDebtorByServiceManagementPerson( $Id ) == false )
         {
             $View->setContent(
                 new Layout( array(
@@ -449,24 +449,26 @@ class Banking extends AbstractFrontend
                                                 new TextField( 'Debtor[LeadTimeFollow]', 'Vorlaufzeit in Tagen', 'Folgeeinzug', new ConversationIcon()
                                                 ), 6),
                                             new FormColumn(
+                                                new TextField( 'Debtor[BankName]', 'Name der Bank', 'Name der Bank', new ConversationIcon()
+                                                ), 6),
+                                            new FormColumn(
+                                                new TextField( 'Debtor[Owner]', 'Vorname Nachname', 'Inhaber', new ConversationIcon()
+                                                ), 6),
+                                            new FormColumn(
                                                 new TextField( 'Debtor[IBAN]', 'XX XX XXXXXXXX XXXXXXXXXX', 'IBAN', new ConversationIcon()
                                                 ), 6),
                                             new FormColumn(
                                                 new TextField( 'Debtor[BIC]', 'XXXX XX XX XXX', 'BIC', new ConversationIcon()
                                                 ), 6),
                                             new FormColumn(
-                                                new TextField( 'Debtor[Owner]', 'Vorname Nachname', 'Inhaber', new ConversationIcon()
-                                                ), 6),
-                                            new FormColumn(
                                                 new TextField( 'Debtor[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
                                                 ), 6),
                                             new FormColumn(
                                                 new TextField( 'Debtor[Reference]', 'Referenznummer', 'Referenz', new ConversationIcon()
-                                                ), 12),
+                                                ), 6),
                                         )),
                                     ))
-                                ), new SubmitPrimary( 'Hinzufügen' )),
-                                $Debtor, $Id )
+                                ), new SubmitPrimary( 'Hinzufügen' )), $Debtor, $Id )
                             ))
                         ))
                     ))
@@ -475,7 +477,7 @@ class Banking extends AbstractFrontend
         }
         else{
 
-            $tblDebtor = Billing::serviceBanking()->entityDebtorByServiceManagement_Person( $Id );
+            $tblDebtor = Billing::serviceBanking()->entityDebtorByServiceManagementPerson( $Id );
 
             $View->setContent(
                 new Layout( array(
@@ -499,12 +501,18 @@ class Banking extends AbstractFrontend
 
                                             new FormColumn(
                                                 new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new ConversationIcon()
-                                                ), 12),
+                                                ), 4),
                                             new FormColumn(
                                                 new TextField( 'Debtor[LeadTimeFirst]', 'Vorlaufzeit in Tagen', 'Ersteinzug', new ConversationIcon()
-                                                ), 6),
+                                                ), 4),
                                             new FormColumn(
                                                 new TextField( 'Debtor[LeadTimeFollow]', 'Vorlaufzeit in Tagen', 'Folgeeinzug', new ConversationIcon()
+                                                ), 4),
+                                            new FormColumn(
+                                                new TextField( 'Debtor[BankName]', 'Name der Bank', 'Name der Bank', new ConversationIcon()
+                                                ), 6),
+                                            new FormColumn(
+                                                new TextField( 'Debtor[Owner]', 'Vorname Nachname', 'Inhaber', new ConversationIcon()
                                                 ), 6),
                                             new FormColumn(
                                                 new TextField( 'Debtor[IBAN]', 'XX XX XXXXXXXX XXXXXXXXXX', 'IBAN', new ConversationIcon()
@@ -513,14 +521,11 @@ class Banking extends AbstractFrontend
                                                 new TextField( 'Debtor[BIC]', 'XXXX XX XX XXX', 'BIC', new ConversationIcon()
                                                 ), 6),
                                             new FormColumn(
-                                                new TextField( 'Debtor[Owner]', 'Vorname Nachname', 'Inhaber', new ConversationIcon()
-                                                ), 6),
-                                            new FormColumn(
                                                 new TextField( 'Debtor[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
                                                 ), 6),
                                             new FormColumn(
                                                 new TextField( 'Debtor[Reference]', 'Reference', 'Reference', new ConversationIcon()
-                                                ), 12),
+                                                ), 6),
                                         )),
                                     )),
                                 ),  new SubmitPrimary( 'Hinzufügen' )), $Debtor, $Id )
@@ -536,8 +541,9 @@ class Banking extends AbstractFrontend
                                             new FormColumn( array(
                                                 new TableData( $tblDebtor, null, array(
                                                     'DebtorNumber' => 'Debitorennummer',
-                                                    'IBAN' => 'International Bank Account Number (IBAN)',
-                                                    'BIC' => 'Bank Identifier Code (BIC)',
+                                                    'BankName' => 'Name der Bank',
+                                                    'IBAN' => 'IBAN',
+                                                    'BIC' => 'BIC',
                                                     'Owner' => 'Inhaber'
                                                 ))
                                             ))
