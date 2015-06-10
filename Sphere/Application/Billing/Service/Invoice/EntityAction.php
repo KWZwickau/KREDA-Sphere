@@ -181,7 +181,7 @@ abstract class EntityAction extends EntitySchema
         foreach ($tblTempInvoiceList as $tblTempInvoice)
         {
             $tblDebtor = $tblTempInvoice->getServiceBillingDebtor();
-            $tblPersonDebtor = Management::servicePerson()->entityPersonById($tblDebtor->getServiceManagement_Person());
+            $tblPersonDebtor = Management::servicePerson()->entityPersonById($tblDebtor->getServiceManagementPerson());
             $tblPerson = $tblTempInvoice->getServiceManagementPerson();
             $Entity = new TblInvoice();
             $Entity->setIsPaid( false );

@@ -648,7 +648,7 @@ class Basket extends AbstractFrontend
                 foreach($tblBasketCommodityDebtorList as &$tblBasketCommodityDebtor)
                 {
                     $tblBasketCommodityDebtor->Name = $tblBasketCommodityDebtor->getServiceBillingDebtor()->getDebtorNumber() . " - " .
-                        $tblBasketCommodityDebtor->getServiceBillingDebtor()->getServiceManagement_Person()->getFullName();
+                        $tblBasketCommodityDebtor->getServiceBillingDebtor()->getServiceManagementPerson()->getFullName();
                 }
 
                 $TableData[]=array(

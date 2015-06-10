@@ -210,9 +210,10 @@ class Banking extends EntityAction
             $this->actionAddDebtor( $Debtor['DebtorNumber'],
                 $Debtor['LeadTimeFirst'],
                 $Debtor['LeadTimeFollow'],
+                $Debtor['BankName'],
+                $Debtor['Owner'],
                 $Debtor['IBAN'],
                 $Debtor['BIC'],
-                $Debtor['Owner'],
                 $Debtor['Description'],
                 Management::servicePerson()->entityPersonById( $Id) );
             if(!empty($Debtor['Reference']))
@@ -388,10 +389,10 @@ class Banking extends EntityAction
      *
      * @return bool|Banking\Entity\TblDebtor[]
      */
-    public function entityDebtorByServiceManagement_Person( $ServiceManagement_Person )
+    public function entityDebtorByServiceManagementPerson( $ServiceManagement_Person )
     {
 
-        return parent::entityDebtorByServiceManagement_Person( $ServiceManagement_Person );
+        return parent::entityDebtorByServiceManagementPerson( $ServiceManagement_Person );
     }
 
     /**
