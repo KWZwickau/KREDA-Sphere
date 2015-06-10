@@ -41,6 +41,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
+use KREDA\Sphere\Client\Frontend\Text\Type\Muted;
 use KREDA\Sphere\Common\AbstractFrontend;
 
 /**
@@ -636,12 +637,12 @@ class Basket extends AbstractFrontend
         $View->setDescription( 'Debitoren zuordnen' );
         $View->setMessage( 'Weisen Sie die entsprechenden Debitoren zu' );
 
-        $TableData = array();
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
         $tblBasketCommodityList = Billing::serviceBasket()->entityBasketCommodityAllByBasket( $tblBasket );
+
         if (!empty($tblBasketCommodityList))
         {
-            foreach ($tblBasketCommodityList as $tblBasketCommodity)
+            foreach ($tblBasketCommodityList as &$tblBasketCommodity)
             {
                 /** @var  TblBasketCommodityDebtor[] $tblBasketCommodityDebtorList */
                 $tblBasketCommodityDebtorList = Billing::serviceBasket()->entityBasketCommodityDebtorAllByBasketCommodity( $tblBasketCommodity );
@@ -651,33 +652,44 @@ class Basket extends AbstractFrontend
                         $tblBasketCommodityDebtor->getServiceBillingDebtor()->getServiceManagement_Person()->getFullName();
                 }
 
-                $TableData[]=array(
-                  'Person' => $tblBasketCommodity->getServiceManagementPerson()->getFullName(),
-                  'Commodity' => $tblBasketCommodity->getServiceBillingCommodity()->getName(),
-                  'Debtors' =>  (new SelectBox( 'Data['. $tblBasketCommodity->getId() .']', null,
-                          array('Name'  => $tblBasketCommodityDebtorList )))->__toString()
-                );
+                $tblBasketCommodity = new FormRow(  array(
+                    new FormColumn(
+                        new Muted(
+                            $tblBasketCommodity->getServiceManagementPerson()->getFullName()),4
+                    ),
+                    new FormColumn(
+                        new Muted(
+                            $tblBasketCommodity->getServiceBillingCommodity()->getName()),4
+                    ),
+                    new FormColumn(
+                        new SelectBox( 'Data['. $tblBasketCommodity->getId() .']', null,
+                            array('Name'  => $tblBasketCommodityDebtorList )), 4
+                    )
+                ));
             }
         }
 
+        $formGroup = new FormGroup($tblBasketCommodityList); //, new FormTitle(" "));
+
         $View->setContent(
             Billing::serviceBasket()->executeCheckDebtors(
-                new Form(
+                new Form( array(
                     new FormGroup( array(
-                        new FormRow( array(
-                            new FormColumn(
-                                new TableData( $TableData, null,
-                                    array(
-                                        'Person' => 'Schüler',
-                                        'Commodity'  => 'Leistung',
-                                        'Debtors' => 'DebitorenNummer'
-                                    )
+                            new FormRow( array(
+                                new FormColumn(
+                                    new Muted('Schüler'),4
+                                ),
+                                new FormColumn(
+                                    new Muted('Leistung'),4
+                                ),
+                                new FormColumn(
+                                    new Muted('Debitorennummer - Debitor'),4
                                 )
-                            )
-                        ) )
-                    ), new FormTitle( 'Debitoren' ) )
-                    , new SubmitPrimary( 'Debitoren zuordnen (prüfen)' )
-                ), $Id, $Date, $Data
+                            ) )
+                    ) ),
+                    $formGroup)
+                , new SubmitPrimary( 'Debitoren zuordnen (prüfen)' ) )
+                , $Id, $Date, $Data
             )
         );
 
