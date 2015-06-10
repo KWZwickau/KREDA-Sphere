@@ -281,9 +281,10 @@ class Invoice extends AbstractFrontend
                                         new MapMarkerIcon() . 'Rechnungsadresse' ,
                                         new LayoutAddress( $tblInvoice->getServiceManagementAddress()),
                                         LayoutPanel::PANEL_TYPE_DEFAULT,
-                                        (count(Management::servicePerson()->entityAddressAllByPerson(
-                                            Billing::serviceBanking()->entityDebtorByDebtorNumber(
-                                            $tblInvoice->getDebtorNumber())->getServiceManagementPerson())) > 1
+                                        (($tblDebtor = Billing::serviceBanking()->entityDebtorByDebtorNumber(
+                                            $tblInvoice->getDebtorNumber()))
+                                            && count(Management::servicePerson()->entityAddressAllByPerson(
+                                                $tblDebtor->getServiceManagementPerson())) > 1
                                                 ? new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/Address/Select',
                                                     new EditIcon(),
                                                     array(
