@@ -9,6 +9,7 @@ use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblTempInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\EntityAction;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
@@ -352,8 +353,8 @@ class Invoice extends EntityAction
      */
     public function executeRemoveInvoiceItem(
         TblInvoiceItem $tblInvoiceItem
-    ) {
-
+    )
+    {
         if ($this->actionRemoveInvoiceItem( $tblInvoiceItem )) {
             return new Success( 'Der Artikel '.$tblInvoiceItem->getItemName().' wurde erfolgreich entfernt' )
             .new Redirect( '/Sphere/Billing/Invoice/Edit', 0,
@@ -376,7 +377,8 @@ class Invoice extends EntityAction
         TblBasket $tblBasket,
         TblPerson $tblPerson,
         TblDebtor $tblDebtor
-    ) {
+    )
+    {
         return $this->actionCreateTempInvoice( $tblBasket, $tblPerson, $tblDebtor );
     }
 
@@ -389,7 +391,25 @@ class Invoice extends EntityAction
     public function executeCreateTempInvoiceCommodity(
         TblTempInvoice $tblTempInvoice,
         TblCommodity $tblCommodity
-    ) {
+    )
+    {
         return $this->actionCreateTempInvoiceCommodity( $tblTempInvoice, $tblCommodity );
+    }
+
+    public function executeChangeInvoiceAddress(
+        TblInvoice $tblInvoice,
+        TblAddress $tblAddress
+    )
+    {
+        if ($this->actionChangeInvoiceAddress( $tblInvoice, $tblAddress))
+        {
+            return new Success( 'Die Rechnungsadresse wurde erfolgreich geändert' )
+                .new Redirect( '/Sphere/Billing/Invoice/Edit', 0, array( 'Id' => $tblInvoice->getId() ) );
+        }
+        else
+        {
+            return new Warning( 'Die Rechnungsadresse konnte nicht geändert werden' )
+                .new Redirect( '/Sphere/Billing/Invoice/Edit', 2, array( 'Id' => $tblInvoice->getId() ) );
+        }
     }
 }

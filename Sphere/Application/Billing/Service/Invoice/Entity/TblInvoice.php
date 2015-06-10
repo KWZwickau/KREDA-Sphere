@@ -296,7 +296,7 @@ class TblInvoice extends AbstractEntity
      */
     public function getDebtorFullName()
     {
-        return $this->DebtorFirstName . " " . $this->DebtorLastName;
+        return $this->DebtorSalutation . " " . $this->DebtorFirstName . " " . $this->DebtorLastName;
     }
 
     /**

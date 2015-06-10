@@ -14,6 +14,7 @@ use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblTempInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblTempInvoiceCommodity;
 use KREDA\Sphere\Application\Management\Management;
+use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
 
@@ -484,5 +485,35 @@ abstract class EntityAction extends EntitySchema
         }
 
         return $Entity;
+    }
+
+    /**
+     * @param TblInvoice $tblInvoice
+     * @param TblAddress $tblAddress
+     *
+     * @return bool
+     */
+    protected function actionChangeInvoiceAddress(
+        TblInvoice $tblInvoice,
+        TblAddress $tblAddress
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblInvoice $Entity */
+        $Entity = $Manager->getEntityById( 'TblInvoice', $tblInvoice->getId() );
+        if (null !== $Entity)
+        {
+            $Protocol = clone $Entity;
+            $Entity->setServiceManagementAddress( $tblAddress );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+
+        return false;
     }
 }

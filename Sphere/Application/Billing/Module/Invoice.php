@@ -70,6 +70,15 @@ class Invoice extends Common
             '/Sphere/Billing/Invoice/Item/Remove', __CLASS__.'::frontendInvoiceItemRemove'
         )
             ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Address/Select', __CLASS__.'::frontendInvoiceAddressSelect'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Address/Change', __CLASS__.'::frontendInvoiceAddressChange'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'AddressId', null);
     }
 
     /**
@@ -177,5 +186,19 @@ class Invoice extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendInvoiceItemRemove( $Id );
+    }
+
+    public static function frontendInvoiceAddressSelect( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoiceAddressSelect( $Id );
+    }
+
+    public static function frontendInvoiceAddressChange( $Id, $AddressId )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoiceAddressChange( $Id, $AddressId );
     }
 }

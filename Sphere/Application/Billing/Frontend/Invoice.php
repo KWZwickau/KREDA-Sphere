@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoiceItem;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
+use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EyeOpenIcon;
@@ -16,9 +17,12 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\QuantityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\RemoveIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TagIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TransferIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\WarningIcon;
 use KREDA\Sphere\Client\Frontend\Button\Form\SubmitPrimary;
 use KREDA\Sphere\Client\Frontend\Button\Link\Danger;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
+use KREDA\Sphere\Client\Frontend\Button\Structure\ButtonGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormColumn;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
@@ -202,9 +206,8 @@ class Invoice extends AbstractFrontend
         $View->addButton( new Primary( 'Geprüft und Freigeben', '/Sphere/Billing/Invoice/Confirm',
             new OkIcon(), array(
                 'Id' => $Id
-                // TODO address
-               //, 'Data' => $Data
-            ) ) );
+            )
+        ) );
         $View->addButton( new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
             new RemoveIcon(), array(
                 'Id' => $Id
@@ -257,7 +260,7 @@ class Invoice extends AbstractFrontend
                         ),
                         new LayoutRow( array(
                             new LayoutColumn(
-                                new LayoutPanel( 'Debitor' , $tblInvoice->getDebtorSalutation() . " " . $tblInvoice->getDebtorFullName() ), 4
+                                new LayoutPanel( 'Debitor' , $tblInvoice->getDebtorFullName() ), 4
                             ),
                             new LayoutColumn(
                                 new LayoutPanel( 'Debitorennummer' , $tblInvoice->getDebtorNumber() ), 4
@@ -278,10 +281,17 @@ class Invoice extends AbstractFrontend
                                         new MapMarkerIcon() . 'Rechnungsadresse' ,
                                         new LayoutAddress( $tblInvoice->getServiceManagementAddress()),
                                         LayoutPanel::PANEL_TYPE_DEFAULT,
-                                        new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/Address/Edit',
-                                                new EditIcon(), array(
-                                                    'Id' => $tblInvoice->getId()
+                                        (count(Management::servicePerson()->entityAddressAllByPerson(
+                                            Billing::serviceBanking()->entityDebtorByDebtorNumber(
+                                            $tblInvoice->getDebtorNumber())->getServiceManagement_Person())) > 1
+                                                ? new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/Address/Select',
+                                                    new EditIcon(),
+                                                    array(
+                                                        'Id' => $tblInvoice->getId(),
+                                                        'AddressId' => $tblInvoice->getServiceManagementAddress()->getId()
+                                                    )
                                                 )
+                                                : null
                                         ), 4
                                     )
                                     : new \KREDA\Sphere\Client\Frontend\Message\Type\Warning("Keine Rechnungsadresse verfügbar")
@@ -320,7 +330,6 @@ class Invoice extends AbstractFrontend
 
         return $View;
     }
-
 
     /**
      * @param $Id
@@ -363,7 +372,7 @@ class Invoice extends AbstractFrontend
                     ),
                     new LayoutRow( array(
                         new LayoutColumn(
-                            new LayoutPanel( 'Debitor' , $tblInvoice->getDebtorSalutation() . " " . $tblInvoice->getDebtorFullName() ), 4
+                            new LayoutPanel( 'Debitor' , $tblInvoice->getDebtorFullName() ), 4
                         ),
                         new LayoutColumn(
                             new LayoutPanel( 'Debitorennummer' , $tblInvoice->getDebtorNumber() ), 4
@@ -467,6 +476,107 @@ class Invoice extends AbstractFrontend
 
         $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
         $View->setContent( Billing::serviceInvoice()->executeCancelInvoice( $tblInvoice ) );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceAddressSelect( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Rechnungsadresse' );
+        $View->setDescription( 'Auswählen' );
+
+        $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
+        $tblAddressAll = Management::servicePerson()->entityAddressAllByPerson(
+            Billing::serviceBanking()->entityDebtorByDebtorNumber($tblInvoice->getDebtorNumber())->getServiceManagement_Person());
+
+        $layoutGroup = self::layoutAddress( $tblAddressAll, $tblInvoice->getServiceManagementAddress(), $tblInvoice );
+
+        $View->setContent(
+            new Layout(array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                         new LayoutColumn( array(
+                             new LayoutPanel('Rechnungsnummer', $tblInvoice->getNumber(), LayoutPanel::PANEL_TYPE_SUCCESS )
+                         ),3),
+                         new LayoutColumn( array(
+                             new LayoutPanel('Empfänger', $tblInvoice->getDebtorFullName(), LayoutPanel::PANEL_TYPE_SUCCESS )
+                         ),3)
+                    ))
+                ))
+            ))
+            . $layoutGroup
+        );
+
+        return $View;
+    }
+
+    private static function layoutAddress($tblAddressList, TblAddress $invoiceAddress, TblInvoice $tblInvoice)
+    {
+        if (!empty($tblAddressList))
+        {
+            /** @var TblAddress[] $tblAddressList */
+            foreach ($tblAddressList as &$tblAddress)
+            {
+                if ($invoiceAddress != null && $invoiceAddress->getId() === $tblAddress->getId())
+                {
+                    $AddressType = new MapMarkerIcon().' Lieferadresse';
+                    $PanelType = LayoutPanel::PANEL_TYPE_SUCCESS;
+                }
+                else
+                {
+                    $AddressType = new MapMarkerIcon().' Adresse';
+                    $PanelType = LayoutPanel::PANEL_TYPE_DEFAULT;
+                }
+
+                $tblAddress = new LayoutColumn(
+                    new LayoutPanel(
+                        $AddressType, new LayoutAddress( $tblAddress ), $PanelType,
+                        new Primary( 'Auswählen', '/Sphere/Billing/Invoice/Address/Change',
+                            new OkIcon(),
+                            array(
+                                'Id' => $tblInvoice->getId(),
+                                'AddressId' => $tblAddress->getId()
+                            )
+                        )
+                    ), 4
+                );
+            }
+        }
+        else
+        {
+            $tblAddressList = array(
+                new LayoutColumn(
+                    new Warning( 'Keine Adressen hinterlegt', new WarningIcon() )
+                )
+            );
+        }
+
+        return new Layout(
+            new LayoutGroup( new LayoutRow( $tblAddressList ), new LayoutTitle( 'Adressen' ) )
+        );
+    }
+
+    /**
+     * @param $Id
+     * @param $AddressId
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceAddressChange( $Id, $AddressId )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Rechnungsadresse' );
+        $View->setDescription( 'Ändern' );
+
+        $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
+        $tblAddress = Management::serviceAddress()->entityAddressById( $AddressId );
+        $View->setContent( Billing::serviceInvoice()->executeChangeInvoiceAddress( $tblInvoice, $tblAddress ) );
 
         return $View;
     }
