@@ -283,7 +283,7 @@ class Invoice extends AbstractFrontend
                                         LayoutPanel::PANEL_TYPE_DEFAULT,
                                         (count(Management::servicePerson()->entityAddressAllByPerson(
                                             Billing::serviceBanking()->entityDebtorByDebtorNumber(
-                                            $tblInvoice->getDebtorNumber())->getServiceManagement_Person())) > 1
+                                            $tblInvoice->getDebtorNumber())->getServiceManagementPerson())) > 1
                                                 ? new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/Address/Select',
                                                     new EditIcon(),
                                                     array(
@@ -493,7 +493,7 @@ class Invoice extends AbstractFrontend
 
         $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
         $tblAddressAll = Management::servicePerson()->entityAddressAllByPerson(
-            Billing::serviceBanking()->entityDebtorByDebtorNumber($tblInvoice->getDebtorNumber())->getServiceManagement_Person());
+            Billing::serviceBanking()->entityDebtorByDebtorNumber($tblInvoice->getDebtorNumber())->getServiceManagementPerson());
 
         $layoutGroup = self::layoutAddress( $tblAddressAll, $tblInvoice->getServiceManagementAddress(), $tblInvoice );
 
@@ -625,22 +625,46 @@ class Invoice extends AbstractFrontend
                 $Global->savePost();
 
                 $View->setContent(
-                    new Success($tblInvoiceItem->getItemName())
-                    .Billing::serviceInvoice()->executeEditInvoiceItem(
-                        new Form( array(
-                                new FormGroup( array(
-                                    new FormRow( array(
-                                        new FormColumn(
-                                            new TextField( 'InvoiceItem[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
-                                            ), 6 ),
-                                        new FormColumn(
-                                            new TextField( 'InvoiceItem[Quantity]', 'Menge', 'Menge', new QuantityIcon()
-                                            ), 6 )
-                                    ) )
-                                ) )
-                            ), new SubmitPrimary( 'Änderungen speichern' )
-                        ), $tblInvoiceItem, $InvoiceItem
-                    )
+                    new Layout(array(
+                        new LayoutGroup( array(
+                            new LayoutRow( array(
+                                new LayoutColumn(
+                                    new LayoutPanel('Leistung-Name', $tblInvoiceItem->getCommodityName()
+                                        , LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                                ),
+                                new LayoutColumn(
+                                    new LayoutPanel('Artikel-Name', $tblInvoiceItem->getItemName()
+                                        , LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                                ),
+                                new LayoutColumn(
+                                    new LayoutPanel('Artikel-Beschreibung', $tblInvoiceItem->getItemDescription()
+                                        , LayoutPanel::PANEL_TYPE_SUCCESS ), 6
+                                )
+                            ) ),
+                        )),
+                        new LayoutGroup( array(
+                            new LayoutRow( array(
+                                new LayoutColumn( array(
+                                        Billing::serviceInvoice()->executeEditInvoiceItem(
+                                            new Form( array(
+                                                    new FormGroup( array(
+                                                        new FormRow( array(
+                                                            new FormColumn(
+                                                                new TextField( 'InvoiceItem[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
+                                                                ), 6 ),
+                                                            new FormColumn(
+                                                                new TextField( 'InvoiceItem[Quantity]', 'Menge', 'Menge', new QuantityIcon()
+                                                                ), 6 )
+                                                        ) )
+                                                    ) )
+                                                ), new SubmitPrimary( 'Änderungen speichern' )
+                                            ), $tblInvoiceItem, $InvoiceItem
+                                        )
+                                    )
+                                )
+                            ) )
+                        ) )
+                    ) )
                 );
             }
         }
