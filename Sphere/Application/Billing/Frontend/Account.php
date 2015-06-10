@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Billing\Frontend;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BarCodeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
@@ -134,7 +135,7 @@ class Account extends AbstractFrontend
                 new FormGroup( array(
                     new FormRow( array(
                         new FormColumn(
-                            new TextField( 'Account[Number]', 'Kennziffer', 'Kennziffer', new ConversationIcon()
+                            new TextField( 'Account[Number]', 'Kennziffer', 'Kennziffer', new BarCodeIcon()
                             ), 6),
                         new FormColumn(
                             new TextField( 'Account[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()

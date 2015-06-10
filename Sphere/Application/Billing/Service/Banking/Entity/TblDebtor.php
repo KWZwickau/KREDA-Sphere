@@ -51,6 +51,10 @@ class TblDebtor extends AbstractEntity
     /**
      * @Column(type="string")
      */
+    protected $CashSign;
+    /**
+     * @Column(type="string")
+     */
     protected $Description;
 
     /**
@@ -170,7 +174,7 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @return string $owner
+     * @return string $Owner
      */
     public function getOwner()
     {
@@ -183,6 +187,22 @@ class TblDebtor extends AbstractEntity
     public function setOwner( $owner )
     {
         $this->Owner = $owner;
+    }
+
+    /**
+     * @return string $CashSign
+     */
+    public function getCashSign()
+    {
+        return $this->CashSign;
+    }
+
+    /**
+     * @param string $cashSign
+     */
+    public function setCashSign( $cashSign )
+    {
+        $this->CashSign = $cashSign;
     }
 
     /**

@@ -72,6 +72,11 @@ class Banking extends Common
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Banking/Select/Reference/Deactivate', __CLASS__.'::frontendBankingReferenceDeactivate'
         )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Edit/Debtor', __CLASS__.'::frontendBankingEditDebtor'
+        )   ->setParameterDefault( 'Debtor', null )
+            ->setParameterDefault( 'Id', null );
     }
 
     /**
@@ -190,6 +195,19 @@ class Banking extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBankingReferenceDeactivate( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $Debtor
+     *
+     * @return Stage
+     */
+    public static function frontendBankingEditDebtor( $Id, $Debtor )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingEditDebtor( $Id, $Debtor );
     }
 
 }

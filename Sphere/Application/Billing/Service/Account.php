@@ -150,12 +150,12 @@ class Account extends EntityAction
 
         if($this->actionActivateAccount( $Id ))
         {
-            return new Success( 'Die Aktivierung ist erfasst worden.' )
+            return new Success( 'Die Aktivierung ist erfasst worden' )
             .new Redirect( '/Sphere/Billing/Account', 2 );
         }
         else
         {
-            return new Danger( 'Die Aktivierung konnte nicht erfasst werden.' )
+            return new Danger( 'Die Aktivierung konnte nicht erfasst werden' )
             .new Redirect( '/Sphere/Billing/Account', 2 );
         }
 
@@ -170,12 +170,12 @@ class Account extends EntityAction
 
         if($this->actionDeactivateAccount( $Id ))
         {
-            return new Success( 'Die Deaktivierung ist erfasst worden.' )
+            return new Success( 'Die Deaktivierung ist erfasst worden' )
             .new Redirect( '/Sphere/Billing/Account', 2 );
         }
         else
         {
-            return ( 'Die Deaktivierung konnte nicht erfasst werden.' )
+            return ( 'Die Deaktivierung konnte nicht erfasst werden' )
             .new Danger( '/Sphere/Billing/Account', 2 );
         }
 

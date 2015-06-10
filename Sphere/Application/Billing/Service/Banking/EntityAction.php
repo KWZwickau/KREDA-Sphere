@@ -258,6 +258,7 @@ abstract class EntityAction extends EntitySchema
      * @param $DebtorNumber
      * @param $BankName
      * @param $Owner
+     * @param $CashSign
      * @param $IBAN
      * @param $BIC
      * @param $Description
@@ -265,7 +266,7 @@ abstract class EntityAction extends EntitySchema
      *
      * @return TblDebtor
      */
-    protected function actionAddDebtor($DebtorNumber, $LeadTimeFirst, $LeadTimeFollow, $BankName, $Owner, $IBAN, $BIC, $Description, $ServiceManagement_Person )
+    protected function actionAddDebtor($DebtorNumber, $LeadTimeFirst, $LeadTimeFollow, $BankName, $Owner, $CashSign, $IBAN, $BIC, $Description, $ServiceManagement_Person )
     {
 
         $Manager = $this->getEntityManager();
@@ -276,6 +277,7 @@ abstract class EntityAction extends EntitySchema
         $Entity->setDebtorNumber( $DebtorNumber );
         $Entity->setBankName( $BankName );
         $Entity->setOwner( $Owner );
+        $Entity->setCashSign( $CashSign );
         $Entity->setIBAN( $IBAN );
         $Entity->setBIC( $BIC );
         $Entity->setDescription( $Description );
@@ -297,7 +299,13 @@ abstract class EntityAction extends EntitySchema
         return ( null === $Entity ? false : $Entity );
     }
 
-    protected function actionAddReference( $Reference, $DebtorNumber  )
+    /**
+     * @param $Reference
+     * @param $DebtorNumber
+     * @param $ReferenceDate
+     * @return TblReference
+     */
+    protected function actionAddReference( $Reference, $DebtorNumber, $ReferenceDate  )
     {
         $Manager = $this->getEntityManager();
 
@@ -305,11 +313,50 @@ abstract class EntityAction extends EntitySchema
         $Entity->setReference( $Reference );
         $Entity->setIsVoid( true );
         $Entity->setServiceTblDebtor( Billing::serviceBanking()->entityDebtorByDebtorNumber( $DebtorNumber ) );
+        if( $ReferenceDate )
+        {
+            $Entity->setReferenceDate( new \DateTime( $ReferenceDate ) );
+        }
         $Manager->saveEntity( $Entity );
 
         System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
 
         return $Entity;
+    }
+
+    protected function actionEditDebtor(
+        TblDebtor $tblDebtor,
+        $Description,
+        $Owner,
+        $IBAN,
+        $BIC,
+        $CashSign,
+        $BankName,
+        $LeadTimeFirst,
+        $LeadTimeFollow
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblDebtor $Entity */
+        $Entity = $Manager->getEntityById( 'TblDebtor', $tblDebtor->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setDescription( $Description );
+            $Entity->setOwner( $Owner );
+            $Entity->setIBAN( $IBAN );
+            $Entity->setBIC( $BIC );
+            $Entity->setCashSign( $CashSign );
+            $Entity->setBankName( $BankName );
+            $Entity->setLeadTimeFirst( $LeadTimeFirst );
+            $Entity->setLeadTimeFollow( $LeadTimeFollow );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
     }
 
     /**

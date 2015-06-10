@@ -23,6 +23,10 @@ class TblReference extends AbstractEntity
      */
     protected $IsVoid;
     /**
+     * @Column(type="date")
+     */
+    protected $ReferenceDate;
+    /**
      * @Column(type="bigint")
      */
     protected $tblDebtor;
@@ -57,6 +61,31 @@ class TblReference extends AbstractEntity
     public function setIsVoid ( $isVoid )
     {
         $this->IsVoid = $isVoid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReferenceDate()
+    {
+        if (null === $this->ReferenceDate) {
+            return false;
+        }
+        /** @var \DateTime $ReferenceDate */
+        $ReferenceDate = $this->ReferenceDate;
+        if ($ReferenceDate instanceof \DateTime) {
+            return $ReferenceDate->format( 'd.m.Y' );
+        } else {
+            return (string)$ReferenceDate;
+        }
+    }
+
+    /**
+     * @param \DateTime $referenceDate
+     */
+    public function setReferenceDate( \DateTime $referenceDate )
+    {
+        $this->ReferenceDate = $referenceDate;
     }
 
     /**

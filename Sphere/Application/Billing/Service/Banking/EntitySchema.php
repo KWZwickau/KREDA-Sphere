@@ -67,6 +67,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','Owner' )){
             $Table->addColumn( 'Owner', 'string' );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','CashSign' )){
+            $Table->addColumn( 'CashSign', 'string' );
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','Description' )){
             $Table->addColumn( 'Description', 'string' );
         }
@@ -109,6 +112,9 @@ abstract class EntitySchema extends AbstractService
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblReference', 'isVoid')){
             $Table->addColumn( 'isVoid', 'boolean' );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblReference', 'ReferenceDate')){
+            $Table->addColumn( 'ReferenceDate', 'date', array('notnull' => false) );
         }
         $this->schemaTableAddForeignKey( $Table, $tblDebtor );
         return $Table;

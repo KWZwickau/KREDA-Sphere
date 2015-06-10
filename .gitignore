@@ -3,6 +3,3 @@
 Update/
 Library/MOC-V/Component/Template/Component/Bridge/Repository/TwigTemplate
 Library/MOC-V/Component/Template/Component/Bridge/Repository/SmartyTemplate
-Sphere/Common/Proxy/Config/
-Sphere/Application/Gatekeeper/Service/Account
-Sphere/Application/Gatekeeper/Service/Token
