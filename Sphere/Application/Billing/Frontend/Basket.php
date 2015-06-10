@@ -38,6 +38,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
@@ -194,6 +195,16 @@ class Basket extends AbstractFrontend
             new Layout( array(
                 new LayoutGroup( array(
                     new LayoutRow( array(
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Nummer', $tblBasket->getId(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Erstellt am', $tblBasket->getCreateDate(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        )
+                    ) ),
+                )),
+                new LayoutGroup( array(
+                    new LayoutRow( array(
                         new LayoutColumn( array(
                                 new TableData( $tblCommodityAllByBasket, null,
                                     array(
@@ -317,15 +328,34 @@ class Basket extends AbstractFrontend
         }
 
         $View->setContent(
-            new TableData( $tblBasketItemAll, null,
-                array(
-                    'CommodityName' => 'Leistung',
-                    'ItemName'      => 'Artikel',
-                    'Price'         => 'Preis',
-                    'Quantity'      => 'Menge',
-                    'Option'        => 'Option'
-                )
-            )
+            new Layout( array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Nummer', $tblBasket->getId(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Erstellt am', $tblBasket->getCreateDate(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        )
+                    ) ),
+                )),
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                                new TableData( $tblBasketItemAll, null,
+                                    array(
+                                        'CommodityName' => 'Leistung',
+                                        'ItemName'      => 'Artikel',
+                                        'Price'         => 'Preis',
+                                        'Quantity'      => 'Menge',
+                                        'Option'        => 'Option'
+                                    )
+                                )
+                            )
+                        )
+                    ) ),
+                ) )
+            ) )
         );
 
         return $View;
@@ -376,22 +406,46 @@ class Basket extends AbstractFrontend
                 $Global->savePost();
 
                 $View->setContent(
-                    new Success($tblBasketItem->getServiceBillingCommodityItem()->getTblItem()->getName())
-                    .Billing::serviceBasket()->executeEditBasketItem(
-                        new Form( array(
-                            new FormGroup( array(
-                                new FormRow( array(
-                                    new FormColumn(
-                                        new TextField( 'BasketItem[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
-                                        ), 6 ),
-                                    new FormColumn(
-                                        new TextField( 'BasketItem[Quantity]', 'Menge', 'Menge', new QuantityIcon()
-                                        ), 6 )
-                                ) )
+                    new Layout(array(
+                        new LayoutGroup( array(
+                            new LayoutRow( array(
+                                new LayoutColumn(
+                                    new LayoutPanel('Leistung-Name', $tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity()->getName()
+                                        , LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                                ),
+                                new LayoutColumn(
+                                    new LayoutPanel('Artikel-Name', $tblBasketItem->getServiceBillingCommodityItem()->getTblItem()->getName()
+                                        , LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                                ),
+                                new LayoutColumn(
+                                    new LayoutPanel('Artikel-Beschreibung', $tblBasketItem->getServiceBillingCommodityItem()->getTblItem()->getDescription()
+                                        , LayoutPanel::PANEL_TYPE_SUCCESS ), 6
+                                )
+                            ) ),
+                        )),
+                        new LayoutGroup( array(
+                            new LayoutRow( array(
+                                new LayoutColumn( array(
+                                        Billing::serviceBasket()->executeEditBasketItem(
+                                            new Form( array(
+                                                    new FormGroup( array(
+                                                        new FormRow( array(
+                                                            new FormColumn(
+                                                                new TextField( 'BasketItem[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
+                                                                ), 6 ),
+                                                            new FormColumn(
+                                                                new TextField( 'BasketItem[Quantity]', 'Menge', 'Menge', new QuantityIcon()
+                                                                ), 6 )
+                                                        ) )
+                                                    ) )
+                                                ), new SubmitPrimary( 'Änderungen speichern' )
+                                            ), $tblBasketItem, $BasketItem
+                                        )
+                                    )
+                                )
                             ) )
-                        ), new SubmitPrimary( 'Änderungen speichern' )
-                        ), $tblBasketItem, $BasketItem
-                    )
+                        ) )
+                    ) )
                 );
             }
         }
@@ -459,6 +513,16 @@ class Basket extends AbstractFrontend
 
         $View->setContent(
             new Layout( array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Nummer', $tblBasket->getId(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Erstellt am', $tblBasket->getCreateDate(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        )
+                    ) ),
+                )),
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn( array(
@@ -568,6 +632,16 @@ class Basket extends AbstractFrontend
 
         $View->setContent(
             new Layout( array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Nummer', $tblBasket->getId(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Erstellt am', $tblBasket->getCreateDate(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        )
+                    ) ),
+                )),
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn(
