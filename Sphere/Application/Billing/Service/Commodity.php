@@ -220,10 +220,10 @@ class Commodity extends EntityAction
             $View->setError( 'Commodity[Name]', 'Bitte geben Sie einen Namen an' );
             $Error = true;
         }
-        if (isset( $Commodity['Description'] ) && empty(  $Commodity['Description'] )) {
-            $View->setError( 'Commodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
-            $Error = true;
-        }
+//        if (isset( $Commodity['Description'] ) && empty(  $Commodity['Description'] )) {
+//            $View->setError( 'Commodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
+//            $Error = true;
+//        }
 
         if (!$Error)
         {
@@ -291,10 +291,10 @@ class Commodity extends EntityAction
             $View->setError( 'Commodity[Name]', 'Bitte geben Sie einen Namen an' );
             $Error = true;
         }
-        if (isset( $Commodity['Description'] ) && empty(  $Commodity['Description'] )) {
-            $View->setError( 'Commodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
-            $Error = true;
-        }
+//        if (isset( $Commodity['Description'] ) && empty(  $Commodity['Description'] )) {
+//            $View->setError( 'Commodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
+//            $Error = true;
+//        }
 
         if (!$Error) {
             if ($this->actionEditCommodity(
@@ -337,18 +337,18 @@ class Commodity extends EntityAction
             $View->setError( 'Item[Name]', 'Bitte geben Sie einen Namen an' );
             $Error = true;
         }
-        if (isset( $Item['Description'] ) && empty(  $Item['Description'] )) {
-            $View->setError( 'Item[Description]', 'Bitte geben Sie eine Beschreibung an' );
-            $Error = true;
-        }
+//        if (isset( $Item['Description'] ) && empty(  $Item['Description'] )) {
+//            $View->setError( 'Item[Description]', 'Bitte geben Sie eine Beschreibung an' );
+//            $Error = true;
+//        }
         if (isset( $Item['Price'] ) && empty(  $Item['Price'] )) {
             $View->setError( 'Item[Price]', 'Bitte geben Sie einen Preis an' );
             $Error = true;
         }
-        if (isset($Item['CostUnit'] ) && empty( $Item['CostUnit'] )) {
-            $View->setError( 'Item[CostUnit]', 'Bitte geben Sie einen Namen an' );
-            $Error = true;
-        }
+//        if (isset($Item['CostUnit'] ) && empty( $Item['CostUnit'] )) {
+//            $View->setError( 'Item[CostUnit]', 'Bitte geben Sie einen Namen an' );
+//            $Error = true;
+//        }
 
         if (!$Error) {
             $this->actionCreateItem(
@@ -418,18 +418,18 @@ class Commodity extends EntityAction
             $View->setError( 'Item[Name]', 'Bitte geben Sie einen Namen an' );
             $Error = true;
         }
-        if (isset( $Item['Description'] ) && empty(  $Item['Description'] )) {
-            $View->setError( 'Item[Description]', 'Bitte geben Sie eine Beschreibung an' );
-            $Error = true;
-        }
+//        if (isset( $Item['Description'] ) && empty(  $Item['Description'] )) {
+//            $View->setError( 'Item[Description]', 'Bitte geben Sie eine Beschreibung an' );
+//            $Error = true;
+//        }
         if (isset( $Item['Price'] ) && empty(  $Item['Price'] )) {
             $View->setError( 'Item[Price]', 'Bitte geben Sie einen Preis an' );
             $Error = true;
         }
-        if (isset( $Item['CostUnit'] ) && empty(  $Item['CostUnit'] )) {
-            $View->setError( 'Item[CostUnit]', 'Bitte geben Sie eine Kostenstelle an' );
-            $Error = true;
-        }
+//        if (isset( $Item['CostUnit'] ) && empty(  $Item['CostUnit'] )) {
+//            $View->setError( 'Item[CostUnit]', 'Bitte geben Sie eine Kostenstelle an' );
+//            $Error = true;
+//        }
 
         if (!$Error) {
             if ($this->actionEditItem(
@@ -536,48 +536,5 @@ class Commodity extends EntityAction
             return new Warning( 'Das FIBU-Konto ' . $tblItemAccount->getServiceBilling_Account()->getDescription(). ' konnte nicht entfernt werden' )
             .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 2, array( 'Id' => $tblItemAccount->getTblItem()->getId()) );
         }
-    }
-
-    /**
-     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
-     *
-     * @param $DebtorCommodity
-     *
-     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
-     */
-    public function executeCreateDebtorCommodity(
-        AbstractType &$View = null,
-        $DebtorCommodity
-    ) {
-
-        /**
-         * Skip to Frontend
-         */
-        if (null === $DebtorCommodity
-        ) {
-            return $View;
-        }
-
-        $Error = false;
-
-        if (isset($DebtorCommodity['Name'] ) && empty( $DebtorCommodity['Name'] )) {
-            $View->setError( 'DebtorCommodity[Name]', 'Bitte geben Sie einen Namen an' );
-            $Error = true;
-        }
-        if (isset( $DebtorCommodity['Description'] ) && empty(  $DebtorCommodity['Description'] )) {
-            $View->setError( 'DebtorCommodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
-            $Error = true;
-        }
-
-        if (!$Error)
-        {
-            $this->actionCreateDebtorCommodity(
-                $DebtorCommodity['Name'],
-                $DebtorCommodity['Description']
-            );
-            return new Success( 'Die Debitor-Leistung wurde erfolgreich angelegt' )
-            .new Redirect( '/Sphere/Billing/Commodity', 2);
-        }
-        return $View;
     }
 }

@@ -393,9 +393,12 @@ class Commodity extends AbstractFrontend
                   new Layout(array(
                       new LayoutGroup( array(
                           new LayoutRow( array(
-                              new LayoutColumn( array(
-                                  new LayoutPanel($tblCommodity->getName(),'', LayoutPanel::PANEL_TYPE_SUCCESS )
-                              ))
+                              new LayoutColumn(
+                                  new LayoutPanel('Name', $tblCommodity->getName(), LayoutPanel::PANEL_TYPE_SUCCESS ), 4
+                              ),
+                              new LayoutColumn(
+                                  new LayoutPanel('Beschreibung', $tblCommodity->getDescription(), LayoutPanel::PANEL_TYPE_SUCCESS ), 8
+                              )
                           )))),
                     new LayoutGroup( array(
                         new LayoutRow( array(
@@ -657,9 +660,11 @@ class Commodity extends AbstractFrontend
                     new Layout(array(
                         new LayoutGroup( array(
                             new LayoutRow( array(
-                                new LayoutColumn( array(
-                                        new LayoutPanel($tblItem->getName(),'', LayoutPanel::PANEL_TYPE_SUCCESS)
-                                    )
+                                new LayoutColumn(
+                                    new LayoutPanel('Name', $tblItem->getName(), LayoutPanel::PANEL_TYPE_SUCCESS ), 4
+                                ),
+                                new LayoutColumn(
+                                    new LayoutPanel('Beschreibung', $tblItem->getDescription(), LayoutPanel::PANEL_TYPE_SUCCESS ), 8
                                 )
                             ) ),
                         )),
@@ -733,35 +738,6 @@ class Commodity extends AbstractFrontend
         {
             $View ->setContent( Billing::serviceCommodity()->executeAddItemAccount( $tblItem, $tblAccount ));
         }
-
-        return $View;
-    }
-
-    /**
-     * @param $DebtorCommodity
-     *
-     * @return Stage
-     */
-    public static function frontendDebtorCommodityCreate( $DebtorCommodity )
-    {
-        $View = new Stage();
-        $View->setTitle( 'Debitor-Leistung' );
-        $View->setDescription( 'Hinzufügen' );
-
-        $View->setContent(Billing::serviceCommodity()->executeCreateDebtorCommodity(
-            new Form( array(
-                new FormGroup( array(
-                    new FormRow( array(
-                        new FormColumn(
-                            new TextField( 'DebtorCommodity[Name]', 'Name', 'Name', new ConversationIcon()
-                            ), 12 )
-                    ) ),
-                    new FormRow( array(
-                        new FormColumn(
-                            new TextField( 'DebtorCommodity[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                            ), 12 )
-                    ) )
-                ))), new SubmitPrimary( 'Hinzufügen' )), $DebtorCommodity));
 
         return $View;
     }
