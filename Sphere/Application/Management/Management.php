@@ -48,6 +48,7 @@ class Management extends Module\Education
             Module\Person::registerApplication( $Configuration );
             Module\Relationship::registerApplication( $Configuration );
             Module\Education::registerApplication( $Configuration );
+            Module\Company::registerApplication( $Configuration );
         }
         /**
          * Observer
@@ -107,6 +108,15 @@ class Management extends Module\Education
     {
 
         return Service\Course::getApi();
+    }
+
+    /**
+     * @return Service\Company
+     */
+    public static function serviceCompany()
+    {
+
+        return Service\Company::getApi();
     }
 
     /**
