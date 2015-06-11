@@ -154,8 +154,8 @@ class Invoice extends AbstractFrontend
             array_walk( $tblInvoiceAllByIsConfirmedState, function ( TblInvoice &$tblInvoice ) {
                 if ($tblInvoice->getIsPaymentDateModified())
                 {
-                    $tblInvoice->InvoiceDateString = new \KREDA\Sphere\Client\Frontend\Text\Type\Warning( $tblInvoice->getInvoiceDate());
-                    $tblInvoice->PaymentDateString = new \KREDA\Sphere\Client\Frontend\Text\Type\Warning( $tblInvoice->getPaymentDate());
+                    $tblInvoice->InvoiceDateString = new Warning( $tblInvoice->getInvoiceDate());
+                    $tblInvoice->PaymentDateString = new Warning( $tblInvoice->getPaymentDate());
                 }
                 else
                 {

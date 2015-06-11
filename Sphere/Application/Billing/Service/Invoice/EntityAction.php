@@ -191,7 +191,7 @@ abstract class EntityAction extends EntitySchema
             $leadTimeByDebtor = Billing::serviceBanking()->entityLeadTimeByDebtor( $tblDebtor );
             $invoiceDate = ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P' . $leadTimeByDebtor .'D' ) );
             $now = new \DateTime();
-            if ($invoiceDate >= $now)
+            if (($invoiceDate->format('d')) >= ($now->format('d')))
             {
                 $Entity->setInvoiceDate( $invoiceDate );
                 $Entity->setPaymentDate( new \DateTime( $Date ) );
