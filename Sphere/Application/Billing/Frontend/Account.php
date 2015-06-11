@@ -166,7 +166,7 @@ class Account extends AbstractFrontend
      * @param $Account
      * @return Stage
      */
-    public static function frontendEditAccountFibu ( $Id, $Account )
+    public static function frontendAccountFibuEdit ( $Id, $Account )
     {
         $View = new Stage();
         $View->setTitle( 'Account' );

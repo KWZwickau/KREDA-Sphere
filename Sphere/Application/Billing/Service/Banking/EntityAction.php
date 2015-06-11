@@ -214,17 +214,16 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param TblDebtor $tblDebtor
+     * @param TblReference $tblReference
      *
      * @return bool
      */
-    protected function actionDeactivateReference( TblDebtor $tblDebtor )
+    protected function actionDeactivateReference( TblReference $tblReference )
     {
         $Manager = $this->getEntityManager();
-        $Reference = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
+
         /** @var TblReference $Entity */
-        $Entity = $Manager->getEntityById( 'TblReference', $Reference->getId() );
-        print_r( $Entity );
+        $Entity = $Manager->getEntityById( 'TblReference', $tblReference->getId() );
         $Protocol = clone $Entity;
         if (null !== $Entity) {
             $Entity->setIsVoid( false );
@@ -368,6 +367,17 @@ abstract class EntityAction extends EntitySchema
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblReference' )
             ->findOneBy( array( TblReference::ATTR_TBL_DEBTOR => $tblDebtor->getId(), TblReference::ATTR_IS_VOID => true ) );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param $tblReference
+     *
+     * @return bool|TblReference
+     */
+    protected function entityReferenceById ( $tblReference )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblReference', $tblReference );
         return ( null === $Entity ? false : $Entity );
     }
 

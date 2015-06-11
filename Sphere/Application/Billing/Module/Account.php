@@ -31,7 +31,7 @@ class Account extends Common
             '/Sphere/Billing/Account', __CLASS__.'::frontendAccountFibu'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Account/Edit', __CLASS__.'::frontendEditAccountFibu'
+            '/Sphere/Billing/Account/Edit', __CLASS__.'::frontendAccountFibuEdit'
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Account', null );
@@ -95,11 +95,11 @@ class Account extends Common
      * @param $Account
      * @return mixed
      */
-    public static function frontendEditAccountFibu( $Id, $Account )
+    public static function frontendAccountFibuEdit( $Id, $Account )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendEditAccountFibu( $Id, $Account );
+        return Frontend::frontendAccountFibuEdit( $Id, $Account );
     }
 
     /**

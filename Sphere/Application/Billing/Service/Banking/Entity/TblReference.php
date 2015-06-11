@@ -93,10 +93,10 @@ class TblReference extends AbstractEntity
      */
     public function getServiceBillingBanking()
     {
-        if (null === $this->getServiceBillingBanking()) {
+        if (null === $this->tblDebtor) {
             return false;
         } else {
-            return Billing::serviceBanking()->entityDebtorById( $this->getServiceBillingBanking() );
+            return Billing::serviceBanking()->entityDebtorById( $this->tblDebtor );
         }
     }
 
