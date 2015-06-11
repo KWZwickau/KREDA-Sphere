@@ -36,6 +36,21 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblCompany $tblCompany
+     * @param TblAddress $tblAddress
+     *
+     * @return bool|TblCompanyAddress
+     */
+    protected function entityCompanyAddressByCompanyAndAddress(TblCompany $tblCompany, TblAddress $tblAddress )
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblCompanyAddress')->findOneBy(array(
+            TblCompanyAddress::ATTR_TBL_Company => $tblCompany->getId(),
+            TblCompanyAddress::ATTR_SERVICE_MANAGEMENT_ADDRESS => $tblAddress->getId()
+        ));
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @return bool|TblCompany[]
      */
     protected function entityCompanyAll()
@@ -50,16 +65,15 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityAddressAllByCompany( TblCompany $tblCompany )
     {
-        /** @var TblCompanyAddress[] $tblCompanyAddressList */
-        $tblCompanyAddressList = $this->getEntityManager()->getEntity( 'TblCompanyAddress' )
-            ->findBy( array( TblCompanyAddress::ATTR_TBL_Company => $tblCompany->getId() ) );
-        $EntityList = array();
-        if (!empty( $tblCompanyAddressList ))
-        {
-            foreach ( $tblCompanyAddressList as $tblCompanyAddress)
-            {
-                array_push($EntityList, $tblCompanyAddress->getServiceManagementAddress());
-            }
+        $EntityList = $this->getEntityManager()->getEntity( 'TblCompanyAddress' )->findBy( array(
+            TblCompanyAddress::ATTR_TBL_Company => $tblCompany->getId()
+        ) );
+
+        if (!empty( $EntityList )) {
+            array_walk( $EntityList, function ( TblCompanyAddress &$Entity ) {
+
+                $Entity = $Entity->getServiceManagementAddress();
+            } );
         }
 
         return ( empty( $EntityList ) ? false : $EntityList );
@@ -128,7 +142,8 @@ abstract class EntityAction extends EntitySchema
         $Manager = $this->getEntityManager();
 
         $Entity = $Manager->getEntityById( 'TblCompanyAddress' , $tblCompanyAddress->getId() );
-        if (null !== $Entity) {
+        if (null !== $Entity)
+        {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
             $Manager->killEntity( $Entity );

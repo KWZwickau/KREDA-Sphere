@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Frontend;
 
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Company\Entity\TblCompany;
@@ -282,6 +283,24 @@ class Company extends AbstractFrontend
     }
 
     /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendCompanyAddressRemove ( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Adresse entfernen' );
+        $tblCompanyAddress = Management::serviceCompany()->entityCompanyAddressById( $Id );
+        if (!empty($tblCompanyAddress))
+        {
+            $View ->setContent( Management::serviceCompany()->executeRemoveCompanyAddress( $tblCompanyAddress ));
+        }
+
+        return $View;
+    }
+
+    /**
      * @return Form
      */
     public static function formAddress()
@@ -326,48 +345,53 @@ class Company extends AbstractFrontend
 
     /**
      * @param TblCompany $tblCompany
-     * @param bool      $hasRemove
+     * @param $hasRemove
      *
      * @return Layout
      */
     public static function layoutAddress( TblCompany $tblCompany, $hasRemove = false )
     {
         $tblAddressList = Management::serviceCompany()->entityAddressAllByCompany( $tblCompany );
-        if (!empty( $tblAddressList )) {
-            /** @noinspection PhpUnusedParameterInspection */
-            array_walk( $tblAddressList, function ( TblAddress &$tblAddress, $Index, $Data ) {
-
-                if ($Index == 0) {
+        if (!empty( $tblAddressList ))
+        {
+            foreach ($tblAddressList as $Key => &$tblAddress)
+            {
+                if ($Key == 0)
+                {
                     $AddressType = new MapMarkerIcon().' Hauptadresse';
                     $PanelType = LayoutPanel::PANEL_TYPE_WARNING;
-                } else {
+                }
+                else
+                {
                     $AddressType = new MapMarkerIcon().' Adresse';
                     $PanelType = LayoutPanel::PANEL_TYPE_DEFAULT;
                 }
 
-                /** @var bool[]|TblCompany[] $Data */
+                $tblCompanyAddress = Management::serviceCompany()->entityCompanyAddressByCompanyAndAddress($tblCompany, $tblAddress);
                 $tblAddress = new LayoutColumn(
                     new LayoutPanel(
                         $AddressType, new LayoutAddress( $tblAddress ), $PanelType,
-                        ( $Data[0]
-                            ? new ButtonGroup( array(
-                                ( $PanelType != LayoutPanel::PANEL_TYPE_PRIMARY
-                                    ? new Primary(
-                                        'Hauptadresse', '/Sphere/Management/Company/Address/Type', new TransferIcon(),
-                                        array( 'Id' => $Data[1]->getId(), 'Address' => $tblAddress->getId() )
+                            ($hasRemove
+                                 ? new ButtonGroup( array(
+                                    ( $Key != 0
+                                        ? new Primary(
+                                            'Hauptadresse', '/Sphere/Management/Company/Address/Type', new TransferIcon(),
+                                            array( 'Id' => $tblCompanyAddress->getId() )
+                                        )
+                                        : ''
+                                    ),
+                                    new Danger(
+                                        'Löschen', '/Sphere/Management/Company/Address/Remove', new RemoveIcon(),
+                                        array( 'Id' => $tblCompanyAddress->getId() )
                                     )
-                                    : ''
-                                ),
-                                new Danger(
-                                    'Löschen', '/Sphere/Management/Company/Address/Destroy', new RemoveIcon(),
-                                    array( 'Id' => $Data[1]->getId(), 'Address' => $tblAddress->getId() )
-                                ),
-                            ) )
-                            : null
-                        )
+                                ) )
+                                :null
+                            )
                     ), 4 );
-            }, array( $hasRemove, $tblCompany ) );
-        } else {
+            }
+        }
+        else
+        {
             $tblAddressList = array(
                 new LayoutColumn(
                     new Warning( 'Keine Adressen hinterlegt', new WarningIcon() )

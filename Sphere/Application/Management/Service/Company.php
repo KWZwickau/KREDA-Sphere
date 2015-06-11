@@ -71,6 +71,18 @@ class Company  extends EntityAction
 
     /**
      * @param TblCompany $tblCompany
+     * @param TblAddress $tblAddress
+     *
+     * @return bool|TblCompanyAddress
+     */
+    public function entityCompanyAddressByCompanyAndAddress(TblCompany $tblCompany, TblAddress $tblAddress)
+    {
+        return parent::entityCompanyAddressByCompanyAndAddress($tblCompany, $tblAddress);
+    }
+
+
+    /**
+     * @param TblCompany $tblCompany
      *
      * @return bool|TblAddress[]
      */
@@ -220,15 +232,16 @@ class Company  extends EntityAction
         TblCompanyAddress $tblCompanyAddress
     )
     {
+        $tblCompany = $tblCompanyAddress->getTblCompany();
         if ($this->actionRemoveCompanyAddress($tblCompanyAddress))
         {
             return new Success( 'Die Addresse wurde erfolgreich entfernt' )
-                .new Redirect( '/Sphere/Management/Company/Edit', 0, array( 'Id' => $tblCompanyAddress->getTblCompany()->getId()) );
+                .new Redirect( '/Sphere/Management/Company/Address/Edit', 0, array( 'Id' => $tblCompany->getId()) );
         }
         else
         {
             return new Warning( 'Die Addresse konnte nicht entfernt werden' )
-            .new Redirect( '/Sphere/Management/Company/Edit', 2, array( 'Id' => $tblCompanyAddress->getTblCompany()->getId()) );
+                .new Redirect( '/Sphere/Management/Company/Address/Edit', 2, array( 'Id' => $tblCompany->getId()) );
         }
     }
 }
