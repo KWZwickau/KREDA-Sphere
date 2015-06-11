@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Company\Entity\TblCompany;
 use KREDA\Sphere\Application\Management\Service\Company\Entity\TblCompanyAddress;
@@ -71,11 +72,11 @@ class Company  extends EntityAction
     /**
      * @param TblCompany $tblCompany
      *
-     * @return bool|TblCompanyAddress[]
+     * @return bool|TblAddress[]
      */
-    public function entityCompanyAddressAllByCompany(TblCompany $tblCompany)
+    public function entityAddressAllByCompany(TblCompany $tblCompany)
     {
-        return parent::entityCompanyAddressAllByCompany($tblCompany);
+        return parent::entityAddressAllByCompany($tblCompany);
     }
 
     /**
@@ -106,10 +107,10 @@ class Company  extends EntityAction
 
         if (!$Error)
         {
-            if ($this->actionCreateCompany($Company['Name']))
+            if (($tblCompany = $this->actionCreateCompany($Company['Name'])))
             {
-                $View .= new Success( 'Die Firma wurde erfolgreich angelegt' )
-                    .new Redirect( '/Sphere/Management/Company', 1 );
+                $View .= new Success( 'Die Firma ' . $tblCompany->getName() . ' wurde erfolgreich angelegt' )
+                    .new Redirect( '/Sphere/Management/Company/Edit', 1, array('Id' => $tblCompany->getId()) );
             }
             else
             {
@@ -126,7 +127,7 @@ class Company  extends EntityAction
      *
      * @return string
      */
-    public function executeDestroyBasket(
+    public function executeDestroyCompany(
         TblCompany $tblCompany
     )
     {
@@ -143,6 +144,51 @@ class Company  extends EntityAction
     }
 
     /**
+     * @param AbstractType $View
+     * @param TblCompany $tblCompany
+     * @param $Company
+     *
+     * @return AbstractType|string
+     */
+    public function executeEditCompany(
+        AbstractType &$View = null,
+        TblCompany $tblCompany,
+        $Company
+    )
+    {
+        /**
+         * Skip to Frontend
+         */
+        if (null === $Company)
+        {
+            return $View;
+        }
+
+        $Error = false;
+
+        if (isset( $Company['Name'] ) && empty(  $Company['Name'] )) {
+            $View->setError( 'Company[Name]', 'Bitte geben Sie einen Namen an' );
+            $Error = true;
+        }
+
+        if (!$Error)
+        {
+            if ($this->actionEditCompany( $tblCompany, $Company['Name'] ))
+            {
+                $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
+                    .new Redirect( '/Sphere/Management/Company/Edit', 1 , array('Id'=>$tblCompany->getId()) );
+            }
+            else
+            {
+                $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' )
+                    .new Redirect( '/Sphere/Management/Company/Edit', 2 , array('Id'=>$tblCompany->getId()) );
+            }
+        }
+
+        return $View;
+    }
+
+    /**
      * @param TblCompany $tblCompany
      * @param TblAddress $tblAddress
      *
@@ -153,15 +199,15 @@ class Company  extends EntityAction
         TblAddress $tblAddress
     )
     {
-        if ($this->actionAddCompanyAddress($tblCompany, $tblAddress))
+        if ( $this->actionAddCompanyAddress($tblCompany, $tblAddress))
         {
             return new Success( 'Die Addresse wurde erfolgreich hinzugefügt' )
-                .new Redirect( '/Sphere/Management/Company/Edit', 0, array( 'Id' => $tblCompany->getId()) );
+                .new Redirect( '/Sphere/Management/Company/Address/Edit', 0, array( 'Id' => $tblCompany->getId()) );
         }
         else
         {
             return new Warning( 'Die Addresse konnte nicht hinzugefügt werden' )
-                .new Redirect( '/Sphere/Management/Company/Edit', 2, array( 'Id' => $tblCompany->getId()) );
+                .new Redirect( '/Sphere/Management/Company/Address/Edit', 2, array( 'Id' => $tblCompany->getId()) );
         }
     }
 
@@ -170,7 +216,7 @@ class Company  extends EntityAction
      *
      * @return string
      */
-    public function executRemoveCompanyAddress(
+    public function executeRemoveCompanyAddress(
         TblCompanyAddress $tblCompanyAddress
     )
     {

@@ -13,7 +13,6 @@ use KREDA\Sphere\Application\System\System;
  */
 abstract class EntityAction extends EntitySchema
 {
-
     /***
      * @param $Id
      *
@@ -47,13 +46,23 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblCompany $tblCompany
-     * @return bool|TblCompanyAddress[]
+     * @return bool|TblAddress[]
      */
-    protected function entityCompanyAddressAllByCompany( TblCompany $tblCompany )
+    protected function entityAddressAllByCompany( TblCompany $tblCompany )
     {
-        $EntityList = $this->getEntityManager()->getEntity( 'TblCompanyAddress' )
+        /** @var TblCompanyAddress[] $tblCompanyAddressList */
+        $tblCompanyAddressList = $this->getEntityManager()->getEntity( 'TblCompanyAddress' )
             ->findBy( array( TblCompanyAddress::ATTR_TBL_Company => $tblCompany->getId() ) );
-        return ( null === $EntityList ? false : $EntityList );
+        $EntityList = array();
+        if (!empty( $tblCompanyAddressList ))
+        {
+            foreach ( $tblCompanyAddressList as $tblCompanyAddress)
+            {
+                array_push($EntityList, $tblCompanyAddress->getServiceManagementAddress());
+            }
+        }
+
+        return ( empty( $EntityList ) ? false : $EntityList );
     }
 
     /**
@@ -99,7 +108,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTblCompany( $tblCompany );
             $Entity->setServiceManagementAddress( $tblAddress );
 
-            $Manager->bulkSaveEntity( $Entity );
+            $Manager->SaveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
         }
@@ -154,6 +163,37 @@ abstract class EntityAction extends EntitySchema
             $Manager->bulkKillEntity( $Entity );
 
             $Manager->flushCache();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param TblCompany $tblCompany
+     * @param $Name
+     *
+     * @return bool
+     */
+    protected function actionEditCompany(
+        TblCompany $tblCompany,
+        $Name
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblCompany $Entity */
+        $Entity = $Manager->getEntityById( 'TblCompany', $tblCompany->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity)
+        {
+            $Entity->setName( $Name );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
 
             return true;
         }
