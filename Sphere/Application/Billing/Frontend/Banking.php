@@ -36,6 +36,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
 use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
@@ -72,7 +73,7 @@ class Banking extends AbstractFrontend
                         new ListIcon(), array(
                             'Id' => $tblDebtor->getId()
                         ) ))->__toString().
-                        (new Primary( 'Bankdaten bearbeiten', '/Sphere/Billing/Banking/Debtor/Edit',
+                        (new Primary( 'Bearbeiten', '/Sphere/Billing/Banking/Debtor/Edit',
                             new EditIcon(), array(
                                 'Id' => $tblDebtor->getId()
                             ) ) )->__toString().
@@ -92,9 +93,22 @@ class Banking extends AbstractFrontend
                 $IBAN = $tblDebtor->getIBAN();
                 $BIC = $tblDebtor->getBIC();
                 $Owner = $tblDebtor->getOwner();
-                if ( !empty( $Bankname ) && !empty( $IBAN ) && !empty( $BIC ) && !empty( $Owner ) )
+                $LeadTimeFirst = $tblDebtor->getLeadTimeFirst();
+                $LeadTimeFollow = $tblDebtor->getLeadTimeFollow();
+                if ( !empty( $Bankname ) && !empty( $IBAN ) && !empty( $BIC ) && !empty( $Owner ) && $LeadTimeFirst != 0 && $LeadTimeFollow != 0 )
                 {
                     $tblDebtor->BankInformation = new Success( new EnableIcon().' Ok' );
+                }
+                elseif( !empty( $Bankname ) && !empty( $IBAN ) && !empty( $BIC ) && !empty( $Owner ) && $LeadTimeFirst == 0 && $LeadTimeFollow == 0 )
+                {
+                    $tblDebtor->BankInformation = new Warning( new EditIcon().' Bankeinzug leer' );
+                }
+                elseif(empty( $Bankname ) && $LeadTimeFirst != 0 && $LeadTimeFollow != 0
+                    || empty( $IBAN ) && $LeadTimeFirst != 0 && $LeadTimeFollow != 0
+                    || empty( $BIC ) && $LeadTimeFirst != 0 && $LeadTimeFollow != 0
+                    || empty( $Owner ) && $LeadTimeFirst != 0 && $LeadTimeFollow != 0)
+                {
+                    $tblDebtor->BankInformation = new Warning( new EditIcon().' Bankdaten leer' );
                 }
                 else
                 {
@@ -462,6 +476,9 @@ class Banking extends AbstractFrontend
                                 new LayoutPanel( new BarCodeIcon(). ' Debitornummer', $DebtorNumber, LayoutPanel::PANEL_TYPE_WARNING )
                             ),6),
                             new LayoutColumn( array(
+                                new Primary('Debitoren Übersicht','/Sphere/Billing/Banking')
+                            ),6),
+                            new LayoutColumn( array(
                                     Billing::serviceBanking()->executeEditDebtor(
                                         new Form( array(
                                             new FormGroup( array(
@@ -536,6 +553,9 @@ class Banking extends AbstractFrontend
                             ),6),
                             new LayoutColumn( array(
                                 new LayoutPanel( new BarCodeIcon(). ' Debitornummer', $DebtorNumber, LayoutPanel::PANEL_TYPE_WARNING )
+                            ),6),
+                            new LayoutColumn( array(
+                                new Primary('Debitoren Übersicht','/Sphere/Billing/Banking')
                             ),6),
                             new LayoutColumn( array(
                                     Billing::serviceBanking()->executeEditDebtor(
