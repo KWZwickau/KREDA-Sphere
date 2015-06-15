@@ -72,7 +72,7 @@ class TblBalance extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @return string $ExportDate
      */
     public function getExportDate()
     {

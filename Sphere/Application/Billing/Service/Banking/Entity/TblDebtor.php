@@ -66,11 +66,11 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @param integer $leadTimeFirst
+     * @param integer $LeadTimeFirst
      */
-    public function setLeadTimeFirst($leadTimeFirst)
+    public function setLeadTimeFirst($LeadTimeFirst)
     {
-        $this->LeadTimeFirst = $leadTimeFirst;
+        $this->LeadTimeFirst = $LeadTimeFirst;
     }
 
     /**
@@ -82,11 +82,11 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @param integer $leadTimeFollow
+     * @param integer $LeadTimeFollow
      */
-    public function setLeadTimeFollow($leadTimeFollow)
+    public function setLeadTimeFollow($LeadTimeFollow)
     {
-        $this->LeadTimeFollow = $leadTimeFollow;
+        $this->LeadTimeFollow = $LeadTimeFollow;
     }
 
     /**
@@ -98,11 +98,11 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @param string $debtorNumber
+     * @param string $DebtorNumber
      */
-    public function setDebtorNumber($debtorNumber)
+    public function setDebtorNumber($DebtorNumber)
     {
-        $this->DebtorNumber = $debtorNumber;
+        $this->DebtorNumber = $DebtorNumber;
     }
 
     /**
@@ -118,11 +118,11 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @param null|TblPerson $serviceManagementPerson
+     * @param null|TblPerson $ServiceManagementPerson
      */
-    public function setServiceManagementPerson( TblPerson $serviceManagementPerson )
+    public function setServiceManagementPerson( TblPerson $ServiceManagementPerson )
     {
-        $this->ServiceManagementPerson = ( null === $serviceManagementPerson ? null : $serviceManagementPerson->getId() );
+        $this->ServiceManagementPerson = ( null === $ServiceManagementPerson ? null : $ServiceManagementPerson->getId() );
     }
 
     /**
@@ -134,11 +134,11 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @param string $bankName
+     * @param string $BankName
      */
-    public function setBankName( $bankName )
+    public function setBankName( $BankName )
     {
-        $this->BankName = $bankName;
+        $this->BankName = $BankName;
     }
 
     /**
@@ -150,15 +150,15 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @param string $iBAN
+     * @param string $IBAN
      */
-    public function setIBAN($iBAN)
+    public function setIBAN($IBAN)
     {
-        $this->IBAN = $iBAN;
+        $this->IBAN = $IBAN;
     }
 
     /**
-     * @return string $bIC
+     * @return string $BIC
      */
     public function getBIC()
     {
@@ -166,11 +166,11 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @param string $bIC
+     * @param string $BIC
      */
-    public function setBIC( $bIC )
+    public function setBIC( $BIC )
     {
-        $this->BIC = $bIC;
+        $this->BIC = $BIC;
     }
 
     /**
@@ -182,11 +182,11 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @param string $owner
+     * @param string $Owner
      */
-    public function setOwner( $owner )
+    public function setOwner( $Owner )
     {
-        $this->Owner = $owner;
+        $this->Owner = $Owner;
     }
 
     /**
@@ -198,11 +198,11 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @param string $cashSign
+     * @param string $CashSign
      */
-    public function setCashSign( $cashSign )
+    public function setCashSign( $CashSign )
     {
-        $this->CashSign = $cashSign;
+        $this->CashSign = $CashSign;
     }
 
     /**
@@ -214,11 +214,11 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @param string $description
+     * @param string $Description
      */
-    public function setDescription($description)
+    public function setDescription($Description)
     {
-        $this->Description = $description;
+        $this->Description = $Description;
     }
 
 }

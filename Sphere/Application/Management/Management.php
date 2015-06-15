@@ -120,6 +120,15 @@ class Management extends Module\Education
     }
 
     /**
+     * @return Service\TableView
+     */
+    public static function serviceTableView()
+    {
+
+        return Service\TableView::getApi();
+    }
+
+    /**
      * @param Data $Data
      *
      * @return bool|string

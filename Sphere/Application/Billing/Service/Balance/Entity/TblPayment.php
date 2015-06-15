@@ -49,7 +49,7 @@ class TblPayment extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @return string $Date
      */
     public function getDate()
     {
@@ -75,11 +75,11 @@ class TblPayment extends AbstractEntity
     }
 
     /**
-     * @param $value
+     * @param $Value
      */
-    public function setValue( $value )
+    public function setValue( $Value )
     {
-        $this->Value = $value;
+        $this->Value = $Value;
     }
 
     /**

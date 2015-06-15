@@ -40,11 +40,11 @@ class TblReference extends AbstractEntity
     }
 
     /**
-     * @param string $reference
+     * @param string $Reference
      */
-    public function setReference( $reference )
+    public function setReference( $Reference )
     {
-        $this->Reference = $reference;
+        $this->Reference = $Reference;
     }
 
     /**
@@ -56,11 +56,11 @@ class TblReference extends AbstractEntity
     }
 
     /**
-     * @param boolean $isVoid
+     * @param boolean $IsVoid
      */
-    public function setIsVoid ( $isVoid )
+    public function setIsVoid ( $IsVoid )
     {
-        $this->IsVoid = $isVoid;
+        $this->IsVoid = $IsVoid;
     }
 
     /**
@@ -81,11 +81,11 @@ class TblReference extends AbstractEntity
     }
 
     /**
-     * @param \DateTime $referenceDate
+     * @param \DateTime $ReferenceDate
      */
-    public function setReferenceDate( \DateTime $referenceDate )
+    public function setReferenceDate( \DateTime $ReferenceDate )
     {
-        $this->ReferenceDate = $referenceDate;
+        $this->ReferenceDate = $ReferenceDate;
     }
 
     /**
