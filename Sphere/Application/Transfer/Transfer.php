@@ -41,6 +41,8 @@ class Transfer extends Export
             Module\Import::registerApplication( $Configuration );
             Module\Import\FuxMedia::registerApplication( $Configuration );
             Module\Export::registerApplication( $Configuration );
+            Module\Export\Datev::registerApplication( $Configuration );
+            Module\Export\Sfirm::registerApplication( $Configuration );
         }
     }
 
@@ -78,7 +80,12 @@ class Transfer extends Export
                                 new LayoutColumn( new LayoutThumbnail(
                                     FileSystem::getFileLoader( '/Sphere/Client/Style/Resource/datev_logo.png' ),
                                     'Datev', 'Rechnungen',
-                                    new Primary( 'Download', '/Sphere/Transfer/Export/Datev/', new DownloadIcon() )
+                                    new Primary( 'Download', '/Sphere/Transfer/Export/Datev', new DownloadIcon() )
+                                ), 2 ),
+                                new LayoutColumn( new LayoutThumbnail(
+                                    FileSystem::getFileLoader( '/Sphere/Client/Style/Resource/datev_logo.png' ),
+                                    'Sfirm', 'Rechnungen',
+                                    new Primary( 'Download', '/Sphere/Transfer/Export/Sfirm', new DownloadIcon() )
                                 ), 2 ),
                             )
                         )

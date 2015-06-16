@@ -95,6 +95,15 @@ class Commodity extends EntityAction
     }
 
     /**
+     * @param string $Name
+     * @return bool|TblItem
+     */
+    public function entityItemByName($Name)
+    {
+        return parent::entityItemByName($Name);
+    }
+
+    /**
      * @return bool|TblItem[]
      */
     public function entityItemAll()

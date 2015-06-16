@@ -94,6 +94,30 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @return bool|TblInvoice[]
+     */
+    protected  function entityInvoiceHasExportDateAll()
+    {
+        $invoiceHasExportDateAll = array();
+        $balanceAll = $this->entityBalanceAll();
+        if ($balanceAll)
+        {
+            foreach ($balanceAll as $balance)
+            {
+                $invoice =$balance->getServiceBillingInvoice();
+                $BalanceDate = $balance->getExportDate();
+
+                if( $BalanceDate !== false )
+                {
+                    $invoiceHasExportDateAll[] = $invoice;
+                }
+            }
+        }
+
+        return ( empty( $invoiceHasExportDateAll ) ? false : $invoiceHasExportDateAll );
+    }
+
+    /**
      * @param TblBalance $tblBalance
      *
      * @return bool|TblPayment[]

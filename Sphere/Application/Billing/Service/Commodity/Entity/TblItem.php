@@ -19,6 +19,7 @@ class TblItem extends AbstractEntity
 {
     const ATTR_SERVICE_MANAGEMENT_COURSE = 'serviceManagement_Course';
     const ATTR_SERVICE_MANAGEMENT_STUDENT_CHILD_RANK = 'serviceManagement_Student_ChildRank';
+    const ATTR_NAME = 'Name';
 
     /**
      * @Column(type="string")

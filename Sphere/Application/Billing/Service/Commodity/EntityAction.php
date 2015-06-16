@@ -71,6 +71,17 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param $Name
+     * @return bool|null|TblItem
+     */
+    protected function entityItemByName( $Name )
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblItem' )
+            ->findOneBy( array( TblItem::ATTR_NAME => $Name ) );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @return bool|TblItem[]
      */
     protected function entityItemAll()

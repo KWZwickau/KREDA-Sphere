@@ -68,6 +68,14 @@ class Balance extends EntityAction
     }
 
     /**
+     * @return bool|Invoice\Entity\TblInvoice[]
+     */
+    public function entityInvoiceHasExportDateAll()
+    {
+        return parent::entityInvoiceHasExportDateAll();
+    }
+
+    /**
      * @param int $Id
      *
      * @return bool|TblPayment
