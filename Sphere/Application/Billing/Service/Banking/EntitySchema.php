@@ -26,7 +26,8 @@ abstract class EntitySchema extends AbstractService
          */
         $Schema = clone $this->getDatabaseHandler()->getSchema();
 
-        $tblDebtor=$this->setTableDebtor( $Schema );
+        $tblPaymentType = $this->setTablePaymentType ( $Schema );
+        $tblDebtor = $this->setTableDebtor( $Schema, $tblPaymentType );
         $this->setTableDebtorCommodity( $Schema, $tblDebtor );
         $this->setTableReference( $Schema, $tblDebtor );
 
@@ -40,10 +41,11 @@ abstract class EntitySchema extends AbstractService
 
     /**
      * @param Schema $Schema
+     * @param Table $tblPaymentType
      *
      * @return Table tblDebtorCommodity
      */
-    private function setTableDebtor( Schema &$Schema )
+    private function setTableDebtor( Schema &$Schema, Table $tblPaymentType )
     {
         $Table = $this->schemaTableCreate( $Schema, 'tblDebtor' );
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','DebtorNumber' )){
@@ -76,6 +78,9 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblDebtor','ServiceManagementPerson' )){
             $Table->addColumn( 'ServiceManagementPerson', 'bigint', array('notnull' => false) );
         }
+
+        $this->schemaTableAddForeignKey( $Table, $tblPaymentType );
+
         return $Table;
     }
 
@@ -117,6 +122,17 @@ abstract class EntitySchema extends AbstractService
             $Table->addColumn( 'ReferenceDate', 'date', array('notnull' => false) );
         }
         $this->schemaTableAddForeignKey( $Table, $tblDebtor );
+        return $Table;
+    }
+
+    private function setTablePaymentType ( Schema &$Schema )
+    {
+        $Table = $this->schemaTableCreate( $Schema, 'tblPaymentType');
+
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblPaymentType', 'PaymentType')){
+            $Table->addColumn( 'PaymentType', 'string' );
+        }
+
         return $Table;
     }
 }

@@ -276,7 +276,7 @@ abstract class EntityAction extends EntitySchema
         $Entity = $Manager->getEntity( 'TblPayment' )->findOneBy( array(
             'tblBalance' => $tblBalance->getId(),
             'Value'      => $Value,
-            '$Date'      => $Date ));
+            'Date'      => $Date ));
 
         if (null === $Entity)
         {

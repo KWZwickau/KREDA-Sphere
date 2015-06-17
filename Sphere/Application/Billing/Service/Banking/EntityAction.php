@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Billing\Service\Banking;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblPaymentType;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblReference;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
@@ -261,11 +262,12 @@ abstract class EntityAction extends EntitySchema
      * @param $IBAN
      * @param $BIC
      * @param $Description
+     * @param $PaymentType
      * @param $ServiceManagement_Person
      *
      * @return TblDebtor
      */
-    protected function actionAddDebtor($DebtorNumber, $LeadTimeFirst, $LeadTimeFollow, $BankName, $Owner, $CashSign, $IBAN, $BIC, $Description, $ServiceManagement_Person )
+    protected function actionAddDebtor($DebtorNumber, $LeadTimeFirst, $LeadTimeFollow, $BankName, $Owner, $CashSign, $IBAN, $BIC, $Description, $PaymentType, $ServiceManagement_Person )
     {
 
         $Manager = $this->getEntityManager();
@@ -280,6 +282,7 @@ abstract class EntityAction extends EntitySchema
         $Entity->setIBAN( $IBAN );
         $Entity->setBIC( $BIC );
         $Entity->setDescription( $Description );
+        $Entity->setPaymentType ( Billing::serviceBanking()->entityPaymentTypeById( $PaymentType ) );
         $Entity->setServiceManagementPerson( $ServiceManagement_Person );
 
         $Manager->saveEntity( $Entity );
@@ -326,6 +329,7 @@ abstract class EntityAction extends EntitySchema
     protected function actionEditDebtor(
         TblDebtor $tblDebtor,
         $Description,
+        $PaymentType,
         $Owner,
         $IBAN,
         $BIC,
@@ -342,6 +346,7 @@ abstract class EntityAction extends EntitySchema
         $Protocol = clone $Entity;
         if (null !== $Entity) {
             $Entity->setDescription( $Description );
+            $Entity->setPaymentType( $PaymentType );
             $Entity->setOwner( $Owner );
             $Entity->setIBAN( $IBAN );
             $Entity->setBIC( $BIC );
@@ -379,6 +384,57 @@ abstract class EntityAction extends EntitySchema
     {
         $Entity = $this->getEntityManager()->getEntityById( 'TblReference', $tblReference );
         return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param $PaymentType
+     * @return TblPaymentType|null|object
+     */
+    protected function actionCreatePaymentType( $PaymentType )
+    {
+        $Manager = $this->getEntityManager();
+        $Entity = $Manager->getEntity( 'TblPaymentType' )->findOneBy( array( TblPaymentType::ATTR_PAYMENT_TYPE => $PaymentType ) );
+        if (null === $Entity)
+        {
+            $Entity = new TblPaymentType();
+            $Entity->setPaymentType( $PaymentType );
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        }
+
+        return $Entity;
+    }
+
+    /**
+     * @return bool|TblPaymentType[]
+     */
+    protected function entityPaymentTypeAll()
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblPaymentType' )->findAll();
+
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param $PaymentType
+     *
+     * @return bool|null|$tblPaymentType
+     */
+    protected function entityPaymentTypeByType($PaymentType)
+    {
+        $Entity = $this->getEntityManager()->getEntity('TblPaymentType')->findOneBy( array( TblPaymentType::ATTR_PAYMENT_TYPE => $PaymentType) );
+        return (null === $Entity ? false : $Entity);
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|TblPaymentType
+     */
+    protected function entityPaymentTypeById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblPaymentType', $Id );
+        return (null === $Entity ? false : $Entity);
     }
 
 }

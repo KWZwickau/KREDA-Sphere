@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Banking\Entity;
 
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Common\AbstractEntity;
@@ -56,6 +57,10 @@ class TblDebtor extends AbstractEntity
      * @Column(type="string")
      */
     protected $Description;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $tblPaymentType;
 
     /**
      * @return integer $LeadTimeFirst
@@ -219,6 +224,27 @@ class TblDebtor extends AbstractEntity
     public function setDescription($Description)
     {
         $this->Description = $Description;
+    }
+
+    /**
+     * @return string $tblPaymentType
+     */
+    public function getPaymentType()
+    {
+
+        if (null === $this->tblPaymentType) {
+            return false;
+        } else {
+            return Billing::serviceBanking()->entityPaymentTypeById( $this->tblPaymentType );
+        }
+    }
+
+    /**
+     * @param TblPaymentType $PaymentType
+     */
+    public function setPaymentType( TblPaymentType $PaymentType)
+    {
+        $this->tblPaymentType = ( null === $PaymentType ? null : $PaymentType->getId() );
     }
 
 }

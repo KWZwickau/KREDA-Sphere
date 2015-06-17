@@ -4,6 +4,7 @@ use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblReference;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblPaymentType;
 use KREDA\Sphere\Application\Billing\Service\Banking\EntityAction;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Management\Management;
@@ -42,6 +43,9 @@ class Banking extends EntityAction
         /**
          * CommodityType
          */
+        $this->actionCreatePaymentType('SEPA-Lastschrift');
+        $this->actionCreatePaymentType('SEPA-Überweisung');
+        $this->actionCreatePaymentType('Bar');
     }
 
     /**
@@ -216,6 +220,7 @@ class Banking extends EntityAction
                 $Debtor['IBAN'],
                 $Debtor['BIC'],
                 $Debtor['Description'],
+                $Debtor['PaymentType'],
                 Management::servicePerson()->entityPersonById( $Id) );
             if(!empty($Debtor['Reference']))
             {
@@ -365,6 +370,7 @@ class Banking extends EntityAction
         if ($this->actionEditDebtor(
             $tblDebtor,
             $Debtor['Description'],
+            $Debtor['PaymentType'],
             $Debtor['Owner'],
             $Debtor['IBAN'],
             $Debtor['BIC'],
@@ -441,6 +447,34 @@ class Banking extends EntityAction
     {
 
         return parent::entityDebtorByServiceManagementPerson( $ServiceManagement_Person );
+    }
+
+    /**
+     * @return array|bool|TblPaymentType[]
+     */
+    public function entityPaymentTypeAll()
+    {
+        return parent::entityPaymentTypeAll();
+    }
+
+    /**
+     * @param $PaymentType
+     *
+     * @return bool|TblPaymentType
+     */
+    public function entityPaymentTypeByType($PaymentType)
+    {
+        return parent::entityPaymentTypeByType($PaymentType);
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|TblPaymentType
+     */
+    public function entityPaymentTypeById( $Id )
+    {
+        return parent::entityPaymentTypeById( $Id );
     }
 
     /**

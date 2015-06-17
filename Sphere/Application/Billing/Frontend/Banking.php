@@ -16,6 +16,7 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EnableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ListIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MinusIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PlusIcon;
@@ -28,6 +29,7 @@ use KREDA\Sphere\Client\Frontend\Form\Structure\FormGroup;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
 use KREDA\Sphere\Client\Frontend\Form\Structure\FormTitle;
 use KREDA\Sphere\Client\Frontend\Input\Type\DatePicker;
+use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutColumn;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
@@ -451,17 +453,23 @@ class Banking extends AbstractFrontend
         $DebtorNumber = $tblDebtor->getDebtorNumber();
         $ReferenceEntity = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
 
-        $Global = self::extensionSuperGlobal();
-        $Global->POST['Debtor']['Description'] = $tblDebtor->getDescription();
-        $Global->POST['Debtor']['Owner'] = $tblDebtor->getOwner();
-        $Global->POST['Debtor']['IBAN'] = $tblDebtor->getIBAN();
-        $Global->POST['Debtor']['BIC'] = $tblDebtor->getBIC();
-        $Global->POST['Debtor']['CashSign'] = $tblDebtor->getCashSign();
-        $Global->POST['Debtor']['BankName'] = $tblDebtor->getBankName();
-        $Global->POST['Debtor']['LeadTimeFirst'] = $tblDebtor->getLeadTimeFirst();
-        $Global->POST['Debtor']['LeadTimeFollow'] = $tblDebtor->getLeadTimeFollow();
+        $tblPaymentType = Billing::serviceBanking()->entityPaymentTypeAll();
+        $PaymentType = Billing::serviceBanking()->entityPaymentTypeById( Billing::serviceBanking()->entityDebtorById( $Id )->getPaymentType() )->getPaymentType();
 
-        $Global->savePost();
+        $Global = self::extensionSuperGlobal();
+        if (!isset( $Global->POST['Debtor']) )
+        {
+            $Global->POST['Debtor']['Description'] = $tblDebtor->getDescription();
+            $Global->POST['Debtor']['PaymentType'] = Billing::serviceBanking()->entityPaymentTypeByType( $PaymentType )->getId();
+            $Global->POST['Debtor']['Owner'] = $tblDebtor->getOwner();
+            $Global->POST['Debtor']['IBAN'] = $tblDebtor->getIBAN();
+            $Global->POST['Debtor']['BIC'] = $tblDebtor->getBIC();
+            $Global->POST['Debtor']['CashSign'] = $tblDebtor->getCashSign();
+            $Global->POST['Debtor']['BankName'] = $tblDebtor->getBankName();
+            $Global->POST['Debtor']['LeadTimeFirst'] = $tblDebtor->getLeadTimeFirst();
+            $Global->POST['Debtor']['LeadTimeFollow'] = $tblDebtor->getLeadTimeFollow();
+            $Global->savePost();
+        }
 
         if( empty($ReferenceEntity) )
         {
@@ -485,7 +493,10 @@ class Banking extends AbstractFrontend
                                                 new FormRow( array(
                                                     new FormColumn(
                                                         new TextField( 'Debtor[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                                                        ), 12 ),
+                                                        ), 6 ),
+                                                    new FormColumn(
+                                                        new SelectBox( 'Debtor[PaymentType]', 'Bezahlmethode', array( 'PaymentType' => $tblPaymentType ) , new ConversationIcon()
+                                                        ), 6 ),
                                                 ))
                                             ), new FormTitle('Debitor') ),
                                             new FormGroup( array(
@@ -564,7 +575,10 @@ class Banking extends AbstractFrontend
                                                 new FormRow( array(
                                                     new FormColumn(
                                                         new TextField( 'Debtor[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                                                        ), 12 ),
+                                                        ), 6 ),
+                                                    new FormColumn(
+                                                        new SelectBox( 'Debtor[PaymentType]', 'Bezahlmethode', array( 'PaymentType' => $tblPaymentType ) , new ConversationIcon()
+                                                        ), 6 ),
                                                 ))
                                             ), new FormTitle('Debitor') ),
                                             new FormGroup( array(
@@ -630,12 +644,16 @@ class Banking extends AbstractFrontend
 
         $Person = Management::servicePerson()->entityPersonById( $Id )->getFullName();
         $PersonType = Management::servicePerson()->entityPersonById( $Id )->getTblPersonType();
+        $tblPaymentType = Billing::serviceBanking()->entityPaymentTypeAll();
 
         $Global = self::extensionSuperGlobal();
         $Global->POST['Debtor']['Owner'] = $Person;
 
-        $Global->savePost();
+        if( !isset( $Global->POST['Debtor']['PaymentType'] ) ) {
+            $Global->POST['Debtor']['PaymentType'] = Billing::serviceBanking()->entityPaymentTypeByType( 'SEPA-Lastschrift' )->getId();
+        }
 
+        $Global->savePost();
 
         if ( Billing::serviceBanking()->entityDebtorByServiceManagementPerson( $Id ) == false )
         {
@@ -660,7 +678,10 @@ class Banking extends AbstractFrontend
                                         new FormRow( array(
                                             new FormColumn(
                                                 new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new BarCodeIcon()
-                                                ), 12),
+                                                ), 6),
+                                            new FormColumn(
+                                                new SelectBox( 'Debtor[PaymentType]', 'Bezahlmethode', array( 'PaymentType' => $tblPaymentType ), new MoneyIcon()
+                                                ), 6),
                                             new FormColumn(
                                                 new TextField( 'Debtor[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
                                                 ), 12),
@@ -733,7 +754,10 @@ class Banking extends AbstractFrontend
                                             new FormRow( array(
                                                 new FormColumn(
                                                     new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new BarCodeIcon()
-                                                    ), 12),
+                                                    ), 6),
+                                                new FormColumn(
+                                                    new SelectBox( 'Debtor[PaymentType]', 'Bezahlmethode', array( 'PaymentType' => $tblPaymentType ), new MoneyIcon()
+                                                    ), 6),
                                                 new FormColumn(
                                                     new TextField( 'Debtor[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
                                                     ), 12),
