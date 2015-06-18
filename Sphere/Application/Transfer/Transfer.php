@@ -40,6 +40,7 @@ class Transfer extends Export
 
             Module\Import::registerApplication( $Configuration );
             Module\Import\FuxMedia::registerApplication( $Configuration );
+            Module\Import\Payment::registerApplication( $Configuration );
             Module\Export::registerApplication( $Configuration );
             Module\Export\Datev::registerApplication( $Configuration );
             Module\Export\Sfirm::registerApplication( $Configuration );
@@ -70,6 +71,12 @@ class Transfer extends Export
                                     FileSystem::getFileLoader( '/Sphere/Client/Style/Resource/fuxschool.gif' ),
                                     'FuxSchool', 'Klassendaten',
                                     new Primary( 'Upload', '/Sphere/Transfer/Import/FuxMedia/FuxSchool/Class',
+                                        new UploadIcon() )
+                                ), 2 ),
+                                new LayoutColumn( new LayoutThumbnail(
+                                    FileSystem::getFileLoader( '/Sphere/Client/Style/Resource/fuxschool.gif' ),
+                                    'Bezahldaten', 'Excel',
+                                    new Primary( 'Upload', '/Sphere/Transfer/Import/Payment',
                                         new UploadIcon() )
                                 ), 2 ),
                             )

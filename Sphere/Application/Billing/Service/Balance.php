@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Billing\Service\Balance\Entity\TblPayment;
 use KREDA\Sphere\Application\Billing\Service\Balance\EntityAction;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
+use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Common\Database\Handler;
 
 /**
@@ -143,5 +144,17 @@ class Balance extends EntityAction
     public function actionCreateBalance(TblDebtor $serviceBilling_Banking, TblInvoice $serviceBilling_Invoice, $ExportDate)
     {
         return parent::actionCreateBalance($serviceBilling_Banking, $serviceBilling_Invoice, $ExportDate);
+    }
+
+    /**
+     * @param TblBalance $tblBalance
+     * @param $Value
+     * @param \DateTime $Date
+     *
+     * @return TblPayment|null
+     */
+    public function actionCreatePayment(TblBalance $tblBalance, $Value,\DateTime $Date)
+    {
+        return parent::actionCreatePayment($tblBalance, $Value, $Date);
     }
 }

@@ -265,11 +265,11 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param TblBalance $tblBalance
      * @param $Value
-     * @param $Date
+     * @param \DateTime $Date
      *
      * @return TblPayment|null|object
      */
-    protected function actionCreatePayment( TblBalance $tblBalance, $Value, $Date)
+    protected function actionCreatePayment( TblBalance $tblBalance, $Value,\DateTime $Date)
     {
 
         $Manager = $this->getEntityManager();
@@ -283,7 +283,7 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblPayment();
             $Entity->setTblBalance( $tblBalance );
             $Entity->setValue( $Value );
-            $Entity->setDate( $Date );
+            $Entity->setDate(  $Date );
 
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
@@ -314,5 +314,4 @@ abstract class EntityAction extends EntitySchema
         }
         return false;
     }
-
 }
