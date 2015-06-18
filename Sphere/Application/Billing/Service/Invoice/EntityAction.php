@@ -96,9 +96,9 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityInvoiceByNumber( $Number )
     {
-        $EntityList = $this->getEntityManager()->getEntity( 'TblInvoice' )
-            ->findBy( array( TblInvoice::ATTR_NUMBER => $Number ) );
-        return ( null === $EntityList ? false : $EntityList );
+        $Entity = $this->getEntityManager()->getEntity( 'TblInvoice' )
+            ->findOneBy( array( TblInvoice::ATTR_NUMBER => $Number ) );
+        return ( null === $Entity ? false : $Entity );
     }
 
     /**
