@@ -91,6 +91,17 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param $Number
+     * @return TblInvoice[]|bool
+     */
+    protected function entityInvoiceByNumber( $Number )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblInvoice' )
+            ->findBy( array( TblInvoice::ATTR_NUMBER => $Number ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
      * @param TblTempInvoice $tblTempInvoice
      * @return TblTempInvoiceCommodity[]|bool
      */

@@ -58,6 +58,15 @@ class Invoice extends EntityAction
     }
 
     /**
+     * @param $Number
+     * @return bool|Invoice\Entity\TblInvoice[]
+     */
+    public function entityInvoiceByNumber($Number)
+    {
+        return parent::entityInvoiceByNumber($Number);
+    }
+
+    /**
      * @return bool|TblInvoice[]
      */
     public  function entityInvoiceAll()
