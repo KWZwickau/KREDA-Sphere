@@ -92,7 +92,7 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param $Number
-     * @return TblInvoice[]|bool
+     * @return TblInvoice|bool
      */
     protected function entityInvoiceByNumber( $Number )
     {

@@ -59,7 +59,7 @@ class Invoice extends EntityAction
 
     /**
      * @param $Number
-     * @return bool|Invoice\Entity\TblInvoice[]
+     * @return bool|Invoice\Entity\TblInvoice
      */
     public function entityInvoiceByNumber($Number)
     {
