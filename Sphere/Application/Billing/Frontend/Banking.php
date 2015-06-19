@@ -69,16 +69,19 @@ class Banking extends AbstractFrontend
         if (!empty( $tblDebtorAll )) {
             array_walk( $tblDebtorAll, function ( TblDebtor &$tblDebtor ) {
                 $Reference = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
-                $tblDebtor->Person = Management::servicePerson()->entityPersonById($tblDebtor->getServiceManagementPerson())->getFullName();
+                $tblDebtor->Payment = Billing::serviceBanking()->entityPaymentTypeById( $tblDebtor->getPaymentType() )->getPaymentType();
+                $tblPerson = Management::servicePerson()->entityPersonById( $tblDebtor->getServiceManagementPerson() );
+                $tblDebtor->FirstName = $tblPerson->getFirstName();
+                $tblDebtor->LastName = $tblPerson->getLastName();
                 $tblDebtor->Edit =
                     (new Primary( 'Leistung hinzufügen', '/Sphere/Billing/Banking/Commodity/Select',
                         new ListIcon(), array(
                             'Id' => $tblDebtor->getId()
                         ) ))->__toString().
-                        (new Primary( 'Bearbeiten', '/Sphere/Billing/Banking/Debtor/Edit',
-                            new EditIcon(), array(
-                                'Id' => $tblDebtor->getId()
-                            ) ) )->__toString().
+                    (new Primary( 'Bearbeiten', '/Sphere/Billing/Banking/Debtor/Edit',
+                        new EditIcon(), array(
+                            'Id' => $tblDebtor->getId()
+                        ) ) )->__toString().
                     (new Danger( 'Löschen', '/Sphere/Billing/Banking/Delete',
                         new RemoveIcon(), array(
                             'Id' => $tblDebtor->getId()
@@ -128,7 +131,9 @@ class Banking extends AbstractFrontend
                             new TableData( $tblDebtorAll, null,
                                 array(
                                     'DebtorNumber' => 'Debitorennummer',
-                                    'Person' => 'Person',
+                                    'FirstName' => 'Vorname',
+                                    'LastName' => 'Nachname',
+                                    'Payment' => 'Bezahlmethode',
                                     'ReferenceCheck' => 'Referenz',
                                     'BankInformation' => 'Bankdaten',
                                     'Edit' => 'Verwaltung'

@@ -346,7 +346,7 @@ abstract class EntityAction extends EntitySchema
         $Protocol = clone $Entity;
         if (null !== $Entity) {
             $Entity->setDescription( $Description );
-            $Entity->setPaymentType( $PaymentType );
+            $Entity->setPaymentType( Billing::serviceBanking()->entityPaymentTypeById( $PaymentType ) );
             $Entity->setOwner( $Owner );
             $Entity->setIBAN( $IBAN );
             $Entity->setBIC( $BIC );
