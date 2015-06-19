@@ -180,22 +180,22 @@ class Banking extends EntityAction
             $View->setError( 'Debtor[DebtorNumber]', 'Die Debitorennummer exisitiert bereits. Bitte geben Sie eine andere Debitorennummer an' );
             $Error = true;
         }
-//        if (isset($Debtor['LeadTimeFirst']) && empty( $Debtor['LeadTimeFirst'])) {
-//            $View->setError( 'Debtor[LeadTimeFirst]', 'Bitte geben sie den Ersteinzug an.' );
-//            $Error = true;
-//        }
-//        if (isset($Debtor['LeadTimeFirst']) &&  !is_numeric($Debtor['LeadTimeFirst'])) {
-//            $View->setError('Debtor[LeadTimeFirst]', 'Bitte geben sie eine Zahl an.');
-//            $Error = true;
-//        }
-//        if (isset($Debtor['LeadTimeFollow']) && empty( $Debtor['LeadTimeFollow'])) {
-//            $View->setError( 'Debtor[LeadTimeFollow]', 'Bitte geben sie den Folgeeinzug an.' );
-//            $Error = true;
-//        }
-//        if (isset($Debtor['LeadTimeFollow']) &&  !is_numeric($Debtor['LeadTimeFollow'])) {
-//            $View->setError('Debtor[LeadTimeFollow]', 'Bitte geben sie eine Zahl an.');
-//            $Error = true;
-//        }
+        if (isset($Debtor['LeadTimeFirst']) && empty( $Debtor['LeadTimeFirst'])) {
+            $View->setError( 'Debtor[LeadTimeFirst]', 'Bitte geben sie den Ersteinzug an.' );
+            $Error = true;
+        }
+        if (isset($Debtor['LeadTimeFirst']) &&  !is_numeric($Debtor['LeadTimeFirst'])) {
+            $View->setError('Debtor[LeadTimeFirst]', 'Bitte geben sie eine Zahl an.');
+            $Error = true;
+        }
+        if (isset($Debtor['LeadTimeFollow']) && empty( $Debtor['LeadTimeFollow'])) {
+            $View->setError( 'Debtor[LeadTimeFollow]', 'Bitte geben sie den Folgeeinzug an.' );
+            $Error = true;
+        }
+        if (isset($Debtor['LeadTimeFollow']) &&  !is_numeric($Debtor['LeadTimeFollow'])) {
+            $View->setError('Debtor[LeadTimeFollow]', 'Bitte geben sie eine Zahl an.');
+            $Error = true;
+        }
 //        if (isset($Debtor['IBAN']) && empty($Debtor['IBAN'])) {
 //            $View->setError('Debtor[IBAN]', 'Bitte geben sie eine IBAN an.');
 //            $Error = true;
@@ -367,23 +367,37 @@ class Banking extends EntityAction
             return $View;
         }
 
-        if ($this->actionEditDebtor(
-            $tblDebtor,
-            $Debtor['Description'],
-            $Debtor['PaymentType'],
-            $Debtor['Owner'],
-            $Debtor['IBAN'],
-            $Debtor['BIC'],
-            $Debtor['CashSign'],
-            $Debtor['BankName'],
-            $Debtor['LeadTimeFirst'],
-            $Debtor['LeadTimeFollow']
-        )) {
-            $View .= new Success( 'Änderungen sind erfasst' )
-                .new Redirect( '/Sphere/Billing/Banking/Debtor/Edit', 2, array( 'Id' => $tblDebtor->getId() ) );
-        } else {
-            $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' )
-                .new Redirect( '/Sphere/Billing/Banking', 2);
+        $Error = false;
+        if (isset($Debtor['LeadTimeFirst']) && empty( $Debtor['LeadTimeFirst'])) {
+            $View->setError( 'Debtor[LeadTimeFirst]', 'Bitte geben sie eine Vorlaufzeit ein' );
+            $Error = true;
+        }
+        if (isset($Debtor['LeadTimeFollow']) && empty( $Debtor['LeadTimeFollow'])) {
+            $View->setError( 'Debtor[LeadTimeFollow]', 'Bitte geben sie eine Vorlaufzeit ein' );
+            $Error = true;
+        }
+
+        if(!$Error)
+        {
+            if ($this->actionEditDebtor(
+                $tblDebtor,
+                $Debtor['Description'],
+                $Debtor['PaymentType'],
+                $Debtor['Owner'],
+                $Debtor['IBAN'],
+                $Debtor['BIC'],
+                $Debtor['CashSign'],
+                $Debtor['BankName'],
+                $Debtor['LeadTimeFirst'],
+                $Debtor['LeadTimeFollow']
+            )) {
+                $View .= new Success( 'Änderungen sind erfasst' )
+                    .new Redirect( '/Sphere/Billing/Banking/Debtor/Edit', 2, array( 'Id' => $tblDebtor->getId() ) );
+            } else {
+                $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' )
+                    .new Redirect( '/Sphere/Billing/Banking', 2);
+            }
+            return $View;
         }
         return $View;
     }

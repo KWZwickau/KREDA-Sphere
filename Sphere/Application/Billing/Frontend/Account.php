@@ -126,6 +126,7 @@ class Account extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'FIBU-Konto' );
         $View->setDescription( 'Hinzufügen' );
+        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Account' ) );
 
         $tblAccountKey = Billing::serviceAccount()->entityKeyValueAll();
         $tblAccountType = Billing::serviceAccount()->entityTypeValueAll();
