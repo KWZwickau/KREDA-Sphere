@@ -496,9 +496,6 @@ class Banking extends AbstractFrontend
                                 new LayoutPanel( new BarCodeIcon(). ' Debitornummer', $DebtorNumber, LayoutPanel::PANEL_TYPE_WARNING )
                             ),6),
                             new LayoutColumn( array(
-                                new Primary('Debitoren Übersicht','/Sphere/Billing/Banking')
-                            ),6),
-                            new LayoutColumn( array(
                                     Billing::serviceBanking()->executeEditDebtor(
                                         new Form( array(
                                             new FormGroup( array(
