@@ -1,5 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Banking;
+
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
@@ -305,9 +306,10 @@ abstract class EntityAction extends EntitySchema
      * @param $Reference
      * @param $DebtorNumber
      * @param $ReferenceDate
+     * @param $Commodity
      * @return TblReference
      */
-    protected function actionAddReference( $Reference, $DebtorNumber, $ReferenceDate  )
+    protected function actionAddReference( $Reference, $DebtorNumber, $ReferenceDate, $Commodity  )
     {
         $Manager = $this->getEntityManager();
 
@@ -315,6 +317,7 @@ abstract class EntityAction extends EntitySchema
         $Entity->setReference( $Reference );
         $Entity->setIsVoid( true );
         $Entity->setServiceTblDebtor( Billing::serviceBanking()->entityDebtorByDebtorNumber( $DebtorNumber ) );
+        $Entity->setTblCommodity( $Commodity );
         if( $ReferenceDate )
         {
             $Entity->setReferenceDate( new \DateTime( $ReferenceDate ) );
@@ -366,12 +369,12 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param TblDebtor $tblDebtor
      *
-     * @return bool|TblReference
+     * @return bool|TblReference[]
      */
     protected function entityReferenceByDebtor( TblDebtor $tblDebtor )
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblReference' )
-            ->findOneBy( array( TblReference::ATTR_TBL_DEBTOR => $tblDebtor->getId(), TblReference::ATTR_IS_VOID => true ) );
+            ->findBy( array( TblReference::ATTR_TBL_DEBTOR => $tblDebtor->getId(), TblReference::ATTR_IS_VOID => true ) );
         return ( null === $Entity ? false : $Entity );
     }
 

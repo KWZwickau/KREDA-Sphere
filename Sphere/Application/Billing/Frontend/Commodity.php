@@ -55,6 +55,10 @@ class Commodity extends AbstractFrontend
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Übersicht' );
         $View->setMessage( 'Zeigt die verfügbaren Leistungen an' );
+        // ToDo
+//        $View->setMessage( 'Leistungen sind Zusammenfassungen aller Artikel, <br />
+//                            die unter einem Punkt für den Debitor abgerechnet werden. <br />
+//                            Beispielsweise: Schulgeld, Hortgeld, usw.' );
         $View->addButton(
             new Primary( 'Leistung anlegen', '/Sphere/Billing/Commodity/Create', new PlusIcon() )
         );
@@ -213,6 +217,10 @@ class Commodity extends AbstractFrontend
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Übersicht' );
         $View->setMessage( 'Zeigt die verfügbaren Artikel an' );
+        // ToDo
+//        $View->setMessage( 'Artikel sind Preise für erbrachte Dienste, die Abhängigkeiten zugewiesen bekommen können. <br />
+//                            Somit werden bei Rechnungen nur die Artikel berechnet, <br />
+//                            die <b>keine</b> oder die <b>zutreffenden</b> Abhängigkeiten für die einzelne Person besitzen.' );
         $View->addButton(
             new Primary( 'Artikel anlegen', '/Sphere/Billing/Commodity/Item/Create', new PlusIcon() )
         );

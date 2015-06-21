@@ -445,7 +445,7 @@ class Banking extends AbstractFrontend
         $Person = Management::servicePerson()->entityPersonById( $tblDebtor->getServiceManagementPerson() );
         $Name = $Person->getFullName();
         $DebtorNumber = $tblDebtor->getDebtorNumber();
-        $ReferenceEntity = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
+        $ReferenceEntityList = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
 
         $tblPaymentType = Billing::serviceBanking()->entityPaymentTypeAll();
         $PaymentType = Billing::serviceBanking()->entityPaymentTypeById( Billing::serviceBanking()->entityDebtorById( $Id )->getPaymentType() )->getPaymentType();
@@ -461,14 +461,33 @@ class Banking extends AbstractFrontend
                 });
         }
 
-        if ($ReferenceEntity)
+        if ($ReferenceEntityList)
             {
-                $ReferenceEntity->Option =
-                    (new Danger( 'Referenz deaktivieren', '/Sphere/Billing/Banking/Reference/Select/Deactivate',
-                        new RemoveIcon(), array(
-                            'Id' => $ReferenceEntity->getId()
-                        ) ))->__toString();
+                foreach ($ReferenceEntityList as $ReferenceEntity)
+                {
+                    $ReferenceEntity->Commodity = Billing::serviceCommodity()->entityCommodityById( $ReferenceEntity->getTblCommodity() )->getName();
+                    $ReferenceEntity->Option =
+                        (new Danger( 'Referenz deaktivieren', '/Sphere/Billing/Banking/Reference/Select/Deactivate',
+                            new RemoveIcon(), array(
+                                'Id' => $ReferenceEntity->getId()
+                            ) ))->__toString();
+                }
             }
+
+        $tblCommoditySelectBox = Billing::serviceCommodity()->entityCommodityAll();
+        $tblReferenceList = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
+        $tblCommodityUsed = array();
+        foreach($tblReferenceList as $tblReference)
+        {
+            $tblCommodityUsed[] = Billing::serviceCommodity()->entityCommodityById( $tblReference->getTblCommodity() );
+        }
+        if ($tblCommoditySelectBox && $tblCommodityUsed)
+        {
+            $tblCommoditySelectBox = array_udiff($tblCommoditySelectBox, $tblCommodityUsed,
+                function(TblCommodity $invoiceA, TblCommodity $invoiceB){
+                    return $invoiceA->getId() - $invoiceB->getId();
+                });
+        }
 
         $Global = self::extensionSuperGlobal();
         if (!isset( $Global->POST['Debtor']) )
@@ -537,7 +556,7 @@ class Banking extends AbstractFrontend
                             ),
                         ))
                     )),
-                    ( empty($ReferenceEntity) ) ?
+                    ( !empty( $tblCommoditySelectBox ) ) ?
                     new LayoutGroup( array(
                         new LayoutRow( array(
                             new LayoutColumn( array(
@@ -547,29 +566,34 @@ class Banking extends AbstractFrontend
                                             new FormRow( array(
                                                 new FormColumn(
                                                     new TextField( 'Reference[Reference]', 'Referenznummer', 'Referenz', new BarCodeIcon()
-                                                    ), 6),
+                                                    ), 4),
                                                 new FormColumn(
                                                     new DatePicker( 'Reference[ReferenceDate]', 'Datum', 'Referenzdatum', new TimeIcon()
-                                                    ), 6),
+                                                    ), 4),
+                                                new FormColumn(
+                                                    new SelectBox( 'Reference[Commodity]', 'Leistung', array( 'Name' => $tblCommoditySelectBox ) ,  new TimeIcon()
+                                                    ), 4),
                                             )),
                                         ))
                                     ),  new SubmitPrimary( 'Hinzufügen' ))
                                     , $tblDebtor, $Reference, $Id )
                             ))
                         ))
-                    ), new LayoutTitle( 'Referenz' )) :
+                    ), new LayoutTitle( 'Referenz' )) : null,
+                    ( !empty($ReferenceEntityList) ) ?
                         new LayoutGroup( array(
                             new LayoutRow( array(
                                 new LayoutColumn( array(
-                                    new TableData( $ReferenceEntity, null,
+                                    new TableData( $ReferenceEntityList, null,
                                         array(
                                             'Reference' => 'Referenznummer',
                                             'ReferenceDate' => 'Referenzdatum',
+                                            'Commodity' => 'Leistung',
                                             'Option' => 'Deaktivieren'
                                         ))
                                 ))
                             ))
-                        ), new LayoutTitle( 'Referenz' ) ),
+                        ), new LayoutTitle( 'Referenz' ) ) : null ,
                     ( count($tblDebtorList) >= 1 ) ?
                     new LayoutGroup( array(
                         new LayoutRow( array(
@@ -616,6 +640,7 @@ class Banking extends AbstractFrontend
         $Person = Management::servicePerson()->entityPersonById( $Id )->getFullName();
         $PersonType = Management::servicePerson()->entityPersonById( $Id )->getTblPersonType();
         $tblPaymentType = Billing::serviceBanking()->entityPaymentTypeAll();
+        $tblCommodity = Billing::serviceCommodity()->entityCommodityAll();
 
         $Global = self::extensionSuperGlobal();
         $Global->POST['Debtor']['Owner'] = $Person;
@@ -688,10 +713,13 @@ class Banking extends AbstractFrontend
                                         new FormRow( array(
                                             new FormColumn(
                                                 new TextField( 'Debtor[Reference]', 'Referenznummer', 'Referenz', new BarCodeIcon()
-                                                ), 6),
+                                                ), 4),
                                             new FormColumn(
                                                 new DatePicker( 'Debtor[ReferenceDate]', 'Datum', 'Referenzdatum', new TimeIcon()
-                                                ), 6),
+                                                ), 4),
+                                            new FormColumn(
+                                                new SelectBox( 'Debtor[Commodity]', 'Leistung', array( 'Name' => $tblCommodity ) , new TimeIcon()
+                                                ), 4),
                                         )),
                                     ),new FormTitle( 'Referenz' ))
                                 ), new SubmitPrimary( 'Hinzufügen' )), $Debtor, $Id )

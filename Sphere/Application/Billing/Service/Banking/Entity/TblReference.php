@@ -12,6 +12,7 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblReference extends AbstractEntity
 {
     const ATTR_TBL_DEBTOR = "tblDebtor";
+    const ATTR_TBL_COMMODITY = "tblCommodity";
     const ATTR_IS_VOID = "IsVoid";
 
     /**
@@ -30,6 +31,10 @@ class TblReference extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $tblDebtor;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $tblCommodity;
 
     /**
      * @return string $Reference
@@ -106,6 +111,22 @@ class TblReference extends AbstractEntity
     public function setServiceTblDebtor( TblDebtor $serviceTblDebtor)
     {
         $this->tblDebtor = (null === $serviceTblDebtor ? null : $serviceTblDebtor->getId() );
+    }
+
+    /**
+     * @return bool|string $tblCommodity
+     */
+    public function getTblCommodity()
+    {
+        return $this->tblCommodity;
+    }
+
+    /**
+     * @param null| string $serviceTblCommodity
+     */
+    public function setTblCommodity( $serviceTblCommodity)
+    {
+        $this->tblCommodity = $serviceTblCommodity;
     }
 
 }

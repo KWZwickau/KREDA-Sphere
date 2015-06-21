@@ -1,5 +1,6 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service;
+
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblReference;
@@ -226,7 +227,8 @@ class Banking extends EntityAction
             {
                 $this->actionAddReference( $Debtor['Reference'],
                     $Debtor['DebtorNumber'],
-                    $Debtor['ReferenceDate'] );
+                    $Debtor['ReferenceDate'],
+                    $Debtor['Commodity'] );
             }
             return new Success( 'Der Debitor ist erfasst worden' )
             .new Redirect( '/Sphere/Billing/Banking', 2 );
@@ -256,10 +258,10 @@ class Banking extends EntityAction
         }
 
         $Error = false;
-        if( Billing::serviceBanking()->entityReferenceByDebtor( $Debtor ) ){
-            $View->setError( 'Reference[Reference]', 'Der Debitor besitzt eine gültige Referenz' );
-            $Error = true;
-        }
+//        if( Billing::serviceBanking()->entityReferenceByDebtor( $Debtor ) ){
+//            $View->setError( 'Reference[Reference]', 'Der Debitor besitzt eine gültige Referenz' );
+//            $Error = true;
+//        }
         if (isset($Reference['Reference']) && empty( $Reference['Reference'])) {
             $View->setError( 'Reference[Reference]', 'Bitte geben sie eine Referenznummer an' );
             $Error = true;
@@ -273,7 +275,8 @@ class Banking extends EntityAction
 
             $this->actionAddReference( $Reference['Reference'],
                 $Debtor->getDebtorNumber(),
-                $Reference['ReferenceDate']);
+                $Reference['ReferenceDate'],
+                $Reference['Commodity']);
 
             return new Success( 'Die Referenz ist erfasst worden' )
             .new Redirect( '/Sphere/Billing/Banking/Debtor/Edit', 0, array( 'Id' => $Debtor->getId() ) );
@@ -414,7 +417,7 @@ class Banking extends EntityAction
     /**
      * @param TblDebtor $tblDebtor
      *
-     * @return bool|TblReference
+     * @return bool|TblReference[]
      */
     public function entityReferenceByDebtor ( TblDebtor $tblDebtor )
     {

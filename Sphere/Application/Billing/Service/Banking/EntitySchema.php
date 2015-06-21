@@ -121,6 +121,10 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblReference', 'ReferenceDate')){
             $Table->addColumn( 'ReferenceDate', 'date', array('notnull' => false) );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblReference', 'tblCommodity')){
+            $Table->addColumn( 'tblCommodity', 'bigint' );
+        }
+
         $this->schemaTableAddForeignKey( $Table, $tblDebtor );
         return $Table;
     }
