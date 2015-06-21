@@ -579,7 +579,7 @@ class Banking extends AbstractFrontend
                                     , $tblDebtor, $Reference, $Id )
                             ))
                         ))
-                    ), new LayoutTitle( 'Referenz' )) : null,
+                    ), new LayoutTitle( 'Referenz hinzufügen' )) : null,
                     ( !empty($ReferenceEntityList) ) ?
                         new LayoutGroup( array(
                             new LayoutRow( array(
