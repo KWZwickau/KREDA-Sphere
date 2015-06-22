@@ -40,7 +40,7 @@ class Invoice extends Common
             '/Sphere/Billing/Invoice/IsNotConfirmed', __CLASS__.'::frontendInvoiceIsNotConfirmedList'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Edit', __CLASS__.'::frontendInvoiceEdit'
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Edit', __CLASS__.'::frontendInvoiceEdit'
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Data', null );
@@ -62,23 +62,32 @@ class Invoice extends Common
         )
             ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Item/Edit', __CLASS__.'::frontendInvoiceItemEdit'
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Item/Edit', __CLASS__.'::frontendInvoiceItemEdit'
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'InvoiceItem', null);
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Item/Remove', __CLASS__.'::frontendInvoiceItemRemove'
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Item/Remove', __CLASS__.'::frontendInvoiceItemRemove'
         )
             ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Address/Select', __CLASS__.'::frontendInvoiceAddressSelect'
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Address/Select', __CLASS__.'::frontendInvoiceAddressSelect'
         )
             ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Address/Change', __CLASS__.'::frontendInvoiceAddressChange'
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Address/Change', __CLASS__.'::frontendInvoiceAddressChange'
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'AddressId', null);
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Payment/Type/Select', __CLASS__.'::frontendInvoicePaymentTypeSelect'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Payment/Type/Change', __CLASS__.'::frontendInvoicePaymentTypeChange'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'PaymentTypeId', null);
     }
 
     /**
@@ -188,6 +197,11 @@ class Invoice extends Common
         return Frontend::frontendInvoiceItemRemove( $Id );
     }
 
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
     public static function frontendInvoiceAddressSelect( $Id )
     {
         self::setupModuleNavigation();
@@ -195,10 +209,41 @@ class Invoice extends Common
         return Frontend::frontendInvoiceAddressSelect( $Id );
     }
 
+    /**
+     * @param $Id
+     * @param $AddressId
+     *
+     * @return Stage
+     */
     public static function frontendInvoiceAddressChange( $Id, $AddressId )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendInvoiceAddressChange( $Id, $AddressId );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoicePaymentTypeSelect( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoicePaymentTypeSelect( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $PaymentTypeId
+     *
+     * @return Stage
+     */
+    public static function frontendInvoicePaymentTypeChange( $Id, $PaymentTypeId )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoicePaymentTypeChange( $Id, $PaymentTypeId );
     }
 }

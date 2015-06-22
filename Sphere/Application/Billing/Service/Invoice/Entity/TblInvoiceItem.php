@@ -55,6 +55,29 @@ class TblInvoiceItem extends AbstractEntity
     /**
      * @return string
      */
+    public function getTotalPriceString()
+    {
+        $result = 0.00;
+        if ($this->ItemPrice > 0 && $this->ItemQuantity > 0)
+        {
+            $result = sprintf("%01.4f", $this->ItemPrice * $this->ItemQuantity);
+        }
+
+        return str_replace('.', ',', $result)  . " €";
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceString()
+    {
+        $result = sprintf("%01.4f", $this->ItemPrice);
+        return str_replace('.', ',', $result)  . " €";
+    }
+
+    /**
+     * @return string
+     */
     public function getCommodityDescription()
     {
         return $this->CommodityDescription;

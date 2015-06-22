@@ -31,6 +31,19 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param string $Name
+     *
+     * @return bool|TblCommodity
+     */
+    protected function entityCommodityByName( $Name )
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblCommodity')->findOneBy(
+            array(TblCommodity::ATTR_NAME => $Name)
+        );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @return bool|TblCommodity[]
      */
     protected function entityCommodityAll()

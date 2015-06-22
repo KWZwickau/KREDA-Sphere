@@ -8,6 +8,8 @@ use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChevronLeftIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EyeOpenIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MapMarkerIcon;
@@ -77,8 +79,19 @@ class Invoice extends AbstractFrontend
         $tblInvoiceAll = Billing::serviceInvoice()->entityInvoiceAll();
 
         if (!empty( $tblInvoiceAll )) {
-            array_walk( $tblInvoiceAll, function ( TblInvoice &$tblInvoice ) {
-                $tblInvoice->Student = $tblInvoice->getServiceManagementPerson()->getFullName();
+            array_walk( $tblInvoiceAll, function ( TblInvoice &$tblInvoice )
+            {
+                $paymentType = $tblInvoice->getServiceBillingBankingPaymentType();
+                if ($paymentType)
+                {
+                    $tblInvoice->PaymentType = $paymentType->getName();
+                }
+                else
+                {
+                    $tblInvoice->PaymentType = "";
+                }
+
+                $tblInvoice->Person = $tblInvoice->getServiceManagementPerson()->getFullName();
                 $tblInvoice->Debtor = $tblInvoice->getDebtorFullName();
                 $tblInvoice->TotalPrice = Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice );
                 $tblInvoice->Option = (new Primary( 'Anzeigen', '/Sphere/Billing/Invoice/Show',
@@ -104,8 +117,8 @@ class Invoice extends AbstractFrontend
                 else
                 {
                     $tblInvoice->IsVoidString = "";
-                    $tblInvoice->Option .= (new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
-                        new RemoveIcon(), array('Id' => $tblInvoice->getId())))->__toString();
+//                    $tblInvoice->Option .= (new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
+//                        new RemoveIcon(), array('Id' => $tblInvoice->getId())))->__toString();
                 }
                 if ($tblInvoice->getIsConfirmed())
                 {
@@ -123,9 +136,11 @@ class Invoice extends AbstractFrontend
                 array(
                     'Number' => 'Nummer',
                     'InvoiceDate' => 'Rechnungsdatum',
-                    'Student' => 'Schüler',
+                    'BasketName' => 'Warenkorb',
+                    'Person' => 'Person',
                     'Debtor' => 'Debitor',
-                    'DebtorNumber' => 'Debitorennummer',
+                    'DebtorNumber' => 'Debitoren-Nr',
+                    'PaymentType' => 'Zahlungsart',
                     'TotalPrice' => 'Gesamtpreis',
                     'IsConfirmedString' => 'Bestätigt',
                     'IsPaidString' => 'Bezahlt',
@@ -146,12 +161,32 @@ class Invoice extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Rechnungen' );
         $View->setDescription( 'Freigeben' );
-        $View->setMessage( 'Zeigt alle noch nicht bestätigten Rechnungen an' );
+        $View->setMessage( 'Zeigt alle noch nicht freigegebenen Rechnungen an' );
 
         $tblInvoiceAllByIsConfirmedState = Billing::serviceInvoice()->entityInvoiceAllByIsConfirmedState(false);
+        $tblInvoiceAllByIsVoid = Billing::serviceInvoice()->entityInvoiceAllByIsVoidState(true);
+
+        if ($tblInvoiceAllByIsConfirmedState && $tblInvoiceAllByIsVoid)
+        {
+            $tblInvoiceAllByIsConfirmedState = array_udiff($tblInvoiceAllByIsConfirmedState, $tblInvoiceAllByIsVoid,
+                function(TblInvoice $invoiceA, TblInvoice $invoiceB){
+                    return $invoiceA->getId() - $invoiceB->getId();
+                });
+        }
 
         if (!empty( $tblInvoiceAllByIsConfirmedState )) {
-            array_walk( $tblInvoiceAllByIsConfirmedState, function ( TblInvoice &$tblInvoice ) {
+            array_walk( $tblInvoiceAllByIsConfirmedState, function ( TblInvoice &$tblInvoice )
+            {
+                $paymentType = $tblInvoice->getServiceBillingBankingPaymentType();
+                if ($paymentType)
+                {
+                    $tblInvoice->PaymentType = $paymentType->getName();
+                }
+                else
+                {
+                    $tblInvoice->PaymentType = "";
+                }
+
                 if ($tblInvoice->getIsPaymentDateModified())
                 {
                     $tblInvoice->InvoiceDateString = new Warning( $tblInvoice->getInvoiceDate());
@@ -162,11 +197,12 @@ class Invoice extends AbstractFrontend
                     $tblInvoice->InvoiceDateString = $tblInvoice->getInvoiceDate();
                     $tblInvoice->PaymentDateString = $tblInvoice->getPaymentDate();
                 }
-                $tblInvoice->Student = $tblInvoice->getServiceManagementPerson()->getFullName();
+
+                $tblInvoice->Person = $tblInvoice->getServiceManagementPerson()->getFullName();
                 $tblInvoice->Debtor = $tblInvoice->getDebtorFullName();
                 $tblInvoice->TotalPrice = Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice );
                 $tblInvoice->Option =
-                    ( new Primary( 'Bearbeiten und Freigeben', '/Sphere/Billing/Invoice/Edit',
+                    ( new Primary( 'Bearbeiten und Freigeben', '/Sphere/Billing/Invoice/IsNotConfirmed/Edit',
                         new EditIcon(), array(
                             'Id' => $tblInvoice->getId()
                         ) ) )->__toString();
@@ -179,9 +215,11 @@ class Invoice extends AbstractFrontend
                     'Number' => 'Nummer',
                     'InvoiceDateString' => 'Rechnungsdatum',
                     'PaymentDateString' => 'Zahlungsdatum',
-                    'Student' => 'Schüler',
+                    'BasketName' => 'Warenkorb',
+                    'Person' => 'Person',
                     'Debtor' => 'Debitor',
-                    'DebtorNumber' => 'Debitorennummer',
+                    'DebtorNumber' => 'Debitoren-Nr',
+                    'PaymentType' => 'Zahlungsart',
                     'TotalPrice' => 'Gesamtpreis',
                     'Option' => 'Option'
                 )
@@ -202,7 +240,10 @@ class Invoice extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Rechnung' );
         $View->setDescription( 'Bearbeiten' );
-        $View->setMessage( 'Hier können Sie die Rechnung bearbeiten' );
+        $View->setMessage(
+            'Hier können Sie die Rechnung bearbeiten und freigeben. <br>
+            <b>Hinweis:</b> Freigegebene Rechnung sind nicht mehr bearbeitbar.'
+        );
         $View->addButton( new Primary( 'Geprüft und Freigeben', '/Sphere/Billing/Invoice/Confirm',
             new OkIcon(), array(
                 'Id' => $Id
@@ -211,7 +252,10 @@ class Invoice extends AbstractFrontend
         $View->addButton( new Danger( 'Stornieren', '/Sphere/Billing/Invoice/Cancel',
             new RemoveIcon(), array(
                 'Id' => $Id
-            ) ) );
+            )
+        ) );
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Invoice/IsNotConfirmed', new ChevronLeftIcon()));
+
 
         $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
         if ($tblInvoice->getIsConfirmed())
@@ -223,18 +267,63 @@ class Invoice extends AbstractFrontend
         {
             $tblInvoiceItemAll = Billing::serviceInvoice()->entityInvoiceItemAllByInvoice( $tblInvoice );
             if (!empty( $tblInvoiceItemAll )) {
-                array_walk( $tblInvoiceItemAll, function ( TblInvoiceItem &$tblInvoiceItem ) {
+                array_walk( $tblInvoiceItemAll, function ( TblInvoiceItem &$tblInvoiceItem, $index, TblInvoice $tblInvoice )
+                {
+                    if ($tblInvoice->getServiceBillingBankingPaymentType()->getId() == 1 ) //SEPA-Lastschrift
+                    {
+                        $tblCommodity = Billing::serviceCommodity()->entityCommodityByName($tblInvoiceItem->getCommodityName());
+                        if ($tblCommodity)
+                        {
+
+                            $tblDebtor = Billing::serviceBanking()->entityDebtorByDebtorNumber( $tblInvoice->getDebtorNumber());
+                            if ($tblDebtor)
+                            {
+                                if(Billing::serviceBanking()->entityReferenceByDebtorAndCommodity($tblDebtor, $tblCommodity))
+                                {
+                                    $tblInvoiceItem->Status = new Success(
+                                        'Mandatsreferenz', new OkIcon()
+                                    );
+                                }
+                                else
+                                {
+                                    $tblInvoiceItem->Status = new Warning(
+                                        'keine Mandatsreferenz', new DisableIcon()
+                                    );
+                                }
+                            }
+                            else
+                            {
+                                $tblInvoiceItem->Status = new \KREDA\Sphere\Client\Frontend\Message\Type\Danger(
+                                    'Debitor nicht gefunden', new DisableIcon()
+                                );
+                            }
+                        }
+                        else
+                        {
+                            $tblInvoiceItem->Status = new \KREDA\Sphere\Client\Frontend\Message\Type\Danger(
+                                'Leistung nicht gefunden', new DisableIcon()
+                            );
+                        }
+                    }
+                    else
+                    {
+                        $tblInvoiceItem->Status="";
+                    }
+
+                    $tblInvoiceItem->TotalPriceString = $tblInvoiceItem->getTotalPriceString();
+                    $tblInvoiceItem->QuantityString = str_replace('.',',', $tblInvoiceItem->getItemQuantity());
+                    $tblInvoiceItem->PriceString = $tblInvoiceItem->getPriceString();
                     $tblInvoiceItem->Option =
-                        ( new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/Item/Edit',
+                        ( new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/IsNotConfirmed/Item/Edit',
                             new EditIcon(), array(
                                 'Id' => $tblInvoiceItem->getId()
                             ) ) )->__toString().
                         ( new Danger( 'Entfernen',
-                            '/Sphere/Billing/Invoice/Item/Remove',
+                            '/Sphere/Billing/Invoice/IsNotConfirmed/Item/Remove',
                             new MinusIcon(), array(
                                 'Id' => $tblInvoiceItem->getId()
                             ) ) )->__toString();
-                } );
+                }, $tblInvoice );
             }
 
             $View->setContent(
@@ -242,15 +331,18 @@ class Invoice extends AbstractFrontend
                     new LayoutGroup( array(
                         new LayoutRow( array(
                             new LayoutColumn(
-                                new LayoutPanel( 'Rechnungsnummer' , $tblInvoice->getNumber(), LayoutPanel::PANEL_TYPE_PRIMARY ), 4
+                                new LayoutPanel( 'Rechnungsnummer' , $tblInvoice->getNumber(), LayoutPanel::PANEL_TYPE_PRIMARY ), 3
+                            ),
+                            new LayoutColumn(
+                                new LayoutPanel( 'Warenkorb' , $tblInvoice->getBasketName(), LayoutPanel::PANEL_TYPE_DEFAULT ), 3
                             ),
                             new LayoutColumn(
                                 new LayoutPanel( 'Rechnungsdatum' , $tblInvoice->getInvoiceDate(),
-                                    $tblInvoice->getIsPaymentDateModified() ? LayoutPanel::PANEL_TYPE_WARNING : LayoutPanel::PANEL_TYPE_DEFAULT), 4
+                                    $tblInvoice->getIsPaymentDateModified() ? LayoutPanel::PANEL_TYPE_WARNING : LayoutPanel::PANEL_TYPE_DEFAULT), 3
                             ),
                             new LayoutColumn(
                                 new LayoutPanel( 'Zahlungsdatum' , $tblInvoice->getPaymentDate(),
-                                    $tblInvoice->getIsPaymentDateModified() ? LayoutPanel::PANEL_TYPE_WARNING : LayoutPanel::PANEL_TYPE_DEFAULT), 4
+                                    $tblInvoice->getIsPaymentDateModified() ? LayoutPanel::PANEL_TYPE_WARNING : LayoutPanel::PANEL_TYPE_DEFAULT), 3
                             ),
                         ) ),
                         new LayoutRow(
@@ -260,44 +352,55 @@ class Invoice extends AbstractFrontend
                         ),
                         new LayoutRow( array(
                             new LayoutColumn(
-                                new LayoutPanel( 'Debitor' , $tblInvoice->getDebtorFullName() ), 4
+                                new LayoutPanel( 'Debitor' , $tblInvoice->getDebtorFullName() ), 3
                             ),
                             new LayoutColumn(
-                                new LayoutPanel( 'Debitorennummer' , $tblInvoice->getDebtorNumber() ), 4
+                                new LayoutPanel( 'Debitorennummer' , $tblInvoice->getDebtorNumber() ), 3
                             ),
                             new LayoutColumn(
-                                new LayoutPanel( 'Schüler' , $tblInvoice->getServiceManagementPerson()->getFullName() ), 4
+                                new LayoutPanel( 'Person' , $tblInvoice->getServiceManagementPerson()->getFullName() ), 3
                             )
                         ) ),
-                        new LayoutRow(
+                        new LayoutRow( array(
                             new LayoutColumn(
-                                new LayoutAspect( 'Adresse' )
-                            )
-                        ),
-                        new LayoutRow(
-                            new LayoutColumn(
-                                $tblInvoice->getServiceManagementAddress()
+                                ($tblInvoice->getServiceManagementAddress()
                                     ? new LayoutPanel(
-                                        new MapMarkerIcon() . 'Rechnungsadresse' ,
+                                        new MapMarkerIcon() . ' Rechnungsadresse' ,
                                         new LayoutAddress( $tblInvoice->getServiceManagementAddress()),
-                                        LayoutPanel::PANEL_TYPE_DEFAULT,
-                                        (($tblDebtor = Billing::serviceBanking()->entityDebtorByDebtorNumber(
-                                            $tblInvoice->getDebtorNumber()))
-                                            && count(Management::servicePerson()->entityAddressAllByPerson(
-                                                $tblDebtor->getServiceManagementPerson())) > 1
-                                                ? new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/Address/Select',
-                                                    new EditIcon(),
-                                                    array(
-                                                        'Id' => $tblInvoice->getId(),
-                                                        'AddressId' => $tblInvoice->getServiceManagementAddress()->getId()
+                                            LayoutPanel::PANEL_TYPE_DEFAULT,
+                                            (($tblDebtor = Billing::serviceBanking()->entityDebtorByDebtorNumber(
+                                                $tblInvoice->getDebtorNumber()))
+                                                && count(Management::servicePerson()->entityAddressAllByPerson(
+                                                    $tblDebtor->getServiceManagementPerson())) > 1
+                                                    ? new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/IsNotConfirmed/Address/Select',
+                                                        new EditIcon(),
+                                                        array(
+                                                            'Id' => $tblInvoice->getId(),
+                                                            'AddressId' => $tblInvoice->getServiceManagementAddress()->getId()
+                                                        )
                                                     )
-                                                )
-                                                : null
-                                        ), 4
+                                                    : null
+                                        )
                                     )
-                                    : new \KREDA\Sphere\Client\Frontend\Message\Type\Warning("Keine Rechnungsadresse verfügbar")
-                            )
-                        ),
+                                    : new \KREDA\Sphere\Client\Frontend\Message\Type\Warning(
+                                        'Keine Rechnungsadresse verfügbar', new DisableIcon()
+                                    )
+                                ), 3
+                            ),
+                            new LayoutColumn(
+                                new LayoutPanel(
+                                    'Zahlungsart' ,
+                                    $tblInvoice->getServiceBillingBankingPaymentType()->getName(),
+                                    LayoutPanel::PANEL_TYPE_DEFAULT,
+                                    new Primary( 'Bearbeiten', '/Sphere/Billing/Invoice/IsNotConfirmed/Payment/Type/Select',
+                                        new EditIcon(),
+                                        array(
+                                            'Id' => $tblInvoice->getId()
+                                        )
+                                    )
+                                ), 3
+                            ),
+                        ) ),
                         new LayoutRow(
                             new LayoutColumn(
                                 new LayoutAspect( 'Betrag' )
@@ -305,7 +408,7 @@ class Invoice extends AbstractFrontend
                         ),
                         new LayoutRow( array(
                             new LayoutColumn(
-                                new LayoutPanel( 'Rechnungsbetrag' , Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice ) ), 4
+                                new LayoutPanel( 'Rechnungsbetrag' , Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice ) ), 3
                             )
                         ) )
                     ), new LayoutTitle( 'Kopf' )),
@@ -315,10 +418,12 @@ class Invoice extends AbstractFrontend
                                     new TableData( $tblInvoiceItemAll, null,
                                         array(
                                             'CommodityName' => 'Leistung',
-                                            'ItemName'      => 'Artikel',
-                                            'ItemPrice'         => 'Preis',
-                                            'ItemQuantity'      => 'Menge',
-                                            'Option'        => 'Option'
+                                            'ItemName' => 'Artikel',
+                                            'PriceString' => 'Preis',
+                                            'QuantityString' => 'Menge',
+                                            'TotalPriceString' => 'Gesamtpreis',
+                                            'Status' => 'Status',
+                                            'Option' => 'Option'
                                         )
                                     )
                                 )
@@ -342,28 +447,84 @@ class Invoice extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Rechnung' );
         $View->setDescription( 'Anzeigen' );
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Invoice', new ChevronLeftIcon()));
 
         $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
-
-        $tblInvoiceItemAll = Billing::serviceInvoice()->entityInvoiceItemAllByInvoice( $tblInvoice );
 
         if ($tblInvoice->getIsVoid())
         {
             $View->setMessage(new \KREDA\Sphere\Client\Frontend\Message\Type\Danger("Diese Rechnung wurde storniert"));
         }
 
+        $tblInvoiceItemAll = Billing::serviceInvoice()->entityInvoiceItemAllByInvoice( $tblInvoice );
+        if (!empty( $tblInvoiceItemAll )) {
+            array_walk( $tblInvoiceItemAll, function ( TblInvoiceItem &$tblInvoiceItem, $index, TblInvoice $tblInvoice )
+            {
+                if ($tblInvoice->getServiceBillingBankingPaymentType()->getId() == 1 ) //SEPA-Lastschrift
+                {
+                    $tblCommodity = Billing::serviceCommodity()->entityCommodityByName($tblInvoiceItem->getCommodityName());
+                    if ($tblCommodity)
+                    {
+
+                        $tblDebtor = Billing::serviceBanking()->entityDebtorByDebtorNumber( $tblInvoice->getDebtorNumber());
+                        if ($tblDebtor)
+                        {
+                            if(Billing::serviceBanking()->entityReferenceByDebtorAndCommodity($tblDebtor, $tblCommodity))
+                            {
+                                $tblInvoiceItem->Status = new Success(
+                                    'Mandatsreferenz', new OkIcon()
+                                );
+                            }
+                            else
+                            {
+                                $tblInvoiceItem->Status = new Warning(
+                                    'keine Mandatsreferenz', new DisableIcon()
+                                );
+                            }
+                        }
+                        else
+                        {
+                            $tblInvoiceItem->Status = new \KREDA\Sphere\Client\Frontend\Message\Type\Danger(
+                                'Debitor nicht gefunden', new DisableIcon()
+                            );
+                        }
+                    }
+                    else
+                    {
+                        $tblInvoiceItem->Status = new \KREDA\Sphere\Client\Frontend\Message\Type\Danger(
+                            'Leistung nicht gefunden', new DisableIcon()
+                        );
+                    }
+                }
+                else
+                {
+                    $tblInvoiceItem->Status="";
+                }
+
+                $tblInvoiceItem->TotalPriceString = $tblInvoiceItem->getTotalPriceString();
+                $tblInvoiceItem->QuantityString = str_replace('.',',', $tblInvoiceItem->getItemQuantity());
+                $tblInvoiceItem->PriceString = $tblInvoiceItem->getPriceString();
+            }, $tblInvoice );
+        }
+
+
         $View->setContent(
             new Layout( array(
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn(
-                            new LayoutPanel( 'Rechnungsnummer' , $tblInvoice->getNumber(), LayoutPanel::PANEL_TYPE_PRIMARY ), 4
+                            new LayoutPanel( 'Rechnungsnummer' , $tblInvoice->getNumber(), LayoutPanel::PANEL_TYPE_PRIMARY ), 3
                         ),
                         new LayoutColumn(
-                            new LayoutPanel( 'Rechnungsdatum' , $tblInvoice->getInvoiceDate() ), 4
+                            new LayoutPanel( 'Warenkorb' , $tblInvoice->getBasketName(), LayoutPanel::PANEL_TYPE_DEFAULT ), 3
                         ),
                         new LayoutColumn(
-                            new LayoutPanel( 'Zahlungsdatum' , $tblInvoice->getPaymentDate() ), 4
+                            new LayoutPanel( 'Rechnungsdatum' , $tblInvoice->getInvoiceDate(),
+                                $tblInvoice->getIsPaymentDateModified() ? LayoutPanel::PANEL_TYPE_WARNING : LayoutPanel::PANEL_TYPE_DEFAULT), 3
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel( 'Zahlungsdatum' , $tblInvoice->getPaymentDate(),
+                                $tblInvoice->getIsPaymentDateModified() ? LayoutPanel::PANEL_TYPE_WARNING : LayoutPanel::PANEL_TYPE_DEFAULT), 3
                         ),
                     ) ),
                     new LayoutRow(
@@ -373,32 +534,36 @@ class Invoice extends AbstractFrontend
                     ),
                     new LayoutRow( array(
                         new LayoutColumn(
-                            new LayoutPanel( 'Debitor' , $tblInvoice->getDebtorFullName() ), 4
+                            new LayoutPanel( 'Debitor' , $tblInvoice->getDebtorFullName() ), 3
                         ),
                         new LayoutColumn(
-                            new LayoutPanel( 'Debitorennummer' , $tblInvoice->getDebtorNumber() ), 4
+                            new LayoutPanel( 'Debitorennummer' , $tblInvoice->getDebtorNumber() ), 3
                         ),
                         new LayoutColumn(
-                            new LayoutPanel( 'Schüler' , $tblInvoice->getServiceManagementPerson()->getFullName() ), 4
+                            new LayoutPanel( 'Person' , $tblInvoice->getServiceManagementPerson()->getFullName() ), 3
                         )
                     ) ),
-                    new LayoutRow(
+                    new LayoutRow( array(
                         new LayoutColumn(
-                            new LayoutAspect( 'Adresse' )
-                        )
-                    ),
-                    new LayoutRow(
-                        new LayoutColumn(
-                            $tblInvoice->getServiceManagementAddress()
+                            ($tblInvoice->getServiceManagementAddress()
                                 ? new LayoutPanel(
-                                    new MapMarkerIcon() . 'Rechnungsadresse' ,
+                                    new MapMarkerIcon() . ' Rechnungsadresse' ,
                                     new LayoutAddress( $tblInvoice->getServiceManagementAddress()),
-                                    LayoutPanel::PANEL_TYPE_DEFAULT,
-                                    null
+                                    LayoutPanel::PANEL_TYPE_DEFAULT
                                 )
-                                : new \KREDA\Sphere\Client\Frontend\Message\Type\Warning("Keine Rechnungsadresse verfügbar")
-                        )
-                    ),
+                                : new \KREDA\Sphere\Client\Frontend\Message\Type\Warning(
+                                    'Keine Rechnungsadresse verfügbar', new DisableIcon()
+                                )
+                            ), 3
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel(
+                                'Zahlungsart' ,
+                                $tblInvoice->getServiceBillingBankingPaymentType()->getName(),
+                                LayoutPanel::PANEL_TYPE_DEFAULT
+                            ), 3
+                        ),
+                    ) ),
                     new LayoutRow(
                         new LayoutColumn(
                             new LayoutAspect( 'Betrag' )
@@ -406,7 +571,7 @@ class Invoice extends AbstractFrontend
                     ),
                     new LayoutRow( array(
                         new LayoutColumn(
-                            new LayoutPanel( 'Rechnungsbetrag' , Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice ) ), 4
+                            new LayoutPanel( 'Rechnungsbetrag' , Billing::serviceInvoice()->sumPriceItemAllStringByInvoice( $tblInvoice ) ), 3
                         ),
                         new LayoutColumn(
                             $tblInvoice->getIsConfirmed() ?
@@ -419,7 +584,7 @@ class Invoice extends AbstractFrontend
                                             :  new LayoutPanel( 'Bezahlbetrag' , Billing::serviceBalance()->sumPriceItemStringByBalance(
                                                     Billing::serviceBalance()->entityBalanceByInvoice( $tblInvoice ) ), LayoutPanel::PANEL_TYPE_DANGER )))
                                 : new \KREDA\Sphere\Client\Frontend\Text\Type\Primary("")
-                                , 4)
+                                , 3)
                     ) ),
                 ), new LayoutTitle( 'Kopf' )),
                 new LayoutGroup( array(
@@ -428,9 +593,11 @@ class Invoice extends AbstractFrontend
                                 new TableData( $tblInvoiceItemAll, null,
                                     array(
                                         'CommodityName' => 'Leistung',
-                                        'ItemName'      => 'Artikel',
-                                        'ItemPrice'         => 'Preis',
-                                        'ItemQuantity'      => 'Menge'
+                                        'ItemName' => 'Artikel',
+                                        'PriceString' => 'Preis',
+                                        'QuantityString' => 'Menge',
+                                        'TotalPriceString' => 'Gesamtpreis',
+                                        'Status' => 'Status'
                                     )
                                 )
                             )
@@ -451,10 +618,9 @@ class Invoice extends AbstractFrontend
      */
     public static function frontendInvoiceConfirm( $Id, $Data )
     {
-
         $View = new Stage();
         $View->setTitle( 'Rechnung' );
-        $View->setDescription( 'Bestätigen' );
+        $View->setDescription( 'Freigeben' );
 
         $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
         $View->setContent( Billing::serviceInvoice()->executeConfirmInvoice( $tblInvoice, $Data ) );
@@ -470,7 +636,6 @@ class Invoice extends AbstractFrontend
      */
     public static function frontendInvoiceCancel( $Id )
     {
-
         $View = new Stage();
         $View->setTitle( 'Rechnung' );
         $View->setDescription( 'Stornieren' );
@@ -489,8 +654,11 @@ class Invoice extends AbstractFrontend
     public static function frontendInvoiceAddressSelect( $Id )
     {
         $View = new Stage();
-        $View->setTitle( 'Rechnungsadresse' );
-        $View->setDescription( 'Auswählen' );
+        $View->setTitle( 'Rechnung' );
+        $View->setDescription( 'Rechnungsadresse Auswählen' );
+        $View->addButton( new Primary('Zurück', '/Sphere/Billing/Invoice/IsNotConfirmed/Edit', new ChevronLeftIcon(),
+            array('Id' => $Id)
+        ));
 
         $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
         $tblAddressAll = Management::servicePerson()->entityAddressAllByPerson(
@@ -526,7 +694,7 @@ class Invoice extends AbstractFrontend
             {
                 if ($invoiceAddress != null && $invoiceAddress->getId() === $tblAddress->getId())
                 {
-                    $AddressType = new MapMarkerIcon().' Lieferadresse';
+                    $AddressType = new MapMarkerIcon().' Rechnungsadresse';
                     $PanelType = LayoutPanel::PANEL_TYPE_SUCCESS;
                 }
                 else
@@ -538,14 +706,14 @@ class Invoice extends AbstractFrontend
                 $tblAddress = new LayoutColumn(
                     new LayoutPanel(
                         $AddressType, new LayoutAddress( $tblAddress ), $PanelType,
-                        new Primary( 'Auswählen', '/Sphere/Billing/Invoice/Address/Change',
+                        new Primary( 'Auswählen', '/Sphere/Billing/Invoice/IsNotConfirmed/Address/Change',
                             new OkIcon(),
                             array(
                                 'Id' => $tblInvoice->getId(),
                                 'AddressId' => $tblAddress->getId()
                             )
                         )
-                    ), 4
+                    ), 3
                 );
             }
         }
@@ -565,6 +733,68 @@ class Invoice extends AbstractFrontend
 
     /**
      * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoicePaymentTypeSelect( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Rechnung' );
+        $View->setDescription( 'Zahlungsart Auswählen' );
+        $View->addButton( new Primary('Zurück', '/Sphere/Billing/Invoice/IsNotConfirmed/Edit', new ChevronLeftIcon(),
+            array('Id' => $Id)
+        ));
+
+        $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
+        $tblPaymentTypeList = Billing::serviceBanking()->entityPaymentTypeAll();
+
+        if($tblPaymentTypeList)
+        {
+            foreach ($tblPaymentTypeList as &$tblPaymentType)
+            {
+                $tblPaymentType = new LayoutColumn(
+                    new LayoutPanel(
+                        'Zahlungsart',
+                        $tblPaymentType->getName(),
+                        $tblPaymentType->getId() === $tblInvoice->getServiceBillingBankingPaymentType()->getId() ?
+                            LayoutPanel::PANEL_TYPE_SUCCESS :
+                            LayoutPanel::PANEL_TYPE_DEFAULT,
+                        new Primary( 'Auswählen', '/Sphere/Billing/Invoice/IsNotConfirmed/Payment/Type/Change',
+                            new OkIcon(),
+                            array(
+                                'Id' => $tblInvoice->getId(),
+                                'PaymentTypeId' => $tblPaymentType->getId()
+                            )
+                        )
+                    ), 3
+                );
+            }
+        }
+        $View->setContent(
+            new Layout(array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            new LayoutPanel('Rechnungsnummer', $tblInvoice->getNumber(), LayoutPanel::PANEL_TYPE_SUCCESS )
+                        ),3),
+                        new LayoutColumn( array(
+                            new LayoutPanel('Empfänger', $tblInvoice->getDebtorFullName(), LayoutPanel::PANEL_TYPE_SUCCESS )
+                        ),3)
+                    ))
+                )),
+                new LayoutGroup(
+                    new LayoutRow(
+                        $tblPaymentTypeList
+                    ), new LayoutTitle( 'Zahlungsarten')
+                )
+            ))
+        );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
      * @param $AddressId
      *
      * @return Stage
@@ -572,12 +802,31 @@ class Invoice extends AbstractFrontend
     public static function frontendInvoiceAddressChange( $Id, $AddressId )
     {
         $View = new Stage();
-        $View->setTitle( 'Rechnungsadresse' );
-        $View->setDescription( 'Ändern' );
+        $View->setTitle( 'Rechnung' );
+        $View->setDescription( 'Rechnungsadresse Ändern' );
 
         $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
         $tblAddress = Management::serviceAddress()->entityAddressById( $AddressId );
         $View->setContent( Billing::serviceInvoice()->executeChangeInvoiceAddress( $tblInvoice, $tblAddress ) );
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @param $PaymentTypeId
+     *
+     * @return Stage
+     */
+    public static function frontendInvoicePaymentTypeChange( $Id, $PaymentTypeId )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Rechnung' );
+        $View->setDescription( 'Zahlungsart Ändern' );
+
+        $tblInvoice = Billing::serviceInvoice()->entityInvoiceById( $Id );
+        $tblPaymentType = Billing::serviceBanking()->entityPaymentTypeById( $PaymentTypeId );
+        $View->setContent( Billing::serviceInvoice()->executeChangeInvoicePaymentType( $tblInvoice, $tblPaymentType ) );
 
         return $View;
     }
@@ -589,7 +838,6 @@ class Invoice extends AbstractFrontend
      */
     public static function frontendInvoicePay( $Id )
     {
-
         $View = new Stage();
         $View->setTitle( 'Rechnung' );
         $View->setDescription( 'Bezahlen' );
@@ -609,8 +857,11 @@ class Invoice extends AbstractFrontend
     public static function frontendInvoiceItemEdit( $Id, $InvoiceItem )
     {
         $View = new Stage();
-        $View->setTitle( 'Artikel' );
-        $View->setDescription( 'Bearbeiten' );
+        $View->setTitle( 'Rechnung' );
+        $View->setDescription( 'Artikel Bearbeiten' );
+        $View->addButton( new Primary('Zurück', '/Sphere/Billing/Invoice/IsNotConfirmed/Edit', new ChevronLeftIcon(),
+            array('Id' => $Id)
+        ));
 
         if (empty( $Id )) {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
@@ -682,8 +933,8 @@ class Invoice extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Artikel' );
-        $View->setDescription( 'Entfernen' );
+        $View->setTitle( 'Rechnung' );
+        $View->setDescription( 'Artikel Entfernen' );
 
         $tblInvoiceItem = Billing::serviceInvoice()->entityInvoiceItemById( $Id );
         $View->setContent( Billing::serviceInvoice()->executeRemoveInvoiceItem( $tblInvoiceItem ) );

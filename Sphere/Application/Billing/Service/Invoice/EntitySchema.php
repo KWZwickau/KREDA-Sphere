@@ -54,6 +54,10 @@ abstract class EntitySchema extends AbstractService
         {
             $Table->addColumn( 'Number', 'string' );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'BasketName' ))
+        {
+            $Table->addColumn( 'BasketName', 'string' );
+        }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'IsVoid' ))
         {
             $Table->addColumn( 'IsVoid', 'boolean' );
@@ -93,6 +97,10 @@ abstract class EntitySchema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'serviceManagement_Person' ))
         {
             $Table->addColumn( 'serviceManagement_Person', 'bigint', array( 'notnull' => false ));
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'serviceBilling_Banking_Payment_Type' ))
+        {
+            $Table->addColumn( 'serviceBilling_Banking_Payment_Type', 'bigint');
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblInvoice', 'IsPaymentDateModified' ))
         {

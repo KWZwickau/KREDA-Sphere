@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblPaymentType;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
@@ -22,6 +23,7 @@ class TblInvoice extends AbstractEntity
     const ATTR_IS_VOID = 'IsVoid';
     const ATTR_DEBTOR_NUMBER = 'DebtorNumber';
     const ATTR_NUMBER = 'Number';
+    const ATTR_SERVICE_BILLING_BANKING_PAYMENT_TYPE = 'serviceBilling_Banking_Payment_Type';
 
     /**
      * @Column(type="boolean")
@@ -32,6 +34,11 @@ class TblInvoice extends AbstractEntity
      * @Column(type="string")
      */
     protected $Number;
+
+    /**
+     * @Column(type="string")
+     */
+    protected $BasketName;
 
     /**
      * @Column(type="boolean")
@@ -82,6 +89,11 @@ class TblInvoice extends AbstractEntity
      * @Column(type="bigint")
      */
     protected $serviceManagement_Person;
+
+    /**
+     * @Column(type="bigint")
+     */
+    protected $serviceBilling_Banking_Payment_Type;
 
     /**
      * @Column(type="boolean")
@@ -142,6 +154,22 @@ class TblInvoice extends AbstractEntity
     public function setNumber( $Number )
     {
         $this->Number = $Number;
+    }
+
+    /**
+     * @param string $BasketName
+     */
+    public function setBasketName($BasketName)
+    {
+        $this->BasketName = $BasketName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBasketName()
+    {
+        return $this->BasketName;
     }
 
     /**
@@ -338,5 +366,25 @@ class TblInvoice extends AbstractEntity
     public function setServiceManagementPerson( TblPerson $tblPerson = null )
     {
         $this->serviceManagement_Person = ( null === $tblPerson ? null : $tblPerson->getId() );
+    }
+
+    /**
+     * @return bool|TblPaymentType
+     */
+    public function getServiceBillingBankingPaymentType()
+    {
+        if (null === $this->serviceBilling_Banking_Payment_Type) {
+            return false;
+        } else {
+            return Billing::serviceBanking()->entityPaymentTypeById($this->serviceBilling_Banking_Payment_Type);
+        }
+    }
+
+    /**
+     * @param TblPaymentType $tblPaymentType
+     */
+    public function setServiceBillingBankingPaymentType( TblPaymentType $tblPaymentType = null )
+    {
+        $this->serviceBilling_Banking_Payment_Type = ( null === $tblPaymentType ? null : $tblPaymentType->getId() );
     }
 }

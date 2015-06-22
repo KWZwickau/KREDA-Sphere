@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Billing\Service\Invoice;
 
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblPaymentType;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
@@ -118,7 +119,8 @@ abstract class EntityAction extends EntitySchema
      */
     protected function sumPriceItemAllStringByInvoice( TblInvoice $tblInvoice)
     {
-        return str_replace('.', ',', round($this->sumPriceItemAllByInvoice( $tblInvoice), 2)) . " €";
+        $result = sprintf("%01.2f", $this->sumPriceItemAllByInvoice( $tblInvoice));
+        return str_replace('.', ',', $result)  . " €";
     }
 
     /**
@@ -198,6 +200,8 @@ abstract class EntityAction extends EntitySchema
             $Entity->setIsPaid( false );
             $Entity->setIsVoid( false );
             $Entity->setNumber( "40000000" );
+            $Entity->setBasketName($tblBasket->getName());
+            $Entity->setServiceBillingBankingPaymentType( $tblDebtor->getPaymentType() );
 
             $leadTimeByDebtor = Billing::serviceBanking()->entityLeadTimeByDebtor( $tblDebtor );
             $invoiceDate = ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P' . $leadTimeByDebtor .'D' ) );
@@ -517,6 +521,36 @@ abstract class EntityAction extends EntitySchema
         {
             $Protocol = clone $Entity;
             $Entity->setServiceManagementAddress( $tblAddress );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param TblInvoice $tblInvoice
+     * @param TblPaymentType $tblPaymentType
+     *
+     * @return bool
+     */
+    protected function actionChangeInvoicePaymentType(
+        TblInvoice $tblInvoice,
+        TblPaymentType $tblPaymentType
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblInvoice $Entity */
+        $Entity = $Manager->getEntityById( 'TblInvoice', $tblInvoice->getId() );
+        if (null !== $Entity)
+        {
+            $Protocol = clone $Entity;
+            $Entity->setServiceBillingBankingPaymentType( $tblPaymentType );
 
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),

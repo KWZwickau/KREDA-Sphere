@@ -15,6 +15,8 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblCommodity extends AbstractEntity
 {
+    const ATTR_NAME = 'Name';
+
     /**
      * @Column(type="bigint")
      */
