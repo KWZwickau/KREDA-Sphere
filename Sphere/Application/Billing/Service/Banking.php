@@ -165,7 +165,6 @@ class Banking extends EntityAction
         $Debtor,
         $Id )
     {
-
         /**
          * Skip to Frontend
          */
@@ -197,18 +196,10 @@ class Banking extends EntityAction
             $View->setError('Debtor[LeadTimeFollow]', 'Bitte geben sie eine Zahl an.');
             $Error = true;
         }
-//        if (isset($Debtor['IBAN']) && empty($Debtor['IBAN'])) {
-//            $View->setError('Debtor[IBAN]', 'Bitte geben sie eine IBAN an.');
-//            $Error = true;
-//        }
-//        if (isset($Debtor['BIC']) && empty($Debtor['BIC'])) {
-//            $View->setError('Debtor[BIC]', 'Bitte geben sie eine SWIFT an.');
-//            $Error = true;
-//        }
-//        if (isset($Debtor['Description']) && empty($Debtor['Description'])) {
-//            $View->setError('Debtor[Description]', 'Bitte geben sie eine Beschreibung an.');
-//            $Error = true;
-//        }
+        if (isset($Debtor['Reference']) && Billing::serviceBanking()->entityReferenceByReference( $Debtor['Reference'])) {
+            $View->setError('Debtor[Reference]', 'Die Mandatsreferenz exisitiert bereits. Bitte geben Sie eine andere an');
+            $Error = true;
+        }
 
         if (!$Error) {
 
@@ -233,9 +224,7 @@ class Banking extends EntityAction
             return new Success( 'Der Debitor ist erfasst worden' )
             .new Redirect( '/Sphere/Billing/Banking', 2 );
         }
-
         return $View;
-
     }
 
     /**
@@ -263,7 +252,11 @@ class Banking extends EntityAction
 //            $Error = true;
 //        }
         if (isset($Reference['Reference']) && empty( $Reference['Reference'])) {
-            $View->setError( 'Reference[Reference]', 'Bitte geben sie eine Referenznummer an' );
+            $View->setError( 'Reference[Reference]', 'Bitte geben sie eine Mandatsreferenz an' );
+            $Error = true;
+        }
+        if (isset($Reference['Reference']) && Billing::serviceBanking()->entityReferenceByReference( $Reference['Reference'])) {
+            $View->setError('Reference[Reference]', 'Die Mandatsreferenz exisitiert bereits. Bitte geben Sie eine andere an');
             $Error = true;
         }
 //        if (isset($Reference['ReferenceDate']) && empty( $Reference['ReferenceDate'])) {
@@ -432,6 +425,16 @@ class Banking extends EntityAction
     public function entityReferenceById ( $tblReference )
     {
         return parent::entityReferenceById( $tblReference );
+    }
+
+    /**
+     * @param $Reference
+     *
+     * @return bool|TblReference
+     */
+    public function entityReferenceByReference ( $Reference )
+    {
+        return parent::entityReferenceByReference( $Reference );
     }
 
     /**

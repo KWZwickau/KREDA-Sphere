@@ -390,6 +390,19 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param $Reference
+     *
+     * @return bool|TblReference
+     */
+    protected function entityReferenceByReference ( $Reference )
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblReference' )
+        ->findOneBy( array( TblReference::ATTR_REFERENCE => $Reference,
+                            TblReference::ATTR_IS_VOID => true) );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param $PaymentType
      * @return TblPaymentType|null|object
      */

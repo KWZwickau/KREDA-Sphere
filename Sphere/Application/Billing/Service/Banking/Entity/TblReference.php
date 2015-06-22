@@ -14,6 +14,7 @@ class TblReference extends AbstractEntity
     const ATTR_TBL_DEBTOR = "tblDebtor";
     const ATTR_TBL_COMMODITY = "tblCommodity";
     const ATTR_IS_VOID = "IsVoid";
+    const ATTR_REFERENCE = "Reference";
 
     /**
      * @Column(type="string")
