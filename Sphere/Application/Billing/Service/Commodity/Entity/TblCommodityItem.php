@@ -34,6 +34,22 @@ class TblCommodityItem extends AbstractEntity
     protected $tblItem;
 
     /**
+     * @return string
+     */
+    public function getTotalPriceString()
+    {
+        $tblItem = $this->getTblItem();
+        $quantity = $this->getQuantity();
+        $result = 0.00;
+        if ($tblItem && $tblItem->getPrice() > 0 && $quantity > 0)
+        {
+            $result = sprintf("%01.4f", $tblItem->getPrice() * $quantity);
+        }
+
+        return str_replace('.', ',', $result)  . " €";
+    }
+
+    /**
      * @return (type="decimal", precision=14, scale=4)
      */
     public function getQuantity()

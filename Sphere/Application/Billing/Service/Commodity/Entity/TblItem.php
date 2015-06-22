@@ -86,6 +86,15 @@ class TblItem extends AbstractEntity
     /**
      * @return string
      */
+    public function getPriceString()
+    {
+        $result = sprintf("%01.4f", $this->Price);
+        return str_replace('.', ',', $result)  . " €";
+    }
+
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->Name;

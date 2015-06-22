@@ -197,7 +197,9 @@ abstract class EntityAction extends EntitySchema
             $sum += $tblCommodityItem->getTblItem()->getPrice() * $tblCommodityItem->getQuantity();
         }
 
-        return str_replace('.', ',', round($sum, 2)) . " €";
+        $sum = round($sum, 2);
+        $sum = sprintf("%01.2f", $sum);
+        return str_replace('.', ',', $sum)  . " €";
     }
 
     /**

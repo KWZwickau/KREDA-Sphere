@@ -253,6 +253,7 @@ class Commodity extends AbstractFrontend
         {
             array_walk($tblItemAll, function (TblItem $tblItem)
             {
+                $tblItem->PriceString = $tblItem->getPriceString();
                 if (Billing::serviceCommodity()->entityCommodityItemAllByItem($tblItem))
                 {
                     $tblItem->Option =
@@ -289,7 +290,7 @@ class Commodity extends AbstractFrontend
                 array(
                     'Name'  => 'Name',
                     'Description' => 'Beschreibung',
-                    'Price' => 'Preis',
+                    'PriceString' => 'Preis',
                     'Option'  => 'Option'
                 )
             )
@@ -349,6 +350,9 @@ class Commodity extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Leistung' );
         $View->setDescription( 'Artikel auswählen' );
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity',
+            new ChevronLeftIcon()
+        ) );
 
         if (empty( $Id ))
         {
@@ -385,7 +389,9 @@ class Commodity extends AbstractFrontend
 
                         $tblCommodityItem->Name = $tblItem->getName();
                         $tblCommodityItem->Description = $tblItem->getDescription();
-                        $tblCommodityItem->Price = $tblItem->getPrice();
+                        $tblCommodityItem->PriceString = $tblItem->getPriceString();
+                        $tblCommodityItem->TotalPriceString = $tblCommodityItem->getTotalPriceString();
+                        $tblCommodityItem->QuantityString = str_replace('.',',', $tblCommodityItem->getQuantity());
                         $tblCommodityItem->CostUnit = $tblItem->getCostUnit();
                         $tblCommodityItem->Option =
                             (new Danger( 'Entfernen', '/Sphere/Billing/Commodity/Item/Remove',
@@ -399,6 +405,7 @@ class Commodity extends AbstractFrontend
                 {
                     foreach ($tblItemAll as $tblItem)
                     {
+                        $tblItem->PriceString = $tblItem->getPriceString();
                         $tblItem->Option=
                             ( new Form(
                                 new FormGroup(
@@ -439,8 +446,9 @@ class Commodity extends AbstractFrontend
                                             'Name'  => 'Name',
                                             'Description' => 'Beschreibung',
                                             'CostUnit' => 'Kostenstelle',
-                                            'Price' => 'Preis',
-                                            'Quantity' => 'Menge',
+                                            'PriceString' => 'Preis',
+                                            'QuantityString' => 'Menge',
+                                            'TotalPriceString' => 'Gesamtpreis',
                                             'Option'  => 'Option'
                                         )
                                     )
@@ -456,7 +464,7 @@ class Commodity extends AbstractFrontend
                                             'Name'  => 'Name',
                                             'Description' => 'Beschreibung',
                                             'CostUnit' => 'Kostenstelle',
-                                            'Price' => 'Preis',
+                                            'PriceString' => 'Preis',
                                             'Option'  => 'Option'
                                         )
                                 )
@@ -658,6 +666,9 @@ class Commodity extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'FIBU-Konten auswählen' );
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity/Item',
+            new ChevronLeftIcon()
+        ) );
 
         if (empty( $Id ))
         {
