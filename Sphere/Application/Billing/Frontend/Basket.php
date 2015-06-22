@@ -380,6 +380,9 @@ class Basket extends AbstractFrontend
                 $tblItem = $tblBasketItem->getServiceBillingCommodityItem()->getTblItem();
                 $tblBasketItem->CommodityName = $tblCommodity->getName();
                 $tblBasketItem->ItemName = $tblItem->getName();
+                $tblBasketItem->TotalPriceString = $tblBasketItem->getTotalPriceString();
+                $tblBasketItem->QuantityString = str_replace('.',',', $tblBasketItem->getQuantity());
+                $tblBasketItem->PriceString = $tblBasketItem->getPriceString();
                 $tblBasketItem->Option =
                     ( new Primary( 'Bearbeiten', '/Sphere/Billing/Basket/Item/Edit',
                         new EditIcon(), array(
@@ -415,8 +418,9 @@ class Basket extends AbstractFrontend
                                     array(
                                         'CommodityName' => 'Leistung',
                                         'ItemName'      => 'Artikel',
-                                        'Price'         => 'Preis',
-                                        'Quantity'      => 'Menge',
+                                        'PriceString'         => 'Preis',
+                                        'QuantityString'      => 'Menge',
+                                        'TotalPriceString' => 'Gesamtpreis',
                                         'Option'        => 'Option'
                                     )
                                 )
@@ -698,6 +702,9 @@ class Basket extends AbstractFrontend
                 $tblItem = $tblBasketItem->getServiceBillingCommodityItem()->getTblItem();
                 $tblBasketItem->CommodityName = $tblCommodity->getName();
                 $tblBasketItem->ItemName = $tblItem->getName();
+                $tblBasketItem->TotalPriceString = $tblBasketItem->getTotalPriceString();
+                $tblBasketItem->QuantityString = str_replace('.',',', $tblBasketItem->getQuantity());
+                $tblBasketItem->PriceString = $tblBasketItem->getPriceString();
             } );
         }
 
@@ -727,8 +734,9 @@ class Basket extends AbstractFrontend
                                     array(
                                         'CommodityName' => 'Leistung',
                                         'ItemName'      => 'Artikel',
-                                        'Price'         => 'Preis',
-                                        'Quantity'      => 'Menge',
+                                        'PriceString'         => 'Preis',
+                                        'QuantityString'      => 'Menge',
+                                        'TotalPriceString'      => 'Gesamtpreis'
                                     )
                                 )
                             )

@@ -41,6 +41,34 @@ class TblBasketItem extends AbstractEntity
     protected $Price;
 
     /**
+     * @return string
+     */
+    public function getTotalPriceString()
+    {
+        $result = 0.00;
+        $tblCommodityItem = $this->getServiceBillingCommodityItem();
+        if ($tblCommodityItem)
+        {
+            $tblItem = $this->getServiceBillingCommodityItem()->getTblItem();
+            $quantity = $this->getQuantity();
+            if ($tblItem && $tblItem->getPrice() > 0 && $quantity > 0)
+            {
+                $result = sprintf("%01.4f", $tblItem->getPrice() * $quantity);
+            }
+        }
+        return str_replace('.', ',', $result)  . " €";
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceString()
+    {
+        $result = sprintf("%01.4f", $this->Price);
+        return str_replace('.', ',', $result)  . " €";
+    }
+
+    /**
      * @param null|TblBasket $tblBasket
      */
     public function setTblBasket($tblBasket = null)
