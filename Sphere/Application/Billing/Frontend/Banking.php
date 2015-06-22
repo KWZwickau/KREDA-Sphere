@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Billing\Frontend;
 use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblPaymentType;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
@@ -318,7 +319,6 @@ class Banking extends AbstractFrontend
      */
     public static function frontendBankingCommodityAdd( $Id, $CommodityId )
     {
-
         $View = new Stage();
         $View->setTitle( 'Leistung' );
         $View->setDescription( 'Hinzufügen' );
@@ -354,8 +354,6 @@ class Banking extends AbstractFrontend
                 $Person->PersonType = $PersonType->getName();
             }
         }
-
-
 
         $View->setContent(
             new Layout(array(
@@ -495,7 +493,7 @@ class Banking extends AbstractFrontend
         $ReferenceEntityList = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
 
         $tblPaymentType = Billing::serviceBanking()->entityPaymentTypeAll();
-        $PaymentType = Billing::serviceBanking()->entityPaymentTypeById( Billing::serviceBanking()->entityDebtorById( $Id )->getPaymentType() )->getPaymentType();
+        $PaymentType = Billing::serviceBanking()->entityPaymentTypeById( Billing::serviceBanking()->entityDebtorById( $Id )->getPaymentType() )->getName();
 
 
         $DebtorArray = array();
@@ -548,7 +546,7 @@ class Banking extends AbstractFrontend
         if (!isset( $Global->POST['Debtor']) )
         {
             $Global->POST['Debtor']['Description'] = $tblDebtor->getDescription();
-            $Global->POST['Debtor']['PaymentType'] = Billing::serviceBanking()->entityPaymentTypeByType( $PaymentType )->getId();
+            $Global->POST['Debtor']['PaymentType'] = Billing::serviceBanking()->entityPaymentTypeByName( $PaymentType )->getId();
             $Global->POST['Debtor']['Owner'] = $tblDebtor->getOwner();
             $Global->POST['Debtor']['IBAN'] = $tblDebtor->getIBAN();
             $Global->POST['Debtor']['BIC'] = $tblDebtor->getBIC();
@@ -711,7 +709,7 @@ class Banking extends AbstractFrontend
         $Global->POST['Debtor']['Owner'] = $PersonName;
 
         if( !isset( $Global->POST['Debtor']['PaymentType'] ) ) {
-            $Global->POST['Debtor']['PaymentType'] = Billing::serviceBanking()->entityPaymentTypeByType( 'SEPA-Lastschrift' )->getId();
+            $Global->POST['Debtor']['PaymentType'] = Billing::serviceBanking()->entityPaymentTypeByName( 'SEPA-Lastschrift' )->getId();
         }
         if ( Billing::serviceBanking()->entityDebtorByServiceManagementPerson( $Id ) == true )
         {
@@ -755,7 +753,7 @@ class Banking extends AbstractFrontend
                                                 new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new BarCodeIcon()
                                                 ), 12),
                                             new FormColumn(
-                                                new SelectBox( 'Debtor[PaymentType]', 'Bezahlmethode', array( 'PaymentType' => $tblPaymentType ), new MoneyIcon()
+                                                new SelectBox( 'Debtor[PaymentType]', 'Bezahlmethode', array( TblPaymentType::ATTR_NAME => $tblPaymentType ), new MoneyIcon()
                                                 ), 4),
                                             new FormColumn(
                                                 new TextField( 'Debtor[LeadTimeFirst]', 'Vorlaufzeit in Tagen', 'Ersteinzug', new TimeIcon()

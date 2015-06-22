@@ -11,27 +11,27 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblPaymentType extends AbstractEntity
 {
 
-    const ATTR_PAYMENT_TYPE = 'PaymentType';
+    const ATTR_NAME = 'Name';
 
     /**
      * @Column(type="string")
      */
-    protected $PaymentType;
+    protected $Name;
 
     /**
-     * @return string $PaymentType
+     * @return string
      */
-    public function getPaymentType()
+    public function getName()
     {
-        return $this->PaymentType;
+        return $this->Name;
     }
 
     /**
-     * @param string $PaymentType
+     * @param string $Name
      */
-    public function setPaymentType( $PaymentType )
+    public function setName( $Name )
     {
-        $this->PaymentType = $PaymentType;
+        $this->Name = $Name;
     }
 
 }

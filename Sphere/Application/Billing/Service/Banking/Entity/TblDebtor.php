@@ -227,7 +227,7 @@ class TblDebtor extends AbstractEntity
     }
 
     /**
-     * @return string $tblPaymentType
+     * @return TblPaymentType $tblPaymentType
      */
     public function getPaymentType()
     {

@@ -482,9 +482,9 @@ class Banking extends EntityAction
      *
      * @return bool|TblPaymentType
      */
-    public function entityPaymentTypeByType($PaymentType)
+    public function entityPaymentTypeByName($PaymentType)
     {
-        return parent::entityPaymentTypeByType($PaymentType);
+        return parent::entityPaymentTypeByName($PaymentType);
     }
 
     /**

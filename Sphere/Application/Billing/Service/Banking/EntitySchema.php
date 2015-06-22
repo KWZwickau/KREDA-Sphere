@@ -133,8 +133,8 @@ abstract class EntitySchema extends AbstractService
     {
         $Table = $this->schemaTableCreate( $Schema, 'tblPaymentType');
 
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblPaymentType', 'PaymentType')){
-            $Table->addColumn( 'PaymentType', 'string' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblPaymentType', 'Name')){
+            $Table->addColumn( 'Name', 'string' );
         }
 
         return $Table;

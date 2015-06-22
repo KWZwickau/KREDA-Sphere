@@ -409,11 +409,11 @@ abstract class EntityAction extends EntitySchema
     protected function actionCreatePaymentType( $PaymentType )
     {
         $Manager = $this->getEntityManager();
-        $Entity = $Manager->getEntity( 'TblPaymentType' )->findOneBy( array( TblPaymentType::ATTR_PAYMENT_TYPE => $PaymentType ) );
+        $Entity = $Manager->getEntity( 'TblPaymentType' )->findOneBy( array( TblPaymentType::ATTR_NAME => $PaymentType ) );
         if (null === $Entity)
         {
             $Entity = new TblPaymentType();
-            $Entity->setPaymentType( $PaymentType );
+            $Entity->setName( $PaymentType );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
@@ -436,9 +436,9 @@ abstract class EntityAction extends EntitySchema
      *
      * @return bool|null|$tblPaymentType
      */
-    protected function entityPaymentTypeByType($PaymentType)
+    protected function entityPaymentTypeByName($PaymentType)
     {
-        $Entity = $this->getEntityManager()->getEntity('TblPaymentType')->findOneBy( array( TblPaymentType::ATTR_PAYMENT_TYPE => $PaymentType) );
+        $Entity = $this->getEntityManager()->getEntity('TblPaymentType')->findOneBy( array( TblPaymentType::ATTR_NAME => $PaymentType) );
         return (null === $Entity ? false : $Entity);
     }
 
