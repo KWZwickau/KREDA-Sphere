@@ -637,13 +637,23 @@ class Banking extends AbstractFrontend
         $View->setTitle( 'Debitoreninformationen' );
         $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking/Person' ) );
 
-        $Person = Management::servicePerson()->entityPersonById( $Id )->getFullName();
+        $PersonName = Management::servicePerson()->entityPersonById( $Id )->getFullName();
         $PersonType = Management::servicePerson()->entityPersonById( $Id )->getTblPersonType();
         $tblPaymentType = Billing::serviceBanking()->entityPaymentTypeAll();
         $tblCommodity = Billing::serviceCommodity()->entityCommodityAll();
+        $tblPerson = Management::servicePerson()->entityPersonById( $Id );
+
+        $tblStudent = Management::serviceStudent()->entityStudentByPerson( $tblPerson );
+        if ($tblStudent)
+        {
+            if ( $tblStudent->getStudentNumber() === 0 )
+            {
+                $tblStudent->setStudentNumber( 'Nicht vergeben' );
+            }
+        }
 
         $Global = self::extensionSuperGlobal();
-        $Global->POST['Debtor']['Owner'] = $Person;
+        $Global->POST['Debtor']['Owner'] = $PersonName;
 
         if( !isset( $Global->POST['Debtor']['PaymentType'] ) ) {
             $Global->POST['Debtor']['PaymentType'] = Billing::serviceBanking()->entityPaymentTypeByType( 'SEPA-Lastschrift' )->getId();
@@ -659,11 +669,11 @@ class Banking extends AbstractFrontend
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn( array(
-                            new LayoutPanel( new PersonIcon().' Debitor', $Person, LayoutPanel::PANEL_TYPE_WARNING
+                            new LayoutPanel( new PersonIcon().' Debitor', $PersonName, LayoutPanel::PANEL_TYPE_WARNING
                             )),6),
                         new LayoutColumn( array(
                             new LayoutPanel( new GroupIcon().'. Personengruppe', $PersonType->getName(), LayoutPanel::PANEL_TYPE_WARNING
-                            )),6)
+                            )),6),
                     ))
                 )),
                 new LayoutGroup( array(
@@ -673,6 +683,10 @@ class Banking extends AbstractFrontend
                                 new Form( array(
                                     new FormGroup( array(
                                         new FormRow( array(
+                                            ( !empty( $tblStudent ) ) ?
+                                            new LayoutColumn( array(
+                                                new LayoutPanel( new GroupIcon().'. Schülernummer', $tblStudent->getStudentNumber(), LayoutPanel::PANEL_TYPE_PRIMARY
+                                                )),6) : null,
                                             new FormColumn(
                                                 new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new BarCodeIcon()
                                                 ), 12),
