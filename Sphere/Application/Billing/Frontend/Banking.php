@@ -67,11 +67,48 @@ class Banking extends AbstractFrontend
 
         if (!empty( $tblDebtorAll )) {
             array_walk( $tblDebtorAll, function ( TblDebtor &$tblDebtor ) {
-                $Reference = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
-                $tblDebtor->Payment = Billing::serviceBanking()->entityPaymentTypeById( $tblDebtor->getPaymentType() )->getPaymentType();
+                $ReferenceList = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
+                $tblCommodityList = array();
+                $Commodity = '';
+                if($ReferenceList)
+                {
+                    foreach($ReferenceList as $Reference)
+                    {
+                        $CommodityId = $Reference->getTblCommodity();
+
+                        $CommodityReal = Billing::serviceCommodity()->entityCommodityById( $CommodityId );
+                        if( $CommodityReal !== false )
+                        {
+                            $tblCommodityList[] = $CommodityReal->getName();
+                        }
+                    }
+                    $counting = 1;
+                    foreach($tblCommodityList as $tblCommodity)
+                    {
+                        if ($counting < count($tblCommodityList))
+                        {
+                            $Commodity .= $tblCommodity.', ';
+                            $counting++;
+                        }
+                        else
+                        { $Commodity .= $tblCommodity; }
+                    }
+                }
+
+
+                $tblDebtor->Commodity = $Commodity;
                 $tblPerson = Management::servicePerson()->entityPersonById( $tblDebtor->getServiceManagementPerson() );
-                $tblDebtor->FirstName = $tblPerson->getFirstName();
-                $tblDebtor->LastName = $tblPerson->getLastName();
+                if(!empty($tblPerson))
+                {
+                    $tblDebtor->FirstName = $tblPerson->getFirstName();
+                    $tblDebtor->LastName = $tblPerson->getLastName();
+                }
+                else
+                {
+                    $tblDebtor->FirstName = 'Person nicht vorhanden';
+                    $tblDebtor->LastName = 'Person nicht vorhanden';
+                }
+
                 $tblDebtor->Edit =
                     (new Primary( 'Leistung hinzufügen', '/Sphere/Billing/Banking/Commodity/Select',
                         new ListIcon(), array(
@@ -86,13 +123,6 @@ class Banking extends AbstractFrontend
                             'Id' => $tblDebtor->getId()
                         ) ) )->__toString();
 
-                if (!empty( $Reference ))
-                {
-                    $tblDebtor->ReferenceCheck = new Success( new EnableIcon().' Ok' );
-                }
-                else{
-                    $tblDebtor->ReferenceCheck = new \KREDA\Sphere\Client\Frontend\Message\Type\Danger( new DisableIcon().' Leer' );
-                }
                 $Bankname = $tblDebtor->getBankName();
                 $IBAN = $tblDebtor->getIBAN();
                 $BIC = $tblDebtor->getBIC();
@@ -119,8 +149,7 @@ class Banking extends AbstractFrontend
                                     'DebtorNumber' => 'Debitorennummer',
                                     'FirstName' => 'Vorname',
                                     'LastName' => 'Nachname',
-                                    'Payment' => 'Bezahlmethode',
-                                    'ReferenceCheck' => 'Referenz',
+                                    'Commodity' => 'Leistungen',
                                     'BankInformation' => 'Bankdaten',
                                     'Edit' => 'Verwaltung'
                                 ))
@@ -163,7 +192,15 @@ class Banking extends AbstractFrontend
         $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking' ) );
 
         $IdPerson = Billing::serviceBanking()->entityDebtorById( $Id )->getServiceManagementPerson();
-        $Person = Management::servicePerson()->entityPersonById( $IdPerson )->getFullName();
+        $tblPerson = Management::servicePerson()->entityPersonById( $IdPerson );
+        if(!empty($tblPerson))
+        {
+            $Person = $tblPerson->getFullName();
+        }
+        else
+        {
+            $Person = 'Person nicht vorhanden';
+        }
         $DebtorNumber = Billing::serviceBanking()->entityDebtorById( $Id )->getDebtorNumber();
 //        $View->setMessage('Name: '.$Person.'<br/> Debitorennummer: '.Billing::serviceBanking()->entityDebtorById( $Id )->getDebtorNumber());
 
@@ -443,14 +480,24 @@ class Banking extends AbstractFrontend
         $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking' ) );
         $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
         $Person = Management::servicePerson()->entityPersonById( $tblDebtor->getServiceManagementPerson() );
-        $Name = $Person->getFullName();
+        if (!empty($Person))
+        {
+            $Name = $Person->getFullName();
+            $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson( $Person );
+        }
+        else
+        {
+            $Name = 'Person nicht vorhanden';
+            $tblDebtorList = false;
+        }
+
         $DebtorNumber = $tblDebtor->getDebtorNumber();
         $ReferenceEntityList = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
 
         $tblPaymentType = Billing::serviceBanking()->entityPaymentTypeAll();
         $PaymentType = Billing::serviceBanking()->entityPaymentTypeById( Billing::serviceBanking()->entityDebtorById( $Id )->getPaymentType() )->getPaymentType();
 
-        $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson( $Person );
+
         $DebtorArray = array();
         $DebtorArray[] = $tblDebtor;
         if ($tblDebtorList && $DebtorArray)
@@ -465,9 +512,15 @@ class Banking extends AbstractFrontend
             {
                 foreach ($ReferenceEntityList as $ReferenceEntity)
                 {
-                    $ReferenceEntity->Commodity = Billing::serviceCommodity()->entityCommodityById( $ReferenceEntity->getTblCommodity() )->getName();
+                    $ReferenceReal = Billing::serviceCommodity()->entityCommodityById( $ReferenceEntity->getTblCommodity() );
+                    if($ReferenceReal !== false)
+                    { $ReferenceEntity->Commodity = $ReferenceReal->getName(); }
+                    else
+                    { $ReferenceEntity->Commodity = 'Leistung nicht vorhanden'; }
+
+
                     $ReferenceEntity->Option =
-                        (new Danger( 'Referenz deaktivieren', '/Sphere/Billing/Banking/Reference/Select/Deactivate',
+                        (new Danger( 'Deaktivieren', '/Sphere/Billing/Banking/Reference/Select/Deactivate',
                             new RemoveIcon(), array(
                                 'Id' => $ReferenceEntity->getId()
                             ) ))->__toString();
@@ -479,7 +532,9 @@ class Banking extends AbstractFrontend
         $tblCommodityUsed = array();
         foreach($tblReferenceList as $tblReference)
         {
-            $tblCommodityUsed[] = Billing::serviceCommodity()->entityCommodityById( $tblReference->getTblCommodity() );
+            $tblCommodityUsedReal = Billing::serviceCommodity()->entityCommodityById( $tblReference->getTblCommodity() );
+            if($tblCommodityUsedReal !== false)
+            { $tblCommodityUsed[] = $tblCommodityUsedReal; }
         }
         if ($tblCommoditySelectBox && $tblCommodityUsed)
         {
@@ -565,10 +620,10 @@ class Banking extends AbstractFrontend
                                         new FormGroup( array(
                                             new FormRow( array(
                                                 new FormColumn(
-                                                    new TextField( 'Reference[Reference]', 'Referenznummer', 'Referenz', new BarCodeIcon()
+                                                    new TextField( 'Reference[Reference]', 'Referenz', 'Mandatsreferenz', new BarCodeIcon()
                                                     ), 4),
                                                 new FormColumn(
-                                                    new DatePicker( 'Reference[ReferenceDate]', 'Datum', 'Referenzdatum', new TimeIcon()
+                                                    new DatePicker( 'Reference[ReferenceDate]', 'Datum', 'Erstellungsdatum', new TimeIcon()
                                                     ), 4),
                                                 new FormColumn(
                                                     new SelectBox( 'Reference[Commodity]', 'Leistung', array( 'Name' => $tblCommoditySelectBox ) ,  new TimeIcon()
@@ -586,14 +641,14 @@ class Banking extends AbstractFrontend
                                 new LayoutColumn( array(
                                     new TableData( $ReferenceEntityList, null,
                                         array(
-                                            'Reference' => 'Referenznummer',
-                                            'ReferenceDate' => 'Referenzdatum',
+                                            'Reference' => 'Mandatsreferenz',
+                                            'ReferenceDate' => 'Datum',
                                             'Commodity' => 'Leistung',
                                             'Option' => 'Deaktivieren'
                                         ))
                                 ))
                             ))
-                        ), new LayoutTitle( 'Referenz' ) ) : null ,
+                        ), new LayoutTitle( 'Mandatsreferenz' ) ) : null ,
                     ( count($tblDebtorList) >= 1 ) ?
                     new LayoutGroup( array(
                         new LayoutRow( array(
@@ -667,6 +722,7 @@ class Banking extends AbstractFrontend
         $View->setContent(
             new Layout( array(
                 new LayoutGroup( array(
+                    ( empty( $tblStudent ) ) ?
                     new LayoutRow( array(
                         new LayoutColumn( array(
                             new LayoutPanel( new PersonIcon().' Debitor', $PersonName, LayoutPanel::PANEL_TYPE_WARNING
@@ -674,7 +730,19 @@ class Banking extends AbstractFrontend
                         new LayoutColumn( array(
                             new LayoutPanel( new GroupIcon().'. Personengruppe', $PersonType->getName(), LayoutPanel::PANEL_TYPE_WARNING
                             )),6),
-                    ))
+                    )): null,
+                    ( !empty( $tblStudent ) ) ?
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            new LayoutPanel( new PersonIcon().' Debitor', $PersonName, LayoutPanel::PANEL_TYPE_WARNING
+                            )),4),
+                        new LayoutColumn( array(
+                            new LayoutPanel( new GroupIcon().'. Schülernummer', $tblStudent->getStudentNumber(), LayoutPanel::PANEL_TYPE_PRIMARY
+                            )),4),
+                        new LayoutColumn( array(
+                            new LayoutPanel( new GroupIcon().'. Personengruppe', $PersonType->getName(), LayoutPanel::PANEL_TYPE_WARNING
+                            )),4),
+                    )): null,
                 )),
                 new LayoutGroup( array(
                     new LayoutRow( array(
@@ -683,10 +751,6 @@ class Banking extends AbstractFrontend
                                 new Form( array(
                                     new FormGroup( array(
                                         new FormRow( array(
-                                            ( !empty( $tblStudent ) ) ?
-                                            new LayoutColumn( array(
-                                                new LayoutPanel( new GroupIcon().'. Schülernummer', $tblStudent->getStudentNumber(), LayoutPanel::PANEL_TYPE_PRIMARY
-                                                )),6) : null,
                                             new FormColumn(
                                                 new TextField( 'Debtor[DebtorNumber]', 'Debitornummer', 'Debitornummer', new BarCodeIcon()
                                                 ), 12),
@@ -726,16 +790,16 @@ class Banking extends AbstractFrontend
                                     new FormGroup( array(
                                         new FormRow( array(
                                             new FormColumn(
-                                                new TextField( 'Debtor[Reference]', 'Referenznummer', 'Referenz', new BarCodeIcon()
+                                                new TextField( 'Debtor[Reference]', 'Referenz', 'Mandatsreferenz', new BarCodeIcon()
                                                 ), 4),
                                             new FormColumn(
-                                                new DatePicker( 'Debtor[ReferenceDate]', 'Datum', 'Referenzdatum', new TimeIcon()
+                                                new DatePicker( 'Debtor[ReferenceDate]', 'Datum', 'Erstellungsdatum', new TimeIcon()
                                                 ), 4),
                                             new FormColumn(
                                                 new SelectBox( 'Debtor[Commodity]', 'Leistung', array( 'Name' => $tblCommodity ) , new TimeIcon()
                                                 ), 4),
                                         )),
-                                    ),new FormTitle( 'Referenz' ))
+                                    ),new FormTitle( 'Mandatsreferenz' ))
                                 ), new SubmitPrimary( 'Hinzufügen' )), $Debtor, $Id )
                         ))
                     ))
