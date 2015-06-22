@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblPaymentType;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblReference;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
@@ -576,7 +577,7 @@ class Banking extends AbstractFrontend
                                                         new TextField( 'Debtor[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
                                                         ), 12 ),
                                                     new FormColumn(
-                                                        new SelectBox( 'Debtor[PaymentType]', 'Bezahlmethode', array( 'PaymentType' => $tblPaymentType ) , new ConversationIcon()
+                                                        new SelectBox( 'Debtor[PaymentType]', 'Bezahlmethode', array( TblPaymentType::ATTR_NAME => $tblPaymentType ) , new ConversationIcon()
                                                         ), 4 ),
                                                     new FormColumn(
                                                         new TextField( 'Debtor[LeadTimeFirst]', 'In Tagen', 'Ersteinzug', new TimeIcon()
