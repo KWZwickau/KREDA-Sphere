@@ -11,6 +11,7 @@ use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Course\Entity\TblCourse;
 use KREDA\Sphere\Application\Management\Service\Student\Entity\TblChildRank;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChevronLeftIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ListIcon;
@@ -54,11 +55,11 @@ class Commodity extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Übersicht' );
-        $View->setMessage( 'Zeigt die verfügbaren Leistungen an' );
         // ToDo
-//        $View->setMessage( 'Leistungen sind Zusammenfassungen aller Artikel, <br />
-//                            die unter einem Punkt für den Debitor abgerechnet werden. <br />
-//                            Beispielsweise: Schulgeld, Hortgeld, usw.' );
+        $View->setMessage( 'Zeigt die verfügbaren Leistungen an. <br />
+                            Leistungen sind Zusammenfassungen aller Artikel,
+                            die unter einem Punkt für den Debitor abgerechnet werden. <br />
+                            Beispielsweise: Schulgeld, Hortgeld, Klassenfahrt usw.' );
         $View->addButton(
             new Primary( 'Leistung anlegen', '/Sphere/Billing/Commodity/Create', new PlusIcon() )
         );
@@ -77,14 +78,14 @@ class Commodity extends AbstractFrontend
                         new EditIcon(), array(
                             'Id' => $tblCommodity->getId()
                     ) ) )->__toString().
-                  (new Danger( 'Löschen', '/Sphere/Billing/Commodity/Delete',
-                      new RemoveIcon(), array(
-                          'Id' => $tblCommodity->getId()
-                      ) ) )->__toString().
                   (new Primary( 'Artikel auswählen', '/Sphere/Billing/Commodity/Item/Select',
                         new ListIcon(), array(
                             'Id' => $tblCommodity->getId()
-                    ) ))->__toString();
+                    ) ))->__toString().
+                  (new Danger( 'Löschen', '/Sphere/Billing/Commodity/Delete',
+                      new RemoveIcon(), array(
+                          'Id' => $tblCommodity->getId()
+                      ) ) )->__toString();
             });
         }
 
@@ -112,8 +113,18 @@ class Commodity extends AbstractFrontend
     public static function frontendCreate( $Commodity )
     {
         $View = new Stage();
-        $View->setTitle( 'Leistungen' );
+        $View->setTitle( 'Leistung' );
         $View->setDescription( 'Hinzufügen' );
+        $View->setMessage(
+            '<b>Hinweis:</b> <br>
+            Bei einer Einzelleistung wird für jede Person der gesamten Betrag berechnet. <br>
+            Hingegen bei einer Sammelleisung bezahlt jede Person einen Teil des gesamten Betrags, abhängig von der
+            Personenanzahl. <br>
+            (z.B.: für Klassenfahrten)
+        ');
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity',
+            new ChevronLeftIcon()
+        ) );
 
         $View->setContent(Billing::serviceCommodity()->executeCreateCommodity(
             new Form( array(
@@ -167,6 +178,16 @@ class Commodity extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Bearbeiten' );
+        $View->setMessage(
+            '<b>Hinweis:</b> <br>
+            Bei einer Einzelleistung wird für jede Person der gesamten Betrag berechnet. <br>
+            Hingegen bei einer Sammelleisung bezahlt jede Person einen Teil des gesamten Betrags, abhängig von der
+            Personenanzahl. <br>
+            (z.B.: für Klassenfahrten)
+        ');
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity',
+            new ChevronLeftIcon()
+        ) );
 
         if (empty( $Id )) {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
@@ -216,11 +237,12 @@ class Commodity extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Übersicht' );
-        $View->setMessage( 'Zeigt die verfügbaren Artikel an' );
         // ToDo
-//        $View->setMessage( 'Artikel sind Preise für erbrachte Dienste, die Abhängigkeiten zugewiesen bekommen können. <br />
-//                            Somit werden bei Rechnungen nur die Artikel berechnet, <br />
-//                            die <b>keine</b> oder die <b>zutreffenden</b> Abhängigkeiten für die einzelne Person besitzen.' );
+        $View->setMessage(
+            'Zeigt alle verfügbaren Artikel an. <br>
+            Artikel sind Preise für erbrachte Dienste, die Abhängigkeiten zugewiesen bekommen können. <br />
+            Somit werden bei Rechnungen nur die Artikel berechnet, <br />
+            die <b>keine</b> oder die <b>zutreffenden</b> Abhängigkeiten für die einzelne Person besitzen.' );
         $View->addButton(
             new Primary( 'Artikel anlegen', '/Sphere/Billing/Commodity/Item/Create', new PlusIcon() )
         );
@@ -250,14 +272,14 @@ class Commodity extends AbstractFrontend
                             new EditIcon(), array(
                                 'Id' => $tblItem->getId()
                             ) ) )->__toString().
-                        (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Löschen', '/Sphere/Billing/Commodity/Item/Delete',
-                            new RemoveIcon(), array(
-                                'Id' => $tblItem->getId()
-                            ) ) )->__toString().
                         (new Primary( 'FIBU-Konten auswählen', '/Sphere/Billing/Commodity/Item/Account/Select',
                             new ListIcon(), array(
                                 'Id' => $tblItem->getId()
-                            ) ))->__toString();
+                            ) ))->__toString().
+                        (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Löschen', '/Sphere/Billing/Commodity/Item/Delete',
+                            new RemoveIcon(), array(
+                                'Id' => $tblItem->getId()
+                            ) ) )->__toString();
                 }
             });
         }
@@ -284,7 +306,8 @@ class Commodity extends AbstractFrontend
     public static function frontendItemRemove ( $Id )
     {
         $View = new Stage();
-        $View->setTitle( 'Artikel entfernen' );
+        $View->setTitle( 'Leistung' );
+        $View->setDescription('Artikel Entfernen');
         $tblCommodityItem = Billing::serviceCommodity()->entityCommodityItemById( $Id );
         if (!empty($tblCommodityItem))
         {
@@ -303,7 +326,8 @@ class Commodity extends AbstractFrontend
     public static function frontendItemAdd ( $tblCommodityId, $tblItemId, $Item )
     {
         $View = new Stage();
-        $View->setTitle( 'Artikel hinzufügen' );
+        $View->setTitle( 'Leistung' );
+        $View->setDescription('Artikel Hinzufügen');
         $tblCommodity = Billing::serviceCommodity()->entityCommodityById($tblCommodityId);
         $tblItem = Billing::serviceCommodity()->entityItemById($tblItemId);
 
@@ -314,7 +338,6 @@ class Commodity extends AbstractFrontend
 
         return $View;
     }
-
 
     /**
      * @param $Id
@@ -458,6 +481,18 @@ class Commodity extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Hinzufügen' );
+        $View->setMessage(
+            '<b>Hinweis:</b> <br>
+            Ist ein Bildungsgang unter der <i>Bedingung Bildungsgang</i> ausgewählt, wird der Artikel nur für
+            Personen (Schüler) berechnet welche diesem Bildungsgang angehören. <br>
+            Ist eine Kind-Reihenfolge unter der <i>Bedingung Kind-Reihenfolge</i> ausgewählt, wird der Artikel nur für
+            Personen (Schüler) berechnet welche dieser Kind-Reihenfolge entsprechen. <br>
+            Beide Bedingungen können einzeln ausgewählt werden, bei der Wahl beider Bedingungen werden diese
+            <b>Und</b> verknüpft.
+        ');
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity/Item',
+            new ChevronLeftIcon()
+        ) );
 
         $tblCourseAll = Management::serviceCourse()->entityCourseAll();
         array_unshift( $tblCourseAll, new TblCourse( '' ) );
@@ -531,6 +566,18 @@ class Commodity extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Bearbeiten' );
+        $View->setMessage(
+            '<b>Hinweis:</b> <br>
+            Ist ein Bildungsgang unter der <i>Bedingung Bildungsgang</i> ausgewählt, wird der Artikel nur für
+            Personen (Schüler) berechnet welche diesem Bildungsgang angehören. <br>
+            Ist eine Kind-Reihenfolge unter der <i>Bedingung Kind-Reihenfolge</i> ausgewählt, wird der Artikel nur für
+            Personen (Schüler) berechnet welche dieser Kind-Reihenfolge entsprechen. <br>
+            Beide Bedingungen können einzeln ausgewählt werden, bei der Wahl beider Bedingungen werden diese
+            <b>Und</b> verknüpft.
+        ');
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity/Item',
+            new ChevronLeftIcon()
+        ) );
 
         $tblCourseAll = Management::serviceCourse()->entityCourseAll();
         array_unshift( $tblCourseAll, new TblCourse( '' ) );
@@ -719,7 +766,8 @@ class Commodity extends AbstractFrontend
     public static function frontendItemAccountRemove ( $Id )
     {
         $View = new Stage();
-        $View->setTitle( 'FIBU-Konto entfernen' );
+        $View->setTitle('Artikel');
+        $View->setDescription( 'FIBU-Konto Entfernen' );
         $tblItemAccount = Billing::serviceCommodity()->entityItemAccountById( $Id );
         if (!empty($tblItemAccount))
         {
@@ -738,7 +786,8 @@ class Commodity extends AbstractFrontend
     public static function frontendItemAccountAdd ( $tblItemId, $tblAccountId )
     {
         $View = new Stage();
-        $View->setTitle( 'FIBU-Konto hinzufügen' );
+        $View->setTitle('Artikel');
+        $View->setDescription( 'FIBU-Konto Hinzufügen' );
         $tblItem = Billing::serviceCommodity()->entityItemById($tblItemId);
         $tblAccount = Billing::serviceAccount()->entityAccountById( $tblAccountId);
 
