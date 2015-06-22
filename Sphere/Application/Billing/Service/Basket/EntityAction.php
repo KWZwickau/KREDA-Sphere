@@ -212,6 +212,9 @@ abstract class EntityAction extends EntitySchema
                 $tblTempInvoice = Billing::serviceInvoice()->executeCreateTempInvoice(
                     $tblBasket, $tblBasketCommodity->getServiceManagementPerson(), $tblBasketCommodityDebtor->getServiceBillingDebtor());
                 Billing::serviceInvoice()->executeCreateTempInvoiceCommodity( $tblTempInvoice, $tblBasketCommodity->getServiceBillingCommodity());
+
+                // auto add DebtorCommodity
+                // Billing::serviceBanking()->executeAddDebtorCommodity($tblBasketCommodityDebtor->getServiceBillingDebtor(), $tblBasketCommodity->getServiceBillingCommodity());
             }
 
             return true;
@@ -367,22 +370,54 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param $Name
+     *
      * @return TblBasket
      */
-    protected function actionCreateBasket()
+    protected function actionCreateBasket(
+        $Name
+    )
     {
-
         $Manager = $this->getEntityManager();
 
         $Entity = new TblBasket();
         date_default_timezone_set('Europe/Berlin');
         $Entity->setCreateDate( new \DateTime( 'now'));
+        $Entity->setName($Name);
 
         $Manager->saveEntity( $Entity );
 
         System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
 
         return $Entity;
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @param $Name
+     *
+     * @return bool
+     */
+    protected function actionEditBasket(
+        TblBasket $tblBasket,
+        $Name
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblBasket $Entity */
+        $Entity = $Manager->getEntityById( 'TblBasket', $tblBasket->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setName( $Name );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
     }
 
     /**

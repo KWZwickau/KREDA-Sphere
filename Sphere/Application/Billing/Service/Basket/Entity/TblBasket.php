@@ -20,6 +20,27 @@ class TblBasket extends AbstractEntity
     protected $CreateDate;
 
     /**
+     * @Column(type="string")
+     */
+    protected $Name;
+
+    /**
+     * @param string $Name
+     */
+    public function setName($Name)
+    {
+        $this->Name = $Name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->Name;
+    }
+
+    /**
      * @return string
      */
     public function getCreateDate()

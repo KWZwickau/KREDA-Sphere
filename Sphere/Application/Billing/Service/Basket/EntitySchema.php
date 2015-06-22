@@ -50,6 +50,10 @@ abstract class EntitySchema extends AbstractService
         {
             $Table->addColumn( 'CreateDate', 'datetime' );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblBasket', 'Name' ))
+        {
+            $Table->addColumn( 'Name', 'string' );
+        }
 
         return $Table;
     }

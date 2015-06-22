@@ -173,22 +173,87 @@ class Basket extends EntityAction
     }
 
     /**
+     * @param AbstractType $View
+     * @param $Basket
+     *
      * @return string
      */
     public function executeCreateBasket(
+        AbstractType &$View = null,
+        $Basket
     )
     {
-        $tblBasket = $this->actionCreateBasket();
-        if ($tblBasket)
+        /**
+         * Skip to Frontend
+         */
+        if (null === $Basket
+        ) {
+            return $View;
+        }
+
+        $Error = false;
+
+        if (isset($Basket['Name'] ) && empty( $Basket['Name'] )) {
+            $View->setError( 'Basket[Name]', 'Bitte geben Sie einen Namen an' );
+            $Error = true;
+        }
+
+        if (!$Error)
         {
+            $tblBasket = $this->actionCreateBasket(
+                $Basket['Name']
+            );
             return new Success( 'Der Warenkorb wurde erfolgreich erstellt' )
                 .new Redirect( '/Sphere/Billing/Basket/Commodity/Select', 1, array( 'Id' => $tblBasket->getId()) );
         }
-        else
-        {
-            return new Warning( 'Der Warenkorb konnte nicht erstellt werden' )
-                .new Redirect( '/Sphere/Billing/Basket', 1 );
+
+        return $View;
+    }
+
+    /**
+     * @param AbstractType $View
+     * @param TblBasket $tblBasket
+     * @param $Basket
+     *
+     * @return AbstractType|string
+     */
+    public function executeEditBasket(
+        AbstractType &$View = null,
+        TblBasket $tblBasket,
+        $Basket
+    ) {
+
+        /**
+         * Skip to Frontend
+         */
+        if (null === $Basket
+        ) {
+            return $View;
         }
+
+        $Error = false;
+
+        if (isset($Basket['Name'] ) && empty( $Basket['Name'] )) {
+            $View->setError( 'Basket[Name]', 'Bitte geben Sie einen Namen an' );
+            $Error = true;
+        }
+
+        if (!$Error) {
+            if ($this->actionEditBasket(
+                $tblBasket,
+                $Basket['Name']
+                )
+            )
+            {
+                $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
+                    .new Redirect( '/Sphere/Billing/Basket', 1 );
+            }
+            else
+            {
+                $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' );
+            };
+        }
+        return $View;
     }
 
     /**
@@ -428,7 +493,6 @@ class Basket extends EntityAction
 
         if ($ErrorMissing)
         {
-            // $View .= new Warning( "Ihre Warenkorbnummer: " . $tblBasket->getId());
             return $View;
         }
 
@@ -438,7 +502,6 @@ class Basket extends EntityAction
             {
                 if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date']))
                 {
-                    $this->actionDestroyBasket( $tblBasket );
                     $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
                         .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 2 );
                 }
@@ -490,7 +553,6 @@ class Basket extends EntityAction
         {
             if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Date))
             {
-                $this->actionDestroyBasket( $tblBasket );
                 $View.= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
                     .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 2 );
             }

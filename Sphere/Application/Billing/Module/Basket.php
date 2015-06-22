@@ -35,7 +35,13 @@ class Basket extends Common
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Basket/Create', __CLASS__.'::frontendBasketCreate'
-        );
+        )
+            ->setParameterDefault( 'Basket', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Basket/Edit', __CLASS__.'::frontendBasketEdit'
+        )
+            ->setParameterDefault( 'Id', null)
+            ->setParameterDefault( 'Basket', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Basket/Delete', __CLASS__.'::frontendBasketDelete'
         )
@@ -105,13 +111,28 @@ class Basket extends Common
     }
 
     /**
+     * @param $Basket
+     *
      * @return Stage
      */
-    public static function frontendBasketCreate()
+    public static function frontendBasketCreate($Basket)
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBasketCreate();
+        return Frontend::frontendBasketCreate($Basket);
+    }
+
+    /**
+     * @param $Id
+     * @param $Basket
+     *
+     * @return Stage
+     */
+    public static function frontendBasketEdit($Id, $Basket)
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketEdit($Id, $Basket);
     }
 
     /**
