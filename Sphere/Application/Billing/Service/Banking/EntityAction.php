@@ -399,7 +399,8 @@ abstract class EntityAction extends EntitySchema
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblReference')->findOneBy(array(
             TblReference::ATTR_TBL_DEBTOR => $tblDebtor->getId(),
-            TblReference::ATTR_TBL_COMMODITY => $tblCommodity->getId()
+            TblReference::ATTR_TBL_COMMODITY => $tblCommodity->getId(),
+            TblReference::ATTR_IS_VOID => false
         ));
         return ( null === $Entity ? false : $Entity );
     }
