@@ -228,7 +228,7 @@ abstract class EntityAction extends EntitySchema
         $Entity = $Manager->getEntityById( 'TblReference', $tblReference->getId() );
         $Protocol = clone $Entity;
         if (null !== $Entity) {
-            $Entity->setIsVoid( false );
+            $Entity->setIsVoid( true );
 
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
@@ -315,7 +315,7 @@ abstract class EntityAction extends EntitySchema
 
         $Entity = new TblReference();
         $Entity->setReference( $Reference );
-        $Entity->setIsVoid( true );
+        $Entity->setIsVoid( false );
         $Entity->setServiceTblDebtor( Billing::serviceBanking()->entityDebtorByDebtorNumber( $DebtorNumber ) );
         $Entity->setTblCommodity( $Commodity );
         if( $ReferenceDate )
@@ -374,7 +374,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityReferenceByDebtor( TblDebtor $tblDebtor )
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblReference' )
-            ->findBy( array( TblReference::ATTR_TBL_DEBTOR => $tblDebtor->getId(), TblReference::ATTR_IS_VOID => true ) );
+            ->findBy( array( TblReference::ATTR_TBL_DEBTOR => $tblDebtor->getId(), TblReference::ATTR_IS_VOID => false ) );
         return ( null === $Entity ? false : $Entity );
     }
 
@@ -390,6 +390,21 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param TblDebtor $tblDebtor
+     * @param TblCommodity $tblCommodity
+     *
+     * @return bool|TblReference
+     */
+    protected function entityReferenceByDebtorAndCommodity (TblDebtor $tblDebtor, TblCommodity $tblCommodity )
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblReference')->findOneBy(array(
+            TblReference::ATTR_TBL_DEBTOR => $tblDebtor->getId(),
+            TblReference::ATTR_TBL_COMMODITY => $tblCommodity->getId()
+        ));
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
      * @param $Reference
      *
      * @return bool|TblReference
@@ -397,8 +412,7 @@ abstract class EntityAction extends EntitySchema
     protected function entityReferenceByReference ( $Reference )
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblReference' )
-        ->findOneBy( array( TblReference::ATTR_REFERENCE => $Reference,
-                            TblReference::ATTR_IS_VOID => true) );
+        ->findOneBy( array( TblReference::ATTR_REFERENCE => $Reference) );
         return ( null === $Entity ? false : $Entity );
     }
 

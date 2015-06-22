@@ -428,6 +428,17 @@ class Banking extends EntityAction
     }
 
     /**
+     * @param TblDebtor $tblDebtor
+     * @param TblCommodity $tblCommodity
+     *
+     * @return bool|TblReference
+     */
+    public function entityReferenceByDebtorAndCommodity(TblDebtor $tblDebtor, TblCommodity $tblCommodity)
+    {
+        return parent::entityReferenceByDebtorAndCommodity($tblDebtor, $tblCommodity);
+    }
+
+    /**
      * @param $Reference
      *
      * @return bool|TblReference
