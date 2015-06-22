@@ -239,6 +239,12 @@ class Commodity extends EntityAction
             $View->setError( 'Commodity[Name]', 'Bitte geben Sie einen Namen an' );
             $Error = true;
         }
+        else if (isset($Commodity['Name']) && $this->entityCommodityByName( $Commodity['Name']))
+        {
+            $View->setError( 'Commodity[Name]', 'Die Leistung exisitiert bereits.
+                Bitte geben Sie eine anderen Name an' );
+            $Error = true;
+        }
 //        if (isset( $Commodity['Description'] ) && empty(  $Commodity['Description'] )) {
 //            $View->setError( 'Commodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
 //            $Error = true;
@@ -308,6 +314,13 @@ class Commodity extends EntityAction
 
         if (isset($Commodity['Name'] ) && empty( $Commodity['Name'] )) {
             $View->setError( 'Commodity[Name]', 'Bitte geben Sie einen Namen an' );
+            $Error = true;
+        }
+        else if (isset($Commodity['Name']) && $tblCommodity->getName() !== $Commodity['Name']
+            && $this->entityCommodityByName( $Commodity['Name']))
+        {
+            $View->setError( 'Commodity[Name]', 'Die Leistung exisitiert bereits.
+                Bitte geben Sie eine anderen Name an' );
             $Error = true;
         }
 //        if (isset( $Commodity['Description'] ) && empty(  $Commodity['Description'] )) {
