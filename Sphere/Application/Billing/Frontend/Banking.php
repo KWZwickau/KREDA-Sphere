@@ -11,6 +11,7 @@ use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BarCodeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BuildingIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChevronLeftIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
@@ -207,7 +208,7 @@ class Banking extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Hinzufügen' );
-        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking' ) );
+        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking', new ChevronLeftIcon() ) );
 
         $IdPerson = Billing::serviceBanking()->entityDebtorById( $Id )->getServiceManagementPerson();
         $tblPerson = Management::servicePerson()->entityPersonById( $IdPerson );
@@ -354,7 +355,7 @@ class Banking extends AbstractFrontend
     {
         $View = new Stage();
         $View->setTitle( 'Debitorensuche' );
-        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking' ) );
+        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking', new ChevronLeftIcon() ) );
 
         $tblPerson = Management::servicePerson()->entityPersonAll();
 
@@ -492,7 +493,7 @@ class Banking extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Bankdaten' );
         $View->setDescription( 'bearbeiten' );
-        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking' ) );
+        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking', new ChevronLeftIcon() ) );
         $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
         $Person = Management::servicePerson()->entityPersonById( $tblDebtor->getServiceManagementPerson() );
         if (!empty($Person))
@@ -705,7 +706,7 @@ class Banking extends AbstractFrontend
 
         $View = new Stage();
         $View->setTitle( 'Debitoreninformationen' );
-        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking/Person' ) );
+        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking/Person', new ChevronLeftIcon() ) );
 
         $PersonName = Management::servicePerson()->entityPersonById( $Id )->getFullName();
         $PersonType = Management::servicePerson()->entityPersonById( $Id )->getTblPersonType();

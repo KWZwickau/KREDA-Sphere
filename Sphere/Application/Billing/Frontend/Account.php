@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BarCodeIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChevronLeftIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
@@ -126,7 +127,7 @@ class Account extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'FIBU-Konto' );
         $View->setDescription( 'Hinzufügen' );
-        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Account' ) );
+        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Account', new ChevronLeftIcon() ) );
 
         $tblAccountKey = Billing::serviceAccount()->entityKeyValueAll();
         $tblAccountType = Billing::serviceAccount()->entityTypeValueAll();
