@@ -7,6 +7,8 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\BasketIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CommodityIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DocumentIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\FolderOpenIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyEuroIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
 use KREDA\Sphere\Client\Configuration;
 
@@ -58,8 +60,8 @@ class Billing extends Module\Commodity
 
         self::setupModuleNavigation();
         $View = new Stage();
-        $View->setTitle( 'Fraktuierung' );
-        $View->setMessage( 'Bitte wählen Sie ein Thema' );
+        $View->setTitle('Fraktuierung');
+        $View->setMessage('Bitte wählen Sie ein Thema');
         return $View;
     }
 
@@ -74,11 +76,11 @@ class Billing extends Module\Commodity
         );
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Account', 'FIBU', new EditIcon()
+            '/Sphere/Billing/Account', 'FIBU-Konten', new FolderOpenIcon()
         );
 
         self::addModuleNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Banking', 'Debitor', new EditIcon()
+            '/Sphere/Billing/Banking', 'Debitoren', new MoneyIcon()
         );
 
         self::addModuleNavigationMain( self::$Configuration,

@@ -22,25 +22,23 @@ class TblAccountKeyType extends AbstractEntity
     protected $Description;
 
     /**
-     * @return string $name
+     * @return string $Name
      */
     public function getName()
     {
-
         return $this->Name;
     }
 
     /**
-     * @param string $name
+     * @param string $Name
      */
-    public function setName( $name )
+    public function setName($Name)
     {
-
-        $this->Name = $name;
+        $this->Name = $Name;
     }
 
     /**
-     * @return string $description
+     * @return string $Description
      */
     public function getDescription()
     {
@@ -49,12 +47,14 @@ class TblAccountKeyType extends AbstractEntity
     }
 
     /**
-     * @param string $description
+     * @param string $Description
      */
-    public function setDescription( $description )
+    public function setDescription($Description)
     {
 
-        $this->Description = $description;
+        $this->Description = $Description;
     }
+
+
 
 }

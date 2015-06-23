@@ -45,6 +45,8 @@ class Update extends AbstractService
         $Protocol[] = Management::serviceCourse()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Management::serviceStudent()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Management::serviceContact()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Management::serviceCompany()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Management::serviceTableView()->setupDatabaseSchema( $Simulate );
 
         $Protocol[] = Billing::serviceAccount()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Billing::serviceBanking()->setupDatabaseSchema( $Simulate );
@@ -75,6 +77,7 @@ class Update extends AbstractService
             Management::serviceCourse()->setupDatabaseContent();
             Management::serviceStudent()->setupDatabaseContent();
             Management::serviceContact()->setupDatabaseContent();
+            Management::serviceCompany()->setupDatabaseContent();
 
             Billing::serviceAccount()->setupDatabaseContent();
             Billing::serviceBanking()->setupDatabaseContent();

@@ -13,9 +13,8 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblBalance extends AbstractEntity
 {
-
     const ATTR_SERVICE_BILLING_BANKING = 'serviceBilling_Banking';
-    const ATTR_SERVICE_BILLING_COMMODITY_ITEM = 'serviceBilling_Invoice';
+    const ATTR_SERVICE_BILLING_INVOICE = 'serviceBilling_Invoice';
 
     /**
      * @Column(type="bigint")
@@ -35,9 +34,8 @@ class TblBalance extends AbstractEntity
     /**
      * @param TblDebtor $serviceBilling_Banking
      */
-    public function setServiceBillingBanking( TblDebtor $serviceBilling_Banking = null )
+    public function setServiceBillingBanking( TblDebtor $serviceBilling_Banking = null)
     {
-
         $this->serviceBilling_Banking = ( null === $serviceBilling_Banking ? null : $serviceBilling_Banking->getId() );
     }
 
@@ -46,7 +44,6 @@ class TblBalance extends AbstractEntity
      */
     public function getServiceBillingBilling()
     {
-
         if (null === $this->serviceBilling_Banking) {
             return false;
         } else {
@@ -55,11 +52,18 @@ class TblBalance extends AbstractEntity
     }
 
     /**
+     * @param null|TblInvoice $serviceBilling_Invoice
+     */
+    public function setServiceBillingInvoice( TblInvoice $serviceBilling_Invoice = null)
+    {
+        $this->serviceBilling_Invoice = ( null === $serviceBilling_Invoice ? null : $serviceBilling_Invoice->getId() );
+    }
+
+    /**
      * @return bool|TblInvoice
      */
     public function getServiceBillingInvoice()
     {
-
         if (null === $this->serviceBilling_Invoice) {
             return false;
         } else {
@@ -68,16 +72,7 @@ class TblBalance extends AbstractEntity
     }
 
     /**
-     * @param null|TblInvoice $serviceBilling_Invoice
-     */
-    public function setServiceBillingInvoice( TblInvoice $serviceBilling_Invoice = null )
-    {
-
-        $this->serviceBilling_Invoice = ( null === $serviceBilling_Invoice ? null : $serviceBilling_Invoice->getId() );
-    }
-
-    /**
-     * @return string
+     * @return string $ExportDate
      */
     public function getExportDate()
     {
@@ -97,9 +92,8 @@ class TblBalance extends AbstractEntity
     /**
      * @param \DateTime $ExportDate
      */
-    public function setExportDate( \DateTime $ExportDate )
+    public function setExportDate(\DateTime $ExportDate )
     {
-
         $this->ExportDate = $ExportDate;
     }
 }

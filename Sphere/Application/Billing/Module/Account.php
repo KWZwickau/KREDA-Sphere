@@ -1,9 +1,10 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Module;
 
-use KREDA\Sphere\Application\Billing\Frontend\Account as Frontend;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Application\Billing\Frontend\Account as Frontend;
 
 /**
  * Class Account
@@ -12,7 +13,6 @@ use KREDA\Sphere\Client\Configuration;
  */
 class Account extends Common
 {
-
     /** @var Configuration $Config */
     private static $Configuration = null;
 
@@ -21,7 +21,6 @@ class Account extends Common
      */
     public static function registerApplication( Configuration $Configuration )
     {
-
         self::$Configuration = $Configuration;
 
         self::registerClientRoute( self::$Configuration,
@@ -32,17 +31,17 @@ class Account extends Common
             '/Sphere/Billing/Account', __CLASS__.'::frontendAccountFibu'
         );
         self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Account/Edit', __CLASS__.'::frontendEditAccountFibu'
+            '/Sphere/Billing/Account/Edit', __CLASS__.'::frontendAccountFibuEdit'
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Account', null );
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Account/Activate', __CLASS__.'::frontendAccountFibuActivate'
-        )->setParameterDefault( 'Id', null );
+        )   ->setParameterDefault( 'Id', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Account/Deactivate', __CLASS__.'::frontendAccountFibuDeactivate'
-        )->setParameterDefault( 'Id', null );
+        )   ->setParameterDefault( 'Id', null );
 
     }
 
@@ -51,7 +50,6 @@ class Account extends Common
      */
     public static function frontendAccountFibu()
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendAccountFibu();
@@ -59,16 +57,7 @@ class Account extends Common
     }
 
     /**
-     * @return void
-     */
-    protected static function setupApplicationNavigation()
-    {
-
-    }
-
-    /**
      * @param $Account
-     *
      * @return Stage
      */
     public static function frontendAccountCreate( $Account )
@@ -76,17 +65,15 @@ class Account extends Common
 
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendCreateAccount( $Account );
+        return Frontend::frontendCreateAccount($Account);
     }
 
     /**
      * @param $Id
-     *
      * @return Stage
      */
     public static function frontendAccountFibuActivate( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendAccountFibuActivate( $Id );
@@ -94,12 +81,10 @@ class Account extends Common
 
     /**
      * @param $Id
-     *
      * @return Stage
      */
     public static function frontendAccountFibuDeactivate( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendAccountFibuDeactivate( $Id );
@@ -108,15 +93,21 @@ class Account extends Common
     /**
      * @param $Id
      * @param $Account
-     *
      * @return mixed
      */
-    public static function frontendEditAccountFibu( $Id, $Account )
+    public static function frontendAccountFibuEdit( $Id, $Account )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendEditAccountFibu( $Id, $Account );
+        return Frontend::frontendAccountFibuEdit( $Id, $Account );
+    }
+
+    /**
+     * @return void
+     */
+    protected static function setupApplicationNavigation()
+    {
+
     }
 
 }

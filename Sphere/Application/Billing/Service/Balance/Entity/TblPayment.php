@@ -11,8 +11,7 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblPayment extends AbstractEntity
 {
-
-    const ATTR_TBL_BANKING = 'tblBalance';
+    const ATTR_TBL_BALANCE = 'tblBalance';
 
     /**
      * @Column(type="bigint")
@@ -30,11 +29,18 @@ class TblPayment extends AbstractEntity
     protected $Date;
 
     /**
+     * @param null|TblBalance $tblBalance
+     */
+    public function setTblBalance($tblBalance = null)
+    {
+        $this->tblBalance = ( null === $tblBalance ? null : $tblBalance->getId() );
+    }
+
+    /**
      * @return bool|TblBalance
      */
     public function getTblBalance()
     {
-
         if (null === $this->tblBalance) {
             return false;
         } else {
@@ -43,16 +49,7 @@ class TblPayment extends AbstractEntity
     }
 
     /**
-     * @param null|TblBalance $tblBalance
-     */
-    public function setTblBalance( $tblBalance = null )
-    {
-
-        $this->tblBalance = ( null === $tblBalance ? null : $tblBalance->getId() );
-    }
-
-    /**
-     * @return string
+     * @return string $Date
      */
     public function getDate()
     {
@@ -72,24 +69,33 @@ class TblPayment extends AbstractEntity
     /**
      * @param \DateTime $Date
      */
-    public function setDate( \DateTime $Date )
+    public function setDate(\DateTime $Date )
     {
-
         $this->Date = $Date;
     }
 
+    /**
+     * @param $Value
+     */
+    public function setValue( $Value )
+    {
+        $this->Value = $Value;
+    }
+
+    /**
+     * @return (type="decimal", precision=14, scale=4)
+     */
     public function getValue()
     {
-
         return $this->Value;
     }
 
     /**
-     * @param $value
+     * @return string
      */
-    public function setValue( $value )
+    public function getValueString()
     {
-
-        $this->Value = $value;
+        $result = sprintf("%01.2f", $this->Value);
+        return str_replace('.', ',', $result)  . " €";
     }
 }

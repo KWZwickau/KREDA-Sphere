@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Service\Banking\Entity;
 
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Common\AbstractEntity;
@@ -14,7 +15,7 @@ class TblDebtor extends AbstractEntity
 {
 
     const ATTR_DEBTOR_NUMBER = 'DebtorNumber';
-    const ATTR_SERVICE_MANAGEMENT_PERSON = 'ServiceManagement_Person';
+    const ATTR_SERVICE_MANAGEMENT_PERSON = 'ServiceManagementPerson';
 
     /**
      * @Column(type="string")
@@ -31,24 +32,50 @@ class TblDebtor extends AbstractEntity
     /**
      * @Column(type="bigint")
      */
-    protected $ServiceManagement_Person;
+    protected $ServiceManagementPerson;
+    /**
+     * @Column(type="string")
+     */
+    protected $BankName;
+    /**
+     * @Column(type="string")
+     */
+    protected $IBAN;
+    /**
+     * @Column(type="string")
+     */
+    protected $BIC;
+    /**
+     * @Column(type="string")
+     */
+    protected $Owner;
+    /**
+     * @Column(type="string")
+     */
+    protected $CashSign;
+    /**
+     * @Column(type="string")
+     */
+    protected $Description;
+    /**
+     * @Column(type="bigint")
+     */
+    protected $tblPaymentType;
 
     /**
      * @return integer $LeadTimeFirst
      */
     public function getLeadTimeFirst()
     {
-
         return $this->LeadTimeFirst;
     }
 
     /**
-     * @param integer $leadTimeFirst
+     * @param integer $LeadTimeFirst
      */
-    public function setLeadTimeFirst( $leadTimeFirst )
+    public function setLeadTimeFirst($LeadTimeFirst)
     {
-
-        $this->LeadTimeFirst = $leadTimeFirst;
+        $this->LeadTimeFirst = $LeadTimeFirst;
     }
 
     /**
@@ -56,17 +83,15 @@ class TblDebtor extends AbstractEntity
      */
     public function getLeadTimeFollow()
     {
-
         return $this->LeadTimeFollow;
     }
 
     /**
-     * @param integer $leadTimeFollow
+     * @param integer $LeadTimeFollow
      */
-    public function setLeadTimeFollow( $leadTimeFollow )
+    public function setLeadTimeFollow($LeadTimeFollow)
     {
-
-        $this->LeadTimeFollow = $leadTimeFollow;
+        $this->LeadTimeFollow = $LeadTimeFollow;
     }
 
     /**
@@ -74,39 +99,152 @@ class TblDebtor extends AbstractEntity
      */
     public function getDebtorNumber()
     {
-
         return $this->DebtorNumber;
     }
 
     /**
-     * @param string $debtorNumber
+     * @param string $DebtorNumber
      */
-    public function setDebtorNumber( $debtorNumber )
+    public function setDebtorNumber($DebtorNumber)
     {
-
-        $this->DebtorNumber = $debtorNumber;
+        $this->DebtorNumber = $DebtorNumber;
     }
 
     /**
-     * @return bool|TblPerson $ServiceManagement_Person
+     * @return bool|TblPerson $ServiceManagementPerson
      */
-    public function getServiceManagement_Person()
+    public function getServiceManagementPerson()
     {
-
-        if (null === $this->ServiceManagement_Person) {
+        if (null === $this->ServiceManagementPerson) {
             return false;
         } else {
-            return Management::servicePerson()->entityPersonById( $this->ServiceManagement_Person );
+            return Management::servicePerson()->entityPersonById( $this->ServiceManagementPerson );
         }
     }
 
     /**
-     * @param null|TblPerson $serviceManagement_Person
+     * @param null|TblPerson $ServiceManagementPerson
      */
-    public function setServiceManagement_Person( TblPerson $serviceManagement_Person )
+    public function setServiceManagementPerson( TblPerson $ServiceManagementPerson )
+    {
+        $this->ServiceManagementPerson = ( null === $ServiceManagementPerson ? null : $ServiceManagementPerson->getId() );
+    }
+
+    /**
+     * @return string $BankName
+     */
+    public function getBankName()
+    {
+        return $this->BankName;
+    }
+
+    /**
+     * @param string $BankName
+     */
+    public function setBankName( $BankName )
+    {
+        $this->BankName = $BankName;
+    }
+
+    /**
+     * @return string $IBAN
+     */
+    public function getIBAN()
+    {
+        return $this->IBAN;
+    }
+
+    /**
+     * @param string $IBAN
+     */
+    public function setIBAN($IBAN)
+    {
+        $this->IBAN = $IBAN;
+    }
+
+    /**
+     * @return string $BIC
+     */
+    public function getBIC()
+    {
+        return $this->BIC;
+    }
+
+    /**
+     * @param string $BIC
+     */
+    public function setBIC( $BIC )
+    {
+        $this->BIC = $BIC;
+    }
+
+    /**
+     * @return string $Owner
+     */
+    public function getOwner()
+    {
+        return $this->Owner;
+    }
+
+    /**
+     * @param string $Owner
+     */
+    public function setOwner( $Owner )
+    {
+        $this->Owner = $Owner;
+    }
+
+    /**
+     * @return string $CashSign
+     */
+    public function getCashSign()
+    {
+        return $this->CashSign;
+    }
+
+    /**
+     * @param string $CashSign
+     */
+    public function setCashSign( $CashSign )
+    {
+        $this->CashSign = $CashSign;
+    }
+
+    /**
+     * @return string $Description
+     */
+    public function getDescription()
+    {
+        return $this->Description;
+    }
+
+    /**
+     * @param string $Description
+     */
+    public function setDescription($Description)
+    {
+        $this->Description = $Description;
+    }
+
+    /**
+     * @return TblPaymentType $tblPaymentType
+     */
+    public function getPaymentType()
     {
 
-        $this->ServiceManagement_Person = ( null === $serviceManagement_Person ? null : $serviceManagement_Person->getId() );
+        if (null === $this->tblPaymentType) {
+            return false;
+        } else {
+            return Billing::serviceBanking()->entityPaymentTypeById( $this->tblPaymentType );
+        }
+    }
+
+    /**
+     * @param TblPaymentType $PaymentType
+     */
+    public function setPaymentType( TblPaymentType $PaymentType)
+    {
+        $this->tblPaymentType = ( null === $PaymentType ? null : $PaymentType->getId() );
     }
 
 }

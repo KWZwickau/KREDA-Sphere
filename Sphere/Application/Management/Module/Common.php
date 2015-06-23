@@ -4,6 +4,7 @@ namespace KREDA\Sphere\Application\Management\Module;
 use KREDA\Sphere\Application\Gatekeeper\Gatekeeper;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ClusterIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\HomeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonKeyIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\TimeIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\YubiKeyIcon;
@@ -43,6 +44,9 @@ class Common extends AbstractApplication
         );
         self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Education', 'Klassen und Fächer', new ClusterIcon()
+        );
+        self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Management/Company', 'Firmen', new HomeIcon()
         );
 //        self::addModuleNavigationMain( self::$Configuration,
 //            '/Sphere/Management/Education/Mission', 'Aufträge', new BriefcaseIcon()

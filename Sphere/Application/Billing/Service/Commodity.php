@@ -2,20 +2,21 @@
 namespace KREDA\Sphere\Application\Billing\Service;
 
 use KREDA\Sphere\Application\Billing\Service\Account\Entity\TblAccount;
-use KREDA\Sphere\Application\Billing\Service\Commodity\Entity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityType;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItem;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblItemAccount;
 use KREDA\Sphere\Application\Billing\Service\Commodity\EntityAction;
 use KREDA\Sphere\Application\Billing\Service\Commodity\TblDebtorCommodity;
+use KREDA\Sphere\Application\System\System;
 use KREDA\Sphere\Client\Frontend\Background\Type\Danger;
-use KREDA\Sphere\Client\Frontend\Form\AbstractType as AbstractType;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType as AbstractType;
 
 /**
  * Class Commodity
@@ -33,7 +34,6 @@ class Commodity extends EntityAction
      */
     final public function __construct()
     {
-
         $this->setDatabaseHandler( 'Billing', 'Commodity', $this->getConsumerSuffix() );
     }
 
@@ -42,7 +42,6 @@ class Commodity extends EntityAction
      */
     public function setupDatabaseContent()
     {
-
         /**
          * CommodityType
          */
@@ -57,8 +56,17 @@ class Commodity extends EntityAction
      */
     public function entityCommodityById( $Id )
     {
-
         return parent::entityCommodityById( $Id );
+    }
+
+    /**
+     * @param string $Name
+     *
+     * @return bool|TblCommodity
+     */
+    public function entityCommodityByName($Name)
+    {
+        return parent::entityCommodityByName($Name);
     }
 
     /**
@@ -66,8 +74,17 @@ class Commodity extends EntityAction
      */
     public function entityCommodityAll()
     {
-
         return parent::entityCommodityAll();
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|TblCommodityType
+     */
+    public function entityCommodityTypeById($Id)
+    {
+        return parent::entityCommodityTypeById($Id);
     }
 
     /**
@@ -75,19 +92,25 @@ class Commodity extends EntityAction
      */
     public function entityCommodityTypeAll()
     {
-
         return parent::entityCommodityTypeAll();
     }
 
     /**
      * @param int $Id
-     *
      * @return bool|TblItem
      */
-    public function entityItemById( $Id )
+    public function entityItemById($Id)
     {
+        return parent::entityItemById($Id);
+    }
 
-        return parent::entityItemById( $Id );
+    /**
+     * @param string $Name
+     * @return bool|TblItem
+     */
+    public function entityItemByName($Name)
+    {
+        return parent::entityItemByName($Name);
     }
 
     /**
@@ -95,7 +118,6 @@ class Commodity extends EntityAction
      */
     public function entityItemAll()
     {
-
         return parent::entityItemAll();
     }
 
@@ -104,10 +126,9 @@ class Commodity extends EntityAction
      *
      * @return bool|Commodity\Entity\TblItem[]
      */
-    public function entityItemAllByCommodity( TblCommodity $tblCommodity )
+    public function entityItemAllByCommodity( TblCommodity $tblCommodity)
     {
-
-        return parent::entityItemAllByCommodity( $tblCommodity );
+        return parent::entityItemAllByCommodity($tblCommodity);
     }
 
     /**
@@ -115,9 +136,8 @@ class Commodity extends EntityAction
      *
      * @return int
      */
-    public function countItemAllByCommodity( TblCommodity $tblCommodity )
+    public function countItemAllByCommodity ( TblCommodity $tblCommodity )
     {
-
         return parent::countItemAllByCommodity( $tblCommodity );
     }
 
@@ -126,10 +146,9 @@ class Commodity extends EntityAction
      *
      * @return bool|Entity\TblItem[]
      */
-    public function entityCommodityItemAllByCommodity( TblCommodity $tblCommodity )
+    public function entityCommodityItemAllByCommodity(TblCommodity $tblCommodity)
     {
-
-        return parent::entityCommodityItemAllByCommodity( $tblCommodity );
+        return parent::entityCommodityItemAllByCommodity($tblCommodity);
     }
 
     /**
@@ -137,10 +156,9 @@ class Commodity extends EntityAction
      *
      * @return bool|TblItem[]
      */
-    public function entityCommodityItemAllByItem( TblItem $tblItem )
+    public  function entityCommodityItemAllByItem(TblItem $tblItem)
     {
-
-        return parent::entityCommodityItemAllByItem( $tblItem );
+        return parent::entityCommodityItemAllByItem($tblItem);
     }
 
     /**
@@ -148,10 +166,9 @@ class Commodity extends EntityAction
      *
      * @return bool|TblCommodityItem
      */
-    public function entityCommodityItemById( $Id )
+    public  function entityCommodityItemById($Id)
     {
-
-        return parent::entityCommodityItemById( $Id );
+        return parent::entityCommodityItemById($Id);
     }
 
     /**
@@ -159,21 +176,20 @@ class Commodity extends EntityAction
      *
      * @return bool|TblItemAccount
      */
-    public function entityItemAccountById( $Id )
+    public function entityItemAccountById($Id)
     {
-
-        return parent::entityItemAccountById( $Id );
+        return parent::entityItemAccountById($Id);
     }
+
 
     /**
      * @param TblItem $tblItem
      *
      * @return bool|TblItemAccount
      */
-    public function entityItemAccountAllByItem( TblItem $tblItem )
+    public function entityItemAccountAllByItem(TblItem $tblItem)
     {
-
-        return parent::entityItemAccountAllByItem( $tblItem );
+        return parent::entityItemAccountAllByItem($tblItem);
     }
 
     /**
@@ -181,27 +197,26 @@ class Commodity extends EntityAction
      *
      * @return Account\Entity\TblAccount[]
      */
-    public function entityAccountAllByItem( TblItem $tblItem )
+    public function entityAccountAllByItem(TblItem $tblItem)
     {
-
-        return parent::entityAccountAllByItem( $tblItem );
+        return parent::entityAccountAllByItem($tblItem);
     }
+
 
     /**
      * @param TblCommodity $tblCommodity
      *
      * @return string
      */
-    public function sumPriceItemAllByCommodity( TblCommodity $tblCommodity )
+    public function sumPriceItemAllByCommodity(TblCommodity $tblCommodity)
     {
-
-        return parent::sumPriceItemAllByCommodity( $tblCommodity );
+        return parent::sumPriceItemAllByCommodity($tblCommodity);
     }
 
     /**
      * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
      *
-     * @param                                                 $Commodity
+     * @param $Commodity
      *
      * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
      */
@@ -220,64 +235,64 @@ class Commodity extends EntityAction
 
         $Error = false;
 
-        if (isset( $Commodity['Name'] ) && empty( $Commodity['Name'] )) {
+        if (isset($Commodity['Name'] ) && empty( $Commodity['Name'] )) {
             $View->setError( 'Commodity[Name]', 'Bitte geben Sie einen Namen an' );
             $Error = true;
         }
-        if (isset( $Commodity['Description'] ) && empty( $Commodity['Description'] )) {
-            $View->setError( 'Commodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
+        else if (isset($Commodity['Name']) && $this->entityCommodityByName( $Commodity['Name']))
+        {
+            $View->setError( 'Commodity[Name]', 'Die Leistung exisitiert bereits.
+                Bitte geben Sie eine anderen Name an' );
             $Error = true;
         }
+//        if (isset( $Commodity['Description'] ) && empty(  $Commodity['Description'] )) {
+//            $View->setError( 'Commodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
+//            $Error = true;
+//        }
 
-        if (!$Error) {
+        if (!$Error)
+        {
             $this->actionCreateCommodity(
                 $Commodity['Name'],
                 $Commodity['Description'],
-                $this->entityCommodityTypeById( $Commodity['Type'] )
+                $this->entityCommodityTypeById($Commodity['Type'])
             );
             return new Success( 'Die Leistung wurde erfolgreich angelegt' )
-            .new Redirect( '/Sphere/Billing/Commodity', 2 );
+            .new Redirect( '/Sphere/Billing/Commodity', 2);
         }
         return $View;
     }
 
-    /**
-     * @param $Id
-     *
-     * @return bool|TblCommodityType
-     */
-    public function entityCommodityTypeById( $Id )
-    {
-
-        return parent::entityCommodityTypeById( $Id );
-    }
 
     /**
      * @param TblCommodity $tblCommodity
-     *
      * @return string
      */
     public function executeRemoveCommodity(
         TblCommodity $tblCommodity
-    ) {
-
-        if (null === $tblCommodity) {
+    )
+    {
+        if (null === $tblCommodity)
+        {
             return '';
         }
 
-        if ($this->actionRemoveCommodity( $tblCommodity )) {
-            return new Success( 'Die Leistung wurde erfolgreich gelöscht' )
-            .new Redirect( '/Sphere/Billing/Commodity', 2 );
-        } else {
+        if ($this->actionRemoveCommodity($tblCommodity))
+        {
+            return new Success( 'Die Leistung wurde erfolgreich gelöscht')
+                .new Redirect( '/Sphere/Billing/Commodity', 2);
+        }
+        else
+        {
             return new Danger( 'Die Leistung konnte nicht gelöscht werden' )
-            .new Redirect( '/Sphere/Billing/Commodity', 2 );
+                .new Redirect( '/Sphere/Billing/Commodity', 2);
         }
     }
 
     /**
      * @param AbstractType $View
      * @param TblCommodity $tblCommodity
-     * @param              $Commodity
+     * @param $Commodity
      *
      * @return AbstractType|string
      */
@@ -297,14 +312,21 @@ class Commodity extends EntityAction
 
         $Error = false;
 
-        if (isset( $Commodity['Name'] ) && empty( $Commodity['Name'] )) {
+        if (isset($Commodity['Name'] ) && empty( $Commodity['Name'] )) {
             $View->setError( 'Commodity[Name]', 'Bitte geben Sie einen Namen an' );
             $Error = true;
         }
-        if (isset( $Commodity['Description'] ) && empty( $Commodity['Description'] )) {
-            $View->setError( 'Commodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
+        else if (isset($Commodity['Name']) && $tblCommodity->getName() !== $Commodity['Name']
+            && $this->entityCommodityByName( $Commodity['Name']))
+        {
+            $View->setError( 'Commodity[Name]', 'Die Leistung exisitiert bereits.
+                Bitte geben Sie eine anderen Name an' );
             $Error = true;
         }
+//        if (isset( $Commodity['Description'] ) && empty(  $Commodity['Description'] )) {
+//            $View->setError( 'Commodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
+//            $Error = true;
+//        }
 
         if (!$Error) {
             if ($this->actionEditCommodity(
@@ -312,10 +334,9 @@ class Commodity extends EntityAction
                 $Commodity['Name'],
                 $Commodity['Description'],
                 $this->entityCommodityTypeById( $Commodity['Type'] )
-            )
-            ) {
+            )) {
                 $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
-                    .new Redirect( '/Sphere/Billing/Commodity', 2 );
+                    .new Redirect( '/Sphere/Billing/Commodity', 2);
             } else {
                 $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' );
             };
@@ -325,7 +346,7 @@ class Commodity extends EntityAction
 
     /**
      * @param AbstractType $View
-     * @param              $Item
+     * @param $Item
      *
      * @return AbstractType|string
      */
@@ -344,22 +365,22 @@ class Commodity extends EntityAction
 
         $Error = false;
 
-        if (isset( $Item['Name'] ) && empty( $Item['Name'] )) {
+        if (isset($Item['Name'] ) && empty( $Item['Name'] )) {
             $View->setError( 'Item[Name]', 'Bitte geben Sie einen Namen an' );
             $Error = true;
         }
-        if (isset( $Item['Description'] ) && empty( $Item['Description'] )) {
-            $View->setError( 'Item[Description]', 'Bitte geben Sie eine Beschreibung an' );
-            $Error = true;
-        }
-        if (isset( $Item['Price'] ) && empty( $Item['Price'] )) {
+//        if (isset( $Item['Description'] ) && empty(  $Item['Description'] )) {
+//            $View->setError( 'Item[Description]', 'Bitte geben Sie eine Beschreibung an' );
+//            $Error = true;
+//        }
+        if (isset( $Item['Price'] ) && empty(  $Item['Price'] )) {
             $View->setError( 'Item[Price]', 'Bitte geben Sie einen Preis an' );
             $Error = true;
         }
-        if (isset( $Item['CostUnit'] ) && empty( $Item['CostUnit'] )) {
-            $View->setError( 'Item[CostUnit]', 'Bitte geben Sie einen Namen an' );
-            $Error = true;
-        }
+//        if (isset($Item['CostUnit'] ) && empty( $Item['CostUnit'] )) {
+//            $View->setError( 'Item[CostUnit]', 'Bitte geben Sie einen Namen an' );
+//            $Error = true;
+//        }
 
         if (!$Error) {
             $this->actionCreateItem(
@@ -371,7 +392,7 @@ class Commodity extends EntityAction
                 $Item['ChildRank']
             );
             return new Success( 'Der Artikel wurde erfolgreich angelegt' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item', 2 );
+            .new Redirect( '/Sphere/Billing/Commodity/Item', 2);
         }
         return $View;
     }
@@ -383,25 +404,29 @@ class Commodity extends EntityAction
      */
     public function executeDeleteItem(
         TblItem $tblItem
-    ) {
-
-        if (null === $tblItem) {
+    )
+    {
+        if (null === $tblItem)
+        {
             return '';
         }
 
-        if ($this->actionDestroyItem( $tblItem )) {
-            return new Success( 'Der Artikel wurde erfolgreich gelöscht' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item', 2 );
-        } else {
+        if ($this->actionDestroyItem( $tblItem ))
+        {
+            return new Success( 'Der Artikel wurde erfolgreich gelöscht')
+            .new Redirect( '/Sphere/Billing/Commodity/Item', 2);
+        }
+        else
+        {
             return new Danger( 'Der Artikel konnte nicht gelöscht werden. Überprüfen Sie ob er noch in einer Leistung verwendet wird.' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item', 2 );
+            .new Redirect( '/Sphere/Billing/Commodity/Item', 2);
         }
     }
 
     /**
      * @param AbstractType $View
-     * @param TblItem      $tblItem
-     * @param              $Item
+     * @param TblItem $tblItem
+     * @param $Item
      *
      * @return AbstractType|string
      */
@@ -421,22 +446,22 @@ class Commodity extends EntityAction
 
         $Error = false;
 
-        if (isset( $Item['Name'] ) && empty( $Item['Name'] )) {
+        if (isset($Item['Name'] ) && empty( $Item['Name'] )) {
             $View->setError( 'Item[Name]', 'Bitte geben Sie einen Namen an' );
             $Error = true;
         }
-        if (isset( $Item['Description'] ) && empty( $Item['Description'] )) {
-            $View->setError( 'Item[Description]', 'Bitte geben Sie eine Beschreibung an' );
-            $Error = true;
-        }
-        if (isset( $Item['Price'] ) && empty( $Item['Price'] )) {
+//        if (isset( $Item['Description'] ) && empty(  $Item['Description'] )) {
+//            $View->setError( 'Item[Description]', 'Bitte geben Sie eine Beschreibung an' );
+//            $Error = true;
+//        }
+        if (isset( $Item['Price'] ) && empty(  $Item['Price'] )) {
             $View->setError( 'Item[Price]', 'Bitte geben Sie einen Preis an' );
             $Error = true;
         }
-        if (isset( $Item['CostUnit'] ) && empty( $Item['CostUnit'] )) {
-            $View->setError( 'Item[CostUnit]', 'Bitte geben Sie eine Kostenstelle an' );
-            $Error = true;
-        }
+//        if (isset( $Item['CostUnit'] ) && empty(  $Item['CostUnit'] )) {
+//            $View->setError( 'Item[CostUnit]', 'Bitte geben Sie eine Kostenstelle an' );
+//            $Error = true;
+//        }
 
         if (!$Error) {
             if ($this->actionEditItem(
@@ -447,10 +472,9 @@ class Commodity extends EntityAction
                 $Item['CostUnit'],
                 $Item['Course'],
                 $Item['ChildRank']
-            )
-            ) {
+            )) {
                 $View .= new Success( 'Änderungen gespeichert, die Daten werden neu geladen...' )
-                    .new Redirect( '/Sphere/Billing/Commodity/Item', 2 );
+                    .new Redirect( '/Sphere/Billing/Commodity/Item', 2);
             } else {
                 $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' );
             };
@@ -460,48 +484,50 @@ class Commodity extends EntityAction
 
     /**
      * @param TblCommodityItem $tblCommodityItem
-     *
      * @return string
      */
     public function executeRemoveCommodityItem(
         TblCommodityItem $tblCommodityItem
-    ) {
-
-        if ($this->actionRemoveCommodityItem( $tblCommodityItem )) {
-            return new Success( 'Der Artikel '.$tblCommodityItem->getTblItem()->getName().' wurde erfolgreich entfernt' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2,
-                array( 'Id' => $tblCommodityItem->getTblCommodity()->getId() ) );
-        } else {
-            return new Warning( 'Der Artikel '.$tblCommodityItem->getTblItem()->getName().' konnte nicht entfernt werden' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2,
-                array( 'Id' => $tblCommodityItem->getTblCommodity()->getId() ) );
+    )
+    {
+        if ($this->actionRemoveCommodityItem($tblCommodityItem))
+        {
+            return new Success( 'Der Artikel ' . $tblCommodityItem->getTblItem()->getName(). ' wurde erfolgreich entfernt' )
+                .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodityItem->getTblCommodity()->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Der Artikel ' . $tblCommodityItem->getTblItem()->getName(). ' konnte nicht entfernt werden' )
+                .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodityItem->getTblCommodity()->getId()) );
         }
     }
 
     /**
      * @param TblCommodity $tblCommodity
-     * @param TblItem      $tblItem
-     * @param              $Item
-     *
+     * @param TblItem $tblItem
+     * @param $Item
      * @return string
      */
     public function executeAddCommodityItem(
         TblCommodity $tblCommodity,
         TblItem $tblItem,
         $Item
-    ) {
-
-        if ($this->actionAddCommodityItem( $tblCommodity, $tblItem, $Item['Quantity'] )) {
-            return new Success( 'Der Artikel '.$tblItem->getName().' wurde erfolgreich hinzugefügt' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodity->getId() ) );
-        } else {
-            return new Warning( 'Der Artikel '.$tblItem->getName().' konnte nicht entfernt werden' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodity->getId() ) );
+    )
+    {
+        if ($this->actionAddCommodityItem($tblCommodity, $tblItem, $Item['Quantity']))
+        {
+            return new Success( 'Der Artikel ' . $tblItem->getName(). ' wurde erfolgreich hinzugefügt' )
+                .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodity->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Der Artikel ' .$tblItem->getName(). ' konnte nicht entfernt werden' )
+                .new Redirect( '/Sphere/Billing/Commodity/Item/Select', 2, array( 'Id' => $tblCommodity->getId()) );
         }
     }
 
     /**
-     * @param TblItem    $tblItem
+     * @param TblItem $tblItem
      * @param TblAccount $tblAccount
      *
      * @return string
@@ -509,14 +535,17 @@ class Commodity extends EntityAction
     public function executeAddItemAccount(
         TblItem $tblItem,
         TblAccount $tblAccount
-    ) {
-
-        if ($this->actionAddItemAccount( $tblItem, $tblAccount )) {
-            return new Success( 'Das FIBU-Konto '.$tblAccount->getDescription().' wurde erfolgreich hinzugefügt' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 0, array( 'Id' => $tblItem->getId() ) );
-        } else {
-            return new Warning( 'Das FIBU-Konto '.$tblAccount->getDescription().' konnte nicht entfernt werden' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 2, array( 'Id' => $tblItem->getId() ) );
+    )
+    {
+        if ($this->actionAddItemAccount($tblItem, $tblAccount))
+        {
+            return new Success( 'Das FIBU-Konto ' . $tblAccount->getDescription(). ' wurde erfolgreich hinzugefügt' )
+            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 0, array( 'Id' => $tblItem->getId()) );
+        }
+        else
+        {
+            return new Warning( 'Das FIBU-Konto ' .$tblAccount->getDescription(). ' konnte nicht entfernt werden' )
+            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 2, array( 'Id' => $tblItem->getId()) );
         }
     }
 
@@ -527,58 +556,17 @@ class Commodity extends EntityAction
      */
     public function executeRemoveItemAccount(
         TblItemAccount $tblItemAccount
-    ) {
-
-        if ($this->actionRemoveItemAccount( $tblItemAccount )) {
-            return new Success( 'Das FIBU-Konto '.$tblItemAccount->getServiceBilling_Account()->getDescription().' wurde erfolgreich entfernt' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 0,
-                array( 'Id' => $tblItemAccount->getTblItem()->getId() ) );
-        } else {
-            return new Warning( 'Das FIBU-Konto '.$tblItemAccount->getServiceBilling_Account()->getDescription().' konnte nicht entfernt werden' )
-            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 2,
-                array( 'Id' => $tblItemAccount->getTblItem()->getId() ) );
+    )
+    {
+        if ($this->actionRemoveItemAccount($tblItemAccount))
+        {
+            return new Success( 'Das FIBU-Konto ' . $tblItemAccount->getServiceBilling_Account()->getDescription(). ' wurde erfolgreich entfernt' )
+            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 0, array( 'Id' => $tblItemAccount->getTblItem()->getId()) );
         }
-    }
-
-    /**
-     * @param \KREDA\Sphere\Client\Frontend\Form\AbstractType $View
-     *
-     * @param                                                 $DebtorCommodity
-     *
-     * @return \KREDA\Sphere\Client\Frontend\Form\AbstractType
-     */
-    public function executeCreateDebtorCommodity(
-        AbstractType &$View = null,
-        $DebtorCommodity
-    ) {
-
-        /**
-         * Skip to Frontend
-         */
-        if (null === $DebtorCommodity
-        ) {
-            return $View;
+        else
+        {
+            return new Warning( 'Das FIBU-Konto ' . $tblItemAccount->getServiceBilling_Account()->getDescription(). ' konnte nicht entfernt werden' )
+            .new Redirect( '/Sphere/Billing/Commodity/Item/Account/Select', 2, array( 'Id' => $tblItemAccount->getTblItem()->getId()) );
         }
-
-        $Error = false;
-
-        if (isset( $DebtorCommodity['Name'] ) && empty( $DebtorCommodity['Name'] )) {
-            $View->setError( 'DebtorCommodity[Name]', 'Bitte geben Sie einen Namen an' );
-            $Error = true;
-        }
-        if (isset( $DebtorCommodity['Description'] ) && empty( $DebtorCommodity['Description'] )) {
-            $View->setError( 'DebtorCommodity[Description]', 'Bitte geben Sie eine Beschreibung an' );
-            $Error = true;
-        }
-
-        if (!$Error) {
-            $this->actionCreateDebtorCommodity(
-                $DebtorCommodity['Name'],
-                $DebtorCommodity['Description']
-            );
-            return new Success( 'Die Debitor-Leistung wurde erfolgreich angelegt' )
-            .new Redirect( '/Sphere/Billing/Commodity', 2 );
-        }
-        return $View;
     }
 }

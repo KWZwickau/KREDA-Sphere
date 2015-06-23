@@ -46,13 +46,13 @@
 	#RewriteRule ^(.*)$ https://www.domain.de/$1 [R=301,L]
 
 	# Platform Root:
-	RewriteCond %{REQUEST_URI} ^/$
-	RewriteRule ^(.*)$ /Client/ [R=301,L]
+#	RewriteCond %{REQUEST_URI} ^/$
+#	RewriteRule ^(.*)$ /Client/ [R=301,L]
 
-	RewriteCond %{REQUEST_URI} !^/Client/
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^(.*)$ /Client/$1 [R=302,L]
+#	RewriteCond %{REQUEST_URI} !^/Client/
+#	RewriteCond %{REQUEST_FILENAME} !-f
+#	RewriteCond %{REQUEST_FILENAME} !-d
+#	RewriteRule ^(.*)$ /Client/$1 [R=302,L]
 
 # Cache settings
 

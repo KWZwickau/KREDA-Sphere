@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Billing\Module;
 
 use KREDA\Sphere\Application\Billing\Frontend\Invoice as Frontend;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
 use KREDA\Sphere\Client\Configuration;
 
 /**
@@ -12,73 +13,81 @@ use KREDA\Sphere\Client\Configuration;
  */
 class Invoice extends Common
 {
-
     /** @var Configuration $Config */
     private static $Configuration = null;
-
-    /**
-     * @param Configuration $Configuration
-     */
-    public static function registerApplication( Configuration $Configuration )
-    {
-
-        self::$Configuration = $Configuration;
-
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice', __CLASS__.'::frontendInvoiceStatus'
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/List', __CLASS__.'::frontendInvoiceList'
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/IsNotConfirmed', __CLASS__.'::frontendInvoiceIsNotConfirmedList'
-        );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Edit', __CLASS__.'::frontendInvoiceEdit'
-        )
-            ->setParameterDefault( 'Id', null );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Confirm', __CLASS__.'::frontendInvoiceConfirm'
-        )
-            ->setParameterDefault( 'Id', null );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Cancel', __CLASS__.'::frontendInvoiceCancel'
-        )
-            ->setParameterDefault( 'Id', null );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Item/Edit', __CLASS__.'::frontendInvoiceItemEdit'
-        )
-            ->setParameterDefault( 'Id', null )
-            ->setParameterDefault( 'InvoiceItem', null );
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Invoice/Item/Remove', __CLASS__.'::frontendInvoiceItemRemove'
-        )
-            ->setParameterDefault( 'Id', null );
-    }
-
-    /**
-     * @return Stage
-     */
-    public static function frontendInvoiceStatus()
-    {
-
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::frontendInvoiceStatus();
-    }
 
     /**
      * @return void
      */
     protected static function setupApplicationNavigation()
     {
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed', 'Freigeben',  new OkIcon()
+        );
+    }
 
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoice/List', 'Alle'
+    /**
+     * @param Configuration $Configuration
+     */
+    public static function registerApplication( Configuration $Configuration )
+    {
+        self::$Configuration = $Configuration;
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice', __CLASS__.'::frontendInvoiceList'
         );
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Invoice/IsNotConfirmed', 'Offene'
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed', __CLASS__.'::frontendInvoiceIsNotConfirmedList'
         );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Edit', __CLASS__.'::frontendInvoiceEdit'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Data', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Show', __CLASS__.'::frontendInvoiceShow'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Confirm', __CLASS__.'::frontendInvoiceConfirm'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Data', null ) ;
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Cancel', __CLASS__.'::frontendInvoiceCancel'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/Pay', __CLASS__.'::frontendInvoicePay'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Item/Edit', __CLASS__.'::frontendInvoiceItemEdit'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'InvoiceItem', null);
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Item/Remove', __CLASS__.'::frontendInvoiceItemRemove'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Address/Select', __CLASS__.'::frontendInvoiceAddressSelect'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Address/Change', __CLASS__.'::frontendInvoiceAddressChange'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'AddressId', null);
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Payment/Type/Select', __CLASS__.'::frontendInvoicePaymentTypeSelect'
+        )
+            ->setParameterDefault( 'Id', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Invoice/IsNotConfirmed/Payment/Type/Change', __CLASS__.'::frontendInvoicePaymentTypeChange'
+        )
+            ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'PaymentTypeId', null);
     }
 
     /**
@@ -86,7 +95,6 @@ class Invoice extends Common
      */
     public static function frontendInvoiceList()
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendInvoiceList();
@@ -97,7 +105,6 @@ class Invoice extends Common
      */
     public static function frontendInvoiceIsNotConfirmedList()
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendInvoiceIsNotConfirmedList();
@@ -105,15 +112,15 @@ class Invoice extends Common
 
     /**
      * @param $Id
+     * @param $Data
      *
      * @return Stage
      */
-    public static function frontendInvoiceEdit( $Id )
+    public static function frontendInvoiceEdit( $Id, $Data )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendInvoiceEdit( $Id );
+        return Frontend::frontendInvoiceEdit( $Id, $Data );
     }
 
     /**
@@ -121,12 +128,36 @@ class Invoice extends Common
      *
      * @return Stage
      */
-    public static function frontendInvoiceConfirm( $Id )
+    public static function frontendInvoiceShow( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendInvoiceConfirm( $Id );
+        return Frontend::frontendInvoiceShow( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $Data
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceConfirm( $Id, $Data )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoiceConfirm( $Id, $Data );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoicePay( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoicePay( $Id );
     }
 
     /**
@@ -136,7 +167,6 @@ class Invoice extends Common
      */
     public static function frontendInvoiceCancel( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendInvoiceCancel( $Id );
@@ -150,7 +180,6 @@ class Invoice extends Common
      */
     public static function frontendInvoiceItemEdit( $Id, $InvoiceItem )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendInvoiceItemEdit( $Id, $InvoiceItem );
@@ -161,11 +190,60 @@ class Invoice extends Common
      *
      * @return Stage
      */
-    public static function frontendInvoiceItemRemove( $Id )
+    public static function frontendInvoiceItemRemove( $Id)
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendInvoiceItemRemove( $Id );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceAddressSelect( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoiceAddressSelect( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $AddressId
+     *
+     * @return Stage
+     */
+    public static function frontendInvoiceAddressChange( $Id, $AddressId )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoiceAddressChange( $Id, $AddressId );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendInvoicePaymentTypeSelect( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoicePaymentTypeSelect( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $PaymentTypeId
+     *
+     * @return Stage
+     */
+    public static function frontendInvoicePaymentTypeChange( $Id, $PaymentTypeId )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendInvoicePaymentTypeChange( $Id, $PaymentTypeId );
     }
 }

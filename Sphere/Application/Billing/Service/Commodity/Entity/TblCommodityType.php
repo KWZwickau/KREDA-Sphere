@@ -14,7 +14,6 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblCommodityType extends AbstractEntity
 {
-
     /**
      * @Column(type="string")
      */
@@ -25,7 +24,6 @@ class TblCommodityType extends AbstractEntity
      */
     public function getName()
     {
-
         return $this->Name;
     }
 
@@ -34,7 +32,6 @@ class TblCommodityType extends AbstractEntity
      */
     public function setName( $Name )
     {
-
         $this->Name = $Name;
     }
 }

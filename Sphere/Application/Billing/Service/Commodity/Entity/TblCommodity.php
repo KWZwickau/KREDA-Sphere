@@ -15,6 +15,7 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblCommodity extends AbstractEntity
 {
+    const ATTR_NAME = 'Name';
 
     /**
      * @Column(type="bigint")
@@ -36,7 +37,6 @@ class TblCommodity extends AbstractEntity
      */
     public function getTblCommodityType()
     {
-
         if (null === $this->tblCommodityType) {
             return false;
         } else {
@@ -49,7 +49,6 @@ class TblCommodity extends AbstractEntity
      */
     public function setTblCommodityType( TblCommodityType $tblCommodityType = null )
     {
-
         $this->tblCommodityType = ( null === $tblCommodityType ? null : $tblCommodityType->getId() );
     }
 
@@ -58,7 +57,6 @@ class TblCommodity extends AbstractEntity
      */
     public function getName()
     {
-
         return $this->Name;
     }
 
@@ -67,7 +65,6 @@ class TblCommodity extends AbstractEntity
      */
     public function setName( $Name )
     {
-
         $this->Name = $Name;
     }
 
@@ -76,7 +73,6 @@ class TblCommodity extends AbstractEntity
      */
     public function getDescription()
     {
-
         return $this->Description;
     }
 
@@ -85,7 +81,6 @@ class TblCommodity extends AbstractEntity
      */
     public function setDescription( $Description )
     {
-
         $this->Description = $Description;
     }
 }

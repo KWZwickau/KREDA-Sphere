@@ -12,16 +12,22 @@ use KREDA\Sphere\Client\Configuration;
  */
 class Basket extends Common
 {
-
     /** @var Configuration $Config */
     private static $Configuration = null;
+
+    /**
+     * @return void
+     */
+    protected static function setupApplicationNavigation()
+    {
+
+    }
 
     /**
      * @param Configuration $Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
-
         self::$Configuration = $Configuration;
 
         self::registerClientRoute( self::$Configuration,
@@ -29,7 +35,13 @@ class Basket extends Common
         );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Basket/Create', __CLASS__.'::frontendBasketCreate'
-        );
+        )
+            ->setParameterDefault( 'Basket', null );
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Basket/Edit', __CLASS__.'::frontendBasketEdit'
+        )
+            ->setParameterDefault( 'Id', null)
+            ->setParameterDefault( 'Basket', null );
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Basket/Delete', __CLASS__.'::frontendBasketDelete'
         )
@@ -85,9 +97,7 @@ class Basket extends Common
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Date', null )
-            ->setParameterDefault( 'Data', null )
-            ->setParameterDefault( 'SelectList', null )
-            ->setParameterDefault( 'TempTblInvoiceList', null );
+            ->setParameterDefault( 'Data', null );
     }
 
     /**
@@ -95,29 +105,34 @@ class Basket extends Common
      */
     public static function frontendBasketList()
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketList();
     }
 
     /**
-     * @return void
+     * @param $Basket
+     *
+     * @return Stage
      */
-    protected static function setupApplicationNavigation()
+    public static function frontendBasketCreate($Basket)
     {
-
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBasketCreate($Basket);
     }
 
     /**
+     * @param $Id
+     * @param $Basket
+     *
      * @return Stage
      */
-    public static function frontendBasketCreate()
+    public static function frontendBasketEdit($Id, $Basket)
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBasketCreate();
+        return Frontend::frontendBasketEdit($Id, $Basket);
     }
 
     /**
@@ -127,7 +142,6 @@ class Basket extends Common
      */
     public static function frontendBasketDelete( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketDelete( $Id );
@@ -140,7 +154,6 @@ class Basket extends Common
      */
     public static function frontendBasketCommoditySelect( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketCommoditySelect( $Id );
@@ -154,7 +167,6 @@ class Basket extends Common
      */
     public static function frontendBasketCommodityAdd( $Id, $CommodityId )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketCommodityAdd( $Id, $CommodityId );
@@ -168,7 +180,6 @@ class Basket extends Common
      */
     public static function frontendBasketCommodityRemove( $Id, $CommodityId )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketCommodityRemove( $Id, $CommodityId );
@@ -179,9 +190,8 @@ class Basket extends Common
      *
      * @return Stage
      */
-    public static function frontendBasketItemStatus( $Id )
+    public static function frontendBasketItemStatus( $Id)
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketItemStatus( $Id );
@@ -192,9 +202,8 @@ class Basket extends Common
      *
      * @return Stage
      */
-    public static function frontendBasketItemRemove( $Id )
+    public static function frontendBasketItemRemove( $Id)
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketItemRemove( $Id );
@@ -208,7 +217,6 @@ class Basket extends Common
      */
     public static function frontendBasketItemEdit( $Id, $BasketItem )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketItemEdit( $Id, $BasketItem );
@@ -221,7 +229,6 @@ class Basket extends Common
      */
     public static function frontendBasketPersonSelect( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketPersonSelect( $Id );
@@ -235,7 +242,6 @@ class Basket extends Common
      */
     public static function frontendBasketPersonAdd( $Id, $PersonId )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketPersonAdd( $Id, $PersonId );
@@ -248,7 +254,6 @@ class Basket extends Common
      */
     public static function frontendBasketPersonRemove( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketPersonRemove( $Id );
@@ -262,7 +267,6 @@ class Basket extends Common
      */
     public static function frontendBasketSummary( $Id, $Basket )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBasketSummary( $Id, $Basket );
@@ -272,16 +276,13 @@ class Basket extends Common
      * @param $Id
      * @param $Date
      * @param $Data
-     * @param $SelectList
-     * @param $TempTblInvoiceList
      *
      * @return Stage
      */
-    public static function frontendBasketDebtorSelect( $Id, $Date, $Data, $SelectList, $TempTblInvoiceList )
+    public static function frontendBasketDebtorSelect( $Id, $Date, $Data )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBasketDebtorSelect( $Id, $Date, $Data, $SelectList, $TempTblInvoiceList );
+        return Frontend::frontendBasketDebtorSelect( $Id, $Date, $Data );
     }
 }

@@ -12,7 +12,6 @@ use KREDA\Sphere\Common\AbstractService;
  */
 abstract class EntitySchema extends AbstractService
 {
-
     /**
      * @param bool $Simulate
      *
@@ -20,7 +19,6 @@ abstract class EntitySchema extends AbstractService
      */
     public function setupDatabaseSchema( $Simulate = true )
     {
-
         /**
          * Table
          */
@@ -42,17 +40,19 @@ abstract class EntitySchema extends AbstractService
      */
     private function setTableBalance( Schema &$Schema )
     {
+        $Table = $this->schemaTableCreate( $Schema, 'tblBalance');
 
-        $Table = $this->schemaTableCreate( $Schema, 'tblBalance' );
-
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblBalance', 'serviceBilling_Banking' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblBalance', 'serviceBilling_Banking' ))
+        {
             $Table->addColumn( 'serviceBilling_Banking', 'bigint' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblBalance', 'serviceBilling_Invoice' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblBalance', 'serviceBilling_Invoice' ))
+        {
             $Table->addColumn( 'serviceBilling_Invoice', 'bigint' );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblBalance', 'ExportDate' )) {
-            $Table->addColumn( 'ExportDate', 'date' );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblBalance', 'ExportDate' ))
+        {
+            $Table->addColumn( 'ExportDate', 'date', array( 'notnull' => false ) );
         }
 
         return $Table;
@@ -60,19 +60,20 @@ abstract class EntitySchema extends AbstractService
 
     /**
      * @param Schema $Schema
-     * @param Table  $tblBalance
+     * @param Table $tblBalance
      *
      * @return Table
      */
     private function setTablePayment( Schema &$Schema, Table $tblBalance )
     {
+        $Table = $this->schemaTableCreate( $Schema, 'tblPayment');
 
-        $Table = $this->schemaTableCreate( $Schema, 'tblPayment' );
-
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblPayment', 'Value' )) {
-            $Table->addColumn( 'Value', 'decimal', array( 'precision' => 14, 'scale' => 4 ) );
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblPayment', 'Value' ))
+        {
+            $Table->addColumn( 'Value', 'decimal' , array( 'precision' => 14 , 'scale' => 4) );
         }
-        if (!$this->getDatabaseHandler()->hasColumn( 'tblPayment', 'Date' )) {
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblPayment', 'Date' ))
+        {
             $Table->addColumn( 'Date', 'date' );
         }
 

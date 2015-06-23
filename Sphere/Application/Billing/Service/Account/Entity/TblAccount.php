@@ -123,7 +123,7 @@ class TblAccount extends AbstractEntity
     public function getTblAccountKey()
     {
 
-        if (null === $this->tblAccountKey) {
+        if (null === $this->tblAccountKey ) {
             return false;
         } else {
             return Billing::serviceAccount()->entityAccountKeyById( $this->tblAccountKey );
@@ -135,7 +135,6 @@ class TblAccount extends AbstractEntity
      */
     public function setTblAccountKey( tblAccountKey $tblAccountKey = null )
     {
-
         $this->tblAccountKey = ( null === $tblAccountKey ? null : $tblAccountKey->getId() );
     }
 

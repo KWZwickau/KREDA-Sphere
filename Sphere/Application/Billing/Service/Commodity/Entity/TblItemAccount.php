@@ -16,7 +16,6 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblItemAccount extends AbstractEntity
 {
-
     const ATTR_TBL_Item = 'tblItem';
     const ATTR_SERVICE_BILLING_ACCOUNT = 'serviceBilling_Account';
 
@@ -36,7 +35,8 @@ class TblItemAccount extends AbstractEntity
     public function getTblItem()
     {
 
-        if (null === $this->tblItem) {
+        if (null === $this->tblItem)
+        {
             return false;
         } else {
             return Billing::serviceCommodity()->entityItemById( $this->tblItem );
@@ -48,7 +48,6 @@ class TblItemAccount extends AbstractEntity
      */
     public function setTblItem( TblItem $tblItem = null )
     {
-
         $this->tblItem = ( null === $tblItem ? null : $tblItem->getId() );
     }
 
@@ -57,7 +56,6 @@ class TblItemAccount extends AbstractEntity
      */
     public function getServiceBilling_Account()
     {
-
         if (null === $this->serviceBilling_Account) {
             return false;
         } else {
@@ -70,7 +68,6 @@ class TblItemAccount extends AbstractEntity
      */
     public function setTblAccount( TblAccount $serviceBilling_Account = null )
     {
-
         $this->serviceBilling_Account = ( null === $serviceBilling_Account ? null : $serviceBilling_Account->getId() );
     }
 }

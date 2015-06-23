@@ -5,8 +5,8 @@ use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
-use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Common\AbstractEntity;
+use KREDA\Sphere\Application\Billing\Billing;
 
 /**
  * @Entity
@@ -15,7 +15,6 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblCommodityItem extends AbstractEntity
 {
-
     const ATTR_TBL_COMMODITY = 'tblCommodity';
     const ATTR_TBL_ITEM = 'tblItem';
 
@@ -35,11 +34,26 @@ class TblCommodityItem extends AbstractEntity
     protected $tblItem;
 
     /**
+     * @return string
+     */
+    public function getTotalPriceString()
+    {
+        $tblItem = $this->getTblItem();
+        $quantity = $this->getQuantity();
+        $result = 0.00;
+        if ($tblItem && $tblItem->getPrice() > 0 && $quantity > 0)
+        {
+            $result = sprintf("%01.4f", $tblItem->getPrice() * $quantity);
+        }
+
+        return str_replace('.', ',', $result)  . " €";
+    }
+
+    /**
      * @return (type="decimal", precision=14, scale=4)
      */
     public function getQuantity()
     {
-
         return $this->Quantity;
     }
 
@@ -48,7 +62,6 @@ class TblCommodityItem extends AbstractEntity
      */
     public function setQuantity( $Quantity )
     {
-
         $this->Quantity = $Quantity;
     }
 
@@ -80,7 +93,8 @@ class TblCommodityItem extends AbstractEntity
     public function getTblItem()
     {
 
-        if (null === $this->tblItem) {
+        if (null === $this->tblItem)
+        {
             return false;
         } else {
             return Billing::serviceCommodity()->entityItemById( $this->tblItem );
@@ -92,7 +106,6 @@ class TblCommodityItem extends AbstractEntity
      */
     public function setTblItem( TblItem $tblItem = null )
     {
-
         $this->tblItem = ( null === $tblItem ? null : $tblItem->getId() );
     }
 }

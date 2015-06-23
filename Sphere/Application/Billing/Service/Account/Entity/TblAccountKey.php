@@ -40,25 +40,24 @@ class TblAccountKey extends AbstractEntity
     protected $tblAccountKeyType;
 
     /**
-     * @return date $validFrom
+     * @return string $validFrom
      */
     public function getValidFrom()
     {
-
         return $this->ValidFrom;
     }
 
     /**
-     * @param date $validFrom
+     * @param \DateTime $ValidFrom
      */
-    public function setValidFrom( $validFrom )
+    public function setValidFrom($ValidFrom)
     {
 
-        $this->ValidFrom = $validFrom;
+        $this->ValidFrom = $ValidFrom;
     }
 
     /**
-     * @return string $value
+     * @return string $Value
      */
     public function getValue()
     {
@@ -67,16 +66,16 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @param string $value
+     * @param string $Value
      */
-    public function setValue( $value )
+    public function setValue($Value)
     {
 
-        $this->Value = $value;
+        $this->Value = $Value;
     }
 
     /**
-     * @return date $validTo
+     * @return string $ValidTo
      */
     public function getValidTo()
     {
@@ -85,16 +84,16 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @param date $validTo
+     * @param \DateTime $ValidTo
      */
-    public function setValidTo( $validTo )
+    public function setValidTo($ValidTo)
     {
 
-        $this->ValidTo = $validTo;
+        $this->ValidTo = $ValidTo;
     }
 
     /**
-     * @return string description
+     * @return string $Description
      */
     public function getDescription()
     {
@@ -103,16 +102,16 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @param string $description
+     * @param string $Description
      */
-    public function setDescription( $description )
+    public function setDescription($Description)
     {
 
-        $this->Description = $description;
+        $this->Description = $Description;
     }
 
     /**
-     * @return integer code
+     * @return integer $Code
      */
     public function getCode()
     {
@@ -121,12 +120,12 @@ class TblAccountKey extends AbstractEntity
     }
 
     /**
-     * @param integer $code
+     * @param integer $Code
      */
-    public function setCode( $code )
+    public function setCode($Code)
     {
 
-        $this->Code = $code;
+        $this->Code = $Code;
     }
 
     /**
@@ -135,10 +134,10 @@ class TblAccountKey extends AbstractEntity
     public function getTableAccountKey()
     {
 
-        if (null === $this->tblAccountKeyType) {
+        if (null === $this->tblAccountKeyType ){
             return false;
         } else {
-            return Billing::serviceAccount()->entityAccountKeyTypeById( $this->tblAccountKeyType );
+            return Billing::serviceAccount()->entityAccountKeyTypeById( $this->tblAccountKeyType);
         }
     }
 
@@ -147,7 +146,6 @@ class TblAccountKey extends AbstractEntity
      */
     public function setTableAccountKeyType( tblAccountKeyType $tblAccountKeyType = null )
     {
-
         $this->tblAccountKeyType = ( null === $tblAccountKeyType ? null : $tblAccountKeyType->getId() );
     }
 }

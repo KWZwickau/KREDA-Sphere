@@ -5,6 +5,8 @@ use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
 use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketCommodity;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketCommodityDebtor;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketPerson;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
@@ -77,18 +79,19 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
-     * @param TblBasket    $tblBasket
+     * @param TblBasket $tblBasket
      * @param TblCommodity $tblCommodity
      *
      * @return TblBasketItem[]|bool
      */
     protected function entityBasketItemAllByBasketAndCommodity( TblBasket $tblBasket, TblCommodity $tblCommodity )
     {
-
         $tblBasketItemAllByBasket = $this->entityBasketItemAllByBasket( $tblBasket );
         $EntityList = array();
-        foreach ($tblBasketItemAllByBasket as $tblBasketItem) {
-            if ($tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity()->getId() == $tblCommodity->getId()) {
+        foreach ($tblBasketItemAllByBasket as $tblBasketItem)
+        {
+            if ($tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity()->getId() == $tblCommodity->getId())
+            {
                 $EntityList[$tblBasketItem->getId()] = $tblBasketItem;
             }
         }
@@ -120,6 +123,52 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param $Id
+     *
+     * @return bool|TblBasketCommodity
+     */
+    protected function entityBasketCommodityById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblBasketCommodity', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return bool|TblBasketCommodityDebtor
+     */
+    protected function entityBasketCommodityDebtorById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblBasketCommodityDebtor', $Id );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @return TblBasketCommodity[]|bool
+     */
+    protected function entityBasketCommodityAllByBasket( TblBasket $tblBasket )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblBasketCommodity' )
+            ->findBy( array( TblBasketCommodity::ATTR_TBL_BASKET => $tblBasket->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+    /**
+     * @param TblBasketCommodity $tblBasketCommodity
+     *
+     * @return TblBasketCommodityDebtor|bool
+     */
+    protected function entityBasketCommodityDebtorAllByBasketCommodity( TblBasketCommodity $tblBasketCommodity )
+    {
+        $EntityList = $this->getEntityManager()->getEntity( 'TblBasketCommodityDebtor' )
+            ->findBy( array( TblBasketCommodityDebtor::ATTR_TBL_BASKET_COMMODITY => $tblBasketCommodity->getId() ) );
+        return ( null === $EntityList ? false : $EntityList );
+    }
+
+
+    /**
      * @param TblBasket $tblBasket
      *
      * @return bool|TblBasketPerson[]
@@ -134,162 +183,141 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblBasket $tblBasket
-     *
      * @return int
      */
-    protected function countPersonByBasket( TblBasket $tblBasket )
+    protected function countPersonByBasket( TblBasket $tblBasket)
     {
-
         return (int)$this->getEntityManager()->getEntity( 'TblBasketPerson' )->countBy( array(
-            TblBasketPerson::ATTR_TBL_Basket => $tblBasket->getId()
+            TblBasketPerson::ATTR_TBL_Basket => $tblBasket ->getId()
         ) );
     }
 
     /**
      * @param TblBasket $tblBasket
-     * @param           $Date
-     * @param           $TempTblInvoiceList
-     * @param           $SelectList
-     *
-     * @return bool
-     */
-    protected function checkDebtorsByBasket(
-        TblBasket $tblBasket,
-        $Date,
-        &$SelectList,
-        &$TempTblInvoiceList
-    ) {
-
-        $tblCommodityAllByBasket = Billing::serviceBasket()->entityCommodityAllByBasket( $tblBasket );
-        $tblBasketPersonAllByBasket = Billing::serviceBasket()->entityBasketPersonAllByBasket( $tblBasket );
-
-        foreach ($tblBasketPersonAllByBasket as $tblBasketPerson) {
-            $tblPerson = Management::servicePerson()->entityPersonById( $tblBasketPerson->getServiceManagementPerson() );
-            foreach ($tblCommodityAllByBasket as $tblCommodity) {
-                /** @var TblDebtorCommodity[] $tblDebtorCommodityListByPersonAndCommodity */
-                $tblDebtorCommodityListByPersonAndCommodity = array();
-                /** @var TblDebtor[] $tblDebtorListByPerson */
-                $tblDebtorListByPerson = array();
-
-                $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson( $tblPerson );
-                foreach ($tblPersonRelationshipList as $tblPersonRelationship) {
-                    $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson(
-                        Management::servicePerson()->entityPersonById( $tblPersonRelationship->getTblPersonA() ) );
-                    foreach ($tblDebtorList as $tblDebtor) {
-                        $tblDebtorCommodityList = Billing::serviceBanking()->entityDebtorCommodityAllByDebtorAndCommodity( $tblDebtor,
-                            $tblCommodity );
-                        foreach ($tblDebtorCommodityList as $tblDebtorCommodity) {
-                            $tblDebtorCommodityListByPersonAndCommodity[] = $tblDebtorCommodity;
-                        }
-                        $tblDebtorListByPerson[] = $tblDebtor;
-                    }
-                }
-
-                if (empty( $tblDebtorCommodityListByPersonAndCommodity )) {
-                    foreach ($tblDebtorListByPerson as $tblDebtor) {
-                        $index = $this->searchArray( $SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity",
-                            $tblCommodity->getId() );
-                        if ($index === false) {
-                            $SelectList[] = array(
-                                'tblPerson'    => $tblPerson->getId(),
-                                'tblCommodity' => $tblCommodity->getId(),
-                                'Debtors'      => array( $tblDebtor->getId() )
-                            );
-                        } else {
-                            $SelectList[$index]['Debtors'][] = $tblDebtor->getId();
-                        }
-                    }
-                } else {
-                    if (count( $tblDebtorCommodityListByPersonAndCommodity ) == 1) {
-                        $index = $this->searchArray( $TempTblInvoiceList, "tblPerson", $tblPerson->getId(),
-                            "tblDebtor", $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId() );
-                        if ($index === false) {
-                            $TempTblInvoiceList[] = array(
-                                'tblPerson'   => $tblPerson->getId(),
-                                'tblDebtor'   => $tblDebtorCommodityListByPersonAndCommodity[0]->getTblDebtor()->getId(),
-                                'Commodities' => array( $tblCommodity->getId() )
-                            );
-                        } else {
-                            $TempTblInvoiceList[$index]['Commodities'][] = $tblCommodity->getId();
-                        }
-                    } else {
-                        foreach ($tblDebtorCommodityListByPersonAndCommodity as $tblDebtorCommodityByPersonAndCommodity) {
-                            $index = $this->searchArray( $SelectList, "tblPerson", $tblPerson->getId(), "tblCommodity",
-                                $tblCommodity->getId() );
-                            if ($index === false) {
-                                $SelectList[] = array(
-                                    'tblPerson'    => $tblPerson->getId(),
-                                    'tblCommodity' => $tblCommodity->getId(),
-                                    'Debtors'      => array( $tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId() )
-                                );
-                            } else {
-                                $SelectList[$index]['Debtors'][] = $tblDebtorCommodityByPersonAndCommodity->getTblDebtor()->getId();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-//        if (empty($TempTblInvoiceList))
-//        {
-//            $TempTblInvoiceList = null;
-//        }
-
-        return empty( $SelectList );
-    }
-
-    /**
-     * @param array $Array
-     * @param       $Key1
-     * @param       $Value1
-     * @param       $Key2
-     * @param       $Value2
-     *
-     * @return bool|int
-     */
-    private function searchArray( array $Array, $Key1, $Value1, $Key2, $Value2 )
-    {
-
-        foreach ($Array as $Key => $Value) {
-            if ($Value[$Key1] == $Value1 && $Value[$Key2] == $Value2) {
-                return $Key;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $Date
-     * @param $TempTblInvoiceList
-     * @param $SelectList
      * @param $Data
      *
      * @return bool
      */
     protected function checkDebtors(
-        $Date,
-        $Data,
-        &$TempTblInvoiceList,
-        &$SelectList
-    ) {
+        TblBasket $tblBasket,
+        $Data
+    )
+    {
+        if ($Data !== null)
+        {
+            foreach ($Data as $Key => $Value)
+            {
+                $tblBasketCommodity = $this->entityBasketCommodityById( $Key );
+                $tblBasketCommodityDebtor = $this->entityBasketCommodityDebtorById( $Value );
+                $tblTempInvoice = Billing::serviceInvoice()->executeCreateTempInvoice(
+                    $tblBasket, $tblBasketCommodity->getServiceManagementPerson(), $tblBasketCommodityDebtor->getServiceBillingDebtor());
+                Billing::serviceInvoice()->executeCreateTempInvoiceCommodity( $tblTempInvoice, $tblBasketCommodity->getServiceBillingCommodity());
 
-        foreach ($Data as $Key => $Value) {
-            $index = $this->searchArray( $TempTblInvoiceList, "tblPerson", $SelectList[$Key]['tblPerson'],
-                "tblDebtor", $Value );
-            if ($index === false) {
-                $TempTblInvoiceList[] = array(
-                    'tblPerson'   => $SelectList[$Key]['tblPerson'],
-                    'tblDebtor'   => $Value,
-                    'Commodities' => array( $SelectList[$Key]['tblCommodity'] )
-                );
-            } else {
-                $TempTblInvoiceList[$index]['Commodities'][] = $SelectList[$Key]['tblCommodity'];
+                // auto add DebtorCommodity
+                // Billing::serviceBanking()->executeAddDebtorCommodity($tblBasketCommodityDebtor->getServiceBillingDebtor(), $tblBasketCommodity->getServiceBillingCommodity());
             }
-            unset( $SelectList[$Key] );
+
+            return true;
         }
-        return empty( $SelectList );
+
+        $tblCommodityAllByBasket = Billing::serviceBasket()->entityCommodityAllByBasket( $tblBasket );
+        $tblBasketPersonAllByBasket = Billing::serviceBasket()->entityBasketPersonAllByBasket( $tblBasket );
+
+        if(!empty($tblBasketPersonAllByBasket))
+        {
+            foreach($tblBasketPersonAllByBasket as $tblBasketPerson)
+            {
+                $tblPerson = $tblBasketPerson->getServiceManagementPerson();
+                foreach($tblCommodityAllByBasket as $tblCommodity)
+                {
+                    /** @var TblDebtorCommodity[] $tblDebtorCommodityListByPersonAndCommodity */
+                    $tblDebtorCommodityListByPersonAndCommodity = array();
+                    /** @var TblDebtor[] $tblDebtorListByPerson */
+                    $tblDebtorListByPerson = array();
+
+                    $debtorPersonAll = Billing::serviceBanking()->entityDebtorAllByPerson($tblPerson);
+                    if (!empty($debtorPersonAll))
+                    {
+                        foreach($debtorPersonAll as $tblDebtor)
+                        {
+                            $tblDebtorCommodityList = Billing::serviceBanking()->entityDebtorCommodityAllByDebtorAndCommodity( $tblDebtor, $tblCommodity );
+                            if (!empty($tblDebtorCommodityList))
+                            {
+                                foreach ($tblDebtorCommodityList as $tblDebtorCommodity)
+                                {
+                                    $tblDebtorCommodityListByPersonAndCommodity[] = $tblDebtorCommodity;
+                                }
+                            }
+                            $tblDebtorListByPerson[]=$tblDebtor;
+                        }
+                    }
+
+                    $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson($tblPerson);
+                    if (!empty($tblPersonRelationshipList))
+                    {
+                        foreach($tblPersonRelationshipList as $tblPersonRelationship)
+                        {
+                            if ($tblPerson->getId() === $tblPersonRelationship->getTblPersonA())
+                            {
+                                $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson( $tblPersonRelationship->getTblPersonB() );
+                            }
+                            else
+                            {
+                                $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson( $tblPersonRelationship->getTblPersonA() );
+                            }
+
+                            if (!empty($tblDebtorList))
+                            {
+                                foreach($tblDebtorList as $tblDebtor)
+                                {
+                                    $tblDebtorCommodityList = Billing::serviceBanking()->entityDebtorCommodityAllByDebtorAndCommodity( $tblDebtor, $tblCommodity );
+                                    if (!empty($tblDebtorCommodityList))
+                                    {
+                                        foreach ($tblDebtorCommodityList as $tblDebtorCommodity)
+                                        {
+                                            $tblDebtorCommodityListByPersonAndCommodity[] = $tblDebtorCommodity;
+                                        }
+                                    }
+                                    $tblDebtorListByPerson[]=$tblDebtor;
+                                }
+                            }
+                        }
+                    }
+
+                    if (count($tblDebtorListByPerson) == 1)
+                    {
+                        $tblDebtor = Billing::serviceBanking()->entityDebtorById($tblDebtorListByPerson[0]->getId());
+                        $tblTempInvoice = Billing::serviceInvoice()->executeCreateTempInvoice( $tblBasket, $tblPerson, $tblDebtor);
+                        Billing::serviceInvoice()->executeCreateTempInvoiceCommodity( $tblTempInvoice, $tblCommodity);
+                    }
+                    else if (empty($tblDebtorCommodityListByPersonAndCommodity))
+                    {
+                        $tblBasketCommodity = $this->actionCreateBasketCommodity( $tblBasket, $tblPerson, $tblCommodity );
+                        foreach($tblDebtorListByPerson as $tblDebtor)
+                        {
+                            $this->actionCreateBasketCommodityDebtor( $tblBasketCommodity, $tblDebtor );
+                        }
+                    }
+                    else if (count($tblDebtorCommodityListByPersonAndCommodity) == 1)
+                    {
+                        $tblDebtor = Billing::serviceBanking()->entityDebtorById($tblDebtorCommodityListByPersonAndCommodity[0]->getId());
+                        $tblTempInvoice = Billing::serviceInvoice()->executeCreateTempInvoice( $tblBasket, $tblPerson, $tblDebtor);
+                        Billing::serviceInvoice()->executeCreateTempInvoiceCommodity( $tblTempInvoice, $tblCommodity);
+                    }
+                    else
+                    {
+                        $tblBasketCommodity = $this->actionCreateBasketCommodity( $tblBasket, $tblPerson, $tblCommodity );
+                        foreach($tblDebtorCommodityListByPersonAndCommodity as $tblDebtorCommodity)
+                        {
+                            $this->actionCreateBasketCommodityDebtor( $tblBasketCommodity, $tblDebtorCommodity->getTblDebtor() );
+                        }
+                    }
+                }
+            }
+        }
+
+        $tblBasketCommodity = $this->entityBasketCommodityAllByBasket( $tblBasket );
+        return empty($tblBasketCommodity);
     }
 
     /**
@@ -299,14 +327,33 @@ abstract class EntityAction extends EntitySchema
      */
     protected function checkDebtorExistsByPerson(
         TblPerson $tblPerson
-    ) {
+    )
+    {
 
         $tblDebtorAllList = array();
+
+        $debtorPersonAll = Billing::serviceBanking()->entityDebtorAllByPerson( $tblPerson );
+        if (!empty( $debtorPersonAll ))
+        {
+            foreach ($debtorPersonAll as $debtor)
+            {
+                array_push( $tblDebtorAllList, $debtor );
+            }
+        }
+
         $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson( $tblPerson );
         if (!empty( $tblPersonRelationshipList )) {
-            foreach ($tblPersonRelationshipList as $tblPersonRelationship) {
-                $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson(
-                    Management::servicePerson()->entityPersonById( $tblPersonRelationship->getTblPersonA() ) );
+            foreach ($tblPersonRelationshipList as $tblPersonRelationship)
+            {
+                if ($tblPerson->getId() === $tblPersonRelationship->getTblPersonA())
+                {
+                    $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson( $tblPersonRelationship->getTblPersonB() );
+                }
+                else
+                {
+                    $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson( $tblPersonRelationship->getTblPersonA() );
+                }
+
                 if (!empty( $tblDebtorList )) {
                     foreach ($tblDebtorList as $tblDebtor) {
                         array_push( $tblDebtorAllList, $tblDebtor );
@@ -314,6 +361,7 @@ abstract class EntityAction extends EntitySchema
                 }
             }
         }
+
         if (empty( $tblDebtorAllList )) {
             return false;
         } else {
@@ -322,20 +370,54 @@ abstract class EntityAction extends EntitySchema
     }
 
     /**
+     * @param $Name
+     *
      * @return TblBasket
      */
-    protected function actionCreateBasket()
+    protected function actionCreateBasket(
+        $Name
+    )
     {
-
         $Manager = $this->getEntityManager();
 
         $Entity = new TblBasket();
+        date_default_timezone_set('Europe/Berlin');
+        $Entity->setCreateDate( new \DateTime( 'now'));
+        $Entity->setName($Name);
 
         $Manager->saveEntity( $Entity );
 
         System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
 
         return $Entity;
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @param $Name
+     *
+     * @return bool
+     */
+    protected function actionEditBasket(
+        TblBasket $tblBasket,
+        $Name
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        /** @var TblBasket $Entity */
+        $Entity = $Manager->getEntityById( 'TblBasket', $tblBasket->getId() );
+        $Protocol = clone $Entity;
+        if (null !== $Entity) {
+            $Entity->setName( $Name );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Protocol,
+                $Entity );
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -354,12 +436,14 @@ abstract class EntityAction extends EntitySchema
         $tblCommodityItemList = Billing::serviceCommodity()->entityCommodityItemAllByCommodity( $tblCommodity );
 
         /** @var TblCommodityItem $tblCommodityItem */
-        foreach ($tblCommodityItemList as $tblCommodityItem) {
+        foreach ($tblCommodityItemList as $tblCommodityItem)
+        {
             $Entity = $Manager->getEntity( 'TblBasketItem' )->findOneBy( array(
-                TblBasketItem::ATTR_TBL_Basket                     => $tblBasket->getId(),
-                TblBasketItem::ATTR_SERVICE_BILLING_COMMODITY_ITEM => $tblCommodityItem->getId()
-            ) );
-            if (null === $Entity) {
+                    TblBasketItem::ATTR_TBL_Basket => $tblBasket->getId(),
+                    TblBasketItem::ATTR_SERVICE_BILLING_COMMODITY_ITEM => $tblCommodityItem->getId()
+            ));
+            if (null === $Entity)
+            {
                 $Entity = new TblBasketItem();
                 $Entity->setPrice( $tblCommodityItem->getTblItem()->getPrice() );
                 $Entity->setQuantity( $tblCommodityItem->getQuantity() );
@@ -473,17 +557,17 @@ abstract class EntityAction extends EntitySchema
 
         $Manager = $this->getEntityManager();
         $Entity = $Manager->getEntity( 'TblBasketPerson' )->findOneBy( array(
-            TblBasketPerson::ATTR_TBL_Basket                => $tblBasket->getId(),
-            TblBasketPerson::ATTR_SERVICE_MANAGEMENT_PERSON => $tblPerson->getId()
-        ) );
-        if (null === $Entity) {
+                TblBasketPerson::ATTR_TBL_Basket => $tblBasket->getId(),
+                TblBasketPerson::ATTR_SERVICE_MANAGEMENT_PERSON => $tblPerson->getId()
+        ));
+        if (null === $Entity)
+        {
             $Entity = new TblBasketPerson();
             $Entity->setTblBasket( $tblBasket );
             $Entity->setServiceManagementPerson( $tblPerson );
 
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
-                $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -538,6 +622,23 @@ abstract class EntityAction extends EntitySchema
                 $Manager->bulkKillEntity( $Entity );
             }
 
+            /** @var  TblBasketCommodity[] $EntityList */
+            $EntityList = $Manager->getEntity( 'TblBasketCommodity' )->findBy( array( TblBasketCommodity::ATTR_TBL_BASKET => $tblBasket->getId() ) );
+            foreach ($EntityList as $Entity)
+            {
+                $EntitySubList = $Manager->getEntity( 'TblBasketCommodityDebtor' )->findBy( array(
+                    TblBasketCommodityDebtor::ATTR_TBL_BASKET_COMMODITY => $Entity->getId() ) );
+                foreach ($EntitySubList as $SubEntity)
+                {
+                    System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                        $SubEntity );
+                    $Manager->bulkKillEntity( $SubEntity );
+                }
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                    $Entity );
+                $Manager->bulkKillEntity( $Entity );
+            }
+
             $Entity = $Manager->getEntity( 'TblBasket' )->findOneBy( array( 'Id' => $tblBasket->getId() ) );
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
@@ -549,5 +650,71 @@ abstract class EntityAction extends EntitySchema
         }
 
         return false;
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @param TblPerson $tblPerson
+     * @param TblCommodity $tblCommodity
+     *
+     * @return TblBasketCommodity|null
+     */
+    protected function actionCreateBasketCommodity(
+        TblBasket $tblBasket,
+        TblPerson $tblPerson,
+        TblCommodity $tblCommodity
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        $Entity = $Manager->getEntity( 'TblBasketCommodity' )->findOneBy( array(
+            TblBasketCommodity::ATTR_TBL_BASKET => $tblBasket->getId(),
+            TblBasketCommodity::ATTR_SERVICE_MANAGEMENT_PERSON => $tblPerson->getId(),
+            TblBasketCommodity::ATTR_SERVICE_BILLING_COMMODITY => $tblCommodity->getId()
+        ));
+        if (null === $Entity)
+        {
+            $Entity = new TblBasketCommodity();
+            $Entity->setTblBasket( $tblBasket );
+            $Entity->setServiceManagementPerson( $tblPerson );
+            $Entity->setServiceBillingCommodity( $tblCommodity );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+
+        return $Entity;
+    }
+
+    /**
+     * @param TblBasketCommodity $tblBasketCommodity
+     * @param TblDebtor $tblDebtor
+     *
+     * @return TblBasketCommodityDebtor|null
+     */
+    protected function actionCreateBasketCommodityDebtor(
+        TblBasketCommodity $tblBasketCommodity,
+        TblDebtor $tblDebtor
+    )
+    {
+        $Manager = $this->getEntityManager();
+
+        $Entity = $Manager->getEntity( 'TblBasketCommodityDebtor' )->findOneBy( array(
+            TblBasketCommodityDebtor::ATTR_TBL_BASKET_COMMODITY => $tblBasketCommodity->getId(),
+            TblBasketCommodityDebtor::ATTR_SERVICE_BILLING_DEBTOR => $tblDebtor->getId()
+        ));
+        if (null === $Entity)
+        {
+            $Entity = new TblBasketCommodityDebtor();
+            $Entity->setTblBasketCommodity( $tblBasketCommodity );
+            $Entity->setServiceBillingDebtor( $tblDebtor );
+
+            $Manager->saveEntity( $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                $Entity );
+        }
+
+        return $Entity;
     }
 }

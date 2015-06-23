@@ -15,7 +15,6 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblInvoiceItem extends AbstractEntity
 {
-
     const ATTR_TBL_INVOICE = 'tblInvoice';
 
     /**
@@ -56,9 +55,31 @@ class TblInvoiceItem extends AbstractEntity
     /**
      * @return string
      */
+    public function getTotalPriceString()
+    {
+        $result = 0.00;
+        if ($this->ItemPrice > 0 && $this->ItemQuantity > 0)
+        {
+            $result = sprintf("%01.4f", $this->ItemPrice * $this->ItemQuantity);
+        }
+
+        return str_replace('.', ',', $result)  . " €";
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceString()
+    {
+        $result = sprintf("%01.4f", $this->ItemPrice);
+        return str_replace('.', ',', $result)  . " €";
+    }
+
+    /**
+     * @return string
+     */
     public function getCommodityDescription()
     {
-
         return $this->CommodityDescription;
     }
 
@@ -67,7 +88,6 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function setCommodityDescription( $CommodityDescription )
     {
-
         $this->CommodityDescription = $CommodityDescription;
     }
 
@@ -76,7 +96,6 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function getCommodityName()
     {
-
         return $this->CommodityName;
     }
 
@@ -85,8 +104,7 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function  setCommodityName( $CommodityName )
     {
-
-        $this->CommodityName = $CommodityName;
+        $this->CommodityName= $CommodityName;
     }
 
     /**
@@ -94,7 +112,6 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function getItemDescription()
     {
-
         return $this->ItemDescription;
     }
 
@@ -103,7 +120,6 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function setItemDescription( $ItemDescription )
     {
-
         $this->ItemDescription = $ItemDescription;
     }
 
@@ -112,7 +128,6 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function getItemName()
     {
-
         return $this->ItemName;
     }
 
@@ -121,8 +136,7 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function  setItemName( $ItemName )
     {
-
-        $this->ItemName = $ItemName;
+        $this->ItemName= $ItemName;
     }
 
     /**
@@ -130,7 +144,6 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function getItemPrice()
     {
-
         return $this->ItemPrice;
     }
 
@@ -139,7 +152,6 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function setItemPrice( $ItemPrice )
     {
-
         $this->ItemPrice = $ItemPrice;
     }
 
@@ -148,7 +160,6 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function getItemQuantity()
     {
-
         return $this->ItemQuantity;
     }
 
@@ -157,7 +168,6 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function setItemQuantity( $ItemQuantity )
     {
-
         $this->ItemQuantity = $ItemQuantity;
     }
 
@@ -166,7 +176,6 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function getTblInvoice()
     {
-
         if (null === $this->tblInvoice) {
             return false;
         } else {
@@ -179,7 +188,6 @@ class TblInvoiceItem extends AbstractEntity
      */
     public function setTblInvoice( TblInvoice $tblInvoice = null )
     {
-
         $this->tblInvoice = ( null === $tblInvoice ? null : $tblInvoice->getId() );
     }
 }

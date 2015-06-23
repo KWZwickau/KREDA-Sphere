@@ -11,6 +11,7 @@ use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Course\Entity\TblCourse;
 use KREDA\Sphere\Application\Management\Service\Student\Entity\TblChildRank;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChevronLeftIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ListIcon;
@@ -34,6 +35,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -45,54 +47,57 @@ use KREDA\Sphere\Common\AbstractFrontend;
  */
 class Commodity extends AbstractFrontend
 {
-
     /**
      * @return Stage
      */
     public static function frontendStatus()
     {
-
         $View = new Stage();
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Übersicht' );
-        $View->setMessage( 'Zeigt die verfügbaren Leistungen' );
+        // ToDo
+        $View->setMessage( 'Zeigt die verfügbaren Leistungen an. <br />
+                            Leistungen sind Zusammenfassungen aller Artikel,
+                            die unter einem Punkt für den Debitor abgerechnet werden. <br />
+                            Beispielsweise: Schulgeld, Hortgeld, Klassenfahrt usw.' );
         $View->addButton(
             new Primary( 'Leistung anlegen', '/Sphere/Billing/Commodity/Create', new PlusIcon() )
         );
 
         $tblCommodityAll = Billing::serviceCommodity()->entityCommodityAll();
 
-        if (!empty( $tblCommodityAll )) {
-            array_walk( $tblCommodityAll, function ( tblCommodity $tblCommodity ) {
-
-                $tblCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
-                $tblCommodity->ItemCount = Billing::serviceCommodity()->countItemAllByCommodity( $tblCommodity );
-                $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity );
-                $tblCommodity->Option =
-                    ( new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Edit',
+        if (!empty($tblCommodityAll))
+        {
+            array_walk($tblCommodityAll, function (tblCommodity $tblCommodity)
+            {
+              $tblCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
+              $tblCommodity->ItemCount = Billing::serviceCommodity()->countItemAllByCommodity( $tblCommodity );
+              $tblCommodity->SumPriceItem = Billing::serviceCommodity()->sumPriceItemAllByCommodity( $tblCommodity);
+              $tblCommodity->Option =
+                  (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Edit',
                         new EditIcon(), array(
                             'Id' => $tblCommodity->getId()
-                        ) ) )->__toString().
-                    ( new Danger( 'Löschen', '/Sphere/Billing/Commodity/Delete',
-                        new RemoveIcon(), array(
-                            'Id' => $tblCommodity->getId()
-                        ) ) )->__toString().
-                    ( new Primary( 'Artikel auswählen', '/Sphere/Billing/Commodity/Item/Select',
+                    ) ) )->__toString().
+                  (new Primary( 'Artikel auswählen', '/Sphere/Billing/Commodity/Item/Select',
                         new ListIcon(), array(
                             'Id' => $tblCommodity->getId()
-                        ) ) )->__toString();
-            } );
+                    ) ))->__toString().
+                  (new Danger( 'Löschen', '/Sphere/Billing/Commodity/Delete',
+                      new RemoveIcon(), array(
+                          'Id' => $tblCommodity->getId()
+                      ) ) )->__toString();
+            });
         }
 
         $View->setContent(
             new TableData( $tblCommodityAll, null,
                 array(
-                    'Name'         => 'Name',
-                    'Description'  => 'Beschreibung',
-                    'Type'         => 'Leistungsart',
-                    'ItemCount'    => 'Artikelanzahl',
+                    'Name'  => 'Name',
+                    'Description' => 'Beschreibung',
+                    'Type' => 'Leistungsart',
+                    'ItemCount' => 'Artikelanzahl',
                     'SumPriceItem' => 'Gesamtpreis',
-                    'Option'       => 'Option'
+                    'Option'  => 'Option'
                 )
             )
         );
@@ -107,12 +112,21 @@ class Commodity extends AbstractFrontend
      */
     public static function frontendCreate( $Commodity )
     {
-
         $View = new Stage();
-        $View->setTitle( 'Leistungen' );
+        $View->setTitle( 'Leistung' );
         $View->setDescription( 'Hinzufügen' );
+        $View->setMessage(
+            '<b>Hinweis:</b> <br>
+            Bei einer Einzelleistung wird für jede Person der gesamten Betrag berechnet. <br>
+            Hingegen bei einer Sammelleisung bezahlt jede Person einen Teil des gesamten Betrags, abhängig von der
+            Personenanzahl. <br>
+            (z.B.: für Klassenfahrten)
+        ');
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity',
+            new ChevronLeftIcon()
+        ) );
 
-        $View->setContent( Billing::serviceCommodity()->executeCreateCommodity(
+        $View->setContent(Billing::serviceCommodity()->executeCreateCommodity(
             new Form( array(
                 new FormGroup( array(
                     new FormRow( array(
@@ -127,12 +141,10 @@ class Commodity extends AbstractFrontend
                     ) ),
                     new FormRow( array(
                         new FormColumn(
-                            new TextField( 'Commodity[Description]', 'Beschreibung', 'Beschreibung',
-                                new ConversationIcon()
+                            new TextField( 'Commodity[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
                             ), 12 )
                     ) )
-                ) )
-            ), new SubmitPrimary( 'Hinzufügen' ) ), $Commodity ) );
+        ))), new SubmitPrimary( 'Hinzufügen' )), $Commodity));
 
         return $View;
     }
@@ -142,15 +154,14 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function frontendDelete( $Id )
+    public static function frontendDelete( $Id)
     {
-
         $View = new Stage();
         $View->setTitle( 'Leistung' );
         $View->setDescription( 'Entfernen' );
 
-        $tblCommodity = Billing::serviceCommodity()->entityCommodityById( $Id );
-        $View->setContent( Billing::serviceCommodity()->executeRemoveCommodity( $tblCommodity ) );
+        $tblCommodity = Billing::serviceCommodity()->entityCommodityById($Id);
+        $View->setContent(Billing::serviceCommodity()->executeRemoveCommodity( $tblCommodity ));
 
         return $View;
     }
@@ -162,17 +173,26 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function frontendEdit( $Id, $Commodity )
+    public static function frontendEdit ( $Id, $Commodity )
     {
-
         $View = new Stage();
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Bearbeiten' );
+        $View->setMessage(
+            '<b>Hinweis:</b> <br>
+            Bei einer Einzelleistung wird für jede Person der gesamten Betrag berechnet. <br>
+            Hingegen bei einer Sammelleisung bezahlt jede Person einen Teil des gesamten Betrags, abhängig von der
+            Personenanzahl. <br>
+            (z.B.: für Klassenfahrten)
+        ');
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity',
+            new ChevronLeftIcon()
+        ) );
 
         if (empty( $Id )) {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
         } else {
-            $tblCommodity = Billing::serviceCommodity()->entityCommodityById( $Id );
+            $tblCommodity = Billing::serviceCommodity()->entityCommodityById($Id);
             if (empty( $tblCommodity )) {
                 $View->setContent( new Warning( 'Die Leistung konnte nicht abgerufen werden' ) );
             } else {
@@ -183,28 +203,26 @@ class Commodity extends AbstractFrontend
                 $Global->POST['Commodity']['Type'] = $tblCommodity->getTblCommodityType()->getId();
                 $Global->savePost();
 
-                $View->setContent( Billing::serviceCommodity()->executeEditCommodity(
+                $View->setContent(Billing::serviceCommodity()->executeEditCommodity(
                     new Form( array(
-                        new FormGroup( array(
-                            new FormRow( array(
-                                new FormColumn(
-                                    new TextField( 'Commodity[Name]', 'Name', 'Name', new ConversationIcon()
-                                    ), 6 ),
-                                new FormColumn(
-                                    new SelectBox( 'Commodity[Type]', 'Leistungsart', array(
-                                        'Name' => Billing::serviceCommodity()->entityCommodityTypeAll()
-                                    ) )
-                                    , 6 )
-                            ) ),
-                            new FormRow( array(
-                                new FormColumn(
-                                    new TextField( 'Commodity[Description]', 'Beschreibung', 'Beschreibung',
-                                        new ConversationIcon()
-                                    ), 12 )
-                            ) )
-                        ) )
-                    ), new SubmitPrimary( 'Änderungen speichern' )
-                    ), $tblCommodity, $Commodity ) );
+                            new FormGroup( array(
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Commodity[Name]', 'Name', 'Name', new ConversationIcon()
+                                        ), 6 ),
+                                    new FormColumn(
+                                        new SelectBox( 'Commodity[Type]', 'Leistungsart', array(
+                                            'Name' => Billing::serviceCommodity()->entityCommodityTypeAll()
+                                        ) )
+                                        , 6 )
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Commodity[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
+                                        ), 12 )
+                                ) )
+                        ))), new SubmitPrimary( 'Änderungen speichern' )
+                    ), $tblCommodity, $Commodity));
             }
         }
 
@@ -216,56 +234,64 @@ class Commodity extends AbstractFrontend
      */
     public static function frontendItemStatus()
     {
-
         $View = new Stage();
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Übersicht' );
-        $View->setMessage( 'Zeigt die verfügbaren Artikel' );
+        // ToDo
+        $View->setMessage(
+            'Zeigt alle verfügbaren Artikel an. <br>
+            Artikel sind Preise für erbrachte Dienste, die Abhängigkeiten zugewiesen bekommen können. <br />
+            Somit werden bei Rechnungen nur die Artikel berechnet, <br />
+            die <b>keine</b> oder die <b>zutreffenden</b> Abhängigkeiten für die einzelne Person besitzen.' );
         $View->addButton(
             new Primary( 'Artikel anlegen', '/Sphere/Billing/Commodity/Item/Create', new PlusIcon() )
         );
 
         $tblItemAll = Billing::serviceCommodity()->entityItemAll();
 
-        if (!empty( $tblItemAll )) {
-            array_walk( $tblItemAll, function ( TblItem $tblItem ) {
-
-                if (Billing::serviceCommodity()->entityCommodityItemAllByItem( $tblItem )) {
+        if (!empty($tblItemAll))
+        {
+            array_walk($tblItemAll, function (TblItem $tblItem)
+            {
+                $tblItem->PriceString = $tblItem->getPriceString();
+                if (Billing::serviceCommodity()->entityCommodityItemAllByItem($tblItem))
+                {
                     $tblItem->Option =
-                        ( new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
+                        (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
                             new EditIcon(), array(
                                 'Id' => $tblItem->getId()
                             ) ) )->__toString().
-                        ( new Primary( 'FIBU-Konten auswählen', '/Sphere/Billing/Commodity/Item/Account/Select',
+                        (new Primary( 'FIBU-Konten auswählen', '/Sphere/Billing/Commodity/Item/Account/Select',
                             new ListIcon(), array(
                                 'Id' => $tblItem->getId()
-                            ) ) )->__toString();
-                } else {
+                            ) ))->__toString();
+                }
+                else
+                {
                     $tblItem->Option =
-                        ( new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
+                        (new Primary( 'Bearbeiten', '/Sphere/Billing/Commodity/Item/Edit',
                             new EditIcon(), array(
                                 'Id' => $tblItem->getId()
                             ) ) )->__toString().
-                        ( new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Löschen',
-                            '/Sphere/Billing/Commodity/Item/Delete',
+                        (new Primary( 'FIBU-Konten auswählen', '/Sphere/Billing/Commodity/Item/Account/Select',
+                            new ListIcon(), array(
+                                'Id' => $tblItem->getId()
+                            ) ))->__toString().
+                        (new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Löschen', '/Sphere/Billing/Commodity/Item/Delete',
                             new RemoveIcon(), array(
-                                'Id' => $tblItem->getId()
-                            ) ) )->__toString().
-                        ( new Primary( 'FIBU-Konten auswählen', '/Sphere/Billing/Commodity/Item/Account/Select',
-                            new ListIcon(), array(
                                 'Id' => $tblItem->getId()
                             ) ) )->__toString();
                 }
-            } );
+            });
         }
 
         $View->setContent(
             new TableData( $tblItemAll, null,
                 array(
-                    'Name'        => 'Name',
+                    'Name'  => 'Name',
                     'Description' => 'Beschreibung',
-                    'Price'       => 'Preis',
-                    'Option'      => 'Option'
+                    'PriceString' => 'Preis',
+                    'Option'  => 'Option'
                 )
             )
         );
@@ -278,14 +304,15 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function frontendItemRemove( $Id )
+    public static function frontendItemRemove ( $Id )
     {
-
         $View = new Stage();
-        $View->setTitle( 'Artikel entfernen' );
+        $View->setTitle( 'Leistung' );
+        $View->setDescription('Artikel Entfernen');
         $tblCommodityItem = Billing::serviceCommodity()->entityCommodityItemById( $Id );
-        if (!empty( $tblCommodityItem )) {
-            $View->setContent( Billing::serviceCommodity()->executeRemoveCommodityItem( $tblCommodityItem ) );
+        if (!empty($tblCommodityItem))
+        {
+            $View ->setContent( Billing::serviceCommodity()->executeRemoveCommodityItem( $tblCommodityItem ));
         }
 
         return $View;
@@ -295,49 +322,57 @@ class Commodity extends AbstractFrontend
      * @param $tblCommodityId
      * @param $tblItemId
      * @param $Item
-     *
      * @return Stage
      */
-    public static function frontendItemAdd( $tblCommodityId, $tblItemId, $Item )
+    public static function frontendItemAdd ( $tblCommodityId, $tblItemId, $Item )
     {
-
         $View = new Stage();
-        $View->setTitle( 'Artikel hinzufügen' );
-        $tblCommodity = Billing::serviceCommodity()->entityCommodityById( $tblCommodityId );
-        $tblItem = Billing::serviceCommodity()->entityItemById( $tblItemId );
+        $View->setTitle( 'Leistung' );
+        $View->setDescription('Artikel Hinzufügen');
+        $tblCommodity = Billing::serviceCommodity()->entityCommodityById($tblCommodityId);
+        $tblItem = Billing::serviceCommodity()->entityItemById($tblItemId);
 
-        if (!empty( $tblCommodityId ) && !empty( $tblItemId )) {
-            $View->setContent( Billing::serviceCommodity()->executeAddCommodityItem( $tblCommodity, $tblItem, $Item ) );
+        if (!empty($tblCommodityId) && !empty($tblItemId))
+        {
+            $View ->setContent( Billing::serviceCommodity()->executeAddCommodityItem( $tblCommodity, $tblItem, $Item ));
         }
 
         return $View;
     }
-
 
     /**
      * @param $Id
      *
      * @return Stage
      */
-    public static function frontendItemSelect( $Id )
+    public static function frontendItemSelect ( $Id )
     {
-
         $View = new Stage();
         $View->setTitle( 'Leistung' );
         $View->setDescription( 'Artikel auswählen' );
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity',
+            new ChevronLeftIcon()
+        ) );
 
-        if (empty( $Id )) {
+        if (empty( $Id ))
+        {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
-        } else {
-            $tblCommodity = Billing::serviceCommodity()->entityCommodityById( $Id );
-            if (empty( $tblCommodity )) {
+        }
+        else
+        {
+            $tblCommodity = Billing::serviceCommodity()->entityCommodityById($Id);
+            if (empty( $tblCommodity ))
+            {
                 $View->setContent( new Warning( 'Die Leistung konnte nicht abgerufen werden' ) );
-            } else {
-                $tblCommodityItem = Billing::serviceCommodity()->entityCommodityItemAllByCommodity( $tblCommodity );
-                $tblItemAllByCommodity = Billing::serviceCommodity()->entityItemAllByCommodity( $tblCommodity );
+            }
+            else
+            {
+                $tblCommodityItem = Billing::serviceCommodity()->entityCommodityItemAllByCommodity($tblCommodity);
+                $tblItemAllByCommodity = Billing::serviceCommodity()->entityItemAllByCommodity($tblCommodity);
                 $tblItemAll = Billing::serviceCommodity()->entityItemAll();
 
-                if (!empty( $tblItemAllByCommodity )) {
+                if (!empty($tblItemAllByCommodity))
+                {
                     $tblItemAll = array_udiff( $tblItemAll, $tblItemAllByCommodity,
                         function ( TblItem $ObjectA, TblItem $ObjectB ) {
 
@@ -346,26 +381,32 @@ class Commodity extends AbstractFrontend
                     );
                 }
 
-                if (!empty( $tblCommodityItem )) {
-                    array_walk( $tblCommodityItem, function ( TblCommodityItem $tblCommodityItem ) {
-
+                if (!empty($tblCommodityItem))
+                {
+                    array_walk($tblCommodityItem, function (TblCommodityItem $tblCommodityItem)
+                    {
                         $tblItem = $tblCommodityItem->getTblItem();
 
                         $tblCommodityItem->Name = $tblItem->getName();
                         $tblCommodityItem->Description = $tblItem->getDescription();
-                        $tblCommodityItem->Price = $tblItem->getPrice();
+                        $tblCommodityItem->PriceString = $tblItem->getPriceString();
+                        $tblCommodityItem->TotalPriceString = $tblCommodityItem->getTotalPriceString();
+                        $tblCommodityItem->QuantityString = str_replace('.',',', $tblCommodityItem->getQuantity());
                         $tblCommodityItem->CostUnit = $tblItem->getCostUnit();
                         $tblCommodityItem->Option =
-                            ( new Danger( 'Entfernen', '/Sphere/Billing/Commodity/Item/Remove',
+                            (new Danger( 'Entfernen', '/Sphere/Billing/Commodity/Item/Remove',
                                 new MinusIcon(), array(
                                     'Id' => $tblCommodityItem->getId()
-                                ) ) )->__toString();
-                    } );
+                                ) ))->__toString();
+                    });
                 }
 
-                if (!empty( $tblItemAll )) {
-                    foreach ($tblItemAll as $tblItem) {
-                        $tblItem->Option =
+                if (!empty($tblItemAll))
+                {
+                    foreach ($tblItemAll as $tblItem)
+                    {
+                        $tblItem->PriceString = $tblItem->getPriceString();
+                        $tblItem->Option=
                             ( new Form(
                                 new FormGroup(
                                     new FormRow( array(
@@ -379,50 +420,58 @@ class Commodity extends AbstractFrontend
                                     ) )
                                 ), null,
                                 '/Sphere/Billing/Commodity/Item/Add', array(
-                                    'tblCommodityId' => $tblCommodity->getId(),
-                                    'tblItemId'      => $tblItem->getId()
+                                    'tblCommodityId'       => $tblCommodity->getId(),
+                                    'tblItemId' => $tblItem->getId()
                                 )
                             ) )->__toString();
                     }
                 }
 
-                $View->setTitle( 'Leisung: '.$tblCommodity->getName() );
                 $View->setContent(
-                    new Layout( array(
-                        new LayoutGroup( array(
-                            new LayoutRow( array(
-                                new LayoutColumn( array(
-                                        new TableData( $tblCommodityItem, null,
-                                            array(
-                                                'Name'        => 'Name',
-                                                'Description' => 'Beschreibung',
-                                                'CostUnit'    => 'Kostenstelle',
-                                                'Price'       => 'Preis',
-                                                'Quantity'    => 'Menge',
-                                                'Option'      => 'Option'
-                                            )
+                  new Layout(array(
+                      new LayoutGroup( array(
+                          new LayoutRow( array(
+                              new LayoutColumn(
+                                  new LayoutPanel('Name', $tblCommodity->getName(), LayoutPanel::PANEL_TYPE_SUCCESS ), 4
+                              ),
+                              new LayoutColumn(
+                                  new LayoutPanel('Beschreibung', $tblCommodity->getDescription(), LayoutPanel::PANEL_TYPE_SUCCESS ), 8
+                              )
+                          )))),
+                    new LayoutGroup( array(
+                        new LayoutRow( array(
+                            new LayoutColumn( array(
+                                    new TableData( $tblCommodityItem, null,
+                                        array(
+                                            'Name'  => 'Name',
+                                            'Description' => 'Beschreibung',
+                                            'CostUnit' => 'Kostenstelle',
+                                            'PriceString' => 'Preis',
+                                            'QuantityString' => 'Menge',
+                                            'TotalPriceString' => 'Gesamtpreis',
+                                            'Option'  => 'Option'
                                         )
                                     )
                                 )
-                            ) ),
-                        ), new LayoutTitle( 'vorhandene Artikel' ) ),
-                        new LayoutGroup( array(
-                            new LayoutRow( array(
-                                new LayoutColumn( array(
-                                        new TableData( $tblItemAll, null,
-                                            array(
-                                                'Name'        => 'Name',
-                                                'Description' => 'Beschreibung',
-                                                'CostUnit'    => 'Kostenstelle',
-                                                'Price'       => 'Preis',
-                                                'Option'      => 'Option'
-                                            )
+                            )
+                        ) ),
+                    ), new LayoutTitle( 'vorhandene Artikel' ) ),
+                    new LayoutGroup( array(
+                        new LayoutRow( array(
+                            new LayoutColumn( array(
+                                    new TableData( $tblItemAll, null,
+                                        array(
+                                            'Name'  => 'Name',
+                                            'Description' => 'Beschreibung',
+                                            'CostUnit' => 'Kostenstelle',
+                                            'PriceString' => 'Preis',
+                                            'Option'  => 'Option'
                                         )
-                                    )
                                 )
-                            ) ),
-                        ), new LayoutTitle( 'mögliche Artikel' ) )
-                    ) )
+                              )
+                            )
+                        ) ),
+                    ), new LayoutTitle( 'mögliche Artikel' ) ) ))
                 );
             }
         }
@@ -437,17 +486,28 @@ class Commodity extends AbstractFrontend
      */
     public static function frontendItemCreate( $Item )
     {
-
         $View = new Stage();
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Hinzufügen' );
+        $View->setMessage(
+            '<b>Hinweis:</b> <br>
+            Ist ein Bildungsgang unter der <i>Bedingung Bildungsgang</i> ausgewählt, wird der Artikel nur für
+            Personen (Schüler) berechnet welche diesem Bildungsgang angehören. <br>
+            Ist eine Kind-Reihenfolge unter der <i>Bedingung Kind-Reihenfolge</i> ausgewählt, wird der Artikel nur für
+            Personen (Schüler) berechnet welche dieser Kind-Reihenfolge entsprechen. <br>
+            Beide Bedingungen können einzeln ausgewählt werden, bei der Wahl beider Bedingungen werden diese
+            <b>Und</b> verknüpft.
+        ');
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity/Item',
+            new ChevronLeftIcon()
+        ) );
 
         $tblCourseAll = Management::serviceCourse()->entityCourseAll();
         array_unshift( $tblCourseAll, new TblCourse( '' ) );
         $tblChildRankAll = Management::serviceStudent()->entityChildRankAll();
         array_unshift( $tblChildRankAll, new TblChildRank( '' ) );
 
-        $View->setContent( Billing::serviceCommodity()->executeCreateItem(
+        $View->setContent(Billing::serviceCommodity()->executeCreateItem(
             new Form( array(
                 new FormGroup( array(
                     new FormRow( array(
@@ -461,29 +521,26 @@ class Commodity extends AbstractFrontend
                     new FormRow( array(
                         new FormColumn(
                             new TextField( 'Item[CostUnit]', 'Kostenstelle', 'Kostenstelle', new MoneyIcon()
-                            ), 6 )
+                            ), 6)
                     ) ),
                     new FormRow( array(
                         new FormColumn(
                             new TextField( 'Item[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
-                            ), 12 )
+                            ), 12)
                     ) ),
                     new FormRow( array(
                         new FormColumn(
                             new SelectBox( 'Item[Course]', 'Bedingung Bildungsgang',
-                                array(
-                                    'Name' => $tblCourseAll
+                                array('Name' => $tblCourseAll
                                 ) )
                             , 6 ),
                         new FormColumn(
                             new SelectBox( 'Item[ChildRank]', 'Bedingung Kind-Reihenfolge',
-                                array(
-                                    'Description' => $tblChildRankAll
+                                array('Description' => $tblChildRankAll
                                 ) )
                             , 6 )
                     ) )
-                ) )
-            ), new SubmitPrimary( 'Hinzufügen' ) ), $Item ) );
+                ))), new SubmitPrimary( 'Hinzufügen' )), $Item));
 
         return $View;
     }
@@ -493,15 +550,14 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function frontendItemDelete( $Id )
+    public static function frontendItemDelete( $Id)
     {
-
         $View = new Stage();
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Entfernen' );
 
-        $tblItem = Billing::serviceCommodity()->entityItemById( $Id );
-        $View->setContent( Billing::serviceCommodity()->executeDeleteItem( $tblItem ) );
+        $tblItem = Billing::serviceCommodity()->entityItemById($Id);
+        $View->setContent(Billing::serviceCommodity()->executeDeleteItem($tblItem));
 
         return $View;
     }
@@ -513,12 +569,23 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function frontendItemEdit( $Id, $Item )
+    public static function frontendItemEdit ( $Id, $Item )
     {
-
         $View = new Stage();
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'Bearbeiten' );
+        $View->setMessage(
+            '<b>Hinweis:</b> <br>
+            Ist ein Bildungsgang unter der <i>Bedingung Bildungsgang</i> ausgewählt, wird der Artikel nur für
+            Personen (Schüler) berechnet welche diesem Bildungsgang angehören. <br>
+            Ist eine Kind-Reihenfolge unter der <i>Bedingung Kind-Reihenfolge</i> ausgewählt, wird der Artikel nur für
+            Personen (Schüler) berechnet welche dieser Kind-Reihenfolge entsprechen. <br>
+            Beide Bedingungen können einzeln ausgewählt werden, bei der Wahl beider Bedingungen werden diese
+            <b>Und</b> verknüpft.
+        ');
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity/Item',
+            new ChevronLeftIcon()
+        ) );
 
         $tblCourseAll = Management::serviceCourse()->entityCourseAll();
         array_unshift( $tblCourseAll, new TblCourse( '' ) );
@@ -528,7 +595,7 @@ class Commodity extends AbstractFrontend
         if (empty( $Id )) {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
         } else {
-            $tblItem = Billing::serviceCommodity()->entityItemById( $Id );
+            $tblItem = Billing::serviceCommodity()->entityItemById($Id);
             if (empty( $tblItem )) {
                 $View->setContent( new Warning( 'Der Artikel konnte nicht abgerufen werden' ) );
             } else {
@@ -536,55 +603,53 @@ class Commodity extends AbstractFrontend
                 $Global = self::extensionSuperGlobal();
                 $Global->POST['Item']['Name'] = $tblItem->getName();
                 $Global->POST['Item']['Description'] = $tblItem->getDescription();
-                $Global->POST['Item']['Price'] = str_replace( '.', ',', $tblItem->getPrice() );
+                $Global->POST['Item']['Price'] = str_replace('.',',', $tblItem->getPrice());
                 $Global->POST['Item']['CostUnit'] = $tblItem->getCostUnit();
-                if ($tblItem->getServiceManagementCourse()) {
+                if ($tblItem->getServiceManagementCourse())
+                {
                     $Global->POST['Item']['Course'] = $tblItem->getServiceManagementCourse()->getId();
                 }
-                if ($tblItem->getServiceManagementStudentChildRank()) {
+                if ($tblItem->getServiceManagementStudentChildRank())
+                {
                     $Global->POST['Item']['ChildRank'] = $tblItem->getServiceManagementStudentChildRank()->getId();
                 }
                 $Global->savePost();
 
-                $View->setContent( Billing::serviceCommodity()->executeEditItem(
+                $View->setContent(Billing::serviceCommodity()->executeEditItem(
                     new Form( array(
-                        new FormGroup( array(
-                            new FormRow( array(
-                                new FormColumn(
-                                    new TextField( 'Item[Name]', 'Name', 'Name', new ConversationIcon()
-                                    ), 6 ),
-                                new FormColumn(
-                                    new TextField( 'Item[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
-                                    ), 6 )
-                            ) ),
-                            new FormRow( array(
-                                new FormColumn(
-                                    new TextField( 'Item[CostUnit]', 'Kostenstelle', 'Kostenstelle', new MoneyIcon()
-                                    ), 6 )
-                            ) ),
-                            new FormRow( array(
-                                new FormColumn(
-                                    new TextField( 'Item[Description]', 'Beschreibung', 'Beschreibung',
-                                        new ConversationIcon()
-                                    ), 12 )
-                            ) ),
-                            new FormRow( array(
-                                new FormColumn(
-                                    new SelectBox( 'Item[Course]', 'Bedingung Bildungsgang',
-                                        array(
-                                            'Name' => $tblCourseAll
-                                        ) )
-                                    , 6 ),
-                                new FormColumn(
-                                    new SelectBox( 'Item[ChildRank]', 'Bedingung Kind-Reihenfolge',
-                                        array(
-                                            'Description' => $tblChildRankAll
-                                        ) )
-                                    , 6 )
-                            ) )
-                        ) )
-                    ), new SubmitPrimary( 'Änderungen speichern' )
-                    ), $tblItem, $Item ) );
+                            new FormGroup( array(
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Item[Name]', 'Name', 'Name', new ConversationIcon()
+                                        ), 6 ),
+                                    new FormColumn(
+                                        new TextField( 'Item[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
+                                        ), 6 )
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Item[CostUnit]', 'Kostenstelle', 'Kostenstelle', new MoneyIcon()
+                                        ), 6)
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Item[Description]', 'Beschreibung', 'Beschreibung', new ConversationIcon()
+                                        ), 12)
+                                ) ),
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new SelectBox( 'Item[Course]', 'Bedingung Bildungsgang',
+                                            array('Name' => $tblCourseAll
+                                            ) )
+                                        , 6 ),
+                                    new FormColumn(
+                                        new SelectBox( 'Item[ChildRank]', 'Bedingung Kind-Reihenfolge',
+                                            array('Description' => $tblChildRankAll
+                                            ) )
+                                        , 6 )
+                                ) )
+                            ))), new SubmitPrimary( 'Änderungen speichern' )
+                    ), $tblItem, $Item));
             }
         }
 
@@ -596,71 +661,87 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function frontendItemAccountSelect( $Id )
+    public static function frontendItemAccountSelect ( $Id )
     {
-
         $View = new Stage();
         $View->setTitle( 'Artikel' );
         $View->setDescription( 'FIBU-Konten auswählen' );
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Commodity/Item',
+            new ChevronLeftIcon()
+        ) );
 
-        if (empty( $Id )) {
+        if (empty( $Id ))
+        {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
-        } else {
-            $tblItem = Billing::serviceCommodity()->entityItemById( $Id );
-            if (empty( $tblItem )) {
+        }
+        else
+        {
+            $tblItem = Billing::serviceCommodity()->entityItemById($Id);
+            if (empty( $tblItem ))
+            {
                 $View->setContent( new Warning( 'Der Artikel konnte nicht abgerufen werden' ) );
-            } else {
-                $tblItemAccountByItem = Billing::serviceCommodity()->entityItemAccountAllByItem( $tblItem );
-                $tblAccountByItem = Billing::serviceCommodity()->entityAccountAllByItem( $tblItem );
+            }
+            else
+            {
+                $tblItemAccountByItem = Billing::serviceCommodity()->entityItemAccountAllByItem($tblItem);
+                $tblAccountByItem = Billing::serviceCommodity()->entityAccountAllByItem($tblItem);
                 $tblAccountAllByActiveState = Billing::serviceAccount()->entityAccountAllByActiveState();
 
-                if (!empty( $tblAccountAllByActiveState )) {
+                if (!empty( $tblAccountAllByActiveState ) ) {
                     $tblAccountAllByActiveState = array_udiff( $tblAccountAllByActiveState, $tblAccountByItem,
                         function ( TblAccount $ObjectA, TblAccount $ObjectB ) {
-
                             return $ObjectA->getId() - $ObjectB->getId();
                         }
                     );
                 }
 
-                if (!empty( $tblItemAccountByItem )) {
-                    array_walk( $tblItemAccountByItem, function ( TblItemAccount $tblItemAccountByItem ) {
-
+                if (!empty($tblItemAccountByItem))
+                {
+                    array_walk($tblItemAccountByItem, function (TblItemAccount $tblItemAccountByItem)
+                    {
                         $tblItemAccountByItem->Number = $tblItemAccountByItem->getServiceBilling_Account()->getNumber();
                         $tblItemAccountByItem->Description = $tblItemAccountByItem->getServiceBilling_Account()->getDescription();
                         $tblItemAccountByItem->Option =
-                            new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Entfernen',
-                                '/Sphere/Billing/Commodity/Item/Account/Remove',
+                            new \KREDA\Sphere\Client\Frontend\Button\Link\Danger( 'Entfernen', '/Sphere/Billing/Commodity/Item/Account/Remove',
                                 new MinusIcon(), array(
                                     'Id' => $tblItemAccountByItem->getId()
+                                ));
+                    });
+                }
+
+                if(!empty($tblAccountAllByActiveState))
+                {
+                    array_walk($tblAccountAllByActiveState, function (TblAccount $tblAccountAllByActiveState, $Index, TblItem $tblItem)
+                    {
+                        $tblAccountAllByActiveState->Option =
+                            new Primary( 'Hinzufügen', '/Sphere/Billing/Commodity/Item/Account/Add',
+                                new PlusIcon(), array(
+                                    'tblAccountId' => $tblAccountAllByActiveState->getId(),
+                                    'tblItemId' => $tblItem->getId()
                                 ) );
-                    } );
+                    }, $tblItem);
                 }
 
-                if (!empty( $tblAccountAllByActiveState )) {
-                    array_walk( $tblAccountAllByActiveState,
-                        function ( TblAccount $tblAccountAllByActiveState, $Index, TblItem $tblItem ) {
-
-                            $tblAccountAllByActiveState->Option =
-                                new Primary( 'Hinzufügen', '/Sphere/Billing/Commodity/Item/Account/Add',
-                                    new PlusIcon(), array(
-                                        'tblAccountId' => $tblAccountAllByActiveState->getId(),
-                                        'tblItemId'    => $tblItem->getId()
-                                    ) );
-                        }, $tblItem );
-                }
-
-                $View->setTitle( 'Artikel: '.$tblItem->getName() );
                 $View->setContent(
-                    new Layout( array(
+                    new Layout(array(
+                        new LayoutGroup( array(
+                            new LayoutRow( array(
+                                new LayoutColumn(
+                                    new LayoutPanel('Name', $tblItem->getName(), LayoutPanel::PANEL_TYPE_SUCCESS ), 4
+                                ),
+                                new LayoutColumn(
+                                    new LayoutPanel('Beschreibung', $tblItem->getDescription(), LayoutPanel::PANEL_TYPE_SUCCESS ), 8
+                                )
+                            ) ),
+                        )),
                         new LayoutGroup( array(
                             new LayoutRow( array(
                                 new LayoutColumn( array(
                                         new TableData( $tblItemAccountByItem, null,
                                             array(
-                                                'Number'      => 'Nummer',
+                                                'Number' => 'Nummer',
                                                 'Description' => 'Beschreibung',
-                                                'Option'      => 'Option'
+                                                'Option'  => 'Option'
                                             )
                                         )
                                     )
@@ -672,16 +753,15 @@ class Commodity extends AbstractFrontend
                                 new LayoutColumn( array(
                                         new TableData( $tblAccountAllByActiveState, null,
                                             array(
-                                                'Number'      => 'Nummer',
+                                                'Number'  => 'Nummer',
                                                 'Description' => 'Beschreibung',
-                                                'Option'      => 'Option '
+                                                'Option'  => 'Option '
                                             )
                                         )
                                     )
                                 )
                             ) ),
-                        ), new LayoutTitle( 'mögliche FIBU-Konten' ) )
-                    ) )
+                        ), new LayoutTitle( 'mögliche FIBU-Konten' ) ) ))
                 );
             }
         }
@@ -694,14 +774,15 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function frontendItemAccountRemove( $Id )
+    public static function frontendItemAccountRemove ( $Id )
     {
-
         $View = new Stage();
-        $View->setTitle( 'FIBU-Konto entfernen' );
+        $View->setTitle('Artikel');
+        $View->setDescription( 'FIBU-Konto Entfernen' );
         $tblItemAccount = Billing::serviceCommodity()->entityItemAccountById( $Id );
-        if (!empty( $tblItemAccount )) {
-            $View->setContent( Billing::serviceCommodity()->executeRemoveItemAccount( $tblItemAccount ) );
+        if (!empty($tblItemAccount))
+        {
+            $View ->setContent( Billing::serviceCommodity()->executeRemoveItemAccount( $tblItemAccount));
         }
 
         return $View;
@@ -713,49 +794,18 @@ class Commodity extends AbstractFrontend
      *
      * @return Stage
      */
-    public static function frontendItemAccountAdd( $tblItemId, $tblAccountId )
+    public static function frontendItemAccountAdd ( $tblItemId, $tblAccountId )
     {
-
         $View = new Stage();
-        $View->setTitle( 'FIBU-Konto hinzufügen' );
-        $tblItem = Billing::serviceCommodity()->entityItemById( $tblItemId );
-        $tblAccount = Billing::serviceAccount()->entityAccountById( $tblAccountId );
+        $View->setTitle('Artikel');
+        $View->setDescription( 'FIBU-Konto Hinzufügen' );
+        $tblItem = Billing::serviceCommodity()->entityItemById($tblItemId);
+        $tblAccount = Billing::serviceAccount()->entityAccountById( $tblAccountId);
 
-        if (!empty( $tblItemId ) && !empty( $tblAccountId )) {
-            $View->setContent( Billing::serviceCommodity()->executeAddItemAccount( $tblItem, $tblAccount ) );
+        if (!empty($tblItemId) && !empty($tblAccountId))
+        {
+            $View ->setContent( Billing::serviceCommodity()->executeAddItemAccount( $tblItem, $tblAccount ));
         }
-
-        return $View;
-    }
-
-    /**
-     * @param $DebtorCommodity
-     *
-     * @return Stage
-     */
-    public static function frontendDebtorCommodityCreate( $DebtorCommodity )
-    {
-
-        $View = new Stage();
-        $View->setTitle( 'Debitor-Leistung' );
-        $View->setDescription( 'Hinzufügen' );
-
-        $View->setContent( Billing::serviceCommodity()->executeCreateDebtorCommodity(
-            new Form( array(
-                new FormGroup( array(
-                    new FormRow( array(
-                        new FormColumn(
-                            new TextField( 'DebtorCommodity[Name]', 'Name', 'Name', new ConversationIcon()
-                            ), 12 )
-                    ) ),
-                    new FormRow( array(
-                        new FormColumn(
-                            new TextField( 'DebtorCommodity[Description]', 'Beschreibung', 'Beschreibung',
-                                new ConversationIcon()
-                            ), 12 )
-                    ) )
-                ) )
-            ), new SubmitPrimary( 'Hinzufügen' ) ), $DebtorCommodity ) );
 
         return $View;
     }

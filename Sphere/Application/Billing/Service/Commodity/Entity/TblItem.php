@@ -17,9 +17,9 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblItem extends AbstractEntity
 {
-
     const ATTR_SERVICE_MANAGEMENT_COURSE = 'serviceManagement_Course';
     const ATTR_SERVICE_MANAGEMENT_STUDENT_CHILD_RANK = 'serviceManagement_Student_ChildRank';
+    const ATTR_NAME = 'Name';
 
     /**
      * @Column(type="string")
@@ -56,7 +56,6 @@ class TblItem extends AbstractEntity
      */
     public function getDescription()
     {
-
         return $this->Description;
     }
 
@@ -65,7 +64,6 @@ class TblItem extends AbstractEntity
      */
     public function setDescription( $Description )
     {
-
         $this->Description = $Description;
     }
 
@@ -74,7 +72,6 @@ class TblItem extends AbstractEntity
      */
     public function getPrice()
     {
-
         return $this->Price;
     }
 
@@ -83,8 +80,16 @@ class TblItem extends AbstractEntity
      */
     public function setPrice( $Price )
     {
-
         $this->Price = $Price;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceString()
+    {
+        $result = sprintf("%01.4f", $this->Price);
+        return str_replace('.', ',', $result)  . " €";
     }
 
     /**
@@ -92,7 +97,6 @@ class TblItem extends AbstractEntity
      */
     public function getName()
     {
-
         return $this->Name;
     }
 
@@ -101,7 +105,6 @@ class TblItem extends AbstractEntity
      */
     public function setName( $Name )
     {
-
         $this->Name = $Name;
     }
 
@@ -110,7 +113,6 @@ class TblItem extends AbstractEntity
      */
     public function getCostUnit()
     {
-
         return $this->CostUnit;
     }
 
@@ -119,7 +121,6 @@ class TblItem extends AbstractEntity
      */
     public function setCostUnit( $CostUnit )
     {
-
         $this->CostUnit = $CostUnit;
     }
 
@@ -141,7 +142,6 @@ class TblItem extends AbstractEntity
      */
     public function setServiceManagementCourse( TblCourse $tblCourse = null )
     {
-
         $this->serviceManagement_Course = ( null === $tblCourse ? null : $tblCourse->getId() );
     }
 
@@ -163,7 +163,6 @@ class TblItem extends AbstractEntity
      */
     public function setServiceManagementStudentChildRank( TblChildRank $tblChildRank = null )
     {
-
         $this->serviceManagement_Student_ChildRank = ( null === $tblChildRank ? null : $tblChildRank->getId() );
     }
 }

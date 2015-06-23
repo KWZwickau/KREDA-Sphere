@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodityItem;
 use KREDA\Sphere\Common\AbstractEntity;
 
@@ -16,7 +17,6 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblBasketItem extends AbstractEntity
 {
-
     const ATTR_TBL_Basket = 'tblBasket';
     const ATTR_SERVICE_BILLING_COMMODITY_ITEM = 'serviceBilling_CommodityItem';
 
@@ -41,12 +41,48 @@ class TblBasketItem extends AbstractEntity
     protected $Price;
 
     /**
+     * @return string
+     */
+    public function getTotalPriceString()
+    {
+        $result = 0.00;
+        $tblCommodityItem = $this->getServiceBillingCommodityItem();
+        if ($tblCommodityItem)
+        {
+            $tblItem = $this->getServiceBillingCommodityItem()->getTblItem();
+            $quantity = $this->getQuantity();
+            if ($tblItem && $tblItem->getPrice() > 0 && $quantity > 0)
+            {
+                $result = sprintf("%01.4f", $tblItem->getPrice() * $quantity);
+            }
+        }
+        return str_replace('.', ',', $result)  . " €";
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceString()
+    {
+        $result = sprintf("%01.4f", $this->Price);
+        return str_replace('.', ',', $result)  . " €";
+    }
+
+    /**
+     * @param null|TblBasket $tblBasket
+     */
+    public function setTblBasket($tblBasket = null)
+    {
+        $this->tblBasket = ( null === $tblBasket ? null : $tblBasket->getId() );
+    }
+
+    /**
      * @return bool|TblBasket
      */
     public function getTblBasket()
     {
-
-        if (null === $this->tblBasket) {
+        if (null === $this->tblBasket)
+        {
             return false;
         } else {
             return Billing::serviceBasket()->entityBasketById( $this->tblBasket );
@@ -54,12 +90,11 @@ class TblBasketItem extends AbstractEntity
     }
 
     /**
-     * @param null|TblBasket $tblBasket
+     * @param null|TblCommodityItem $serviceBilling_CommodityItem
      */
-    public function setTblBasket( $tblBasket = null )
+    public function setServiceBillingCommodityItem($serviceBilling_CommodityItem = null)
     {
-
-        $this->tblBasket = ( null === $tblBasket ? null : $tblBasket->getId() );
+        $this->serviceBilling_CommodityItem = ( null === $serviceBilling_CommodityItem ? null : $serviceBilling_CommodityItem->getId() );
     }
 
     /**
@@ -67,7 +102,6 @@ class TblBasketItem extends AbstractEntity
      */
     public function getServiceBillingCommodityItem()
     {
-
         if (null === $this->serviceBilling_CommodityItem) {
             return false;
         } else {
@@ -76,20 +110,10 @@ class TblBasketItem extends AbstractEntity
     }
 
     /**
-     * @param null|TblCommodityItem $serviceBilling_CommodityItem
-     */
-    public function setServiceBillingCommodityItem( $serviceBilling_CommodityItem = null )
-    {
-
-        $this->serviceBilling_CommodityItem = ( null === $serviceBilling_CommodityItem ? null : $serviceBilling_CommodityItem->getId() );
-    }
-
-    /**
      * @return (type="decimal", precision=14, scale=4)
      */
     public function getQuantity()
     {
-
         return $this->Quantity;
     }
 
@@ -98,7 +122,6 @@ class TblBasketItem extends AbstractEntity
      */
     public function setQuantity( $Quantity )
     {
-
         $this->Quantity = $Quantity;
     }
 
@@ -107,7 +130,6 @@ class TblBasketItem extends AbstractEntity
      */
     public function getPrice()
     {
-
         return $this->Price;
     }
 
@@ -116,7 +138,6 @@ class TblBasketItem extends AbstractEntity
      */
     public function setPrice( $Price )
     {
-
         $this->Price = $Price;
     }
 }

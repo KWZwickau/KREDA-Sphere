@@ -30,7 +30,6 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param $Id
-     *
      * @return bool|TblAccountKey
      */
     protected function entityAccountKeyById( $Id )
@@ -42,14 +41,13 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param $Id
-     *
      * @return bool|TblAccountKeyType
      */
     protected function entityAccountKeyTypeById( $Id )
     {
 
         $Entity = $this->getEntityManager()->getEntityById( 'TblAccountKeyType', $Id );
-        return ( null === $Entity ? false : $Entity );
+        return ( null === $Entity ? false : $Entity);
     }
 
     /**
@@ -58,7 +56,6 @@ abstract class EntityAction extends EntitySchema
      * @param $isActive
      * @param $Key
      * @param $Type
-     *
      * @return TblAccount
      */
     protected function actionAddAccount( $Number, $Description, $isActive, TblAccountKey $Key, TblAccountType $Type )
@@ -68,15 +65,15 @@ abstract class EntityAction extends EntitySchema
 
         $Entity = new TblAccount();
 
-        $Entity->setDescription( $Description );
-        $Entity->setIsActive( $isActive );
-        $Entity->setNumber( $Number );
+        $Entity->setDescription($Description);
+        $Entity->setIsActive($isActive);
+        $Entity->setNumber($Number);
         $Entity->setTblAccountKey( $Key );
         $Entity->setTblAccountType( $Type );
 
-        $Manager->saveEntity( $Entity );
+        $Manager->saveEntity($Entity);
 
-        System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
+        System::serviceProtocol()->executeCreateInsertEntry($this->getDatabaseHandler()->getDatabaseName(), $Entity);
 
         return $Entity;
     }
@@ -104,58 +101,47 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param $Name
      * @param $Description
-     *
      * @return TblAccountKeyType|null|object
      */
-    protected function actionCreateKeyType( $Name, $Description )
+    protected function actionCreateKeyType( $Name, $Description)
     {
 
         $Manager = $this->getEntityManager();
-        $Entity = $Manager->getEntity( 'TblAccountKeyType' )->findOneBy( array(
-            'Name'        => $Name,
-            'Description' => $Description
-        ) );
-        if (null === $Entity) {
+        $Entity = $Manager->getEntity( 'TblAccountKeyType' )->findOneBy( array( 'Name' => $Name, 'Description' => $Description ) );
+        if (null === $Entity)
+        {
             $Entity = new TblAccountKeyType();
             $Entity->setName( $Name );
             $Entity->setDescription( $Description );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
-                $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
 
     /**
-     * @param                   $ValidFrom
-     * @param                   $Value
-     * @param                   $ValidTo
-     * @param                   $Description
-     * @param                   $Code
+     * @param $ValidFrom
+     * @param $Value
+     * @param $ValidTo
+     * @param $Description
+     * @param $Code
      * @param TblAccountKeyType $tblAccountKeyType
-     *
      * @return TblAccountKey|null|object
      */
-    protected function actionCreateKey(
-        $ValidFrom,
-        $Value,
-        $ValidTo,
-        $Description,
-        $Code,
-        TblAccountKeyType $tblAccountKeyType
-    ) {
+    protected function actionCreateKey( $ValidFrom, $Value, $ValidTo, $Description, $Code, TblAccountKeyType $tblAccountKeyType)
+    {
 
         $Manager = $this->getEntityManager();
         $Entity = $Manager->getEntity( 'TblAccountKey' )->findOneBy( array(
-            'ValidFrom'         => new \DateTime( $ValidFrom ),
-            'Value'             => $Value,
-            'ValidTo'           => new \DateTime( $ValidTo ),
-            'Description'       => $Description,
-            'Code'              => $Code,
-            'tblAccountKeyType' => $tblAccountKeyType->getId()
-        ) );
+            'ValidFrom' => new \DateTime( $ValidFrom ),
+            'Value' => $Value,
+            'ValidTo' => new \DateTime( $ValidTo ),
+            'Description' => $Description,
+            'Code' => $Code,
+            'tblAccountKeyType' => $tblAccountKeyType->getId() ));
 
-        if (null === $Entity) {
+        if (null === $Entity)
+        {
             $Entity = new TblAccountKey();
             $Entity->setValidFrom( new \DateTime( $ValidFrom ) );
             $Entity->setValue( $Value );
@@ -165,8 +151,7 @@ abstract class EntityAction extends EntitySchema
             $Entity->setTableAccountKeyType( $tblAccountKeyType );
 
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
-                $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
@@ -174,36 +159,30 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param $Name
      * @param $Description
-     *
      * @return TblAccountType|null|object
      */
-    protected function actionCreateType( $Name, $Description )
+    protected function actionCreateType( $Name, $Description)
     {
 
         $Manager = $this->getEntityManager();
-        $Entity = $Manager->getEntity( 'TblAccountType' )->findOneBy( array(
-            'Name'        => $Name,
-            'Description' => $Description
-        ) );
-        if (null === $Entity) {
+        $Entity = $Manager->getEntity( 'TblAccountType' )->findOneBy( array( 'Name' => $Name, 'Description' => $Description ) );
+        if (null === $Entity)
+        {
             $Entity = new TblAccountType();
             $Entity->setName( $Name );
             $Entity->setDescription( $Description );
             $Manager->saveEntity( $Entity );
-            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(),
-                $Entity );
+            System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
         return $Entity;
     }
 
     /**
      * @param $Id
-     *
      * @return bool|TblAccount
      */
     protected function entityAccountById( $Id )
     {
-
         $Entity = $this->getEntityManager()->getEntityById( 'TblAccount', $Id );
         return ( null === $Entity ? false : $Entity );
     }
@@ -227,19 +206,17 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityAccountAll()
     {
-
         $Entity = $this->getEntityManager()->getEntity( 'TblAccount' )->findAll();
         return ( null === $Entity ? false : $Entity );
     }
 
     /**
-     * @param TblAccount     $tblAccount
-     * @param                $Description
-     * @param                $Number
-     * @param                $IsActive
-     * @param TblAccountKey  $tblAccountKey
+     * @param TblAccount $tblAccount
+     * @param $Description
+     * @param $Number
+     * @param $IsActive
+     * @param TblAccountKey $tblAccountKey
      * @param TblAccountType $tblAccountType
-     *
      * @return bool
      */
     protected function actionEditAccount(
@@ -274,7 +251,6 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param $Id
-     *
      * @return bool
      */
     protected function actionActivateAccount( $Id )
@@ -299,7 +275,6 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param $Id
-     *
      * @return bool
      */
     protected function actionDeactivateAccount( $Id )
@@ -327,7 +302,6 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityAccountKeyAll()
     {
-
         $Entity = $this->getEntityManager()->getEntity( 'TblAccountKey' )->findAll();
         return ( null === $Entity ? false : $Entity );
     }
@@ -337,7 +311,6 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityAccountTypeAll()
     {
-
         $Entity = $this->getEntityManager()->getEntity( 'TblAccountType' )->findAll();
         return ( null === $Entity ? false : $Entity );
     }

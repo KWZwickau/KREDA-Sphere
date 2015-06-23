@@ -6,6 +6,7 @@ use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressCity;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddressState;
 use KREDA\Sphere\Application\Management\Service\Address\EntityAction;
+use KREDA\Sphere\Application\Management\Service\Company\Entity\TblCompany;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Frontend\Form\AbstractType;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
@@ -275,6 +276,75 @@ class Address extends EntityAction
         return parent::actionCreateAddress(
             $TblAddressState, $TblAddressCity, $StreetName, $StreetNumber, $PostOfficeBox
         );
+    }
+
+    /**
+     * @param AbstractType $Form
+     * @param int|array    $State
+     * @param array        $City
+     * @param array        $Street
+     *
+     * @param TblCompany    $tblCompany
+     *
+     * @return AbstractType|Redirect
+     */
+    public function executeCreateCompanyAddress( AbstractType &$Form, $State, $City, $Street, TblCompany $tblCompany )
+    {
+
+        if (null === $State
+            && null === $City
+            && null === $Street
+        ) {
+            return $Form;
+        }
+        $Error = false;
+
+        if (is_numeric( $State )) {
+            $State = array( 'Name' => Management::serviceAddress()->entityAddressStateById( $State )->getName() );
+        }
+
+        if (!preg_match( '!^[0-9]{5}$!is', $City['Code'] )) {
+            $Form->setError( 'City[Code]', 'Bitte geben Sie eine fünfstellige Postleitzahl ein' );
+            $Error = true;
+        } else {
+            $Form->setSuccess( 'City[Code]' );
+        }
+        if (empty( $City['Name'] )) {
+            $Form->setError( 'City[Name]', 'Bitte geben Sie einen Namen ein' );
+            $Error = true;
+        } else {
+            $Form->setSuccess( 'City[Name]' );
+        }
+
+        if (empty( $Street['Name'] )) {
+            $Form->setError( 'Street[Name]', 'Bitte geben Sie einen Namen ein' );
+            $Error = true;
+        } else {
+            $Form->setSuccess( 'Street[Name]' );
+        }
+
+        if (!isset( $City['District'] ) || empty( $City['District'] )) {
+            $City['District'] = null;
+        }
+        if (!isset( $Street['Box'] ) || empty( $Street['Box'] )) {
+            $Street['Box'] = null;
+        }
+
+        if (!$Error) {
+
+            $tblState = $this->actionCreateAddressState( $State['Name'] );
+            $tblCity = $this->actionCreateAddressCity( $City['Code'], $City['Name'], $City['District'] );
+            $tblAddress = $this->actionCreateAddress( $tblState, $tblCity, $Street['Name'], $Street['Number'],
+                $Street['Box'] );
+
+            if (null !== $tblCompany)
+            {
+                $Form  .= Management::serviceCompany()->executeAddCompanyAddress( $tblCompany, $tblAddress );
+            }
+//            return new Success( 'Adresse erfolgreich angelegt' )
+//                .new Redirect( '/Sphere/Management/Company/Edit', 1, array('Id' => $tblCompany->getId()) );
+        }
+        return $Form;
     }
 
 }

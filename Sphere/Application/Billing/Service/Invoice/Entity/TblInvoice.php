@@ -5,6 +5,8 @@ use Doctrine\ORM\Mapping\Cache;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
+use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblPaymentType;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
@@ -17,15 +19,11 @@ use KREDA\Sphere\Common\AbstractEntity;
  */
 class TblInvoice extends AbstractEntity
 {
-
-    const ATTR_IS_CONFIRMED = 'IsConfirmed';
     const ATTR_IS_PAID = 'IsPaid';
     const ATTR_IS_VOID = 'IsVoid';
-
-    /**
-     * @Column(type="boolean")
-     */
-    protected $IsConfirmed;
+    const ATTR_DEBTOR_NUMBER = 'DebtorNumber';
+    const ATTR_NUMBER = 'Number';
+    const ATTR_SERVICE_BILLING_BANKING_PAYMENT_TYPE = 'serviceBilling_Banking_Payment_Type';
 
     /**
      * @Column(type="boolean")
@@ -36,6 +34,11 @@ class TblInvoice extends AbstractEntity
      * @Column(type="string")
      */
     protected $Number;
+
+    /**
+     * @Column(type="string")
+     */
+    protected $BasketName;
 
     /**
      * @Column(type="boolean")
@@ -88,21 +91,37 @@ class TblInvoice extends AbstractEntity
     protected $serviceManagement_Person;
 
     /**
+     * @Column(type="bigint")
+     */
+    protected $serviceBilling_Banking_Payment_Type;
+
+    /**
+     * @Column(type="boolean")
+     */
+    protected $IsPaymentDateModified;
+
+    /**
+     * @param boolean $IsPaymentDateModified
+     */
+    public function setIsPaymentDateModified($IsPaymentDateModified)
+    {
+        $this->IsPaymentDateModified = $IsPaymentDateModified;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPaymentDateModified()
+    {
+        return $this->IsPaymentDateModified;
+    }
+
+    /**
      * @return boolean
      */
     public function getIsConfirmed()
     {
-
-        return $this->IsConfirmed;
-    }
-
-    /**
-     * @param boolean $IsConfirmed
-     */
-    public function setIsConfirmed( $IsConfirmed )
-    {
-
-        $this->IsConfirmed = $IsConfirmed;
+        return (Billing::serviceBalance()->entityBalanceByInvoice( $this ) === false ? false : true);
     }
 
     /**
@@ -110,7 +129,6 @@ class TblInvoice extends AbstractEntity
      */
     public function getIsPaid()
     {
-
         return $this->IsPaid;
     }
 
@@ -119,7 +137,6 @@ class TblInvoice extends AbstractEntity
      */
     public function setIsPaid( $IsPaid )
     {
-
         $this->IsPaid = $IsPaid;
     }
 
@@ -128,7 +145,6 @@ class TblInvoice extends AbstractEntity
      */
     public function getNumber()
     {
-
         return $this->Number;
     }
 
@@ -137,8 +153,23 @@ class TblInvoice extends AbstractEntity
      */
     public function setNumber( $Number )
     {
-
         $this->Number = $Number;
+    }
+
+    /**
+     * @param string $BasketName
+     */
+    public function setBasketName($BasketName)
+    {
+        $this->BasketName = $BasketName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBasketName()
+    {
+        return $this->BasketName;
     }
 
     /**
@@ -146,7 +177,6 @@ class TblInvoice extends AbstractEntity
      */
     public function getIsVoid()
     {
-
         return $this->IsVoid;
     }
 
@@ -155,7 +185,6 @@ class TblInvoice extends AbstractEntity
      */
     public function setIsVoid( $IsVoid )
     {
-
         $this->IsVoid = $IsVoid;
     }
 
@@ -180,9 +209,8 @@ class TblInvoice extends AbstractEntity
     /**
      * @param \DateTime $InvoiceDate
      */
-    public function setInvoiceDate( \DateTime $InvoiceDate )
+    public function setInvoiceDate(\DateTime $InvoiceDate )
     {
-
         $this->InvoiceDate = $InvoiceDate;
     }
 
@@ -207,9 +235,8 @@ class TblInvoice extends AbstractEntity
     /**
      * @param \DateTime $PaymentDate
      */
-    public function setPaymentDate( \DateTime $PaymentDate )
+    public function setPaymentDate(\DateTime $PaymentDate )
     {
-
         $this->PaymentDate = $PaymentDate;
     }
 
@@ -218,7 +245,6 @@ class TblInvoice extends AbstractEntity
      */
     public function getDiscount()
     {
-
         return $this->Discount;
     }
 
@@ -227,7 +253,6 @@ class TblInvoice extends AbstractEntity
      */
     public function setDiscount( $Discount )
     {
-
         $this->Discount = $Discount;
     }
 
@@ -236,7 +261,6 @@ class TblInvoice extends AbstractEntity
      */
     public function getDebtorFirstName()
     {
-
         return $this->DebtorFirstName;
     }
 
@@ -245,7 +269,6 @@ class TblInvoice extends AbstractEntity
      */
     public function setDebtorFirstName( $PersonFirstName )
     {
-
         $this->DebtorFirstName = $PersonFirstName;
     }
 
@@ -254,7 +277,6 @@ class TblInvoice extends AbstractEntity
      */
     public function getDebtorLastName()
     {
-
         return $this->DebtorLastName;
     }
 
@@ -263,7 +285,6 @@ class TblInvoice extends AbstractEntity
      */
     public function setDebtorLastName( $PersonLastName )
     {
-
         $this->DebtorLastName = $PersonLastName;
     }
 
@@ -272,7 +293,6 @@ class TblInvoice extends AbstractEntity
      */
     public function getDebtorSalutation()
     {
-
         return $this->DebtorSalutation;
     }
 
@@ -281,8 +301,15 @@ class TblInvoice extends AbstractEntity
      */
     public function setDebtorSalutation( $PersonSalutation )
     {
-
         $this->DebtorSalutation = $PersonSalutation;
+    }
+
+    /**
+     * @param string $DebtorNumber
+     */
+    public function setDebtorNumber($DebtorNumber)
+    {
+        $this->DebtorNumber = $DebtorNumber;
     }
 
     /**
@@ -290,17 +317,7 @@ class TblInvoice extends AbstractEntity
      */
     public function getDebtorNumber()
     {
-
         return $this->DebtorNumber;
-    }
-
-    /**
-     * @param string $DebtorNumber
-     */
-    public function setDebtorNumber( $DebtorNumber )
-    {
-
-        $this->DebtorNumber = $DebtorNumber;
     }
 
     /**
@@ -308,8 +325,7 @@ class TblInvoice extends AbstractEntity
      */
     public function getDebtorFullName()
     {
-
-        return $this->DebtorFirstName." ".$this->DebtorLastName;
+        return $this->DebtorSalutation . " " . $this->DebtorFirstName . " " . $this->DebtorLastName;
     }
 
     /**
@@ -317,11 +333,10 @@ class TblInvoice extends AbstractEntity
      */
     public function getServiceManagementAddress()
     {
-
         if (null === $this->serviceManagement_Address) {
             return false;
         } else {
-            return Management::serviceAddress()->entityAddressById( $this->serviceManagement_Address );
+            return Management::serviceAddress()->entityAddressById($this->serviceManagement_Address);
         }
     }
 
@@ -330,7 +345,6 @@ class TblInvoice extends AbstractEntity
      */
     public function setServiceManagementAddress( TblAddress $tblAddress = null )
     {
-
         $this->serviceManagement_Address = ( null === $tblAddress ? null : $tblAddress->getId() );
     }
 
@@ -339,11 +353,10 @@ class TblInvoice extends AbstractEntity
      */
     public function getServiceManagementPerson()
     {
-
         if (null === $this->serviceManagement_Person) {
             return false;
         } else {
-            return Management::servicePerson()->entityPersonById( $this->serviceManagement_Person );
+            return Management::servicePerson()->entityPersonById($this->serviceManagement_Person);
         }
     }
 
@@ -352,7 +365,26 @@ class TblInvoice extends AbstractEntity
      */
     public function setServiceManagementPerson( TblPerson $tblPerson = null )
     {
-
         $this->serviceManagement_Person = ( null === $tblPerson ? null : $tblPerson->getId() );
+    }
+
+    /**
+     * @return bool|TblPaymentType
+     */
+    public function getServiceBillingBankingPaymentType()
+    {
+        if (null === $this->serviceBilling_Banking_Payment_Type) {
+            return false;
+        } else {
+            return Billing::serviceBanking()->entityPaymentTypeById($this->serviceBilling_Banking_Payment_Type);
+        }
+    }
+
+    /**
+     * @param TblPaymentType $tblPaymentType
+     */
+    public function setServiceBillingBankingPaymentType( TblPaymentType $tblPaymentType = null )
+    {
+        $this->serviceBilling_Banking_Payment_Type = ( null === $tblPaymentType ? null : $tblPaymentType->getId() );
     }
 }

@@ -40,7 +40,10 @@ class Transfer extends Export
 
             Module\Import::registerApplication( $Configuration );
             Module\Import\FuxMedia::registerApplication( $Configuration );
+            Module\Import\Payment::registerApplication( $Configuration );
             Module\Export::registerApplication( $Configuration );
+            Module\Export\Datev::registerApplication( $Configuration );
+            Module\Export\Sfirm::registerApplication( $Configuration );
         }
     }
 
@@ -70,6 +73,12 @@ class Transfer extends Export
                                     new Primary( 'Upload', '/Sphere/Transfer/Import/FuxMedia/FuxSchool/Class',
                                         new UploadIcon() )
                                 ), 2 ),
+                                new LayoutColumn( new LayoutThumbnail(
+                                    FileSystem::getFileLoader( '/Sphere/Client/Style/Resource/fuxschool.gif' ),
+                                    'Bezahldaten', 'Excel',
+                                    new Primary( 'Upload', '/Sphere/Transfer/Import/Payment',
+                                        new UploadIcon() )
+                                ), 2 ),
                             )
                         )
                         , new LayoutTitle( 'Import' ) ),
@@ -78,7 +87,12 @@ class Transfer extends Export
                                 new LayoutColumn( new LayoutThumbnail(
                                     FileSystem::getFileLoader( '/Sphere/Client/Style/Resource/datev_logo.png' ),
                                     'Datev', 'Rechnungen',
-                                    new Primary( 'Download', '/Sphere/Transfer/Export/Datev/', new DownloadIcon() )
+                                    new Primary( 'Download', '/Sphere/Transfer/Export/Datev', new DownloadIcon() )
+                                ), 2 ),
+                                new LayoutColumn( new LayoutThumbnail(
+                                    FileSystem::getFileLoader( '/Sphere/Client/Style/Resource/datev_logo.png' ),
+                                    'Sfirm', 'Rechnungen',
+                                    new Primary( 'Download', '/Sphere/Transfer/Export/Sfirm', new DownloadIcon() )
                                 ), 2 ),
                             )
                         )

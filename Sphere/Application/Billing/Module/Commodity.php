@@ -2,9 +2,13 @@
 namespace KREDA\Sphere\Application\Billing\Module;
 
 use KREDA\Sphere\Application\Billing\Frontend\Commodity as Frontend;
+use KREDA\Sphere\Application\Billing\Billing;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\CommodityItemIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\PersonIcon;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Common\AbstractApplication;
 
 /**
  * Class Commodity
@@ -13,16 +17,24 @@ use KREDA\Sphere\Client\Configuration;
  */
 class Commodity extends Common
 {
-
     /** @var Configuration $Config */
     private static $Configuration = null;
+
+    /**
+     * @return void
+     */
+    protected static function setupApplicationNavigation()
+    {
+        self::addApplicationNavigationMain( self::$Configuration,
+            '/Sphere/Billing/Commodity/Item', 'Artikel', new CommodityItemIcon()
+        );
+    }
 
     /**
      * @param Configuration $Configuration
      */
     public static function registerApplication( Configuration $Configuration )
     {
-
         self::$Configuration = $Configuration;
 
         self::registerClientRoute( self::$Configuration,
@@ -93,21 +105,9 @@ class Commodity extends Common
      */
     public static function frontendStatus()
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendStatus();
-    }
-
-    /**
-     * @return void
-     */
-    protected static function setupApplicationNavigation()
-    {
-
-        self::addApplicationNavigationMain( self::$Configuration,
-            '/Sphere/Billing/Commodity/Item', 'Artikel', new CommodityItemIcon()
-        );
     }
 
     /**
@@ -117,7 +117,6 @@ class Commodity extends Common
      */
     public static function frontendCreate( $Commodity )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendCreate( $Commodity );
@@ -125,12 +124,10 @@ class Commodity extends Common
 
     /**
      * @param $Id
-     *
      * @return Stage
      */
     public static function frontendDelete( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendDelete( $Id );
@@ -144,7 +141,6 @@ class Commodity extends Common
      */
     public static function frontendEdit( $Id, $Commodity )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendEdit( $Id, $Commodity );
@@ -155,7 +151,6 @@ class Commodity extends Common
      */
     public static function frontendItemStatus()
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendItemStatus();
@@ -166,24 +161,21 @@ class Commodity extends Common
      *
      * @return Stage
      */
-    public static function frontendItemSelect( $Id )
+    public static function frontendItemSelect ( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendItemSelect( $Id );
+        return Frontend::frontendItemSelect( $Id);
     }
 
     /**
      * @param $tblCommodityId
      * @param $tblItemId
      * @param $Item
-     *
      * @return Stage
      */
-    public static function frontendItemAdd( $tblCommodityId, $tblItemId, $Item )
+    public static function frontendItemAdd ( $tblCommodityId, $tblItemId, $Item )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendItemAdd( $tblCommodityId, $tblItemId, $Item );
@@ -194,12 +186,11 @@ class Commodity extends Common
      *
      * @return Stage
      */
-    public static function frontendItemRemove( $Id )
+    public static function frontendItemRemove ( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendItemRemove( $Id );
+        return Frontend::frontendItemRemove( $Id);
     }
 
     /**
@@ -209,7 +200,6 @@ class Commodity extends Common
      */
     public static function frontendItemCreate( $Item )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendItemCreate( $Item );
@@ -222,7 +212,6 @@ class Commodity extends Common
      */
     public static function frontendItemDelete( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendItemDelete( $Id );
@@ -236,7 +225,6 @@ class Commodity extends Common
      */
     public static function frontendItemEdit( $Id, $Item )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendItemEdit( $Id, $Item );
@@ -249,7 +237,6 @@ class Commodity extends Common
      */
     public static function frontendItemAccountSelect( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendItemAccountSelect( $Id );
@@ -263,7 +250,6 @@ class Commodity extends Common
      */
     public static function frontendItemAccountAdd( $tblItemId, $tblAccountId )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendItemAccountAdd( $tblItemId, $tblAccountId );
@@ -274,9 +260,8 @@ class Commodity extends Common
      *
      * @return Stage
      */
-    public static function frontendItemAccountRemove( $Id )
+    public static function frontendItemAccountRemove( $Id)
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendItemAccountRemove( $Id );

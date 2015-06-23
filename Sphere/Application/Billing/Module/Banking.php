@@ -1,9 +1,9 @@
 <?php
 namespace KREDA\Sphere\Application\Billing\Module;
 
-use KREDA\Sphere\Application\Billing\Frontend\Banking as Frontend;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Configuration;
+use KREDA\Sphere\Application\Billing\Frontend\Banking as Frontend;
 
 /**
  * Class Account
@@ -12,60 +12,8 @@ use KREDA\Sphere\Client\Configuration;
  */
 class Banking extends Common
 {
-
     /** @var Configuration $Config */
     private static $Configuration = null;
-
-    /**
-     * @param Configuration $Configuration
-     */
-    public static function registerApplication( Configuration $Configuration )
-    {
-
-        self::$Configuration = $Configuration;
-
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Banking', __CLASS__.'::frontendBanking'
-        );
-
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Banking/Person', __CLASS__.'::frontendBankingPerson'
-        )->setParameterDefault( 'Id', null );
-
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Banking/Person/Select', __CLASS__.'::frontendBankingPersonSelect'
-        )->setParameterDefault( 'Id', null )
-            ->setParameterDefault( 'Debtor', null );
-
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Banking/Delete', __CLASS__.'::frontendBankingDelete'
-        )->setParameterDefault( 'Id', null );
-
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Banking/Select/Commodity', __CLASS__.'::frontendBankingSelectCommodity'
-        )->setParameterDefault( 'Id', null );
-
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Banking/Commodity/Remove', __CLASS__.'::frontendBankingRemoveCommodity'
-        )->setParameterDefault( 'Id', null );
-
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Banking/Commodity/Add', __CLASS__.'::frontendBankingAddCommodity'
-        )->setParameterDefault( 'Id', null )
-            ->setParameterDefault( 'CommodityId', null );
-
-    }
-
-    /**
-     * @return Stage
-     */
-    public static function frontendBanking()
-    {
-
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::frontendBanking();
-    }
 
     /**
      * @return void
@@ -76,11 +24,77 @@ class Banking extends Common
     }
 
     /**
+     * @param Configuration $Configuration
+     */
+    public static function registerApplication( Configuration $Configuration )
+    {
+        self::$Configuration = $Configuration;
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking', __CLASS__.'::frontendBanking'
+        );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Person', __CLASS__.'::frontendBankingPerson'
+        )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Person/Select', __CLASS__.'::frontendBankingPersonSelect'
+        )   ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Debtor', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Delete', __CLASS__.'::frontendBankingDelete'
+        )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Commodity/Select', __CLASS__.'::frontendBankingCommoditySelect'
+        )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Commodity/Remove', __CLASS__.'::frontendBankingCommodityRemove'
+        )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Commodity/Add', __CLASS__.'::frontendBankingCommodityAdd'
+        )   ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'CommodityId', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Reference/Select', __CLASS__.'::frontendBankingReferenceSelect'
+        )   ->setParameterDefault( 'Id', null )
+            ->setParameterDefault( 'Reference', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Reference/Delete', __CLASS__.'::frontendBankingReferenceDelete'
+        )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Reference/Select/Deactivate', __CLASS__.'::frontendBankingReferenceDeactivate'
+        )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Debtor/Edit', __CLASS__.'::frontendBankingDebtorEdit'
+        )   ->setParameterDefault( 'Debtor', null )
+            ->setParameterDefault( 'Reference', null )
+            ->setParameterDefault( 'Id', null );
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendBanking()
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBanking();
+    }
+
+    /**
      * @return Stage
      */
     public static function frontendBankingPerson()
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBankingPerson();
@@ -94,7 +108,6 @@ class Banking extends Common
      */
     public static function frontendBankingPersonSelect( $Debtor, $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBankingPersonSelect( $Debtor, $Id );
@@ -105,9 +118,8 @@ class Banking extends Common
      *
      * @return Stage
      */
-    public static function frontendBankingDelete( $Id )
+    public static function frontendBankingDelete ( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendBankingDelete( $Id );
@@ -118,12 +130,11 @@ class Banking extends Common
      *
      * @return mixed
      */
-    public static function frontendBankingSelectCommodity( $Id )
+    public static function frontendBankingCommoditySelect ( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBankingSelectCommodity( $Id );
+        return Frontend::frontendBankingCommoditySelect( $Id );
     }
 
     /**
@@ -131,12 +142,11 @@ class Banking extends Common
      *
      * @return Stage
      */
-    public static function frontendBankingRemoveCommodity( $Id )
+    public static function frontendBankingCommodityRemove( $Id )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBankingRemoveCommodity( $Id );
+        return Frontend::frontendBankingCommodityRemove( $Id );
     }
 
     /**
@@ -145,12 +155,61 @@ class Banking extends Common
      *
      * @return Stage
      */
-    public static function frontendBankingAddCommodity( $Id, $CommodityId )
+    public static function frontendBankingCommodityAdd( $Id, $CommodityId )
     {
-
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBankingAddCommodity( $Id, $CommodityId );
+        return Frontend::frontendBankingCommodityAdd( $Id, $CommodityId );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBankingReferenceSelect( $Id, $Reference )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingReferenceSelect( $Id, $Reference );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBankingReferenceDelete( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingReferenceDelete( $Id );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBankingReferenceDeactivate( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingReferenceDeactivate( $Id );
+    }
+
+    /**
+     * @param $Id
+     * @param $Debtor
+     * @param $Reference
+     *
+     * @return Stage
+     */
+    public static function frontendBankingDebtorEdit( $Id, $Debtor, $Reference )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingDebtorEdit( $Id, $Debtor, $Reference );
     }
 
 }

@@ -2,7 +2,11 @@
 namespace KREDA\Sphere\Application\Billing\Frontend;
 
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Module\Commodity;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtor;
+use KREDA\Sphere\Application\Billing\Service\Banking\Entity\TblDebtorCommodity;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket;
+use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketCommodityDebtor;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketItem;
 use KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasketPerson;
 use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
@@ -11,6 +15,7 @@ use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChevronLeftIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChevronRightIcon;
+use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MinusIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyEuroIcon;
@@ -34,9 +39,11 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
+use KREDA\Sphere\Client\Frontend\Text\Type\Muted;
 use KREDA\Sphere\Common\AbstractFrontend;
 
 /**
@@ -56,7 +63,7 @@ class Basket extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Warenkorb' );
         $View->setDescription( 'Übersicht' );
-        $View->setMessage( 'Zeigt die vorhandenen Warenkörbe, welche noch nicht fakuriert wurden' );
+        $View->setMessage( 'Zeigt alle vorhandenen Warenkörbe an' );
         $View->addButton(
             new Primary( 'Warenkorb anlegen', '/Sphere/Billing/Basket/Create' )
         );
@@ -72,6 +79,10 @@ class Basket extends AbstractFrontend
                         new EditIcon(), array(
                             'Id' => $tblBasket->getId()
                         ) ) )->__toString().
+                    ( new Primary( 'Name Bearbeiten', '/Sphere/Billing/Basket/Edit',
+                        new EditIcon(), array(
+                            'Id' => $tblBasket->getId()
+                        ) ) )->__toString().
                     ( new Danger( 'Löschen', '/Sphere/Billing/Basket/Delete',
                         new RemoveIcon(), array(
                             'Id' => $tblBasket->getId()
@@ -83,6 +94,8 @@ class Basket extends AbstractFrontend
             new TableData( $tblBasketAll, null,
                 array(
                     'Number' => 'Nummer',
+                    'Name' => 'Name',
+                    'CreateDate' => 'Erstellt am',
                     'Option' => 'Option'
                 )
             )
@@ -92,17 +105,74 @@ class Basket extends AbstractFrontend
     }
 
     /**
+     * @param $Basket
      *
      * @return Stage
      */
-    public static function frontendBasketCreate()
+    public static function frontendBasketCreate($Basket)
     {
 
         $View = new Stage();
         $View->setTitle( 'Warenkorb' );
-        $View->setDescription( 'Erstellen' );
+        $View->setDescription( 'Hinzufügen' );
+        $View->setMessage('Der Name des Warenkorbs ist Teil des Buchungstextes');
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Basket',
+            new ChevronLeftIcon()
+        ) );
 
-        $View->setContent( Billing::serviceBasket()->executeCreateBasket() );
+        $View->setContent(Billing::serviceBasket()->executeCreateBasket(
+            new Form( array(
+                new FormGroup( array(
+                    new FormRow( array(
+                        new FormColumn(
+                            new TextField( 'Basket[Name]', 'Name', 'Name', new ConversationIcon()
+                            ), 6 ),
+                    ) ),
+                ))), new SubmitPrimary( 'Hinzufügen' )), $Basket));
+
+        return $View;
+    }
+
+    /**
+     * @param $Id
+     * @param $Basket
+     *
+     * @return Stage
+     */
+    public static function frontendBasketEdit ( $Id, $Basket )
+    {
+        $View = new Stage();
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Bearbeiten' );
+        $View->setMessage('Der Name des Warenkorbs ist Teil des Buchungstextes');
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Basket',
+            new ChevronLeftIcon()
+        ) );
+
+        if (empty( $Id )) {
+            $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
+        } else {
+            $tblBasket = Billing::serviceBasket()->entityBasketById($Id);
+            if (empty( $tblBasket )) {
+                $View->setContent( new Warning( 'Der Warenkorb konnte nicht abgerufen werden' ) );
+            } else {
+
+                $Global = self::extensionSuperGlobal();
+                $Global->POST['Basket']['Name'] = $tblBasket->getName();
+                $Global->savePost();
+
+                $View->setContent(Billing::serviceBasket()->executeEditBasket(
+                    new Form( array(
+                            new FormGroup( array(
+                                new FormRow( array(
+                                    new FormColumn(
+                                        new TextField( 'Basket[Name]', 'Name', 'Name', new ConversationIcon()
+                                        ), 6 ),
+                                ) )
+                            ))), new SubmitPrimary( 'Änderungen speichern' )
+                    ), $tblBasket, $Basket));
+            }
+        }
 
         return $View;
     }
@@ -134,8 +204,8 @@ class Basket extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Leistungen' );
-        $View->setDescription( 'Auswählen' );
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Leistungen Auswählen' );
         $View->setMessage( 'Bitte wählen Sie die Leistungen zur Fakturierung aus' );
         $View->addButton( new Primary( 'Weiter', '/Sphere/Billing/Basket/Item',
             new ChevronRightIcon(), array(
@@ -178,7 +248,7 @@ class Basket extends AbstractFrontend
                 $tblCommodity->Option =
                     ( new Primary( 'Hinzufügen', '/Sphere/Billing/Basket/Commodity/Add',
                         new PlusIcon(), array(
-                            'Id'          => $tblBasket->getId(),
+                            'Id' => $tblBasket->getId(),
                             'CommodityId' => $tblCommodity->getId()
                         ) ) )->__toString();
             }, $tblBasket );
@@ -188,15 +258,28 @@ class Basket extends AbstractFrontend
             new Layout( array(
                 new LayoutGroup( array(
                     new LayoutRow( array(
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Nummer', $tblBasket->getId(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Name', $tblBasket->getName(), LayoutPanel::PANEL_TYPE_SUCCESS ), 6
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Erstellt am', $tblBasket->getCreateDate(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        )
+                    ) ),
+                )),
+                new LayoutGroup( array(
+                    new LayoutRow( array(
                         new LayoutColumn( array(
                                 new TableData( $tblCommodityAllByBasket, null,
                                     array(
-                                        'Name'         => 'Name',
-                                        'Description'  => 'Beschreibung',
-                                        'Type'         => 'Leistungsart',
-                                        'ItemCount'    => 'Artikelanzahl',
+                                        'Name'        => 'Name',
+                                        'Description' => 'Beschreibung',
+                                        'Type'        => 'Leistungsart',
+                                        'ItemCount'   => 'Artikelanzahl',
                                         'SumPriceItem' => 'Gesamtpreis',
-                                        'Option'       => 'Option'
+                                        'Option'      => 'Option'
                                     )
                                 )
                             )
@@ -208,12 +291,12 @@ class Basket extends AbstractFrontend
                         new LayoutColumn( array(
                                 new TableData( $tblCommodityAll, null,
                                     array(
-                                        'Name'         => 'Name',
-                                        'Description'  => 'Beschreibung',
-                                        'Type'         => 'Leistungsart',
-                                        'ItemCount'    => 'Artikelanzahl',
+                                        'Name'        => 'Name',
+                                        'Description' => 'Beschreibung',
+                                        'Type'        => 'Leistungsart',
+                                        'ItemCount'   => 'Artikelanzahl',
                                         'SumPriceItem' => 'Gesamtpreis',
-                                        'Option'       => 'Option'
+                                        'Option'      => 'Option'
                                     )
                                 )
                             )
@@ -236,8 +319,8 @@ class Basket extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Leistung' );
-        $View->setDescription( 'Hinzufügen' );
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Leistung Hinzufügen' );
 
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
         $tblCommodity = Billing::serviceCommodity()->entityCommodityById( $CommodityId );
@@ -256,8 +339,8 @@ class Basket extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Leistung' );
-        $View->setDescription( 'Entfernen' );
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Leistung Entfernen' );
 
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
         $tblCommodity = Billing::serviceCommodity()->entityCommodityById( $CommodityId );
@@ -275,9 +358,9 @@ class Basket extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Warenkorb Artikel' );
-        $View->setDescription( 'Übersicht' );
-        $View->setMessage( 'Zeigt die Artikel im Warenkorb' );
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Artikel Übersicht' );
+        $View->setMessage( 'Zeigt alle Artikel im Warenkorb' );
         $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Basket/Commodity/Select',
             new ChevronLeftIcon(), array(
                 'Id' => $Id
@@ -297,6 +380,9 @@ class Basket extends AbstractFrontend
                 $tblItem = $tblBasketItem->getServiceBillingCommodityItem()->getTblItem();
                 $tblBasketItem->CommodityName = $tblCommodity->getName();
                 $tblBasketItem->ItemName = $tblItem->getName();
+                $tblBasketItem->TotalPriceString = $tblBasketItem->getTotalPriceString();
+                $tblBasketItem->QuantityString = str_replace('.',',', $tblBasketItem->getQuantity());
+                $tblBasketItem->PriceString = $tblBasketItem->getPriceString();
                 $tblBasketItem->Option =
                     ( new Primary( 'Bearbeiten', '/Sphere/Billing/Basket/Item/Edit',
                         new EditIcon(), array(
@@ -311,15 +397,38 @@ class Basket extends AbstractFrontend
         }
 
         $View->setContent(
-            new TableData( $tblBasketItemAll, null,
-                array(
-                    'CommodityName' => 'Leistung',
-                    'ItemName'      => 'Artikel',
-                    'Price'         => 'Preis',
-                    'Quantity'      => 'Menge',
-                    'Option'        => 'Option'
-                )
-            )
+            new Layout( array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Nummer', $tblBasket->getId(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Name', $tblBasket->getName(), LayoutPanel::PANEL_TYPE_SUCCESS ), 6
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Erstellt am', $tblBasket->getCreateDate(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        )
+                    ) ),
+                )),
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                                new TableData( $tblBasketItemAll, null,
+                                    array(
+                                        'CommodityName' => 'Leistung',
+                                        'ItemName'      => 'Artikel',
+                                        'PriceString'         => 'Preis',
+                                        'QuantityString'      => 'Menge',
+                                        'TotalPriceString' => 'Gesamtpreis',
+                                        'Option'        => 'Option'
+                                    )
+                                )
+                            )
+                        )
+                    ) ),
+                ) )
+            ) )
         );
 
         return $View;
@@ -334,8 +443,8 @@ class Basket extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Artikel' );
-        $View->setDescription( 'Entfernen' );
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Artikel Entfernen' );
 
         $tblBasketItem = Billing::serviceBasket()->entityBasketItemById( $Id );
         $View->setContent( Billing::serviceBasket()->executeRemoveBasketItem( $tblBasketItem ) );
@@ -351,15 +460,18 @@ class Basket extends AbstractFrontend
      */
     public static function frontendBasketItemEdit( $Id, $BasketItem )
     {
-
+        $tblBasketItem = Billing::serviceBasket()->entityBasketItemById( $Id );
         $View = new Stage();
-        $View->setTitle( 'Artikel' );
-        $View->setDescription( 'Bearbeiten' );
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Artikel Bearbeiten' );
+        $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Basket/Item',
+            new ChevronLeftIcon(), array(
+                'Id' => $tblBasketItem->getTblBasket()->getId()
+        ) ) );
 
         if (empty( $Id )) {
             $View->setContent( new Warning( 'Die Daten konnten nicht abgerufen werden' ) );
         } else {
-            $tblBasketItem = Billing::serviceBasket()->entityBasketItemById( $Id );
             if (empty( $tblBasketItem )) {
                 $View->setContent( new Warning( 'Der Artikel konnte nicht abgerufen werden' ) );
             } else {
@@ -370,22 +482,46 @@ class Basket extends AbstractFrontend
                 $Global->savePost();
 
                 $View->setContent(
-                    new Success( $tblBasketItem->getServiceBillingCommodityItem()->getTblItem()->getName() )
-                    .Billing::serviceBasket()->executeEditBasketItem(
-                        new Form( array(
-                            new FormGroup( array(
-                                new FormRow( array(
-                                    new FormColumn(
-                                        new TextField( 'BasketItem[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
-                                        ), 6 ),
-                                    new FormColumn(
-                                        new TextField( 'BasketItem[Quantity]', 'Menge', 'Menge', new QuantityIcon()
-                                        ), 6 )
-                                ) )
+                    new Layout(array(
+                        new LayoutGroup( array(
+                            new LayoutRow( array(
+                                new LayoutColumn(
+                                    new LayoutPanel('Leistung-Name', $tblBasketItem->getServiceBillingCommodityItem()->getTblCommodity()->getName()
+                                        , LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                                ),
+                                new LayoutColumn(
+                                    new LayoutPanel('Artikel-Name', $tblBasketItem->getServiceBillingCommodityItem()->getTblItem()->getName()
+                                        , LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                                ),
+                                new LayoutColumn(
+                                    new LayoutPanel('Artikel-Beschreibung', $tblBasketItem->getServiceBillingCommodityItem()->getTblItem()->getDescription()
+                                        , LayoutPanel::PANEL_TYPE_SUCCESS ), 6
+                                )
+                            ) ),
+                        )),
+                        new LayoutGroup( array(
+                            new LayoutRow( array(
+                                new LayoutColumn( array(
+                                        Billing::serviceBasket()->executeEditBasketItem(
+                                            new Form( array(
+                                                    new FormGroup( array(
+                                                        new FormRow( array(
+                                                            new FormColumn(
+                                                                new TextField( 'BasketItem[Price]', 'Preis in €', 'Preis', new MoneyEuroIcon()
+                                                                ), 6 ),
+                                                            new FormColumn(
+                                                                new TextField( 'BasketItem[Quantity]', 'Menge', 'Menge', new QuantityIcon()
+                                                                ), 6 )
+                                                        ) )
+                                                    ) )
+                                                ), new SubmitPrimary( 'Änderungen speichern' )
+                                            ), $tblBasketItem, $BasketItem
+                                        )
+                                    )
+                                )
                             ) )
-                        ), new SubmitPrimary( 'Änderungen speichern' )
-                        ), $tblBasketItem, $BasketItem
-                    )
+                        ) )
+                    ) )
                 );
             }
         }
@@ -403,9 +539,9 @@ class Basket extends AbstractFrontend
     ) {
 
         $View = new Stage();
-        $View->setTitle( 'Schüler' );
-        $View->setDescription( 'Auswählen' );
-        $View->setMessage( 'Bitte wählen Sie Schüler zur Fakturierung aus' );
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Personen Auswählen' );
+        $View->setMessage( 'Bitte wählen Sie Personen zur Fakturierung aus' );
         $View->addButton( new Primary( 'Zurück', '/Sphere/Billing/Basket/Item', new ChevronLeftIcon(),
             array( 'Id' => $Id ) ) );
         $View->addButton( new Primary( 'Weiter', '/Sphere/Billing/Basket/Summary', new ChevronRightIcon(),
@@ -414,10 +550,10 @@ class Basket extends AbstractFrontend
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
         $tblBasketPersonList = Billing::serviceBasket()->entityBasketPersonAllByBasket( $tblBasket );
         $tblPersonByBasketList = Billing::serviceBasket()->entityPersonAllByBasket( $tblBasket );
-        $tblStudentAll = Management::servicePerson()->entityPersonAllByType( Management::servicePerson()->entityPersonTypeByName( 'Schüler' ) );
+        $tblPersonAll = Management::servicePerson()->entityPersonAll();
 
         if (!empty( $tblPersonByBasketList )) {
-            $tblStudentAll = array_udiff( $tblStudentAll, $tblPersonByBasketList,
+            $tblPersonAll = array_udiff( $tblPersonAll, $tblPersonByBasketList,
                 function ( TblPerson $ObjectA, TblPerson $ObjectB ) {
 
                     return $ObjectA->getId() - $ObjectB->getId();
@@ -439,13 +575,13 @@ class Basket extends AbstractFrontend
             } );
         }
 
-        if (!empty( $tblStudentAll )) {
-            array_walk( $tblStudentAll, function ( TblPerson &$tblPerson, $Index, TblBasket $tblBasket ) {
+        if (!empty( $tblPersonAll )) {
+            array_walk( $tblPersonAll, function ( TblPerson &$tblPerson, $Index, TblBasket $tblBasket ) {
 
                 $tblPerson->Option =
                     ( new Primary( 'Hinzufügen', '/Sphere/Billing/Basket/Person/Add',
                         new PlusIcon(), array(
-                            'Id'       => $tblBasket->getId(),
+                            'Id' => $tblBasket->getId(),
                             'PersonId' => $tblPerson->getId()
                         ) ) )->__toString();
             }, $tblBasket );
@@ -453,6 +589,19 @@ class Basket extends AbstractFrontend
 
         $View->setContent(
             new Layout( array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Nummer', $tblBasket->getId(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Name', $tblBasket->getName(), LayoutPanel::PANEL_TYPE_SUCCESS ), 6
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Erstellt am', $tblBasket->getCreateDate(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        )
+                    ) ),
+                )),
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn( array(
@@ -466,11 +615,11 @@ class Basket extends AbstractFrontend
                             )
                         )
                     ) ),
-                ), new LayoutTitle( 'zugewiesene Studenten' ) ),
+                ), new LayoutTitle( 'zugewiesene Personen' ) ),
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn( array(
-                                new TableData( $tblStudentAll, null,
+                                new TableData( $tblPersonAll, null,
                                     array(
                                         'FirstName' => 'Vorname',
                                         'LastName'  => 'Nachname',
@@ -480,7 +629,7 @@ class Basket extends AbstractFrontend
                             )
                         )
                     ) ),
-                ), new LayoutTitle( 'mögliche Studenten' ) )
+                ), new LayoutTitle( 'mögliche Personen' ) )
             ) )
         );
 
@@ -497,8 +646,8 @@ class Basket extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Student' );
-        $View->setDescription( 'Hinzufügen' );
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Person Hinzufügen' );
 
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
         $tblPerson = Management::servicePerson()->entityPersonById( $PersonId );
@@ -516,8 +665,8 @@ class Basket extends AbstractFrontend
     {
 
         $View = new Stage();
-        $View->setTitle( 'Student' );
-        $View->setDescription( 'Entfernen' );
+        $View->setTitle( 'Warenkorb' );
+        $View->setDescription( 'Person Entfernen' );
 
         $tblBasketPerson = Billing::serviceBasket()->entityBasketPersonById( $Id );
         $View->setContent( Billing::serviceBasket()->executeRemoveBasketPerson( $tblBasketPerson ) );
@@ -534,7 +683,6 @@ class Basket extends AbstractFrontend
      */
     public static function frontendBasketSummary( $Id, $Basket = null )
     {
-
         $View = new Stage();
         $View->setTitle( 'Warenkorb' );
         $View->setDescription( 'Zusammenfassung' );
@@ -554,6 +702,9 @@ class Basket extends AbstractFrontend
                 $tblItem = $tblBasketItem->getServiceBillingCommodityItem()->getTblItem();
                 $tblBasketItem->CommodityName = $tblCommodity->getName();
                 $tblBasketItem->ItemName = $tblItem->getName();
+                $tblBasketItem->TotalPriceString = $tblBasketItem->getTotalPriceString();
+                $tblBasketItem->QuantityString = str_replace('.',',', $tblBasketItem->getQuantity());
+                $tblBasketItem->PriceString = $tblBasketItem->getPriceString();
             } );
         }
 
@@ -565,13 +716,27 @@ class Basket extends AbstractFrontend
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Nummer', $tblBasket->getId(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Name', $tblBasket->getName(), LayoutPanel::PANEL_TYPE_SUCCESS ), 6
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Erstellt am', $tblBasket->getCreateDate(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        )
+                    ) ),
+                )),
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn(
                             array(
                                 new TableData( $tblBasketItemAll, null,
                                     array(
                                         'CommodityName' => 'Leistung',
                                         'ItemName'      => 'Artikel',
-                                        'Price'         => 'Preis',
-                                        'Quantity'      => 'Menge',
+                                        'PriceString'         => 'Preis',
+                                        'QuantityString'      => 'Menge',
+                                        'TotalPriceString'      => 'Gesamtpreis'
                                     )
                                 )
                             )
@@ -591,7 +756,7 @@ class Basket extends AbstractFrontend
                             )
                         )
                     ) )
-                ), new LayoutTitle( 'Studenten' ) ),
+                ), new LayoutTitle( 'Personen' ) ),
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn(
@@ -600,11 +765,11 @@ class Basket extends AbstractFrontend
                                     new FormGroup( array(
                                         new FormRow( array(
                                             new FormColumn(
-                                                new DatePicker( 'Basket[Date]', 'Fälligkeitsdatum', 'Fälligkeitsdatum',
+                                                new DatePicker( 'Basket[Date]', 'Zahlungsdatum (Fälligkeit)', 'Zahlungsdatum (Fälligkeit)',
                                                     new TimeIcon() )
                                                 , 3 )
                                         ) ),
-                                    ), new FormTitle( 'Fälligkeit' ) )
+                                    ), new FormTitle( 'Zahlungsdatum' ) )
                                     , new SubmitPrimary( 'Warenkorb fakturieren (prüfen)' )
                                 ), $tblBasket, $Basket
                             )
@@ -621,55 +786,97 @@ class Basket extends AbstractFrontend
      * @param $Id
      * @param $Date
      * @param $Data
-     * @param $SelectList
-     * @param $TempTblInvoiceList
      *
      * @return Stage
      */
-    public static function frontendBasketDebtorSelect( $Id, $Date, $Data, $SelectList, $TempTblInvoiceList )
+    public static function frontendBasketDebtorSelect( $Id, $Date, $Data )
     {
-
         $View = new Stage();
         $View->setTitle( 'Warenkorb' );
         $View->setDescription( 'Debitoren zuordnen' );
-        $View->setMessage( 'Weisen Sie die entsprechenden Debitoren zu' );
+        $View->setMessage( 'Es konnten im Warenkorb nicht zu alle Personen bei allen Leistungen eindeutig ein Debitor
+            ermittelt werden. Es werden alle nicht automatisch zuordenbaren Kombinationen von Personen und Leistungen
+            angezeigt. Bitte weisen Sie die entsprechenden Debitoren zu' );
 
-        $TableData = array();
-        foreach ($SelectList as $Key => $Select) {
-            $Debtors = array();
-            foreach ($Select['Debtors'] as $Debtor) {
-                $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Debtor );
-                $tblDebtor->setDebtorNumber( $tblDebtor->getDebtorNumber()." - ".$tblDebtor->getServiceManagement_Person()->getFullName() );
-                array_push( $Debtors, $tblDebtor );
+        $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
+        $tblBasketCommodityList = Billing::serviceBasket()->entityBasketCommodityAllByBasket( $tblBasket );
+
+        if (!empty($tblBasketCommodityList))
+        {
+            foreach ($tblBasketCommodityList as &$tblBasketCommodity)
+            {
+                /** @var  TblBasketCommodityDebtor[] $tblBasketCommodityDebtorList */
+                $tblBasketCommodityDebtorList = Billing::serviceBasket()->entityBasketCommodityDebtorAllByBasketCommodity( $tblBasketCommodity );
+                foreach($tblBasketCommodityDebtorList as &$tblBasketCommodityDebtor)
+                {
+                    $tblBasketCommodityDebtor->Name = $tblBasketCommodityDebtor->getServiceBillingDebtor()->getDebtorNumber() . " - " .
+                        $tblBasketCommodityDebtor->getServiceBillingDebtor()->getServiceManagementPerson()->getFullName() .
+                        ($tblBasketCommodityDebtor->getServiceBillingDebtor()->getDescription() !== "" ?
+                            " - " . $tblBasketCommodityDebtor->getServiceBillingDebtor()->getDescription() :
+                            "")
+                    ;
+                }
+
+                $tblBasketCommodity = new FormRow(  array(
+                    new FormColumn(
+                        new Muted(
+                            $tblBasketCommodity->getServiceManagementPerson()->getFullName()), 3
+                    ),
+                    new FormColumn(
+                        new Muted(
+                            $tblBasketCommodity->getServiceBillingCommodity()->getName()), 3
+                    ),
+                    new FormColumn(
+                        new SelectBox( 'Data['. $tblBasketCommodity->getId() .']', null,
+                            array('Name'  => $tblBasketCommodityDebtorList )), 6
+                    )
+                ));
             }
-
-            $TableData[] = array(
-                'Person'    => Management::servicePerson()->entityPersonById( $Select['tblPerson'] )->getFullName(),
-                'Commodity' => Billing::serviceCommodity()->entityCommodityById( $Select['tblCommodity'] )->getName(),
-                'Debtors'   => ( new SelectBox( 'Data['.$Key.']', null,
-                    array( 'DebtorNumber' => $Debtors ) ) )->__toString()
-            );
         }
 
+        $formGroup = new FormGroup($tblBasketCommodityList); //, new FormTitle(" "));
+
         $View->setContent(
-            Billing::serviceBasket()->executeCheckDebtors(
-                new Form(
-                    new FormGroup( array(
-                        new FormRow( array(
-                            new FormColumn(
-                                new TableData( $TableData, null,
-                                    array(
-                                        'Person'    => 'Student',
-                                        'Commodity' => 'Leistung',
-                                        'Debtors'   => 'DebitorenNummer'
-                                    )
-                                )
+            new Layout( array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Nummer', $tblBasket->getId(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Warenkorb - Name', $tblBasket->getName(), LayoutPanel::PANEL_TYPE_SUCCESS ), 6
+                        ),
+                        new LayoutColumn(
+                            new LayoutPanel('Erstellt am', $tblBasket->getCreateDate(), LayoutPanel::PANEL_TYPE_SUCCESS ), 3
+                        )
+                    ) ),
+                )),
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            Billing::serviceBasket()->executeCheckDebtors(
+                                new Form( array(
+                                    new FormGroup( array(
+                                            new FormRow( array(
+                                                new FormColumn(
+                                                    new Muted('Person'), 3
+                                                ),
+                                                new FormColumn(
+                                                    new Muted('Leistung'), 3
+                                                ),
+                                                new FormColumn(
+                                                    new Muted('Debitorennummer - Debitor - Beschreibung'), 6
+                                                )
+                                            ) )
+                                    ) ),
+                                    $formGroup)
+                                , new SubmitPrimary( 'Debitoren zuordnen (prüfen)' ) )
+                                , $Id, $Date, $Data
                             )
-                        ) )
-                    ), new FormTitle( 'Debitoren' ) )
-                    , new SubmitPrimary( 'Debitoren zuordnen (prüfen)' )
-                ), $Id, $Date, $Data, $SelectList, $TempTblInvoiceList
-            )
+                        )
+                     ) )
+                )),
+            ))
         );
 
         return $View;

@@ -30,7 +30,6 @@ class TblDebtorCommodity extends AbstractEntity
      */
     public function getServiceBillingCommodity()
     {
-
         if (null === $this->serviceBilling_Commodity) {
             return false;
         } else {
@@ -41,10 +40,9 @@ class TblDebtorCommodity extends AbstractEntity
     /**
      * @param null|TblCommodity $tblCommodity
      */
-    public function setServiceBillingCommodity( TblCommodity $tblCommodity )
+    public function setServiceBillingCommodity( TblCommodity $tblCommodity)
     {
-
-        $this->serviceBilling_Commodity = ( null === $tblCommodity ? null : $tblCommodity->getId() );
+        $this->serviceBilling_Commodity = (null === $tblCommodity ? null : $tblCommodity->getId() );
     }
 
     /**
@@ -52,7 +50,6 @@ class TblDebtorCommodity extends AbstractEntity
      */
     public function getTblDebtor()
     {
-
         if (null === $this->tblDebtor) {
             return false;
         } else {
@@ -63,10 +60,9 @@ class TblDebtorCommodity extends AbstractEntity
     /**
      * @param null|TblDebtor $tblDebtor
      */
-    public function setTblDebtor( TblDebtor $tblDebtor )
+    public function setTblDebtor( TblDebtor $tblDebtor)
     {
-
-        $this->tblDebtor = ( null === $tblDebtor ? null : $tblDebtor->getId() );
+        $this->tblDebtor = (null === $tblDebtor ? null : $tblDebtor->getId() );
     }
 
 }
