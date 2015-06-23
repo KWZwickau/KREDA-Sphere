@@ -55,7 +55,11 @@ class SelectBox extends AbstractType
                                 if (method_exists( $Entity, 'get'.$Variable )) {
                                     $Template->setVariable( $Variable, $Entity->{'get'.$Variable}() );
                                 } else {
-                                    $Template->setVariable( $Variable, $Entity->{$Variable} );
+                                    if (property_exists( $Entity, $Variable )) {
+                                        $Template->setVariable( $Variable, $Entity->{$Variable} );
+                                    } else {
+                                        $Template->setVariable( $Variable, null );
+                                    }
                                 }
                             }
                         }
