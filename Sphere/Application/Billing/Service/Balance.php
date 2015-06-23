@@ -30,6 +30,34 @@ class Balance extends EntityAction
     }
 
     /**
+     *
+     */
+    public function setupDatabaseContent()
+    {
+
+    }
+
+    /**
+     * @param int $Id
+     *
+     * @return bool|TblBalance
+     */
+    public function entityBalanceById( $Id )
+    {
+        return parent::entityBalanceById( $Id );
+    }
+
+    /**
+     * @param TblInvoice $tblInvoice
+     *
+     * @return bool|TblBalance
+     */
+    public function entityBalanceByInvoice(TblInvoice $tblInvoice)
+    {
+        return parent::entityBalanceByInvoice($tblInvoice);
+    }
+
+    /**
      * @return bool|TblBalance[]
      */
     public function entityBalanceAll()
@@ -38,26 +66,31 @@ class Balance extends EntityAction
     }
 
     /**
+     * @param int $Id
+     *
+     * @return bool|TblPayment
+     */
+    public function entityPaymentById( $Id )
+    {
+        return parent::entityPaymentById( $Id );
+    }
+
+    /**
+     * @param TblBalance $Balance
+     *
+     * @return bool|TblPayment[]
+     */
+    public function entityPaymentByBalance( TblBalance $Balance )
+    {
+        return parent::entityPaymentByBalance( $Balance );
+    }
+
+    /**
      * @return bool|TblPayment[]
      */
     public function entityPaymentAll()
     {
         return parent::entityPaymentAll();
-    }
-
-    /**
-     * @param TblBalance $tblBalance
-     *
-     * @return string
-     */
-    public function sumPriceItemStringByBalance( TblBalance $tblBalance )
-    {
-        return parent::sumPriceItemStringByBalance( $tblBalance );
-    }
-
-    public function sumPriceItemByBalance(TblBalance $tblBalance)
-    {
-        return parent::sumPriceItemByBalance($tblBalance);
     }
 
     /**
@@ -77,51 +110,23 @@ class Balance extends EntityAction
     }
 
     /**
-     * @param int $Id
+     * @param TblBalance $tblBalance
      *
-     * @return bool|TblPayment
+     * @return string
      */
-    public function entityPaymentById( $Id )
+    public function sumPriceItemStringByBalance( TblBalance $tblBalance )
     {
-        return parent::entityPaymentById( $Id );
+        return parent::sumPriceItemStringByBalance( $tblBalance );
     }
 
     /**
-     * @param int $Id
+     * @param TblBalance $tblBalance
      *
-     * @return bool|TblBalance
+     * @return float
      */
-    public function entityBalanceById( $Id )
+    public function sumPriceItemByBalance(TblBalance $tblBalance)
     {
-        return parent::entityBalanceById( $Id );
-    }
-
-    /**
-     *
-     */
-    public function setupDatabaseContent()
-    {
-
-    }
-
-    /**
-     * @param TblInvoice $tblInvoice
-     *
-     * @return bool|TblBalance
-     */
-    public function entityBalanceByInvoice(TblInvoice $tblInvoice)
-    {
-        return parent::entityBalanceByInvoice($tblInvoice);
-    }
-
-    /**
-     * @param TblBalance $Balance
-     *
-     * @return bool|TblPayment[]
-     */
-    public function entityPaymentByBalance( TblBalance $Balance )
-    {
-        return parent::entityPaymentByBalance( $Balance );
+        return parent::sumPriceItemByBalance($tblBalance);
     }
 
     /**

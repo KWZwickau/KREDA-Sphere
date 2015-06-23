@@ -89,4 +89,13 @@ class TblPayment extends AbstractEntity
     {
         return $this->Value;
     }
+
+    /**
+     * @return string
+     */
+    public function getValueString()
+    {
+        $result = sprintf("%01.2f", $this->Value);
+        return str_replace('.', ',', $result)  . " €";
+    }
 }

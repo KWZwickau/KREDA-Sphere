@@ -23,7 +23,6 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityBalanceById( $Id )
     {
-
         $Entity = $this->getEntityManager()->getEntityById( 'TblBalance', $Id );
         return ( null === $Entity ? false : $Entity );
     }
@@ -35,38 +34,56 @@ abstract class EntityAction extends EntitySchema
      */
     protected function entityBalanceByInvoice(TblInvoice $tblInvoice )
     {
-        $Entity = $this->getEntityManager()->getEntity( 'TblBalance')->findOneBy(array(TblBalance::ATTR_SERVICE_BILLING_INVOICE => $tblInvoice->getId()));
+        $Entity = $this->getEntityManager()->getEntity( 'TblBalance')->findOneBy(
+            array(TblBalance::ATTR_SERVICE_BILLING_INVOICE => $tblInvoice->getId())
+        );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @return bool|TblBalance[]
+     */
+    protected function entityBalanceAll()
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblBalance' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param integer $Id
+     *
+     * @return bool|TblPayment
+     */
+    protected function entityPaymentById( $Id )
+    {
+        $Entity = $this->getEntityManager()->getEntityById( 'TblPayment', $Id );
         return ( null === $Entity ? false : $Entity );
     }
 
     /**
      * @param TblBalance $tblBalance
-     * @return string
-     */
-    protected function sumPriceItemStringByBalance( TblBalance $tblBalance)
-    {
-        return str_replace('.', ',', round($this->sumPriceItemByBalance( $tblBalance ), 2)) . " €";
-    }
-
-    /**
-     * @param TblBalance $tblBalance
-     * @return float
-     */
-    protected function sumPriceItemByBalance( TblBalance $tblBalance)
-    {
-        $sum = 0.00;
-        $tblPaymentList = $this->entityPaymentByBalance( $tblBalance);
-        foreach($tblPaymentList as $tblPayment)
-        {
-            $sum += $tblPayment->getValue();
-        }
-
-        return $sum;
-    }
-
-    /**
      *
-     * @return bool|\KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice[]
+     * @return bool|TblPayment[]
+     */
+    protected function entityPaymentByBalance (TblBalance $tblBalance)
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblPayment')->findBy(
+            array(TblPayment::ATTR_TBL_BALANCE => $tblBalance->getId())
+        );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @return bool|TblPayment[]
+     */
+    protected function entityPaymentAll()
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblPayment' )->findAll();
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @return bool|TblInvoice[]
      */
     protected function entityInvoiceHasFullPaymentAll()
     {
@@ -119,45 +136,27 @@ abstract class EntityAction extends EntitySchema
 
     /**
      * @param TblBalance $tblBalance
-     *
-     * @return bool|TblPayment[]
+     * @return string
      */
-    protected function entityPaymentByBalance (TblBalance $tblBalance)
+    protected function sumPriceItemStringByBalance( TblBalance $tblBalance)
     {
-        $Entity = $this->getEntityManager()->getEntity( 'TblPayment')->findBy(array(TblPayment::ATTR_TBL_BALANCE => $tblBalance->getId()));
-        return ( null === $Entity ? false : $Entity );
+        return str_replace('.', ',', round($this->sumPriceItemByBalance( $tblBalance ), 2)) . " €";
     }
 
     /**
-     * @return bool|TblBalance[]
+     * @param TblBalance $tblBalance
+     * @return float
      */
-    protected function entityBalanceAll()
+    protected function sumPriceItemByBalance( TblBalance $tblBalance)
     {
+        $sum = 0.00;
+        $tblPaymentList = $this->entityPaymentByBalance( $tblBalance);
+        foreach($tblPaymentList as $tblPayment)
+        {
+            $sum += $tblPayment->getValue();
+        }
 
-        $Entity = $this->getEntityManager()->getEntity( 'TblBalance' )->findAll();
-        return ( null === $Entity ? false : $Entity );
-    }
-
-    /**
-     * @param integer $Id
-     *
-     * @return bool|TblPayment
-     */
-    protected function entityPaymentById( $Id )
-    {
-
-        $Entity = $this->getEntityManager()->getEntityById( 'TblPayment', $Id );
-        return ( null === $Entity ? false : $Entity );
-    }
-
-    /**
-     * @return bool|TblPayment[]
-     */
-    protected function entityPaymentAll()
-    {
-
-        $Entity = $this->getEntityManager()->getEntity( 'TblPayment' )->findAll();
-        return ( null === $Entity ? false : $Entity );
+        return $sum;
     }
 
     /**
@@ -168,10 +167,13 @@ abstract class EntityAction extends EntitySchema
     {
         /** @var TblBalance[] $balanceAllByDebtor */
         $balanceAllByDebtor = $this->getEntityManager() -> getEntity('TblBalance')->findBy(
-            array(TblBalance::ATTR_SERVICE_BILLING_BANKING => $tblDebtor->getId()));
+            array(TblBalance::ATTR_SERVICE_BILLING_BANKING => $tblDebtor->getId())
+        );
         foreach ( $balanceAllByDebtor as $balance )
         {
-            $Entity = $this->getEntityManager()->getEntity( 'TblPayment' )->findOneBy(array(TblPayment::ATTR_TBL_BALANCE => $balance->getId()));
+            $Entity = $this->getEntityManager()->getEntity( 'TblPayment' )->findOneBy(
+                array(TblPayment::ATTR_TBL_BALANCE => $balance->getId())
+            );
             if ($Entity !== null)
             {
                 return true;
@@ -195,6 +197,7 @@ abstract class EntityAction extends EntitySchema
             TblBalance::ATTR_SERVICE_BILLING_BANKING => $serviceBilling_Banking->getId(),
             TblBalance::ATTR_SERVICE_BILLING_INVOICE => $serviceBilling_Invoice->getId()
         ));
+
         if (null === $Entity)
         {
             $Entity = new TblBalance();
@@ -218,47 +221,47 @@ abstract class EntityAction extends EntitySchema
      *
      * @return bool
      */
-    protected function actionSetExportDateBalance(
-        TblBalance $tblBalance
-    )
+    protected function actionSetExportDateBalance(TblBalance $tblBalance)
     {
         $Manager = $this->getEntityManager();
-
         /** @var TblBalance $Entity */
         $Entity = $Manager->getEntityById( 'TblInvoice', $tblBalance->getId() );
         $Protocol = clone $Entity;
-        if (null !== $Entity) {
+
+        if (null !== $Entity)
+        {
             $Entity->setExportDate( new \DateTime('now') );
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Protocol,
                 $Entity );
+
             return true;
         }
+
         return false;
     }
-
 
     /**
      * @param TblBalance $tblBalance
      *
      * @return bool
      */
-    protected function actionRemoveBalance(
-        TblBalance $tblBalance
-    ) {
-
+    protected function actionRemoveBalance(TblBalance $tblBalance)
+    {
         $Manager = $this->getEntityManager();
-
         $Entity = $Manager->getEntity( 'TblBalance' )->findOneBy(
-            array(
-                'Id' => $tblBalance->getId()
-            ) );
-        if (null !== $Entity) {
+            array('Id' => $tblBalance->getId())
+        );
+
+        if (null !== $Entity)
+        {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
             $Manager->killEntity( $Entity );
+
             return true;
         }
+
         return false;
     }
 
@@ -271,7 +274,6 @@ abstract class EntityAction extends EntitySchema
      */
     protected function actionCreatePayment( TblBalance $tblBalance, $Value,\DateTime $Date)
     {
-
         $Manager = $this->getEntityManager();
         $Entity = $Manager->getEntity( 'TblPayment' )->findOneBy( array(
             'tblBalance' => $tblBalance->getId(),
@@ -288,6 +290,7 @@ abstract class EntityAction extends EntitySchema
             $Manager->saveEntity( $Entity );
             System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
         }
+
         return $Entity;
     }
 
@@ -296,22 +299,22 @@ abstract class EntityAction extends EntitySchema
      *
      * @return bool
      */
-    protected function actionRemovePayment(
-        TblPayment $tblPayment
-    ) {
-
+    protected function actionRemovePayment(TblPayment $tblPayment)
+    {
         $Manager = $this->getEntityManager();
-
         $Entity = $Manager->getEntity( 'TblPayment' )->findOneBy(
-            array(
-                'Id' => $tblPayment->getId()
-            ) );
-        if (null !== $Entity) {
+            array('Id' => $tblPayment->getId())
+        );
+
+        if (null !== $Entity)
+        {
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
             $Manager->killEntity( $Entity );
+
             return true;
         }
+
         return false;
     }
 }

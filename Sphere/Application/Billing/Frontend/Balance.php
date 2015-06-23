@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Billing\Frontend;
 
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Balance\Entity\TblPayment;
 use KREDA\Sphere\Application\Billing\Service\Invoice\Entity\TblInvoice;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\OkIcon;
@@ -17,6 +18,9 @@ use KREDA\Sphere\Common\AbstractFrontend;
 class Balance extends AbstractFrontend
 {
 
+    /**
+     * @return Stage
+     */
     public static function frontendBalance()
     {
         $View = new Stage();
@@ -78,6 +82,49 @@ class Balance extends AbstractFrontend
                 'PaidPayment' => 'Bezahlt',
                 'PaidInvoice' => 'Gesamt',
                 'Option' => 'Option'
+                )
+            )
+        );
+
+        return $View;
+    }
+
+    /**
+     * @return Stage
+     */
+    public static function frontendPayment()
+    {
+        $View = new Stage();
+        $View->setTitle('Zahlungen');
+        $View->setDescription('Importierte');
+
+        $paymentList = Billing::serviceBalance()->entityPaymentAll();
+        if ($paymentList)
+        {
+            array_walk($paymentList, function(TblPayment &$tblPayment)
+            {
+                $tblInvoice = $tblPayment->getTblBalance()->getServiceBillingInvoice();
+                if ($tblInvoice)
+                {
+                    $tblPayment->InvoiceNumber = $tblInvoice->getNumber();
+                    $tblPayment->InvoiceDate = $tblInvoice->getInvoiceDate();
+                    $tblPayment->DebtorFullName = $tblInvoice->getDebtorFullName();
+                    $tblPayment->DebtorNumber = $tblInvoice->getDebtorNumber();
+                    $tblPayment->ValueString = $tblPayment->getValueString();
+                }
+            });
+        }
+
+
+        $View->setContent(
+            new TableData( $paymentList, null,
+                array(
+                    'InvoiceNumber'  => 'Rechnungs-Nr.',
+                    'InvoiceDate' => 'Rechnungsdatum',
+                    'Date' => 'Zahlungseingangsdatum',
+                    'DebtorFullName' => 'Debitor',
+                    'DebtorNumber' => 'Debitorennummer',
+                    'ValueString' => 'Betrag'
                 )
             )
         );
