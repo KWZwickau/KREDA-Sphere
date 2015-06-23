@@ -2,6 +2,7 @@
 namespace KREDA\Sphere\Application\Billing\Service\Banking\Entity;
 
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Common\AbstractEntity;
 
 /**
@@ -12,7 +13,7 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblReference extends AbstractEntity
 {
     const ATTR_TBL_DEBTOR = "tblDebtor";
-    const ATTR_TBL_COMMODITY = "tblCommodity";
+    const ATTR_SERVICE_BILLING_COMMODITY = "serviceBilling_Commodity";
     const ATTR_IS_VOID = "IsVoid";
     const ATTR_REFERENCE = "Reference";
 
@@ -35,7 +36,7 @@ class TblReference extends AbstractEntity
     /**
      * @Column(type="bigint")
      */
-    protected $tblCommodity;
+    protected $serviceBilling_Commodity;
 
     /**
      * @return string $Reference
@@ -115,19 +116,22 @@ class TblReference extends AbstractEntity
     }
 
     /**
-     * @return bool|string $tblCommodity
+     * @return bool|TblCommodity
      */
-    public function getTblCommodity()
+    public function getServiceBillingCommodity()
     {
-        return $this->tblCommodity;
+        if (null === $this->serviceBilling_Commodity) {
+            return false;
+        } else {
+            return Billing::serviceCommodity()->entityCommodityById( $this->serviceBilling_Commodity );
+        }
     }
 
     /**
-     * @param null| string $serviceTblCommodity
+     * @param null|TblCommodity $tblCommodity
      */
-    public function setTblCommodity( $serviceTblCommodity)
+    public function setServiceBillingCommodity( TblCommodity $tblCommodity)
     {
-        $this->tblCommodity = $serviceTblCommodity;
+        $this->serviceBilling_Commodity = (null === $tblCommodity ? null : $tblCommodity->getId() );
     }
-
 }

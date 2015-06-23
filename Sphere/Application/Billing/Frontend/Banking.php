@@ -69,37 +69,52 @@ class Banking extends AbstractFrontend
 
         if (!empty( $tblDebtorAll )) {
             array_walk( $tblDebtorAll, function ( TblDebtor &$tblDebtor ) {
-                $ReferenceList = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
-                $tblCommodityList = array();
-                $Commodity = '';
-                if($ReferenceList)
+                $referenceCommodityList = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
+                $referenceCommodity = '';
+                if($referenceCommodityList)
                 {
-                    foreach($ReferenceList as $Reference)
+                    for ($i = 0; $i < count($referenceCommodityList); $i++)
                     {
-                        $CommodityId = $Reference->getTblCommodity();
-
-                        $CommodityReal = Billing::serviceCommodity()->entityCommodityById( $CommodityId );
-                        if( $CommodityReal !== false )
+                        $tblCommodity = $referenceCommodityList[$i]->getServiceBillingCommodity();
+                        if ($tblCommodity)
                         {
-                            $tblCommodityList[] = $CommodityReal->getName();
+                            if ($i === 0)
+                            {
+                                $referenceCommodity .= $tblCommodity->getName();
+                            }
+                            else
+                            {
+                                $referenceCommodity .= ', ' . $tblCommodity->getName() ;
+                            }
                         }
-                    }
-                    $counting = 1;
-                    foreach($tblCommodityList as $tblCommodity)
-                    {
-                        if ($counting < count($tblCommodityList))
-                        {
-                            $Commodity .= $tblCommodity.', ';
-                            $counting++;
-                        }
-                        else
-                        { $Commodity .= $tblCommodity; }
                     }
                 }
+                $tblDebtor->ReferenceCommodity = $referenceCommodity;
+
+                $debtorCommodityList = Billing::serviceBanking()->entityCommodityDebtorAllByDebtor( $tblDebtor );
+                $debtorCommodity = '';
+                if($debtorCommodityList)
+                {
+                    for ($i = 0; $i < count($debtorCommodityList); $i++)
+                    {
+                        $tblCommodity = $debtorCommodityList[$i]->getServiceBillingCommodity();
+                        if ($tblCommodity)
+                        {
+                            if ($i === 0)
+                            {
+                                $debtorCommodity .= $tblCommodity->getName();
+                            }
+                            else
+                            {
+                                $debtorCommodity .= ', ' . $tblCommodity->getName() ;
+                            }
+                        }
+                    }
+                }
+                $tblDebtor->DebtorCommodity = $debtorCommodity;
 
 
-                $tblDebtor->Commodity = $Commodity;
-                $tblPerson = Management::servicePerson()->entityPersonById( $tblDebtor->getServiceManagementPerson() );
+                $tblPerson = $tblDebtor->getServiceManagementPerson();
                 if(!empty($tblPerson))
                 {
                     $tblDebtor->FirstName = $tblPerson->getFirstName();
@@ -112,7 +127,7 @@ class Banking extends AbstractFrontend
                 }
 
                 $tblDebtor->Edit =
-                    (new Primary( 'Leistung hinzufügen', '/Sphere/Billing/Banking/Commodity/Select',
+                    (new Primary( 'Leistungen auswählen', '/Sphere/Billing/Banking/Commodity/Select',
                         new ListIcon(), array(
                             'Id' => $tblDebtor->getId()
                         ) ))->__toString().
@@ -148,10 +163,11 @@ class Banking extends AbstractFrontend
                         new LayoutColumn( array(
                             new TableData( $tblDebtorAll, null,
                                 array(
-                                    'DebtorNumber' => 'Debitorennummer',
+                                    'DebtorNumber' => 'Debitoren-Nr',
                                     'FirstName' => 'Vorname',
                                     'LastName' => 'Nachname',
-                                    'Commodity' => 'Leistungen',
+                                    'ReferenceCommodity' => 'Mandatsreferenzen',
+                                    'DebtorCommodity' => 'Leistungszuordnung',
                                     'BankInformation' => 'Bankdaten',
                                     'Edit' => 'Verwaltung'
                                 ))
@@ -511,7 +527,7 @@ class Banking extends AbstractFrontend
             {
                 foreach ($ReferenceEntityList as $ReferenceEntity)
                 {
-                    $ReferenceReal = Billing::serviceCommodity()->entityCommodityById( $ReferenceEntity->getTblCommodity() );
+                    $ReferenceReal = Billing::serviceCommodity()->entityCommodityById( $ReferenceEntity->getServiceBillingCommodity() );
                     if($ReferenceReal !== false)
                     { $ReferenceEntity->Commodity = $ReferenceReal->getName(); }
                     else
@@ -531,7 +547,7 @@ class Banking extends AbstractFrontend
         $tblCommodityUsed = array();
         foreach($tblReferenceList as $tblReference)
         {
-            $tblCommodityUsedReal = Billing::serviceCommodity()->entityCommodityById( $tblReference->getTblCommodity() );
+            $tblCommodityUsedReal = Billing::serviceCommodity()->entityCommodityById( $tblReference->getServiceBillingCommodity() );
             if($tblCommodityUsedReal !== false)
             { $tblCommodityUsed[] = $tblCommodityUsedReal; }
         }

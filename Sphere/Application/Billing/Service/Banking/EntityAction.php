@@ -306,10 +306,10 @@ abstract class EntityAction extends EntitySchema
      * @param $Reference
      * @param $DebtorNumber
      * @param $ReferenceDate
-     * @param $Commodity
+     * @param $tblCommodity
      * @return TblReference
      */
-    protected function actionAddReference( $Reference, $DebtorNumber, $ReferenceDate, $Commodity  )
+    protected function actionAddReference( $Reference, $DebtorNumber, $ReferenceDate, TblCommodity $tblCommodity  )
     {
         $Manager = $this->getEntityManager();
 
@@ -317,7 +317,7 @@ abstract class EntityAction extends EntitySchema
         $Entity->setReference( $Reference );
         $Entity->setIsVoid( false );
         $Entity->setServiceTblDebtor( Billing::serviceBanking()->entityDebtorByDebtorNumber( $DebtorNumber ) );
-        $Entity->setTblCommodity( $Commodity );
+        $Entity->setServiceBillingCommodity( $tblCommodity );
         if( $ReferenceDate )
         {
             $Entity->setReferenceDate( new \DateTime( $ReferenceDate ) );
@@ -399,7 +399,7 @@ abstract class EntityAction extends EntitySchema
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblReference')->findOneBy(array(
             TblReference::ATTR_TBL_DEBTOR => $tblDebtor->getId(),
-            TblReference::ATTR_TBL_COMMODITY => $tblCommodity->getId(),
+            TblReference::ATTR_SERVICE_BILLING_COMMODITY => $tblCommodity->getId(),
             TblReference::ATTR_IS_VOID => false
         ));
         return ( null === $Entity ? false : $Entity );

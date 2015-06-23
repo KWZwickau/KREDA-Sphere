@@ -171,6 +171,9 @@ class Banking extends EntityAction
         if ( null === $Debtor){
             return $View;
         }
+
+        print_r($Debtor);
+
         $Error = false;
         if (isset($Debtor['DebtorNumber']) && empty( $Debtor['DebtorNumber'])) {
             $View->setError( 'Debtor[DebtorNumber]', 'Bitte geben sie die Debitorennummer an' );
@@ -219,7 +222,7 @@ class Banking extends EntityAction
                 $this->actionAddReference( $Debtor['Reference'],
                     $Debtor['DebtorNumber'],
                     $Debtor['ReferenceDate'],
-                    $Debtor['Commodity'] );
+                    Billing::serviceCommodity()->entityCommodityById($Debtor['Commodity']) );
             }
             return new Success( 'Der Debitor ist erfasst worden' )
             .new Redirect( '/Sphere/Billing/Banking', 2 );
@@ -269,7 +272,7 @@ class Banking extends EntityAction
             $this->actionAddReference( $Reference['Reference'],
                 $Debtor->getDebtorNumber(),
                 $Reference['ReferenceDate'],
-                $Reference['Commodity']);
+                Billing::serviceCommodity()->entityCommodityById( $Reference['Commodity'] ));
 
             return new Success( 'Die Referenz ist erfasst worden' )
             .new Redirect( '/Sphere/Billing/Banking/Debtor/Edit', 0, array( 'Id' => $Debtor->getId() ) );
