@@ -1,6 +1,7 @@
 <?php
 namespace KREDA\Sphere\Application\Management\Service;
 
+use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Company\Entity\TblCompany;
 use KREDA\Sphere\Application\Management\Service\Contact\Entity\TblContact;
 use KREDA\Sphere\Application\Management\Service\Contact\Entity\TblMail;
@@ -8,6 +9,10 @@ use KREDA\Sphere\Application\Management\Service\Contact\Entity\TblPhone;
 use KREDA\Sphere\Application\Management\Service\Contact\EntityAction;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\System;
+use KREDA\Sphere\Client\Frontend\Form\AbstractType;
+use KREDA\Sphere\Client\Frontend\Message\Type\Success;
+use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
+use KREDA\Sphere\Client\Frontend\Redirect;
 use KREDA\Sphere\Common\Database\Handler;
 
 /**
@@ -35,6 +40,9 @@ class Contact extends EntityAction
      */
     public function setupDatabaseContent()
     {
+        $this->actionCreateContact('Privat', 'Das ist ein privater Kontakt');
+        $this->actionCreateContact('Geschäftlich', 'Das ist ein geschäftlicher Kontakt');
+        $this->actionCreateContact('Notfall', 'Das ist ein Notfall Kontakt');
     }
 
     /**
@@ -117,112 +125,48 @@ class Contact extends EntityAction
     }
 
     /**
-     * @param $Name
-     * @param $Description
-     *
-     * @return TblContact|null
-     */
-    public function actionCreateContact(
-        $Name,
-        $Description
-    )
-    {
-        return parent::actionCreateContact($Name, $Description); 
-    }
-
-    /**
-     * @param TblPerson $tblPerson
-     * @param TblContact $tblContact
-     * @param $Address
-     * @param $Description
-     *
-     * @return TblMail|null
-     */
-    public function actionCreatePersonMail(
-        TblPerson $tblPerson,
-        TblContact $tblContact,
-        $Address,
-        $Description
-    )
-    {
-        return parent::actionCreatePersonMail($tblPerson, $tblContact, $Address, $Description); 
-    }
-
-    /**
-     * @param TblPerson $tblPerson
-     * @param TblContact $tblContact
-     * @param $Number
-     * @param $Description
-     *
-     * @return TblPhone|null
-     */
-    public function actionCreatePersonPhone(
-        TblPerson $tblPerson,
-        TblContact $tblContact,
-        $Number,
-        $Description
-    )
-    {
-        return parent::actionCreatePersonPhone($tblPerson, $tblContact, $Number, $Description); 
-    }
-
-    /**
+     * @param AbstractType $Form
      * @param TblCompany $tblCompany
-     * @param TblContact $tblContact
-     * @param $Number
-     * @param $Description
+     * @param $Phone
      *
-     * @return TblPhone|null
+     * @return AbstractType|string
      */
-    public function actionCreateCompanyPhone(
+    public function executeCreateCompanyPhone(
+        AbstractType &$Form,
         TblCompany $tblCompany,
-        TblContact $tblContact,
-        $Number,
-        $Description
+        $Phone
     )
     {
-        return parent::actionCreateCompanyPhone($tblCompany, $tblContact, $Number, $Description); 
-    }
+        if (null === $Phone
+        ) {
+            return $Form;
+        }
+        $Error = false;
 
-    /**
-     * @param TblCompany $tblCompany
-     * @param TblContact $tblContact
-     * @param $Address
-     * @param $Description
-     *
-     * @return TblMail|null
-     */
-    public function actionCreateCompanyMail(
-        TblCompany $tblCompany,
-        TblContact $tblContact,
-        $Address,
-        $Description
-    )
-    {
-        return parent::actionCreateCompanyMail($tblCompany, $tblContact, $Address, $Description); 
-    }
+        if (isset( $Phone['Number'] ) && empty(  $Phone['Number'] )) {
+            $Form->setError( 'Number[Price]', 'Bitte geben Sie einen Preis an' );
+            $Error = true;
+        }
 
-    /**
-     * @param TblMail $tblMail
-     *
-     * @return bool
-     */
-    public function actionDestroyMail(
-        TblMail $tblMail
-    )
-    {
-        return parent::actionDestroyMail($tblMail); 
-    }
+        if (!$Error) {
 
-    /**
-     * @param TblPhone $tblPhone
-     *
-     * @return bool
-     */
-    public function actionDestroyPhone(
-        TblPhone $tblPhone
-    )
-    {
-        return parent::actionDestroyPhone($tblPhone); 
+            if ( $this->actionCreateCompanyPhone(
+                $tblCompany,
+                Management::serviceContact()->entityContactById($Phone['Contact']),
+                $Phone['Number'],
+                $Phone['Description']
+            ))
+            {
+                return new Success( 'Der Kontakt wurde erfolgreich hinzugefügt' )
+                .new Redirect( '/Sphere/Management/Company/Phone/Edit', 0, array( 'Id' => $tblCompany->getId()) );
+            }
+            else
+            {
+                return new Warning( 'Der Kontakt konnte nicht hinzugefügt werden' )
+                .new Redirect( '/Sphere/Management/Company/Phone/Edit', 2, array( 'Id' => $tblCompany->getId()) );
+            }
+        }
+
+        return $Form;
     }
 }

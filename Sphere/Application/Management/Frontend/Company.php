@@ -2,10 +2,12 @@
 namespace KREDA\Sphere\Application\Management\Frontend;
 
 use KREDA\Sphere\Application\Billing\Billing;
+use KREDA\Sphere\Application\Billing\Service\Commodity\Entity\TblCommodity;
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Address\Entity\TblAddress;
 use KREDA\Sphere\Application\Management\Service\Company\Entity\TblCompany;
 use KREDA\Sphere\Application\Management\Service\Company\Entity\TblCompanyAddress;
+use KREDA\Sphere\Application\Management\Service\Contact\Entity\TblPhone;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ChevronLeftIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
@@ -60,29 +62,6 @@ class Company extends AbstractFrontend
         $View->addButton(
             new Primary( 'Firma anlegen', '/Sphere/Management/Company/Create', new PlusIcon() )
         );
-
-        $reflection = new \ReflectionClass(get_class(new TblCompanyAddress()));
-        $properties = $reflection->getProperties();
-        print_r($properties);
-        print_r("<br>");
-        foreach($properties as $property)
-        {
-            if (strpos($property->getName(),'tbl') === 0)
-            {
-                print_r($property->getName());
-                print_r("<br>");
-
-            }
-            else if(strpos($property->getName(), 'service') !== false)
-            {
-                print_r($property->getName());
-                print_r("<br>");
-            }
-
-        }
-        print_r("<br>");
-
-
 
         $tblCompanyList = Management::serviceCompany()->entityCompanyAll();
 
@@ -207,6 +186,9 @@ class Company extends AbstractFrontend
                             ), new LayoutTitle( 'Grunddaten')),
                     ))
                     . new Primary( 'Bearbeiten', '/Sphere/Management/Company/Basic/Edit', new PencilIcon(),
+                        array( 'Id' => $tblCompany->getId() ))
+                    . self::layoutPhone( $tblCompany )
+                    . new Primary( 'Bearbeiten', '/Sphere/Management/Company/Phone/Edit', new PencilIcon(),
                         array( 'Id' => $tblCompany->getId() ))
                     . self::layoutAddress( $tblCompany )
                     . new Primary( 'Bearbeiten', '/Sphere/Management/Company/Address/Edit', new PencilIcon(),
@@ -434,6 +416,94 @@ class Company extends AbstractFrontend
 
         return new Layout(
             new LayoutGroup( new LayoutRow( $tblAddressList ), new LayoutTitle( 'Adressen' ) )
+        );
+    }
+
+    /**
+     * @param $Id
+     * @param $Phone
+     *
+     * @return Stage
+     */
+    public static function frontendCompanyPhoneEdit( $Id, $Phone )
+    {
+
+        $View = new Stage( 'Firma', 'Kontaktdaten bearbeiten' );
+
+        $tblCompany = Management::serviceCompany()->entityCompanyById( $Id );
+
+        $Form = Contact::formPhone();
+        $Form->appendFormButton( new SubmitPrimary( 'Kontakt hinzufügen' ) );
+
+        $View->setContent(
+            new Layout(array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn(
+                            new LayoutPanel('Name', $tblCompany->getName()
+                                , LayoutPanel::PANEL_TYPE_SUCCESS ), 4
+                        )
+                    ) )
+                ))
+            ))
+            .self::layoutPhone( $tblCompany, true )
+            .new Layout(
+                new LayoutGroup(
+                    new LayoutRow(
+                        new LayoutColumn(
+                           Management::serviceContact()->executeCreateCompanyPhone($Form, $tblCompany, $Phone)
+                        )
+                    )
+                ), new LayoutTitle( 'Kontakt hinzufügen' )
+            )
+        );
+
+        return $View;
+    }
+
+    /**
+     * @param TblCompany $tblCompany
+     * @param bool $hasRemove
+     *
+     * @return Layout
+     */
+    public static function layoutPhone(TblCompany $tblCompany, $hasRemove = false )
+    {
+        $tblPhoneList = Management::serviceContact()->entityPhoneAllByCompany( $tblCompany );
+
+        if (!empty( $tblPhoneList )) {
+            /** @noinspection PhpUnusedParameterInspection */
+            array_walk( $tblPhoneList, function ( TblPhone &$tblPhone, $Index, $Data ) {
+
+                /** @var bool[]|TblCompany[] $Data */
+                $tblPhone = new LayoutColumn(
+                    new LayoutPanel(
+                        new ConversationIcon() . $tblPhone->getTblContact()->getName(), array(
+                            $tblPhone->getNumber(),
+                            $tblPhone->getDescription()
+                        ),
+                        LayoutPanel::PANEL_TYPE_DEFAULT,
+                        ( $Data[0]
+                            ? new ButtonGroup( array(
+                                new \KREDA\Sphere\Client\Frontend\Button\Link\Danger(
+                                    'Löschen', '/Sphere/Management/Company/Contact/Destroy', new RemoveIcon(),
+                                    array( 'Id' => $Data[1]->getId(), 'Contact' => $tblPhone->getId() )
+                                ),
+                            ) )
+                            : null
+                        )
+                    ), 4 );
+            }, array( $hasRemove, $tblCompany ) );
+        } else {
+            $tblPhoneList = array(
+                new LayoutColumn(
+                    new Warning( 'Keine Kontaktdaten hinterlegt', new WarningIcon() )
+                )
+            );
+        }
+
+        return new Layout(
+            new LayoutGroup( new LayoutRow( $tblPhoneList ), new LayoutTitle( 'Kontaktdaten' ) )
         );
     }
 }

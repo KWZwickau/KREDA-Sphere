@@ -173,6 +173,7 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblPhone();
             $Entity->setTblContact( $tblContact );
             $Entity->setNumber( $Number );
+            $Entity->setRank( 1 );
             $Entity->setDescription( $Description );
             $Entity->setServiceManagementPerson( $tblPerson );
 
@@ -209,6 +210,7 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblPhone();
             $Entity->setTblContact( $tblContact );
             $Entity->setNumber( $Number );
+            $Entity->setRank( 1 );
             $Entity->setDescription( $Description );
             $Entity->setServiceManagementCompany( $tblCompany );
 
@@ -245,6 +247,7 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblMail();
             $Entity->setTblContact( $tblContact );
             $Entity->setAddress( $Address );
+            $Entity->setRank( 1 );
             $Entity->setDescription( $Description );
             $Entity->setServiceManagementPerson( $tblPerson );
 
@@ -281,6 +284,7 @@ abstract class EntityAction extends EntitySchema
             $Entity = new TblMail();
             $Entity->setTblContact( $tblContact );
             $Entity->setAddress( $Address );
+            $Entity->setRank( 1 );
             $Entity->setDescription( $Description );
             $Entity->setServiceManagementCompany( $tblCompany );
 

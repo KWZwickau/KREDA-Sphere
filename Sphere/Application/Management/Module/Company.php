@@ -54,6 +54,11 @@ class Company extends Common
             '/Sphere/Management/Company/Address/Remove', __CLASS__.'::frontendCompanyAddressRemove'
         )
             ->setParameterDefault('Id', null);
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Management/Company/Phone/Edit', __CLASS__.'::frontendCompanyPhoneEdit'
+        )
+            ->setParameterDefault('Id', null)
+            ->setParameterDefault('Phone', null);
     }
 
     /**
@@ -148,5 +153,18 @@ class Company extends Common
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
         return Frontend::frontendCompanyAddressRemove($Id);
+    }
+
+    /**
+     * @param $Id
+     * @param $Phone
+     *
+     * @return Stage
+     */
+    public static function frontendCompanyPhoneEdit($Id, $Phone)
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendCompanyPhoneEdit($Id, $Phone);
     }
 }
