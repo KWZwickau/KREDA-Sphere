@@ -198,10 +198,13 @@ class Commodity extends AbstractFrontend
             } else {
 
                 $Global = self::extensionSuperGlobal();
-                $Global->POST['Commodity']['Name'] = $tblCommodity->getName();
-                $Global->POST['Commodity']['Description'] = $tblCommodity->getDescription();
-                $Global->POST['Commodity']['Type'] = $tblCommodity->getTblCommodityType()->getId();
-                $Global->savePost();
+                if (!isset( $Global->POST['Commodity']) )
+                {
+                    $Global->POST['Commodity']['Name'] = $tblCommodity->getName();
+                    $Global->POST['Commodity']['Description'] = $tblCommodity->getDescription();
+                    $Global->POST['Commodity']['Type'] = $tblCommodity->getTblCommodityType()->getId();
+                    $Global->savePost();
+                }
 
                 $View->setContent(Billing::serviceCommodity()->executeEditCommodity(
                     new Form( array(
@@ -601,19 +604,22 @@ class Commodity extends AbstractFrontend
             } else {
 
                 $Global = self::extensionSuperGlobal();
-                $Global->POST['Item']['Name'] = $tblItem->getName();
-                $Global->POST['Item']['Description'] = $tblItem->getDescription();
-                $Global->POST['Item']['Price'] = str_replace('.',',', $tblItem->getPrice());
-                $Global->POST['Item']['CostUnit'] = $tblItem->getCostUnit();
-                if ($tblItem->getServiceManagementCourse())
+                if (!isset( $Global->POST['Item']) )
                 {
-                    $Global->POST['Item']['Course'] = $tblItem->getServiceManagementCourse()->getId();
+                    $Global->POST['Item']['Name'] = $tblItem->getName();
+                    $Global->POST['Item']['Description'] = $tblItem->getDescription();
+                    $Global->POST['Item']['Price'] = str_replace('.',',', $tblItem->getPrice());
+                    $Global->POST['Item']['CostUnit'] = $tblItem->getCostUnit();
+                    if ($tblItem->getServiceManagementCourse())
+                    {
+                        $Global->POST['Item']['Course'] = $tblItem->getServiceManagementCourse()->getId();
+                    }
+                    if ($tblItem->getServiceManagementStudentChildRank())
+                    {
+                        $Global->POST['Item']['ChildRank'] = $tblItem->getServiceManagementStudentChildRank()->getId();
+                    }
+                    $Global->savePost();
                 }
-                if ($tblItem->getServiceManagementStudentChildRank())
-                {
-                    $Global->POST['Item']['ChildRank'] = $tblItem->getServiceManagementStudentChildRank()->getId();
-                }
-                $Global->savePost();
 
                 $View->setContent(Billing::serviceCommodity()->executeEditItem(
                     new Form( array(
