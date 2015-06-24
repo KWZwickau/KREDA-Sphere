@@ -5,6 +5,7 @@ use KREDA\Sphere\Application\Gatekeeper\Service\Account\Entity\TblAccount;
 use KREDA\Sphere\Application\Gatekeeper\Service\Consumer\Entity\TblConsumer;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Application\System\Service\Protocol\Entity\TblProtocol;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutList;
 use KREDA\Sphere\Client\Frontend\Message\Type\Danger;
 use KREDA\Sphere\Client\Frontend\Table\Structure\TableBody;
 use KREDA\Sphere\Client\Frontend\Table\Structure\TableColumn;
@@ -99,33 +100,14 @@ abstract class EntityAction extends EntitySchema
         )
             ->setCallbackFunction( function ( TblProtocol &$V ) {
 
-                $Editor = new Table(
-                    new TableHead( new TableRow(
-                        new TableColumn( '', 2 )
-                    ) ),
-                    new TableBody( array(
-                        new TableRow( array(
-                            new TableColumn( 'Database' ),
-                            new TableColumn( $V->getProtocolDatabase() )
-                        ) ),
-                        new TableRow( array(
-                            new TableColumn( 'Consumer' ),
-                            new TableColumn( $V->getConsumerName().' '.$V->getConsumerSuffix() )
-                        ) ),
-                        new TableRow( array(
-                            new TableColumn( 'Login' ),
-                            new TableColumn( $V->getAccountUsername() )
-                        ) ),
-                        new TableRow( array(
-                            new TableColumn( 'Person' ),
-                            new TableColumn( $V->getPersonFirstName().' '.$V->getPersonLastName() )
-                        ) ),
-                        new TableRow( array(
-                            new TableColumn( 'Time' ),
-                            new TableColumn( date( 'd.m.Y H:i:s', $V->getProtocolTimestamp() ) )
-                        ) )
-                    ) )
-                );
+                $Editor = new LayoutList( array(
+                    'Database: '.$V->getProtocolDatabase(),
+                    'Consumer: '.$V->getConsumerName().' '.$V->getConsumerSuffix(),
+                    'Login: '.$V->getAccountUsername(),
+                    'Person: '.$V->getPersonFirstName().' '.$V->getPersonLastName(),
+                    'Time: '.date( 'd.m.Y H:i:s', $V->getProtocolTimestamp() ),
+                ) );
+
                 $DataOrigin = self::fixObject( unserialize( $V->getEntityFrom() ) );
                 $DataCommit = self::fixObject( unserialize( $V->getEntityTo() ) );
 
