@@ -275,7 +275,7 @@ class Banking extends EntityAction
                 Billing::serviceCommodity()->entityCommodityById( $Reference['Commodity'] ));
 
             return new Success( 'Die Referenz ist erfasst worden' )
-            .new Redirect( '/Sphere/Billing/Banking/Debtor/Edit', 0, array( 'Id' => $Debtor->getId() ) );
+            .new Redirect( '/Sphere/Billing/Banking/Debtor/Reference', 0, array( 'Id' => $Debtor->getId() ) );
         }
 
         return $View;
@@ -321,12 +321,12 @@ class Banking extends EntityAction
         }
         if ($this->actionDeactivateReference( $tblReference )) {
             return new Success('Die Deaktivierung ist erfasst worden')
-            . new Redirect('/Sphere/Billing/Banking/Debtor/Edit', 2, array( 'Id' => $tblReference->getServiceBillingBanking()->getId() ) );
+            . new Redirect('/Sphere/Billing/Banking/Debtor/Reference', 2, array( 'Id' => $tblReference->getServiceBillingBanking()->getId() ) );
         }
         else
         {
             return new Danger( 'Die Referenz konnte nicht deaktiviert werden' )
-            .new Redirect( '/Sphere/Billing/Banking/Debtor/Edit', 2, array( 'Id' => $tblReference->getServiceBillingBanking()->getId() ) );
+            .new Redirect( '/Sphere/Billing/Banking/Debtor/Reference', 2, array( 'Id' => $tblReference->getServiceBillingBanking()->getId() ) );
         }
     }
 
