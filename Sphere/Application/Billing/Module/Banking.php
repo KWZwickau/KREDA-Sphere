@@ -76,7 +76,11 @@ class Banking extends Common
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Banking/Debtor/Edit', __CLASS__.'::frontendBankingDebtorEdit'
         )   ->setParameterDefault( 'Debtor', null )
-            ->setParameterDefault( 'Reference', null )
+            ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Debtor/Reference', __CLASS__.'::frontendBankingDebtorReference'
+        )   ->setParameterDefault( 'Reference', null )
             ->setParameterDefault( 'Id', null );
     }
 
@@ -164,6 +168,7 @@ class Banking extends Common
 
     /**
      * @param $Id
+     * @param $Reference
      *
      * @return Stage
      */
@@ -201,15 +206,27 @@ class Banking extends Common
     /**
      * @param $Id
      * @param $Debtor
+     *
+     * @return Stage
+     */
+    public static function frontendBankingDebtorEdit( $Id, $Debtor )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingDebtorEdit( $Id, $Debtor );
+    }
+
+    /**
+     * @param $Id
      * @param $Reference
      *
      * @return Stage
      */
-    public static function frontendBankingDebtorEdit( $Id, $Debtor, $Reference )
+    public static function frontendBankingDebtorReference( $Id, $Reference )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBankingDebtorEdit( $Id, $Debtor, $Reference );
+        return Frontend::frontendBankingDebtorReference( $Id, $Reference );
     }
 
 }
