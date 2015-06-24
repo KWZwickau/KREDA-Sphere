@@ -206,7 +206,7 @@ abstract class EntityAction extends EntitySchema
             $leadTimeByDebtor = Billing::serviceBanking()->entityLeadTimeByDebtor( $tblDebtor );
             $invoiceDate = ( new \DateTime( $Date ) )->sub( new \DateInterval( 'P' . $leadTimeByDebtor .'D' ) );
             $now = new \DateTime();
-            if (($invoiceDate->format('d')) >= ($now->format('d')))
+            if (($invoiceDate->format('y.m.d')) >= ($now->format('y.m.d')))
             {
                 $Entity->setInvoiceDate( $invoiceDate );
                 $Entity->setPaymentDate( new \DateTime( $Date ) );
@@ -556,6 +556,44 @@ abstract class EntityAction extends EntitySchema
             System::serviceProtocol()->executeCreateUpdateEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Protocol,
                 $Entity );
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     *
+     * @return bool
+     */
+    protected function actionDestroyTempInvoice(
+        TblBasket $tblBasket
+    ) {
+
+        if ($tblBasket !== null) {
+            $Manager = $this->getEntityManager();
+
+            /** @var  TblTempInvoice[] $EntityList */
+            $EntityList = $Manager->getEntity( 'TblTempInvoice' )->findBy( array(
+                TblTempInvoice::ATTR_SERVICE_BILLING_BASKET => $tblBasket->getId()
+            ) );
+            foreach ($EntityList as $Entity) {
+                $EntitySubList = $Manager->getEntity( 'TblTempInvoiceCommodity' )->findBy( array(
+                    TblTempInvoiceCommodity::ATTR_TBL_TEMP_INVOICE => $Entity->getId()
+                ) );
+                foreach ($EntitySubList as $SubEntity) {
+                    System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                        $SubEntity );
+                    $Manager->bulkKillEntity( $SubEntity );
+                }
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                    $Entity );
+                $Manager->bulkKillEntity( $Entity );
+            }
+
+            $Manager->flushCache();
+
             return true;
         }
 

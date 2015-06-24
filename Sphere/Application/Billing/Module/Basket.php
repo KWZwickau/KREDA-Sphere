@@ -97,7 +97,8 @@ class Basket extends Common
         )
             ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'Date', null )
-            ->setParameterDefault( 'Data', null );
+            ->setParameterDefault( 'Data', null )
+            ->setParameterDefault( 'Save', null );
     }
 
     /**
@@ -276,13 +277,14 @@ class Basket extends Common
      * @param $Id
      * @param $Date
      * @param $Data
+     * @param $Save
      *
      * @return Stage
      */
-    public static function frontendBasketDebtorSelect( $Id, $Date, $Data )
+    public static function frontendBasketDebtorSelect( $Id, $Date, $Data, $Save)
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBasketDebtorSelect( $Id, $Date, $Data );
+        return Frontend::frontendBasketDebtorSelect( $Id, $Date, $Data, $Save );
     }
 }
