@@ -51,7 +51,7 @@ class Youtrack extends AbstractService
                 $Ticket->prependGridGroup( $Youtrack->ticketCurrent() );
                 return $Ticket;
             } catch( \Exception $E ) {
-                return new Danger( 'Das Support-System konnten nicht geladen werden' );
+                return new Danger( 'Das Support-System konnte nicht geladen werden' );
             }
         } else {
             /**
