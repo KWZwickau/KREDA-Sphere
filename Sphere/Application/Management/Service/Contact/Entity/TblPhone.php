@@ -49,7 +49,7 @@ class TblPhone extends AbstractEntity
     protected $Description;
 
     /**
-     * @Column(type="int")
+     * @Column(type="integer")
      */
     protected $Rank;
 
@@ -86,7 +86,7 @@ class TblPhone extends AbstractEntity
     }
 
     /**
-     * @param int $Rank
+     * @param integer $Rank
      */
     public function setRank($Rank)
     {
@@ -94,7 +94,7 @@ class TblPhone extends AbstractEntity
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getRank()
     {

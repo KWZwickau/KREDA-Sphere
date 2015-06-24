@@ -73,7 +73,7 @@ abstract class EntitySchema extends AbstractService
             $Table->addColumn( 'Description', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPhone', 'Rank' )) {
-            $Table->addColumn( 'Rank', 'int' );
+            $Table->addColumn( 'Rank', 'integer' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPhone', 'serviceManagement_Person' )) {
             $Table->addColumn( 'serviceManagement_Person', 'bigint', array( 'notnull' => false ) );
@@ -104,7 +104,7 @@ abstract class EntitySchema extends AbstractService
             $Table->addColumn( 'Description', 'string' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblPhone', 'Rank' )) {
-            $Table->addColumn( 'Rank', 'int' );
+            $Table->addColumn( 'Rank', 'integer' );
         }
         if (!$this->getDatabaseHandler()->hasColumn( 'tblMail', 'serviceManagement_Person' )) {
             $Table->addColumn( 'serviceManagement_Person', 'bigint', array( 'notnull' => false ) );
