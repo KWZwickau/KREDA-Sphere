@@ -1,5 +1,10 @@
 .idea/
 .project
 Update/
+Sphere/Common/Database/Config/Billing.ini
+Sphere/Common/Database/Config/Gatekeeper.ini
+Sphere/Common/Database/Config/Graduation.ini
+Sphere/Common/Database/Config/Management.ini
+Sphere/Common/Database/Config/System.ini
 Library/MOC-V/Component/Template/Component/Bridge/Repository/TwigTemplate
 Library/MOC-V/Component/Template/Component/Bridge/Repository/SmartyTemplate
