@@ -17,32 +17,48 @@ use KREDA\Sphere\Common\AbstractEntity;
 class TblContact extends AbstractEntity
 {
 
-    const ATTR_SERVICE_MANAGEMENT_PERSON = 'serviceManagement_Person';
+    const ATTR_NAME = 'Name';
+    const ATTR_DESCRIPTION = 'Description';
 
     /**
-     * @Column(type="bigint")
+     * @Column(type="string")
      */
-    protected $serviceManagement_Person;
+    protected $Name;
 
     /**
-     * @return bool|TblPerson
+     * @Column(type="string")
      */
-    public function getServiceManagementPerson()
+    protected $Description;
+
+    /**
+     * @param string $Description
+     */
+    public function setDescription($Description)
     {
-
-        if (null === $this->serviceManagement_Person) {
-            return false;
-        } else {
-            return Management::servicePerson()->entityPersonById( $this->serviceManagement_Person );
-        }
+        $this->Description = $Description;
     }
 
     /**
-     * @param null|TblPerson $tblPerson
+     * @return string
      */
-    public function setServiceManagementPerson( TblPerson $tblPerson = null )
+    public function getDescription()
     {
+        return $this->Description;
+    }
 
-        $this->serviceManagement_Person = ( null === $tblPerson ? null : $tblPerson->getId() );
+    /**
+     * @param string $Name
+     */
+    public function setName($Name)
+    {
+        $this->Name = $Name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->Name;
     }
 }
