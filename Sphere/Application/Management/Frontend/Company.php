@@ -61,6 +61,29 @@ class Company extends AbstractFrontend
             new Primary( 'Firma anlegen', '/Sphere/Management/Company/Create', new PlusIcon() )
         );
 
+        $reflection = new \ReflectionClass(get_class(new TblCompanyAddress()));
+        $properties = $reflection->getProperties();
+        print_r($properties);
+        print_r("<br>");
+        foreach($properties as $property)
+        {
+            if (strpos($property->getName(),'tbl') === 0)
+            {
+                print_r($property->getName());
+                print_r("<br>");
+
+            }
+            else if(strpos($property->getName(), 'service') !== false)
+            {
+                print_r($property->getName());
+                print_r("<br>");
+            }
+
+        }
+        print_r("<br>");
+
+
+
         $tblCompanyList = Management::serviceCompany()->entityCompanyAll();
 
         if (!empty( $tblCompanyList ))
@@ -73,6 +96,12 @@ class Company extends AbstractFrontend
                     $tblCompany->ZipCode = $tblAdressList[0]->getTblAddressCity()->getCode();
                     $tblCompany->City = $tblAdressList[0]->getTblAddressCity()->getName();
                 }
+                else
+                {
+                    $tblCompany->ZipCode = "";
+                    $tblCompany->City = "";
+                }
+
                 $tblCompany->Option =
                     (new Primary( 'Bearbeiten', '/Sphere/Management/Company/Edit',
                         new EditIcon(), array('Id' => $tblCompany->getId())))->__toString() .
@@ -81,14 +110,18 @@ class Company extends AbstractFrontend
             });
         }
 
+        $array = array(
+            'Name' => 'Name',
+            'ZipCode' => 'PLZ',
+            'City' => 'Ort',
+            'Option' => 'Option'
+        );
+
         $View->setContent(
-            new TableData( $tblCompanyList, null,
-                array(
-                    'Name' => 'Name',
-                    'ZipCode' => 'PLZ',
-                    'City' => 'Ort',
-                    'Option' => 'Option'
-                )
+            new TableData( $tblCompanyList, null,$array,array("columnDefs" => array(
+                array( "visible" => false, "targets" => 0 )
+             ))
+
             )
         );
 

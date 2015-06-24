@@ -872,9 +872,12 @@ class Invoice extends AbstractFrontend
             } else {
 
                 $Global = self::extensionSuperGlobal();
-                $Global->POST['InvoiceItem']['Price'] = str_replace( '.', ',', $tblInvoiceItem->getItemPrice() );
-                $Global->POST['InvoiceItem']['Quantity'] = str_replace( '.', ',', $tblInvoiceItem->getItemQuantity() );
-                $Global->savePost();
+                if (!isset( $Global->POST['InvoiceItems']) )
+                {
+                    $Global->POST['InvoiceItem']['Price'] = str_replace( '.', ',', $tblInvoiceItem->getItemPrice() );
+                    $Global->POST['InvoiceItem']['Quantity'] = str_replace( '.', ',', $tblInvoiceItem->getItemQuantity() );
+                    $Global->savePost();
+                }
 
                 $View->setContent(
                     new Layout(array(

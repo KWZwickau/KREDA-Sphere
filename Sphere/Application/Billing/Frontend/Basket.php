@@ -156,8 +156,11 @@ class Basket extends AbstractFrontend
             } else {
 
                 $Global = self::extensionSuperGlobal();
-                $Global->POST['Basket']['Name'] = $tblBasket->getName();
-                $Global->savePost();
+                if (!isset( $Global->POST['Basket']) )
+                {
+                    $Global->POST['Basket']['Name'] = $tblBasket->getName();
+                    $Global->savePost();
+                }
 
                 $View->setContent( Billing::serviceBasket()->executeEditBasket(
                     new Form( array(
@@ -483,9 +486,12 @@ class Basket extends AbstractFrontend
             } else {
 
                 $Global = self::extensionSuperGlobal();
-                $Global->POST['BasketItem']['Price'] = str_replace( '.', ',', $tblBasketItem->getPrice() );
-                $Global->POST['BasketItem']['Quantity'] = str_replace( '.', ',', $tblBasketItem->getQuantity() );
-                $Global->savePost();
+                if (!isset( $Global->POST['BasketItem']) )
+                {
+                    $Global->POST['BasketItem']['Price'] = str_replace( '.', ',', $tblBasketItem->getPrice() );
+                    $Global->POST['BasketItem']['Quantity'] = str_replace( '.', ',', $tblBasketItem->getQuantity() );
+                    $Global->savePost();
+                }
 
                 $View->setContent(
                     new Layout( array(

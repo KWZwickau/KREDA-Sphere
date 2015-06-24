@@ -183,12 +183,15 @@ class Account extends AbstractFrontend
             } else {
 
                 $Global = self::extensionSuperGlobal();
-                $Global->POST['Account']['Description'] = $tblAccount->getDescription();
-                $Global->POST['Account']['Number'] = $tblAccount->getNumber();
-                $Global->POST['Account']['IsActive'] = $tblAccount->getIsActive();
-                $Global->POST['Account']['tblAccountKey'] = $tblAccount->getTblAccountKey()->getId();
-                $Global->POST['Account']['tblAccountType'] = $tblAccount->getTblAccountType()->getId();
-                $Global->savePost();
+                if (!isset( $Global->POST['Account']) )
+                {
+                    $Global->POST['Account']['Description'] = $tblAccount->getDescription();
+                    $Global->POST['Account']['Number'] = $tblAccount->getNumber();
+                    $Global->POST['Account']['IsActive'] = $tblAccount->getIsActive();
+                    $Global->POST['Account']['tblAccountKey'] = $tblAccount->getTblAccountKey()->getId();
+                    $Global->POST['Account']['tblAccountType'] = $tblAccount->getTblAccountType()->getId();
+                    $Global->savePost();
+                }
 
                 $View->setContent(Billing::serviceAccount()->executeEditAccount(
                     new Form( array(
