@@ -258,7 +258,7 @@ class Banking extends EntityAction
             $View->setError( 'Reference[Reference]', 'Bitte geben sie eine Mandatsreferenz an' );
             $Error = true;
         }
-        if (isset($Reference['Reference']) && Billing::serviceBanking()->entityReferenceByReference( $Reference['Reference'])) {
+        if (isset($Reference['Reference']) && Billing::serviceBanking()->entityReferenceByReferenceActive( $Reference['Reference'])) {
             $View->setError('Reference[Reference]', 'Die Mandatsreferenz exisitiert bereits. Bitte geben Sie eine andere an');
             $Error = true;
         }
@@ -275,7 +275,7 @@ class Banking extends EntityAction
                 Billing::serviceCommodity()->entityCommodityById( $Reference['Commodity'] ));
 
             return new Success( 'Die Referenz ist erfasst worden' )
-            .new Redirect( '/Sphere/Billing/Banking/Debtor/Edit', 0, array( 'Id' => $Debtor->getId() ) );
+            .new Redirect( '/Sphere/Billing/Banking/Debtor/Reference', 0, array( 'Id' => $Debtor->getId() ) );
         }
 
         return $View;
@@ -321,12 +321,12 @@ class Banking extends EntityAction
         }
         if ($this->actionDeactivateReference( $tblReference )) {
             return new Success('Die Deaktivierung ist erfasst worden')
-            . new Redirect('/Sphere/Billing/Banking/Debtor/Edit', 2, array( 'Id' => $tblReference->getServiceBillingBanking()->getId() ) );
+            . new Redirect('/Sphere/Billing/Banking/Debtor/Reference', 2, array( 'Id' => $tblReference->getServiceBillingBanking()->getId() ) );
         }
         else
         {
             return new Danger( 'Die Referenz konnte nicht deaktiviert werden' )
-            .new Redirect( '/Sphere/Billing/Banking/Debtor/Edit', 2, array( 'Id' => $tblReference->getServiceBillingBanking()->getId() ) );
+            .new Redirect( '/Sphere/Billing/Banking/Debtor/Reference', 2, array( 'Id' => $tblReference->getServiceBillingBanking()->getId() ) );
         }
     }
 
@@ -391,7 +391,7 @@ class Banking extends EntityAction
                 $Debtor['LeadTimeFollow']
             )) {
                 $View .= new Success( 'Änderungen sind erfasst' )
-                    .new Redirect( '/Sphere/Billing/Banking/Debtor/Edit', 2, array( 'Id' => $tblDebtor->getId() ) );
+                    .new Redirect( '/Sphere/Billing/Banking/Debtor/View', 2, array( 'Id' => $tblDebtor->getId() ) );
             } else {
                 $View .= new Danger( 'Änderungen konnten nicht gespeichert werden' )
                     .new Redirect( '/Sphere/Billing/Banking', 2);
@@ -449,6 +449,16 @@ class Banking extends EntityAction
     public function entityReferenceByReference ( $Reference )
     {
         return parent::entityReferenceByReference( $Reference );
+    }
+
+    /**
+     * @param $Reference
+     *
+     * @return bool|TblReference
+     */
+    public function entityReferenceByReferenceActive ( $Reference )
+    {
+        return parent::entityReferenceByReferenceActive( $Reference );
     }
 
     /**

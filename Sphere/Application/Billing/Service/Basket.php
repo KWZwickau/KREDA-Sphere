@@ -46,6 +46,17 @@ class Basket extends EntityAction
     }
 
     /**
+     * @param $Id
+     *
+     * @return bool|TblBasket
+     */
+    public function entityBasketById( $Id)
+    {
+
+        return parent::entityBasketById( $Id);
+    }
+
+    /**
      * @return bool|\KREDA\Sphere\Application\Billing\Service\Basket\Entity\TblBasket[]
      */
     public function entityBasketAll()
@@ -147,6 +158,18 @@ class Basket extends EntityAction
     {
 
         return parent::entityBasketCommodityDebtorAllByBasketCommodity( $tblBasketCommodity );
+    }
+
+
+    /**
+     * @param TblBasket $tblBasket
+     *
+     * @return bool|TblBasketItem[]
+     */
+    public function entityBasketItemAllByBasket( TblBasket $tblBasket)
+    {
+
+        return parent::entityBasketItemAllByBasket( $tblBasket);
     }
 
     /**
@@ -465,6 +488,10 @@ class Basket extends EntityAction
         }
 
         if (!$Error) {
+            //destroy TempTables
+            $this->actionDestroyBasketCommodity( $tblBasket );
+            Billing::serviceInvoice()->executeDestroyTempInvoice( $tblBasket );
+
             if ($this->checkDebtors( $tblBasket, null )) {
                 if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Basket['Date'] )) {
                     $View .= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
@@ -485,22 +512,14 @@ class Basket extends EntityAction
         return $View;
     }
 
-    /**
-     * @param TblBasket $tblBasket
-     *
-     * @return bool|TblBasketItem[]
-     */
-    public function entityBasketItemAllByBasket( TblBasket $tblBasket)
-    {
 
-        return parent::entityBasketItemAllByBasket( $tblBasket);
-    }
 
     /**
      * @param AbstractType $View
      * @param              $Id
      * @param              $Date
      * @param              $Data
+     * @param              $Save
      *
      * @return AbstractType|string
      */
@@ -508,20 +527,22 @@ class Basket extends EntityAction
         AbstractType &$View = null,
         $Id,
         $Date,
-        $Data
+        $Data,
+        $Save
     )
     {
         /**
          * Skip to Frontend
          */
-        if (null === $Data
+        if (null === $Data && null === $Save
         ) {
             return $View;
         }
 
+        $isSave = $Save == 2;
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id);
 
-        if ($this->checkDebtors( $tblBasket, $Data)) {
+        if ($this->checkDebtors( $tblBasket, $Data, $isSave)) {
             if (Billing::serviceInvoice()->executeCreateInvoiceListFromBasket( $tblBasket, $Date)) {
                 $View .= new Success( 'Die Rechnungen wurden erfolgreich erstellt' )
                     .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed', 2 );
@@ -535,14 +556,5 @@ class Basket extends EntityAction
         return $View;
     }
 
-    /**
-     * @param $Id
-     *
-     * @return bool|TblBasket
-     */
-    public function entityBasketById( $Id)
-    {
 
-        return parent::entityBasketById( $Id);
-    }
 }

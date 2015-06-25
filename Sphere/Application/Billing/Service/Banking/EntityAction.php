@@ -322,6 +322,11 @@ abstract class EntityAction extends EntitySchema
         {
             $Entity->setReferenceDate( new \DateTime( $ReferenceDate ) );
         }
+        else
+        {
+            date_default_timezone_set( 'Europe/Berlin' );
+            $Entity->setReferenceDate( new \DateTime( 'now' ) );
+        }
         $Manager->saveEntity( $Entity );
 
         System::serviceProtocol()->executeCreateInsertEntry( $this->getDatabaseHandler()->getDatabaseName(), $Entity );
@@ -414,6 +419,19 @@ abstract class EntityAction extends EntitySchema
     {
         $Entity = $this->getEntityManager()->getEntity( 'TblReference' )
         ->findOneBy( array( TblReference::ATTR_REFERENCE => $Reference) );
+        return ( null === $Entity ? false : $Entity );
+    }
+
+    /**
+     * @param $Reference
+     *
+     * @return bool|TblReference
+     */
+    protected function entityReferenceByReferenceActive ( $Reference )
+    {
+        $Entity = $this->getEntityManager()->getEntity( 'TblReference' )
+            ->findOneBy( array( TblReference::ATTR_REFERENCE => $Reference,
+                                TblReference::ATTR_IS_VOID => false ) );
         return ( null === $Entity ? false : $Entity );
     }
 

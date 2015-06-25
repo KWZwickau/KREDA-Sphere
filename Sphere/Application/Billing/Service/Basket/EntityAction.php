@@ -164,12 +164,14 @@ abstract class EntityAction extends EntitySchema
     /**
      * @param TblBasket $tblBasket
      * @param           $Data
+     * @param           $IsSave
      *
      * @return bool
      */
     protected function checkDebtors(
         TblBasket $tblBasket,
-        $Data
+        $Data,
+        $IsSave = false
     ) {
 
         if ($Data !== null) {
@@ -183,7 +185,12 @@ abstract class EntityAction extends EntitySchema
                     $tblBasketCommodity->getServiceBillingCommodity());
 
                 // auto add DebtorCommodity
-                // Billing::serviceBanking()->executeAddDebtorCommodity($tblBasketCommodityDebtor->getServiceBillingDebtor(), $tblBasketCommodity->getServiceBillingCommodity());
+                if ($IsSave)
+                {
+                    Billing::serviceBanking()->executeAddDebtorCommodity(
+                        $tblBasketCommodityDebtor->getServiceBillingDebtor(), $tblBasketCommodity->getServiceBillingCommodity()
+                    );
+                }
             }
 
             return true;
@@ -218,7 +225,7 @@ abstract class EntityAction extends EntitySchema
                     $tblPersonRelationshipList = Management::servicePerson()->entityPersonRelationshipAllByPerson( $tblPerson );
                     if (!empty( $tblPersonRelationshipList )) {
                         foreach ($tblPersonRelationshipList as $tblPersonRelationship) {
-                            if ($tblPerson->getId() === $tblPersonRelationship->getTblPersonA()) {
+                            if ($tblPerson->getId() === $tblPersonRelationship->getTblPersonA()->getId()) {
                                 $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson( $tblPersonRelationship->getTblPersonB() );
                             } else {
                                 $tblDebtorList = Billing::serviceBanking()->entityDebtorAllByPerson( $tblPersonRelationship->getTblPersonA() );
@@ -688,6 +695,42 @@ abstract class EntityAction extends EntitySchema
             System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
                 $Entity );
             $Manager->bulkKillEntity( $Entity );
+
+            $Manager->flushCache();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param TblBasket $tblBasket
+     *
+     * @return bool
+     */
+    protected function actionDestroyBasketCommodity(
+        TblBasket $tblBasket
+    ) {
+
+        if ($tblBasket !== null) {
+            $Manager = $this->getEntityManager();
+
+            /** @var  TblBasketCommodity[] $EntityList */
+            $EntityList = $Manager->getEntity( 'TblBasketCommodity' )->findBy( array( TblBasketCommodity::ATTR_TBL_BASKET => $tblBasket->getId() ) );
+            foreach ($EntityList as $Entity) {
+                $EntitySubList = $Manager->getEntity( 'TblBasketCommodityDebtor' )->findBy( array(
+                    TblBasketCommodityDebtor::ATTR_TBL_BASKET_COMMODITY => $Entity->getId()
+                ) );
+                foreach ($EntitySubList as $SubEntity) {
+                    System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                        $SubEntity );
+                    $Manager->bulkKillEntity( $SubEntity );
+                }
+                System::serviceProtocol()->executeCreateDeleteEntry( $this->getDatabaseHandler()->getDatabaseName(),
+                    $Entity );
+                $Manager->bulkKillEntity( $Entity );
+            }
 
             $Manager->flushCache();
 

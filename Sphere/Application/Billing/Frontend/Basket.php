@@ -36,6 +36,7 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutBadge;
 use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
@@ -155,8 +156,11 @@ class Basket extends AbstractFrontend
             } else {
 
                 $Global = self::extensionSuperGlobal();
-                $Global->POST['Basket']['Name'] = $tblBasket->getName();
-                $Global->savePost();
+                if (!isset( $Global->POST['Basket']) )
+                {
+                    $Global->POST['Basket']['Name'] = $tblBasket->getName();
+                    $Global->savePost();
+                }
 
                 $View->setContent( Billing::serviceBasket()->executeEditBasket(
                     new Form( array(
@@ -482,9 +486,12 @@ class Basket extends AbstractFrontend
             } else {
 
                 $Global = self::extensionSuperGlobal();
-                $Global->POST['BasketItem']['Price'] = str_replace( '.', ',', $tblBasketItem->getPrice() );
-                $Global->POST['BasketItem']['Quantity'] = str_replace( '.', ',', $tblBasketItem->getQuantity() );
-                $Global->savePost();
+                if (!isset( $Global->POST['BasketItem']) )
+                {
+                    $Global->POST['BasketItem']['Price'] = str_replace( '.', ',', $tblBasketItem->getPrice() );
+                    $Global->POST['BasketItem']['Quantity'] = str_replace( '.', ',', $tblBasketItem->getQuantity() );
+                    $Global->savePost();
+                }
 
                 $View->setContent(
                     new Layout( array(
@@ -804,10 +811,11 @@ class Basket extends AbstractFrontend
      * @param $Id
      * @param $Date
      * @param $Data
+     * @param $Save
      *
      * @return Stage
      */
-    public static function frontendBasketDebtorSelect( $Id, $Date, $Data )
+    public static function frontendBasketDebtorSelect( $Id, $Date, $Data, $Save )
     {
 
         $View = new Stage();
@@ -816,6 +824,12 @@ class Basket extends AbstractFrontend
         $View->setMessage( 'Es konnten im Warenkorb nicht zu alle Personen bei allen Leistungen eindeutig ein Debitor
             ermittelt werden. Es werden alle nicht automatisch zuordenbaren Kombinationen von Personen und Leistungen
             angezeigt. Bitte weisen Sie die entsprechenden Debitoren zu' );
+
+        $Global = self::extensionSuperGlobal();
+        if( !isset( $Global->POST['Save'] ) ) {
+            $Global->POST['Save'] = 1;
+        }
+        $Global->savePost();
 
         $tblBasket = Billing::serviceBasket()->entityBasketById( $Id );
         $tblBasketCommodityList = Billing::serviceBasket()->entityBasketCommodityAllByBasket( $tblBasket );
@@ -829,7 +843,8 @@ class Basket extends AbstractFrontend
             $tblBasketCommodity->Select = new SelectBox( 'Data['.$tblBasketCommodity->getId().']', '', array(
                 '{{ ServiceBillingDebtor.DebtorNumber }}'
                 .' - {{ ServiceBillingDebtor.ServiceManagementPerson.FullName }}'
-                .'{% if( ServiceBillingDebtor.Description is not empty) %} - {{ ServiceBillingDebtor.Description }}{% endif %}' => $tblBasketCommodityDebtorList
+                .'{% if( ServiceBillingDebtor.Description is not empty) %} - {{ ServiceBillingDebtor.Description }}{% endif %}'
+                => $tblBasketCommodityDebtorList
             ) );
         } );
 
@@ -871,7 +886,7 @@ class Basket extends AbstractFrontend
                                             new FormColumn(
                                                 new SelectBox( 'Save', '', array(
                                                     1 => 'Nicht speichern',
-                                                    2 => 'Als default speichern'
+                                                    2 => 'Als Standard speichern'
                                                 ) )
                                                 , 3 ),
                                             new FormColumn(
@@ -880,7 +895,7 @@ class Basket extends AbstractFrontend
                                         ) )
                                     ) )
                                 )
-                                , $Id, $Date, $Data
+                                , $Id, $Date, $Data, $Save
                             )
                         )
                     ) )

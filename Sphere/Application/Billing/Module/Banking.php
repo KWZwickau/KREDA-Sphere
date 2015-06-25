@@ -60,24 +60,28 @@ class Banking extends Common
         )   ->setParameterDefault( 'Id', null )
             ->setParameterDefault( 'CommodityId', null );
 
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Banking/Reference/Select', __CLASS__.'::frontendBankingReferenceSelect'
-        )   ->setParameterDefault( 'Id', null )
-            ->setParameterDefault( 'Reference', null );
-
-        self::registerClientRoute( self::$Configuration,
-            '/Sphere/Billing/Banking/Reference/Delete', __CLASS__.'::frontendBankingReferenceDelete'
-        )   ->setParameterDefault( 'Id', null );
+//        self::registerClientRoute( self::$Configuration,
+//            '/Sphere/Billing/Banking/Reference/Delete', __CLASS__.'::frontendBankingReferenceDelete'
+//        )   ->setParameterDefault( 'Id', null );
 
         self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Banking/Reference/Select/Deactivate', __CLASS__.'::frontendBankingReferenceDeactivate'
         )   ->setParameterDefault( 'Id', null );
 
         self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Debtor/View', __CLASS__.'::frontendBankingDebtorView'
+        )   ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
             '/Sphere/Billing/Banking/Debtor/Edit', __CLASS__.'::frontendBankingDebtorEdit'
         )   ->setParameterDefault( 'Debtor', null )
-            ->setParameterDefault( 'Reference', null )
             ->setParameterDefault( 'Id', null );
+
+        self::registerClientRoute( self::$Configuration,
+            '/Sphere/Billing/Banking/Debtor/Reference', __CLASS__.'::frontendBankingDebtorReference'
+        )   ->setParameterDefault( 'Reference', null )
+            ->setParameterDefault( 'Id', null );
+
     }
 
     /**
@@ -162,29 +166,17 @@ class Banking extends Common
         return Frontend::frontendBankingCommodityAdd( $Id, $CommodityId );
     }
 
-    /**
-     * @param $Id
-     *
-     * @return Stage
-     */
-    public static function frontendBankingReferenceSelect( $Id, $Reference )
-    {
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::frontendBankingReferenceSelect( $Id, $Reference );
-    }
-
-    /**
-     * @param $Id
-     *
-     * @return Stage
-     */
-    public static function frontendBankingReferenceDelete( $Id )
-    {
-        self::setupModuleNavigation();
-        self::setupApplicationNavigation();
-        return Frontend::frontendBankingReferenceDelete( $Id );
-    }
+//    /**
+//     * @param $Id
+//     *
+//     * @return Stage
+//     */
+//    public static function frontendBankingReferenceDelete( $Id )
+//    {
+//        self::setupModuleNavigation();
+//        self::setupApplicationNavigation();
+//        return Frontend::frontendBankingReferenceDelete( $Id );
+//    }
 
     /**
      * @param $Id
@@ -201,15 +193,39 @@ class Banking extends Common
     /**
      * @param $Id
      * @param $Debtor
+     *
+     * @return Stage
+     */
+    public static function frontendBankingDebtorEdit( $Id, $Debtor )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingDebtorEdit( $Id, $Debtor );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
+    public static function frontendBankingDebtorView( $Id )
+    {
+        self::setupModuleNavigation();
+        self::setupApplicationNavigation();
+        return Frontend::frontendBankingDebtorView( $Id );
+    }
+
+    /**
+     * @param $Id
      * @param $Reference
      *
      * @return Stage
      */
-    public static function frontendBankingDebtorEdit( $Id, $Debtor, $Reference )
+    public static function frontendBankingDebtorReference( $Id, $Reference )
     {
         self::setupModuleNavigation();
         self::setupApplicationNavigation();
-        return Frontend::frontendBankingDebtorEdit( $Id, $Debtor, $Reference );
+        return Frontend::frontendBankingDebtorReference( $Id, $Reference );
     }
 
 }

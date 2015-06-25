@@ -451,4 +451,15 @@ class Invoice extends EntityAction
             .new Redirect( '/Sphere/Billing/Invoice/IsNotConfirmed/Edit', 2, array( 'Id' => $tblInvoice->getId() ) );
         }
     }
+
+    /**
+     * @param TblBasket $tblBasket
+     * @return bool
+     */
+    public function executeDestroyTempInvoice(
+        TblBasket $tblBasket
+    )
+    {
+        return $this->actionDestroyTempInvoice( $tblBasket );
+    }
 }
