@@ -20,6 +20,7 @@ use KREDA\Sphere\Client\Frontend\Form\Structure\FormRow;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
 use KREDA\Sphere\Client\Frontend\Input\Type\TextField;
 use KREDA\Sphere\Client\Frontend\Input\Type\SelectBox;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutLabel;
 use KREDA\Sphere\Client\Frontend\Message\Type\Warning;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
 use KREDA\Sphere\Common\AbstractFrontend;
@@ -55,7 +56,7 @@ class Account extends AbstractFrontend
                 $tblAccount->Typ = $tblAccount->getTblAccountType()->getName();
                 if( $tblAccount->getIsActive()=== true )
                 {
-                    $tblAccount->Activity = new \KREDA\Sphere\Client\Frontend\Message\Type\Success( 'Aktiviert' );
+                    $tblAccount->Activity = new LayoutLabel( 'Aktiviert', LayoutLabel::LABEL_TYPE_SUCCESS );
                     $tblAccount->Option =
                         (new Danger( 'Deaktivieren', '/Sphere/Billing/Account/Deactivate',
                             new DisableIcon(), array(
@@ -64,7 +65,7 @@ class Account extends AbstractFrontend
                 }
                 else
                 {
-                    $tblAccount->Activity = new \KREDA\Sphere\Client\Frontend\Message\Type\Danger( 'Deaktiviert' );
+                    $tblAccount->Activity = new LayoutLabel( 'Deaktiviert', LayoutLabel::LABEL_TYPE_DANGER );
                     $tblAccount->Option =
                         (new Success( 'Aktivieren', '/Sphere/Billing/Account/Activate',
                             new OkIcon(), array(

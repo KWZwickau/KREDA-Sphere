@@ -17,7 +17,6 @@ use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\DisableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EditIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\EnableIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\GroupIcon;
-use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ListIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MinusIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\MoneyIcon;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\NameplateIcon;
@@ -39,9 +38,10 @@ use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutGroup;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutRow;
 use KREDA\Sphere\Client\Frontend\Layout\Structure\LayoutTitle;
 use KREDA\Sphere\Client\Frontend\Layout\Type\Layout;
+use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutLabel;
 use KREDA\Sphere\Client\Frontend\Layout\Type\LayoutPanel;
-use KREDA\Sphere\Client\Frontend\Message\Type\Success;
 use KREDA\Sphere\Client\Frontend\Table\Type\TableData;
+use KREDA\Sphere\Client\Frontend\Text\Type\Success;
 use KREDA\Sphere\Common\AbstractFrontend;
 use KREDA\Sphere\Client\Frontend\Button\Link\Primary;
 use KREDA\Sphere\Client\Frontend\Form\Type\Form;
@@ -128,15 +128,7 @@ class Banking extends AbstractFrontend
                 }
 
                 $tblDebtor->Edit =
-                    (new Primary( 'Leistungen auswählen', '/Sphere/Billing/Banking/Commodity/Select',
-                        new ListIcon(), array(
-                            'Id' => $tblDebtor->getId()
-                        ) ))->__toString().
-                    (new Primary( 'Referenzen', '/Sphere/Billing/Banking/Debtor/Reference',
-                        new EditIcon(), array(
-                            'Id' => $tblDebtor->getId()
-                        ) ) )->__toString().
-                    (new Primary( 'Bearbeiten', '/Sphere/Billing/Banking/Debtor/Edit',
+                    (new Primary( 'Bearbeiten', '/Sphere/Billing/Banking/Debtor/View',
                         new EditIcon(), array(
                             'Id' => $tblDebtor->getId()
                         ) ) )->__toString().
@@ -151,11 +143,11 @@ class Banking extends AbstractFrontend
                 $Owner = $tblDebtor->getOwner();
                 if(!empty( $Bankname ) && !empty( $IBAN ) && !empty( $BIC ) && !empty( $Owner ) )
                 {
-                    $tblDebtor->BankInformation = new Success( new EnableIcon().' OK' );
+                    $tblDebtor->BankInformation = new LayoutLabel( new EnableIcon().' OK', LayoutLabel::LABEL_TYPE_SUCCESS );
                 }
                 else
                 {
-                    $tblDebtor->BankInformation = new \KREDA\Sphere\Client\Frontend\Message\Type\Danger( new DisableIcon().' Nicht OK' );
+                    $tblDebtor->BankInformation = new LayoutLabel( new DisableIcon().' Nicht OK', LayoutLabel::LABEL_TYPE_DANGER );
                 }
 
             } );
@@ -190,6 +182,126 @@ class Banking extends AbstractFrontend
      *
      * @return Stage
      */
+    public static function frontendBankingDebtorView( $Id )
+    {
+        $View = new Stage();
+        $View->setTitle('Debitor');
+        $View->addButton( new Primary('Zurück', '/Sphere/Billing/Banking', new ChevronLeftIcon()) );
+        $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
+        $tblPerson = $tblDebtor->getServiceManagementPerson();
+
+        $View->setContent(
+            new Layout(array(
+                new LayoutGroup( array(
+                    new LayoutRow( array(
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'Name Debitor', $tblPerson->getFullName(), LayoutPanel::PANEL_TYPE_INFO )
+                        ), 4),
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'Debitornummer', $tblDebtor->getDebtorNumber(), LayoutPanel::PANEL_TYPE_INFO )
+                        ), 4),
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'Bezahlart', $tblDebtor->getPaymentType()->getName(), LayoutPanel::PANEL_TYPE_WARNING )
+                        ), 4),
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'Kontoinhaber', $tblDebtor->getOwner(), LayoutPanel::PANEL_TYPE_WARNING )
+                        ), 4),
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'IBAN', $tblDebtor->getIBAN(), LayoutPanel::PANEL_TYPE_WARNING )
+                        ), 4),
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'BIC', $tblDebtor->getBIC(), LayoutPanel::PANEL_TYPE_WARNING )
+                        ), 4),
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'Bank', $tblDebtor->getBankName(), LayoutPanel::PANEL_TYPE_DEFAULT )
+                        ), 4),
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'Bankzeichen', $tblDebtor->getCashSign(), LayoutPanel::PANEL_TYPE_DEFAULT )
+                        ), 4),
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'Ersteinzug', $tblDebtor->getLeadTimeFirst(), LayoutPanel::PANEL_TYPE_DEFAULT )
+                        ), 2),
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'Folgeeinzug', $tblDebtor->getLeadTimeFollow(), LayoutPanel::PANEL_TYPE_DEFAULT )
+                        ), 2),
+                        new LayoutColumn( array(
+                            new LayoutPanel( 'Beschreibung', $tblDebtor->getDescription(), LayoutPanel::PANEL_TYPE_DEFAULT )
+                        ), 12),
+                    ))
+                ), new LayoutTitle( 'Bankdaten' ))
+            ))
+            .new Primary( 'Bearbeiten', '/Sphere/Billing/Banking/Debtor/Edit', null, array( 'Id' => $Id ) )
+            .self::layoutCommodityDebtor( $tblDebtor )
+            .new Primary( 'Bearbeiten', '/Sphere/Billing/Banking/Commodity/Select', null, array( 'Id' => $Id ) )
+            .self::layoutReference( $tblDebtor )
+            .new Primary( 'Bearbeiten', '/Sphere/Billing/Banking/Debtor/Reference', null, array( 'Id' => $Id ) )
+        );
+
+        return $View;
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     *
+     * @return Layout
+     */
+    public static function layoutCommodityDebtor( TblDebtor $tblDebtor )
+    {
+        $tblCommodityList = Billing::serviceBanking()->entityCommodityAllByDebtor( $tblDebtor );
+        if (!empty( $tblCommodityList ))
+        {
+            /** @var TblCommodity $tblCommodity */
+            foreach ($tblCommodityList as $Key => &$tblCommodity)
+            {
+
+                $tblReference = Billing::serviceBanking()->entityReferenceByDebtorAndCommodity( $tblDebtor, $tblCommodity );
+
+                if($tblReference)
+                {
+                    $tblCommodity = new LayoutColumn(array(
+                        new LayoutPanel( $tblCommodity->getName(),null, LayoutPanel::PANEL_TYPE_SUCCESS ) ),3);
+                }
+                else
+                {
+                    $tblCommodity = new LayoutColumn(array(
+                        new LayoutPanel( $tblCommodity->getName(),null, LayoutPanel::PANEL_TYPE_DANGER ) ),3);
+                }
+            }
+        }
+        return new Layout(
+            new LayoutGroup( new LayoutRow( $tblCommodityList ), new LayoutTitle( 'Leistungen' ) )
+        );
+    }
+
+    /**
+     * @param TblDebtor $tblDebtor
+     *
+     * @return Layout
+     */
+    public static function layoutReference( TblDebtor $tblDebtor )
+    {
+        $tblReferenceList = Billing::serviceBanking()->entityReferenceByDebtor( $tblDebtor );
+        if (!empty($tblReferenceList))
+        {
+            /** @var TblReference $tblReference */
+            foreach ($tblReferenceList as $Key => &$tblReference)
+            {
+                $Reference = $tblReference->getServiceBillingCommodity()->getName();
+
+                $tblReference = new LayoutColumn(array(
+                    new LayoutPanel( $Reference, $tblReference->getReference(), LayoutPanel::PANEL_TYPE_SUCCESS ) ),3);
+            }
+        }
+        return new Layout(
+            new LayoutGroup( new LayoutRow( $tblReferenceList ), new LayoutTitle( 'Referenzen' ) )
+        );
+    }
+
+    /**
+     * @param $Id
+     *
+     * @return Stage
+     */
     public static function frontendBankingDelete( $Id )
     {
         $View = new Stage();
@@ -212,7 +324,9 @@ class Banking extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Leistungen' );
         $View->setDescription( 'Hinzufügen' );
-        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking', new ChevronLeftIcon() ) );
+        $View->setMessage( 'Gibt es mehrere Debitoren für eine Person, kann über die Leistung bestimmt werden, welcher Debitor welche Leistung bezahlen soll.<br />
+                            Ist die Vorauswahl nicht getroffen, wird bei unklarem Debitor an entsprechender Stelle gefragt.' );
+        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking/Debtor/View', new ChevronLeftIcon(), array( 'Id' => $Id ) ) );
 
         $IdPerson = Billing::serviceBanking()->entityDebtorById( $Id )->getServiceManagementPerson();
         $tblPerson = Management::servicePerson()->entityPersonById( $IdPerson );
@@ -245,10 +359,21 @@ class Banking extends AbstractFrontend
         if (!empty( $tblDebtorCommodityList )) {
             array_walk( $tblDebtorCommodityList, function ( TblDebtorCommodity &$tblDebtorCommodity ) {
 
+                $tblReference = Billing::serviceBanking()->entityReferenceByDebtorAndCommodity( $tblDebtorCommodity->getTblDebtor(), $tblDebtorCommodity->getServiceBillingCommodity() );
+                if ($tblReference)
+                {
+                    $tblDebtorCommodity->Ready = new LayoutLabel( 'Ref. ok', LayoutLabel::LABEL_TYPE_SUCCESS );
+                }
+                else
+                {
+                    $tblDebtorCommodity->Ready = new LayoutLabel( 'Ref. fehlt', LayoutLabel::LABEL_TYPE_DANGER );
+                }
+
                 $tblCommodity = $tblDebtorCommodity->getServiceBillingCommodity();
                 $tblDebtorCommodity->Name = $tblCommodity->getName();
                 $tblDebtorCommodity->Description = $tblCommodity->getDescription();
                 $tblDebtorCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
+
                 $tblDebtorCommodity->Option =
                     ( new Danger( 'Entfernen', '/Sphere/Billing/Banking/Commodity/Remove',
                         new MinusIcon(), array(
@@ -259,6 +384,18 @@ class Banking extends AbstractFrontend
 
         if (!empty( $tblCommodityAll )) {
             array_walk( $tblCommodityAll, function ( TblCommodity &$tblCommodity, $Index, TblDebtor $tblDebtor ) {
+
+                $tblReference = Billing::serviceBanking()->entityReferenceByDebtorAndCommodity( $tblDebtor, $tblCommodity );
+
+                if ($tblReference)
+                {
+                    $tblCommodity->Ready = new LayoutLabel( 'Ref. ok', LayoutLabel::LABEL_TYPE_SUCCESS );
+                }
+                else
+                {
+                    $tblCommodity->Ready = new LayoutLabel( 'Ref. fehlt', LayoutLabel::LABEL_TYPE_DANGER );
+                }
+
                 $tblCommodity->Type = $tblCommodity->getTblCommodityType()->getName();
                 $tblCommodity->Option =
                     ( new Primary( 'Hinzufügen', '/Sphere/Billing/Banking/Commodity/Add',
@@ -291,6 +428,7 @@ class Banking extends AbstractFrontend
                                         'Name'        => 'Name',
                                         'Description' => 'Beschreibung',
                                         'Type'        => 'Leistungsart',
+                                        'Ready'        => 'Referenz',
                                         'Option' => 'Option'
                                     ))
                                 ))
@@ -304,6 +442,7 @@ class Banking extends AbstractFrontend
                                         'Name'        => 'Name',
                                         'Description' => 'Beschreibung',
                                         'Type'        => 'Leistungsart',
+                                        'Ready'        => 'Referenz',
                                         'Option' => 'Option'
                                     ))
                                 ))
@@ -398,75 +537,22 @@ class Banking extends AbstractFrontend
         return $View;
     }
 
-    /**
-     * @param $Id
-     * @param $Reference
-     *
-     * @return Stage
-     */
-    public static function frontendBankingReferenceSelect( $Id, $Reference )
-    {
-        $View = new Stage();
-        $View->setTitle( 'Referenz' );
-        $View->setDescription( 'hinzufügen' );
-        $Debtor = Billing::serviceBanking()->entityDebtorById( $Id );
-        $Person = Management::servicePerson()->entityPersonById( $Debtor->getServiceManagementPerson()->getId() )->getFullName();
-        $DebtorNumber = $Debtor->getDebtorNumber();
-        $View->setMessage( $Person );
-        $View->setContent(
-            new Layout( array(
-                new LayoutGroup( array(
-                    new LayoutRow( array(
-                        new LayoutColumn( array(
-                            new LayoutPanel( 'Debitor', $Person, LayoutPanel::PANEL_TYPE_PRIMARY
-                            )),6),
-                        new LayoutColumn( array(
-                            new LayoutPanel( 'Debitornummer', $DebtorNumber, LayoutPanel::PANEL_TYPE_PRIMARY
-                            )),6),
-                    ))
-                )),
-                new LayoutGroup( array(
-                    new LayoutRow( array(
-                        new LayoutColumn( array(
-                                Billing::serviceBanking()->executeAddReference(
-                                    new Form( array(
-                                        new FormGroup( array(
-                                            new FormRow( array(
-                                                new FormColumn(
-                                                    new TextField( 'Reference[Reference]', 'Referenznummer', 'Referenz', new BarCodeIcon()
-                                                    ), 6),
-                                                new FormColumn(
-                                                    new DatePicker( 'Reference[ReferenceDate]', 'Datum', 'Referenzdatum', new TimeIcon()
-                                                    ), 6),
-                                            )),
-                                        ))
-                                    ),  new SubmitPrimary( 'Hinzufügen' ))
-                                , $Debtor, $Reference )
-                            ))
-                        ))
-                    ))
-                ))
-            );
-
-        return $View;
-    }
-
-    /**
-     * @param $Id
-     *
-     * @return Stage
-     */
-    public static function frontendBankingReferenceDelete( $Id )
-    {
-        $View = new Stage();
-        $View->setTitle( 'Referenz' );
-        $View->setDescription( 'entfernt' );
-        $Debtor = Billing::serviceBanking()->entityDebtorById( $Id );
-        $View->setContent(
-            Billing::serviceBanking()->executeDeleteReference( $Debtor ) );
-
-        return $View;
-    }
+//    /**
+//     * @param $Id
+//     *
+//     * @return Stage
+//     */
+//    public static function frontendBankingReferenceDelete( $Id )
+//    {
+//        $View = new Stage();
+//        $View->setTitle( 'Referenz' );
+//        $View->setDescription( 'entfernt' );
+//        $Debtor = Billing::serviceBanking()->entityDebtorById( $Id );
+//        $View->setContent(
+//            Billing::serviceBanking()->executeDeleteReference( $Debtor ) );
+//
+//        return $View;
+//    }
 
     /**
      * @param $Id
@@ -496,7 +582,7 @@ class Banking extends AbstractFrontend
         $View = new Stage();
         $View->setTitle( 'Bankdaten' );
         $View->setDescription( 'bearbeiten' );
-        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking', new ChevronLeftIcon() ) );
+        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking/Debtor/View', new ChevronLeftIcon(), array( 'Id' => $Id ) ) );
         $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
         $Person = Management::servicePerson()->entityPersonById( $tblDebtor->getServiceManagementPerson() );
         if (!empty($Person))
@@ -533,10 +619,10 @@ class Banking extends AbstractFrontend
                     new LayoutGroup( array(
                         new LayoutRow( array(
                             new LayoutColumn( array(
-                                new LayoutPanel( new PersonIcon(). ' Person', $Name, LayoutPanel::PANEL_TYPE_WARNING )
+                                new LayoutPanel( new PersonIcon(). ' Person', $Name, LayoutPanel::PANEL_TYPE_SUCCESS )
                             ),6),
                             new LayoutColumn( array(
-                                new LayoutPanel( new BarCodeIcon(). ' Debitornummer', $DebtorNumber, LayoutPanel::PANEL_TYPE_WARNING )
+                                new LayoutPanel( new BarCodeIcon(). ' Debitornummer', $DebtorNumber, LayoutPanel::PANEL_TYPE_SUCCESS )
                             ),6),
                             new LayoutColumn( array(
                                 Billing::serviceBanking()->executeEditDebtor(
@@ -595,7 +681,7 @@ class Banking extends AbstractFrontend
         $View->setMessage( 'Die Referenzen sind eine vom Auftraggeber der Zahlung vergebene Kennzeichnung.<br />
                             Hier kann z.B. eine Vertrags- oder Rechnungsnummer eingetragen werden.<br />
                             Referenzen müssen eindeutig sein!' );
-        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking', new ChevronLeftIcon() ) );
+        $View->addButton( new Primary( 'Zurück','/Sphere/Billing/Banking/Debtor/View', new ChevronLeftIcon(), array( 'Id' => $Id ) ) );
         $tblDebtor = Billing::serviceBanking()->entityDebtorById( $Id );
         $Person = Management::servicePerson()->entityPersonById( $tblDebtor->getServiceManagementPerson() );
         if (!empty($Person))
@@ -632,6 +718,16 @@ class Banking extends AbstractFrontend
                 else
                 { $ReferenceEntity->Commodity = 'Leistung nicht vorhanden'; }
 
+                $tblComparList = Billing::serviceBanking()->entityDebtorCommodityAllByDebtorAndCommodity( $ReferenceEntity->getServiceBillingBanking(), $ReferenceEntity->getServiceBillingCommodity() );
+
+                if($tblComparList)
+                {
+                    $ReferenceEntity->Usage = new Success( new EnableIcon().' In Verwendung' );
+                }
+                else
+                {
+                    $ReferenceEntity->Usage = '';
+                }
 
                 $ReferenceEntity->Option =
                     (new Danger( 'Deaktivieren', '/Sphere/Billing/Banking/Reference/Select/Deactivate',
@@ -663,10 +759,10 @@ class Banking extends AbstractFrontend
                 new LayoutGroup( array(
                     new LayoutRow( array(
                         new LayoutColumn( array(
-                            new LayoutPanel( new PersonIcon(). ' Person', $Name, LayoutPanel::PANEL_TYPE_WARNING )
+                            new LayoutPanel( new PersonIcon(). ' Person', $Name, LayoutPanel::PANEL_TYPE_SUCCESS )
                         ),6),
                         new LayoutColumn( array(
-                            new LayoutPanel( new BarCodeIcon(). ' Debitornummer', $DebtorNumber, LayoutPanel::PANEL_TYPE_WARNING )
+                            new LayoutPanel( new BarCodeIcon(). ' Debitornummer', $DebtorNumber, LayoutPanel::PANEL_TYPE_SUCCESS )
                         ),6),
                     ))
                 )),
@@ -703,6 +799,7 @@ class Banking extends AbstractFrontend
                                                 'Reference' => 'Mandatsreferenz',
                                                 'ReferenceDate' => 'Datum',
                                                 'Commodity' => 'Leistung',
+                                                'Usage' => 'Benutzung',
                                                 'Option' => 'Deaktivieren'
                                             ))
                                     ))
@@ -784,10 +881,10 @@ class Banking extends AbstractFrontend
                     ( empty( $tblStudent ) ) ?
                     new LayoutRow( array(
                         new LayoutColumn( array(
-                            new LayoutPanel( new PersonIcon().' Debitor', $PersonName, LayoutPanel::PANEL_TYPE_WARNING
+                            new LayoutPanel( new PersonIcon().' Debitor', $PersonName, LayoutPanel::PANEL_TYPE_SUCCESS
                             )),6),
                         new LayoutColumn( array(
-                            new LayoutPanel( new GroupIcon().'. Personengruppe', $PersonType->getName(), LayoutPanel::PANEL_TYPE_WARNING
+                            new LayoutPanel( new GroupIcon().'. Personengruppe', $PersonType->getName(), LayoutPanel::PANEL_TYPE_SUCCESS
                             )),6),
                     )): null,
                     ( !empty( $tblStudent ) ) ?
