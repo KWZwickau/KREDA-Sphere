@@ -28,6 +28,7 @@ class Style extends AbstractExtension
         $this->setSource( '/Library/Bootstrap.Glyphicons/1.9.0/glyphicons_social/web/html_css/css/glyphicons-social.css' );
         $this->setSource( '/Library/Bootstrap.FileInput/4.1.6/css/fileinput.min.css' );
         $this->setSource( '/Library/Bootstrap.Checkbox/0.3.3/awesome-bootstrap-checkbox.css' );
+        $this->setSource( '/Library/Bootstrap.Jasny/3.1.3/dist/css/jasny-bootstrap.min.css' );
 //        $this->setSource( '/Library/Bootstrap.Select/1.6.4/dist/css/bootstrap-select.min.css' );
         $this->setSource( '/Library/Bootflat/2.0.4/bootflat/css/bootflat.min.css' );
         $this->setSource( '/Library/Twitter.Typeahead.Bootstrap/1.0.0/typeaheadjs.css' );

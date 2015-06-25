@@ -14,6 +14,7 @@
         {% endif %}
         {% endif %}
         <input type="text" class="form-control" name="{{ ElementName }}" placeholder="{{ ElementPlaceholder }}"
+               {% if( ElementMask is not empty and ElementValue is empty ) %}data-mask="{{ ElementMask }}" {% endif %}
                value="{{ ElementValue }}"/>
         {{ ElementFeedbackIcon }}
         {% if( ElementIcon is not empty ) %}

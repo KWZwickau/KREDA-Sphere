@@ -17,12 +17,14 @@ class TextField extends AbstractType
      * @param null|string  $Placeholder
      * @param null|string  $Label
      * @param AbstractIcon $Icon
+     * @param null|string  $Mask 9: Number, a:Char, w:Alphanumeric, *:Any, ?:Optional (plus following)
      */
     public function __construct(
         $Name,
         $Placeholder = '',
         $Label = '',
-        AbstractIcon $Icon = null
+        AbstractIcon $Icon = null,
+        $Mask = null
     ) {
 
         parent::__construct( $Name );
@@ -32,6 +34,9 @@ class TextField extends AbstractType
         $this->Template->setVariable( 'ElementPlaceholder', $Placeholder );
         if (null !== $Icon) {
             $this->Template->setVariable( 'ElementIcon', $Icon );
+        }
+        if (null !== $Mask) {
+            $this->Template->setVariable( 'ElementMask', $Mask );
         }
     }
 

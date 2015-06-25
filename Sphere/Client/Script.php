@@ -88,6 +88,11 @@ class Script extends AbstractExtension
             "'undefined' !== typeof jQuery.fn.selectpicker"
         );
         $this->setSource(
+            'Bootstrap.Jasny',
+            '/Library/Bootstrap.Jasny/3.1.3/dist/js/jasny-bootstrap.min.js',
+            "'undefined' !== typeof jQuery.fn.inputmask"
+        );
+        $this->setSource(
             'Twitter.Typeahead', '/Library/Twitter.Typeahead/0.10.5/dist/typeahead.bundle.min.js',
             "'undefined' !== typeof jQuery.fn.typeahead"
         );
@@ -101,7 +106,7 @@ class Script extends AbstractExtension
          */
 
         $this->setModule(
-            'ModAlways', array( 'Bootstrap', 'jQuery.Ui', 'jQuery' )
+            'ModAlways', array( 'Bootstrap.Jasny', 'Bootstrap', 'jQuery.Ui', 'jQuery' )
         );
         $this->setModule(
             'ModTable',
