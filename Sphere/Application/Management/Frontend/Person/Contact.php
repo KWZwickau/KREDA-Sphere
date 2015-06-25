@@ -3,6 +3,7 @@ namespace KREDA\Sphere\Application\Management\Frontend\Person;
 
 use KREDA\Sphere\Application\Management\Management;
 use KREDA\Sphere\Application\Management\Service\Contact\Entity\TblContact;
+use KREDA\Sphere\Application\Management\Service\Contact\Entity\TblMail;
 use KREDA\Sphere\Application\Management\Service\Person\Entity\TblPerson;
 use KREDA\Sphere\Client\Component\Element\Repository\Content\Stage;
 use KREDA\Sphere\Client\Component\Parameter\Repository\Icon\ConversationIcon;
@@ -97,23 +98,24 @@ class Contact extends AbstractFrontend
      */
     public static function layoutContact( TblPerson $tblPerson, $hasRemove = false )
     {
+        //ToDo entityContactAllByPerson ?
+//        $tblContactList = Management::serviceContact()->entityContactAllByPerson( $tblPerson );
+        $tblMailList = Management::serviceContact()->entityMailAllByPerson( $tblPerson );
 
-        $tblContactList = Management::serviceContact()->entityContactAllByPerson( $tblPerson );
-
-        if (!empty( $tblContactList )) {
+        if (!empty( $tblMailList )) {
             /** @noinspection PhpUnusedParameterInspection */
-            array_walk( $tblContactList, function ( TblContact &$tblContact, $Index, $Data ) {
+            array_walk( $tblMailList, function ( TblMail &$tblMail, $Index, $Data ) {
 
                 /** @var bool[]|TblPerson[] $Data */
-                $tblContact = new LayoutColumn(
+                $tblMail = new LayoutColumn(
                     new LayoutPanel(
-                        new ConversationIcon().' Privat', array( 'E-Mail Addresse', 'mustermann@beispiel.net' ),
+                        new ConversationIcon().' '.$tblMail->getTblContact()->getName(), array( 'E-Mail Addresse', $tblMail->getAddress() ),
                         LayoutPanel::PANEL_TYPE_DEFAULT,
                         ( $Data[0]
                             ? new ButtonGroup( array(
                                 new Danger(
                                     'Löschen', '/Sphere/Management/Person/Contact/Destroy', new RemoveIcon(),
-                                    array( 'Id' => $Data[1]->getId(), 'Contact' => $tblContact->getId() )
+                                    array( 'Id' => $Data[1]->getId(), 'Contact' => $tblMail->getTblContact()->getId() )
                                 ),
                             ) )
                             : null
@@ -121,7 +123,7 @@ class Contact extends AbstractFrontend
                     ), 4 );
             }, array( $hasRemove, $tblPerson ) );
         } else {
-            $tblContactList = array(
+            $tblMailList = array(
                 new LayoutColumn(
                     new Warning( 'Keine Kontaktdaten hinterlegt', new WarningIcon() )
                 )
@@ -129,7 +131,7 @@ class Contact extends AbstractFrontend
         }
 
         return new Layout(
-            new LayoutGroup( new LayoutRow( $tblContactList ), new LayoutTitle( 'Kontaktdaten' ) )
+            new LayoutGroup( new LayoutRow( $tblMailList ), new LayoutTitle( 'Kontaktdaten' ) )
         );
     }
 

@@ -151,6 +151,33 @@ class TblDebtor extends AbstractEntity
      */
     public function getIBAN()
     {
+
+        return $this->IBAN;
+    }
+
+    /**
+     * @return string $IBAN
+     */
+    public function getIBANFrontend()
+    {
+
+        if ($this->IBAN)
+        {
+                $IbanFrontend =  substr($this->IBAN,0,4);
+                $IbanFrontend .=  ' '.substr($this->IBAN,4,4);
+                $IbanFrontend .=  ' '.substr($this->IBAN,8,4);
+                $IbanFrontend .=  ' '.substr($this->IBAN,12,4);
+                $IbanFrontend .=  ' '.substr($this->IBAN,16,4);
+                $IbanFrontend .=  ' '.substr($this->IBAN,20,4);
+            (substr($this->IBAN,24,4)) ?
+                $IbanFrontend .=  ' '.substr($this->IBAN,24,4): null;
+            (substr($this->IBAN,28,4)) ?
+                $IbanFrontend .=  ' '.substr($this->IBAN,28,4):null;
+            (substr($this->IBAN,32,2)) ?
+                $IbanFrontend .=  ' '.substr($this->IBAN,32,2):null;
+
+            return $IbanFrontend;
+        }
         return $this->IBAN;
     }
 
@@ -159,7 +186,7 @@ class TblDebtor extends AbstractEntity
      */
     public function setIBAN($IBAN)
     {
-        $this->IBAN = $IBAN;
+        $this->IBAN = strtoupper(substr(str_replace(' ','',$IBAN),0,34));
     }
 
     /**
@@ -175,7 +202,7 @@ class TblDebtor extends AbstractEntity
      */
     public function setBIC( $BIC )
     {
-        $this->BIC = $BIC;
+        $this->BIC = strtoupper(substr(str_replace(' ','',$BIC),0,11));
     }
 
     /**

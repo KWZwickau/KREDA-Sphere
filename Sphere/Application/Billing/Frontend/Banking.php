@@ -138,7 +138,7 @@ class Banking extends AbstractFrontend
                         ) ) )->__toString();
 
                 $Bankname = $tblDebtor->getBankName();
-                $IBAN = $tblDebtor->getIBAN();
+                $IBAN = $tblDebtor->getIBANFrontend();
                 $BIC = $tblDebtor->getBIC();
                 $Owner = $tblDebtor->getOwner();
                 if(!empty( $Bankname ) && !empty( $IBAN ) && !empty( $BIC ) && !empty( $Owner ) )
@@ -203,15 +203,19 @@ class Banking extends AbstractFrontend
                         new LayoutColumn( array(
                             new LayoutPanel( 'Bezahlart', $tblDebtor->getPaymentType()->getName(), LayoutPanel::PANEL_TYPE_WARNING )
                         ), 4),
+                    )),
+                    new LayoutRow( array(
                         new LayoutColumn( array(
                             new LayoutPanel( 'Kontoinhaber', $tblDebtor->getOwner(), LayoutPanel::PANEL_TYPE_WARNING )
                         ), 4),
                         new LayoutColumn( array(
-                            new LayoutPanel( 'IBAN', $tblDebtor->getIBAN(), LayoutPanel::PANEL_TYPE_WARNING )
+                            new LayoutPanel( 'IBAN', $tblDebtor->getIBANFrontend(), LayoutPanel::PANEL_TYPE_WARNING )
                         ), 4),
                         new LayoutColumn( array(
                             new LayoutPanel( 'BIC', $tblDebtor->getBIC(), LayoutPanel::PANEL_TYPE_WARNING )
                         ), 4),
+                    )),
+                    new LayoutRow( array(
                         new LayoutColumn( array(
                             new LayoutPanel( 'Bank', $tblDebtor->getBankName(), LayoutPanel::PANEL_TYPE_DEFAULT )
                         ), 4),
@@ -224,6 +228,8 @@ class Banking extends AbstractFrontend
                         new LayoutColumn( array(
                             new LayoutPanel( 'Folgeeinzug', $tblDebtor->getLeadTimeFollow(), LayoutPanel::PANEL_TYPE_DEFAULT )
                         ), 2),
+                    )),
+                    new LayoutRow( array(
                         new LayoutColumn( array(
                             new LayoutPanel( 'Beschreibung', $tblDebtor->getDescription(), LayoutPanel::PANEL_TYPE_DEFAULT )
                         ), 12),
@@ -605,7 +611,7 @@ class Banking extends AbstractFrontend
             $Global->POST['Debtor']['Description'] = $tblDebtor->getDescription();
             $Global->POST['Debtor']['PaymentType'] = Billing::serviceBanking()->entityPaymentTypeByName( $PaymentType )->getId();
             $Global->POST['Debtor']['Owner'] = $tblDebtor->getOwner();
-            $Global->POST['Debtor']['IBAN'] = $tblDebtor->getIBAN();
+            $Global->POST['Debtor']['IBAN'] = $tblDebtor->getIBANFrontend();
             $Global->POST['Debtor']['BIC'] = $tblDebtor->getBIC();
             $Global->POST['Debtor']['CashSign'] = $tblDebtor->getCashSign();
             $Global->POST['Debtor']['BankName'] = $tblDebtor->getBankName();
@@ -706,6 +712,13 @@ class Banking extends AbstractFrontend
                 function(TblDebtor $invoiceA, TblDebtor $invoiceB){
                     return $invoiceA->getId() - $invoiceB->getId();
                 });
+
+            /** @var TblDebtor $DebtorOne */
+            foreach($tblDebtorList as $DebtorOne)
+            {
+                $DebtorOne->IBANfrontend = $DebtorOne->getIBANFrontend();
+            }
+
         }
 
         if ($ReferenceEntityList)
@@ -817,7 +830,7 @@ class Banking extends AbstractFrontend
                                                         new TableData( $tblDebtorList, null, array(
                                                             'DebtorNumber' => 'Debitorennummer',
                                                             'BankName' => 'Name der Bank',
-                                                            'IBAN' => 'IBAN',
+                                                            'IBANfrontend' => 'IBAN',
                                                             'BIC' => 'BIC',
                                                             'Owner' => 'Inhaber'
                                                         ))
@@ -933,7 +946,7 @@ class Banking extends AbstractFrontend
                                                 new TextField( 'Debtor[BankName]', 'Name der Bank', 'Name der Bank', new BuildingIcon()
                                                 ), 6),
                                             new FormColumn(
-                                                new TextField( 'Debtor[IBAN]', 'XX XX XXXXXXXX XXXXXXXXXX', 'IBAN', new BarCodeIcon()
+                                                new TextField( 'Debtor[IBAN]', 'XXXX XXXX XXXX XXXX XXXX XX', 'IBAN', new BarCodeIcon()
                                                 ), 4),
                                             new FormColumn(
                                                 new TextField( 'Debtor[BIC]', 'XXXX XX XX XXX', 'BIC', new BarCodeIcon()

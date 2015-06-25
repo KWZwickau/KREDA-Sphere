@@ -56,7 +56,7 @@ class Account extends AbstractFrontend
                 $tblAccount->Typ = $tblAccount->getTblAccountType()->getName();
                 if( $tblAccount->getIsActive()=== true )
                 {
-                    $tblAccount->Activity = new LayoutLabel( 'Aktiviert', LayoutLabel::LABEL_TYPE_SUCCESS );
+                    $tblAccount->Activity = new LayoutLabel( 'Aktiv', LayoutLabel::LABEL_TYPE_SUCCESS );
                     $tblAccount->Option =
                         (new Danger( 'Deaktivieren', '/Sphere/Billing/Account/Deactivate',
                             new DisableIcon(), array(
@@ -65,7 +65,7 @@ class Account extends AbstractFrontend
                 }
                 else
                 {
-                    $tblAccount->Activity = new LayoutLabel( 'Deaktiviert', LayoutLabel::LABEL_TYPE_DANGER );
+                    $tblAccount->Activity = new LayoutLabel( 'Inaktiv', LayoutLabel::LABEL_TYPE_DANGER );
                     $tblAccount->Option =
                         (new Success( 'Aktivieren', '/Sphere/Billing/Account/Activate',
                             new OkIcon(), array(
