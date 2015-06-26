@@ -31,13 +31,9 @@
 </form>
 {% if FormConfirm is not empty %}
     <script type="text/javascript">
-        Client.Use( 'jQuery', function()
+        Client.Use( 'ModForm', function()
         {
-            jQuery( "form#{{ Hash }}" ).submit( function( Event )
-            {
-                Event.stopImmediatePropagation();
-                return confirm( "{{ FormConfirm }}" );
-            } );
-        } )
+            jQuery( "form#{{ Hash }}" ).ModForm( {notifyChangedMessage: "{{ FormConfirm }}"} );
+        } );
     </script>
 {% endif %}

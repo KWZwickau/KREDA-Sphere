@@ -87,11 +87,13 @@ label {
 .selecter .selecter-selected {
     padding: 4px 8px;
 }
+
 .input-group .selecter-selected {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     padding: 4px 8px;
 }
+
 .input-group .selecter-selected:after {
     top: 13px;
 }
@@ -328,4 +330,10 @@ table.dataTable.dtr-inline.collapsed > tbody tr.parent th:first-child:before {
     padding-left: 4px;
     padding-top: 3px;
     font-size: 9px;
+}
+
+/* LIST */
+
+.list-group-item {
+    padding: 5px 10px;
 }

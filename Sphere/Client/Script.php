@@ -145,6 +145,9 @@ class Script extends AbstractExtension
         $this->setModule(
             'ModSortable', array( 'jQuery.Ui', 'jQuery' )
         );
+        $this->setModule(
+            'ModForm', array( 'jQuery' )
+        );
     }
 
     /**
