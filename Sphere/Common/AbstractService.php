@@ -115,7 +115,14 @@ abstract class AbstractService extends AbstractExtension implements IServiceInte
             $Column->setAutoincrement( true );
             $Table->setPrimaryKey( array( 'Id' ) );
         }
-        return $Schema->getTable( $Name );
+        $Table = $Schema->getTable( $Name );
+        if (!$this->getDatabaseHandler()->hasColumn( $Name, 'EntityCreate' )) {
+            $Table->addColumn( 'EntityCreate', 'datetime', array( 'notnull' => false ) );
+        }
+        if (!$this->getDatabaseHandler()->hasColumn( $Name, 'EntityUpdate' )) {
+            $Table->addColumn( 'EntityUpdate', 'datetime', array( 'notnull' => false ) );
+        }
+        return $Table;
     }
 
     /**
