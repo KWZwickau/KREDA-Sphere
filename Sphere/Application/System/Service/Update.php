@@ -34,6 +34,7 @@ class Update extends AbstractService
         $Protocol[] = Gatekeeper::serviceAccount()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Management::servicePerson()->setupDatabaseSchema( $Simulate );
         $Protocol[] = Management::serviceAddress()->setupDatabaseSchema( $Simulate );
+        $Protocol[] = Management::serviceGroup()->setupDatabaseSchema( $Simulate );
         /**
          * Payload
          */

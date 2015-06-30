@@ -93,6 +93,15 @@ class Management extends Module\Education
     }
 
     /**
+     * @return Service\Group
+     */
+    public static function serviceGroup()
+    {
+
+        return Service\Group::getApi();
+    }
+
+    /**
      * @return Service\Contact
      */
     public static function serviceContact()
