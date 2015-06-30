@@ -68,7 +68,7 @@ class Subject extends AbstractFrontend
                             preg_replace( '!^(.*?)\s*/\s*(.*?)$!is', '${1} / ${2}', $tblSubject->getName() )
                         ), $tblCategoryList ),
                         ( $tblSubject->getActiveState()
-                            ? LayoutPanel::PANEL_TYPE_INFO
+                            ? LayoutPanel::PANEL_TYPE_SUCCESS
                             : LayoutPanel::PANEL_TYPE_DANGER
                         ),
                         new ButtonGroup( array(

@@ -57,6 +57,9 @@ abstract class Schema extends AbstractService
         if (!$this->getDatabaseHandler()->hasColumn( 'tblGroup', 'Description' )) {
             $Table->addColumn( 'Description', 'string', array( 'notnull' => false ) );
         }
+        if (!$this->getDatabaseHandler()->hasColumn( 'tblGroup', 'IsEditable' )) {
+            $Table->addColumn( 'IsEditable', 'boolean' );
+        }
 
         return $Table;
     }

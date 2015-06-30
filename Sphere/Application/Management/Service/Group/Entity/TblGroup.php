@@ -26,6 +26,10 @@ class TblGroup extends AbstractEntity
      * @Column(type="string")
      */
     protected $Description;
+    /**
+     * @Column(type="boolean")
+     */
+    protected $IsEditable;
 
     /**
      * @param string $Name
@@ -33,6 +37,7 @@ class TblGroup extends AbstractEntity
     function __construct( $Name )
     {
 
+        $this->IsEditable = true;
         $this->Name = $Name;
     }
 
@@ -70,5 +75,23 @@ class TblGroup extends AbstractEntity
     {
 
         $this->Description = $Description;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsEditable()
+    {
+
+        return $this->IsEditable;
+    }
+
+    /**
+     * @param boolean $IsEditable
+     */
+    public function setIsEditable( $IsEditable )
+    {
+
+        $this->IsEditable = $IsEditable;
     }
 }

@@ -38,7 +38,7 @@ class TblCompanyList extends AbstractEntity
         if (null === $this->tblGroup) {
             return false;
         } else {
-            return Management::serviceGroup()->entityGroupById( $this->tblGroup );
+            return Management::serviceGroup()->fetchGroupById( $this->tblGroup );
         }
     }
 

@@ -6,11 +6,11 @@ use KREDA\Sphere\Client\Frontend\Button\AbstractType;
 use KREDA\Sphere\Common\Signature\Type\GetSignature;
 
 /**
- * Class Primary
+ * Class Warning
  *
  * @package KREDA\Sphere\Client\Frontend\Button\Link
  */
-class Primary extends AbstractType
+class Warning extends AbstractType
 {
 
     /**
@@ -24,7 +24,7 @@ class Primary extends AbstractType
     {
 
         parent::__construct( $Name );
-        $this->Template = $this->extensionTemplate( __DIR__.'/Primary.twig' );
+        $this->Template = $this->extensionTemplate( __DIR__.'/Warning.twig' );
         $this->Template->setVariable( 'ElementName', $Name );
         if (null !== $Icon) {
             $this->Template->setVariable( 'ElementIcon', $Icon );

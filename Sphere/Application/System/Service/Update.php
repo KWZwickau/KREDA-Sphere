@@ -67,6 +67,7 @@ class Update extends AbstractService
             Gatekeeper::serviceAccount()->setupDatabaseContent();
             Management::servicePerson()->setupDatabaseContent();
             Gatekeeper::serviceToken()->setupDatabaseContent();
+            Management::serviceGroup()->setupDatabaseContent();
             /**
              * Payload
              */

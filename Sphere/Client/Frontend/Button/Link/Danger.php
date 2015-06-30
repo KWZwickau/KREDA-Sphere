@@ -18,8 +18,9 @@ class Danger extends AbstractType
      * @param              $Path
      * @param AbstractIcon $Icon
      * @param array        $Data
+     * @param bool|string  $ToolTip
      */
-    public function __construct( $Name, $Path, AbstractIcon $Icon = null, $Data = array() )
+    public function __construct( $Name, $Path, AbstractIcon $Icon = null, $Data = array(), $ToolTip = false )
     {
 
         parent::__construct( $Name );
@@ -36,5 +37,12 @@ class Danger extends AbstractType
         }
         $this->Template->setVariable( 'ElementPath', $Path.$Data );
         $this->Template->setVariable( 'UrlBase', $this->extensionRequest()->getUrlBase() );
+        if ($ToolTip) {
+            if (is_string( $ToolTip )) {
+                $this->Template->setVariable( 'ElementToolTip', $ToolTip );
+            } else {
+                $this->Template->setVariable( 'ElementToolTip', $Name );
+            }
+        }
     }
 }

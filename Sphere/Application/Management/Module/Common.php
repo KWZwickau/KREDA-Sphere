@@ -40,6 +40,9 @@ class Common extends AbstractApplication
             '/Sphere/Management/Person', 'Personen', new GroupIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
+            '/Sphere/Management/Group', 'Gruppen', new GroupIcon()
+        );
+        self::addModuleNavigationMain( self::$Configuration,
             '/Sphere/Management/Period/SchoolYear', 'Zeiten', new TimeIcon()
         );
         self::addModuleNavigationMain( self::$Configuration,
