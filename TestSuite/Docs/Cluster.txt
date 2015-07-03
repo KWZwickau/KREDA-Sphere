@@ -52,6 +52,16 @@ B:I:apache2
 B:C:a2dismod mpm_event mpm_prefork
 B:C:a2enmod mpm_worker
 B:C:a2enmod proxy proxy_http rewrite deflate headers proxy_balancer ssl lbmethod_byrequests
+
+B:I:ufw
+B:C:ufw default deny
+B:C:ufw allow 80
+B:C:ufw allow 443
+B:C:ufw enable
+
+B:SSL Csr+Key (4096+SHA256)
+> openssl req -new -newkey rsa:4096 -nodes -sha256 -out mydomain.csr -keyout mydomain.key
+
 --------------------
 B:C:vHost-Balancer
 
